@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Plugin Builder" default="build">
+    <property name="version.constant" value="PP_AUTHORS_VERSION"/>
+    <import file="vendor/alledia/wordpress-plugin-builder/build.xml"/>
+</project>

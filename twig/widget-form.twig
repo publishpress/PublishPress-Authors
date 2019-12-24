@@ -1,0 +1,16 @@
+<p>
+    <label for="{{ esc_attr( ids.title ) }}">{{ labels.title }}:</label>
+    <input class="widefat" id="{{ esc_attr( ids.title ) }}" name="{{ esc_attr( names.title ) }}" type="text" value="{{ esc_attr( values.title ) }}">
+</p>
+
+<p>
+    <label for="{{ esc_attr( ids.layout ) }}">{{ labels.layout }}:</label>
+
+    <select id="{{ esc_attr( ids.layout ) }}" name="{{ esc_attr( names.layout) }}">';
+
+        {% for layout, text in layouts %}
+            <option value="{{ layout }}" {% if layout == values.layout %}selected="selected"{% endif %}>{{ text }}</option>
+        {% endfor %}
+
+    </select>
+</p>
