@@ -280,28 +280,3 @@ body.block-editor-page select[id^="post-author-selector-"] {
 .ppma-module-settings input[type="submit"] {
     margin-top: 20px;
 }
-
-#multiple_authors_multiple_authors_options_license_key {
-    width: 300px;
-}
-
-.ppma_license_key_status {
-    margin-left: 0;
-    font-weight: bold;
-    margin-bottom: 10px;
-    box-sizing: border-box;
-    padding: 4px;
-}
-
-.ppma_license_key_status.valid {
-    color: #8181da;
-}
-
-.ppma_license_key_status.invalid {
-color: #f54d4d;
-}
-
-.ppma_license_key_status_label {
-color: black;
-font-weight: normal;
-}

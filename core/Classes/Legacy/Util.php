@@ -123,11 +123,4 @@ class Util
 
         return $isEnabled;
     }
-
-    public static function hasValidLicenseKeySet()
-    {
-        $container = Factory::get_container();
-
-        return ! empty($container['LICENSE_KEY']) && $container['LICENSE_STATUS'] === \MA_Multiple_Authors::LICENSE_STATUS_VALID;
-    }
 }

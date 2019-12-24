@@ -14,6 +14,7 @@ use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Classes\Utils;
 use MultipleAuthors\Traits\Author_box;
 use WP_Post;
+use WP_Screen;
 
 defined('ABSPATH') or die('No direct script access allowed.');
 
@@ -234,7 +235,8 @@ class Plugin
         add_shortcode('ppma_test', [$this, 'ppma_test']);
     }
 
-    public function ppma_test () {
+    public function ppma_test()
+    {
         echo '<b>PublishPress Authors:</b> shortcode rendered successfully!';
     }
 
@@ -342,7 +344,7 @@ class Plugin
                 'assign_terms' => 'ppma_manage_authors',
             ],
             'show_ui'            => true,
-            'show_in_menu' => true,
+            'show_in_menu'       => true,
             'show_in_quick_edit' => false,
             'meta_box_cb'        => false,
             'query_var'          => 'ppma_author',
@@ -376,41 +378,6 @@ class Plugin
         add_action('load-edit.php', [$this, 'load_edit']);
     }
 
-    private function shouldDisplayFooter()
-    {
-        global $current_screen;
-
-        if ($current_screen->base === 'edit-tags' && $current_screen->taxonomy === 'author') {
-            return true;
-        }
-
-        if ($current_screen->base === 'term' && $current_screen->taxonomy === 'author') {
-            return true;
-        }
-
-        if ($current_screen->base === 'edit' && $current_screen->post_type === \MA_Author_Custom_Fields::POST_TYPE_CUSTOM_FIELDS) {
-            return true;
-        }
-
-        if ($current_screen->base === 'post' && $current_screen->post_type === \MA_Author_Custom_Fields::POST_TYPE_CUSTOM_FIELDS) {
-            return true;
-        }
-
-        if ($current_screen->base === 'edit' && $current_screen->post_type === \MA_Author_Custom_Layouts::POST_TYPE_LAYOUT) {
-            return true;
-        }
-
-        if ($current_screen->base === 'post' && $current_screen->post_type === \MA_Author_Custom_Layouts::POST_TYPE_LAYOUT) {
-            return true;
-        }
-
-        if ($current_screen->base === 'authors_page_ppma-modules-settings') {
-            return true;
-        }
-
-        return false;
-    }
-
     /**
      * Display the PublishPress footer on the custom post pages
      */
@@ -434,6 +401,35 @@ class Plugin
         return $footer;
     }
 
+    private function shouldDisplayFooter()
+    {
+        global $current_screen;
+
+        if ($current_screen->base === 'edit-tags' && $current_screen->taxonomy === 'author') {
+            return true;
+        }
+
+        if ($current_screen->base === 'term' && $current_screen->taxonomy === 'author') {
+            return true;
+        }
+
+        if ($current_screen->base === 'authors_page_ppma-modules-settings') {
+            return true;
+        }
+
+        /**
+         * @param bool      $shouldDisplay
+         * @param WP_Screen $currentScreen
+         *
+         * @return bool
+         */
+        if (apply_filters('pp_authors_should_display_footer', true, $current_screen)) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * Echo or returns the default footer
      *
@@ -444,15 +440,12 @@ class Plugin
      */
     public function print_default_footer($current_module, $echo = true)
     {
-        $showFooter = true;
-        $html       = '';
-
-        // If we have any license key set, we check if the branding is disabled.
-        if (Util::hasValidLicenseKeySet()) {
-            $legacyPlugin = Factory::getLegacyPlugin();
-
-            $showFooter = ! (isset($legacyPlugin->modules->multiple_authors->options->display_branding) && $legacyPlugin->modules->multiple_authors->options->display_branding === 'off');
-        }
+        $html = '';
+        /**
+         * @param bool   $showFooter
+         * @param string $currentModule
+         */
+        $showFooter = apply_filters('pp_authors_show_footer', true, $current_module);
 
         if ($showFooter) {
             $container = Factory::get_container();
@@ -465,12 +458,13 @@ class Plugin
                     'plugin_name'    => __('PublishPress', 'publishpress-authors'),
                     'plugin_slug'    => 'publishpress',
                     'plugin_url'     => PP_AUTHORS_URL,
-                    'rating_message' => __('If you like %s please leave us a %s rating. Thank you!', 'publishpress-authors'),
+                    'rating_message' => __('If you like %s please leave us a %s rating. Thank you!',
+                        'publishpress-authors'),
                 ]
             );
         }
 
-        if (! $echo) {
+        if ( ! $echo) {
             return $html;
         }
 
@@ -1469,8 +1463,13 @@ class Plugin
      * @param bool $force
      * @param null $post_id
      */
-    public function action_echo_author_box($show_title = null, $layout = null, $archive = false, $force = false, $post_id = null)
-    {
+    public function action_echo_author_box(
+        $show_title = null,
+        $layout = null,
+        $archive = false,
+        $force = false,
+        $post_id = null
+    ) {
         if ($this->should_display_author_box() || $force) {
             echo $this->get_author_box_markup('action', $show_title, $layout, $archive, $post_id);
         }

@@ -40,7 +40,11 @@ class Installer
         self::add_capabilities();
         self::fix_author_url();
         self::flush_permalinks();
-        self::create_default_layouts();
+
+        /**
+         * @param string $currentVersion
+         */
+        do_action('pp_authors_install', $current_version);
     }
 
     /**
@@ -172,6 +176,14 @@ class Installer
         }
     }
 
+    private static function add_capabilities()
+    {
+        $role = get_role('administrator');
+        $role->add_cap('ppma_edit_orphan_post');
+        $role->add_cap('ppma_manage_authors');
+        $role->add_cap('manage_options');
+    }
+
     /**
      * Fix the author URL for authors with mapped users, to make sure the slug is the same.
      */
@@ -214,14 +226,6 @@ class Installer
     }
 
     /**
-     * Create the default author layouts.
-     */
-    protected static function create_default_layouts()
-    {
-        \MA_Author_Custom_Layouts::createDefaultLayouts();
-    }
-
-    /**
      * Runs methods when the plugin is being upgraded to a most recent version.
      *
      * @param string $previous_version
@@ -235,40 +239,13 @@ class Installer
             self::fix_author_url();
         }
 
-        if (version_compare($previous_version, '2.3.0', '<=')) {
-            self::create_default_layouts();
-        }
-
-        if (version_compare($previous_version, '2.4.0', '<=')) {
-            self::add_post_custom_fields();
-        }
+        /**
+         * @param string $previousVersion
+         */
+        do_action('pp_authors_upgrade', $previous_version);
 
         self::add_capabilities();
         self::flush_permalinks();
-    }
-
-    /**
-     * Add custom field with authors' name on all posts.
-     *
-     * @since 2.4.0
-     */
-    protected static function add_post_custom_fields()
-    {
-        global $wpdb;
-
-        // Get the authors
-        $terms = static::get_all_author_terms();
-        $names = static::get_terms_author_names($terms);
-
-        // Get all different combinations of authors to make a cache and save connections to the db.
-        $posts_author_names = static::get_post_author_names($names);
-
-        // Update all posts.
-        foreach ($posts_author_names as $post_id => $post_names) {
-            $post_names = implode(', ', $post_names);
-
-            update_post_meta($post_id, 'ppma_authors_name', $post_names);
-        }
     }
 
     /**
@@ -368,15 +345,5 @@ class Installer
         );
 
         return $ids;
-    }
-
-    private static function add_capabilities()
-    {
-        $role = get_role('administrator');
-        $role->add_cap('ppma_edit_orphan_post');
-        $role->add_cap('ppma_manage_authors');
-        $role->add_cap('manage_options');
-        $role->add_cap('ppma_manage_layouts');
-        $role->add_cap('ppma_manage_custom_fields');
     }
 }

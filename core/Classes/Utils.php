@@ -144,20 +144,20 @@ class Utils
      */
     public static function set_post_authors($post_id, $authors)
     {
-        static::set_post_authors_custom_field($post_id, $authors);
+        static::set_post_authors_name_meta($post_id, $authors);
 
         $authors = wp_list_pluck($authors, 'term_id');
         wp_set_object_terms($post_id, $authors, 'author');
     }
 
     /**
-     * Save a custom field with the post authors' name. Add compatibility to
+     * Save a metadata with the post authors' name. Add compatibility to
      * Yoast for using in the custom title, and other 3rd party plugins.
      *
      * @param $post_id
      * @param $authors
      */
-    protected static function set_post_authors_custom_field($post_id, $authors)
+    protected static function set_post_authors_name_meta($post_id, $authors)
     {
         if ( ! is_array($authors)) {
             $authors = [];
