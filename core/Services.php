@@ -62,9 +62,7 @@ class Services implements ServiceProviderInterface
         };
 
         $container['twig_loader'] = function ($c) {
-            $loader = new Twig_Loader_Filesystem(PP_AUTHORS_BASE_PATH . 'twig');
-
-            return $loader;
+            return new Twig_Loader_Filesystem(PP_AUTHORS_BASE_PATH . 'twig');
         };
 
         $container['twig'] = function ($c) {

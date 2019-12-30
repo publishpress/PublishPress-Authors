@@ -26,6 +26,7 @@ use MultipleAuthors\Classes\Legacy\Module;
 use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Classes\Utils;
 use MultipleAuthors\Factory;
+use MultipleAuthors\Classes\Objects\Author;
 
 if ( ! class_exists('MA_Multiple_Authors')) {
     /**
@@ -658,7 +659,6 @@ if ( ! class_exists('MA_Multiple_Authors')) {
             echo '</p>';
 
             foreach ($actions as $actionName => $actionInfo) {
-
                 if (isset($actionInfo['button_link'])) {
                     $link = $actionInfo['button_link'];
                 } else {
@@ -772,9 +772,9 @@ if ( ! class_exists('MA_Multiple_Authors')) {
          * Filters the list of receivers in the notification workflows provided
          * by the improved notifications add-on.
          *
-         * @param array   $receivers
+         * @param array $receivers
          * @param WP_Post $workflow
-         * @param array   $args
+         * @param array $args
          *
          * @return array
          */
@@ -798,8 +798,8 @@ if ( ! class_exists('MA_Multiple_Authors')) {
          * Over hide some strings for Authors.
          *
          * @param string $translation Translated text.
-         * @param string $text        Text to translate.
-         * @param string $domain      Text domain. Unique identifier for retrieving translated strings.
+         * @param string $text Text to translate.
+         * @param string $domain Text domain. Unique identifier for retrieving translated strings.
          *
          * @return string
          */
@@ -937,7 +937,6 @@ if ( ! class_exists('MA_Multiple_Authors')) {
 
             // Check if we have any role selected to create an author for the new user.
             if ( ! empty($roles)) {
-
                 // Get users from roles
                 $args  = [
                     'role__in' => $roles,
