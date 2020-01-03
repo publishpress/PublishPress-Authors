@@ -9,12 +9,10 @@
  * @since       1.0.0
  */
 
-if ( ! defined('ABSPATH')) {
-    die('No direct script access allowed.');
-}
+defined('ABSPATH') or die('No direct script access allowed.');
 
-if ( ! defined('PP_AUTHORS_DEFINED')) {
-    define('PP_AUTHORS_VERSION', '3.2.0-alpha.1');
+if ( ! defined('PP_AUTHORS_LOADED')) {
+    define('PP_AUTHORS_VERSION', '3.2.0');
     define('PP_AUTHORS_ITEM_ID', '7203');
     define('PP_AUTHORS_SITE_URL', 'https://publishpress.com');
     define('PP_AUTHORS_PLUGIN_AUTHOR', 'PublishPress');
@@ -25,5 +23,16 @@ if ( ! defined('PP_AUTHORS_DEFINED')) {
     define('PP_AUTHORS_URL', plugins_url('/', __FILE__));
     define('PP_AUTHORS_BASENAME', plugin_basename(PP_AUTHORS_BASE_PATH));
 
-    define('PP_AUTHORS_DEFINED', 1);
+    define('PP_AUTHORS_LOADED', 1);
+
+    $autoloadPath = PP_AUTHORS_BASE_PATH . 'vendor/autoload.php';
+    if (file_exists($autoloadPath)) {
+        require_once $autoloadPath;
+    }
+
+    require_once __DIR__ . '/deprecated.php';
+    require_once __DIR__ . '/template-tags.php';
+    require_once __DIR__ . '/integrations/amp.php';
+    require_once __DIR__ . '/libraries/cmb2/init.php';
+    require_once __DIR__ . '/modules/multiple-authors/multiple-authors.php';
 }
