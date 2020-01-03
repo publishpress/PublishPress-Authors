@@ -20,12 +20,6 @@
       "homepage": "http://automattic.com/"
     }
   ],
-  "repositories": [
-    {
-      "type": "git",
-      "url": "https://github.com/OSTraining/PublishPress-Addon-Framework"
-    }
-  ],
   "config": {
     "preferred-install": "dist"
   },
@@ -43,7 +37,6 @@
     "phing/phing": "*",
     "pimple/pimple": "~3.0",
     "alledia/wordpress-plugin-builder": "^2",
-    "alledia/wordpress-plugin-framework": "~0.6",
     "twig/twig": "1.37.1"
   },
   "require-dev": {

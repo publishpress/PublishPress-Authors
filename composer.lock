@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e22967c486c19200a35ac9d8d0a2e503",
+    "content-hash": "fbb3a7f08b48c1ca30811590e4264a27",
     "packages": [
         {
             "name": "alledia/wordpress-plugin-builder",
-            "version": "2.4.0",
+            "version": "2.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/publishpress/WordPress-Plugin-Builder.git",
-                "reference": "aa47b080faf33674a9a18179b14803257903c4b2"
+                "reference": "baaafee236909d2ac47ab09f664a353440790dce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/publishpress/WordPress-Plugin-Builder/zipball/aa47b080faf33674a9a18179b14803257903c4b2",
-                "reference": "aa47b080faf33674a9a18179b14803257903c4b2",
+                "url": "https://api.github.com/repos/publishpress/WordPress-Plugin-Builder/zipball/baaafee236909d2ac47ab09f664a353440790dce",
+                "reference": "baaafee236909d2ac47ab09f664a353440790dce",
                 "shasum": ""
             },
             "require": {
@@ -61,57 +61,7 @@
                 "plugin",
                 "wordpress"
             ],
-            "time": "2019-12-02T21:20:22+00:00"
-        },
-        {
-            "name": "alledia/wordpress-plugin-framework",
-            "version": "0.6.8",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/publishpress/WordPress-Plugin-Framework.git",
-                "reference": "d92bdbda933412f8d04f7088b758c81f1eb4fba0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/publishpress/WordPress-Plugin-Framework/zipball/d92bdbda933412f8d04f7088b758c81f1eb4fba0",
-                "reference": "d92bdbda933412f8d04f7088b758c81f1eb4fba0",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.6",
-                "pimple/pimple": "~3.0",
-                "twig/twig": "~1.20"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Allex\\": "src/library"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Alledia",
-                    "email": "help@alledia.com",
-                    "homepage": "https://alledia.com"
-                },
-                {
-                    "name": "Anderson Grudtner Martins",
-                    "email": "anderson@grudtner.me",
-                    "homepage": "http://anderson.grudtner.me",
-                    "role": "Lead Developer"
-                }
-            ],
-            "description": "Alledia framework for creating WordPress plugins.",
-            "keywords": [
-                "framework",
-                "plugin",
-                "wordpress"
-            ],
-            "time": "2019-11-19T16:38:51+00:00"
+            "time": "2020-01-02T17:03:16+00:00"
         },
         {
             "name": "phing/phing",

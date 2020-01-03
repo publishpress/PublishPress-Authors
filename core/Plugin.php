@@ -53,10 +53,6 @@ class Plugin
         add_action('init', [$this, 'action_init']);
         add_action('init', [$this, 'action_init_late'], 100);
 
-        $container = Factory::get_container();
-        $framework = $container['framework'];
-        $framework->init();
-
         // Installation hooks
         add_action('multiple_authors_install',
             ['MultipleAuthors\\Classes\\Installer', 'install']);

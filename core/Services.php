@@ -50,17 +50,6 @@ class Services implements ServiceProviderInterface
             return $legacyPlugin->multiple_authors;
         };
 
-        $container['framework'] = function ($c) {
-            // The 4th param is there just for backward compatibility with older versions of the Allex framework
-            // packed in UpStream (in case it is installed and loaded).
-            return new Core(
-                PP_AUTHORS_BASENAME,
-                PP_AUTHORS_SITE_URL,
-                PP_AUTHORS_PLUGIN_AUTHOR,
-                ''
-            );
-        };
-
         $container['twig_loader'] = function ($c) {
             return new Twig_Loader_Filesystem(PP_AUTHORS_BASE_PATH . 'twig');
         };
