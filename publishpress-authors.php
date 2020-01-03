@@ -12,7 +12,7 @@
  * @publishpress-authors
  * Plugin Name: PublishPress Authors
  * Plugin URI:  https://publishpress.com/
- * Version: 3.2.0-alpha.1
+ * Version: 3.2.0
  * Description: Add support for multiple authors
  * Author:      PublishPress
  * Author URI:  https://publishpress.com
@@ -38,7 +38,8 @@ if (is_plugin_active('presspermit-pro/presspermit-pro.php')) {
         if ( ! strpos(urldecode($_SERVER['REQUEST_URI']), 'deactivate')) {
             add_action('all_admin_notices', function () {
                 $msg = sprintf(
-                    __('Error: %1$s is not compatible with PressPermit Pro v2.7.23 or prior. Sorry, but we recommend updating PressPermit.', 'publishpress-authors'),
+                    __('Error: %1$s is not compatible with PressPermit Pro v2.7.23 or prior. Sorry, but we recommend updating PressPermit.',
+                        'publishpress-authors'),
                     'PublishPress Authors'
                 );
 
@@ -50,14 +51,8 @@ if (is_plugin_active('presspermit-pro/presspermit-pro.php')) {
     }
 }
 
-$autoloadPath = __DIR__ . '/vendor/autoload.php';
-if (file_exists($autoloadPath)) {
-    require_once $autoloadPath;
-}
-
-if ( ! defined('PP_AUTHORS_DEFINED')) {
-    require_once __DIR__ . '/defines.php';
-    require_once __DIR__ . '/deprecated.php';
+if (! defined('PP_AUTHORS_LOADED')) {
+    require_once __DIR__ . '/includes.php';
 
     global $multiple_authors_addon;
 
@@ -80,7 +75,7 @@ if ( ! defined('PP_AUTHORS_DEFINED')) {
          * This is a modified version of the core function in wp-includes/pluggable.php that
          * supports notifs to multiple co-authors. Unfortunately, this is the best way to do it :(
          *
-         * @param int    $comment_id   Comment ID
+         * @param int $comment_id Comment ID
          * @param string $comment_type Optional. The comment type either 'comment' (default), 'trackback', or 'pingback'
          *
          * @return bool False if user email does not exist. True on completion.
@@ -93,7 +88,6 @@ if ( ! defined('PP_AUTHORS_DEFINED')) {
             $post      = get_post($comment->comment_post_ID);
             $coauthors = get_multiple_authors($post->ID);
             foreach ($coauthors as $author) {
-
                 // The comment was left by the co-author
                 if ($comment->user_id == $author->ID) {
                     return false;
@@ -204,7 +198,7 @@ if ( ! defined('PP_AUTHORS_DEFINED')) {
          * Filter array of moderation notification email addresses
          *
          * @param array $recipients
-         * @param int   $comment_id
+         * @param int $comment_id
          *
          * @return array
          */
@@ -247,22 +241,4 @@ if ( ! defined('PP_AUTHORS_DEFINED')) {
             return $multiple_authors_addon->get_coauthor_terms_for_post($post_id);
         }
     }
-} else {
-    if (is_admin()) {
-        global $pagenow;
-
-        if (('plugins.php' == $pagenow) && ! strpos(urldecode($_SERVER['REQUEST_URI']), 'deactivate')) {
-            add_action('all_admin_notices', function () {
-                $msg = sprintf(
-                    '<strong>Error:</strong> Multiple copies of %1$s activated. Only the copy in folder "%2$s" is functional.',
-                    'PublishPress Authors',
-                    dirname(PP_AUTHORS_BASENAME)
-                );
-
-                echo "<div class='notice notice-error is-dismissible' style='color:black'><p>" . $msg . '</p></div>';
-            }, 5);
-        }
-    }
-
-    return;
 }

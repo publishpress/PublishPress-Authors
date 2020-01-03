@@ -147,6 +147,7 @@ class LegacyPlugin
             'modules-settings'      => PP_AUTHORS_MODULES_PATH,
             'settings'              => PP_AUTHORS_MODULES_PATH,
             'multiple-authors'      => PP_AUTHORS_MODULES_PATH,
+            'default-layouts'       => PP_AUTHORS_MODULES_PATH,
         ];
 
         // Add filters to extend the modules

@@ -50,64 +50,8 @@ class Services implements ServiceProviderInterface
             return $legacyPlugin->multiple_authors;
         };
 
-        $container['module_author_custom_fields'] = function ($c) {
-            $legacyPlugin = $c['legacy_plugin'];
-
-            return $legacyPlugin->author_custom_fields;
-        };
-
-        $container['LICENSE_KEY'] = function ($c) {
-            $key = '';
-            if (isset($c['module']->module->options->license_key)) {
-                $key = $c['module']->module->options->license_key;
-            }
-
-            return $key;
-        };
-
-        $container['LICENSE_STATUS'] = function ($c) {
-            $status = \MA_Multiple_Authors::LICENSE_STATUS_INVALID;
-
-            if (isset($c['module']->module->options->license_status)) {
-                $status = $c['module']->module->options->license_status;
-            }
-
-            return $status;
-        };
-
-        $container['edd_container'] = function ($c) {
-            $config = new EDDServicesConfig();
-            $config->setApiUrl(PP_AUTHORS_SITE_URL);
-            $config->setLicenseKey($c['LICENSE_KEY']);
-            $config->setLicenseStatus($c['LICENSE_STATUS']);
-            $config->setPluginVersion(PP_AUTHORS_VERSION);
-            $config->setEddItemId(PP_AUTHORS_ITEM_ID);
-            $config->setPluginAuthor(PP_AUTHORS_PLUGIN_AUTHOR);
-            $config->setPluginFile(PP_AUTHORS_FILE);
-
-            $services = new EDDServices($config);
-
-            $eddContainer = new EDDContainer();
-            $eddContainer->register($services);
-
-            return $eddContainer;
-        };
-
-        $container['framework'] = function ($c) {
-            // The 4th param is there just for backward compatibility with older versions of the Allex framework
-            // packed in UpStream (in case it is installed and loaded).
-            return new Core(
-                PP_AUTHORS_BASENAME,
-                PP_AUTHORS_SITE_URL,
-                PP_AUTHORS_PLUGIN_AUTHOR,
-                ''
-            );
-        };
-
         $container['twig_loader'] = function ($c) {
-            $loader = new Twig_Loader_Filesystem(PP_AUTHORS_BASE_PATH . 'twig');
-
-            return $loader;
+            return new Twig_Loader_Filesystem(PP_AUTHORS_BASE_PATH . 'twig');
         };
 
         $container['twig'] = function ($c) {

@@ -20,20 +20,6 @@
       "homepage": "http://automattic.com/"
     }
   ],
-  "repositories": [
-    {
-      "type": "git",
-      "url": "https://github.com/OSTraining/WordPress-EDD-License-Integration"
-    },
-    {
-      "type": "git",
-      "url": "https://github.com/OSTraining/EDD-License-handler"
-    },
-    {
-      "type": "git",
-      "url": "https://github.com/OSTraining/PublishPress-Addon-Framework"
-    }
-  ],
   "config": {
     "preferred-install": "dist"
   },
@@ -42,19 +28,15 @@
       "MultipleAuthors\\": "core/"
     },
     "files": [
-      "template-tags.php",
-      "integrations/amp.php",
-      "libraries/cmb2/init.php",
-      "modules/multiple-authors/multiple-authors.php"
+      "publishpress-authors.php"
     ]
   },
   "minimum-stability": "stable",
   "require": {
     "php": ">=5.6.20",
+    "phing/phing": "*",
     "pimple/pimple": "~3.0",
-    "alledia/wordpress-edd-license-integration": "~2.2",
-    "alledia/wordpress-plugin-builder": "dev-development",
-    "alledia/wordpress-plugin-framework": "~0.6",
+    "alledia/wordpress-plugin-builder": "^2",
     "twig/twig": "1.37.1"
   },
   "require-dev": {

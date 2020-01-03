@@ -58,7 +58,6 @@ if ( ! class_exists('MA_Modules_Settings')) {
                 'slug'                 => 'modules-settings',
                 'default_options'      => [
                     'enabled'          => 'on',
-                    'display_branding' => 'on',
                 ],
                 'configure_page_cb'    => 'print_configure_view',
                 'autoload'             => false,

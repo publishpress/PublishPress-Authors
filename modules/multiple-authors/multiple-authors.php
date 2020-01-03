@@ -26,6 +26,7 @@ use MultipleAuthors\Classes\Legacy\Module;
 use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Classes\Utils;
 use MultipleAuthors\Factory;
+use MultipleAuthors\Classes\Objects\Author;
 
 if ( ! class_exists('MA_Multiple_Authors')) {
     /**
@@ -35,16 +36,6 @@ if ( ! class_exists('MA_Multiple_Authors')) {
     {
         const SETTINGS_SLUG = 'ppma-settings';
 
-        /**
-         * Constant for valid status
-         */
-        const LICENSE_STATUS_VALID = 'valid';
-
-        /**
-         * Constant for invalid status
-         */
-        const LICENSE_STATUS_INVALID = 'invalid';
-
         public $module_name = 'multiple_authors';
 
         /**
@@ -53,7 +44,7 @@ if ( ! class_exists('MA_Multiple_Authors')) {
         const MENU_SLUG = 'ppma-authors';
 
         /**
-         * List of post types which supports checklist
+         * List of post types which supports authors
          *
          * @var array
          */
@@ -96,9 +87,6 @@ if ( ! class_exists('MA_Multiple_Authors')) {
                     'author_for_new_users' => [],
                     'layout'               => 'simple_list',
                     'force_empty_author'   => 'no',
-                    'license_key'          => '',
-                    'license_status'       => self::LICENSE_STATUS_INVALID,
-                    'display_branding'     => 'on',
                 ],
                 'options_page'         => false,
                 'autoload'             => true,
@@ -145,7 +133,6 @@ if ( ! class_exists('MA_Multiple_Authors')) {
         public function init()
         {
             add_action('admin_init', [$this, 'register_settings']);
-            add_action('admin_init', [$this, 'load_updater']);
             add_action('admin_init', [$this, 'handle_action_reset_author_terms']);
             add_action('admin_init', [$this, 'migrate_legacy_settings']);
             add_action('admin_notices', [$this, 'handle_action_reset_author_terms_notice']);
@@ -171,8 +158,6 @@ if ( ! class_exists('MA_Multiple_Authors')) {
 
             // Fix upload permissions for multiple authors.
             add_filter('map_meta_cap', [$this, 'filter_map_meta_cap'], 10, 4);
-
-            add_filter('wp_insert_post_data', [$this, 'force_empty_user']);
 
             // Menu
             add_action('multiple_authors_admin_menu_page', [$this, 'action_admin_menu_page']);
@@ -351,24 +336,6 @@ if ( ! class_exists('MA_Multiple_Authors')) {
             );
 
             add_settings_field(
-                'license_key',
-                __('License key:', 'publishpress-authors'),
-                [$this, 'settings_license_key_option'],
-                $this->module->options_group_name,
-                $this->module->options_group_name . '_general'
-            );
-
-            if (Util::hasValidLicenseKeySet()) {
-                add_settings_field(
-                    'display_branding',
-                    __('Display PublishPress branding in the admin:', 'publishpress-authors'),
-                    [$this, 'settings_branding_option'],
-                    $this->module->options_group_name,
-                    $this->module->options_group_name . '_general'
-                );
-            }
-
-            add_settings_field(
                 'post_types',
                 __('Add to these post types:', 'publishpress-authors'),
                 [$this, 'settings_post_types_option'],
@@ -381,14 +348,6 @@ if ( ! class_exists('MA_Multiple_Authors')) {
                 __('Automatically create author profiles:',
                     'publishpress-authors'),
                 [$this, 'settings_author_for_new_users_option'],
-                $this->module->options_group_name,
-                $this->module->options_group_name . '_general'
-            );
-
-            add_settings_field(
-                'force_empty_author',
-                __('Remove author from new posts:', 'publishpress-authors'),
-                [$this, 'settings_force_empty_author'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_general'
             );
@@ -464,6 +423,8 @@ if ( ! class_exists('MA_Multiple_Authors')) {
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_maintenance'
             );
+
+            do_action('pp_authors_register_settings');
         }
 
         public function settings_section_general()
@@ -482,72 +443,13 @@ if ( ! class_exists('MA_Multiple_Authors')) {
         }
 
         /**
-         * Displays the field to allow select the post types for checklist.
+         * Displays the field to allow select the post types for authors.
          */
         public function settings_post_types_option()
         {
             $legacyPlugin = Factory::getLegacyPlugin();
 
             $legacyPlugin->settings->helper_option_custom_post_type($this->module);
-        }
-
-        /**
-         * Displays the field to allow force new posts to not have author.
-         */
-        public function settings_force_empty_author()
-        {
-            $id    = $this->module->options_group_name . '_force_empty_author';
-            $value = isset($this->module->options->force_empty_author) ? $this->module->options->force_empty_author : 'no';
-
-            echo '<label for="' . $id . '">';
-            echo '<input type="checkbox" value="yes" id="' . $id . '" name="' . $this->module->options_group_name . '[force_empty_author]" '
-                 . checked($value, 'yes', false) . ' />';
-            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">' . esc_html__('This will remove the default author when creating posts. This means that new posts will have no author until you select one.',
-                    'publishpress-authors') . '</span>';
-            echo '</label>';
-        }
-
-        public function settings_license_key_option()
-        {
-            $id     = $this->module->options_group_name . '_license_key';
-            $value  = isset($this->module->options->license_key) ? $this->module->options->license_key : '';
-            $status = isset($this->module->options->license_status) ? $this->module->options->license_status : self::LICENSE_STATUS_INVALID;
-
-            if (empty($status) || empty($value)) {
-                $status = self::LICENSE_STATUS_INVALID;
-            }
-
-            if ($status === self::LICENSE_STATUS_VALID) {
-                $statusLabel = __('Activated', 'publishpress-authors');
-            } else {
-                $statusLabel = __('Inactive', 'publishpress-authors');
-            }
-
-            echo '<label for="' . $id . '">';
-            echo '<input type="text" value="' . $value . '" id="' . $id . '" name="' . $this->module->options_group_name . '[license_key]"/>';
-            echo '<div class="ppma_license_key_status ' . $status . '"><span class="ppma_license_key_status_label">' . __('Status: ',
-                    'publishpress-authors') . '</span>' . $statusLabel . '</div>';
-            echo '<p class="ppma_settings_field_description">' . esc_html__('Enter the license key for being able to update the plugin.',
-                    'publishpress-authors') . '</p>';
-            echo '</label>';
-        }
-
-        /**
-         * Branding options
-         *
-         * @since 0.7
-         */
-        public function settings_branding_option()
-        {
-            $id = $this->module->options_group_name . '_display_branding';
-
-            echo '<label for="' . $id . '">';
-            echo '<input id="' . $id . '" name="'
-                 . $this->module->options_group_name . '[display_branding]"';
-            if (isset($this->module->options->display_branding)) {
-                checked($this->module->options->display_branding, 'on');
-            }
-            echo ' type="checkbox" value="on" /></label>';
         }
 
         /**
@@ -694,14 +596,12 @@ if ( ! class_exists('MA_Multiple_Authors')) {
                     'description'  => 'This action is very helpful if you\'re installing Multiple Authors on an existing WordPress site. This action finds all the users in a role and creates author profiles for them. You can choose the roles using the "Automatically create author profiles" setting.',
                     'button_label' => __('Create missed authors from role', 'publishpress-authors'),
                 ],
-
-                'create_default_layouts' => [
-                    'title'        => __('Create default layouts',
-                        'publishpress-authors'),
-                    'description'  => 'This action creates the default custom layouts if they don\'t exist or were accidentally deleted.',
-                    'button_label' => __('Create default layouts', 'publishpress-authors'),
-                ],
             ];
+
+            /**
+             * @param array $actions
+             */
+            $actions = apply_filters('pp_authors_maintenance_actions', $actions);
 
             if (isset($GLOBALS['coauthors_plus']) && ! empty($GLOBALS['coauthors_plus'])) {
                 $actions['copy_coauthor_plus_data'] = [
@@ -733,7 +633,6 @@ if ( ! class_exists('MA_Multiple_Authors')) {
             echo '</p>';
 
             foreach ($actions as $actionName => $actionInfo) {
-
                 if (isset($actionInfo['button_link'])) {
                     $link = $actionInfo['button_link'];
                 } else {
@@ -803,10 +702,6 @@ if ( ! class_exists('MA_Multiple_Authors')) {
                 $new_options['show_site_link'] = 'no';
             }
 
-            if ( ! isset($new_options['force_empty_author'])) {
-                $new_options['force_empty_author'] = 'no';
-            }
-
             if (isset($new_options['layout'])) {
                 /**
                  * Filter the list of available layouts.
@@ -818,65 +713,13 @@ if ( ! class_exists('MA_Multiple_Authors')) {
                 }
             }
 
-            // Check if we need to activate the license key
-            $justActivatedLicense = false;
-            if (isset($new_options['license_key'])) {
-                $licenseStatus = $this->module->options->license_status;
-
-                if ($this->module->options->license_key !== $new_options['license_key'] || empty($licenseStatus) || $licenseStatus === self::LICENSE_STATUS_INVALID) {
-                    $this->validate_license_key($new_options['license_key']);
-                    $justActivatedLicense = true;
-                }
-            }
-
-            if ( ! isset($new_options['display_branding']) && ! $justActivatedLicense) {
-                $new_options['display_branding'] = 'off';
-            }
-
-            return $new_options;
-        }
-
-        public function validate_license_key($licenseKey)
-        {
-            // The default status.
-            $licenseNewStatus = self::LICENSE_STATUS_INVALID;
-
-            // Make the request.
-            $eddResponse = wp_remote_post(
-                $this->eddAPIUrl,
-                [
-                    'timeout'   => 30,
-                    'sslverify' => true,
-                    'body'      => [
-                        'edd_action' => "activate_license",
-                        'license'    => $licenseKey,
-                        'item_id'    => PP_AUTHORS_ITEM_ID,
-                        'url'        => site_url(),
-                    ],
-                ]
-            );
-
-            // Is the response an error?
-            if (is_wp_error($eddResponse) || 200 !== wp_remote_retrieve_response_code($eddResponse)) {
-                $licenseNewStatus = self::LICENSE_STATUS_INVALID;
-            } else {
-                // Convert data response to an object.
-                $data = json_decode(wp_remote_retrieve_body($eddResponse));
-
-                // Do we have empty data? Throw an error.
-                if (empty($data) || ! is_object($data)) {
-                    $licenseNewStatus = self::LICENSE_STATUS_INVALID;
-                } else {
-                    if ($data->success && $data->license === self::LICENSE_STATUS_VALID) {
-                        $licenseNewStatus = self::LICENSE_STATUS_VALID;
-                    } else {
-                        $licenseNewStatus = self::LICENSE_STATUS_INVALID;
-                    }
-                }
-            }
-
-            $legacyPlugin = Factory::getLegacyPlugin();
-            $legacyPlugin->update_module_option('multiple_authors', 'license_status', $licenseNewStatus);
+            /**
+             * @param array $newOptions
+             * @param string $moduleName
+             *
+             * @return array
+             */
+            return apply_filters('pp_authors_validate_module_settings', $new_options, $module_name);
         }
 
         /**
@@ -899,9 +742,9 @@ if ( ! class_exists('MA_Multiple_Authors')) {
          * Filters the list of receivers in the notification workflows provided
          * by the improved notifications add-on.
          *
-         * @param array   $receivers
+         * @param array $receivers
          * @param WP_Post $workflow
-         * @param array   $args
+         * @param array $args
          *
          * @return array
          */
@@ -925,8 +768,8 @@ if ( ! class_exists('MA_Multiple_Authors')) {
          * Over hide some strings for Authors.
          *
          * @param string $translation Translated text.
-         * @param string $text        Text to translate.
-         * @param string $domain      Text domain. Unique identifier for retrieving translated strings.
+         * @param string $text Text to translate.
+         * @param string $domain Text domain. Unique identifier for retrieving translated strings.
          *
          * @return string
          */
@@ -1064,7 +907,6 @@ if ( ! class_exists('MA_Multiple_Authors')) {
 
             // Check if we have any role selected to create an author for the new user.
             if ( ! empty($roles)) {
-
                 // Get users from roles
                 $args  = [
                     'role__in' => $roles,
@@ -1160,21 +1002,6 @@ if ( ! class_exists('MA_Multiple_Authors')) {
                 if (isset($args[0])) {
                     $post_id = (int)$args[0];
 
-                    // Check if it is an orphan post
-                    if ($this->is_force_empty_author_enabled()) {
-                        $post = get_post($post_id);
-                        $user = get_userdata($user_id);
-
-                        if (($user instanceof WP_User) && (int)$post->post_author === 0 && $user->has_cap('ppma_edit_orphan_post')) {
-                            foreach ($caps as &$item) {
-                                // If he is an author for this post we should only check edit_posts.
-                                if ($item === 'edit_others_posts') {
-                                    $item = 'edit_posts';
-                                }
-                            }
-                        }
-                    }
-
                     // Check if the user is an author for the current post
                     if (is_multiple_author_for_post($user_id, $post_id)) {
                         foreach ($caps as &$item) {
@@ -1184,31 +1011,12 @@ if ( ! class_exists('MA_Multiple_Authors')) {
                             }
                         }
                     }
+
+                    $caps = apply_filters('pp_authors_filter_map_meta_cap', $caps, $cap, $user_id, $post_id);
                 }
             }
 
             return $caps;
-        }
-
-        private function is_force_empty_author_enabled()
-        {
-            return isset($this->module->options->force_empty_author) ? $this->module->options->force_empty_author === 'yes' : 'no';
-        }
-
-        /**
-         * @param array $data
-         *
-         * @return array
-         */
-        public function force_empty_user($data)
-        {
-            $emptyAuthorByDefault = $this->is_force_empty_author_enabled();
-
-            if ($emptyAuthorByDefault && $data['post_status'] === 'auto-draft') {
-                $data['post_author'] = 0;
-            }
-
-            return $data;
         }
 
         public function admin_enqueue_scripts()
@@ -1279,19 +1087,6 @@ if ( ! class_exists('MA_Multiple_Authors')) {
             }
 
             update_option('publishpress_multiple_authors_settings_migrated_3_0_0', 1);
-        }
-
-        /**
-         * Load the update manager.
-         *
-         * @return mixed
-         */
-        public function load_updater()
-        {
-
-            $container = Factory::get_container();
-
-            return $container['edd_container']['update_manager'];
         }
 
         /**
