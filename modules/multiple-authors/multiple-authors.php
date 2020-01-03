@@ -44,7 +44,7 @@ if ( ! class_exists('MA_Multiple_Authors')) {
         const MENU_SLUG = 'ppma-authors';
 
         /**
-         * List of post types which supports checklist
+         * List of post types which supports authors
          *
          * @var array
          */
@@ -443,7 +443,7 @@ if ( ! class_exists('MA_Multiple_Authors')) {
         }
 
         /**
-         * Displays the field to allow select the post types for checklist.
+         * Displays the field to allow select the post types for authors.
          */
         public function settings_post_types_option()
         {
