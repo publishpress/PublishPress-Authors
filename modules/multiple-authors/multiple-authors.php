@@ -159,8 +159,6 @@ if ( ! class_exists('MA_Multiple_Authors')) {
             // Fix upload permissions for multiple authors.
             add_filter('map_meta_cap', [$this, 'filter_map_meta_cap'], 10, 4);
 
-            add_filter('wp_insert_post_data', [$this, 'force_empty_user']);
-
             // Menu
             add_action('multiple_authors_admin_menu_page', [$this, 'action_admin_menu_page']);
             add_action('multiple_authors_admin_submenu', [$this, 'action_admin_submenu'], 50);
@@ -337,8 +335,6 @@ if ( ! class_exists('MA_Multiple_Authors')) {
                 $this->module->options_group_name
             );
 
-            do_action('pp_authors_register_settings');
-
             add_settings_field(
                 'post_types',
                 __('Add to these post types:', 'publishpress-authors'),
@@ -352,14 +348,6 @@ if ( ! class_exists('MA_Multiple_Authors')) {
                 __('Automatically create author profiles:',
                     'publishpress-authors'),
                 [$this, 'settings_author_for_new_users_option'],
-                $this->module->options_group_name,
-                $this->module->options_group_name . '_general'
-            );
-
-            add_settings_field(
-                'force_empty_author',
-                __('Remove author from new posts:', 'publishpress-authors'),
-                [$this, 'settings_force_empty_author'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_general'
             );
@@ -435,6 +423,8 @@ if ( ! class_exists('MA_Multiple_Authors')) {
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_maintenance'
             );
+
+            do_action('pp_authors_register_settings');
         }
 
         public function settings_section_general()
@@ -460,22 +450,6 @@ if ( ! class_exists('MA_Multiple_Authors')) {
             $legacyPlugin = Factory::getLegacyPlugin();
 
             $legacyPlugin->settings->helper_option_custom_post_type($this->module);
-        }
-
-        /**
-         * Displays the field to allow force new posts to not have author.
-         */
-        public function settings_force_empty_author()
-        {
-            $id    = $this->module->options_group_name . '_force_empty_author';
-            $value = isset($this->module->options->force_empty_author) ? $this->module->options->force_empty_author : 'no';
-
-            echo '<label for="' . $id . '">';
-            echo '<input type="checkbox" value="yes" id="' . $id . '" name="' . $this->module->options_group_name . '[force_empty_author]" '
-                 . checked($value, 'yes', false) . ' />';
-            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">' . esc_html__('This will remove the default author when creating posts. This means that new posts will have no author until you select one.',
-                    'publishpress-authors') . '</span>';
-            echo '</label>';
         }
 
         /**
@@ -726,10 +700,6 @@ if ( ! class_exists('MA_Multiple_Authors')) {
 
             if ( ! isset($new_options['show_site_link'])) {
                 $new_options['show_site_link'] = 'no';
-            }
-
-            if ( ! isset($new_options['force_empty_author'])) {
-                $new_options['force_empty_author'] = 'no';
             }
 
             if (isset($new_options['layout'])) {
@@ -1032,21 +1002,6 @@ if ( ! class_exists('MA_Multiple_Authors')) {
                 if (isset($args[0])) {
                     $post_id = (int)$args[0];
 
-                    // Check if it is an orphan post
-                    if ($this->is_force_empty_author_enabled()) {
-                        $post = get_post($post_id);
-                        $user = get_userdata($user_id);
-
-                        if (($user instanceof WP_User) && (int)$post->post_author === 0 && $user->has_cap('ppma_edit_orphan_post')) {
-                            foreach ($caps as &$item) {
-                                // If he is an author for this post we should only check edit_posts.
-                                if ($item === 'edit_others_posts') {
-                                    $item = 'edit_posts';
-                                }
-                            }
-                        }
-                    }
-
                     // Check if the user is an author for the current post
                     if (is_multiple_author_for_post($user_id, $post_id)) {
                         foreach ($caps as &$item) {
@@ -1056,31 +1011,12 @@ if ( ! class_exists('MA_Multiple_Authors')) {
                             }
                         }
                     }
+
+                    $caps = apply_filters('pp_authors_filter_map_meta_cap', $caps, $cap, $user_id, $post_id);
                 }
             }
 
             return $caps;
-        }
-
-        private function is_force_empty_author_enabled()
-        {
-            return isset($this->module->options->force_empty_author) ? $this->module->options->force_empty_author === 'yes' : 'no';
-        }
-
-        /**
-         * @param array $data
-         *
-         * @return array
-         */
-        public function force_empty_user($data)
-        {
-            $emptyAuthorByDefault = $this->is_force_empty_author_enabled();
-
-            if ($emptyAuthorByDefault && $data['post_status'] === 'auto-draft') {
-                $data['post_author'] = 0;
-            }
-
-            return $data;
         }
 
         public function admin_enqueue_scripts()
