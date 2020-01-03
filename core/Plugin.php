@@ -423,11 +423,7 @@ class Plugin
          *
          * @return bool
          */
-        if (apply_filters('pp_authors_should_display_footer', true, $current_screen)) {
-            return true;
-        }
-
-        return false;
+        return apply_filters('pp_authors_should_display_footer', false, $current_screen);
     }
 
     /**
