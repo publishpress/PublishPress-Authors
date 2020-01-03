@@ -26,10 +26,7 @@
   "autoload": {
     "psr-4": {
       "MultipleAuthors\\": "core/"
-    },
-    "files": [
-      "publishpress-authors.php"
-    ]
+    }
   },
   "minimum-stability": "stable",
   "require": {
