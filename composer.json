@@ -34,7 +34,8 @@
     "phing/phing": "^2.16",
     "pimple/pimple": "~3.0",
     "alledia/wordpress-plugin-builder": "^2.5",
-    "twig/twig": "1.37.1"
+    "twig/twig": "1.37.1",
+    "cmb2/cmb2": "^2.6"
   },
   "require-dev": {
     "phpunit/phpunit": "^6",

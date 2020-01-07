@@ -29,6 +29,5 @@ if ( ! defined('PP_AUTHORS_LOADED')) {
     require_once __DIR__ . '/deprecated.php';
     require_once __DIR__ . '/template-tags.php';
     require_once __DIR__ . '/integrations/amp.php';
-    require_once __DIR__ . '/libraries/cmb2/init.php';
     require_once __DIR__ . '/modules/multiple-authors/multiple-authors.php';
 }
