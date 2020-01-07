@@ -156,6 +156,8 @@ if ( ! class_exists('MA_Settings')) {
                 $message = false;
             }
 
+            $message = sanitize_text_field($message);
+
             if ($message && isset($current_module->messages[$message])) {
                 $display_text .= '<div class="is-dismissible notice notice-info"><p>' . esc_html($current_module->messages[$message]) . '</p></div>';
             }
@@ -170,6 +172,9 @@ if ( ! class_exists('MA_Settings')) {
             } else {
                 $error = false;
             }
+            
+            $error = sanitize_text_field($error);
+
             if ($error && isset($current_module->messages[$error])) {
                 $display_text .= '<div class="is-dismissible notice notice-error"><p>' . esc_html($current_module->messages[$error]) . '</p></div>';
             }
