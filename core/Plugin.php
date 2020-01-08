@@ -447,8 +447,8 @@ class Plugin
                 'footer-base.twig',
                 [
                     'current_module' => $current_module,
-                    'plugin_name'    => __('PublishPress', 'publishpress-authors'),
-                    'plugin_slug'    => 'publishpress',
+                    'plugin_name'    => __('PublishPress Authors', 'publishpress-authors'),
+                    'plugin_slug'    => 'publishpress-authors',
                     'plugin_url'     => PP_AUTHORS_URL,
                     'rating_message' => __('If you like %s please leave us a %s rating. Thank you!',
                         'publishpress-authors'),

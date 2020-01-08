@@ -51,7 +51,7 @@ if (is_plugin_active('presspermit-pro/presspermit-pro.php')) {
     }
 }
 
-if (! defined('PP_AUTHORS_LOADED')) {
+if ( ! defined('PP_AUTHORS_LOADED')) {
     require_once __DIR__ . '/includes.php';
 
     global $multiple_authors_addon;

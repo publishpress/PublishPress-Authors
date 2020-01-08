@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: PublishPress Authors\n"
-"POT-Creation-Date: 2019-12-24 10:10-0300\n"
+"POT-Creation-Date: 2020-01-07 11:27-0300\n"
 "PO-Revision-Date: 2019-11-07 12:27-0300\n"
 "Last-Translator: Anderson Grudtner Martins <anderson@publishpress.com>\n"
 "Language-Team: Anderson Grudtner Martins <anderson@publishpress.com>\n"
@@ -20,18 +20,7 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
 "X-Poedit-SearchPathExcluded-1: vendor\n"
 "X-Poedit-SearchPathExcluded-2: node_modules\n"
-
-#: assets/lib/ace/worker-coffee.js:1
-msgid "arguments"
-msgstr ""
-
-#: assets/lib/ace/worker-coffee.js:1
-msgid "RegExp"
-msgstr ""
-
-#: assets/lib/ace/worker-coffee.js:1
-msgid "Math"
-msgstr ""
+"X-Poedit-SearchPathExcluded-3: assets/lib\n"
 
 #: core/Classes/Author_Editor.php:47
 msgid "Name"
@@ -134,49 +123,29 @@ msgstr ""
 msgid "No post ID provided for Multiple_authors_iterator constructor. Are you not in a loop or is $post not set?"
 msgstr ""
 
-#: core/Classes/CustomFieldsModel.php:43
-msgid "Text"
-msgstr ""
-
-#: core/Classes/CustomFieldsModel.php:44
-msgid "Multiline text"
-msgstr ""
-
-#: core/Classes/CustomFieldsModel.php:45
-msgid "WYSIWYG Editor"
-msgstr ""
-
-#: core/Classes/CustomFieldsModel.php:46
-msgid "Link"
-msgstr ""
-
-#: core/Classes/CustomFieldsModel.php:47
-msgid "Email address"
-msgstr ""
-
 #. translators: Author archive title. 1: Author name
 #: core/Classes/Integrations/Theme.php:37
 #, php-format
 msgid "Author: %s"
 msgstr ""
 
-#: core/Classes/Legacy/LegacyPlugin.php:198
+#: core/Classes/Legacy/LegacyPlugin.php:199
 msgid "Configure"
 msgstr ""
 
-#: core/Classes/Legacy/LegacyPlugin.php:201
+#: core/Classes/Legacy/LegacyPlugin.php:202
 msgid "Please correct your form errors below and try again."
 msgstr ""
 
-#: core/Classes/Legacy/LegacyPlugin.php:203 modules/settings/settings.php:330
+#: core/Classes/Legacy/LegacyPlugin.php:204 modules/settings/settings.php:330
 msgid "Cheatin&#8217; uh?"
 msgstr ""
 
-#: core/Classes/Legacy/LegacyPlugin.php:204
+#: core/Classes/Legacy/LegacyPlugin.php:205
 msgid "You do not have necessary permissions to complete this action."
 msgstr ""
 
-#: core/Classes/Legacy/LegacyPlugin.php:206
+#: core/Classes/Legacy/LegacyPlugin.php:207
 msgid "Post does not exist"
 msgstr ""
 
@@ -204,8 +173,13 @@ msgstr ""
 msgid "'display_name' is a required argument"
 msgstr ""
 
-#: core/Classes/Post_Editor.php:52 core/Classes/Post_Editor.php:118 core/Plugin.php:500 core/Plugin.php:538 core/Plugin.php:1269 core/Traits/Author_box.php:91 core/Widget.php:48 core/Widget.php:79 modules/multiple-authors/multiple-authors.php:198
-#: modules/multiple-authors/multiple-authors.php:199 modules/multiple-authors/multiple-authors.php:230 modules/multiple-authors/multiple-authors.php:231
+#: core/Classes/Post_Editor.php:52 core/Classes/Post_Editor.php:118
+#: core/Plugin.php:486 core/Plugin.php:524 core/Plugin.php:1255
+#: core/Traits/Author_box.php:91 core/Widget.php:48 core/Widget.php:79
+#: modules/multiple-authors/multiple-authors.php:183
+#: modules/multiple-authors/multiple-authors.php:184
+#: modules/multiple-authors/multiple-authors.php:215
+#: modules/multiple-authors/multiple-authors.php:216
 msgid "Authors"
 msgstr ""
 
@@ -213,7 +187,7 @@ msgstr ""
 msgid "No author"
 msgstr ""
 
-#: core/Classes/Post_Editor.php:161 core/Plugin.php:1123
+#: core/Classes/Post_Editor.php:161 core/Plugin.php:1109
 msgid "Search for an author"
 msgstr ""
 
@@ -221,135 +195,135 @@ msgstr ""
 msgid "Co-Authors Plus must be installed and active."
 msgstr ""
 
-#: core/Plugin.php:309
+#: core/Plugin.php:307
 msgctxt "taxonomy general name"
 msgid "Authors"
 msgstr ""
 
-#: core/Plugin.php:311
+#: core/Plugin.php:309
 msgctxt "taxonomy singular name"
 msgid "Author"
 msgstr ""
 
-#: core/Plugin.php:313
+#: core/Plugin.php:311
 msgid "Search authors"
 msgstr ""
 
-#: core/Plugin.php:314
+#: core/Plugin.php:312
 msgid "Popular authors"
 msgstr ""
 
-#: core/Plugin.php:315
+#: core/Plugin.php:313
 msgid "All authors"
 msgstr ""
 
-#: core/Plugin.php:316
+#: core/Plugin.php:314
 msgid "Parent author"
 msgstr ""
 
-#: core/Plugin.php:317
+#: core/Plugin.php:315
 msgid "Parent author:"
 msgstr ""
 
-#: core/Plugin.php:318
+#: core/Plugin.php:316
 msgid "Edit author"
 msgstr ""
 
-#: core/Plugin.php:319
+#: core/Plugin.php:317
 msgid "View author"
 msgstr ""
 
-#: core/Plugin.php:320
+#: core/Plugin.php:318
 msgid "Update author"
 msgstr ""
 
-#: core/Plugin.php:321 core/Plugin.php:322
+#: core/Plugin.php:319 core/Plugin.php:320
 msgid "New author"
 msgstr ""
 
-#: core/Plugin.php:323
+#: core/Plugin.php:321
 msgid "Separate authors with commas"
 msgstr ""
 
-#: core/Plugin.php:325
+#: core/Plugin.php:323
 msgid "Add or remove authors"
 msgstr ""
 
-#: core/Plugin.php:326
+#: core/Plugin.php:324
 msgid "Choose from the most used authors"
 msgstr ""
 
-#: core/Plugin.php:328
+#: core/Plugin.php:326
 msgid "No authors found."
 msgstr ""
 
-#: core/Plugin.php:329 modules/multiple-authors/multiple-authors.php:581
+#: core/Plugin.php:327 modules/multiple-authors/multiple-authors.php:483
 msgid "Author"
 msgstr ""
 
-#: core/Plugin.php:330
+#: core/Plugin.php:328
 msgid "Back to Authors"
 msgstr ""
 
-#. Author of the plugin/theme
-#: core/Plugin.php:465
-msgid "PublishPress"
+#. Plugin Name of the plugin/theme
+#: core/Plugin.php:450 modules/settings/settings.php:59
+msgid "PublishPress Authors"
 msgstr ""
 
-#: core/Plugin.php:468
+#: core/Plugin.php:453
 #, php-format
 msgid "If you like %s please leave us a %s rating. Thank you!"
 msgstr ""
 
-#: core/Plugin.php:540
+#: core/Plugin.php:526
 msgid "Click on an author to change them. Drag to change their order."
 msgstr ""
 
-#: core/Plugin.php:569
+#: core/Plugin.php:555
 msgid "No co-author exists for that term"
 msgstr ""
 
-#: core/Plugin.php:1118
+#: core/Plugin.php:1104
 msgid "Edit"
 msgstr ""
 
-#: core/Plugin.php:1119
+#: core/Plugin.php:1105
 msgid "Are you sure you want to remove this author?"
 msgstr ""
 
-#: core/Plugin.php:1121
+#: core/Plugin.php:1107
 msgid "Click to change this author, or drag to change their position"
 msgstr ""
 
-#: core/Plugin.php:1124
+#: core/Plugin.php:1110
 msgid "Click on an author to change them. Drag to change their order. Click on <strong>Remove</strong> to remove them."
 msgstr ""
 
-#: core/Plugin.php:1126
+#: core/Plugin.php:1112
 msgid "Are you sure you want to delete the authors profiles mapped to users? This action can't be undone."
 msgstr ""
 
-#: core/Plugin.php:1128
+#: core/Plugin.php:1114
 msgid "Are you sure you want to delete the guest authors profiles? This action can't be undone."
 msgstr ""
 
-#: core/Plugin.php:1130
+#: core/Plugin.php:1116
 msgid "Are you sure you want to create author profiles for the missed post authors?"
 msgstr ""
 
-#: core/Plugin.php:1132
+#: core/Plugin.php:1118
 msgid "Are you sure you want to create authors for the selected roles?"
 msgstr ""
 
-#: core/Plugin.php:1136
+#: core/Plugin.php:1122
 msgid "Please, wait..."
 msgstr ""
 
-#: core/Plugin.php:1137
+#: core/Plugin.php:1123
 msgid "Sorry, the request returned an error."
 msgstr ""
 
-#: core/Plugin.php:1185
+#: core/Plugin.php:1171
 msgid "Mine"
 msgstr ""
 
@@ -380,7 +354,7 @@ msgstr ""
 msgid "Display a list of authors for the current post."
 msgstr ""
 
-#: core/Widget.php:32 modules/multiple-authors/multiple-authors.php:81
+#: core/Widget.php:32 modules/multiple-authors/multiple-authors.php:72
 msgid "Multiple Authors"
 msgstr ""
 
@@ -396,16 +370,48 @@ msgstr ""
 msgid "Test Metabox"
 msgstr ""
 
-#: libraries/cmb2/example-functions.php:138 libraries/cmb2/example-functions.php:478
+#: libraries/cmb2/example-functions.php:138
+#: libraries/cmb2/example-functions.php:478
 msgid "Test Text"
 msgstr ""
 
-#: libraries/cmb2/example-functions.php:139 libraries/cmb2/example-functions.php:152 libraries/cmb2/example-functions.php:165 libraries/cmb2/example-functions.php:172 libraries/cmb2/example-functions.php:185 libraries/cmb2/example-functions.php:193 libraries/cmb2/example-functions.php:202
-#: libraries/cmb2/example-functions.php:210 libraries/cmb2/example-functions.php:225 libraries/cmb2/example-functions.php:233 libraries/cmb2/example-functions.php:241 libraries/cmb2/example-functions.php:258 libraries/cmb2/example-functions.php:267 libraries/cmb2/example-functions.php:283
-#: libraries/cmb2/example-functions.php:290 libraries/cmb2/example-functions.php:297 libraries/cmb2/example-functions.php:322 libraries/cmb2/example-functions.php:335 libraries/cmb2/example-functions.php:348 libraries/cmb2/example-functions.php:360 libraries/cmb2/example-functions.php:369
-#: libraries/cmb2/example-functions.php:377 libraries/cmb2/example-functions.php:386 libraries/cmb2/example-functions.php:393 libraries/cmb2/example-functions.php:407 libraries/cmb2/example-functions.php:479 libraries/cmb2/example-functions.php:573 libraries/cmb2/example-functions.php:581
-#: libraries/cmb2/example-functions.php:588 libraries/cmb2/example-functions.php:595 libraries/cmb2/example-functions.php:602 libraries/cmb2/example-functions.php:609 libraries/cmb2/example-functions.php:616 libraries/cmb2/example-functions.php:643 libraries/cmb2/example-functions.php:651
-#: libraries/cmb2/example-functions.php:658 libraries/cmb2/example-functions.php:709
+#: libraries/cmb2/example-functions.php:139
+#: libraries/cmb2/example-functions.php:152
+#: libraries/cmb2/example-functions.php:165
+#: libraries/cmb2/example-functions.php:172
+#: libraries/cmb2/example-functions.php:185
+#: libraries/cmb2/example-functions.php:193
+#: libraries/cmb2/example-functions.php:202
+#: libraries/cmb2/example-functions.php:210
+#: libraries/cmb2/example-functions.php:225
+#: libraries/cmb2/example-functions.php:233
+#: libraries/cmb2/example-functions.php:241
+#: libraries/cmb2/example-functions.php:258
+#: libraries/cmb2/example-functions.php:267
+#: libraries/cmb2/example-functions.php:283
+#: libraries/cmb2/example-functions.php:290
+#: libraries/cmb2/example-functions.php:297
+#: libraries/cmb2/example-functions.php:322
+#: libraries/cmb2/example-functions.php:335
+#: libraries/cmb2/example-functions.php:348
+#: libraries/cmb2/example-functions.php:360
+#: libraries/cmb2/example-functions.php:369
+#: libraries/cmb2/example-functions.php:377
+#: libraries/cmb2/example-functions.php:386
+#: libraries/cmb2/example-functions.php:393
+#: libraries/cmb2/example-functions.php:407
+#: libraries/cmb2/example-functions.php:479
+#: libraries/cmb2/example-functions.php:573
+#: libraries/cmb2/example-functions.php:581
+#: libraries/cmb2/example-functions.php:588
+#: libraries/cmb2/example-functions.php:595
+#: libraries/cmb2/example-functions.php:602
+#: libraries/cmb2/example-functions.php:609
+#: libraries/cmb2/example-functions.php:616
+#: libraries/cmb2/example-functions.php:643
+#: libraries/cmb2/example-functions.php:651
+#: libraries/cmb2/example-functions.php:658
+#: libraries/cmb2/example-functions.php:709
 msgid "field description (optional)"
 msgstr ""
 
@@ -441,7 +447,8 @@ msgstr ""
 msgid "Test Time"
 msgstr ""
 
-#: libraries/cmb2/example-functions.php:217 libraries/cmb2/example-functions.php:218
+#: libraries/cmb2/example-functions.php:217
+#: libraries/cmb2/example-functions.php:218
 msgid "Time zone"
 msgstr ""
 
@@ -489,15 +496,21 @@ msgstr ""
 msgid "Test Select"
 msgstr ""
 
-#: libraries/cmb2/example-functions.php:327 libraries/cmb2/example-functions.php:340 libraries/cmb2/example-functions.php:352
+#: libraries/cmb2/example-functions.php:327
+#: libraries/cmb2/example-functions.php:340
+#: libraries/cmb2/example-functions.php:352
 msgid "Option One"
 msgstr ""
 
-#: libraries/cmb2/example-functions.php:328 libraries/cmb2/example-functions.php:341 libraries/cmb2/example-functions.php:353
+#: libraries/cmb2/example-functions.php:328
+#: libraries/cmb2/example-functions.php:341
+#: libraries/cmb2/example-functions.php:353
 msgid "Option Two"
 msgstr ""
 
-#: libraries/cmb2/example-functions.php:329 libraries/cmb2/example-functions.php:342 libraries/cmb2/example-functions.php:354
+#: libraries/cmb2/example-functions.php:329
+#: libraries/cmb2/example-functions.php:342
+#: libraries/cmb2/example-functions.php:354
 msgid "Option Three"
 msgstr ""
 
@@ -619,7 +632,8 @@ msgstr ""
 msgid "User Profile Metabox"
 msgstr ""
 
-#: libraries/cmb2/example-functions.php:572 libraries/cmb2/example-functions.php:642
+#: libraries/cmb2/example-functions.php:572
+#: libraries/cmb2/example-functions.php:642
 msgid "Extra Info"
 msgstr ""
 
@@ -709,7 +723,8 @@ msgid "Remove Embed"
 msgstr ""
 
 #. translators: 1: results for. 2: link to codex.wordpress.org/Embeds
-#: libraries/cmb2/includes/CMB2_Ajax.php:199 libraries/cmb2/includes/helper-functions.php:116
+#: libraries/cmb2/includes/CMB2_Ajax.php:199
+#: libraries/cmb2/includes/helper-functions.php:116
 #, php-format
 msgid "No oEmbed Results Found for %1$s. View more info at %2$s."
 msgstr ""
@@ -734,12 +749,16 @@ msgstr ""
 msgid "%1$s was called with a parameter that is <strong>deprecated</strong> since version %2$s with no alternative available."
 msgstr ""
 
-#: libraries/cmb2/includes/CMB2_Base.php:542 libraries/cmb2/includes/CMB2_Hookup_Base.php:110 libraries/cmb2/includes/CMB2_Options_Hookup.php:358 libraries/cmb2/includes/types/CMB2_Type_Base.php:191
+#: libraries/cmb2/includes/CMB2_Base.php:542
+#: libraries/cmb2/includes/CMB2_Hookup_Base.php:110
+#: libraries/cmb2/includes/CMB2_Options_Hookup.php:358
+#: libraries/cmb2/includes/types/CMB2_Type_Base.php:191
 #, php-format
 msgid "Invalid %1$s property: %2$s"
 msgstr ""
 
-#: libraries/cmb2/includes/CMB2_Base.php:559 libraries/cmb2/includes/types/CMB2_Type_Base.php:173
+#: libraries/cmb2/includes/CMB2_Base.php:559
+#: libraries/cmb2/includes/types/CMB2_Type_Base.php:173
 #, php-format
 msgid "Invalid %1$s method: %2$s"
 msgstr ""
@@ -752,7 +771,8 @@ msgstr ""
 msgid "Remove Group"
 msgstr ""
 
-#: libraries/cmb2/includes/CMB2_Field.php:1418 libraries/cmb2/includes/CMB2_Field.php:1423
+#: libraries/cmb2/includes/CMB2_Field.php:1418
+#: libraries/cmb2/includes/CMB2_Field.php:1423
 msgid "None"
 msgstr ""
 
@@ -760,7 +780,9 @@ msgstr ""
 msgid "Sorry, this field does not have a cmb_id specified."
 msgstr ""
 
-#: libraries/cmb2/includes/CMB2_Field_Display.php:467 libraries/cmb2/includes/CMB2_JS.php:247 libraries/cmb2/includes/types/CMB2_Type_File_Base.php:92
+#: libraries/cmb2/includes/CMB2_Field_Display.php:467
+#: libraries/cmb2/includes/CMB2_JS.php:247
+#: libraries/cmb2/includes/types/CMB2_Type_File_Base.php:92
 msgid "File:"
 msgstr ""
 
@@ -769,7 +791,8 @@ msgstr ""
 msgid "%1$s should be implemented by the extended class."
 msgstr ""
 
-#: libraries/cmb2/includes/CMB2_JS.php:178 libraries/cmb2/includes/CMB2_JS.php:226
+#: libraries/cmb2/includes/CMB2_JS.php:178
+#: libraries/cmb2/includes/CMB2_JS.php:226
 msgid "Clear"
 msgstr ""
 
@@ -822,7 +845,8 @@ msgstr ""
 msgid "Today"
 msgstr ""
 
-#: libraries/cmb2/includes/CMB2_JS.php:225 libraries/cmb2/includes/CMB2_JS.php:235
+#: libraries/cmb2/includes/CMB2_JS.php:225
+#: libraries/cmb2/includes/CMB2_JS.php:235
 msgid "Done"
 msgstr ""
 
@@ -863,15 +887,19 @@ msgstr ""
 msgid "Use these files"
 msgstr ""
 
-#: libraries/cmb2/includes/CMB2_JS.php:245 libraries/cmb2/includes/types/CMB2_Type_File_Base.php:73
+#: libraries/cmb2/includes/CMB2_JS.php:245
+#: libraries/cmb2/includes/types/CMB2_Type_File_Base.php:73
 msgid "Remove Image"
 msgstr ""
 
-#: libraries/cmb2/includes/CMB2_JS.php:246 libraries/cmb2/includes/CMB2_Types.php:451 libraries/cmb2/includes/types/CMB2_Type_File_Base.php:97
+#: libraries/cmb2/includes/CMB2_JS.php:246
+#: libraries/cmb2/includes/CMB2_Types.php:451
+#: libraries/cmb2/includes/types/CMB2_Type_File_Base.php:97
 msgid "Remove"
 msgstr ""
 
-#: libraries/cmb2/includes/CMB2_JS.php:248 libraries/cmb2/includes/types/CMB2_Type_File_Base.php:95
+#: libraries/cmb2/includes/CMB2_JS.php:248
+#: libraries/cmb2/includes/types/CMB2_Type_File_Base.php:95
 msgid "Download"
 msgstr ""
 
@@ -960,7 +988,8 @@ msgstr ""
 msgid "When the '_rendered' argument is passed, the renderable field attributes will be returned fully rendered. By default, the names of the callback handers for the renderable attributes will be returned."
 msgstr ""
 
-#: libraries/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:38 libraries/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:42
+#: libraries/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:38
+#: libraries/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:42
 msgid "To view or modify the field's value, the 'object_id' and 'object_type' arguments are required."
 msgstr ""
 
@@ -972,7 +1001,8 @@ msgstr ""
 msgid "CMB2 Field value cannot be modified without the object_id and object_type parameters specified."
 msgstr ""
 
-#: libraries/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:344 libraries/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:375
+#: libraries/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:344
+#: libraries/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:375
 msgid "No field found by that id."
 msgstr ""
 
@@ -986,9 +1016,18 @@ msgstr ""
 msgid "Method '%s' must be overridden."
 msgstr ""
 
-#: libraries/cmb2/includes/shim/WP_REST_Controller.php:41 libraries/cmb2/includes/shim/WP_REST_Controller.php:56 libraries/cmb2/includes/shim/WP_REST_Controller.php:71 libraries/cmb2/includes/shim/WP_REST_Controller.php:86 libraries/cmb2/includes/shim/WP_REST_Controller.php:101
-#: libraries/cmb2/includes/shim/WP_REST_Controller.php:116 libraries/cmb2/includes/shim/WP_REST_Controller.php:131 libraries/cmb2/includes/shim/WP_REST_Controller.php:146 libraries/cmb2/includes/shim/WP_REST_Controller.php:161 libraries/cmb2/includes/shim/WP_REST_Controller.php:176
-#: libraries/cmb2/includes/shim/WP_REST_Controller.php:191 libraries/cmb2/includes/shim/WP_REST_Controller.php:207
+#: libraries/cmb2/includes/shim/WP_REST_Controller.php:41
+#: libraries/cmb2/includes/shim/WP_REST_Controller.php:56
+#: libraries/cmb2/includes/shim/WP_REST_Controller.php:71
+#: libraries/cmb2/includes/shim/WP_REST_Controller.php:86
+#: libraries/cmb2/includes/shim/WP_REST_Controller.php:101
+#: libraries/cmb2/includes/shim/WP_REST_Controller.php:116
+#: libraries/cmb2/includes/shim/WP_REST_Controller.php:131
+#: libraries/cmb2/includes/shim/WP_REST_Controller.php:146
+#: libraries/cmb2/includes/shim/WP_REST_Controller.php:161
+#: libraries/cmb2/includes/shim/WP_REST_Controller.php:176
+#: libraries/cmb2/includes/shim/WP_REST_Controller.php:191
+#: libraries/cmb2/includes/shim/WP_REST_Controller.php:207
 #, php-format
 msgid "Method '%s' not implemented. Must be overridden in subclass."
 msgstr ""
@@ -1021,181 +1060,169 @@ msgstr ""
 msgid "No terms"
 msgstr ""
 
+#: modules/default-layouts/default-layouts.php:53
+msgid "Default Layouts"
+msgstr ""
+
+#: modules/default-layouts/default-layouts.php:117
+msgid "Boxed"
+msgstr ""
+
+#: modules/default-layouts/default-layouts.php:118
+msgid "Centered"
+msgstr ""
+
+#: modules/default-layouts/default-layouts.php:119
+msgid "Inline"
+msgstr ""
+
+#: modules/default-layouts/default-layouts.php:120
+msgid "Inline with avatar"
+msgstr ""
+
+#: modules/default-layouts/default-layouts.php:121
+msgid "Simple list"
+msgstr ""
+
 #: modules/modules-settings/modules-settings.php:53
 msgid "Authors Settings"
 msgstr ""
 
-#: modules/modules-settings/modules-settings.php:222
+#: modules/modules-settings/modules-settings.php:221
 msgid "Features"
 msgstr ""
 
-#: modules/modules-settings/modules-settings.php:223
+#: modules/modules-settings/modules-settings.php:222
 msgid "Feel free to select only the features you need."
 msgstr ""
 
-#: modules/modules-settings/modules-settings.php:229
+#: modules/modules-settings/modules-settings.php:228
 msgid "Enabled features"
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:82 modules/multiple-authors/multiple-authors.php:84
+#: modules/multiple-authors/multiple-authors.php:73
+#: modules/multiple-authors/multiple-authors.php:75
 msgid "Add support for multiple authors on your content"
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:126 modules/settings/settings.php:283
+#: modules/multiple-authors/multiple-authors.php:114
+#: modules/settings/settings.php:283
 msgid "Posts"
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:127 modules/settings/settings.php:284
+#: modules/multiple-authors/multiple-authors.php:115
+#: modules/settings/settings.php:284
 msgid "Pages"
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:355
-msgid "License key:"
-msgstr ""
-
-#: modules/multiple-authors/multiple-authors.php:364
-msgid "Display PublishPress branding in the admin:"
-msgstr ""
-
-#: modules/multiple-authors/multiple-authors.php:373
+#: modules/multiple-authors/multiple-authors.php:340
 msgid "Add to these post types:"
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:381
+#: modules/multiple-authors/multiple-authors.php:348
 msgid "Automatically create author profiles:"
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:390
-msgid "Remove author from new posts:"
-msgstr ""
-
-#: modules/multiple-authors/multiple-authors.php:410
+#: modules/multiple-authors/multiple-authors.php:369
 msgid "Show below the content:"
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:418
+#: modules/multiple-authors/multiple-authors.php:377
 msgid "Title for the author box:"
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:426
+#: modules/multiple-authors/multiple-authors.php:385
 msgid "Layout:"
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:434
+#: modules/multiple-authors/multiple-authors.php:393
 msgid "Show email link:"
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:442
+#: modules/multiple-authors/multiple-authors.php:401
 msgid "Show site link:"
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:505
-msgid "This will remove the default author when creating posts. This means that new posts will have no author until you select one."
-msgstr ""
-
-#: modules/multiple-authors/multiple-authors.php:521
-msgid "Activated"
-msgstr ""
-
-#: modules/multiple-authors/multiple-authors.php:523
-msgid "Inactive"
-msgstr ""
-
-#: modules/multiple-authors/multiple-authors.php:528
-msgid "Status: "
-msgstr ""
-
-#: modules/multiple-authors/multiple-authors.php:530
-msgid "Enter the license key for being able to update the plugin."
-msgstr ""
-
-#: modules/multiple-authors/multiple-authors.php:567
+#: modules/multiple-authors/multiple-authors.php:469
 msgid "This will display the authors box at the end of the content."
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:633
+#: modules/multiple-authors/multiple-authors.php:535
 msgid "Author profiles can be mapped to WordPress user accounts. This option allows you to automatically create author profiles when users are created in these roles. You can also do this for existing users by clicking the \"Create missed authors from role\" button in the Maintenance tab."
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:652
+#: modules/multiple-authors/multiple-authors.php:554
 msgid "This will display the authors email in the author box."
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:670
+#: modules/multiple-authors/multiple-authors.php:572
 msgid "This will display the authors site in the author box."
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:687 modules/multiple-authors/multiple-authors.php:689
+#: modules/multiple-authors/multiple-authors.php:589
+#: modules/multiple-authors/multiple-authors.php:591
 msgid "Create missed post authors"
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:693 modules/multiple-authors/multiple-authors.php:695
+#: modules/multiple-authors/multiple-authors.php:595
+#: modules/multiple-authors/multiple-authors.php:597
 msgid "Create missed authors from role"
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:699 modules/multiple-authors/multiple-authors.php:702
-msgid "Create default layouts"
-msgstr ""
-
-#: modules/multiple-authors/multiple-authors.php:708
+#: modules/multiple-authors/multiple-authors.php:608
 msgid "Copy Co-Authors Plus data"
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:716
+#: modules/multiple-authors/multiple-authors.php:616
 msgid "Delete Mapped Authors"
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:718
+#: modules/multiple-authors/multiple-authors.php:618
 msgid "Delete all authors mapped to users"
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:723
+#: modules/multiple-authors/multiple-authors.php:623
 msgid "Delete Guest Authors"
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:725
+#: modules/multiple-authors/multiple-authors.php:625
 msgid "Delete all guest authors"
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:731
+#: modules/multiple-authors/multiple-authors.php:631
 msgid "Please be careful clicking these buttons. Before clicking, we recommend taking a site backup in case anything goes wrong."
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:890
+#: modules/multiple-authors/multiple-authors.php:733
 msgid "General"
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:891
+#: modules/multiple-authors/multiple-authors.php:734
 msgid "Display"
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:892
+#: modules/multiple-authors/multiple-authors.php:735
 msgid "Maintenance"
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:941
+#: modules/multiple-authors/multiple-authors.php:784
 msgid "This is how the author’s name will appears on your site."
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:949
+#: modules/multiple-authors/multiple-authors.php:792
 msgid "Author URL"
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:953
+#: modules/multiple-authors/multiple-authors.php:796
 msgid "This forms part of the URL for the author’s profile page. If you choose a Mapped User, this URL is taken from the user’s account and can not be changed."
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:1131
+#: modules/multiple-authors/multiple-authors.php:973
 msgid "Error. Author terms could not be reseted."
 msgstr ""
 
-#: modules/multiple-authors/multiple-authors.php:1140
+#: modules/multiple-authors/multiple-authors.php:982
 msgid "Maintenance completed successfully."
-msgstr ""
-
-#. Plugin Name of the plugin/theme
-#: modules/settings/settings.php:59
-msgid "PublishPress Authors"
 msgstr ""
 
 #: modules/settings/settings.php:102
@@ -1220,103 +1247,104 @@ msgstr ""
 msgid "Error: %1$s is not compatible with PressPermit Pro v2.7.23 or prior. Sorry, but we recommend updating PressPermit."
 msgstr ""
 
-#: publishpress-authors.php:123
+#: publishpress-authors.php:117
 #, php-format
 msgid "New comment on your post \"%s\""
 msgstr ""
 
 #. translators: 1: comment author, 2: author IP, 3: author domain
-#: publishpress-authors.php:125
+#: publishpress-authors.php:119
 #, php-format
 msgid "Author : %1$s (IP: %2$s , %3$s)"
 msgstr ""
 
-#: publishpress-authors.php:127
+#: publishpress-authors.php:121
 #, php-format
 msgid "E-mail : %s"
 msgstr ""
 
-#: publishpress-authors.php:128 publishpress-authors.php:140 publishpress-authors.php:150
+#: publishpress-authors.php:122 publishpress-authors.php:134
+#: publishpress-authors.php:144
 #, php-format
 msgid "URL    : %s"
 msgstr ""
 
-#: publishpress-authors.php:129
+#: publishpress-authors.php:123
 #, php-format
 msgid "Whois  : http://whois.arin.net/rest/ip/%s"
 msgstr ""
 
-#: publishpress-authors.php:131
+#: publishpress-authors.php:125
 msgid "Comment: "
 msgstr ""
 
-#: publishpress-authors.php:132
+#: publishpress-authors.php:126
 msgid "You can see all comments on this post here: "
 msgstr ""
 
 #. translators: 1: blog name, 2: post title
-#: publishpress-authors.php:134
+#: publishpress-authors.php:128
 #, php-format
 msgid "[%1$s] Comment: \"%2$s\""
 msgstr ""
 
-#: publishpress-authors.php:136
+#: publishpress-authors.php:130
 #, php-format
 msgid "New trackback on your post \"%s\""
 msgstr ""
 
 #. translators: 1: website name, 2: author IP, 3: author domain
 #. translators: 1: comment author, 2: author IP, 3: author domain
-#: publishpress-authors.php:138 publishpress-authors.php:148
+#: publishpress-authors.php:132 publishpress-authors.php:142
 #, php-format
 msgid "Website: %1$s (IP: %2$s , %3$s)"
 msgstr ""
 
-#: publishpress-authors.php:141 publishpress-authors.php:151
+#: publishpress-authors.php:135 publishpress-authors.php:145
 msgid "Excerpt: "
 msgstr ""
 
-#: publishpress-authors.php:142
+#: publishpress-authors.php:136
 msgid "You can see all trackbacks on this post here: "
 msgstr ""
 
 #. translators: 1: blog name, 2: post title
-#: publishpress-authors.php:144
+#: publishpress-authors.php:138
 #, php-format
 msgid "[%1$s] Trackback: \"%2$s\""
 msgstr ""
 
-#: publishpress-authors.php:146
+#: publishpress-authors.php:140
 #, php-format
 msgid "New pingback on your post \"%s\""
 msgstr ""
 
-#: publishpress-authors.php:153
+#: publishpress-authors.php:147
 msgid "You can see all pingbacks on this post here: "
 msgstr ""
 
 #. translators: 1: blog name, 2: post title
-#: publishpress-authors.php:155
+#: publishpress-authors.php:149
 #, php-format
 msgid "[%1$s] Pingback: \"%2$s\""
 msgstr ""
 
-#: publishpress-authors.php:158
+#: publishpress-authors.php:152
 #, php-format
 msgid "Permalink: %s"
 msgstr ""
 
-#: publishpress-authors.php:161
+#: publishpress-authors.php:155
 #, php-format
 msgid "Trash it: %s"
 msgstr ""
 
-#: publishpress-authors.php:164
+#: publishpress-authors.php:158
 #, php-format
 msgid "Delete it: %s"
 msgstr ""
 
-#: publishpress-authors.php:167
+#: publishpress-authors.php:161
 #, php-format
 msgid "Spam it: %s"
 msgstr ""
@@ -1355,6 +1383,10 @@ msgstr ""
 
 #. Description of the plugin/theme
 msgid "Add support for multiple authors"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "PublishPress"
 msgstr ""
 
 #. Author URI of the plugin/theme
