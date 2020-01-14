@@ -422,11 +422,10 @@ class Plugin
     {
         /**
          * @param bool      $shouldDisplay
-         * @param WP_Screen $currentScreen
          *
          * @return bool
          */
-        return apply_filters('pp_authors_show_footer', false, $current_screen);
+        return apply_filters('pp_authors_show_footer', false);
     }
 
     /**
