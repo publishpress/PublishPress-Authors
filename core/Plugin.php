@@ -372,6 +372,8 @@ class Plugin
 
         // Apply some targeted filters
         add_action('load-edit.php', [$this, 'load_edit']);
+
+        add_filter('pp_authors_show_footer', [$this, 'filterDisplayFooter'], 10);
     }
 
     /**
@@ -397,7 +399,7 @@ class Plugin
         return $footer;
     }
 
-    private function shouldDisplayFooter()
+    public function filterDisplayFooter($shouldDisplay = true)
     {
         global $current_screen;
 
@@ -413,6 +415,11 @@ class Plugin
             return true;
         }
 
+        return $shouldDisplay;
+    }
+
+    private function shouldDisplayFooter()
+    {
         /**
          * @param bool      $shouldDisplay
          * @param WP_Screen $currentScreen
