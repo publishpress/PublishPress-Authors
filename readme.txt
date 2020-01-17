@@ -21,7 +21,7 @@ PublishPress Authors is the best plugin for adding many authors to one WordPress
 
 With PublishPress Authors, you can set multiple authors and coauthors for each post. When you write a post, you’ll see a box in the right sidebar. Here you can choose from all the users on your site, and assign them as authors.
 
-On the frontend of your site. PublishPress Authors gives you several different options to display the authors’ box:
+On the frontend of your site, PublishPress Authors gives you several different options to display the authors’ box:
 
 * Replacing the default author display.
 * At the bottom of your content.
@@ -42,6 +42,7 @@ You will be able to select and display Guest Authors in exactly the same way as 
 = Multiple Layout Options for Author Profiles =
 
 PublishPress Authors provides five default ways to display the author profiles on your site.
+
 In the PublishPress Authors settings you can choose from these layouts:
 
 * Simple list
@@ -57,6 +58,8 @@ In the PublishPress Authors settings you can choose from these layouts:
 PublishPress Authors Pro enables you to create custom fields and enhance your author profiles.
 
 You can add Text, WYSIWYG, Link and email address fields. Then you can place those fields in author profiles using custom layouts.
+
+[Click here to see how to add fields for author profiles](https://publishpress.com/knowledge-base/custom-fields/).
 
 = Custom Layouts for Author Profiles (Pro version) =
 
@@ -87,7 +90,7 @@ Bug reports for PublishPress Authors are welcomed in our [repository on GitHub](
 
 = Follow the PublishPress team =
 
-Follow PublishPress on [Facebook](https://www.facebook.com/publishpress), [Twitter](https://www.twitter.com/publishpresscom) and [YouTube](https://www.youtube.com/channel/UC8VExJ7eS8EduxYD_GSMNdA)
+Follow PublishPress on [Facebook](https://www.facebook.com/publishpress), [Twitter](https://www.twitter.com/publishpresscom) and [YouTube](https://www.youtube.com/channel/UC8VExJ7eS8EduxYD_GSMNdA).
 
 = Thank You =
 
@@ -116,7 +119,7 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Usage ==
 
-* Go to admin page, click on the "Authors" menu and create new author profiles.
+* Go to the admin page, click on the "Authors" menu and create new author profiles;
 * Go to write a new post and you'll see the box for selecting multiple authors in the sidebar.
 
 == Changelog ==
