@@ -50,7 +50,7 @@ In the PublishPress Authors settings you can choose from these layouts:
 * Inline
 * Inline with Avatars
 
-[Click here to see details on all the layout options](https://publishpress.com/knowledge-base/layout/)
+[Click here to see details on all the layout options](https://publishpress.com/knowledge-base/layout/).
 
 = Custom Fields for Author Profiles (Pro version) =
 
