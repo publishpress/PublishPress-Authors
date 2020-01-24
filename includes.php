@@ -16,7 +16,7 @@ if ( ! defined('PP_AUTHORS_LOADED')) {
     define('PP_AUTHORS_FILE', 'publishpress-authors/publishpress-authors.php');
     define('PP_AUTHORS_BASE_PATH', plugin_dir_path(__FILE__));
     define('PP_AUTHORS_MODULES_PATH', PP_AUTHORS_BASE_PATH . 'modules');
-    define('PP_AUTHORS_ASSETS_URL', plugins_url('publishpress-authors/assets'));
+    define('PP_AUTHORS_ASSETS_URL', plugins_url('/assets', __DIR__ . '/publishpress-authors.php'));
     define('PP_AUTHORS_URL', plugins_url('/', __FILE__));
 
     define('PP_AUTHORS_LOADED', 1);
