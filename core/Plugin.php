@@ -799,10 +799,11 @@ class Plugin
             "SELECT *
                      FROM {$wpdb->posts} AS p
                      INNER JOIN {$wpdb->term_relationships} AS tr ON (tr.`object_id` = p.ID)
+                     INNER JOIN {$wpdb->term_taxonomy} AS tt ON (tt.`term_taxonomy_id` = tr.`term_taxonomy_id`)
                      WHERE
                       p.post_type = 'post'
                       AND p.post_status NOT IN ('trash', 'auto-draft')
-                      AND tr.`term_taxonomy_id` = {$term_id}"
+                      AND tt.`term_id` = {$term_id}"
         );
 
         $count = count($items);
