@@ -130,3 +130,11 @@ and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec
 = [3.2.0] - 2020-01-03 =
 
 * First free public release. Based on PublishPress Multiple Authors v3.1.0.
+
+= [3.2.1] - UNRELEASED =
+
+* Added hooks for allowing to extend the settings and other parts of the plugin;
+* Removed the CMB2 library dependency;
+* Added new filter: pp_authors_twig for extending the Twig environment object;
+* Fixed the count of authors' posts using the correct field in the query: term_id. Issue #17;
+* Fixed the query in the installer that look for posts without author's taxonomy to migrate;
