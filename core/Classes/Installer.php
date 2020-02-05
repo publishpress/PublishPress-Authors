@@ -150,7 +150,7 @@ class Installer
 					FROM {$wpdb->posts} AS p
 					INNER JOIN {$wpdb->termmeta} AS meta ON (p.post_author = meta.meta_value)
 					INNER JOIN {$wpdb->term_taxonomy} AS tax ON (meta.term_id = tax.term_id)
-					INNER JOIN {$wpdb->term_relationships} AS rel ON (tax.term_id = rel.term_taxonomy_id)
+					INNER JOIN {$wpdb->term_relationships} AS rel ON (tax.term_taxonomy_id = rel.term_taxonomy_id)
 					WHERE
 						p.post_status NOT IN ('trash')
 						AND p.post_author <> 0
