@@ -127,6 +127,15 @@ There are two ways to install the PublishPress Authors plugin:
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.html).
 
+= [3.2.1] - UNRELEASED =
+
+* Fixed: Fixed the author's posts count on some sites;
+* Fixed: Fixed the query for migrating posts' authors when installed for the first time;
+* Changed: Cleanup the installer class;
+* Added: Added actions for before and after the settings fields: publishpress_authors_register_settings_before, publishpress_authors_register_settings_after;
+* Changed: Removed the CMB2 library since it is only used in the Pro plugins;
+* Changed: Refactored the code to support the Pro version;
+
 = [3.2.0] - 2020-01-03 =
 
 * First free public release. Based on PublishPress Multiple Authors v3.1.0.
