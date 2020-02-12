@@ -131,6 +131,7 @@ and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec
 
 * Fixed: Fixed the author's posts count on some sites;
 * Fixed: Fixed the query for migrating posts' authors when installed for the first time;
+* Fixed: Fixed the assets URL for the plugin when it is installed in a folder different from wp-content/plugins
 * Changed: Cleanup the installer class;
 * Added: Added actions for before and after the settings fields: publishpress_authors_register_settings_before, publishpress_authors_register_settings_after;
 * Changed: Removed the CMB2 library since it is only used in the Pro plugins;
