@@ -335,6 +335,11 @@ if ( ! class_exists('MA_Multiple_Authors')) {
                 $this->module->options_group_name
             );
 
+            do_action('publishpress_authors_register_settings_before',
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_general'
+            );
+
             add_settings_field(
                 'post_types',
                 __('Add to these post types:', 'publishpress-authors'),
@@ -351,6 +356,8 @@ if ( ! class_exists('MA_Multiple_Authors')) {
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_general'
             );
+
+            do_action('publishpress_authors_register_settings_after');
 
             /**
              *

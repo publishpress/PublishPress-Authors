@@ -100,6 +100,13 @@ class Services implements ServiceProviderInterface
             });
             $twig->addFunction($function);
 
+            /**
+             * @param Twig_Environment $twig
+             *
+             * @return Twig_Environment
+             */
+            $twig = apply_filters('pp_authors_twig', $twig);
+
             return $twig;
         };
     }

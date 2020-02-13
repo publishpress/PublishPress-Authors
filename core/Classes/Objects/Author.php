@@ -222,7 +222,6 @@ class Author
         $properties['ID']            = true;
         $properties['first_name']    = true;
         $properties['last_name']     = true;
-        $properties['user_url']      = true;
 
         /**
          * Filter the author's properties.

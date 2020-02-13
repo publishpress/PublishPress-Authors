@@ -103,7 +103,7 @@ if ( ! class_exists('MA_Modules_Settings')) {
          */
         public function register_settings()
         {
-
+            
         }
 
         /**

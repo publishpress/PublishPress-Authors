@@ -60,22 +60,28 @@ trait Author_box
      * Returns the HTML markup for the author box.
      *
      * @param string $target
-     * @param bool   $show_title
+     * @param bool $show_title
      * @param string $layout
-     * @param bool   $archive
-     * @param int    $post_id
+     * @param bool $archive
+     * @param int $post_id
      *
      * @return string
      */
-    protected function get_author_box_markup($target = null, $show_title = true, $layout = null, $archive = false, $post_id = null)
-    {
+    protected function get_author_box_markup(
+        $target = null,
+        $show_title = true,
+        $layout = null,
+        $archive = false,
+        $post_id = null
+    ) {
         $legacyPlugin = Factory::getLegacyPlugin();
 
         $html = '';
 
         wp_enqueue_style('dashicons');
         wp_enqueue_style('multiple-authors-widget-css',
-            plugins_url('assets/css/multiple-authors-widget.css', PP_AUTHORS_FILE), false,
+            PP_AUTHORS_ASSETS_URL . 'css/multiple-authors-widget.css',
+            false,
             PP_AUTHORS_VERSION, 'all');
 
         if ( ! function_exists('multiple_authors')) {
@@ -104,15 +110,15 @@ trait Author_box
             ? 'yes' === $legacyPlugin->modules->multiple_authors->options->show_site_link : true;
 
         $args = [
-            'show_title' => $show_title,
-            'css_class'  => $css_class,
-            'title'      => $title,
-            'authors'    => get_multiple_authors($post_id, true, $archive),
-            'target'     => $target,
-            'item_class' => 'author url fn',
-            'layout'     => $layout,
-            'show_email' => $show_email,
-            'show_site'  => $show_site,
+            'show_title'   => $show_title,
+            'css_class'    => $css_class,
+            'title'        => $title,
+            'authors'      => get_multiple_authors($post_id, true, $archive),
+            'target'       => $target,
+            'item_class'   => 'author url fn',
+            'layout'       => $layout,
+            'show_email'   => $show_email,
+            'show_site'    => $show_site,
         ];
 
         /**
@@ -126,7 +132,7 @@ trait Author_box
          * Filter the author box HTML code, allowing to use custom rendered layouts.
          *
          * @param string $html
-         * @param array  $args
+         * @param array $args
          */
         $html = apply_filters('pp_multiple_authors_author_box_html', null, $args);
 
@@ -135,9 +141,9 @@ trait Author_box
         /**
          * Filter the rendered markup of the author box.
          *
-         * @param string           $html
+         * @param string $html
          * @param Authors_Iterator $authors_iterator
-         * @param string           $target
+         * @param string $target
          *
          * @deprecated since 2.4.0, use pp_multiple_authors_author_box_rendered_markup instead.
          */
@@ -147,9 +153,9 @@ trait Author_box
         /**
          * Filter the rendered markup of the author box.
          *
-         * @param string           $html
+         * @param string $html
          * @param Authors_Iterator $authors_iterator
-         * @param string           $target
+         * @param string $target
          */
         $html = apply_filters('pp_multiple_authors_author_box_rendered_markup', $html, $authors_iterator,
             $target);

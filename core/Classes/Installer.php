@@ -150,7 +150,7 @@ class Installer
 					FROM {$wpdb->posts} AS p
 					INNER JOIN {$wpdb->termmeta} AS meta ON (p.post_author = meta.meta_value)
 					INNER JOIN {$wpdb->term_taxonomy} AS tax ON (meta.term_id = tax.term_id)
-					INNER JOIN {$wpdb->term_relationships} AS rel ON (tax.term_id = rel.term_taxonomy_id)
+					INNER JOIN {$wpdb->term_relationships} AS rel ON (tax.term_taxonomy_id = rel.term_taxonomy_id)
 					WHERE
 						p.post_status NOT IN ('trash')
 						AND p.post_author <> 0
@@ -246,104 +246,5 @@ class Installer
 
         self::add_capabilities();
         self::flush_permalinks();
-    }
-
-    /**
-     * Return a list with al the author terms.
-     *
-     * @return array
-     *
-     * @since 2.4.0
-     */
-    protected static function get_all_author_terms()
-    {
-        global $wpdb;
-
-        // Get list of authors with mapped users.
-        $authors = $wpdb->get_results(
-            "SELECT taxonomy.term_id
-						 FROM {$wpdb->term_taxonomy} AS taxonomy
-						 WHERE taxonomy.`taxonomy` = 'author'
-			    "
-        );
-
-        return $authors;
-    }
-
-    /**
-     * Map a list of author terms to a list of author names indexed by the term id.
-     *
-     * @param array $authors
-     *
-     * @return array
-     *
-     * @since 2.4.0
-     */
-    protected static function get_terms_author_names($authors)
-    {
-        if (empty($authors)) {
-            return;
-        }
-
-        $mappedList = [];
-
-        foreach ($authors as $term) {
-            $author = Author::get_by_term_id($term->term_id);
-
-            $mappedList[$term->term_id] = $author->name;
-        }
-
-        return $mappedList;
-    }
-
-    /**
-     * @param array $author_names
-     *
-     * @return array
-     *
-     * @since 2.4.0
-     */
-    protected static function get_post_author_names($author_names)
-    {
-        $term_ids          = array_keys($author_names);
-        $combination_names = [];
-
-        $combinations = static::get_taxonomy_ids_combinations($term_ids);
-        foreach ($combinations as $combination_str) {
-            $combination_list = explode(',', $combination_str->taxonomy_ids);
-
-            $names = array_map(function ($id) use ($author_names) {
-                return $author_names[$id];
-            }, $combination_list);
-
-            $combination_names[$combination_str->object_id] = $names;
-        }
-
-        return $combination_names;
-    }
-
-    /**
-     *
-     * @param array $term_ids
-     *
-     * @return mixed
-     *
-     * @since 2.4.0
-     */
-    protected static function get_taxonomy_ids_combinations($term_ids)
-    {
-        global $wpdb;
-
-        $term_ids = implode(',', $term_ids);
-
-        $ids = $wpdb->get_results(
-            "SELECT object_id, group_concat(r.term_taxonomy_id) as taxonomy_ids
-                FROM TrB7dXiiH_term_relationships AS r
-                WHERE r.term_taxonomy_id in ({$term_ids})
-                GROUP BY r.object_id
-                ORDER BY r.term_order"
-        );
-
-        return $ids;
     }
 }
