@@ -129,22 +129,17 @@ and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec
 
 = [3.2.1] - 2020-02-13 =
 
-* Fixed: Fixed the author's posts count on some sites;
 * Fixed: Fixed the query for migrating posts' authors when installed for the first time;
 * Fixed: Fixed the assets URL for the plugin when it is installed in a folder different from wp-content/plugins
-* Changed: Cleanup the installer class;
+* Fixed: Fixed the count of authors' posts using the correct field in the query: term_id. Issue #17;
+* Fixed: Fixed the query in the installer that look for posts without author's taxonomy to migrate;
 * Added: Added actions for before and after the settings fields: publishpress_authors_register_settings_before, publishpress_authors_register_settings_after;
+* Added: Added new filter: pp_authors_twig for extending the Twig environment object;
+* Changed: Cleanup the installer class;
 * Changed: Removed the CMB2 library since it is only used in the Pro plugins;
 * Changed: Refactored the code to support the Pro version;
+* Removed: Removed the CMB2 library dependency;
 
 = [3.2.0] - 2020-01-03 =
 
 * First free public release. Based on PublishPress Multiple Authors v3.1.0.
-
-= [3.2.1] - UNRELEASED =
-
-* Added hooks for allowing to extend the settings and other parts of the plugin;
-* Removed the CMB2 library dependency;
-* Added new filter: pp_authors_twig for extending the Twig environment object;
-* Fixed the count of authors' posts using the correct field in the query: term_id. Issue #17;
-* Fixed the query in the installer that look for posts without author's taxonomy to migrate;
