@@ -229,6 +229,8 @@ class Plugin
         add_filter('admin_footer_text', [$this, 'update_footer_admin']);
 
         add_shortcode('ppma_test', [$this, 'ppma_test']);
+
+        add_filter('cme_multiple_authors_capabilities', [$this, 'filterCMECapabilities'], 20);
     }
 
     public function ppma_test()
@@ -256,7 +258,6 @@ class Plugin
              */
             do_action('multiple_authors_install', $current_version);
         } elseif (version_compare($previous_version, $current_version, '>')) {
-
             /**
              * Action called when the module is downgraded.
              *
@@ -264,7 +265,6 @@ class Plugin
              */
             do_action('multiple_authors_downgrade', $previous_version);
         } elseif (version_compare($previous_version, $current_version, '<')) {
-
             /**
              * Action called when the module is upgraded.
              *
@@ -284,7 +284,6 @@ class Plugin
      */
     public function action_init()
     {
-
         // Allow PublishPress Authors to be easily translated
         load_plugin_textdomain('publishpress-authors', null,
             dirname(plugin_basename(__FILE__)) . '/languages/');
@@ -421,7 +420,7 @@ class Plugin
     private function shouldDisplayFooter()
     {
         /**
-         * @param bool      $shouldDisplay
+         * @param bool $shouldDisplay
          *
          * @return bool
          */
@@ -432,7 +431,7 @@ class Plugin
      * Echo or returns the default footer
      *
      * @param object $current_module
-     * @param bool   $echo
+     * @param bool $echo
      *
      * @return string
      */
@@ -440,7 +439,7 @@ class Plugin
     {
         $html = '';
         /**
-         * @param bool   $showFooter
+         * @param bool $showFooter
          * @param string $currentModule
          */
         $showFooter = apply_filters('pp_authors_show_footer', true, $current_module);
@@ -505,7 +504,6 @@ class Plugin
      */
     public function _filter_manage_users_columns($columns)
     {
-
         $new_columns = [];
         // Unset and add our column while retaining the order of the columns
         foreach ($columns as $column_name => $column_title) {
@@ -567,14 +565,13 @@ class Plugin
     /**
      * Get a co-author object by a specific type of key
      *
-     * @param string $key   Key to search by (slug,email)
+     * @param string $key Key to search by (slug,email)
      * @param string $value Value to search for
      *
      * @return object|false $coauthor The co-author on success, false on failure
      */
     public function get_coauthor_by($key, $value, $force = false)
     {
-
         switch ($key) {
             case 'id':
             case 'login':
@@ -606,7 +603,6 @@ class Plugin
         }
 
         return false;
-
     }
 
     /**
@@ -639,7 +635,6 @@ class Plugin
         $coauthors        = array_unique(array_merge($existing_coauthors, $coauthors));
         $coauthor_objects = [];
         foreach ($coauthors as &$author_name) {
-
             $author             = $this->get_coauthor_by('user_nicename', $author_name);
             $coauthor_objects[] = $author;
             $term               = $this->update_author_term($author);
@@ -668,7 +663,6 @@ class Plugin
         }
 
         return true;
-
     }
 
     /**
@@ -682,7 +676,6 @@ class Plugin
      */
     public function update_author_term($coauthor)
     {
-
         if ( ! is_object($coauthor)) {
             return false;
         }
@@ -724,7 +717,6 @@ class Plugin
      */
     public function get_author_term($coauthor)
     {
-
         if ( ! is_object($coauthor)) {
             return;
         }
@@ -750,7 +742,6 @@ class Plugin
      */
     public function filter_wp_get_object_terms($terms, $object_ids, $taxonomies, $args)
     {
-
         if ( ! isset($_REQUEST['bulk_edit']) || "'author'" !== $taxonomies) {
             return $terms;
         }
@@ -783,7 +774,6 @@ class Plugin
         }
 
         return $terms;
-
     }
 
     /**
@@ -883,7 +873,6 @@ class Plugin
         }
 
         if (is_object($author)) {
-
             $authordata = $author;
 
             $wp_query->queried_object    = $author;
@@ -1030,12 +1019,10 @@ class Plugin
      */
     public function action_pre_user_query(&$user_query)
     {
-
         if (is_object($user_query)) {
             $user_query->query_where = str_replace('user_nicename LIKE', 'display_name LIKE',
                 $user_query->query_where);
         }
-
     }
 
     /**
@@ -1141,7 +1128,6 @@ class Plugin
      */
     public function load_edit()
     {
-
         $screen               = get_current_screen();
         $supported_post_types = Utils::get_supported_post_types();
         if (in_array($screen->post_type, $supported_post_types)) {
@@ -1156,7 +1142,6 @@ class Plugin
      */
     public function filter_views($views)
     {
-
         if (array_key_exists('mine', $views)) {
             return $views;
         }
@@ -1189,7 +1174,6 @@ class Plugin
      */
     public function filter_user_has_cap($allcaps, $caps, $args)
     {
-
         $cap     = $args[0];
         $user_id = isset($args[1]) ? $args[1] : 0;
         $post_id = isset($args[2]) ? $args[2] : 0;
@@ -1245,13 +1229,12 @@ class Plugin
      * Filter Edit Flow's 'ef_calendar_item_information_fields' to add co-authors
      *
      * @param array $information_fields
-     * @param int   $post_id
+     * @param int $post_id
      *
      * @return array
      */
     public function filter_ef_calendar_item_information_fields($information_fields, $post_id)
     {
-
         // Don't add the author row again if another plugin has removed
         if ( ! array_key_exists('author', $information_fields)) {
             return $information_fields;
@@ -1281,7 +1264,6 @@ class Plugin
      */
     public function filter_ef_story_budget_term_column_value($column_name, $post, $parent_term)
     {
-
         // We only want to modify the 'author' column
         if ('author' != $column_name) {
             return $column_name;
@@ -1299,7 +1281,7 @@ class Plugin
     /**
      * Filter non-native users added by Co-Author-Plus in Jetpack
      *
-     * @param array $og_tags          Required. Array of Open Graph Tags.
+     * @param array $og_tags Required. Array of Open Graph Tags.
      * @param array $image_dimensions Required. Dimensions for images used.
      *
      * @return array Open Graph Tags either as they were passed or updated.
@@ -1308,7 +1290,6 @@ class Plugin
      */
     public function filter_jetpack_open_graph_tags($og_tags, $image_dimensions)
     {
-
         if (is_author()) {
             $author                        = get_queried_object();
             $og_tags['og:title']           = $author->display_name;
@@ -1348,7 +1329,6 @@ class Plugin
      */
     public function get_coauthor_terms_for_post($post_id)
     {
-
         if ( ! $post_id) {
             return [];
         }
@@ -1371,7 +1351,6 @@ class Plugin
         }
 
         return $coauthor_terms;
-
     }
 
     /**
@@ -1391,14 +1370,12 @@ class Plugin
      */
     public function clear_cache_on_terms_set($object_id, $terms, $tt_ids, $taxonomy, $append, $old_tt_ids)
     {
-
         // We only care about the coauthors taxonomy
         if ($this->coauthor_taxonomy !== $taxonomy) {
             return;
         }
 
         wp_cache_delete('coauthors_post_' . $object_id, 'publishpress-authors');
-
     }
 
     /**
@@ -1480,5 +1457,14 @@ class Plugin
     public function activation_hook()
     {
         flush_rewrite_rules();
+    }
+
+    public function filterCMECapabilities($capabilities)
+    {
+        $capabilities = array_merge($capabilities, [
+            'ppma_manage_authors',
+        ]);
+
+        return $capabilities;
     }
 }
