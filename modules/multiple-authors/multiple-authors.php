@@ -23,7 +23,7 @@
 
 use MultipleAuthors\Classes\Installer;
 use MultipleAuthors\Classes\Legacy\Module;
-use MultipleAuthors\Classes\Legacy\Util;
+use MultipleAuthors\Classes\Authors_Iterator;
 use MultipleAuthors\Classes\Utils;
 use MultipleAuthors\Factory;
 use MultipleAuthors\Classes\Objects\Author;
