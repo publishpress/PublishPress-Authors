@@ -4,65 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e3b7c5a9929b7acc318aef511bfde6ac",
+    "content-hash": "3cf11bebf1b3ad4995b7cf7018251851",
     "packages": [
-        {
-            "name": "alledia/wordpress-plugin-builder",
-            "version": "2.5.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/publishpress/WordPress-Plugin-Builder.git",
-                "reference": "a327ca29a1f793f858a515aad586699ab5671115"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/publishpress/WordPress-Plugin-Builder/zipball/a327ca29a1f793f858a515aad586699ab5671115",
-                "reference": "a327ca29a1f793f858a515aad586699ab5671115",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Alledia\\Builder\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "PublishPress",
-                    "email": "help@publishpress.com",
-                    "homepage": "https://publishpress.com"
-                },
-                {
-                    "name": "Alledia",
-                    "email": "help@alledia.com"
-                },
-                {
-                    "name": "UpStream",
-                    "email": "help@upstream.com"
-                },
-                {
-                    "name": "Anderson Grudtner Martins",
-                    "email": "anderson@grudtner.me",
-                    "homepage": "http://anderson.grudtner.me",
-                    "role": "Lead Developer"
-                }
-            ],
-            "description": "Base classes and Phing scripts for building WordPress plugins",
-            "keywords": [
-                "builder",
-                "phing",
-                "plugin",
-                "wordpress"
-            ],
-            "time": "2020-01-06T21:59:27+00:00"
-        },
         {
             "name": "pimple/pimple",
             "version": "v3.2.3",
@@ -288,6 +231,63 @@
         }
     ],
     "packages-dev": [
+        {
+            "name": "alledia/wordpress-plugin-builder",
+            "version": "2.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/publishpress/WordPress-Plugin-Builder.git",
+                "reference": "da97523122020232821c0798137be84cab0f2bca"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/publishpress/WordPress-Plugin-Builder/zipball/da97523122020232821c0798137be84cab0f2bca",
+                "reference": "da97523122020232821c0798137be84cab0f2bca",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Alledia\\Builder\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "PublishPress",
+                    "email": "help@publishpress.com",
+                    "homepage": "https://publishpress.com"
+                },
+                {
+                    "name": "Alledia",
+                    "email": "help@alledia.com"
+                },
+                {
+                    "name": "UpStream",
+                    "email": "help@upstream.com"
+                },
+                {
+                    "name": "Anderson Grudtner Martins",
+                    "email": "anderson@grudtner.me",
+                    "homepage": "http://anderson.grudtner.me",
+                    "role": "Lead Developer"
+                }
+            ],
+            "description": "Base classes and Phing scripts for building WordPress plugins",
+            "keywords": [
+                "builder",
+                "phing",
+                "plugin",
+                "wordpress"
+            ],
+            "time": "2020-02-18T17:05:49+00:00"
+        },
         {
             "name": "behat/behat",
             "version": "v3.6.1",

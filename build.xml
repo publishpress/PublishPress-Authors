@@ -11,5 +11,5 @@
     <property name="src.excludes" value="${src.excludes},assets/lib/chosen-v1.8.3/options.html" override="true"/>
     <property name="src.excludes" value="${src.excludes},assets/lib/chosen-v1.8.3/package.json" override="true"/>
 
-    <import file="vendor/alledia/wordpress-plugin-builder/build.xml"/>
+    <import file="${env.ALLEDIA_BUILDER_PATH}/build.xml"/>
 </project>
