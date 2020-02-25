@@ -127,7 +127,7 @@ There are two ways to install the PublishPress Authors plugin:
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.html).
 
-= [3.2.2] - 2020-02-18 =
+= [3.2.2] - 2020-02-25 =
 
 * Fixed: Undefined class Authors_Iterator, #26;
 * Fixed: Error message related to Phing class file not found. Removed Phing from the package;
