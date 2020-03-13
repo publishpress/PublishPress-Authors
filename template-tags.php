@@ -762,6 +762,21 @@ if ( ! function_exists('authors_render')) {
     }
 }
 
+// Fix compatibility with the Genesis framework in the Authors page.
+if (function_exists('genesis')) {
+    add_filter('document_title_parts', function($parts) {
+        if (isset($parts['title']) && function_exists('get_multiple_authors') && is_author()) {
+            $authors = get_multiple_authors(0, true, true);
+            if (!empty($authors)) {
+                $author = $authors[0];
+                $parts['title'] = $author->display_name;
+            }
+        }
+
+        return $parts;
+    }, 20);
+}
+
 // Keep backward compatibility with Bylines, legacy versions of PublishPress Authors and CoAuthors
 include_once 'coauthors-functions.php';
 include_once 'bylines-functions.php';
