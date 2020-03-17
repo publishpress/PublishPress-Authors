@@ -80,7 +80,7 @@ trait Author_box
 
         wp_enqueue_style('dashicons');
         wp_enqueue_style('multiple-authors-widget-css',
-            PP_AUTHORS_ASSETS_URL . 'css/multiple-authors-widget.css',
+            PP_AUTHORS_ASSETS_URL . '/css/multiple-authors-widget.css',
             false,
             PP_AUTHORS_VERSION, 'all');
 

@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.4
 Tested up to: 5.3
-Stable tag: 3.2.2
+Stable tag: 3.2.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -126,6 +126,13 @@ There are two ways to install the PublishPress Authors plugin:
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.html).
+
+= [3.2.3] - 2020-03-16 =
+
+* Fixed: Wrong URL for the file multiple-authors-widget.css;
+* Fixed: Fixed the author page for compatibility to the Genesis framework;
+* Added: Added new filter to bypass the installation and data migration on special cases;
+* Added: Add top banner for the Pro version;
 
 = [3.2.2] - 2020-02-25 =
 

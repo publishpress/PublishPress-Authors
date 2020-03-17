@@ -250,27 +250,29 @@ class Plugin
         $previous_version = get_option($option_name);
         $current_version  = PP_AUTHORS_VERSION;
 
-        if (empty($previous_version)) {
-            /**
-             * Action called when the module is installed.
-             *
-             * @param string $current_version
-             */
-            do_action('multiple_authors_install', $current_version);
-        } elseif (version_compare($previous_version, $current_version, '>')) {
-            /**
-             * Action called when the module is downgraded.
-             *
-             * @param string $previous_version
-             */
-            do_action('multiple_authors_downgrade', $previous_version);
-        } elseif (version_compare($previous_version, $current_version, '<')) {
-            /**
-             * Action called when the module is upgraded.
-             *
-             * @param string $previous_version
-             */
-            do_action('multiple_authors_upgrade', $previous_version);
+        if ( ! apply_filters('publishpress_authors_skip_installation', false, $previous_version, $current_version)) {
+            if (empty($previous_version)) {
+                /**
+                 * Action called when the module is installed.
+                 *
+                 * @param string $current_version
+                 */
+                do_action('multiple_authors_install', $current_version);
+            } elseif (version_compare($previous_version, $current_version, '>')) {
+                /**
+                 * Action called when the module is downgraded.
+                 *
+                 * @param string $previous_version
+                 */
+                do_action('multiple_authors_downgrade', $previous_version);
+            } elseif (version_compare($previous_version, $current_version, '<')) {
+                /**
+                 * Action called when the module is upgraded.
+                 *
+                 * @param string $previous_version
+                 */
+                do_action('multiple_authors_upgrade', $previous_version);
+            }
         }
 
         if ($current_version !== $previous_version) {
