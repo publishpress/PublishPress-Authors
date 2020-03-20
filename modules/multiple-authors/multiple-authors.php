@@ -28,7 +28,7 @@ use MultipleAuthors\Classes\Utils;
 use MultipleAuthors\Factory;
 use MultipleAuthors\Classes\Objects\Author;
 
-if ( ! class_exists('MA_Multiple_Authors')) {
+if (!class_exists('MA_Multiple_Authors')) {
     /**
      * class MA_Multiple_Authors
      */
@@ -155,6 +155,7 @@ if ( ! class_exists('MA_Multiple_Authors')) {
             add_filter('publishpress_multiple_authors_settings_tabs', [$this, 'settings_tab']);
 
             add_filter('gettext', [$this, 'filter_get_text'], 101, 3);
+            add_filter('body_class', [$this, 'filter_body_class']);
 
             // Fix upload permissions for multiple authors.
             add_filter('map_meta_cap', [$this, 'filter_map_meta_cap'], 10, 4);
@@ -200,7 +201,7 @@ if ( ! class_exists('MA_Multiple_Authors')) {
 
             // Remove the author taxonomy from the all post types
             foreach ($submenu as $menu => $items) {
-                if (is_array($items) && ! empty($items)) {
+                if (is_array($items) && !empty($items)) {
                     foreach ($items as $key => $value) {
                         if (isset($value[2]) && strpos($value[2], 'edit-tags.php?taxonomy=author') !== false) {
                             unset($submenu[$menu][$key]);
@@ -280,7 +281,7 @@ if ( ! class_exists('MA_Multiple_Authors')) {
                             continue;
                         }
 
-                        if ( ! array_key_exists($item[2], $relevantMenus)) {
+                        if (!array_key_exists($item[2], $relevantMenus)) {
                             $new_submenu[] = $item;
                             unset($submenu_pp[$index]);
                         }
@@ -472,7 +473,7 @@ if ( ! class_exists('MA_Multiple_Authors')) {
 
             echo '<label for="' . $id . '">';
             echo '<input type="checkbox" value="yes" id="' . $id . '" name="' . $this->module->options_group_name . '[append_to_content]" '
-                 . checked($value, 'yes', false) . ' />';
+                . checked($value, 'yes', false) . ' />';
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">' . esc_html__('This will display the authors box at the end of the content.',
                     'publishpress-authors') . '</span>';
             echo '</label>';
@@ -557,7 +558,7 @@ if ( ! class_exists('MA_Multiple_Authors')) {
 
             echo '<label for="' . $id . '">';
             echo '<input type="checkbox" value="yes" id="' . $id . '" name="' . $this->module->options_group_name . '[show_email_link]" '
-                 . checked($value, 'yes', false) . ' />';
+                . checked($value, 'yes', false) . ' />';
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">' . esc_html__('This will display the authors email in the author box.',
                     'publishpress-authors') . '</span>';
             echo '</label>';
@@ -575,7 +576,7 @@ if ( ! class_exists('MA_Multiple_Authors')) {
 
             echo '<label for="' . $id . '">';
             echo '<input type="checkbox" value="yes" id="' . $id . '" name="' . $this->module->options_group_name . '[show_site_link]" '
-                 . checked($value, 'yes', false) . ' />';
+                . checked($value, 'yes', false) . ' />';
             echo '&nbsp;&nbsp;&nbsp; <span class="ppma_settings_field_description">' . esc_html__('This will display the authors site in the author box.',
                     'publishpress-authors') . '</span>';
             echo '</label>';
@@ -610,7 +611,7 @@ if ( ! class_exists('MA_Multiple_Authors')) {
              */
             $actions = apply_filters('pp_authors_maintenance_actions', $actions);
 
-            if (isset($GLOBALS['coauthors_plus']) && ! empty($GLOBALS['coauthors_plus'])) {
+            if (isset($GLOBALS['coauthors_plus']) && !empty($GLOBALS['coauthors_plus'])) {
                 $actions['copy_coauthor_plus_data'] = [
                     'title'       => __('Copy Co-Authors Plus data', 'publishpress-authors'),
                     'description' => 'This action copy the authors from the plugin Co-Authors Plus allowing you to migrate to PublishPress Authors without lose any data. This action can be run multiple time.',
@@ -650,7 +651,7 @@ if ( ! class_exists('MA_Multiple_Authors')) {
                 echo '<h4>' . $actionInfo['title'] . '</h4>';
                 echo '<p class="ppma_settings_field_description">' . $actionInfo['description'] . '</p>';
 
-                if ( ! empty($link)) {
+                if (!empty($link)) {
                     echo '<a href="' . $link . '" class="button - secondary button - danger ppma_maintenance_button" id="' . $actionName . '">';
 
                     if (isset($actionInfo['button_icon'])) {
@@ -684,7 +685,7 @@ if ( ! class_exists('MA_Multiple_Authors')) {
             }
 
             // Whitelist validation for the post type options
-            if ( ! isset($new_options['post_types'])) {
+            if (!isset($new_options['post_types'])) {
                 $new_options['post_types'] = [];
             }
 
@@ -693,19 +694,19 @@ if ( ! class_exists('MA_Multiple_Authors')) {
                 $this->module->post_type_support
             );
 
-            if ( ! isset($new_options['append_to_content'])) {
+            if (!isset($new_options['append_to_content'])) {
                 $new_options['append_to_content'] = 'no';
             }
 
-            if ( ! isset($new_options['author_for_new_users']) || ! is_array($new_options['author_for_new_users'])) {
+            if (!isset($new_options['author_for_new_users']) || !is_array($new_options['author_for_new_users'])) {
                 $new_options['author_for_new_users'] = [];
             }
 
-            if ( ! isset($new_options['show_email_link'])) {
+            if (!isset($new_options['show_email_link'])) {
                 $new_options['show_email_link'] = 'no';
             }
 
-            if ( ! isset($new_options['show_site_link'])) {
+            if (!isset($new_options['show_site_link'])) {
                 $new_options['show_site_link'] = 'no';
             }
 
@@ -715,7 +716,7 @@ if ( ! class_exists('MA_Multiple_Authors')) {
                  */
                 $layouts = apply_filters('pp_multiple_authors_author_layouts', []);
 
-                if ( ! array_key_exists($new_options['layout'], $layouts)) {
+                if (!array_key_exists($new_options['layout'], $layouts)) {
                     $new_options['layout'] = 'simple_list';
                 }
             }
@@ -757,13 +758,13 @@ if ( ! class_exists('MA_Multiple_Authors')) {
          */
         public function filter_workflow_receiver_post_authors($receivers, $workflow, $args)
         {
-            if ( ! function_exists('multiple_authors')) {
+            if (!function_exists('multiple_authors')) {
                 require_once PP_AUTHORS_BASE_PATH . 'template-tags.php';
             }
 
             $authors_iterator = new Authors_Iterator($args['post']->ID);
             while ($authors_iterator->iterate()) {
-                if ( ! in_array($authors_iterator->current_author->ID, $receivers)) {
+                if (!in_array($authors_iterator->current_author->ID, $receivers)) {
                     $receivers[] = $authors_iterator->current_author->ID;
                 }
             }
@@ -782,7 +783,7 @@ if ( ! class_exists('MA_Multiple_Authors')) {
          */
         public function filter_get_text($translation, $text, $domain)
         {
-            if ( ! Utils::is_valid_page()) {
+            if (!Utils::is_valid_page()) {
                 return $translation;
             }
 
@@ -810,6 +811,22 @@ if ( ! class_exists('MA_Multiple_Authors')) {
         }
 
         /**
+         * @param $classes
+         *
+         * @return mixed
+         */
+        public function filter_body_class($classes)
+        {
+            if (is_author()) {
+                if ($brokenItem = array_search('author-', $classes)) {
+                    unset($classes[$brokenItem]);
+                }
+            }
+
+            return $classes;
+        }
+
+        /**
          * Handle the action to reset author therms.
          * Remove all authors and regenerate based on posts' authors and the setting to automatically create authors
          * for specific roles.
@@ -824,13 +841,13 @@ if ( ! class_exists('MA_Multiple_Authors')) {
                 'copy_coauthor_plus_data',
             ];
 
-            if ( ! isset($_GET['ppma_action']) || isset($_GET['author_term_reset_notice'])
-                 || ! in_array($_GET['ppma_action'], $actions, true)) {
+            if (!isset($_GET['ppma_action']) || isset($_GET['author_term_reset_notice'])
+                || !in_array($_GET['ppma_action'], $actions, true)) {
                 return;
             }
 
             $nonce = isset($_GET['nonce']) ? $_GET['nonce'] : '';
-            if ( ! wp_verify_nonce($nonce, 'multiple_authors_maintenance')) {
+            if (!wp_verify_nonce($nonce, 'multiple_authors_maintenance')) {
                 wp_redirect(admin_url('/admin.php?page=ppma-modules-settings&author_term_reset_notice=fail'),
                     301);
 
@@ -864,7 +881,7 @@ if ( ! class_exists('MA_Multiple_Authors')) {
 
             $terms = $wpdb->get_results($query);
 
-            if ( ! empty($terms)) {
+            if (!empty($terms)) {
                 foreach ($terms as $term) {
                     wp_delete_term($term->term_id, 'author');
                 }
@@ -892,7 +909,7 @@ if ( ! class_exists('MA_Multiple_Authors')) {
 
             $terms = $wpdb->get_results($query);
 
-            if ( ! empty($terms)) {
+            if (!empty($terms)) {
                 foreach ($terms as $term) {
                     wp_delete_term($term->term_id, 'author');
                 }
@@ -913,14 +930,14 @@ if ( ! class_exists('MA_Multiple_Authors')) {
             $roles = (array)$legacyPlugin->modules->multiple_authors->options->author_for_new_users;
 
             // Check if we have any role selected to create an author for the new user.
-            if ( ! empty($roles)) {
+            if (!empty($roles)) {
                 // Get users from roles
                 $args  = [
                     'role__in' => $roles,
                 ];
                 $users = get_users($args);
 
-                if ( ! empty($users)) {
+                if (!empty($users)) {
                     foreach ($users as $user) {
                         // Create author for this user
                         Author::create_from_user($user->ID);
@@ -931,7 +948,7 @@ if ( ! class_exists('MA_Multiple_Authors')) {
 
         public function action_copy_coauthor_plus_data()
         {
-            if ( ! class_exists('CoAuthorsIterator')) {
+            if (!class_exists('CoAuthorsIterator')) {
                 return [];
             }
 
@@ -971,7 +988,7 @@ if ( ! class_exists('MA_Multiple_Authors')) {
          */
         public function handle_action_reset_author_terms_notice()
         {
-            if ( ! isset($_GET['author_term_reset_notice'])) {
+            if (!isset($_GET['author_term_reset_notice'])) {
                 return;
             }
 
@@ -1036,7 +1053,7 @@ if ( ! class_exists('MA_Multiple_Authors')) {
                     PP_AUTHORS_VERSION
                 );
 
-                if (isset($GLOBALS['coauthors_plus']) && ! empty($GLOBALS['coauthors_plus'])) {
+                if (isset($GLOBALS['coauthors_plus']) && !empty($GLOBALS['coauthors_plus'])) {
                     wp_enqueue_script(
                         'publishpress-authors-coauthors-migration',
                         PP_AUTHORS_URL . '/modules/multiple-authors/assets/js/coauthors-migration.min.js',
@@ -1089,7 +1106,7 @@ if ( ! class_exists('MA_Multiple_Authors')) {
             }
 
             $legacyOptions = get_option('publishpress_multiple_authors_options');
-            if ( ! empty($legacyOptions)) {
+            if (!empty($legacyOptions)) {
                 update_option('multiple_authors_multiple_authors_options', $legacyOptions);
             }
 
@@ -1136,7 +1153,7 @@ if ( ! class_exists('MA_Multiple_Authors')) {
 
         public function getCoauthorsMigrationData()
         {
-            if ( ! wp_verify_nonce($_GET['nonce'], 'migrate_coauthors')) {
+            if (!wp_verify_nonce($_GET['nonce'], 'migrate_coauthors')) {
                 wp_send_json_error(null, 400);
             }
 
@@ -1154,7 +1171,7 @@ if ( ! class_exists('MA_Multiple_Authors')) {
                 'post_status' => 'publish',
             ]);
 
-            if ( ! empty($posts)) {
+            if (!empty($posts)) {
                 return $posts[0];
             }
 
@@ -1168,7 +1185,7 @@ if ( ! class_exists('MA_Multiple_Authors')) {
 
         public function migrateCoAuthorsData()
         {
-            if ( ! wp_verify_nonce($_GET['nonce'], 'migrate_coauthors')) {
+            if (!wp_verify_nonce($_GET['nonce'], 'migrate_coauthors')) {
                 wp_send_json_error(null, 400);
             }
 
@@ -1186,11 +1203,11 @@ if ( ! class_exists('MA_Multiple_Authors')) {
                 ],
             ]);
 
-            if ( ! empty($termsToMigrate)) {
+            if (!empty($termsToMigrate)) {
                 foreach ($termsToMigrate as $term) {
                     $author = $this->getCoAuthorGuestAuthorBySlug($term->slug);
 
-                    if ( ! empty($author)) {
+                    if (!empty($author)) {
                         // Guest author
                         if ($author instanceof WP_Post) {
                             $name        = get_post_meta($author->ID, 'cap-display_name', true);
@@ -1211,7 +1228,7 @@ if ( ! class_exists('MA_Multiple_Authors')) {
                             ]);
 
                             $avatar = get_post_meta($author->ID, '_thumbnail_id', true);
-                            if ( ! empty($avatar)) {
+                            if (!empty($avatar)) {
                                 update_term_meta($term->term_id, 'avatar', $avatar);
                             }
                         }
@@ -1249,7 +1266,7 @@ if ( ! class_exists('MA_Multiple_Authors')) {
 
         public function deactivateCoAuthorsPlus()
         {
-            if ( ! wp_verify_nonce($_GET['nonce'], 'migrate_coauthors')) {
+            if (!wp_verify_nonce($_GET['nonce'], 'migrate_coauthors')) {
                 wp_send_json_error(null, 400);
             }
 
