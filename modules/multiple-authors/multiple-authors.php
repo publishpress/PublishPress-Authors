@@ -156,6 +156,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             add_filter('gettext', [$this, 'filter_get_text'], 101, 3);
             add_filter('body_class', [$this, 'filter_body_class']);
+            add_filter('get_the_author_headline', [$this, 'filter_author_headline'], 10, 3);
             // Genesis framework support
             add_filter('genesis_post_author_posts_link_shortcode',
                 [$this, 'filter_genesis_post_author_posts_link_shortcode'], 10, 2);
@@ -838,6 +839,29 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
+         * @param $value
+         * @param $user_id
+         * @param $original_user_id
+         *
+         * @return mixed
+         */
+        public function filter_author_headline($value, $user_id, $original_user_id)
+        {
+            // Try to fix the headline for the guest authors page
+            if (empty($value) && empty($user_id) && is_archive() && is_author()) {
+                $authors = get_multiple_authors(0, true, true);
+
+                if (!empty($authors)) {
+                    $author = $authors[0];
+
+                    $value = $author->display_name;
+                }
+            }
+
+            return $value;
+        }
+
+        /**
          * @param $output
          * @param $attr
          *
@@ -848,8 +872,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             $authors = get_multiple_authors();
 
             $output = '';
-            foreach ($authors as $author)
-            {
+            foreach ($authors as $author) {
                 if (!empty($output)) {
                     $output .= ', ';
                 }
