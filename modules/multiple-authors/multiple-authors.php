@@ -160,6 +160,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             // Genesis framework support
             add_filter('genesis_post_author_posts_link_shortcode',
                 [$this, 'filter_genesis_post_author_posts_link_shortcode'], 10, 2);
+            add_filter('genesis_attr_archive-title_output', [$this, 'filter_genesis_archive_title'], 10, 4);
 
             // Fix upload permissions for multiple authors.
             add_filter('map_meta_cap', [$this, 'filter_map_meta_cap'], 10, 4);
@@ -883,6 +884,29 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $output .= '</span></a>';
                 $output .= $attr['after'];
                 $output .= '</span>';
+            }
+
+            return $output;
+        }
+
+        /**
+         * @param $output
+         * @param $attributes
+         * @param $context
+         * @param $args
+         *
+         * @return string
+         */
+        public function filter_genesis_archive_title($output, $attributes, $context, $args)
+        {
+            if (is_archive() && is_author()) {
+                $authors = get_multiple_authors(0, true, true);
+
+                if (!empty($authors)) {
+                    $author = $authors[0];
+
+                    $output = $author->display_name;
+                }
             }
 
             return $output;
