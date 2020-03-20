@@ -821,6 +821,14 @@ if (!class_exists('MA_Multiple_Authors')) {
                 if ($brokenItem = array_search('author-', $classes)) {
                     unset($classes[$brokenItem]);
                 }
+
+                $authors = get_multiple_authors(0, true, true);
+
+                if (!empty($authors)) {
+                    $author = $authors[0];
+
+                    $classes[] = (is_object($author) && $author->is_guest()) ? 'guest-author' : 'not-guest-author';
+                }
             }
 
             return $classes;
