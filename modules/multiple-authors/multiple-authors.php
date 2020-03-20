@@ -156,6 +156,9 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             add_filter('gettext', [$this, 'filter_get_text'], 101, 3);
             add_filter('body_class', [$this, 'filter_body_class']);
+            // Genesis framework support
+            add_filter('genesis_post_author_posts_link_shortcode',
+                [$this, 'filter_genesis_post_author_posts_link_shortcode'], 10, 2);
 
             // Fix upload permissions for multiple authors.
             add_filter('map_meta_cap', [$this, 'filter_map_meta_cap'], 10, 4);
@@ -832,6 +835,34 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             return $classes;
+        }
+
+        /**
+         * @param $output
+         * @param $attr
+         *
+         * @return string
+         */
+        public function filter_genesis_post_author_posts_link_shortcode($output, $attr)
+        {
+            $authors = get_multiple_authors();
+
+            $output = '';
+            foreach ($authors as $author)
+            {
+                if (!empty($output)) {
+                    $output .= ', ';
+                }
+                $output .= '<span class="entry-author" itemprop="author" itemscope itemtype="https://schema.org/Person">';
+                $output .= $attr['before'];
+                $output .= '<a href="' . $author->link . '" class="entry-author-link" rel="author" itemprop="url">';
+                $output .= '<span class="entry-author-name" itemprop="name">' . $author->display_name;
+                $output .= '</span></a>';
+                $output .= $attr['after'];
+                $output .= '</span>';
+            }
+
+            return $output;
         }
 
         /**
