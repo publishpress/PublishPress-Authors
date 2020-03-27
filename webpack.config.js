@@ -1,13 +1,16 @@
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
-var path = require('path');
+let path = require('path');
 
 module.exports = {
     mode: NODE_ENV,
-    entry: './modules/multiple-authors/assets/js/coauthors-migration.jsx',
+    entry: {
+        'coauthors-migration': './modules/multiple-authors/assets/js/coauthors-migration.jsx',
+        'byline-migration': './modules/byline-migration/assets/js/byline-migration.jsx'
+    },
     output: {
-        path: path.join(__dirname, 'modules/multiple-authors/assets/js'),
-        filename: 'coauthors-migration.min.js'
+        path: path.join(__dirname, 'assets/js'),
+        filename: '[name].min.js'
     },
     module: {
         rules: [

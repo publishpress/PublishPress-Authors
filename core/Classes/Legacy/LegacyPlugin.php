@@ -78,7 +78,7 @@ class LegacyPlugin
     private function load_modules()
     {
         // We use the WP_List_Table API for some of the table gen
-        if ( ! class_exists('WP_List_Table')) {
+        if (!class_exists('WP_List_Table')) {
             require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
         }
 
@@ -120,7 +120,7 @@ class LegacyPlugin
                     $args = $this->modules->$slug;
                 }
 
-                if ( ! is_null($args) && ! empty($args->settings_help_tab)) {
+                if (!is_null($args) && !empty($args->settings_help_tab)) {
                     add_action('load-multiple_authors_page_' . $args->settings_slug,
                         [$module_instance, 'action_settings_help_menu']);
                 }
@@ -144,10 +144,11 @@ class LegacyPlugin
     private function getModulesDirs()
     {
         $defaultDirs = [
-            'modules-settings'      => PP_AUTHORS_MODULES_PATH,
-            'settings'              => PP_AUTHORS_MODULES_PATH,
-            'multiple-authors'      => PP_AUTHORS_MODULES_PATH,
-            'default-layouts'       => PP_AUTHORS_MODULES_PATH,
+            'modules-settings' => PP_AUTHORS_MODULES_PATH,
+            'settings'         => PP_AUTHORS_MODULES_PATH,
+            'multiple-authors' => PP_AUTHORS_MODULES_PATH,
+            'default-layouts'  => PP_AUTHORS_MODULES_PATH,
+            'byline-migration' => PP_AUTHORS_MODULES_PATH,
         ];
 
         // Add filters to extend the modules
@@ -166,7 +167,7 @@ class LegacyPlugin
             $this->modules->$mod_name->options = get_option($this->options_group . $mod_name . '_options',
                 new stdClass());
             foreach ($mod_data->default_options as $default_key => $default_value) {
-                if ( ! isset($this->modules->$mod_name->options->$default_key)) {
+                if (!isset($this->modules->$mod_name->options->$default_key)) {
                     $this->modules->$mod_name->options->$default_key = $default_value;
                 }
             }
@@ -182,7 +183,7 @@ class LegacyPlugin
     public function register_module($name, $args = [])
     {
         // A title and name is required for every module
-        if ( ! isset($args['title'], $name)) {
+        if (!isset($args['title'], $name)) {
             return false;
         }
 
@@ -215,7 +216,7 @@ class LegacyPlugin
         $args['name']               = $name;
         $args['options_group_name'] = $this->options_group . $name . '_options';
 
-        if ( ! isset($args['settings_slug'])) {
+        if (!isset($args['settings_slug'])) {
             $args['settings_slug'] = 'ppma-' . $args['slug'] . '-settings';
         }
 
@@ -251,7 +252,7 @@ class LegacyPlugin
         // For each module that's been loaded, auto-load data if it's never been run before
         foreach ($this->modules as $mod_name => $mod_data) {
             // If the module has never been loaded before, run the install method if there is one
-            if ( ! isset($mod_data->options->loaded_once) || ! $mod_data->options->loaded_once) {
+            if (!isset($mod_data->options->loaded_once) || !$mod_data->options->loaded_once) {
                 if (method_exists($this->$mod_name, 'install')) {
                     $this->$mod_name->install();
                 }

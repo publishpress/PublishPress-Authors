@@ -112,7 +112,6 @@ class Plugin
         add_filter('posts_selection', [$this, 'fix_author_page']);
         add_action('the_post', [$this, 'fix_post'], 10);
 
-        // Init Bylines features
         add_action('init', [
             'MultipleAuthors\\Classes\\Content_Model',
             'action_init_late_register_taxonomy_for_object_type',

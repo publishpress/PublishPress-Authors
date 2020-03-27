@@ -34,7 +34,6 @@ class Installer
      */
     public static function install($current_version)
     {
-        self::convert_bylines_taxonomy();
         self::convert_post_author_into_taxonomy();
         self::add_author_term_for_posts();
         self::add_capabilities();
@@ -45,24 +44,6 @@ class Installer
          * @param string $currentVersion
          */
         do_action('pp_authors_install', $current_version);
-    }
-
-    /**
-     * Converts any byline taxonomy found.
-     */
-    public static function convert_bylines_taxonomy()
-    {
-        global $wpdb;
-
-        $wpdb->update(
-            $wpdb->term_taxonomy,
-            [
-                'taxonomy' => 'author',
-            ],
-            [
-                'taxonomy' => 'byline',
-            ]
-        );
     }
 
     /**
@@ -233,7 +214,6 @@ class Installer
     public static function upgrade($previous_version)
     {
         if (version_compare($previous_version, '2.0.2', '<')) {
-            self::convert_bylines_taxonomy();
             self::convert_post_author_into_taxonomy();
             self::add_author_term_for_posts();
             self::fix_author_url();
