@@ -618,8 +618,8 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             if (isset($GLOBALS['coauthors_plus']) && !empty($GLOBALS['coauthors_plus'])) {
                 $actions['copy_coauthor_plus_data'] = [
-                    'title'       => __('Copy Co-Authors Plus data', 'publishpress-authors'),
-                    'description' => 'This action copy the authors from the plugin Co-Authors Plus allowing you to migrate to PublishPress Authors without lose any data. This action can be run multiple time.',
+                    'title'       => __('Copy Co-Authors Plus Data', 'publishpress-authors'),
+                    'description' => 'This action copy the authors from the plugin Co-Authors Plus allowing you to migrate to PublishPress Authors without lose any data. This action can be run multiple times.',
                     'button_link' => '',
                     'after'       => '<div id="publishpress-authors-coauthors-migration"></div>',
                 ];
@@ -1142,7 +1142,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 if (isset($GLOBALS['coauthors_plus']) && !empty($GLOBALS['coauthors_plus'])) {
                     wp_enqueue_script(
                         'publishpress-authors-coauthors-migration',
-                        PP_AUTHORS_URL . '/modules/multiple-authors/assets/js/coauthors-migration.min.js',
+                        PP_AUTHORS_URL . '/assets/js/coauthors-migration.min.js',
                         [
                             'react',
                             'react-dom',
@@ -1240,7 +1240,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function getCoauthorsMigrationData()
         {
             if (!wp_verify_nonce($_GET['nonce'], 'migrate_coauthors')) {
-                wp_send_json_error(null, 400);
+                wp_send_json_error(null, 403);
             }
 
             // nonce: migrate_coauthors
@@ -1272,7 +1272,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function migrateCoAuthorsData()
         {
             if (!wp_verify_nonce($_GET['nonce'], 'migrate_coauthors')) {
-                wp_send_json_error(null, 400);
+                wp_send_json_error(null, 403);
             }
 
             $keyForNotMigrated = 'ppma-migrated';
@@ -1353,7 +1353,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function deactivateCoAuthorsPlus()
         {
             if (!wp_verify_nonce($_GET['nonce'], 'migrate_coauthors')) {
-                wp_send_json_error(null, 400);
+                wp_send_json_error(null, 403);
             }
 
             deactivate_plugins('co-authors-plus/co-authors-plus.php');

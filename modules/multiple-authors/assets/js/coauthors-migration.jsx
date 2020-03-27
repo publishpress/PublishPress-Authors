@@ -36,7 +36,7 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
         var self = this;
 
         this.setState({
-            'log': __('Collecting data for the migration...', 'publishpress-multiple-authors')
+            'log': __('Collecting data for the migration...', 'publishpress-authors')
         });
 
         window.setTimeout(() => {
@@ -60,7 +60,7 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
                     self.setState({
                         progress: 0,
                         inProgress: false,
-                        log: __('Error: ', 'publishpress-multiple-authors') + errorThrown + ' [' + textStatus + ']',
+                        log: __('Error: ', 'publishpress-authors') + errorThrown + ' [' + textStatus + ']',
                         showDeactivateOption: false
                     });
                 }
@@ -97,7 +97,7 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
                 } else {
                     self.setState({
                         progress: 100,
-                        log: __('Done! Co-Authors Plus data was copied.', 'publishpress-multiple-authors'),
+                        log: __('Done! Co-Authors Plus data was copied.', 'publishpress-authors'),
                         showDeactivateOption: true
                     });
 
@@ -112,7 +112,7 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
                 self.setState({
                     progress: 0,
                     inProgress: false,
-                    log: __('Error: ', 'publishpress-multiple-authors') + errorThrown + ' [' + textStatus + ']',
+                    log: __('Error: ', 'publishpress-authors') + errorThrown + ' [' + textStatus + ']',
                     showDeactivateOption: false
                 });
             }
@@ -126,7 +126,7 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
             {
                 progress: 1,
                 inProgress: true,
-                log: __('Please, wait...', 'publishpress-multiple-authors'),
+                log: __('Please, wait...', 'publishpress-authors'),
                 showDeactivateOption: false
             }
         );
@@ -136,7 +136,7 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
                 self.setState(
                     {
                         progress: 2,
-                        log: __('Copying authors\' data...', 'publishpress-multiple-authors')
+                        log: __('Copying authors\' data...', 'publishpress-authors')
                     }
                 );
 
@@ -151,7 +151,7 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
         this.setState(
             {
                 disablingCoAuthors: true,
-                log: __('Deactivating Co-uthors Plus...', 'publishpress-multiple-authors')
+                log: __('Deactivating Co-uthors Plus...', 'publishpress-authors')
             }
         );
 
@@ -166,21 +166,21 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
             success: function (response) {
                 self.setState({
                     disablingCoAuthors: false,
-                    log: __('Done! Co-Authors Plus is deactivated.', 'publishpress-multiple-authors'),
+                    log: __('Done! Co-Authors Plus is deactivated.', 'publishpress-authors'),
                     showDeactivateOption: false
                 });
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 self.setState({
                     disablingCoAuthors: false,
-                    log: __('Error: ', 'publishpress-multiple-authors') + errorThrown + ' [' + textStatus + ']'
+                    log: __('Error: ', 'publishpress-authors') + errorThrown + ' [' + textStatus + ']'
                 });
             }
         });
     }
 
     renderDeactivatePluginOption () {
-        let label = __('Deactivate Co-Authors Plus.', 'publishpress-multiple-authors');
+        let label = __('Deactivate Co-Authors Plus', 'publishpress-authors');
         let isEnabled = !this.state.disablingCoAuthors;
 
         return (
@@ -217,7 +217,7 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
         return (
             <div>
                 <PPAuthorsMaintenanceButton
-                    label={__('Copy Co-Authors Plus data', 'publishpress-multiple-authors')}
+                    label={__('Copy Co-Authors Plus data', 'publishpress-authors')}
                     onClick={this.startMigration}
                     enabled={isEnabled}/>
                 {deactivatePluginPanel}

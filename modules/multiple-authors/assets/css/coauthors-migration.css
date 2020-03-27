@@ -28,8 +28,9 @@
 }
 
 .ppma_maintenance_log {
-    background-color: #dcdcdc;
-    color: #3e3e3e;
+    background-color: #f3f5f6;
+    color: #555555;
     padding: 10px;
     margin-top: 2px;
+    border: 1px solid silver;
 }
