@@ -1,0 +1,36 @@
+.p-progressbar {
+    height: 1.5em;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+    border: 1px solid #0071a1;
+    background: #f3f5f6;
+}
+
+.p-progressbar-determinate .p-progressbar-value {
+    height: 100%;
+    width: 0%;
+    position: absolute;
+    display: none;
+    border: 0 none;
+    background-color: #0071a1;
+}
+
+.p-progressbar-determinate .p-progressbar-label {
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    font-weight: bold;
+    color: #ffe3af;
+    mix-blend-mode: difference;
+}
+
+.ppma_maintenance_log {
+    background-color: #f3f5f6;
+    color: #555555;
+    padding: 10px;
+    margin-top: 2px;
+    border: 1px solid silver;
+}
