@@ -127,6 +127,10 @@ There are two ways to install the PublishPress Authors plugin:
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.html).
 
+= [3.2.4] - UNRELEASED =
+
+* Fixed: Fixed the error displayed on Windows servers when the constant DIRECTORY_SEPARATOR is not defined;
+
 = [3.2.3] - 2020-03-16 =
 
 * Fixed: Wrong URL for the file multiple-authors-widget.css;
