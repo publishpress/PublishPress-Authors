@@ -48,13 +48,15 @@ class Author
         if (is_int($user)) {
             $user = get_user_by('id', $user);
         }
-        if ( ! is_a($user, 'WP_User')) {
+        if (!is_a($user, 'WP_User')) {
             return new WP_Error('missing-user', __("User doesn't exist", 'publishpress-authors'));
         }
         $existing = self::get_by_user_id($user->ID);
         if ($existing) {
-            return new WP_Error('existing-author',
-                __('User already has a author.', 'publishpress-authors'));
+            return new WP_Error(
+                'existing-author',
+                __('User already has a author.', 'publishpress-authors')
+            );
         }
         $author = self::create(
             [
@@ -92,7 +94,7 @@ class Author
             )
         );
 
-        if ( ! $term_id) {
+        if (!$term_id) {
             return false;
         }
 
@@ -109,15 +111,21 @@ class Author
     public static function create($args)
     {
         if (empty($args['slug'])) {
-            return new WP_Error('missing-slug',
-                __("'slug' is a required argument", 'publishpress-authors'));
+            return new WP_Error(
+                'missing-slug',
+                __("'slug' is a required argument", 'publishpress-authors')
+            );
         }
         if (empty($args['display_name'])) {
-            return new WP_Error('missing-display_name',
-                __("'display_name' is a required argument", 'publishpress-authors'));
+            return new WP_Error(
+                'missing-display_name',
+                __("'display_name' is a required argument", 'publishpress-authors')
+            );
         }
         $term = wp_insert_term(
-            $args['display_name'], 'author', [
+            $args['display_name'],
+            'author',
+            [
                 'slug' => $args['slug'],
             ]
         );
@@ -143,9 +151,13 @@ class Author
             return;
         }
 
-        wp_update_term($term_id, 'author', [
-            'slug' => $user->user_nicename,
-        ]);
+        wp_update_term(
+            $term_id,
+            'author',
+            [
+                'slug' => $user->user_nicename,
+            ]
+        );
 
         // Clone applicable user fields.
         $user_fields = [
@@ -195,7 +207,7 @@ class Author
     public static function get_by_term_slug($slug)
     {
         $term = get_term_by('slug', $slug, 'author');
-        if ( ! $term || is_wp_error($term)) {
+        if (!$term || is_wp_error($term)) {
             return false;
         }
 
@@ -244,7 +256,6 @@ class Author
      */
     public function __get($attribute)
     {
-
         // Underscore prefix means protected.
         if ('_' === $attribute[0]) {
             return null;
@@ -262,7 +273,7 @@ class Author
             $user_id = get_term_meta($this->term_id, 'user_id', true);
 
             // Is a user mapped to this author?
-            if ( ! empty($user_id)) {
+            if (!empty($user_id)) {
                 return get_author_posts_url($user_id);
             }
 
@@ -292,6 +303,22 @@ class Author
     }
 
     /**
+     * @param int $size
+     *
+     * @return string|array
+     */
+    public function get_avatar_url($size = 96)
+    {
+        if ($this->has_custom_avatar()) {
+            $url = $this->get_custom_avatar_url($size);
+        } else {
+            $url = get_avatar_url($this->user_email, $size);
+        }
+
+        return $url;
+    }
+
+    /**
      * For guest authors, returns the custom avatar, if set. If not set, the WordPress' default profile picture.
      * For user mapped authors, returns the custom avatar if set. If not set, returns the user's avatar.
      *
@@ -309,14 +336,14 @@ class Author
          *
          * @param string $avatar HTML for the author's avatar. Default null.
          * @param Author $author The author's instance.
-         * @param int    $size   The size of the avatar.
+         * @param int $size The size of the avatar.
          *
          * @since 2.2.1
          *
          */
         $avatar = apply_filters('multiple_authors_pre_get_avatar', null, $this, $size);
 
-        if ( ! is_null($avatar)) {
+        if (!is_null($avatar)) {
             /** This filter is documented in core/Classes/Objects/Author.php */
             return apply_filters('multiple_authors_get_avatar', $avatar, $this, $size);
         }
@@ -332,7 +359,7 @@ class Author
          *
          * @param string $avatar HTML for the author's avatar.
          * @param Author $author The author's instance.
-         * @param int    $size   The size of the avatar.
+         * @param int $size The size of the avatar.
          *
          * @since 2.2.1
          *
@@ -347,7 +374,37 @@ class Author
     {
         $avatar_attachment_id = get_term_meta($this->term_id, 'avatar', true);
 
-        return ! empty($avatar_attachment_id);
+        return !empty($avatar_attachment_id);
+    }
+
+    /**
+     * @param int $size
+     *
+     * @return array
+     */
+    protected function get_custom_avatar_url($size = 96)
+    {
+        $avatar_attachment_id = get_term_meta($this->term_id, 'avatar', true);
+
+        // Get the avatar from the attachments.
+        $url   = '';
+        $url2x = '';
+        if (!empty($avatar_attachment_id)) {
+            $url   = wp_get_attachment_image_url($avatar_attachment_id, $size);
+            $url2x = wp_get_attachment_image_url($avatar_attachment_id, $size * 2);
+        }
+
+        // Check if it should return the default avatar.
+        if (empty($url)) {
+            $avatar_data = get_avatar_data(0);
+            $url         = $avatar_data['url'];
+            $url2x       = $avatar_data['url'] . '2x';
+        }
+
+        return [
+            'url'   => $url,
+            'url2x' => $url2x,
+        ];
     }
 
     /**
@@ -359,22 +416,7 @@ class Author
      */
     protected function get_custom_avatar($size = 96)
     {
-        $avatar_attachment_id = get_term_meta($this->term_id, 'avatar', true);
-
-        // Get the avatar from the attachments.
-        $url   = '';
-        $url2x = '';
-        if ( ! empty($avatar_attachment_id)) {
-            $url   = wp_get_attachment_image_url($avatar_attachment_id, $size);
-            $url2x = wp_get_attachment_image_url($avatar_attachment_id, $size * 2);
-        }
-
-        // Check if it should return the default avatar.
-        if (empty($url)) {
-            $avatar_data = get_avatar_data(0);
-            $url         = $avatar_data['url'];
-            $url2x       = $avatar_data['url'] . '2x';
-        }
+        $urls = $this->get_custom_avatar_url($size);
 
         $class = [
             'multiple_authors_guest_author_avatar',
@@ -387,8 +429,8 @@ class Author
         $avatar = sprintf(
             "<img alt='%s' src='%s' srcset='%s' class='%s' height='%d' width='%d'/>",
             esc_attr($alt),
-            esc_url($url),
-            esc_url($url2x),
+            esc_url($urls['url']),
+            esc_url($urls['url2x']),
             esc_attr(join(' ', $class)),
             (int)$size,
             (int)$size
@@ -418,7 +460,7 @@ class Author
     {
         $metaValue = null;
 
-        if ( ! $this->is_guest()) {
+        if (!$this->is_guest()) {
             $metaValue = get_user_meta($this->user_id, $metaKey, $single);
         }
 
