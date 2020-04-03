@@ -31,8 +31,7 @@ if ( ! defined('PP_AUTHORS_LOADED')) {
     require_once __DIR__ . '/integrations/amp.php';
 
     if (is_admin() && !defined('PUBLISHPRESS_AUTHORS_SKIP_VERSION_NOTICES')) {
-        $includesPath = __DIR__ . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'publishpress' . DIRECTORY_SEPARATOR
-                        . 'wordpress-version-notices' . DIRECTORY_SEPARATOR . 'includes.php';
+        $includesPath = __DIR__ . '/vendor/publishpress/wordpress-version-notices/includes.php';
 
         if (file_exists($includesPath)) {
             require_once $includesPath;

@@ -25,7 +25,8 @@
   },
   "autoload": {
     "psr-4": {
-      "MultipleAuthors\\": "core/"
+      "MultipleAuthors\\": "core/",
+      "PPAuthors\\YoastSEO\\": "modules/yoast-seo-integration/src/"
     }
   },
   "minimum-stability": "stable",
