@@ -129,7 +129,16 @@ and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec
 
 = [3.2.4] - UNRELEASED =
 
+* Added: Button to migrate data from the Bylines (Daniel Bachhuber) plugin;
+* Added: Button to migrate data from the Byline (Matt Dulin) plugin;
+* Added: Added a body class for guest authors "author-<author_slug>" (#45);
 * Fixed: Fixed the error displayed on Windows servers when the constant DIRECTORY_SEPARATOR is not defined;
+* Fixed: Fixed compatibility with composer based sites;
+* Fixed: Broken body class for guest authors "author-" (#43);
+* Fixed: Wrong authors in the header of pages based on Genesis framework (#46);
+* Fixed: Empty author headline for guest authors (#47);
+* Fixed: Fixed some texts and style in the Co-authors plugin migration box;
+* Fixed: Wrong author data in the Yoast SEO schema (#77);
 
 = [3.2.3] - 2020-03-16 =
 
