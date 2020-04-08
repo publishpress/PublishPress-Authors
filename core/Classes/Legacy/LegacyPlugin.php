@@ -153,7 +153,11 @@ class LegacyPlugin
         ];
 
         // Only load the Yoast SEO integration if the installed version is >= 13.4.1.
-        if (defined('WPSEO_VERSION') && version_compare(WPSEO_VERSION, '13.4.1', '<=')) {
+        if (defined('WPSEO_VERSION') && class_exists('WPSEO_Schema_Context') && version_compare(
+                WPSEO_VERSION,
+                '13.4.1',
+                '<='
+            )) {
             $defaultDirs['yoast-seo-integration'] = PP_AUTHORS_MODULES_PATH;
         }
 

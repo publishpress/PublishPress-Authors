@@ -103,7 +103,8 @@ if ( ! class_exists('MA_Settings')) {
                 esc_html__('Settings', 'publishpress-authors'),
                 apply_filters('pp_multiple_authors_manage_settings_cap', 'manage_options'),
                 self::MENU_SLUG,
-                [$this, 'options_page_controller']
+                [$this, 'options_page_controller'],
+                20
             );
         }
 

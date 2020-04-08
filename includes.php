@@ -50,6 +50,16 @@ if ( ! defined('PP_AUTHORS_LOADED')) {
 
             return $settings;
         });
+
+        add_filter(\PPVersionNotices\Module\MenuLink\Module::SETTINGS_FILTER, function ($settings) {
+            $settings['publishpress-authors'] = [
+                'parent' => 'ppma-authors',
+                'label'  => 'Upgrade to Pro',
+                'link'   => 'https://publishpress.com/links/authors-menu',
+            ];
+
+            return $settings;
+        });
     }
 
     require_once __DIR__ . '/modules/multiple-authors/multiple-authors.php';
