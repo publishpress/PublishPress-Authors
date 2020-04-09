@@ -21,12 +21,9 @@
  * along with PublishPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use MultipleAuthors\Classes\Installer;
 use MultipleAuthors\Classes\Legacy\Module;
-use MultipleAuthors\Classes\Authors_Iterator;
-use MultipleAuthors\Classes\Utils;
-use MultipleAuthors\Factory;
 use MultipleAuthors\Classes\Objects\Author;
+use MultipleAuthors\Factory;
 
 if (!class_exists('MA_Bylines_Migration')) {
     /**
@@ -259,6 +256,8 @@ if (!class_exists('MA_Bylines_Migration')) {
             }
 
             if (!empty($termsToMigrate)) {
+                global $wpdb;
+
                 foreach ($termsToMigrate as $bylinesTerm) {
                     $description = get_term_meta($bylinesTerm->term_id, 'description', true);
                     $firstName   = get_term_meta($bylinesTerm->term_id, 'first_name', true);
@@ -279,6 +278,7 @@ if (!class_exists('MA_Bylines_Migration')) {
                             self::META_ERROR_ON_MIGRATING,
                             $author->get_error_message()
                         );
+                        update_term_meta($bylinesTerm->term_id, self::META_MIGRATED, 1);
 
                         continue;
                     }
@@ -293,6 +293,20 @@ if (!class_exists('MA_Bylines_Migration')) {
                     if (!empty($userId)) {
                         update_term_meta($author->term_id, 'user_id', $userId);
                     }
+
+                    // Migrate the posts' terms relationship.
+                    $sql = $wpdb->prepare(
+                        "
+                        INSERT INTO {$wpdb->term_relationships}
+                            SELECT object_id, %s, term_order
+                            FROM {$wpdb->term_relationships}
+                            WHERE term_taxonomy_id = %s
+                        
+                        ",
+                        $author->term_id,
+                        $bylinesTerm->term_id
+                    );
+                    $results = $wpdb->get_results($sql);
 
                     update_term_meta($bylinesTerm->term_id, self::META_MIGRATED, 1);
                 }
