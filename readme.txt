@@ -141,6 +141,7 @@ and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec
 * Fixed: Wrong author data in the Yoast SEO schema for structured data (#77);
 * Fixed: Fixed author page title when using Yoast SEO (#80);
 * Fixed: Fix the result of the function get_the_author_posts_link for supporting multiple authors;
+* Changed: Renamed the name of the Widget, from Multiple Authors to Authors;
 
 = [3.2.3] - 2020-03-16 =
 
