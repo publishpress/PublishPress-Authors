@@ -138,7 +138,9 @@ and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec
 * Fixed: Wrong authors in the header of pages based on Genesis framework (#46);
 * Fixed: Empty author headline for guest authors (#47);
 * Fixed: Fixed some texts and style in the Co-authors plugin migration box;
-* Fixed: Wrong author data in the Yoast SEO schema (#77);
+* Fixed: Wrong author data in the Yoast SEO schema for structured data (#77);
+* Fixed: Fixed author page title when using Yoast SEO (#80);
+* Fixed: Fix the result of the function get_the_author_posts_link for supporting multiple authors;
 
 = [3.2.3] - 2020-03-16 =
 

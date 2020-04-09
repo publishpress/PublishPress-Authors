@@ -42,15 +42,25 @@ class Query
             return;
         }
 
+        global $authordata;
+
         $term = get_term_by('slug', $author_name, 'author');
         $user = get_user_by('slug', $author_name);
         if ($term) {
             $author                   = Author::get_by_term_id($term->term_id);
             $query->queried_object    = $author;
             $query->queried_object_id = $author->term_id;
+            $query->set('author_name', $author->display_name);
+            $query->set('author', $author->slug);
+
+            $authordata = $term;
         } elseif (is_object($user)) {
             $query->queried_object    = $user;
             $query->queried_object_id = $user->ID;
+            $query->set('author_name', $user->display_name);
+            $query->set('author', $user->ID);
+
+            $authordata = $user;
         } else {
             $query->queried_object    = null;
             $query->queried_object_id = null;

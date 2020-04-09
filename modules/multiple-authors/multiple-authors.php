@@ -186,6 +186,10 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             // Add compatibility with GeneratePress theme.
             add_filter('generate_post_author_output', [$this, 'generatepress_author_output']);
+
+            add_filter('the_author_posts_link', [$this, 'theAuthorPostsLink']);
+            add_filter('pre_get_document_title', [$this, 'preGetDocumentTitle'], 999);
+            add_filter('document_title_parts', [$this, 'documentTitleParts'], 20);
         }
 
         /**
@@ -800,6 +804,57 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
 
             return $tabs;
+        }
+
+        public function theAuthorPostsLink($link)
+        {
+            $newLink   = '';
+            $postID    = get_the_id();
+            $isArchive = empty($postID) && is_author();
+            $authors   = get_multiple_authors($postID, true, $isArchive);
+
+            foreach ($authors as $author)
+            {
+                if (!empty($newLink)) {
+                    $newLink .= ', ';
+                }
+
+                $newLink .= '<a href="' . $author->link . '" title="' . $author->display_name
+                    . '" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">'
+                    . $author->display_name . '</a>';
+            }
+
+            return $newLink;
+        }
+
+        public function documentTitleParts($title)
+        {
+            if (is_author()) {
+                $authors = get_multiple_authors(0, true, true);
+                $author = $authors[0];
+
+                $title['title'] = $author->display_name;
+            }
+
+            return $title;
+        }
+
+        public function preGetDocumentTitle($title)
+        {
+            if (is_author()) {
+                // Try to replace the author name in the title
+                $wpAuthor = get_queried_object();
+
+                if (substr_count($title, $wpAuthor->display_name)) {
+                    $authors = get_multiple_authors(0, true, true);
+                    $author = $authors[0];
+
+                    $title = $author->display_name;
+                }
+
+            }
+
+            return $title;
         }
 
         /**
