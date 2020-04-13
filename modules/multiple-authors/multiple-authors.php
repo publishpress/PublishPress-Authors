@@ -669,7 +669,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             if (isset($GLOBALS['coauthors_plus']) && !empty($GLOBALS['coauthors_plus'])) {
                 $actions['copy_coauthor_plus_data'] = [
                     'title'       => __('Copy Co-Authors Plus Data', 'publishpress-authors'),
-                    'description' => 'This action copy the authors from the plugin Co-Authors Plus allowing you to migrate to PublishPress Authors without lose any data. This action can be run multiple times.',
+                    'description' => 'This action will copy the authors from the plugin Co-Authors Plus allowing you to migrate to PublishPress Authors without losing any data. This action can be run multiple times.',
                     'button_link' => '',
                     'after'       => '<div id="publishpress-authors-coauthors-migration"></div>',
                 ];

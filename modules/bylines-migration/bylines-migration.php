@@ -165,7 +165,7 @@ if (!class_exists('MA_Bylines_Migration')) {
         {
             $actions['copy_bylines_data'] = [
                 'title'       => __('Copy Bylines Data', 'publishpress-authors'),
-                'description' => 'This action copy the authors from the plugin Bylines allowing you to migrate to PublishPress Authors without lose any data. This action can be run multiple times.',
+                'description' => 'This action will copy the authors from the plugin Bylines allowing you to migrate to PublishPress Authors without losing any data. This action can be run multiple times.',
                 'button_link' => '',
                 'after'       => '<div id="publishpress-authors-bylines-migration"></div>',
             ];
