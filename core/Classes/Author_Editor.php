@@ -67,9 +67,9 @@ class Author_Editor
     /**
      * Render and return custom column
      *
-     * @param string $retval      Value being returned.
+     * @param string $retval Value being returned.
      * @param string $column_name Name of the column.
-     * @param int    $term_id     Term ID.
+     * @param int $term_id Term ID.
      */
     public static function filter_manage_author_custom_column($retval, $column_name, $term_id)
     {
@@ -77,14 +77,18 @@ class Author_Editor
             $author = Author::get_by_term_id($term_id);
 
             $retval = $author->get_avatar(32);
-            $retval .= '<strong><a class="row-title" aria-label="' . $author->display_name . '" href="' . get_edit_term_link($author->term_id,
-                    'author') . '">' . $author->display_name . '</a>';
+            $retval .= '<strong><a class="row-title" aria-label="' . $author->display_name . '" href="' . get_edit_term_link(
+                    $author->term_id,
+                    'author'
+                ) . '">' . $author->display_name . '</a>';
 
-            if ( ! empty((int)$author->user_id)) {
+            if (!empty((int)$author->user_id)) {
                 $retval .= ' — <span class="post-state">' . __('User', 'publishpress-authors') . '</span>';
             } else {
-                $retval .= ' — <span class="post-state">' . __('Guest Author',
-                        'publishpress-authors') . '</span>';
+                $retval .= ' — <span class="post-state">' . __(
+                        'Guest Author',
+                        'publishpress-authors'
+                    ) . '</span>';
             }
 
             $retval .= '</strong>';
@@ -94,11 +98,12 @@ class Author_Editor
             $retval .= '<div class="name">' . $author->display_name . '</div>';
             $retval .= '<div class="slug">' . $author->slug . '</div>';
             $retval .= '<div class="parent">0</div></div>';
-
         } elseif ('author_user_email' === $column_name) {
             $author = Author::get_by_term_id($term_id);
             if ($author->user_email) {
-                $retval = '<a href="' . esc_url('mailto:' . $author->user_email) . '">' . esc_html($author->user_email) . '</a>';
+                $retval = '<a href="' . esc_url('mailto:' . $author->user_email) . '">' . esc_html(
+                        $author->user_email
+                    ) . '</a>';
             }
         }
 
@@ -108,40 +113,49 @@ class Author_Editor
     /**
      * Add "Create author" and "Edit author" links for users
      *
-     * @param array   $actions Existing user action links.
-     * @param WP_User $user    User object.
+     * @param array $actions Existing user action links.
+     * @param WP_User $user User object.
      *
      * @return array
      */
     public static function filter_user_row_actions($actions, $user)
     {
         if (is_network_admin()
-            || ! current_user_can(get_taxonomy('author')->cap->manage_terms)) {
+            || !current_user_can(get_taxonomy('author')->cap->manage_terms)) {
             return $actions;
         }
 
         // Over hide the string Edit
         if (isset($actions['edit'])) {
-            $actions['edit'] = str_replace('>Edit<', '>' . __('Edit User', 'publishpress-authors') . '<',
-                $actions['edit']);
+            $actions['edit'] = str_replace(
+                '>Edit<',
+                '>' . __('Edit User', 'publishpress-authors') . '<',
+                $actions['edit']
+            );
         }
 
         $new_actions = [];
         $author      = Author::get_by_user_id($user->ID);
         if ($author) {
             $link                       = get_edit_term_link($author->term_id, 'author');
-            $new_actions['edit-author'] = '<a href="' . esc_url($link) . '">' . esc_html__('Edit Author',
-                    'publishpress-authors') . '</a>';
+            $new_actions['edit-author'] = '<a href="' . esc_url($link) . '">' . esc_html__(
+                    'Edit Author',
+                    'publishpress-authors'
+                ) . '</a>';
         } else {
             $args                         = [
                 'action'  => 'author_create_from_user',
                 'user_id' => $user->ID,
                 'nonce'   => wp_create_nonce('author_create_from_user' . $user->ID),
             ];
-            $link                         = add_query_arg(array_map('rawurlencode', $args),
-                admin_url('admin-ajax.php'));
-            $new_actions['create-author'] = '<a href="' . esc_url($link) . '">' . esc_html__('Create Author',
-                    'publishpress-authors') . '</a>';
+            $link                         = add_query_arg(
+                array_map('rawurlencode', $args),
+                admin_url('admin-ajax.php')
+            );
+            $new_actions['create-author'] = '<a href="' . esc_url($link) . '">' . esc_html__(
+                    'Create Author',
+                    'publishpress-authors'
+                ) . '</a>';
         }
 
         return $new_actions + $actions;
@@ -150,7 +164,7 @@ class Author_Editor
     /**
      * Add "Edit user" links for authors mapped to user
      *
-     * @param array   $actions     Existing user action links.
+     * @param array $actions Existing user action links.
      * @param WP_Term $author_term Author term object.
      *
      * @return array
@@ -158,7 +172,7 @@ class Author_Editor
     public static function filter_author_row_actions($actions, $author_term)
     {
         if (is_network_admin()
-            || ! current_user_can('edit_users')) {
+            || !current_user_can('edit_users')) {
             return $actions;
         }
 
@@ -168,19 +182,23 @@ class Author_Editor
 
         // Over hide the string Edit
         if (isset($actions['edit'])) {
-            $actions['edit'] = str_replace('>Edit<',
+            $actions['edit'] = str_replace(
+                '>Edit<',
                 '>' . __('Edit Author Profile', 'publishpress-authors') . '<',
-                $actions['edit']);
+                $actions['edit']
+            );
         }
 
         $author = Author::get_by_term_id($author_term->term_id);
 
         $new_actions = [];
 
-        if ( ! empty($author->user_id)) {
+        if (!empty($author->user_id)) {
             $link                     = get_edit_user_link($author->user_id);
-            $new_actions['edit-user'] = '<a href="' . esc_url($link) . '">' . esc_html__('Edit User',
-                    'publishpress-authors') . '</a>';
+            $new_actions['edit-user'] = '<a href="' . esc_url($link) . '">' . esc_html__(
+                    'Edit User',
+                    'publishpress-authors'
+                ) . '</a>';
         }
 
         return $new_actions + $actions;
@@ -198,7 +216,7 @@ class Author_Editor
         /**
          * Filter the fields on the Author's profile.
          *
-         * @param array  $fields
+         * @param array $fields
          * @param Author $author
          *
          * @return array
@@ -240,8 +258,10 @@ class Author_Editor
             'user_email'  => [
                 'label'       => __('Email', 'publishpress-authors'),
                 'type'        => 'email',
-                'description' => __('To show the avatar from the Mapped User, enter the same email address as the Mapped User. <br> To show the avatar for a Guest Author, enter the email for their Gravatar account.',
-                    'publishpress-authors'),
+                'description' => __(
+                    'To show the avatar from the Mapped User, enter the same email address as the Mapped User. <br> To show the avatar for a Guest Author, enter the email for their Gravatar account.',
+                    'publishpress-authors'
+                ),
             ],
             'avatar'      => [
                 'label'    => __('Custom Avatar', 'publishpress-authors'),
@@ -263,7 +283,7 @@ class Author_Editor
         /**
          * Customize fields presented in the author editor.
          *
-         * @param array  $fields Existing fields to display.
+         * @param array $fields Existing fields to display.
          * @param Author $author Author to be rendered.
          */
         $fields = apply_filters('authors_editor_fields', $fields, $author);
@@ -290,7 +310,7 @@ class Author_Editor
         ?>
         <tr class="<?php echo esc_attr('form-field term-' . $key . '-wrap'); ?>">
             <th scope="row">
-                <?php if ( ! empty($args['label'])) : ?>
+                <?php if (!empty($args['label'])) : ?>
                     <label for="<?php echo esc_attr($key); ?>"><?php echo esc_html($args['label']); ?></label>
                 <?php endif; ?>
             </th>
@@ -309,7 +329,7 @@ class Author_Editor
                             <a class="select-author-image-field <?php echo $author_image ? 'hidden' : ''; ?>" href="#">
                                 <?php _e('Select image', 'publishpress-authors'); ?>
                             </a>
-                            <a class="delete-author-image-field <?php echo ! $author_image ? 'hidden' : ''; ?>"
+                            <a class="delete-author-image-field <?php echo !$author_image ? 'hidden' : ''; ?>"
                                href="#">
                                 <?php _e('Remove this image', 'publishpress-authors'); ?>
                             </a>
@@ -322,7 +342,7 @@ class Author_Editor
                             name="<?php echo esc_attr($key); ?>"><?php echo esc_textarea($args['value']); ?></textarea>
                 <?php
                 elseif ('ajax_user_select' === $args['type']) :
-                    $user = ! empty($args['value']) ? get_user_by('id', $args['value']) : false;
+                    $user = !empty($args['value']) ? get_user_by('id', $args['value']) : false;
                     ?>
                     <select data-nonce="<?php echo esc_attr(wp_create_nonce('authors-user-search')); ?>"
                             placeholder="<?php esc_attr_e('Select a user', 'publishpress-authors'); ?>"
@@ -357,13 +377,13 @@ class Author_Editor
     public static function action_edited_author($term_id)
     {
         if (empty($_POST['author-edit-nonce'])
-            || ! wp_verify_nonce($_POST['author-edit-nonce'], 'author-edit')) {
+            || !wp_verify_nonce($_POST['author-edit-nonce'], 'author-edit')) {
             return;
         }
         $author = Author::get_by_term_id($term_id);
 
         foreach (self::get_fields($author) as $key => $args) {
-            if ( ! isset($_POST['authors-' . $key])) {
+            if (!isset($_POST['authors-' . $key])) {
                 continue;
             }
             $sanitize = isset($args['sanitize']) ? $args['sanitize'] : 'sanitize_text_field';
@@ -371,12 +391,12 @@ class Author_Editor
         }
 
         // If there is a mapper user, make sure the author url (slug) is the same of the user.
-        if (isset($_POST['authors-user_id']) && ! empty($_POST['authors-user_id'])) {
+        if (isset($_POST['authors-user_id']) && !empty($_POST['authors-user_id'])) {
             $user_id = (int)$_POST['authors-user_id'];
 
             $user = get_user_by('id', $user_id);
 
-            if ( ! is_a($user, 'WP_User')) {
+            if (!is_a($user, 'WP_User')) {
                 return;
             }
 
@@ -408,7 +428,7 @@ class Author_Editor
 
         $user = get_user_by('ID', $user_id);
 
-        if ( ! empty(array_intersect($roles, $user->roles))) {
+        if (!empty(array_intersect($roles, $user->roles))) {
             // Create author for this user
             Author::create_from_user($user_id);
         }
@@ -423,13 +443,17 @@ class Author_Editor
         <div class="form-field term-user_id-wrap">
         <label for="tag-user-id"><?php echo __('Mapped User (optional)', 'publishpress-authors'); ?></label>
         <?php
-        echo static::get_rendered_author_partial([
-            'type'        => 'ajax_user_select',
-            'value'       => '',
-            'key'         => 'new',
-            'description' => __('You don’t have to choose a Mapped User. Leave this choice blank and you can create a Guest Author with no WordPress account.',
-                'publishpress-authors'),
-        ]);
+        echo static::get_rendered_author_partial(
+            [
+                'type'        => 'ajax_user_select',
+                'value'       => '',
+                'key'         => 'new',
+                'description' => __(
+                    'You don’t have to choose a Mapped User. Leave this choice blank and you can create a Guest Author with no WordPress account.',
+                    'publishpress-authors'
+                ),
+            ]
+        );
 
         // It is missing the end of the tag by purpose, because there is a hardcoded > after the action is called.
         echo '</div';
@@ -447,7 +471,7 @@ class Author_Editor
      */
     public static function filter_insert_term_data($data, $taxonomy, $args)
     {
-        if ($taxonomy !== 'author' || ! isset($args['authors-new']) || empty($args['authors-new'])) {
+        if ($taxonomy !== 'author' || !isset($args['authors-new']) || empty($args['authors-new'])) {
             return $data;
         }
 
@@ -467,7 +491,7 @@ class Author_Editor
      */
     public static function action_created_author($term_id)
     {
-        if ( ! isset($_POST['authors-new']) || empty($_POST['authors-new'])) {
+        if (!isset($_POST['authors-new']) || empty($_POST['authors-new'])) {
             return;
         }
 
@@ -483,10 +507,14 @@ class Author_Editor
      */
     public static function filter_author_bulk_actions($bulk_actions)
     {
-        $bulk_actions['update_mapped_author_data'] = __('Update data from mapped user',
-            'publishpress-authors');
-        $bulk_actions['convert_into_guest_author'] = __('Convert into guest author',
-            'publishpress-authors');
+        $bulk_actions['update_mapped_author_data'] = __(
+            'Update data from mapped user',
+            'publishpress-authors'
+        );
+        $bulk_actions['convert_into_guest_author'] = __(
+            'Convert into guest author',
+            'publishpress-authors'
+        );
 
         return $bulk_actions;
     }
@@ -496,7 +524,7 @@ class Author_Editor
      *
      * @param string $redirect_to
      * @param string $do_action
-     * @param array  $terms_ids
+     * @param array $terms_ids
      *
      * @return mixed
      */
@@ -507,7 +535,7 @@ class Author_Editor
             'convert_into_guest_author',
         ];
 
-        if (empty($terms_ids) || ! in_array($do_action, $bulkActions, true)) {
+        if (empty($terms_ids) || !in_array($do_action, $bulkActions, true)) {
             return $redirect_to;
         }
 
@@ -539,7 +567,7 @@ class Author_Editor
      */
     public static function admin_notices()
     {
-        if ( ! empty($_REQUEST['bulk_update_author'])) {
+        if (!empty($_REQUEST['bulk_update_author'])) {
             $count = (int)$_REQUEST['bulk_update_author'];
 
             echo '<div id="message" class="updated fade">';

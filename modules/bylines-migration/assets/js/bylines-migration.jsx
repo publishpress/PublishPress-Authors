@@ -1,18 +1,18 @@
 let {__} = wp.i18n;
 
-class PPAuthorsCoAuthorsMigrationBox extends React.Component {
-    constructor (props) {
+class PPAuthorsBylinesMigrationBox extends React.Component {
+    constructor(props) {
         super(props);
 
         this.renderDeactivatePluginOption = this.renderDeactivatePluginOption.bind(this);
         this.renderProgressBar = this.renderProgressBar.bind(this);
         this.renderLog = this.renderLog.bind(this);
-        this.deactivateCoAuthorsPlus = this.deactivateCoAuthorsPlus.bind(this);
+        this.deactivateBylines = this.deactivateBylines.bind(this);
         this.startMigration = this.startMigration.bind(this);
         this.clickStart = this.clickStart.bind(this);
         this.reset = this.reset.bind(this);
         this.migrateChunkOfData = this.migrateChunkOfData.bind(this);
-        this.getCoAuthorsMigrationInitialData = this.getCoAuthorsMigrationInitialData.bind(this);
+        this.getBylinesMigrationInitialData = this.getBylinesMigrationInitialData.bind(this);
 
         this.state = {
             totalToMigrate: 0,
@@ -22,17 +22,17 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
             progress: 0,
             log: '',
             showDeactivateOption: false,
-            disablingCoAuthors: false
+            disablingBylines: false
         };
     };
 
-    clickStart (e) {
+    clickStart(e) {
         e.preventDefault();
 
         this.startMigration();
     }
 
-    getCoAuthorsMigrationInitialData (next) {
+    getBylinesMigrationInitialData(next) {
         var self = this;
 
         this.setState({
@@ -46,10 +46,21 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
                 url: ajaxurl,
                 async: false,
                 data: {
-                    action: 'get_coauthors_migration_data',
+                    action: 'get_bylines_migration_data',
                     nonce: this.props.nonce
                 },
                 success: function (response) {
+                    if (!response.success) {
+                        self.setState({
+                            progress: 0,
+                            inProgress: false,
+                            log: __('Error: ', 'publishpress-authors') + response.error,
+                            showDeactivateOption: false
+                        });
+
+                        return;
+                    }
+
                     self.setState({
                         totalToMigrate: response.total
                     });
@@ -68,7 +79,7 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
         }, 1000);
     }
 
-    migrateChunkOfData () {
+    migrateChunkOfData() {
         var self = this;
 
         jQuery.ajax({
@@ -76,11 +87,22 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
             dataType: 'json',
             url: ajaxurl,
             data: {
-                action: 'migrate_coauthors',
+                action: 'migrate_bylines',
                 nonce: this.props.nonce,
                 chunkSize: this.state.chunkSize
             },
             success: function (response) {
+                if (!response.success) {
+                    self.setState({
+                        progress: 0,
+                        inProgress: false,
+                        log: __('Error: ', 'publishpress-authors') + response.error,
+                        showDeactivateOption: false
+                    });
+
+                    return;
+                }
+
                 let totalMigrated = self.state.totalMigrated + self.state.chunkSize;
 
                 if (totalMigrated > self.state.totalToMigrate) {
@@ -95,9 +117,11 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
                 if (totalMigrated < self.state.totalToMigrate) {
                     self.migrateChunkOfData();
                 } else {
+                    let logMessage = __('Done! Bylines data was copied and you can deactivate the plugin.', 'publishpress-authors');
+
                     self.setState({
                         progress: 100,
-                        log: __('Done! Co-Authors Plus data was copied.', 'publishpress-authors'),
+                        log: logMessage,
                         showDeactivateOption: true
                     });
 
@@ -119,7 +143,7 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
         });
     }
 
-    startMigration () {
+    startMigration() {
         var self = this;
 
         this.setState(
@@ -132,7 +156,7 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
         );
 
         window.setTimeout(() => {
-            self.getCoAuthorsMigrationInitialData(() => {
+            self.getBylinesMigrationInitialData(() => {
                 self.setState(
                     {
                         progress: 2,
@@ -145,13 +169,13 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
         }, 1000);
     }
 
-    deactivateCoAuthorsPlus () {
+    deactivateBylines() {
         var self = this;
 
         this.setState(
             {
-                disablingCoAuthors: true,
-                log: __('Deactivating Co-uthors Plus...', 'publishpress-authors')
+                disablingBylines: true,
+                log: __('Deactivating Bylines...', 'publishpress-authors')
             }
         );
 
@@ -160,54 +184,54 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
             dataType: 'json',
             url: ajaxurl,
             data: {
-                action: 'deactivate_coauthors_plus',
+                action: 'deactivate_bylines',
                 nonce: this.props.nonce
             },
             success: function (response) {
                 self.setState({
-                    disablingCoAuthors: false,
-                    log: __('Done! Co-Authors Plus is deactivated.', 'publishpress-authors'),
+                    disablingBylines: false,
+                    log: __('Done! Bylines is deactivated.', 'publishpress-authors'),
                     showDeactivateOption: false
                 });
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 self.setState({
-                    disablingCoAuthors: false,
+                    disablingBylines: false,
                     log: __('Error: ', 'publishpress-authors') + errorThrown + ' [' + textStatus + ']'
                 });
             }
         });
     }
 
-    renderDeactivatePluginOption () {
-        let label = __('Deactivate Co-Authors Plus', 'publishpress-authors');
-        let isEnabled = !this.state.disablingCoAuthors;
+    renderDeactivatePluginOption() {
+        let label = __('Deactivate Bylines', 'publishpress-authors');
+        let isEnabled = !this.state.disablingBylines;
 
         return (
             <PPAuthorsMaintenanceButton
                 label={label}
-                onClick={this.deactivateCoAuthorsPlus}
+                onClick={this.deactivateBylines}
                 enabled={isEnabled}/>
         );
     }
 
-    reset () {
+    reset() {
         this.setState({progress: 0, inProgress: false});
     }
 
-    renderProgressBar () {
+    renderProgressBar() {
         return (
             <PPAuthorsProgressBar value={this.state.progress}/>
         );
     }
 
-    renderLog () {
+    renderLog() {
         return (
             <PPAuthorsMaintenanceLog log={this.state.log} show={this.state.showDeactivateOption}/>
         );
     }
 
-    render () {
+    render() {
         let isEnabled = !this.state.inProgress;
 
         let progressBar = (this.state.inProgress) ? this.renderProgressBar() : '';
@@ -217,24 +241,23 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
         return (
             <div>
                 <PPAuthorsMaintenanceButton
-                    label={__('Copy Co-Authors Plus data', 'publishpress-authors')}
+                    label={__('Copy Bylines Data', 'publishpress-authors')}
                     onClick={this.startMigration}
                     enabled={isEnabled}/>
                 {deactivatePluginPanel}
                 {progressBar}
                 {logPanel}
-
             </div>
         );
     }
 }
 
 class PPAuthorsMaintenanceButton extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
     }
 
-    render () {
+    render() {
         var disabled = !this.props.enabled;
         return (
             <input type="button"
@@ -247,11 +270,11 @@ class PPAuthorsMaintenanceButton extends React.Component {
 }
 
 class PPAuthorsMaintenanceLog extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
     }
 
-    render () {
+    render() {
         return (
             <div>
                 <div class="ppma_maintenance_log" readOnly={true}>{this.props.log}</div>
@@ -261,17 +284,17 @@ class PPAuthorsMaintenanceLog extends React.Component {
 }
 
 class PPAuthorsProgressBar extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
     }
 
-    renderLabel () {
+    renderLabel() {
         return (
             <div className="p-progressbar-label">{this.props.value} %</div>
         );
     }
 
-    render () {
+    render() {
         let className = 'p-progressbar p-component p-progressbar-determinate';
         let label = this.renderLabel();
 
@@ -287,10 +310,10 @@ class PPAuthorsProgressBar extends React.Component {
 }
 
 jQuery(function () {
-    ReactDOM.render(<PPAuthorsCoAuthorsMigrationBox notMigratedPostsId={ppmaCoAuthorsMigration.notMigratedPostsId}
-                                                    nonce={ppmaCoAuthorsMigration.nonce}
-                                                    chunkSize={5}/>,
-        document.getElementById('publishpress-authors-coauthors-migration')
+    ReactDOM.render(<PPAuthorsBylinesMigrationBox notMigratedPostsId={ppmaBylinesMigration.notMigratedPostsId}
+                                                  nonce={ppmaBylinesMigration.nonce}
+                                                  chunkSize={5}/>,
+        document.getElementById('publishpress-authors-bylines-migration')
     );
 });
 

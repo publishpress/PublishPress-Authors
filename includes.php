@@ -12,7 +12,7 @@
 defined('ABSPATH') or die('No direct script access allowed.');
 
 if ( ! defined('PP_AUTHORS_LOADED')) {
-    define('PP_AUTHORS_VERSION', '3.2.3');
+    define('PP_AUTHORS_VERSION', '3.2.4');
     define('PP_AUTHORS_FILE', 'publishpress-authors/publishpress-authors.php');
     define('PP_AUTHORS_BASE_PATH', plugin_dir_path(__FILE__));
     define('PP_AUTHORS_MODULES_PATH', PP_AUTHORS_BASE_PATH . 'modules');
@@ -30,9 +30,12 @@ if ( ! defined('PP_AUTHORS_LOADED')) {
     require_once __DIR__ . '/template-tags.php';
     require_once __DIR__ . '/integrations/amp.php';
 
-    if (is_admin()) {
-        require_once __DIR__ . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'publishpress' . DIRECTORY_SEPARATOR
-                     . 'wordpress-version-notices' . DIRECTORY_SEPARATOR . 'includes.php';
+    if (is_admin() && !defined('PUBLISHPRESS_AUTHORS_SKIP_VERSION_NOTICES')) {
+        $includesPath = __DIR__ . '/vendor/publishpress/wordpress-version-notices/includes.php';
+
+        if (file_exists($includesPath)) {
+            require_once $includesPath;
+        }
 
         add_filter(\PPVersionNotices\Module\TopNotice\Module::SETTINGS_FILTER, function ($settings) {
             $settings['publishpress-authors'] = [
@@ -43,6 +46,16 @@ if ( ! defined('PP_AUTHORS_LOADED')) {
                     ['base' => 'term', 'id' => 'edit-author','taxonomy' => 'author'],
                     ['base' => 'authors_page_ppma-modules-settings', 'id' => 'authors_page_ppma-modules-settings'],
                 ]
+            ];
+
+            return $settings;
+        });
+
+        add_filter(\PPVersionNotices\Module\MenuLink\Module::SETTINGS_FILTER, function ($settings) {
+            $settings['publishpress-authors'] = [
+                'parent' => 'ppma-authors',
+                'label'  => 'Upgrade to Pro',
+                'link'   => 'https://publishpress.com/links/authors-menu',
             ];
 
             return $settings;
