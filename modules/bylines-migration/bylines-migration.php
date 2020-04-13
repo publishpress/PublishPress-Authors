@@ -21,12 +21,9 @@
  * along with PublishPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use MultipleAuthors\Classes\Installer;
 use MultipleAuthors\Classes\Legacy\Module;
-use MultipleAuthors\Classes\Authors_Iterator;
-use MultipleAuthors\Classes\Utils;
-use MultipleAuthors\Factory;
 use MultipleAuthors\Classes\Objects\Author;
+use MultipleAuthors\Factory;
 
 if (!class_exists('MA_Bylines_Migration')) {
     /**
@@ -37,6 +34,9 @@ if (!class_exists('MA_Bylines_Migration')) {
         const SETTINGS_SLUG = 'ppma-settings';
 
         const NONCE_ACTION = 'bylines_migration';
+
+        const META_MIGRATED = 'ppma_migrated';
+        const META_ERROR_ON_MIGRATING = 'ppma_error_migrating';
 
         public $module_name = 'bylines_migration';
 
@@ -99,7 +99,7 @@ if (!class_exists('MA_Bylines_Migration')) {
          */
         private function isBylineInstalled()
         {
-            return defined('BYLINES_VERSION');
+            return defined('BYLINES_VERSION') || class_exists('\\Bylines\\Objects\\Byline');
         }
 
         /**
@@ -173,19 +173,36 @@ if (!class_exists('MA_Bylines_Migration')) {
             return $actions;
         }
 
+        /**
+         * @param int $number
+         *
+         * @return array|WP_Error
+         */
+        private function getNotMigratedBylines($number = 5)
+        {
+            $terms = get_terms(
+                [
+                    'taxonomy'   => 'byline',
+                    'hide_empty' => false,
+                    'number'     => $number,
+                    'meta_query' => [
+                        [
+                            'key'     => self::META_MIGRATED,
+                            'compare' => 'NOT EXISTS',
+                        ],
+                    ],
+                ]
+            );
+
+            return $terms;
+        }
+
+        /**
+         * @return int|string
+         */
         private function getTotalOfNotMigratedBylines()
         {
-            $terms = get_terms([
-                'taxonomy'   => 'byline',
-                'hide_empty' => false,
-                'number'     => 0,
-                'meta_query' => [
-                    [
-                        'key'     => 'ppma-migrated',
-                        'compare' => 'NOT EXISTS',
-                    ],
-                ],
-            ]);
+            $terms = $this->getNotMigratedBylines(0);
 
             if (is_wp_error($terms)) {
                 return $terms->get_error_message();
@@ -203,15 +220,19 @@ if (!class_exists('MA_Bylines_Migration')) {
             $total = $this->getTotalOfNotMigratedBylines();
 
             if (!is_numeric($total)) {
-                wp_send_json([
-                    'success' => false,
-                    'error'   => $total,
-                ]);
+                wp_send_json(
+                    [
+                        'success' => false,
+                        'error'   => $total,
+                    ]
+                );
             } else {
-                wp_send_json([
-                    'success' => true,
-                    'total'   => $this->getTotalOfNotMigratedBylines(),
-                ]);
+                wp_send_json(
+                    [
+                        'success' => true,
+                        'total'   => $total,
+                    ]
+                );
             }
         }
 
@@ -221,42 +242,46 @@ if (!class_exists('MA_Bylines_Migration')) {
                 wp_send_json_error(null, 403);
             }
 
-            $keyForNotMigrated = 'ppma-migrated';
-
-            $termsToMigrate = get_terms([
-                'taxonomy'   => 'byline',
-                'hide_empty' => false,
-                'number'     => 5,
-                'meta_query' => [
-                    [
-                        'key'     => $keyForNotMigrated,
-                        'compare' => 'NOT EXISTS',
-                    ],
-                ],
-            ]);
+            $termsToMigrate = $this->getNotMigratedBylines(5);
 
             if (is_wp_error($termsToMigrate)) {
-                wp_send_json([
-                    'success' => false,
-                    'error'   => $termsToMigrate->get_error_message()
-                ]);
+                wp_send_json(
+                    [
+                        'success' => false,
+                        'error'   => $termsToMigrate->get_error_message()
+                    ]
+                );
 
                 return;
             }
 
             if (!empty($termsToMigrate)) {
+                global $wpdb;
+
                 foreach ($termsToMigrate as $bylinesTerm) {
+                    $description = get_term_meta($bylinesTerm->term_id, 'description', true);
+                    $firstName   = get_term_meta($bylinesTerm->term_id, 'first_name', true);
+                    $lastName    = get_term_meta($bylinesTerm->term_id, 'last_name', true);
+                    $userEmail   = get_term_meta($bylinesTerm->term_id, 'user_email', true);
+                    $userUrl     = get_term_meta($bylinesTerm->term_id, 'user_url', true);
 
-                    $description = get_user_meta($bylinesTerm->term_id, 'description', true);
-                    $firstName   = get_user_meta($bylinesTerm->term_id, 'first_name', true);
-                    $lastName    = get_user_meta($bylinesTerm->term_id, 'last_name', true);
-                    $userEmail   = get_user_meta($bylinesTerm->term_id, 'user_email', true);
-                    $userUrl     = get_user_meta($bylinesTerm->term_id, 'user_url', true);
+                    $author = Author::create(
+                        [
+                            'display_name' => $bylinesTerm->name,
+                            'slug'         => str_replace('cap-', '', $bylinesTerm->slug),
+                        ]
+                    );
 
-                    $author = Author::create([
-                        'display_name' => $bylinesTerm->name,
-                        'slug'         => str_replace('cap-', '', $author->user_nicename),
-                    ]);
+                    if (is_wp_error($author)) {
+                        update_term_meta(
+                            $bylinesTerm->term_id,
+                            self::META_ERROR_ON_MIGRATING,
+                            $author->get_error_message()
+                        );
+                        update_term_meta($bylinesTerm->term_id, self::META_MIGRATED, 1);
+
+                        continue;
+                    }
 
                     update_term_meta($author->term_id, 'first_name', $firstName);
                     update_term_meta($author->term_id, 'last_name', $lastName);
@@ -264,19 +289,35 @@ if (!class_exists('MA_Bylines_Migration')) {
                     update_term_meta($author->term_id, 'user_url', $userUrl);
                     update_term_meta($author->term_id, 'description', $description);
 
-                    $userId = get_term_meta($bylinesTerm->term_id, 'user_id');
+                    $userId = get_term_meta($bylinesTerm->term_id, 'user_id', true);
                     if (!empty($userId)) {
                         update_term_meta($author->term_id, 'user_id', $userId);
                     }
 
-                    update_term_meta($bylinesTerm->term_id, $keyForNotMigrated, 1);
+                    // Migrate the posts' terms relationship.
+                    $sql = $wpdb->prepare(
+                        "
+                        INSERT INTO {$wpdb->term_relationships}
+                            SELECT object_id, %s, term_order
+                            FROM {$wpdb->term_relationships}
+                            WHERE term_taxonomy_id = %s
+                        
+                        ",
+                        $author->term_id,
+                        $bylinesTerm->term_id
+                    );
+                    $results = $wpdb->get_results($sql);
+
+                    update_term_meta($bylinesTerm->term_id, self::META_MIGRATED, 1);
                 }
             }
 
-            wp_send_json([
-                'success' => true,
-                'total'   => $this->getTotalOfNotMigratedBylines(),
-            ]);
+            wp_send_json(
+                [
+                    'success' => true,
+                    'total'   => $this->getTotalOfNotMigratedBylines(),
+                ]
+            );
         }
 
         public function deactivateBylines()
@@ -287,9 +328,11 @@ if (!class_exists('MA_Bylines_Migration')) {
 
             deactivate_plugins('bylines/bylines.php');
 
-            wp_send_json([
-                'deactivated' => true,
-            ]);
+            wp_send_json(
+                [
+                    'deactivated' => true,
+                ]
+            );
         }
     }
 }

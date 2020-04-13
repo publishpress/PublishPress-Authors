@@ -96,7 +96,7 @@ class Article implements \WPSEO_Graph_Piece
             '@type'            => 'Article',
             '@id'              => $this->context->canonical . \WPSEO_Schema_IDs::ARTICLE_HASH,
             'isPartOf'         => ['@id' => $this->context->canonical . \WPSEO_Schema_IDs::WEBPAGE_HASH],
-            'author'           => $this->context->site_url . \WPSEO_Schema_IDs::PERSON_HASH . wp_hash($author->slug),
+            'author'           => ['@id' => $this->context->site_url . \WPSEO_Schema_IDs::PERSON_HASH . wp_hash($author->slug)],
             'headline'         => \WPSEO_Schema_Utils::get_post_title_with_fallback($this->context->id),
             'datePublished'    => $this->date->format($post->post_date_gmt),
             'dateModified'     => $this->date->format($post->post_modified_gmt),

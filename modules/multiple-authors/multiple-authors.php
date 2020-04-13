@@ -21,12 +21,12 @@
  * along with PublishPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use MultipleAuthors\Classes\Authors_Iterator;
 use MultipleAuthors\Classes\Installer;
 use MultipleAuthors\Classes\Legacy\Module;
-use MultipleAuthors\Classes\Authors_Iterator;
+use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Classes\Utils;
 use MultipleAuthors\Factory;
-use MultipleAuthors\Classes\Objects\Author;
 
 if (!class_exists('MA_Multiple_Authors')) {
     /**
@@ -70,10 +70,14 @@ if (!class_exists('MA_Multiple_Authors')) {
             // Register the module with PublishPress
             $args = [
                 'title'                => __('Multiple Authors', 'publishpress-authors'),
-                'short_description'    => __('Add support for multiple authors on your content',
-                    'publishpress-authors'),
-                'extended_description' => __('Add support for multiple authors on your content',
-                    'publishpress-authors'),
+                'short_description'    => __(
+                    'Add support for multiple authors on your content',
+                    'publishpress-authors'
+                ),
+                'extended_description' => __(
+                    'Add support for multiple authors on your content',
+                    'publishpress-authors'
+                ),
                 'module_url'           => $this->module_url,
                 'icon_class'           => 'dashicons dashicons-feedback',
                 'slug'                 => 'multiple-authors',
@@ -158,8 +162,12 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_filter('body_class', [$this, 'filter_body_class']);
             add_filter('get_the_author_headline', [$this, 'filter_author_headline'], 10, 3);
             // Genesis framework support
-            add_filter('genesis_post_author_posts_link_shortcode',
-                [$this, 'filter_genesis_post_author_posts_link_shortcode'], 10, 2);
+            add_filter(
+                'genesis_post_author_posts_link_shortcode',
+                [$this, 'filter_genesis_post_author_posts_link_shortcode'],
+                10,
+                2
+            );
             add_filter('genesis_attr_archive-title_output', [$this, 'filter_genesis_archive_title'], 10, 4);
 
             // Fix upload permissions for multiple authors.
@@ -178,6 +186,10 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             // Add compatibility with GeneratePress theme.
             add_filter('generate_post_author_output', [$this, 'generatepress_author_output']);
+
+            add_filter('the_author_posts_link', [$this, 'theAuthorPostsLink']);
+            add_filter('pre_get_document_title', [$this, 'preGetDocumentTitle'], 999);
+            add_filter('document_title_parts', [$this, 'documentTitleParts'], 20);
         }
 
         /**
@@ -221,7 +233,9 @@ if (!class_exists('MA_Multiple_Authors')) {
                 esc_html__('Authors', 'publishpress-authors'),
                 esc_html__('Authors', 'publishpress-authors'),
                 apply_filters('pp_multiple_authors_manage_authors_cap', 'ppma_manage_authors'),
-                'edit-tags.php?taxonomy=author'
+                'edit-tags.php?taxonomy=author',
+                __return_empty_string(),
+                10
             );
         }
 
@@ -235,72 +249,93 @@ if (!class_exists('MA_Multiple_Authors')) {
             global $submenu;
 
             if (isset($submenu[self::MENU_SLUG])) {
-                $submenu_pp  = $submenu[self::MENU_SLUG];
-                $new_submenu = [];
+                $currentSubmenu   = $submenu[self::MENU_SLUG];
+                $newSubmenu       = [];
+                $upgradeMenuSlugs = [];
 
                 // Get the index for the menus, removing the first submenu which was automatically created by WP.
-                $relevantMenus = [
+                $itemsToSort = [
                     'edit-tags.php?taxonomy=author'    => null,
                     'edit.php?post_type=ppmacf_field'  => null,
                     'edit.php?post_type=ppmacf_layout' => null,
                     'ppma-modules-settings'            => null,
                 ];
 
-                foreach ($submenu_pp as $index => $item) {
-                    if (array_key_exists($item[2], $relevantMenus)) {
-                        $relevantMenus[$item[2]] = $index;
+                if (!defined('PUBLISHPRESS_AUTHORS_SKIP_VERSION_NOTICES')) {
+                    $suffix           = \PPVersionNotices\Module\MenuLink\Module::MENU_SLUG_SUFFIX;
+                    $upgradeMenuSlugs = [
+                        'ppma-authors' . $suffix => null,
+                    ];
+
+                    $itemsToSort = array_merge($itemsToSort, $upgradeMenuSlugs);
+                }
+
+                foreach ($currentSubmenu as $index => $item) {
+                    if (array_key_exists($item[2], $itemsToSort)) {
+                        $itemsToSort[$item[2]] = $index;
                     }
                 }
 
                 // Authors
-                if (isset($relevantMenus['edit-tags.php?taxonomy=author'])) {
-                    $new_submenu[] = $submenu_pp[$relevantMenus['edit-tags.php?taxonomy=author']];
+                if (isset($itemsToSort['edit-tags.php?taxonomy=author'])) {
+                    $newSubmenu[] = $currentSubmenu[$itemsToSort['edit-tags.php?taxonomy=author']];
 
-                    unset($submenu_pp[$relevantMenus['edit-tags.php?taxonomy=author']]);
+                    unset($currentSubmenu[$itemsToSort['edit-tags.php?taxonomy=author']]);
                 }
 
                 // Fields
-                if (isset($relevantMenus['edit.php?post_type=ppmacf_field'])) {
-                    $new_submenu[] = $submenu_pp[$relevantMenus['edit.php?post_type=ppmacf_field']];
+                if (isset($itemsToSort['edit.php?post_type=ppmacf_field'])) {
+                    $newSubmenu[] = $currentSubmenu[$itemsToSort['edit.php?post_type=ppmacf_field']];
 
-                    unset($submenu_pp[$relevantMenus['edit.php?post_type=ppmacf_field']]);
+                    unset($currentSubmenu[$itemsToSort['edit.php?post_type=ppmacf_field']]);
                 }
 
                 // Layouts
-                if (isset($relevantMenus['edit.php?post_type=ppmacf_layout'])) {
-                    $new_submenu[] = $submenu_pp[$relevantMenus['edit.php?post_type=ppmacf_layout']];
+                if (isset($itemsToSort['edit.php?post_type=ppmacf_layout'])) {
+                    $newSubmenu[] = $currentSubmenu[$itemsToSort['edit.php?post_type=ppmacf_layout']];
 
-                    unset($submenu_pp[$relevantMenus['edit.php?post_type=ppmacf_layout']]);
+                    unset($currentSubmenu[$itemsToSort['edit.php?post_type=ppmacf_layout']]);
                 }
 
                 // Check if we have other menu items, except settings. They will be added to the end.
-                if (count($submenu_pp) >= 1) {
+                if (count($currentSubmenu) >= 1) {
                     $itemsToIgnore = [
                         'ppma-authors',
                         'ppma-modules-settings',
                     ];
 
                     // Add the additional items
-                    foreach ($submenu_pp as $index => $item) {
+                    foreach ($currentSubmenu as $index => $item) {
                         if (in_array($item[2], $itemsToIgnore)) {
                             continue;
                         }
 
-                        if (!array_key_exists($item[2], $relevantMenus)) {
-                            $new_submenu[] = $item;
-                            unset($submenu_pp[$index]);
+                        if (!array_key_exists($item[2], $itemsToSort)) {
+                            $newSubmenu[] = $item;
+                            unset($currentSubmenu[$index]);
                         }
                     }
                 }
 
                 // Settings
-                if (isset($relevantMenus['ppma-modules-settings'])) {
-                    $new_submenu[] = $submenu_pp[$relevantMenus['ppma-modules-settings']];
+                if (isset($itemsToSort['ppma-modules-settings'])) {
+                    $newSubmenu[] = $currentSubmenu[$itemsToSort['ppma-modules-settings']];
 
-                    unset($submenu_pp[$relevantMenus['ppma-modules-settings']]);
+                    unset($currentSubmenu[$itemsToSort['ppma-modules-settings']]);
                 }
 
-                $submenu[self::MENU_SLUG] = $new_submenu;
+                // Upgrade to Pro
+                if (!defined('PUBLISHPRESS_AUTHORS_SKIP_VERSION_NOTICES')) {
+                    $suffix = \PPVersionNotices\Module\MenuLink\Module::MENU_SLUG_SUFFIX;
+
+                    foreach ($upgradeMenuSlugs as $index => $item) {
+                        if (!is_null($itemsToSort[$index])) {
+                            $newSubmenu[] = $currentSubmenu[$itemsToSort[$index]];
+                        }
+                    }
+                }
+
+                $submenu[self::MENU_SLUG] = $newSubmenu;
             }
 
             return $menu_ord;
@@ -341,7 +376,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $this->module->options_group_name
             );
 
-            do_action('publishpress_authors_register_settings_before',
+            do_action(
+                'publishpress_authors_register_settings_before',
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_general'
             );
@@ -356,8 +392,10 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             add_settings_field(
                 'author_for_new_users',
-                __('Automatically create author profiles:',
-                    'publishpress-authors'),
+                __(
+                    'Automatically create author profiles:',
+                    'publishpress-authors'
+                ),
                 [$this, 'settings_author_for_new_users_option'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_general'
@@ -479,8 +517,10 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '<label for="' . $id . '">';
             echo '<input type="checkbox" value="yes" id="' . $id . '" name="' . $this->module->options_group_name . '[append_to_content]" '
                 . checked($value, 'yes', false) . ' />';
-            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">' . esc_html__('This will display the authors box at the end of the content.',
-                    'publishpress-authors') . '</span>';
+            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">' . esc_html__(
+                    'This will display the authors box at the end of the content.',
+                    'publishpress-authors'
+                ) . '</span>';
             echo '</label>';
         }
 
@@ -493,11 +533,15 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function settings_title_appended_to_content_option($args = [])
         {
             $id    = $this->module->options_group_name . '_title_appended_to_content';
-            $value = isset($this->module->options->title_appended_to_content) ? $this->module->options->title_appended_to_content : esc_html__('Author',
-                'publishpress-authors');
+            $value = isset($this->module->options->title_appended_to_content) ? $this->module->options->title_appended_to_content : esc_html__(
+                'Author',
+                'publishpress-authors'
+            );
 
             echo '<label for="' . $id . '">';
-            echo '<input type="text" value="' . esc_attr($value) . '" id="' . $id . '" name="' . $this->module->options_group_name . '[title_appended_to_content]" class="regular-text" />';
+            echo '<input type="text" value="' . esc_attr(
+                    $value
+                ) . '" id="' . $id . '" name="' . $this->module->options_group_name . '[title_appended_to_content]" class="regular-text" />';
             echo '</label>';
         }
 
@@ -545,8 +589,10 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '</select>';
 
-            echo '<p class="ppma_settings_field_description">' . __('Author profiles can be mapped to WordPress user accounts. This option allows you to automatically create author profiles when users are created in these roles. You can also do this for existing users by clicking the "Create missed authors from role" button in the Maintenance tab.',
-                    'publishpress-authors');
+            echo '<p class="ppma_settings_field_description">' . __(
+                    'Author profiles can be mapped to WordPress user accounts. This option allows you to automatically create author profiles when users are created in these roles. You can also do this for existing users by clicking the "Create missed authors from role" button in the Maintenance tab.',
+                    'publishpress-authors'
+                );
 
             echo '</label>';
         }
@@ -564,8 +610,10 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '<label for="' . $id . '">';
             echo '<input type="checkbox" value="yes" id="' . $id . '" name="' . $this->module->options_group_name . '[show_email_link]" '
                 . checked($value, 'yes', false) . ' />';
-            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">' . esc_html__('This will display the authors email in the author box.',
-                    'publishpress-authors') . '</span>';
+            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">' . esc_html__(
+                    'This will display the authors email in the author box.',
+                    'publishpress-authors'
+                ) . '</span>';
             echo '</label>';
         }
 
@@ -582,8 +630,10 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '<label for="' . $id . '">';
             echo '<input type="checkbox" value="yes" id="' . $id . '" name="' . $this->module->options_group_name . '[show_site_link]" '
                 . checked($value, 'yes', false) . ' />';
-            echo '&nbsp;&nbsp;&nbsp; <span class="ppma_settings_field_description">' . esc_html__('This will display the authors site in the author box.',
-                    'publishpress-authors') . '</span>';
+            echo '&nbsp;&nbsp;&nbsp; <span class="ppma_settings_field_description">' . esc_html__(
+                    'This will display the authors site in the author box.',
+                    'publishpress-authors'
+                ) . '</span>';
             echo '</label>';
         }
 
@@ -641,8 +691,10 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '<div id="ppma_maintenance_settings">';
 
-            echo '<p class="ppma_warning">' . __('Please be careful clicking these buttons. Before clicking, we recommend taking a site backup in case anything goes wrong.',
-                    'publishpress-authors');
+            echo '<p class="ppma_warning">' . __(
+                    'Please be careful clicking these buttons. Before clicking, we recommend taking a site backup in case anything goes wrong.',
+                    'publishpress-authors'
+                );
             echo '</p>';
 
             foreach ($actions as $actionName => $actionInfo) {
@@ -742,13 +794,67 @@ if (!class_exists('MA_Multiple_Authors')) {
          */
         public function settings_tab($tabs)
         {
-            $tabs = array_merge($tabs, [
-                '#ppma-tab-general'     => __('General', 'publishpress-authors'),
-                '#ppma-tab-display'     => __('Display', 'publishpress-authors'),
-                '#ppma-tab-maintenance' => __('Maintenance', 'publishpress-authors'),
-            ]);
+            $tabs = array_merge(
+                $tabs,
+                [
+                    '#ppma-tab-general'     => __('General', 'publishpress-authors'),
+                    '#ppma-tab-display'     => __('Display', 'publishpress-authors'),
+                    '#ppma-tab-maintenance' => __('Maintenance', 'publishpress-authors'),
+                ]
+            );
 
             return $tabs;
+        }
+
+        public function theAuthorPostsLink($link)
+        {
+            $newLink   = '';
+            $postID    = get_the_id();
+            $isArchive = empty($postID) && is_author();
+            $authors   = get_multiple_authors($postID, true, $isArchive);
+
+            foreach ($authors as $author)
+            {
+                if (!empty($newLink)) {
+                    $newLink .= ', ';
+                }
+
+                $newLink .= '<a href="' . $author->link . '" title="' . $author->display_name
+                    . '" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">'
+                    . $author->display_name . '</a>';
+            }
+
+            return $newLink;
+        }
+
+        public function documentTitleParts($title)
+        {
+            if (is_author()) {
+                $authors = get_multiple_authors(0, true, true);
+                $author = $authors[0];
+
+                $title['title'] = $author->display_name;
+            }
+
+            return $title;
+        }
+
+        public function preGetDocumentTitle($title)
+        {
+            if (is_author()) {
+                // Try to replace the author name in the title
+                $wpAuthor = get_queried_object();
+
+                if (substr_count($title, $wpAuthor->display_name)) {
+                    $authors = get_multiple_authors(0, true, true);
+                    $author = $authors[0];
+
+                    $title = $author->display_name;
+                }
+
+            }
+
+            return $title;
         }
 
         /**
@@ -794,8 +900,10 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             // The description of the field Name
             if ('default' === $domain && 'The name is how it appears on your site.' === $translation) {
-                $translation = __('This is how the author’s name will appears on your site.',
-                    'publishpress-authors');
+                $translation = __(
+                    'This is how the author’s name will appears on your site.',
+                    'publishpress-authors'
+                );
             }
 
             // The name of field Slug, convert to Author URL
@@ -806,8 +914,10 @@ if (!class_exists('MA_Multiple_Authors')) {
                     }
 
                     if ('The &#8220;slug&#8221; is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens.' === $translation) {
-                        $translation = __('This forms part of the URL for the author’s profile page. If you choose a Mapped User, this URL is taken from the user’s account and can not be changed.',
-                            'publishpress-authors');
+                        $translation = __(
+                            'This forms part of the URL for the author’s profile page. If you choose a Mapped User, this URL is taken from the user’s account and can not be changed.',
+                            'publishpress-authors'
+                        );
                     }
                 }
             }
@@ -934,8 +1044,10 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             $nonce = isset($_GET['nonce']) ? $_GET['nonce'] : '';
             if (!wp_verify_nonce($nonce, 'multiple_authors_maintenance')) {
-                wp_redirect(admin_url('/admin.php?page=ppma-modules-settings&author_term_reset_notice=fail'),
-                    301);
+                wp_redirect(
+                    admin_url('/admin.php?page=ppma-modules-settings&author_term_reset_notice=fail'),
+                    301
+                );
 
                 return;
             }
@@ -943,11 +1055,15 @@ if (!class_exists('MA_Multiple_Authors')) {
             try {
                 $result = do_action('multiple_authors_' . $_GET['ppma_action']);
 
-                wp_redirect(admin_url('/admin.php?page=ppma-modules-settings&author_term_reset_notice=success'),
-                    301);
+                wp_redirect(
+                    admin_url('/admin.php?page=ppma-modules-settings&author_term_reset_notice=success'),
+                    301
+                );
             } catch (Exception $e) {
-                wp_redirect(admin_url('/admin.php?page=ppma-modules-settings&author_term_reset_notice=fail'),
-                    301);
+                wp_redirect(
+                    admin_url('/admin.php?page=ppma-modules-settings&author_term_reset_notice=fail'),
+                    301
+                );
             }
         }
 
@@ -1080,8 +1196,10 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             if ($_GET['author_term_reset_notice'] === 'fail') {
                 echo '<div class="notice notice - error is - dismissible">';
-                echo '<p>' . __('Error. Author terms could not be reseted.',
-                        'publishpress-authors') . '</p>';
+                echo '<p>' . __(
+                        'Error. Author terms could not be reseted.',
+                        'publishpress-authors'
+                    ) . '</p>';
                 echo '</div>';
 
                 return;
@@ -1222,17 +1340,19 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         private function getTotalOfNotMigratedCoAuthors()
         {
-            $terms = get_terms([
-                'taxonomy'   => 'author',
-                'hide_empty' => false,
-                'number'     => 0,
-                'meta_query' => [
-                    [
-                        'key'     => 'ppma-migrated',
-                        'compare' => 'NOT EXISTS',
+            $terms = get_terms(
+                [
+                    'taxonomy'   => 'author',
+                    'hide_empty' => false,
+                    'number'     => 0,
+                    'meta_query' => [
+                        [
+                            'key'     => 'ppma-migrated',
+                            'compare' => 'NOT EXISTS',
+                        ],
                     ],
-                ],
-            ]);
+                ]
+            );
 
             return count($terms);
         }
@@ -1244,18 +1364,22 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             // nonce: migrate_coauthors
-            wp_send_json([
-                'total' => $this->getTotalOfNotMigratedCoAuthors(),
-            ]);
+            wp_send_json(
+                [
+                    'total' => $this->getTotalOfNotMigratedCoAuthors(),
+                ]
+            );
         }
 
         private function getCoAuthorGuestAuthorBySlug($slug)
         {
-            $posts = get_posts([
-                'name'        => $slug,
-                'post_type'   => 'guest-author',
-                'post_status' => 'publish',
-            ]);
+            $posts = get_posts(
+                [
+                    'name'        => $slug,
+                    'post_type'   => 'guest-author',
+                    'post_status' => 'publish',
+                ]
+            );
 
             if (!empty($posts)) {
                 return $posts[0];
@@ -1277,17 +1401,19 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             $keyForNotMigrated = 'ppma-migrated';
 
-            $termsToMigrate = get_terms([
-                'taxonomy'   => 'author',
-                'hide_empty' => false,
-                'number'     => 5,
-                'meta_query' => [
-                    [
-                        'key'     => $keyForNotMigrated,
-                        'compare' => 'NOT EXISTS',
+            $termsToMigrate = get_terms(
+                [
+                    'taxonomy'   => 'author',
+                    'hide_empty' => false,
+                    'number'     => 5,
+                    'meta_query' => [
+                        [
+                            'key'     => $keyForNotMigrated,
+                            'compare' => 'NOT EXISTS',
+                        ],
                     ],
-                ],
-            ]);
+                ]
+            );
 
             if (!empty($termsToMigrate)) {
                 foreach ($termsToMigrate as $term) {
@@ -1308,10 +1434,14 @@ if (!class_exists('MA_Multiple_Authors')) {
                             update_term_meta($term->term_id, 'user_email', $email);
                             update_term_meta($term->term_id, 'user_url', $url);
                             update_term_meta($term->term_id, 'description', $description);
-                            wp_update_term($term->term_id, 'author', [
-                                'name' => $name,
-                                'slug' => str_replace('cap-', '', $term->slug),
-                            ]);
+                            wp_update_term(
+                                $term->term_id,
+                                'author',
+                                [
+                                    'name' => $name,
+                                    'slug' => str_replace('cap-', '', $term->slug),
+                                ]
+                            );
 
                             $avatar = get_post_meta($author->ID, '_thumbnail_id', true);
                             if (!empty($avatar)) {
@@ -1332,10 +1462,14 @@ if (!class_exists('MA_Multiple_Authors')) {
                             update_term_meta($term->term_id, 'description', $description);
                             update_term_meta($term->term_id, 'user_id', $author->ID);
 
-                            wp_update_term($term->term_id, 'author', [
-                                'name' => $author->display_name,
-                                'slug' => str_replace('cap-', '', $author->user_nicename),
-                            ]);
+                            wp_update_term(
+                                $term->term_id,
+                                'author',
+                                [
+                                    'name' => $author->display_name,
+                                    'slug' => str_replace('cap-', '', $author->user_nicename),
+                                ]
+                            );
                         }
                     }
 
@@ -1344,10 +1478,12 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             // nonce: migrate_coauthors
-            wp_send_json([
-                'success' => true,
-                'total'   => $this->getTotalOfNotMigratedCoAuthors(),
-            ]);
+            wp_send_json(
+                [
+                    'success' => true,
+                    'total'   => $this->getTotalOfNotMigratedCoAuthors(),
+                ]
+            );
         }
 
         public function deactivateCoAuthorsPlus()
@@ -1359,9 +1495,11 @@ if (!class_exists('MA_Multiple_Authors')) {
             deactivate_plugins('co-authors-plus/co-authors-plus.php');
 
             // nonce: migrate_coauthors
-            wp_send_json([
-                'deactivated' => true,
-            ]);
+            wp_send_json(
+                [
+                    'deactivated' => true,
+                ]
+            );
         }
     }
 }

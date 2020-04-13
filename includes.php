@@ -12,7 +12,7 @@
 defined('ABSPATH') or die('No direct script access allowed.');
 
 if ( ! defined('PP_AUTHORS_LOADED')) {
-    define('PP_AUTHORS_VERSION', '3.2.4-beta.1');
+    define('PP_AUTHORS_VERSION', '3.2.4');
     define('PP_AUTHORS_FILE', 'publishpress-authors/publishpress-authors.php');
     define('PP_AUTHORS_BASE_PATH', plugin_dir_path(__FILE__));
     define('PP_AUTHORS_MODULES_PATH', PP_AUTHORS_BASE_PATH . 'modules');
@@ -46,6 +46,16 @@ if ( ! defined('PP_AUTHORS_LOADED')) {
                     ['base' => 'term', 'id' => 'edit-author','taxonomy' => 'author'],
                     ['base' => 'authors_page_ppma-modules-settings', 'id' => 'authors_page_ppma-modules-settings'],
                 ]
+            ];
+
+            return $settings;
+        });
+
+        add_filter(\PPVersionNotices\Module\MenuLink\Module::SETTINGS_FILTER, function ($settings) {
+            $settings['publishpress-authors'] = [
+                'parent' => 'ppma-authors',
+                'label'  => 'Upgrade to Pro',
+                'link'   => 'https://publishpress.com/links/authors-menu',
             ];
 
             return $settings;

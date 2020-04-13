@@ -92,6 +92,29 @@ if (!class_exists('MA_Yoast_Seo_Integration')) {
 
             $schemaFacade = new \PPAuthors\YoastSEO\SchemaFacade();
             $schemaFacade->addSupportForMultipleAuthors();
+
+            add_filter('wpseo_replacements', [$this, 'overrideSEOReplacements'], 10, 2);
+        }
+
+        public function overrideSEOReplacements($replacements, $args)
+        {
+            if (!is_author()) {
+                return $replacements;
+            }
+
+            foreach ($replacements as $key => &$value)
+            {
+                if ($key === '%%name%%') {
+                    $authors = get_multiple_authors(0, true, true);
+                    $author = $authors[0];
+
+                    if ($author->is_guest()) {
+                        $value = $author->display_name;
+                    }
+                }
+            }
+
+            return $replacements;
         }
     }
 }

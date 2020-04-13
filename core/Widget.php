@@ -21,16 +21,14 @@ class Widget extends WP_Widget
      */
     public function __construct()
     {
-        $widget_ops = [
-            'classname'   => 'multiple_authors_widget',
-            'description' => esc_html__('Display a list of authors for the current post.',
-                'publishpress-authors'),
-        ];
-
         parent::__construct(
             'multiple_authors_widget',
-            esc_html__('Multiple Authors', 'publishpress-authors'),
-            $widget_ops
+            esc_html__('Authors', 'publishpress-authors'),
+            [
+                'classname'   => 'multiple_authors_widget',
+                'description' => esc_html__('Display a list of authors for the current post.',
+                                            'publishpress-authors'),
+            ]
         );
     }
 
@@ -56,13 +54,13 @@ class Widget extends WP_Widget
             $layout = isset($instance['layout']) ? $instance['layout'] : $legacyPlugin->modules->multiple_authors->options->layout;
 
             $output .= $this->get_author_box_markup('widget', false, $layout);
-        }
 
-        if ( ! empty($output)) {
-            echo $args['before_widget'];
-            echo $args['before_title'] . apply_filters('widget_title', $title) . $args['after_title'];
-            echo $output;
-            echo $args['after_widget'];
+            if (!empty($output)) {
+                echo $args['before_widget'];
+                echo $args['before_title'] . apply_filters('widget_title', $title) . $args['after_title'];
+                echo $output;
+                echo $args['after_widget'];
+            }
         }
     }
 
