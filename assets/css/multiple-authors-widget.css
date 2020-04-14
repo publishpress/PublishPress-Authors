@@ -1,25 +1,26 @@
 .pp-multiple-authors-layout-simple_list ul,
 .pp-multiple-authors-layout-boxed ul {
     padding-left: 0;
+    margin-left: 0;
 }
 
 .pp-multiple-authors-layout-simple_list ul li {
     list-style: none;
     position: relative;
     min-height: 35px;
+    line-height: 35px;
     border-bottom: 1px solid #dddddd;
     border-top: 1px solid #dddddd;
     border-bottom: 1px solid #dddddd;
     border-top: 1px solid #dddddd;
     padding: 0.5em 0;
-    margin-top: -1px;
+    margin: -1px 0 0 0;
 }
 
 .pp-multiple-authors-layout-simple_list .avatar,
 .pp-multiple-authors-layout-simple_list .photo {
-    position: absolute;
-    right: 0;
-    top: 5px;
+    float: left;
+    margin-right: 10px;
     width: 35px;
     height: 35px;
     display: block;
