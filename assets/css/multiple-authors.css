@@ -172,6 +172,7 @@ ul.authors-list.authors-current-user-can-assign li .author-remove {
     top: 50%;
     -webkit-transform: translateY(-50%);
     transform: translateY(-50%);
+    cursor: pointer;
 }
 
 ul.authors-list.authors-current-user-can-assign li .author-remove .dashicons {
