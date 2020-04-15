@@ -100,12 +100,18 @@
 
 .pp-multiple-authors-layout-centered a {
     font-size: 1.2em;
-    margin-bottom: 10px;
-    display: inline-block;
+}
+
+.pp-multiple-authors-layout-centered a .dashicons,
+.pp-multiple-authors-layout-centered a:hover .dashicons,
+.pp-multiple-authors-layout-centered a:focus .dashicons,
+.pp-multiple-authors-layout-centered a:active .dashicons {
+    text-decoration: none;
 }
 
 .pp-multiple-authors-layout-centered p {
     font-size: 0.85em;
+    margin: 5px 0;
 }
 
 .pp-multiple-authors-layout-inline .avatar,
