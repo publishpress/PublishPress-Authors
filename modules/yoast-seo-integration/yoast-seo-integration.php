@@ -122,10 +122,6 @@ if (!class_exists('MA_Yoast_Seo_Integration')) {
 
         public function overrideSEOReplacementsForAuthorsPage($replacements, $args)
         {
-            if (!is_author()) {
-                return $replacements;
-            }
-
             try {
                 foreach ($replacements as $key => &$value) {
                     if ($key === '%%name%%') {
