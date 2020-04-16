@@ -144,27 +144,16 @@ class LegacyPlugin
     private function getModulesDirs()
     {
         $defaultDirs = [
-            'modules-settings'  => PP_AUTHORS_MODULES_PATH,
-            'settings'          => PP_AUTHORS_MODULES_PATH,
-            'multiple-authors'  => PP_AUTHORS_MODULES_PATH,
-            'default-layouts'   => PP_AUTHORS_MODULES_PATH,
-            'byline-migration'  => PP_AUTHORS_MODULES_PATH,
-            'bylines-migration' => PP_AUTHORS_MODULES_PATH,
+            'modules-settings'      => PP_AUTHORS_MODULES_PATH,
+            'settings'              => PP_AUTHORS_MODULES_PATH,
+            'multiple-authors'      => PP_AUTHORS_MODULES_PATH,
+            'default-layouts'       => PP_AUTHORS_MODULES_PATH,
+            'byline-migration'      => PP_AUTHORS_MODULES_PATH,
+            'bylines-migration'     => PP_AUTHORS_MODULES_PATH,
+            'yoast-seo-integration' => PP_AUTHORS_MODULES_PATH,
         ];
 
-        // Only load the Yoast SEO integration if the installed version is >= 13.4.1.
-        if (defined('WPSEO_VERSION') && class_exists('WPSEO_Schema_Context') && version_compare(
-                WPSEO_VERSION,
-                '13.4.1',
-                '<='
-            )) {
-            $defaultDirs['yoast-seo-integration'] = PP_AUTHORS_MODULES_PATH;
-        }
-
-        // Add filters to extend the modules
-        $modulesDirs = apply_filters('ppma_module_dirs', $defaultDirs);
-
-        return $modulesDirs;
+        return apply_filters('ppma_module_dirs', $defaultDirs);
     }
 
     /**
