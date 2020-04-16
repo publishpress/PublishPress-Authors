@@ -26,6 +26,7 @@ namespace PPAuthors\YoastSEO\Schema;
 
 
 use MultipleAuthors\Classes\Authors_Iterator;
+use PPAuthors\YoastSEO\SchemaUtils;
 
 /**
  * Returns schema Article data.
@@ -90,7 +91,7 @@ class Webpage implements \WPSEO_Graph_Piece
             ],
         ];
 
-        $data = \WPSEO_Schema_Utils::add_piece_language($data);
+        $data = SchemaUtils::addPieceLanguage($data);
 
         if (is_front_page()) {
             if ($this->context->site_represents_reference) {

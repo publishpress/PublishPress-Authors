@@ -25,6 +25,7 @@
 namespace PPAuthors\YoastSEO\Schema;
 
 use MultipleAuthors\Classes\Authors_Iterator;
+use PPAuthors\YoastSEO\SchemaUtils;
 
 /**
  * Returns schema Article data.
@@ -115,7 +116,7 @@ class Article implements \WPSEO_Graph_Piece
         $data = $this->add_image($data);
         $data = $this->add_keywords($data);
         $data = $this->add_sections($data);
-        $data = \WPSEO_Schema_Utils::add_piece_language($data);
+        $data = SchemaUtils::addPieceLanguage($data);
 
         if (post_type_supports($post->post_type, 'comments') && $post->comment_status === 'open') {
             $data = $this->add_potential_action($data);
