@@ -49,10 +49,12 @@ class Author
             $user = get_user_by('id', $user);
         }
         if (!is_a($user, 'WP_User')) {
+            error_log(sprintf('[PublishPress Authors] The method %s found that the expected user doesn\'t exist: %s', __METHOD__, maybe_serialize($user)));
             return new WP_Error('missing-user', __("User doesn't exist", 'publishpress-authors'));
         }
         $existing = self::get_by_user_id($user->ID);
         if ($existing) {
+            error_log(sprintf('[PublishPress Authors] The method %s tried to create an author that already exists for the user: %s', __METHOD__, maybe_serialize($user)));
             return new WP_Error(
                 'existing-author',
                 __('User already has a author.', 'publishpress-authors')
@@ -65,6 +67,7 @@ class Author
             ]
         );
         if (is_wp_error($author)) {
+            error_log(sprintf('[PublishPress Authors] The method %s found an error trying to create an author', __METHOD__));
             return $author;
         }
 
@@ -111,12 +114,14 @@ class Author
     public static function create($args)
     {
         if (empty($args['slug'])) {
+            error_log(sprintf('[PublishPress Authors] The method %s is missing the slug in the arguments', __METHOD__));
             return new WP_Error(
                 'missing-slug',
                 __("'slug' is a required argument", 'publishpress-authors')
             );
         }
         if (empty($args['display_name'])) {
+            error_log(sprintf('[PublishPress Authors] The method %s is missing the display_name in the arguments', __METHOD__));
             return new WP_Error(
                 'missing-display_name',
                 __("'display_name' is a required argument", 'publishpress-authors')
