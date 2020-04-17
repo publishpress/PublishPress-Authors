@@ -49,15 +49,17 @@ class Post_Editor
     public static function filter_manage_posts_columns($columns)
     {
         $new_columns = [];
-        foreach ($columns as $key => $title) {
-            $new_columns[$key] = $title;
-            if ('title' === $key) {
-                $new_columns['authors'] = __('Authors', 'publishpress-authors');
+        if (!Utils::is_post_type_enabled()) {
+            return $columns;
+        }
+
+        foreach ($columns as $key => $value) {
+            if ('author' === $key) {
+                $key   = 'authors';
+                $value = __('Authors', 'publishpress-authors');
             }
 
-            if ('author' === $key) {
-                unset($new_columns[$key]);
-            }
+            $new_columns[$key] = $value;
         }
 
         return $new_columns;

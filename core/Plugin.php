@@ -606,32 +606,6 @@ class Plugin
     }
 
     /**
-     * Add coauthors to author column on edit pages
-     *
-     * @param array $post_columns
-     */
-    public function _filter_manage_posts_columns($posts_columns)
-    {
-        $new_columns = [];
-        if (!Utils::is_post_type_enabled()) {
-            return $posts_columns;
-        }
-
-        foreach ($posts_columns as $key => $value) {
-            $new_columns[$key] = $value;
-            if ('title' === $key) {
-                $new_columns['coauthors'] = __('Authors', 'publishpress-authors');
-            }
-
-            if ('author' === $key) {
-                unset($new_columns[$key]);
-            }
-        }
-
-        return $new_columns;
-    }
-
-    /**
      * Unset the post count column because it's going to be inaccurate and provide our own
      */
     public function _filter_manage_users_columns($columns)
