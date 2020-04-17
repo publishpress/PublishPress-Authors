@@ -295,7 +295,7 @@ if (!class_exists('MA_Bylines_Migration')) {
                     }
 
                     // Migrate the posts' terms relationship.
-                    $sql = $wpdb->prepare(
+                    $sql     = $wpdb->prepare(
                         "
                         INSERT INTO {$wpdb->term_relationships}
                             SELECT object_id, %s, term_order

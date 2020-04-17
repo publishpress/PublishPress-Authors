@@ -32,7 +32,7 @@ use MultipleAuthors\Classes\Legacy\Module;
 use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Factory;
 
-if ( ! class_exists('MA_Settings')) {
+if (!class_exists('MA_Settings')) {
     class MA_Settings extends Module
     {
         const SETTINGS_SLUG = 'ppma-settings';
@@ -98,7 +98,7 @@ if ( ! class_exists('MA_Settings')) {
 
             // Main Menu
             add_submenu_page(
-                \MA_Multiple_Authors::MENU_SLUG,
+                MA_Multiple_Authors::MENU_SLUG,
                 esc_html__('Multiple Authors Settings', 'publishpress-authors'),
                 esc_html__('Settings', 'publishpress-authors'),
                 apply_filters('pp_multiple_authors_manage_settings_cap', 'manage_options'),

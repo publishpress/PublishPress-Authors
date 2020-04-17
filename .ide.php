@@ -12,7 +12,7 @@
 
 namespace {
 
-    if ( ! class_exists(PP_Multiple_authors_plugin::class)) {
+    if (!class_exists(PP_Multiple_authors_plugin::class)) {
         /**
          * Class PP_Multiple_authors_plugin
          *
@@ -26,7 +26,7 @@ namespace {
 
 namespace PublishPress\Addon\Multiple_authors {
 
-    if ( ! class_exists(Container::class)) {
+    if (!class_exists(Container::class)) {
         /**
          * Class PublishPress
          *
@@ -37,7 +37,7 @@ namespace PublishPress\Addon\Multiple_authors {
         }
     }
 
-    if ( ! class_exists(Factory::class)) {
+    if (!class_exists(Factory::class)) {
         /**
          * Class PublishPress
          *
@@ -48,7 +48,7 @@ namespace PublishPress\Addon\Multiple_authors {
         }
     }
 
-    if ( ! class_exists(Services::class)) {
+    if (!class_exists(Services::class)) {
         /**
          * Class PublishPress
          *
@@ -59,7 +59,7 @@ namespace PublishPress\Addon\Multiple_authors {
         }
     }
 
-    if ( ! class_exists(Widget::class)) {
+    if (!class_exists(Widget::class)) {
         /**
          * Class PublishPress
          *
@@ -70,7 +70,7 @@ namespace PublishPress\Addon\Multiple_authors {
         }
     }
 
-    if ( ! class_exists(WP_Cli::class)) {
+    if (!class_exists(WP_Cli::class)) {
         /**
          * Class PublishPress
          *
@@ -84,7 +84,7 @@ namespace PublishPress\Addon\Multiple_authors {
 
 namespace PublishPress\Addon\Multiple_authors\Classes {
 
-    if ( ! class_exists(Admin_Ajax::class)) {
+    if (!class_exists(Admin_Ajax::class)) {
         /**
          * Class PublishPress
          *
@@ -95,7 +95,7 @@ namespace PublishPress\Addon\Multiple_authors\Classes {
         }
     }
 
-    if ( ! class_exists(Author_Editor::class)) {
+    if (!class_exists(Author_Editor::class)) {
         /**
          * Class PublishPress
          *
@@ -106,7 +106,7 @@ namespace PublishPress\Addon\Multiple_authors\Classes {
         }
     }
 
-    if ( ! class_exists(Authors_Iterator::class)) {
+    if (!class_exists(Authors_Iterator::class)) {
         /**
          * Class PublishPress
          *
@@ -117,7 +117,7 @@ namespace PublishPress\Addon\Multiple_authors\Classes {
         }
     }
 
-    if ( ! class_exists(CLI::class)) {
+    if (!class_exists(CLI::class)) {
         /**
          * Class PublishPress
          *
@@ -128,7 +128,7 @@ namespace PublishPress\Addon\Multiple_authors\Classes {
         }
     }
 
-    if ( ! class_exists(Content_Model::class)) {
+    if (!class_exists(Content_Model::class)) {
         /**
          * Class PublishPress
          *
@@ -139,7 +139,7 @@ namespace PublishPress\Addon\Multiple_authors\Classes {
         }
     }
 
-    if ( ! class_exists(Installer::class)) {
+    if (!class_exists(Installer::class)) {
         /**
          * Class PublishPress
          *
@@ -150,7 +150,7 @@ namespace PublishPress\Addon\Multiple_authors\Classes {
         }
     }
 
-    if ( ! class_exists(Post_Editor::class)) {
+    if (!class_exists(Post_Editor::class)) {
         /**
          * Class PublishPress
          *
@@ -161,7 +161,7 @@ namespace PublishPress\Addon\Multiple_authors\Classes {
         }
     }
 
-    if ( ! class_exists(Query::class)) {
+    if (!class_exists(Query::class)) {
         /**
          * Class PublishPress
          *
@@ -172,7 +172,7 @@ namespace PublishPress\Addon\Multiple_authors\Classes {
         }
     }
 
-    if ( ! class_exists(Utils::class)) {
+    if (!class_exists(Utils::class)) {
         /**
          * Class PublishPress
          *
@@ -186,7 +186,7 @@ namespace PublishPress\Addon\Multiple_authors\Classes {
 
 namespace PublishPress\Addon\Multiple_authors\Classes\Objects {
 
-    if ( ! class_exists(Author::class)) {
+    if (!class_exists(Author::class)) {
         /**
          * Class PublishPress
          *
@@ -200,7 +200,7 @@ namespace PublishPress\Addon\Multiple_authors\Classes\Objects {
 
 namespace PublishPress\Addon\Multiple_authors\Classes\Integrations {
 
-    if ( ! class_exists(RSS::class)) {
+    if (!class_exists(RSS::class)) {
         /**
          * Class PublishPress
          *
@@ -211,7 +211,7 @@ namespace PublishPress\Addon\Multiple_authors\Classes\Integrations {
         }
     }
 
-    if ( ! class_exists(Theme::class)) {
+    if (!class_exists(Theme::class)) {
         /**
          * Class PublishPress
          *

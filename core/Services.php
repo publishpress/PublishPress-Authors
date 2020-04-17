@@ -13,9 +13,6 @@ use Allex\Core;
 use MultipleAuthors\Classes\Legacy\LegacyPlugin;
 use Pimple\Container as Pimple;
 use Pimple\ServiceProviderInterface;
-use PublishPress\EDD_License\Core\Container as EDDContainer;
-use PublishPress\EDD_License\Core\Services as EDDServices;
-use PublishPress\EDD_License\Core\ServicesConfig as EDDServicesConfig;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
 use Twig_SimpleFunction;
@@ -57,47 +54,63 @@ class Services implements ServiceProviderInterface
         $container['twig'] = function ($c) {
             $twig = new Twig_Environment($c['twig_loader']);
 
-            $function = new Twig_SimpleFunction('settings_fields', function () use ($c) {
+            $function = new Twig_SimpleFunction(
+                'settings_fields', function () use ($c) {
                 return settings_fields('multiple_authors_options');
-            });
+            }
+            );
             $twig->addFunction($function);
 
-            $function = new Twig_SimpleFunction('nonce_field', function ($context) {
+            $function = new Twig_SimpleFunction(
+                'nonce_field', function ($context) {
                 return wp_nonce_field($context);
-            });
+            }
+            );
             $twig->addFunction($function);
 
-            $function = new Twig_SimpleFunction('submit_button', function () {
+            $function = new Twig_SimpleFunction(
+                'submit_button', function () {
                 return submit_button();
-            });
+            }
+            );
             $twig->addFunction($function);
 
-            $function = new Twig_SimpleFunction('__', function ($id) {
+            $function = new Twig_SimpleFunction(
+                '__', function ($id) {
                 return __($id, 'publishpress-authors');
-            });
+            }
+            );
             $twig->addFunction($function);
 
-            $function = new Twig_SimpleFunction('do_settings_sections', function ($section) {
+            $function = new Twig_SimpleFunction(
+                'do_settings_sections', function ($section) {
                 return do_settings_sections($section);
-            });
+            }
+            );
             $twig->addFunction($function);
 
-            $function = new \Twig_SimpleFunction('esc_attr', function ($string) {
+            $function = new Twig_SimpleFunction(
+                'esc_attr', function ($string) {
                 return esc_attr($string);
-            });
+            }
+            );
             $twig->addFunction($function);
 
-            $function = new \Twig_SimpleFunction('do_shortcode', function ($string) {
+            $function = new Twig_SimpleFunction(
+                'do_shortcode', function ($string) {
                 do_shortcode($string);
-            });
+            }
+            );
             $twig->addFunction($function);
 
             /**
              * @deprecated 2.2.1 Replaced by the author.avatar attribute, which includes avatar for guest authors.
              */
-            $function = new \Twig_SimpleFunction('get_avatar', function ($user_email, $size = 35) {
+            $function = new Twig_SimpleFunction(
+                'get_avatar', function ($user_email, $size = 35) {
                 return get_avatar($user_email, $size);
-            });
+            }
+            );
             $twig->addFunction($function);
 
             /**

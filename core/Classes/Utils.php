@@ -12,6 +12,7 @@ namespace MultipleAuthors\Classes;
 use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Factory;
+use stdClass;
 use WP_Error;
 
 /**
@@ -48,26 +49,28 @@ class Utils
      * Errors if the post already has authors. To re-convert, remove authors
      * from the post.
      *
-     * @param integer $post_id ID for the post to convert.
+     * @param int $post_id ID for the post to convert.
      *
      * @return object|WP_Error Result object if successful; WP_Error on error.
      */
     public static function convert_post_coauthors($post_id)
     {
-        if ( ! function_exists('get_coauthors')) {
-            return new WP_Error('authors_missing_cap',
-                __('Co-Authors Plus must be installed and active.', 'publishpress-authors'));
+        if (!function_exists('get_coauthors')) {
+            return new WP_Error(
+                'authors_missing_cap',
+                __('Co-Authors Plus must be installed and active.', 'publishpress-authors')
+            );
         }
         $post = get_post($post_id);
-        if ( ! $post) {
+        if (!$post) {
             return new WP_Error('authors_missing_post', "Invalid post: {$post_id}");
         }
         $authors = get_the_terms($post_id, 'author');
-        if ($authors && ! is_wp_error($authors)) {
+        if ($authors && !is_wp_error($authors)) {
             return new WP_Error('authors_post_has_authors', "Post {$post_id} already has authors.");
         }
         $authors          = [];
-        $result           = new \stdClass;
+        $result           = new stdClass();
         $result->created  = 0;
         $result->existing = 0;
         $result->post_id  = 0;
@@ -128,8 +131,10 @@ class Utils
             } // End switch().
         } // End foreach().
         if (empty($authors) || count($coauthors) !== count($authors)) {
-            return new WP_Error('authors_post_missing_coauthors',
-                "Failed to convert some authors for post {$post_id}.");
+            return new WP_Error(
+                'authors_post_missing_coauthors',
+                "Failed to convert some authors for post {$post_id}."
+            );
         }
         Utils::set_post_authors($post_id, $authors);
 
@@ -139,8 +144,8 @@ class Utils
     /**
      * Set the authors for a post
      *
-     * @param integer $post_id ID for the post to modify.
-     * @param array   $authors Bylines to set on the post.
+     * @param int $post_id ID for the post to modify.
+     * @param array $authors Bylines to set on the post.
      */
     public static function set_post_authors($post_id, $authors)
     {
@@ -159,7 +164,7 @@ class Utils
      */
     protected static function set_post_authors_name_meta($post_id, $authors)
     {
-        if ( ! is_array($authors)) {
+        if (!is_array($authors)) {
             $authors = [];
         }
 
@@ -171,7 +176,7 @@ class Utils
             $names = [];
 
             foreach ($authors as $author) {
-                if ( ! is_object($author) && is_numeric($author)) {
+                if (!is_object($author) && is_numeric($author)) {
                     $author = Author::get_by_term_id($author);
                 }
 
@@ -197,7 +202,7 @@ class Utils
         $valid = (bool)in_array($pagenow, self::$pages_whitelist);
 
 
-        if ( ! $valid) {
+        if (!$valid) {
             return false;
         }
 
@@ -236,7 +241,7 @@ class Utils
             self::$supported_post_types = self::get_supported_post_types();
         }
 
-        if ( ! $post_type) {
+        if (!$post_type) {
             $post_type = Util::get_current_post_type();
         }
 
@@ -272,7 +277,7 @@ class Utils
                     continue;
                 }
 
-                if ( ! post_type_supports($name, 'author') || in_array($name, ['revision', 'attachment'])) {
+                if (!post_type_supports($name, 'author') || in_array($name, ['revision', 'attachment'])) {
                     unset($post_types_with_authors[$key]);
                 }
             }
@@ -295,9 +300,9 @@ class Utils
      */
     public static function current_user_can_set_authors($post = null)
     {
-        if ( ! $post) {
+        if (!$post) {
             $post = get_post();
-            if ( ! $post) {
+            if (!$post) {
                 if (isset($_GET['post'])) {
                     $post = get_post($_GET['post']);
                 } else {
@@ -309,14 +314,14 @@ class Utils
         $post_type = $post->post_type;
 
         // TODO: need to fix this; shouldn't just say no if don't have post_type
-        if ( ! $post_type) {
+        if (!$post_type) {
             return false;
         }
 
 
         $current_user = wp_get_current_user();
 
-        if ( ! $current_user) {
+        if (!$current_user) {
             return false;
         }
         // Super admins can do anything
@@ -326,7 +331,7 @@ class Utils
 
         $can_set_authors = isset($current_user->allcaps['edit_others_posts']) ? $current_user->allcaps['edit_others_posts'] : false;
 
-        if ( ! $can_set_authors) {
+        if (!$can_set_authors) {
             $can_set_authors = isset($current_user->allcaps['ppma_edit_orphan_post']) ? $current_user->allcaps['ppma_edit_orphan_post'] : false;
         }
 
@@ -342,7 +347,7 @@ class Utils
      */
     public static function isPluginActive($check_plugin_file)
     {
-        if ( ! is_multisite()) {
+        if (!is_multisite()) {
             $plugins = (array)get_option('active_plugins');
             foreach ($plugins as $plugin_file) {
                 if (false !== strpos($plugin_file, $check_plugin_file)) {

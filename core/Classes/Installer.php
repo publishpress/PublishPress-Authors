@@ -76,7 +76,7 @@ class Installer
         );
 
         // Check if the authors have a term. If not, create one.
-        if ( ! empty($authors)) {
+        if (!empty($authors)) {
             foreach ($authors as $author) {
                 $term = wp_insert_term(
                     $author->display_name,
@@ -144,7 +144,7 @@ class Installer
 				AND p.post_status NOT IN ('trash')"
         );
 
-        if ( ! empty($posts_to_update)) {
+        if (!empty($posts_to_update)) {
             foreach ($posts_to_update as $post_data) {
                 $author = Author::get_by_user_id($post_data->post_author);
 
@@ -185,7 +185,7 @@ class Installer
 			    "
         );
 
-        if ( ! empty($authors)) {
+        if (!empty($authors)) {
             foreach ($authors as $author) {
                 if ($author->slug !== $author->user_nicename) {
                     wp_update_term($author->term_id, 'author', ['slug' => $author->user_nicename]);

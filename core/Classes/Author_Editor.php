@@ -372,7 +372,7 @@ class Author_Editor
     /**
      * Handle saving of term meta
      *
-     * @param integer $term_id ID for the term being edited.
+     * @param int $term_id ID for the term being edited.
      */
     public static function action_edited_author($term_id)
     {

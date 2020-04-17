@@ -28,14 +28,31 @@ class RSS
      */
     public static function filter_the_author($author)
     {
-        if ( ! is_feed() || ! self::is_supported_post_type()) {
+        if (!is_feed() || !self::is_supported_post_type()) {
             return $author;
         }
 
         $authors = get_multiple_authors();
         $first   = array_shift($authors);
 
-        return ! empty($first) ? $first->display_name : '';
+        return !empty($first) ? $first->display_name : '';
+    }
+
+    /**
+     * Whether or not the global post is a supported post type
+     *
+     * @return bool
+     */
+    private static function is_supported_post_type()
+    {
+        global $post;
+
+        // Can't determine post, so assume true.
+        if (!$post) {
+            return true;
+        }
+
+        return in_array($post->post_type, Content_Model::get_author_supported_post_types(), true);
     }
 
     /**
@@ -43,7 +60,7 @@ class RSS
      */
     public static function action_rss2_item()
     {
-        if ( ! self::is_supported_post_type()) {
+        if (!self::is_supported_post_type()) {
             return;
         }
         $authors = get_multiple_authors();
@@ -52,23 +69,6 @@ class RSS
         foreach ($authors as $author) {
             echo '<dc:creator><![CDATA[' . esc_html($author->display_name) . ']]></dc:creator>' . PHP_EOL;
         }
-    }
-
-    /**
-     * Whether or not the global post is a supported post type
-     *
-     * @return boolean
-     */
-    private static function is_supported_post_type()
-    {
-        global $post;
-
-        // Can't determine post, so assume true.
-        if ( ! $post) {
-            return true;
-        }
-
-        return in_array($post->post_type, Content_Model::get_author_supported_post_types(), true);
     }
 
 }

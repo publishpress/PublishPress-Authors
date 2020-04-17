@@ -11,9 +11,9 @@
 
 namespace MultipleAuthors;
 
-use \WP_CLI_Command;
+use WP_CLI_Command;
 
-class WP_Cli extends \WP_CLI_Command
+class WP_Cli extends WP_CLI_Command
 {
 
     /**
@@ -44,9 +44,7 @@ class WP_Cli extends \WP_CLI_Command
         $total_posts = $posts->found_posts;
         self::line("Now inspecting or updating {$posts->found_posts} total posts.");
         while ($posts->post_count) {
-
             foreach ($posts->posts as $single_post) {
-
                 $count++;
 
                 $terms = cap_get_coauthor_terms_for_post($single_post->ID);
@@ -54,22 +52,35 @@ class WP_Cli extends \WP_CLI_Command
                     self::error(sprintf('No co-authors found for post #%d.', $single_post->ID));
                 }
 
-                if ( ! empty($terms)) {
-                    self::line("{$count}/{$posts->found_posts}) Skipping - Post #{$single_post->ID} '{$single_post->post_title}' already has these terms: " . implode(', ',
-                            wp_list_pluck($terms, 'name')));
+                if (!empty($terms)) {
+                    self::line(
+                        "{$count}/{$posts->found_posts}) Skipping - Post #{$single_post->ID} '{$single_post->post_title}' already has these terms: " . implode(
+                            ', ',
+                            wp_list_pluck($terms, 'name')
+                        )
+                    );
                     continue;
                 }
 
-                $author                             = ( ! empty($authors[$single_post->post_author])) ? $authors[$single_post->post_author] : get_user_by('id',
-                    $single_post->post_author);
+                $author                             = (!empty($authors[$single_post->post_author])) ? $authors[$single_post->post_author] : get_user_by(
+                    'id',
+                    $single_post->post_author
+                );
                 $authors[$single_post->post_author] = $author;
 
-                $author_term                             = ( ! empty($author_terms[$single_post->post_author])) ? $author_terms[$single_post->post_author] : $multiple_authors_addon->update_author_term($author);
+                $author_term                             = (!empty($author_terms[$single_post->post_author])) ? $author_terms[$single_post->post_author] : $multiple_authors_addon->update_author_term(
+                    $author
+                );
                 $author_terms[$single_post->post_author] = $author_term;
 
-                wp_set_post_terms($single_post->ID, [$author_term->slug],
-                    $multiple_authors_addon->coauthor_taxonomy);
-                self::line("{$count}/{$total_posts}) Added - Post #{$single_post->ID} '{$single_post->post_title}' now has an author term for: " . $author->user_nicename);
+                wp_set_post_terms(
+                    $single_post->ID,
+                    [$author_term->slug],
+                    $multiple_authors_addon->coauthor_taxonomy
+                );
+                self::line(
+                    "{$count}/{$total_posts}) Added - Post #{$single_post->ID} '{$single_post->post_title}' now has an author term for: " . $author->user_nicename
+                );
                 $affected++;
             }
 
@@ -87,7 +98,6 @@ class WP_Cli extends \WP_CLI_Command
         }
 
         self::success("Done! Of {$total_posts} posts, {$affected} now have author terms.");
-
     }
 
     /**
@@ -99,7 +109,7 @@ class WP_Cli extends \WP_CLI_Command
 
         $wpdb->queries = []; // or define( 'WP_IMPORTING', true );
 
-        if ( ! is_object($wp_object_cache)) {
+        if (!is_object($wp_object_cache)) {
             return;
         }
 
@@ -148,7 +158,6 @@ class WP_Cli extends \WP_CLI_Command
 
         $posts = new WP_Query($this->args);
         while ($posts->post_count) {
-
             foreach ($posts->posts as $single_post) {
                 $posts_total++;
 
@@ -163,24 +172,35 @@ class WP_Cli extends \WP_CLI_Command
                 }
                 if ($already_associated) {
                     $posts_already_associated++;
-                    self::line($posts_total . ': Post #' . $single_post->ID . ' already has "' . $original_author . '" associated as a coauthor');
+                    self::line(
+                        $posts_total . ': Post #' . $single_post->ID . ' already has "' . $original_author . '" associated as a coauthor'
+                    );
                     continue;
                 }
 
                 // Make sure this original author exists as a co-author
-                if (( ! $coauthor = $multiple_authors_addon->get_coauthor_by('user_login', $original_author)) &&
-                    ( ! $coauthor = $multiple_authors_addon->get_coauthor_by('user_login',
-                        sanitize_title($original_author)))) {
+                if ((!$coauthor = $multiple_authors_addon->get_coauthor_by('user_login', $original_author)) &&
+                    (!$coauthor = $multiple_authors_addon->get_coauthor_by(
+                        'user_login',
+                        sanitize_title($original_author)
+                    ))) {
                     $posts_missing_coauthor++;
                     $missing_coauthors[] = $original_author;
-                    self::line($posts_total . ': Post #' . $single_post->ID . ' does not have "' . $original_author . '" associated as a coauthor but there is not a coauthor profile');
+                    self::line(
+                        $posts_total . ': Post #' . $single_post->ID . ' does not have "' . $original_author . '" associated as a coauthor but there is not a coauthor profile'
+                    );
                     continue;
                 }
 
                 // Assign the coauthor to the post
-                $multiple_authors_addon->add_coauthors($single_post->ID, [$coauthor->user_nicename],
-                    $append_coauthors);
-                self::line($posts_total . ': Post #' . $single_post->ID . ' has been assigned "' . $original_author . '" as the author');
+                $multiple_authors_addon->add_coauthors(
+                    $single_post->ID,
+                    [$coauthor->user_nicename],
+                    $append_coauthors
+                );
+                self::line(
+                    $posts_total . ': Post #' . $single_post->ID . ' has been assigned "' . $original_author . '" as the author'
+                );
                 $posts_associated++;
                 clean_post_cache($single_post->ID);
             }
@@ -201,7 +221,6 @@ class WP_Cli extends \WP_CLI_Command
         if ($posts_associated) {
             self::line("- {$posts_associated} posts now have the proper coauthor");
         }
-
     }
 
     /**
@@ -226,40 +245,54 @@ class WP_Cli extends \WP_CLI_Command
         $user     = get_user_by('login', $assoc_args['user_login']);
         $coauthor = $multiple_authors_addon->get_coauthor_by('login', $assoc_args['coauthor']);
 
-        if ( ! $user) {
+        if (!$user) {
             self::error(__('Please specify a valid user_login', 'publishpress-authors'));
         }
 
-        if ( ! $coauthor) {
+        if (!$coauthor) {
             self::error(__('Please specify a valid co-author login', 'publishpress-authors'));
         }
 
         $post_types = implode("','", $multiple_authors_addon->supported_post_types);
-        $posts      = $wpdb->get_col($wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_author=%d AND post_type IN ('$post_types')",
-            $user->ID));
+        $posts      = $wpdb->get_col(
+            $wpdb->prepare(
+                "SELECT ID FROM $wpdb->posts WHERE post_author=%d AND post_type IN ('$post_types')",
+                $user->ID
+            )
+        );
         $affected   = 0;
         foreach ($posts as $post_id) {
             $coauthors = cap_get_coauthor_terms_for_post($post_id);
-            if ( ! empty($coauthors)) {
-                self::line(sprintf(
-                    __('Skipping - Post #%d already has co-authors assigned: %s', 'publishpress-authors'),
-                    $post_id,
-                    implode(', ', wp_list_pluck($coauthors, 'slug'))
-                ));
+            if (!empty($coauthors)) {
+                self::line(
+                    sprintf(
+                        __('Skipping - Post #%d already has co-authors assigned: %s', 'publishpress-authors'),
+                        $post_id,
+                        implode(', ', wp_list_pluck($coauthors, 'slug'))
+                    )
+                );
                 continue;
             }
 
             $multiple_authors_addon->add_coauthors($post_id, [$coauthor->user_login]);
-            self::line(sprintf(__("Updating - Adding %s's byline to post #%d", 'publishpress-authors'),
-                $coauthor->user_login, $post_id));
+            self::line(
+                sprintf(
+                    __("Updating - Adding %s's byline to post #%d", 'publishpress-authors'),
+                    $coauthor->user_login,
+                    $post_id
+                )
+            );
             $affected++;
             if ($affected && 0 === $affected % 20) {
                 sleep(5);
             }
         }
-        self::success(sprintf(__('All done! %d posts were affected.', 'publishpress-authors'),
-            $affected));
-
+        self::success(
+            sprintf(
+                __('All done! %d posts were affected.', 'publishpress-authors'),
+                $affected
+            )
+        );
     }
 
     /**
@@ -315,15 +348,18 @@ class WP_Cli extends \WP_CLI_Command
             'success'          => 0,
         ];
         foreach ($authors_to_migrate as $old_user => $new_user) {
-
             if (is_numeric($new_user)) {
                 $new_user = get_user_by('id', $new_user)->user_login;
             }
 
             // The old user should exist as a term
-            $old_term = $multiple_authors_addon->get_author_term($multiple_authors_addon->get_coauthor_by('login',
-                $old_user));
-            if ( ! $old_term) {
+            $old_term = $multiple_authors_addon->get_author_term(
+                $multiple_authors_addon->get_coauthor_by(
+                    'login',
+                    $old_user
+                )
+            );
+            if (!$old_term) {
                 self::line("Error: Term '{$old_user}' doesn't exist, skipping");
                 $results->old_term_missing++;
                 continue;
@@ -332,10 +368,16 @@ class WP_Cli extends \WP_CLI_Command
             // If the new user exists as a term already, we want to reassign all posts to that
             // new term and delete the original
             // Otherwise, simply rename the old term
-            $new_term = $multiple_authors_addon->get_author_term($multiple_authors_addon->get_coauthor_by('login',
-                $new_user));
+            $new_term = $multiple_authors_addon->get_author_term(
+                $multiple_authors_addon->get_coauthor_by(
+                    'login',
+                    $new_user
+                )
+            );
             if (is_object($new_term)) {
-                self::line("Success: There's already a '{$new_user}' term for '{$old_user}'. Reassigning {$old_term->count} posts and then deleting the term");
+                self::line(
+                    "Success: There's already a '{$new_user}' term for '{$old_user}'. Reassigning {$old_term->count} posts and then deleting the term"
+                );
                 $args = [
                     'default'       => $new_term->term_id,
                     'force_default' => true,
@@ -358,7 +400,6 @@ class WP_Cli extends \WP_CLI_Command
         self::line("- $results->success authors were successfully reassigned terms");
         self::line("- $results->new_term_exists authors had their old term merged to their new term");
         self::line("- $results->old_term_missing authors were missing old terms");
-
     }
 
     /**
@@ -382,11 +423,11 @@ class WP_Cli extends \WP_CLI_Command
         $to_userlogin = $assoc_args['to'];
 
         $orig_coauthor = $multiple_authors_addon->get_coauthor_by('user_login', $assoc_args['from']);
-        if ( ! $orig_coauthor) {
+        if (!$orig_coauthor) {
             self::error("No co-author found for {$assoc_args['from']}");
         }
 
-        if ( ! $to_userlogin) {
+        if (!$to_userlogin) {
             self::error('--to param must not be empty');
         }
 
@@ -433,17 +474,17 @@ class WP_Cli extends \WP_CLI_Command
 
         $orig_coauthor = $multiple_authors_addon->get_coauthor_by('user_login', $from_userlogin);
 
-        if ( ! $orig_coauthor) {
+        if (!$orig_coauthor) {
             self::error("No co-author found for $from_userlogin");
         }
 
-        if ( ! $to_userlogin) {
+        if (!$to_userlogin) {
             self::error('--to param must not be empty');
         }
 
         $to_coauthor = $multiple_authors_addon->get_coauthor_by('user_login', $to_userlogin);
 
-        if ( ! $to_coauthor) {
+        if (!$to_coauthor) {
             self::error("No co-author found for $to_userlogin");
         }
 
@@ -474,7 +515,7 @@ class WP_Cli extends \WP_CLI_Command
             foreach ($posts->posts as $post) {
                 $coauthors = get_multiple_authors($post->ID);
 
-                if ( ! is_array($coauthors) || ! count($coauthors)) {
+                if (!is_array($coauthors) || !count($coauthors)) {
                     continue;
                 }
 
@@ -482,7 +523,7 @@ class WP_Cli extends \WP_CLI_Command
 
                 $posts_total++;
 
-                if ( ! $dry) {
+                if (!$dry) {
                     // Remove the $from_userlogin from $coauthors
                     foreach ($coauthors as $index => $user_login) {
                         if ($from_userlogin === $user_login) {
@@ -498,11 +539,15 @@ class WP_Cli extends \WP_CLI_Command
                     // By not passing $append = false as the 3rd param, we replace all existing coauthors
                     $multiple_authors_addon->add_coauthors($post->ID, $coauthors, false);
 
-                    self::line($posts_total . ': Post #' . $post->ID . ' has been assigned "' . $to_userlogin . '" as a co-author');
+                    self::line(
+                        $posts_total . ': Post #' . $post->ID . ' has been assigned "' . $to_userlogin . '" as a co-author'
+                    );
 
                     clean_post_cache($post->ID);
                 } else {
-                    self::line($posts_total . ': Post #' . $post->ID . ' will be assigned "' . $to_userlogin . '" as a co-author');
+                    self::line(
+                        $posts_total . ': Post #' . $post->ID . ' will be assigned "' . $to_userlogin . '" as a co-author'
+                    );
                 }
             }
 
@@ -545,9 +590,7 @@ class WP_Cli extends \WP_CLI_Command
 
         $posts = new WP_Query($this->args);
         while ($posts->post_count) {
-
             foreach ($posts->posts as $single_post) {
-
                 $terms = cap_get_coauthor_terms_for_post($single_post->ID);
                 if (empty($terms)) {
                     $saved = [
@@ -565,7 +608,6 @@ class WP_Cli extends \WP_CLI_Command
             $this->args['paged']++;
             $posts = new WP_Query($this->args);
         }
-
     }
 
     /**
@@ -586,7 +628,9 @@ class WP_Cli extends \WP_CLI_Command
             $multiple_authors_addon->update_author_term($coauthor);
             wp_cache_delete($author_term->term_id, $multiple_authors_addon->coauthor_taxonomy);
             $new_count = get_term_by('id', $author_term->term_id, $multiple_authors_addon->coauthor_taxonomy)->count;
-            self::line("Term {$author_term->slug} ({$author_term->term_id}) changed from {$old_count} to {$new_count} and the description was refreshed");
+            self::line(
+                "Term {$author_term->slug} ({$author_term->term_id}) changed from {$old_count} to {$new_count} and the description was refreshed"
+            );
         }
         // Create author terms for any users that don't have them
         $users = get_users();
@@ -617,7 +661,6 @@ class WP_Cli extends \WP_CLI_Command
         self::line('Found ' . count($ids) . ' revisions to look through');
         $affected = 0;
         foreach ($ids as $post_id) {
-
             $terms = cap_get_coauthor_terms_for_post($post_id);
             if (empty($terms)) {
                 continue;

@@ -20,7 +20,7 @@ class Author
     /**
      * ID for the correlated term.
      *
-     * @var integer
+     * @var int
      */
     private $term_id;
 
@@ -29,7 +29,7 @@ class Author
      *
      * Authors are always fetched by static fetchers.
      *
-     * @param integer $term_id ID for the correlated term.
+     * @param int $term_id ID for the correlated term.
      */
     private function __construct($term_id)
     {
@@ -39,7 +39,7 @@ class Author
     /**
      * Create a new author object from an existing WordPress user.
      *
-     * @param WP_User|integer $user WordPress user to clone.
+     * @param WP_User|int $user WordPress user to clone.
      *
      * @return Author|WP_Error
      */
@@ -49,12 +49,24 @@ class Author
             $user = get_user_by('id', $user);
         }
         if (!is_a($user, 'WP_User')) {
-            error_log(sprintf('[PublishPress Authors] The method %s found that the expected user doesn\'t exist: %s', __METHOD__, maybe_serialize($user)));
+            error_log(
+                sprintf(
+                    '[PublishPress Authors] The method %s found that the expected user doesn\'t exist: %s',
+                    __METHOD__,
+                    maybe_serialize($user)
+                )
+            );
             return new WP_Error('missing-user', __("User doesn't exist", 'publishpress-authors'));
         }
         $existing = self::get_by_user_id($user->ID);
         if ($existing) {
-            error_log(sprintf('[PublishPress Authors] The method %s tried to create an author that already exists for the user: %s', __METHOD__, maybe_serialize($user)));
+            error_log(
+                sprintf(
+                    '[PublishPress Authors] The method %s tried to create an author that already exists for the user: %s',
+                    __METHOD__,
+                    maybe_serialize($user)
+                )
+            );
             return new WP_Error(
                 'existing-author',
                 __('User already has a author.', 'publishpress-authors')
@@ -67,7 +79,9 @@ class Author
             ]
         );
         if (is_wp_error($author)) {
-            error_log(sprintf('[PublishPress Authors] The method %s found an error trying to create an author', __METHOD__));
+            error_log(
+                sprintf('[PublishPress Authors] The method %s found an error trying to create an author', __METHOD__)
+            );
             return $author;
         }
 
@@ -79,7 +93,7 @@ class Author
     /**
      * Get a author object based on its user id.
      *
-     * @param integer $user_id ID for the author's user.
+     * @param int $user_id ID for the author's user.
      *
      * @return Author|false
      */
@@ -121,7 +135,9 @@ class Author
             );
         }
         if (empty($args['display_name'])) {
-            error_log(sprintf('[PublishPress Authors] The method %s is missing the display_name in the arguments', __METHOD__));
+            error_log(
+                sprintf('[PublishPress Authors] The method %s is missing the display_name in the arguments', __METHOD__)
+            );
             return new WP_Error(
                 'missing-display_name',
                 __("'display_name' is a required argument", 'publishpress-authors')
@@ -193,7 +209,7 @@ class Author
     /**
      * Get a author object based on its term id.
      *
-     * @param integer $term_id ID for the author term.
+     * @param int $term_id ID for the author term.
      *
      * @return Author|false
      */
@@ -324,6 +340,46 @@ class Author
     }
 
     /**
+     * @return bool
+     */
+    public function has_custom_avatar()
+    {
+        $avatar_attachment_id = get_term_meta($this->term_id, 'avatar', true);
+
+        return !empty($avatar_attachment_id);
+    }
+
+    /**
+     * @param int $size
+     *
+     * @return array
+     */
+    protected function get_custom_avatar_url($size = 96)
+    {
+        $avatar_attachment_id = get_term_meta($this->term_id, 'avatar', true);
+
+        // Get the avatar from the attachments.
+        $url   = '';
+        $url2x = '';
+        if (!empty($avatar_attachment_id)) {
+            $url   = wp_get_attachment_image_url($avatar_attachment_id, $size);
+            $url2x = wp_get_attachment_image_url($avatar_attachment_id, $size * 2);
+        }
+
+        // Check if it should return the default avatar.
+        if (empty($url)) {
+            $avatar_data = get_avatar_data(0);
+            $url         = $avatar_data['url'];
+            $url2x       = $avatar_data['url'] . '2x';
+        }
+
+        return [
+            'url'   => $url,
+            'url2x' => $url2x,
+        ];
+    }
+
+    /**
      * For guest authors, returns the custom avatar, if set. If not set, the WordPress' default profile picture.
      * For user mapped authors, returns the custom avatar if set. If not set, returns the user's avatar.
      *
@@ -370,46 +426,6 @@ class Author
          *
          */
         return apply_filters('multiple_authors_get_avatar', $avatar, $this, $size);
-    }
-
-    /**
-     * @return bool
-     */
-    public function has_custom_avatar()
-    {
-        $avatar_attachment_id = get_term_meta($this->term_id, 'avatar', true);
-
-        return !empty($avatar_attachment_id);
-    }
-
-    /**
-     * @param int $size
-     *
-     * @return array
-     */
-    protected function get_custom_avatar_url($size = 96)
-    {
-        $avatar_attachment_id = get_term_meta($this->term_id, 'avatar', true);
-
-        // Get the avatar from the attachments.
-        $url   = '';
-        $url2x = '';
-        if (!empty($avatar_attachment_id)) {
-            $url   = wp_get_attachment_image_url($avatar_attachment_id, $size);
-            $url2x = wp_get_attachment_image_url($avatar_attachment_id, $size * 2);
-        }
-
-        // Check if it should return the default avatar.
-        if (empty($url)) {
-            $avatar_data = get_avatar_data(0);
-            $url         = $avatar_data['url'];
-            $url2x       = $avatar_data['url'] . '2x';
-        }
-
-        return [
-            'url'   => $url,
-            'url2x' => $url2x,
-        ];
     }
 
     /**

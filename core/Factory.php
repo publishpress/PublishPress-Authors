@@ -13,7 +13,7 @@ use MultipleAuthors\Classes\Legacy\LegacyPlugin;
 
 defined('ABSPATH') or die('No direct script access allowed.');
 
-if ( ! defined('MULTIPLE_AUTHORS_LOADED')) {
+if (!defined('MULTIPLE_AUTHORS_LOADED')) {
     require_once __DIR__ . '/../includes.php';
 }
 
@@ -28,6 +28,16 @@ abstract class Factory
     protected static $container = null;
 
     /**
+     * @return LegacyPlugin
+     */
+    public static function getLegacyPlugin()
+    {
+        $container = self::get_container();
+
+        return $container['legacy_plugin'];
+    }
+
+    /**
      * @return Container
      */
     public static function get_container()
@@ -40,15 +50,5 @@ abstract class Factory
         }
 
         return static::$container;
-    }
-
-    /**
-     * @return LegacyPlugin
-     */
-    public static function getLegacyPlugin()
-    {
-        $container = self::get_container();
-
-        return $container['legacy_plugin'];
     }
 }

@@ -27,37 +27,43 @@ namespace PPAuthors\YoastSEO\Schema;
 
 use MultipleAuthors\Classes\Authors_Iterator;
 use PPAuthors\YoastSEO\SchemaUtils;
+use WP_Post;
+use WPSEO_Date_Helper;
+use WPSEO_Frontend_Page_Type;
+use WPSEO_Graph_Piece;
+use WPSEO_Schema_Context;
+use WPSEO_Schema_IDs;
 
 /**
  * Returns schema Article data.
  *
  * Based on the class \WPSEO_Schema_Article, from Yoast SEO Premium.
  */
-class Webpage implements \WPSEO_Graph_Piece
+class Webpage implements WPSEO_Graph_Piece
 {
     /**
      * The date helper.
      *
-     * @var \WPSEO_Date_Helper
+     * @var WPSEO_Date_Helper
      */
     protected $date;
 
     /**
      * A value object with context variables.
      *
-     * @var \WPSEO_Schema_Context
+     * @var WPSEO_Schema_Context
      */
     private $context;
 
     /**
      * WPSEO_Schema_WebPage constructor.
      *
-     * @param \WPSEO_Schema_Context $context A value object with context variables.
+     * @param WPSEO_Schema_Context $context A value object with context variables.
      */
-    public function __construct(\WPSEO_Schema_Context $context)
+    public function __construct(WPSEO_Schema_Context $context)
     {
         $this->context = $context;
-        $this->date    = new \WPSEO_Date_Helper();
+        $this->date    = new WPSEO_Date_Helper();
     }
 
     /**
@@ -83,11 +89,11 @@ class Webpage implements \WPSEO_Graph_Piece
     {
         $data = [
             '@type'    => $this->determine_page_type(),
-            '@id'      => $this->context->canonical . \WPSEO_Schema_IDs::WEBPAGE_HASH,
+            '@id'      => $this->context->canonical . WPSEO_Schema_IDs::WEBPAGE_HASH,
             'url'      => $this->context->canonical,
             'name'     => $this->context->title,
             'isPartOf' => [
-                '@id' => $this->context->site_url . \WPSEO_Schema_IDs::WEBSITE_HASH,
+                '@id' => $this->context->site_url . WPSEO_Schema_IDs::WEBSITE_HASH,
             ],
         ];
 
@@ -120,7 +126,7 @@ class Webpage implements \WPSEO_Graph_Piece
 
         if ($this->add_breadcrumbs()) {
             $data['breadcrumb'] = [
-                '@id' => $this->context->canonical . \WPSEO_Schema_IDs::BREADCRUMB_HASH,
+                '@id' => $this->context->canonical . WPSEO_Schema_IDs::BREADCRUMB_HASH,
             ];
         }
 
@@ -130,23 +136,34 @@ class Webpage implements \WPSEO_Graph_Piece
     }
 
     /**
-     * Adds an author property to the $data if the WebPage is not represented.
+     * Determine the page type for the current page.
      *
-     * @param array $data The WebPage schema.
-     * @param \WP_Post $post The post the context is representing.
-     *
-     * @return array The WebPage schema.
+     * @return string
      */
-    public function add_author($data, $post)
+    private function determine_page_type()
     {
-        if ($this->context->site_represents === false) {
-            $authorsIterator = new Authors_Iterator($post->ID, false);
-            $authorsIterator->iterate();
-            $author = $authorsIterator->current_author;
-
-            $data['author'] = ['@id' => $this->context->site_url . \WPSEO_Schema_IDs::PERSON_HASH . wp_hash($author->slug)];
+        switch (true) {
+            case is_search():
+                $type = 'SearchResultsPage';
+                break;
+            case is_author():
+                $type = 'ProfilePage';
+                break;
+            case WPSEO_Frontend_Page_Type::is_posts_page():
+            case WPSEO_Frontend_Page_Type::is_home_posts_page():
+            case is_archive():
+                $type = 'CollectionPage';
+                break;
+            default:
+                $type = 'WebPage';
         }
-        return $data;
+
+        /**
+         * Filter: 'wpseo_schema_webpage_type' - Allow changing the WebPage type.
+         *
+         * @api string $type The WebPage type.
+         */
+        return apply_filters('wpseo_schema_webpage_type', $type);
     }
 
     /**
@@ -157,8 +174,32 @@ class Webpage implements \WPSEO_Graph_Piece
     public function add_image(&$data)
     {
         if ($this->context->has_image) {
-            $data['primaryImageOfPage'] = ['@id' => $this->context->canonical . \WPSEO_Schema_IDs::PRIMARY_IMAGE_HASH];
+            $data['primaryImageOfPage'] = ['@id' => $this->context->canonical . WPSEO_Schema_IDs::PRIMARY_IMAGE_HASH];
         }
+    }
+
+    /**
+     * Adds an author property to the $data if the WebPage is not represented.
+     *
+     * @param array $data The WebPage schema.
+     * @param WP_Post $post The post the context is representing.
+     *
+     * @return array The WebPage schema.
+     */
+    public function add_author($data, $post)
+    {
+        if ($this->context->site_represents === false) {
+            $authorsIterator = new Authors_Iterator($post->ID, false);
+            $authorsIterator->iterate();
+            $author = $authorsIterator->current_author;
+
+            $data['author'] = [
+                '@id' => $this->context->site_url . WPSEO_Schema_IDs::PERSON_HASH . wp_hash(
+                        $author->slug
+                    )
+            ];
+        }
+        return $data;
     }
 
     /**
@@ -177,37 +218,6 @@ class Webpage implements \WPSEO_Graph_Piece
         }
 
         return false;
-    }
-
-    /**
-     * Determine the page type for the current page.
-     *
-     * @return string
-     */
-    private function determine_page_type()
-    {
-        switch (true) {
-            case is_search():
-                $type = 'SearchResultsPage';
-                break;
-            case is_author():
-                $type = 'ProfilePage';
-                break;
-            case \WPSEO_Frontend_Page_Type::is_posts_page():
-            case \WPSEO_Frontend_Page_Type::is_home_posts_page():
-            case is_archive():
-                $type = 'CollectionPage';
-                break;
-            default:
-                $type = 'WebPage';
-        }
-
-        /**
-         * Filter: 'wpseo_schema_webpage_type' - Allow changing the WebPage type.
-         *
-         * @api string $type The WebPage type.
-         */
-        return apply_filters('wpseo_schema_webpage_type', $type);
     }
 
     /**

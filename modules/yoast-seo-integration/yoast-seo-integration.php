@@ -23,6 +23,7 @@
 
 use MultipleAuthors\Classes\Legacy\Module;
 use MultipleAuthors\Factory;
+use PPAuthors\YoastSEO\SchemaFacade;
 
 if (!class_exists('MA_Yoast_Seo_Integration')) {
     /**
@@ -48,16 +49,16 @@ if (!class_exists('MA_Yoast_Seo_Integration')) {
 
             // Register the module with PublishPress
             $args = [
-                'title'             => __('Yoast SEO Compatibility', 'publishpress-authors'),
+                'title' => __('Yoast SEO Compatibility', 'publishpress-authors'),
                 'short_description' => __('Add compatibility with the Yoast SEO plugin', 'publishpress-authors'),
-                'module_url'        => $this->module_url,
-                'icon_class'        => 'dashicons dashicons-feedback',
-                'slug'              => 'yoast-seo-compatibility',
-                'default_options'   => [
+                'module_url' => $this->module_url,
+                'icon_class' => 'dashicons dashicons-feedback',
+                'slug' => 'yoast-seo-compatibility',
+                'default_options' => [
                     'enabled' => 'on',
                 ],
-                'options_page'      => false,
-                'autoload'          => true,
+                'options_page' => false,
+                'autoload' => true,
             ];
 
             // Apply a filter to the default options
@@ -111,12 +112,14 @@ if (!class_exists('MA_Yoast_Seo_Integration')) {
                     return;
                 }
 
-                $schemaFacade = new \PPAuthors\YoastSEO\SchemaFacade();
+                $schemaFacade = new SchemaFacade();
                 $schemaFacade->addSupportForMultipleAuthors();
 
                 add_filter('wpseo_replacements', [$this, 'overrideSEOReplacementsForAuthorsPage'], 10, 2);
-            } catch (\Exception $e) {
-                error_log(sprintf('[PublishPress Authors] Method [%s] caught the exception %s', __METHOD__, $e->getMessage()));
+            } catch (Exception $e) {
+                error_log(
+                    sprintf('[PublishPress Authors] Method [%s] caught the exception %s', __METHOD__, $e->getMessage())
+                );
             }
         }
 
@@ -133,8 +136,10 @@ if (!class_exists('MA_Yoast_Seo_Integration')) {
                         }
                     }
                 }
-            } catch (\Exception $e) {
-                error_log(sprintf('[PublishPress Authors] Method %s caught the exception: %s', __METHOD__, $e->getMessage()));
+            } catch (Exception $e) {
+                error_log(
+                    sprintf('[PublishPress Authors] Method %s caught the exception: %s', __METHOD__, $e->getMessage())
+                );
             }
 
 

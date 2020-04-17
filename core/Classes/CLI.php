@@ -37,7 +37,6 @@ class CLI
      */
     public function convert_coauthor($args, $assoc_args)
     {
-
         if (empty($GLOBALS['coauthors_plus'])) {
             WP_CLI::error('Co-Authors Plus must be installed and active.');
         }
@@ -94,7 +93,6 @@ class CLI
      */
     public function convert_post_author($args, $assoc_args)
     {
-
         $successes = 0;
         $failures  = 0;
         $total     = count($args);
@@ -103,19 +101,19 @@ class CLI
                 WP_CLI\Utils\wp_clear_object_cache();
             }
             $post = get_post($post_id);
-            if ( ! $post) {
+            if (!$post) {
                 WP_CLI::warning("Invalid post: {$post_id}");
                 $failures++;
                 continue;
             }
             $authors = get_the_terms($post_id, 'author');
-            if ($authors && ! is_wp_error($authors)) {
+            if ($authors && !is_wp_error($authors)) {
                 WP_CLI::warning("Post {$post_id} already has authors.");
                 $failures++;
                 continue;
             }
 
-            if ( ! $post->post_author) {
+            if (!$post->post_author) {
                 WP_CLI::warning("Post {$post_id} doesn't have an author.");
                 $failures++;
                 continue;

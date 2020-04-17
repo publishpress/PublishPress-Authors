@@ -23,6 +23,8 @@
 
 namespace PPAuthors\YoastSEO;
 
+use WPSEO_Schema_Context;
+
 class SchemaFacade
 {
     public function addSupportForMultipleAuthors()
@@ -32,11 +34,11 @@ class SchemaFacade
 
     /**
      * @param array $pieces
-     * @param \WPSEO_Schema_Context $context An object with context variables.
+     * @param WPSEO_Schema_Context $context An object with context variables.
      *
      * @return array
      */
-    public function handleSchemaGraphPieces($pieces, \WPSEO_Schema_Context $context)
+    public function handleSchemaGraphPieces($pieces, WPSEO_Schema_Context $context)
     {
         $schemaMap = [
             'WPSEO_Schema_Article' => Schema\Article::class,

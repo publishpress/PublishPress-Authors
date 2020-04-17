@@ -4,6 +4,8 @@
 namespace PPAuthors\YoastSEO;
 
 
+use WPSEO_Schema_Utils;
+
 abstract class SchemaUtils
 {
     /**
@@ -17,7 +19,7 @@ abstract class SchemaUtils
     public static function addPieceLanguage($data)
     {
         if (class_exists('\\WPSEO_Schema_Utils') && method_exists('\\WPSEO_Schema_Utils', 'add_piece_language')) {
-            return \WPSEO_Schema_Utils::add_piece_language($data);
+            return WPSEO_Schema_Utils::add_piece_language($data);
         } else {
             /**
              * Filter: 'wpseo_schema_piece_language' - Allow changing the Schema piece language.

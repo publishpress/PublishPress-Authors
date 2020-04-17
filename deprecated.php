@@ -20,17 +20,35 @@ class_alias(MultipleAuthors\Services::class, PublishPress\Addon\Multiple_authors
 class_alias(MultipleAuthors\Widget::class, PublishPress\Addon\Multiple_authors\Widget::class);
 //class_alias(MultipleAuthors\WP_Cli::class, PublishPress\Addon\Multiple_authors\WP_Cli::class);
 class_alias(MultipleAuthors\Classes\Admin_Ajax::class, PublishPress\Addon\Multiple_authors\Classes\Admin_Ajax::class);
-class_alias(MultipleAuthors\Classes\Author_Editor::class, PublishPress\Addon\Multiple_authors\Classes\Author_Editor::class);
-class_alias(MultipleAuthors\Classes\Authors_Iterator::class, PublishPress\Addon\Multiple_authors\Classes\Authors_Iterator::class);
+class_alias(
+    MultipleAuthors\Classes\Author_Editor::class,
+    PublishPress\Addon\Multiple_authors\Classes\Author_Editor::class
+);
+class_alias(
+    MultipleAuthors\Classes\Authors_Iterator::class,
+    PublishPress\Addon\Multiple_authors\Classes\Authors_Iterator::class
+);
 class_alias(MultipleAuthors\Classes\CLI::class, PublishPress\Addon\Multiple_authors\Classes\CLI::class);
-class_alias(MultipleAuthors\Classes\Content_Model::class, PublishPress\Addon\Multiple_authors\Classes\Content_Model::class);
+class_alias(
+    MultipleAuthors\Classes\Content_Model::class,
+    PublishPress\Addon\Multiple_authors\Classes\Content_Model::class
+);
 class_alias(MultipleAuthors\Classes\Installer::class, PublishPress\Addon\Multiple_authors\Classes\Installer::class);
 class_alias(MultipleAuthors\Classes\Post_Editor::class, PublishPress\Addon\Multiple_authors\Classes\Post_Editor::class);
 class_alias(MultipleAuthors\Classes\Query::class, PublishPress\Addon\Multiple_authors\Classes\Query::class);
 class_alias(MultipleAuthors\Classes\Utils::class, PublishPress\Addon\Multiple_authors\Classes\Utils::class);
-class_alias(MultipleAuthors\Classes\Objects\Author::class, PublishPress\Addon\Multiple_authors\Classes\Objects\Author::class);
-class_alias(MultipleAuthors\Classes\Integrations\RSS::class, PublishPress\Addon\Multiple_authors\Classes\Integrations\RSS::class);
-class_alias(MultipleAuthors\Classes\Integrations\Theme::class, PublishPress\Addon\Multiple_authors\Classes\Integrations\Theme::class);
+class_alias(
+    MultipleAuthors\Classes\Objects\Author::class,
+    PublishPress\Addon\Multiple_authors\Classes\Objects\Author::class
+);
+class_alias(
+    MultipleAuthors\Classes\Integrations\RSS::class,
+    PublishPress\Addon\Multiple_authors\Classes\Integrations\RSS::class
+);
+class_alias(
+    MultipleAuthors\Classes\Integrations\Theme::class,
+    PublishPress\Addon\Multiple_authors\Classes\Integrations\Theme::class
+);
 
 if (!defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION')) {
     define('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION', PP_AUTHORS_VERSION);

@@ -7,7 +7,7 @@
  * @since       1.0.7
  */
 
-if ( ! function_exists('get_bylines')) {
+if (!function_exists('get_bylines')) {
     /**
      * Get all bylines for a post.
      *
@@ -21,7 +21,7 @@ if ( ! function_exists('get_bylines')) {
     }
 }
 
-if ( ! function_exists('the_bylines')) {
+if (!function_exists('the_bylines')) {
     /**
      * Renders the bylines display names, without links to their posts.
      *
@@ -35,7 +35,7 @@ if ( ! function_exists('the_bylines')) {
     }
 }
 
-if ( ! function_exists('get_the_bylines')) {
+if (!function_exists('get_the_bylines')) {
     /**
      * Gets the bylines display names, without links to their posts.
      *
@@ -49,7 +49,7 @@ if ( ! function_exists('get_the_bylines')) {
     }
 }
 
-if ( ! function_exists('the_bylines_posts_links')) {
+if (!function_exists('the_bylines_posts_links')) {
     /**
      * Renders the bylines display names, with links to their posts.
      *
@@ -63,7 +63,7 @@ if ( ! function_exists('the_bylines_posts_links')) {
     }
 }
 
-if ( ! function_exists('get_the_bylines_posts_links')) {
+if (!function_exists('get_the_bylines_posts_links')) {
     /**
      * Renders the bylines display names, with links to their posts.
      *
@@ -75,7 +75,7 @@ if ( ! function_exists('get_the_bylines_posts_links')) {
     }
 }
 
-if ( ! function_exists('the_bylines_links')) {
+if (!function_exists('the_bylines_links')) {
     /**
      * Renders the bylines display names, with their website link if it exists.
      *
@@ -89,7 +89,7 @@ if ( ! function_exists('the_bylines_links')) {
     }
 }
 
-if ( ! function_exists('get_the_bylines_links')) {
+if (!function_exists('get_the_bylines_links')) {
     /**
      * Renders the bylines display names, with their website link if it exists.
      *
@@ -101,13 +101,13 @@ if ( ! function_exists('get_the_bylines_links')) {
     }
 }
 
-if ( ! function_exists('bylines_render')) {
+if (!function_exists('bylines_render')) {
     /**
      * Display one or more bylines, according to arguments provided.
      *
-     * @param array    $bylines         Set of bylines to display.
+     * @param array $bylines Set of bylines to display.
      * @param callable $render_callback Callback to return rendered byline.
-     * @param array    $args            Arguments to affect display.
+     * @param array $args Arguments to affect display.
      *
      * @return string
      */

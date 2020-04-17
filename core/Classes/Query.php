@@ -33,12 +33,12 @@ class Query
      */
     public static function action_pre_get_posts($query)
     {
-        if ( ! $query->is_author()) {
+        if (!$query->is_author()) {
             return;
         }
 
         $author_name = $query->get('author_name');
-        if ( ! $author_name) {
+        if (!$author_name) {
             return;
         }
 
@@ -72,7 +72,7 @@ class Query
     /**
      * Modify the WHERE clause on author queries.
      *
-     * @param string   $where Existing WHERE clause.
+     * @param string $where Existing WHERE clause.
      * @param WP_Query $query Query object.
      *
      * @return string
@@ -81,12 +81,14 @@ class Query
     {
         global $wpdb;
 
-        if ( ! $query->is_author()) {
+        if (!$query->is_author()) {
             return $where;
         }
 
-        if ( ! empty($query->query_vars['post_type']) && ! is_object_in_taxonomy($query->query_vars['post_type'],
-                'author')) {
+        if (!empty($query->query_vars['post_type']) && !is_object_in_taxonomy(
+                $query->query_vars['post_type'],
+                'author'
+            )) {
             return $where;
         }
 
@@ -96,7 +98,7 @@ class Query
             $author_id = (int)$query->get('author');
             $user      = get_user_by('id', $author_id);
 
-            if ( ! $author_id || ! $user) {
+            if (!$author_id || !$user) {
                 return $where;
             }
 
@@ -106,7 +108,7 @@ class Query
         $terms = [];
         $term  = get_term_by('slug', $author_name, 'author');
 
-        if ( ! empty($term)) {
+        if (!empty($term)) {
             $terms[] = $term;
         }
 
@@ -119,7 +121,7 @@ class Query
 
         $maybe_both_query = $maybe_both ? '$0 OR ' : '';
 
-        if ( ! empty($terms)) {
+        if (!empty($terms)) {
             $terms_implode = '';
 
             $query->authors_having_terms = '';
@@ -150,7 +152,7 @@ class Query
     /**
      * Modify the JOIN clause on author queries.
      *
-     * @param string   $join  Existing JOIN clause.
+     * @param string $join Existing JOIN clause.
      * @param WP_Query $query Query object.
      *
      * @return string
@@ -159,7 +161,7 @@ class Query
     {
         global $wpdb;
 
-        if ( ! $query->is_author() || empty($query->authors_having_terms)) {
+        if (!$query->is_author() || empty($query->authors_having_terms)) {
             return $join;
         }
 
@@ -184,8 +186,8 @@ class Query
     /**
      * Modify the GROUP BY clause on author queries.
      *
-     * @param string   $groupby Existing GROUP BY clause.
-     * @param WP_Query $query   Query object.
+     * @param string $groupby Existing GROUP BY clause.
+     * @param WP_Query $query Query object.
      *
      * @return string
      */
@@ -193,7 +195,7 @@ class Query
     {
         global $wpdb;
 
-        if ( ! $query->is_author() || empty($query->authors_having_terms)) {
+        if (!$query->is_author() || empty($query->authors_having_terms)) {
             return $groupby;
         }
 

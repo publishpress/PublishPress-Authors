@@ -813,8 +813,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             $isArchive = empty($postID) && is_author();
             $authors   = get_multiple_authors($postID, true, $isArchive);
 
-            foreach ($authors as $author)
-            {
+            foreach ($authors as $author) {
                 if (!empty($newLink)) {
                     $newLink .= ', ';
                 }
@@ -831,7 +830,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         {
             if (is_author()) {
                 $authors = get_multiple_authors(0, true, true);
-                $author = $authors[0];
+                $author  = $authors[0];
 
                 $title['title'] = $author->display_name;
             }
@@ -847,11 +846,10 @@ if (!class_exists('MA_Multiple_Authors')) {
 
                 if (substr_count($title, $wpAuthor->display_name)) {
                     $authors = get_multiple_authors(0, true, true);
-                    $author = $authors[0];
+                    $author  = $authors[0];
 
                     $title = $author->display_name;
                 }
-
             }
 
             return $title;

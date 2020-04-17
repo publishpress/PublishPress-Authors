@@ -37,8 +37,8 @@ class Content_Model
     /**
      * Filter author term links to look like author links
      *
-     * @param string $link     Term link URL.
-     * @param object $term     Term object.
+     * @param string $link Term link URL.
+     * @param object $term Term object.
      * @param string $taxonomy Taxonomy slug.
      *
      * @return string
@@ -90,7 +90,7 @@ class Content_Model
 
             $authors = get_multiple_authors();
 
-            if ( ! empty($authors)) {
+            if (!empty($authors)) {
                 // Even for multiple authors, if not specified one, we will always get the first author.
                 $author = $authors[0];
 
@@ -126,7 +126,7 @@ class Content_Model
         if (empty($author_meta) && empty($user_id)) {
             $authors = get_multiple_authors();
 
-            if ( ! empty($authors)) {
+            if (!empty($authors)) {
                 // Even for multiple authors, if not specified one, we will always get the first author.
                 $author = $authors[0];
 
@@ -142,10 +142,10 @@ class Content_Model
     /**
      * Store user id as a term meta key too, for faster querying
      *
-     * @param mixed   $check      Whether or not the update should be short-circuited.
-     * @param integer $object_id  ID for the author term object.
-     * @param string  $meta_key   Meta key being updated.
-     * @param string  $meta_value New meta value.
+     * @param mixed $check Whether or not the update should be short-circuited.
+     * @param int $object_id ID for the author term object.
+     * @param string $meta_key Meta key being updated.
+     * @param string $meta_value New meta value.
      */
     public static function filter_update_term_metadata($check, $object_id, $meta_key, $meta_value)
     {
@@ -177,7 +177,7 @@ class Content_Model
      */
     public static function action_parse_request($query)
     {
-        if ( ! isset($query->query_vars['author_name'])) {
+        if (!isset($query->query_vars['author_name'])) {
             return $query;
         }
 
@@ -213,7 +213,7 @@ class Content_Model
             'author_login'        => 'user_login',
         ];
 
-        if ( ! isset($field_map[$field])) {
+        if (!isset($field_map[$field])) {
             return $data;
         }
 
