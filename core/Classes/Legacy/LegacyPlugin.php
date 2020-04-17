@@ -17,7 +17,7 @@ use stdClass;
 class LegacyPlugin
 {
     /**
-     * @var \stdClass
+     * @var stdClass
      */
     public $modules;
 
@@ -25,7 +25,7 @@ class LegacyPlugin
 
     public function __construct()
     {
-        $this->modules = new \stdClass();
+        $this->modules = new stdClass();
 
         $this->setup_actions();
     }
@@ -121,8 +121,10 @@ class LegacyPlugin
                 }
 
                 if (!is_null($args) && !empty($args->settings_help_tab)) {
-                    add_action('load-multiple_authors_page_' . $args->settings_slug,
-                        [$module_instance, 'action_settings_help_menu']);
+                    add_action(
+                        'load-multiple_authors_page_' . $args->settings_slug,
+                        [$module_instance, 'action_settings_help_menu']
+                    );
                 }
 
                 $this->loadedModules[] = $slug;
@@ -144,27 +146,16 @@ class LegacyPlugin
     private function getModulesDirs()
     {
         $defaultDirs = [
-            'modules-settings'  => PP_AUTHORS_MODULES_PATH,
-            'settings'          => PP_AUTHORS_MODULES_PATH,
-            'multiple-authors'  => PP_AUTHORS_MODULES_PATH,
-            'default-layouts'   => PP_AUTHORS_MODULES_PATH,
-            'byline-migration'  => PP_AUTHORS_MODULES_PATH,
-            'bylines-migration' => PP_AUTHORS_MODULES_PATH,
+            'modules-settings'      => PP_AUTHORS_MODULES_PATH,
+            'settings'              => PP_AUTHORS_MODULES_PATH,
+            'multiple-authors'      => PP_AUTHORS_MODULES_PATH,
+            'default-layouts'       => PP_AUTHORS_MODULES_PATH,
+            'byline-migration'      => PP_AUTHORS_MODULES_PATH,
+            'bylines-migration'     => PP_AUTHORS_MODULES_PATH,
+            'yoast-seo-integration' => PP_AUTHORS_MODULES_PATH,
         ];
 
-        // Only load the Yoast SEO integration if the installed version is >= 13.4.1.
-        if (defined('WPSEO_VERSION') && class_exists('WPSEO_Schema_Context') && version_compare(
-                WPSEO_VERSION,
-                '13.4.1',
-                '<='
-            )) {
-            $defaultDirs['yoast-seo-integration'] = PP_AUTHORS_MODULES_PATH;
-        }
-
-        // Add filters to extend the modules
-        $modulesDirs = apply_filters('ppma_module_dirs', $defaultDirs);
-
-        return $modulesDirs;
+        return apply_filters('ppma_module_dirs', $defaultDirs);
     }
 
     /**
@@ -174,8 +165,10 @@ class LegacyPlugin
     public function load_module_options()
     {
         foreach ($this->modules as $mod_name => $mod_data) {
-            $this->modules->$mod_name->options = get_option($this->options_group . $mod_name . '_options',
-                new stdClass());
+            $this->modules->$mod_name->options = get_option(
+                $this->options_group . $mod_name . '_options',
+                new stdClass()
+            );
             foreach ($mod_data->default_options as $default_key => $default_value) {
                 if (!isset($this->modules->$mod_name->options->$default_key)) {
                     $this->modules->$mod_name->options->$default_key = $default_value;
@@ -210,11 +203,15 @@ class LegacyPlugin
             'configure_link_text'  => __('Configure', 'publishpress-authors'),
             // These messages are applied to modules and can be overridden if custom messages are needed
             'messages'             => [
-                'form-error'          => __('Please correct your form errors below and try again.',
-                    'publishpress-authors'),
+                'form-error'          => __(
+                    'Please correct your form errors below and try again.',
+                    'publishpress-authors'
+                ),
                 'nonce-failed'        => __('Cheatin&#8217; uh?', 'publishpress-authors'),
-                'invalid-permissions' => __('You do not have necessary permissions to complete this action.',
-                    'publishpress-authors'),
+                'invalid-permissions' => __(
+                    'You do not have necessary permissions to complete this action.',
+                    'publishpress-authors'
+                ),
                 'missing-post'        => __('Post does not exist', 'publishpress-authors'),
             ],
             'autoload'             => false, // autoloading a module will remove the ability to enable or disable it
@@ -354,8 +351,10 @@ class LegacyPlugin
     {
         foreach ($this->modules as $mod_name => $mod_data) {
             if (isset($this->modules->$mod_name->options->post_types)) {
-                $this->modules->$mod_name->options->post_types = $this->helpers->clean_post_type_options($this->modules->$mod_name->options->post_types,
-                    $mod_data->post_type_support);
+                $this->modules->$mod_name->options->post_types = $this->helpers->clean_post_type_options(
+                    $this->modules->$mod_name->options->post_types,
+                    $mod_data->post_type_support
+                );
             }
 
             $this->$mod_name->module = $this->modules->$mod_name;

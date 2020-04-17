@@ -25,38 +25,44 @@
 namespace PPAuthors\YoastSEO\Schema;
 
 use MultipleAuthors\Classes\Authors_Iterator;
+use PPAuthors\YoastSEO\SchemaUtils;
+use WPSEO_Date_Helper;
+use WPSEO_Graph_Piece;
+use WPSEO_Schema_Context;
+use WPSEO_Schema_IDs;
+use WPSEO_Schema_Utils;
 
 /**
  * Returns schema Article data.
  *
  * Based on the class \WPSEO_Schema_Article, from Yoast SEO Premium.
  */
-class Article implements \WPSEO_Graph_Piece
+class Article implements WPSEO_Graph_Piece
 {
 
     /**
      * The date helper.
      *
-     * @var \WPSEO_Date_Helper
+     * @var WPSEO_Date_Helper
      */
     protected $date;
 
     /**
      * A value object with context variables.
      *
-     * @var \WPSEO_Schema_Context
+     * @var WPSEO_Schema_Context
      */
     private $context;
 
     /**
      * WPSEO_Schema_Article constructor.
      *
-     * @param \WPSEO_Schema_Context $context A value object with context variables.
+     * @param WPSEO_Schema_Context $context A value object with context variables.
      */
-    public function __construct(\WPSEO_Schema_Context $context)
+    public function __construct(WPSEO_Schema_Context $context)
     {
         $this->context = $context;
-        $this->date    = new \WPSEO_Date_Helper();
+        $this->date    = new WPSEO_Date_Helper();
     }
 
     /**
@@ -75,53 +81,6 @@ class Article implements \WPSEO_Graph_Piece
         }
 
         return self::is_article_post_type(get_post_type());
-    }
-
-    /**
-     * Returns Article data.
-     *
-     * @return array $data Article data.
-     */
-    public function generate()
-    {
-        $post          = get_post($this->context->id);
-        $comment_count = get_comment_count($this->context->id);
-
-        // We can only show one author for now - a limitation from the https://schema.org/Article schema.
-        $authorsIterator = new Authors_Iterator($post->ID, false);
-        $authorsIterator->iterate();
-        $author = $authorsIterator->current_author;
-
-        $data = [
-            '@type'            => 'Article',
-            '@id'              => $this->context->canonical . \WPSEO_Schema_IDs::ARTICLE_HASH,
-            'isPartOf'         => ['@id' => $this->context->canonical . \WPSEO_Schema_IDs::WEBPAGE_HASH],
-            'author'           => ['@id' => $this->context->site_url . \WPSEO_Schema_IDs::PERSON_HASH . wp_hash($author->slug)],
-            'headline'         => \WPSEO_Schema_Utils::get_post_title_with_fallback($this->context->id),
-            'datePublished'    => $this->date->format($post->post_date_gmt),
-            'dateModified'     => $this->date->format($post->post_modified_gmt),
-            'commentCount'     => $comment_count['approved'],
-            'mainEntityOfPage' => ['@id' => $this->context->canonical . \WPSEO_Schema_IDs::WEBPAGE_HASH],
-        ];
-
-        if ($this->context->site_represents_reference) {
-            $data['publisher'] = $this->context->site_represents_reference;
-        }
-
-        if ($this->context->site_represents_reference) {
-            $data['publisher'] = $this->context->site_represents_reference;
-        }
-
-        $data = $this->add_image($data);
-        $data = $this->add_keywords($data);
-        $data = $this->add_sections($data);
-        $data = \WPSEO_Schema_Utils::add_piece_language($data);
-
-        if (post_type_supports($post->post_type, 'comments') && $post->comment_status === 'open') {
-            $data = $this->add_potential_action($data);
-        }
-
-        return $data;
     }
 
     /**
@@ -148,6 +107,75 @@ class Article implements \WPSEO_Graph_Piece
     }
 
     /**
+     * Returns Article data.
+     *
+     * @return array $data Article data.
+     */
+    public function generate()
+    {
+        $post          = get_post($this->context->id);
+        $comment_count = get_comment_count($this->context->id);
+
+        // We can only show one author for now - a limitation from the https://schema.org/Article schema.
+        $authorsIterator = new Authors_Iterator($post->ID, false);
+        $authorsIterator->iterate();
+        $author = $authorsIterator->current_author;
+
+        $data = [
+            '@type'            => 'Article',
+            '@id'              => $this->context->canonical . WPSEO_Schema_IDs::ARTICLE_HASH,
+            'isPartOf'         => ['@id' => $this->context->canonical . WPSEO_Schema_IDs::WEBPAGE_HASH],
+            'author'           => [
+                '@id' => $this->context->site_url . WPSEO_Schema_IDs::PERSON_HASH . wp_hash(
+                        $author->slug
+                    )
+            ],
+            'headline'         => WPSEO_Schema_Utils::get_post_title_with_fallback($this->context->id),
+            'datePublished'    => $this->date->format($post->post_date_gmt),
+            'dateModified'     => $this->date->format($post->post_modified_gmt),
+            'commentCount'     => $comment_count['approved'],
+            'mainEntityOfPage' => ['@id' => $this->context->canonical . WPSEO_Schema_IDs::WEBPAGE_HASH],
+        ];
+
+        if ($this->context->site_represents_reference) {
+            $data['publisher'] = $this->context->site_represents_reference;
+        }
+
+        if ($this->context->site_represents_reference) {
+            $data['publisher'] = $this->context->site_represents_reference;
+        }
+
+        $data = $this->add_image($data);
+        $data = $this->add_keywords($data);
+        $data = $this->add_sections($data);
+        $data = SchemaUtils::addPieceLanguage($data);
+
+        if (post_type_supports($post->post_type, 'comments') && $post->comment_status === 'open') {
+            $data = $this->add_potential_action($data);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Adds an image node if the post has a featured image.
+     *
+     * @param array $data The Article data.
+     *
+     * @return array $data The Article data.
+     */
+    private function add_image($data)
+    {
+        if ($this->context->has_image) {
+            $data['image'] = [
+                '@id' => $this->context->canonical . WPSEO_Schema_IDs::PRIMARY_IMAGE_HASH,
+            ];
+        }
+
+        return $data;
+    }
+
+    /**
      * Adds tags as keywords, if tags are assigned.
      *
      * @param array $data Article data.
@@ -164,25 +192,6 @@ class Article implements \WPSEO_Graph_Piece
         $taxonomy = apply_filters('wpseo_schema_article_keywords_taxonomy', 'post_tag');
 
         return $this->add_terms($data, 'keywords', $taxonomy);
-    }
-
-    /**
-     * Adds categories as sections, if categories are assigned.
-     *
-     * @param array $data Article data.
-     *
-     * @return array $data Article data.
-     */
-    private function add_sections($data)
-    {
-        /**
-         * Filter: 'wpseo_schema_article_sections_taxonomy' - Allow changing the taxonomy used to assign keywords to a post type Article data.
-         *
-         * @api string $taxonomy The chosen taxonomy.
-         */
-        $taxonomy = apply_filters('wpseo_schema_article_sections_taxonomy', 'category');
-
-        return $this->add_terms($data, 'articleSection', $taxonomy);
     }
 
     /**
@@ -213,21 +222,22 @@ class Article implements \WPSEO_Graph_Piece
     }
 
     /**
-     * Adds an image node if the post has a featured image.
+     * Adds categories as sections, if categories are assigned.
      *
-     * @param array $data The Article data.
+     * @param array $data Article data.
      *
-     * @return array $data The Article data.
+     * @return array $data Article data.
      */
-    private function add_image($data)
+    private function add_sections($data)
     {
-        if ($this->context->has_image) {
-            $data['image'] = [
-                '@id' => $this->context->canonical . \WPSEO_Schema_IDs::PRIMARY_IMAGE_HASH,
-            ];
-        }
+        /**
+         * Filter: 'wpseo_schema_article_sections_taxonomy' - Allow changing the taxonomy used to assign keywords to a post type Article data.
+         *
+         * @api string $taxonomy The chosen taxonomy.
+         */
+        $taxonomy = apply_filters('wpseo_schema_article_sections_taxonomy', 'category');
 
-        return $data;
+        return $this->add_terms($data, 'articleSection', $taxonomy);
     }
 
     /**

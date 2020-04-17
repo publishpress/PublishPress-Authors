@@ -29,50 +29,55 @@ class Query
      *
      * If the author does have posts, it doesn't matter that they're not an author.
      *
-     * @param WP_Query $query Query object.
+     * @param WP_Query $wp_query Query object.
      */
-    public static function action_pre_get_posts($query)
+    public static function fix_query_pre_get_posts($wp_query)
     {
-        if ( ! $query->is_author()) {
+        if (!$wp_query->is_author()) {
             return;
         }
 
-        $author_name = $query->get('author_name');
-        if ( ! $author_name) {
+        $author_name = $wp_query->get('author_name');
+        if (!$author_name) {
             return;
         }
 
         global $authordata;
 
-        $term = get_term_by('slug', $author_name, 'author');
-        $user = get_user_by('slug', $author_name);
-        if ($term) {
-            $author                   = Author::get_by_term_id($term->term_id);
-            $query->queried_object    = $author;
-            $query->queried_object_id = $author->term_id;
-            $query->set('author_name', $author->display_name);
-            $query->set('author', $author->slug);
+        $author = Author::get_by_user_id_or_slug($author_name);
 
-            $authordata = $term;
-        } elseif (is_object($user)) {
-            $query->queried_object    = $user;
-            $query->queried_object_id = $user->ID;
-            $query->set('author_name', $user->display_name);
-            $query->set('author', $user->ID);
+        if (!is_object($author)) {
+            $wp_query->queried_object    = null;
+            $wp_query->queried_object_id = null;
+            $wp_query->is_author         = false;
+            $wp_query->is_archive        = false;
+
+            return;
+        }
+
+        if ($author->is_guest()) {
+            $wp_query->queried_object    = $author;
+            $wp_query->queried_object_id = $author->slug;
+            $wp_query->set('author_name', $author->slug);
+            $wp_query->set('author', $author->slug);
+
+            $authordata = $author;
+        } else {
+            $user = $author->get_user_object();
+
+            $wp_query->queried_object    = $user;
+            $wp_query->queried_object_id = $user->ID;
+            $wp_query->set('author_name', $author->slug);
+            $wp_query->set('author', $user->ID);
 
             $authordata = $user;
-        } else {
-            $query->queried_object    = null;
-            $query->queried_object_id = null;
-            $query->is_author         = false;
-            $query->is_archive        = false;
         }
     }
 
     /**
      * Modify the WHERE clause on author queries.
      *
-     * @param string   $where Existing WHERE clause.
+     * @param string $where Existing WHERE clause.
      * @param WP_Query $query Query object.
      *
      * @return string
@@ -81,12 +86,14 @@ class Query
     {
         global $wpdb;
 
-        if ( ! $query->is_author()) {
+        if (!$query->is_author()) {
             return $where;
         }
 
-        if ( ! empty($query->query_vars['post_type']) && ! is_object_in_taxonomy($query->query_vars['post_type'],
-                'author')) {
+        if (!empty($query->query_vars['post_type']) && !is_object_in_taxonomy(
+                $query->query_vars['post_type'],
+                'author'
+            )) {
             return $where;
         }
 
@@ -96,7 +103,7 @@ class Query
             $author_id = (int)$query->get('author');
             $user      = get_user_by('id', $author_id);
 
-            if ( ! $author_id || ! $user) {
+            if (!$author_id || !$user) {
                 return $where;
             }
 
@@ -106,7 +113,7 @@ class Query
         $terms = [];
         $term  = get_term_by('slug', $author_name, 'author');
 
-        if ( ! empty($term)) {
+        if (!empty($term)) {
             $terms[] = $term;
         }
 
@@ -119,7 +126,7 @@ class Query
 
         $maybe_both_query = $maybe_both ? '$0 OR ' : '';
 
-        if ( ! empty($terms)) {
+        if (!empty($terms)) {
             $terms_implode = '';
 
             $query->authors_having_terms = '';
@@ -150,7 +157,7 @@ class Query
     /**
      * Modify the JOIN clause on author queries.
      *
-     * @param string   $join  Existing JOIN clause.
+     * @param string $join Existing JOIN clause.
      * @param WP_Query $query Query object.
      *
      * @return string
@@ -159,7 +166,7 @@ class Query
     {
         global $wpdb;
 
-        if ( ! $query->is_author() || empty($query->authors_having_terms)) {
+        if (!$query->is_author() || empty($query->authors_having_terms)) {
             return $join;
         }
 
@@ -184,8 +191,8 @@ class Query
     /**
      * Modify the GROUP BY clause on author queries.
      *
-     * @param string   $groupby Existing GROUP BY clause.
-     * @param WP_Query $query   Query object.
+     * @param string $groupby Existing GROUP BY clause.
+     * @param WP_Query $query Query object.
      *
      * @return string
      */
@@ -193,7 +200,7 @@ class Query
     {
         global $wpdb;
 
-        if ( ! $query->is_author() || empty($query->authors_having_terms)) {
+        if (!$query->is_author() || empty($query->authors_having_terms)) {
             return $groupby;
         }
 

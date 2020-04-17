@@ -28,14 +28,16 @@ class Theme
      */
     public static function filter_get_the_archive_title($title)
     {
-        if ( ! is_author()) {
+        if (!is_author()) {
             return $title;
         }
 
         /* translators: Author archive title. 1: Author name */
 
-        return sprintf(__('Author: %s', 'publishpress-authors'),
-            '<span class="vcard">' . get_queried_object()->display_name . '</span>');
+        return sprintf(
+            __('Author: %s', 'publishpress-authors'),
+            '<span class="vcard">' . get_queried_object()->display_name . '</span>'
+        );
     }
 
     /**
@@ -47,7 +49,7 @@ class Theme
      */
     public static function filter_get_the_archive_description($description)
     {
-        if ( ! is_author()) {
+        if (!is_author()) {
             return $description;
         }
 

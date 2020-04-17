@@ -25,39 +25,51 @@
 namespace PPAuthors\YoastSEO\Schema;
 
 
-use MultipleAuthors\Classes\Authors_Iterator;
+use WPSEO_Graph_Piece;
+use WPSEO_Schema_Article;
+use WPSEO_Schema_Context;
+use WPSEO_Schema_IDs;
 
 /**
  * Returns schema Article data.
  *
  * Based on the class \WPSEO_Schema_Article, from Yoast SEO Premium.
  */
-class Author extends Person implements \WPSEO_Graph_Piece
+class Author extends Person implements WPSEO_Graph_Piece
 {
-    /**
-     * A value object with context variables.
-     *
-     * @var \WPSEO_Schema_Context
-     */
-    private $context;
-
     /**
      * The Schema type we use for this class.
      *
      * @var string[]
      */
     protected $type = ['Person'];
+    /**
+     * A value object with context variables.
+     *
+     * @var WPSEO_Schema_Context
+     */
+    private $context;
 
     /**
      * WPSEO_Schema_Author constructor.
      *
-     * @param \WPSEO_Schema_Context $context A value object with context variables.
+     * @param WPSEO_Schema_Context $context A value object with context variables.
      */
-    public function __construct(\WPSEO_Schema_Context $context)
+    public function __construct(WPSEO_Schema_Context $context)
     {
         parent::__construct($context);
         $this->context    = $context;
-        $this->image_hash = \WPSEO_Schema_IDs::AUTHOR_LOGO_HASH;
+        $this->image_hash = WPSEO_Schema_IDs::AUTHOR_LOGO_HASH;
+    }
+
+    /**
+     * Gets the Schema type we use for this class.
+     *
+     * @return string[] The schema type.
+     */
+    public static function get_type()
+    {
+        return self::$type;
     }
 
     /**
@@ -86,6 +98,20 @@ class Author extends Person implements \WPSEO_Graph_Piece
     }
 
     /**
+     * Determine whether the current URL is worthy of Article schema.
+     *
+     * @return bool
+     */
+    protected function is_post_author()
+    {
+        if (is_singular() && WPSEO_Schema_Article::is_article_post_type()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Returns Person Schema data.
      *
      * @return bool|array Person data on success, false on failure.
@@ -102,25 +128,11 @@ class Author extends Person implements \WPSEO_Graph_Piece
         // If this is an author page, the Person object is the main object, so we set it as such here.
         if (is_author()) {
             $data['mainEntityOfPage'] = [
-                '@id' => $this->context->canonical . \WPSEO_Schema_IDs::WEBPAGE_HASH,
+                '@id' => $this->context->canonical . WPSEO_Schema_IDs::WEBPAGE_HASH,
             ];
         }
 
         return $data;
-    }
-
-    /**
-     * Determine whether the current URL is worthy of Article schema.
-     *
-     * @return bool
-     */
-    protected function is_post_author()
-    {
-        if (is_singular() && \WPSEO_Schema_Article::is_article_post_type()) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
@@ -162,15 +174,5 @@ class Author extends Person implements \WPSEO_Graph_Piece
     private function set_image_from_options($data, $schema_id)
     {
         return $data;
-    }
-
-    /**
-     * Gets the Schema type we use for this class.
-     *
-     * @return string[] The schema type.
-     */
-    public static function get_type()
-    {
-        return self::$type;
     }
 }

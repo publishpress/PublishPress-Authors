@@ -23,6 +23,7 @@
 
 use MultipleAuthors\Classes\Legacy\Module;
 use MultipleAuthors\Factory;
+use PPAuthors\YoastSEO\SchemaFacade;
 
 if (!class_exists('MA_Yoast_Seo_Integration')) {
     /**
@@ -48,16 +49,16 @@ if (!class_exists('MA_Yoast_Seo_Integration')) {
 
             // Register the module with PublishPress
             $args = [
-                'title'             => __('Yoast SEO Compatibility', 'publishpress-authors'),
+                'title' => __('Yoast SEO Compatibility', 'publishpress-authors'),
                 'short_description' => __('Add compatibility with the Yoast SEO plugin', 'publishpress-authors'),
-                'module_url'        => $this->module_url,
-                'icon_class'        => 'dashicons dashicons-feedback',
-                'slug'              => 'yoast-seo-compatibility',
-                'default_options'   => [
+                'module_url' => $this->module_url,
+                'icon_class' => 'dashicons dashicons-feedback',
+                'slug' => 'yoast-seo-compatibility',
+                'default_options' => [
                     'enabled' => 'on',
                 ],
-                'options_page'      => false,
-                'autoload'          => true,
+                'options_page' => false,
+                'autoload' => true,
             ];
 
             // Apply a filter to the default options
@@ -76,9 +77,21 @@ if (!class_exists('MA_Yoast_Seo_Integration')) {
         /**
          *
          */
-        private function isYoastSeoInstalled()
+        private function isCompatibleYoastSeoInstalled()
         {
-            return defined('WPSEO_FILE') && class_exists('WPSEO_Schema_Context');
+            if (!defined('WPSEO_VERSION') || version_compare(WPSEO_VERSION, '13.4.1', '<')) {
+                return false;
+            }
+
+            if (!defined('WPSEO_FILE')) {
+                return false;
+            }
+
+            if (!class_exists('WPSEO_Schema_Context')) {
+                return false;
+            }
+
+            return true;
         }
 
         /**
@@ -86,33 +99,49 @@ if (!class_exists('MA_Yoast_Seo_Integration')) {
          */
         public function init()
         {
-            if (!$this->isYoastSeoInstalled()) {
-                return;
+            try {
+                if (!$this->isCompatibleYoastSeoInstalled()) {
+                    error_log(
+                        sprintf(
+                            '[PublishPress Authors] %s %s',
+                            __METHOD__,
+                            'detected a not supported version of the Yoast SEO plugin. It requires 13.4.1 or later.'
+                        )
+                    );
+
+                    return;
+                }
+
+                $schemaFacade = new SchemaFacade();
+                $schemaFacade->addSupportForMultipleAuthors();
+
+                add_filter('wpseo_replacements', [$this, 'overrideSEOReplacementsForAuthorsPage'], 10, 2);
+            } catch (Exception $e) {
+                error_log(
+                    sprintf('[PublishPress Authors] Method [%s] caught the exception %s', __METHOD__, $e->getMessage())
+                );
             }
-
-            $schemaFacade = new \PPAuthors\YoastSEO\SchemaFacade();
-            $schemaFacade->addSupportForMultipleAuthors();
-
-            add_filter('wpseo_replacements', [$this, 'overrideSEOReplacements'], 10, 2);
         }
 
-        public function overrideSEOReplacements($replacements, $args)
+        public function overrideSEOReplacementsForAuthorsPage($replacements, $args)
         {
-            if (!is_author()) {
-                return $replacements;
-            }
+            try {
+                foreach ($replacements as $key => &$value) {
+                    if ($key === '%%name%%') {
+                        $authors = get_multiple_authors(0, true, true);
+                        $author  = $authors[0];
 
-            foreach ($replacements as $key => &$value)
-            {
-                if ($key === '%%name%%') {
-                    $authors = get_multiple_authors(0, true, true);
-                    $author = $authors[0];
-
-                    if ($author->is_guest()) {
-                        $value = $author->display_name;
+                        if ($author->is_guest()) {
+                            $value = $author->display_name;
+                        }
                     }
                 }
+            } catch (Exception $e) {
+                error_log(
+                    sprintf('[PublishPress Authors] Method %s caught the exception: %s', __METHOD__, $e->getMessage())
+                );
             }
+
 
             return $replacements;
         }

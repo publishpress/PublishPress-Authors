@@ -12,7 +12,7 @@
  * @publishpress-authors
  * Plugin Name: PublishPress Authors
  * Plugin URI:  https://publishpress.com/
- * Version: 3.2.4
+ * Version: 3.2.4-hotfix-issue-93
  * Description: Add support for multiple authors
  * Author:      PublishPress
  * Author URI:  https://publishpress.com
@@ -23,35 +23,42 @@
  */
 
 use MultipleAuthors\Factory;
+use MultipleAuthors\Plugin;
 
 /*
  * Before loading we need to check if PressPermit 2.7.23 or prior is installed. It doesn't check if the interface
  * Pimple\ServiceProviderInterface is loaded before loading it, triggering a fatal error. This plugin loads before it.
  */
-if ( ! function_exists('is_plugin_active')) {
+if (!function_exists('is_plugin_active')) {
     require_once ABSPATH . '/wp-admin/includes/plugin.php';
 }
 if (is_plugin_active('presspermit-pro/presspermit-pro.php')) {
     $presspermitVersions = get_option('presspermitpro_version');
 
     if (version_compare($presspermitVersions['version'], '2.7.23', '<=')) {
-        if ( ! strpos(urldecode($_SERVER['REQUEST_URI']), 'deactivate')) {
-            add_action('all_admin_notices', function () {
-                $msg = sprintf(
-                    __('Error: %1$s is not compatible with PressPermit Pro v2.7.23 or prior. Sorry, but we recommend updating PressPermit.',
-                        'publishpress-authors'),
-                    'PublishPress Authors'
-                );
+        if (!strpos(urldecode($_SERVER['REQUEST_URI']), 'deactivate')) {
+            add_action(
+                'all_admin_notices',
+                function () {
+                    $msg = sprintf(
+                        __(
+                            'Error: %1$s is not compatible with PressPermit Pro v2.7.23 or prior. Sorry, but we recommend updating PressPermit.',
+                            'publishpress-authors'
+                        ),
+                        'PublishPress Authors'
+                    );
 
-                echo "<div class='notice notice-error is-dismissible' style='color:black'><p>" . $msg . '</p></div>';
-            }, 5);
+                    echo "<div class='notice notice-error is-dismissible' style='color:black'><p>" . $msg . '</p></div>';
+                },
+                5
+            );
 
             return;
         }
     }
 }
 
-if ( ! defined('PP_AUTHORS_LOADED')) {
+if (!defined('PP_AUTHORS_LOADED')) {
     require_once __DIR__ . '/includes.php';
 
     global $multiple_authors_addon;
@@ -63,13 +70,16 @@ if ( ! defined('PP_AUTHORS_LOADED')) {
     // Init the legacy plugin instance
     $legacyPlugin = Factory::getLegacyPlugin();
 
-    $multiple_authors_addon = new \MultipleAuthors\Plugin();
+    $multiple_authors_addon = new Plugin();
 
-    register_activation_hook(PP_AUTHORS_FILE, function () {
-        require_once __DIR__ . '/activation.php';
-    });
+    register_activation_hook(
+        PP_AUTHORS_FILE,
+        function () {
+            require_once __DIR__ . '/activation.php';
+        }
+    );
 
-    if ( ! function_exists('wp_notify_postauthor')) {
+    if (!function_exists('wp_notify_postauthor')) {
         /**
          * Notify a co-author of a comment/trackback/pingback to one of their posts.
          * This is a modified version of the core function in wp-includes/pluggable.php that
@@ -116,12 +126,18 @@ if ( ! defined('PP_AUTHORS_LOADED')) {
                 if ('comment' == $comment_type) {
                     $notify_message = sprintf(__('New comment on your post "%s"'), $post->post_title) . "\r\n";
                     /* translators: 1: comment author, 2: author IP, 3: author domain */
-                    $notify_message .= sprintf(__('Author : %1$s (IP: %2$s , %3$s)'), $comment->comment_author,
-                            $comment->comment_author_IP, $comment_author_domain) . "\r\n";
+                    $notify_message .= sprintf(
+                            __('Author : %1$s (IP: %2$s , %3$s)'),
+                            $comment->comment_author,
+                            $comment->comment_author_IP,
+                            $comment_author_domain
+                        ) . "\r\n";
                     $notify_message .= sprintf(__('E-mail : %s'), $comment->comment_author_email) . "\r\n";
                     $notify_message .= sprintf(__('URL    : %s'), $comment->comment_author_url) . "\r\n";
-                    $notify_message .= sprintf(__('Whois  : http://whois.arin.net/rest/ip/%s'),
-                            $comment->comment_author_IP) . "\r\n";
+                    $notify_message .= sprintf(
+                            __('Whois  : http://whois.arin.net/rest/ip/%s'),
+                            $comment->comment_author_IP
+                        ) . "\r\n";
                     $notify_message .= __('Comment: ') . "\r\n" . $comment->comment_content . "\r\n\r\n";
                     $notify_message .= __('You can see all comments on this post here: ') . "\r\n";
                     /* translators: 1: blog name, 2: post title */
@@ -129,8 +145,12 @@ if ( ! defined('PP_AUTHORS_LOADED')) {
                 } elseif ('trackback' == $comment_type) {
                     $notify_message = sprintf(__('New trackback on your post "%s"'), $post->post_title) . "\r\n";
                     /* translators: 1: website name, 2: author IP, 3: author domain */
-                    $notify_message .= sprintf(__('Website: %1$s (IP: %2$s , %3$s)'), $comment->comment_author,
-                            $comment->comment_author_IP, $comment_author_domain) . "\r\n";
+                    $notify_message .= sprintf(
+                            __('Website: %1$s (IP: %2$s , %3$s)'),
+                            $comment->comment_author,
+                            $comment->comment_author_IP,
+                            $comment_author_domain
+                        ) . "\r\n";
                     $notify_message .= sprintf(__('URL    : %s'), $comment->comment_author_url) . "\r\n";
                     $notify_message .= __('Excerpt: ') . "\r\n" . $comment->comment_content . "\r\n\r\n";
                     $notify_message .= __('You can see all trackbacks on this post here: ') . "\r\n";
@@ -139,27 +159,41 @@ if ( ! defined('PP_AUTHORS_LOADED')) {
                 } elseif ('pingback' == $comment_type) {
                     $notify_message = sprintf(__('New pingback on your post "%s"'), $post->post_title) . "\r\n";
                     /* translators: 1: comment author, 2: author IP, 3: author domain */
-                    $notify_message .= sprintf(__('Website: %1$s (IP: %2$s , %3$s)'), $comment->comment_author,
-                            $comment->comment_author_IP, $comment_author_domain) . "\r\n";
+                    $notify_message .= sprintf(
+                            __('Website: %1$s (IP: %2$s , %3$s)'),
+                            $comment->comment_author,
+                            $comment->comment_author_IP,
+                            $comment_author_domain
+                        ) . "\r\n";
                     $notify_message .= sprintf(__('URL    : %s'), $comment->comment_author_url) . "\r\n";
-                    $notify_message .= __('Excerpt: ') . "\r\n" . sprintf('[...] %s [...]',
-                            $comment->comment_content) . "\r\n\r\n";
+                    $notify_message .= __('Excerpt: ') . "\r\n" . sprintf(
+                            '[...] %s [...]',
+                            $comment->comment_content
+                        ) . "\r\n\r\n";
                     $notify_message .= __('You can see all pingbacks on this post here: ') . "\r\n";
                     /* translators: 1: blog name, 2: post title */
                     $subject = sprintf(__('[%1$s] Pingback: "%2$s"'), $blogname, $post->post_title);
                 }
                 $notify_message .= get_permalink($comment->comment_post_ID) . "#comments\r\n\r\n";
-                $notify_message .= sprintf(__('Permalink: %s'),
-                        get_permalink($comment->comment_post_ID) . '#comment-' . $comment_id) . "\r\n";
+                $notify_message .= sprintf(
+                        __('Permalink: %s'),
+                        get_permalink($comment->comment_post_ID) . '#comment-' . $comment_id
+                    ) . "\r\n";
                 if (EMPTY_TRASH_DAYS) {
-                    $notify_message .= sprintf(__('Trash it: %s'),
-                            admin_url("comment.php?action=trash&c=$comment_id")) . "\r\n";
+                    $notify_message .= sprintf(
+                            __('Trash it: %s'),
+                            admin_url("comment.php?action=trash&c=$comment_id")
+                        ) . "\r\n";
                 } else {
-                    $notify_message .= sprintf(__('Delete it: %s'),
-                            admin_url("comment.php?action=delete&c=$comment_id")) . "\r\n";
+                    $notify_message .= sprintf(
+                            __('Delete it: %s'),
+                            admin_url("comment.php?action=delete&c=$comment_id")
+                        ) . "\r\n";
                 }
-                $notify_message .= sprintf(__('Spam it: %s'),
-                        admin_url("comment.php?action=spam&c=$comment_id")) . "\r\n";
+                $notify_message .= sprintf(
+                        __('Spam it: %s'),
+                        admin_url("comment.php?action=spam&c=$comment_id")
+                    ) . "\r\n";
 
                 $wp_email = 'wordpress@' . preg_replace('#^www\.#', '', strtolower($_SERVER['SERVER_NAME']));
 
@@ -176,7 +210,7 @@ if ( ! defined('PP_AUTHORS_LOADED')) {
                 }
 
                 $message_headers = "$from\n"
-                                   . 'Content-Type: text/plain; charset="' . get_option('blog_charset') . "\"\n";
+                    . 'Content-Type: text/plain; charset="' . get_option('blog_charset') . "\"\n";
 
                 if (isset($reply_to)) {
                     $message_headers .= $reply_to . "\n";
@@ -193,7 +227,7 @@ if ( ! defined('PP_AUTHORS_LOADED')) {
         }
     }
 
-    if ( ! function_exists('cap_filter_comment_moderation_email_recipients')) {
+    if (!function_exists('cap_filter_comment_moderation_email_recipients')) {
         /**
          * Filter array of moderation notification email addresses
          *
@@ -211,7 +245,7 @@ if ( ! defined('PP_AUTHORS_LOADED')) {
                 $coauthors        = get_multiple_authors($post_id);
                 $extra_recipients = [];
                 foreach ($coauthors as $user) {
-                    if ( ! empty($user->user_email)) {
+                    if (!empty($user->user_email)) {
                         $extra_recipients[] = $user->user_email;
                     }
                 }
@@ -223,7 +257,7 @@ if ( ! defined('PP_AUTHORS_LOADED')) {
         }
     }
 
-    if ( ! function_exists('cap_get_coauthor_terms_for_post')) {
+    if (!function_exists('cap_get_coauthor_terms_for_post')) {
         /**
          * Retrieve a list of coauthor terms for a single post.
          *

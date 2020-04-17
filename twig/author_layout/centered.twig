@@ -11,10 +11,12 @@
                 {% else %}
                     {{ get_avatar(author.user_email, 160)|raw }}
                 {% endif %}
-                <br>
-                <a href="{{ author.link }}" class="{{ item_class }}" rel="author">{{ author.display_name }}</a>
-                <p>{{ author.description }}</p>
-
+                <p>
+                    <a href="{{ author.link }}" class="{{ item_class }}" rel="author">{{ author.display_name }}</a>
+                </p>
+                {% if author.description %}
+                    <p>{{ author.description }}</p>
+                {% endif %}
                 {% if show_email or show_site %}
                     <p class="multiple-authors-links">
                         {% if show_email and author.user_email %}

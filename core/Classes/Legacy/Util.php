@@ -9,8 +9,6 @@
 
 namespace MultipleAuthors\Classes\Legacy;
 
-use MultipleAuthors\Factory;
-
 class Util
 {
     /**
@@ -29,15 +27,17 @@ class Util
             $post_type = $post->post_type;
         } elseif ($typenow) {
             $post_type = $typenow;
-        } elseif ($current_screen && ! empty($current_screen->post_type)) {
+        } elseif ($current_screen && !empty($current_screen->post_type)) {
             $post_type = $current_screen->post_type;
         } elseif (isset($_REQUEST['post_type'])) {
             $post_type = sanitize_key($_REQUEST['post_type']);
         } elseif ('post.php' == $pagenow
-                  && $post_id
-                  && ! empty(get_post($post_id)->post_type)) {
+            && $post_id
+            && !empty(get_post($post_id)->post_type)) {
             $post_type = get_post($post_id)->post_type;
         } elseif ('edit.php' == $pagenow && empty($_REQUEST['post_type'])) {
+            $post_type = 'post';
+        } elseif (@is_author()) {
             $post_type = 'post';
         } else {
             $post_type = null;
@@ -72,7 +72,7 @@ class Util
      * Sanitizes the module name, making sure we always have only
      * valid chars, replacing - with _.
      *
-     * @param  string $name
+     * @param string $name
      *
      * @return string
      */
@@ -84,10 +84,10 @@ class Util
     /**
      * Adds an array of capabilities to a role.
      *
+     * @param string $role A standard WP user role like 'administrator' or 'author'
+     * @param array $caps One or more user caps to add
      * @since 1.9.8
      *
-     * @param string $role A standard WP user role like 'administrator' or 'author'
-     * @param array  $caps One or more user caps to add
      */
     public static function add_caps_to_role($role, $caps)
     {
@@ -115,7 +115,7 @@ class Util
         $isEnabled = defined('GUTENBERG_VERSION');
 
         // Is WordPress 5?
-        if ( ! $isEnabled) {
+        if (!$isEnabled) {
             $wpVersion = get_bloginfo('version');
 
             $isEnabled = version_compare($wpVersion, '5.0', '>=');

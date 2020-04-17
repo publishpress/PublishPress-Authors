@@ -25,22 +25,43 @@
 namespace PPAuthors\YoastSEO\Schema;
 
 use MultipleAuthors\Classes\Authors_Iterator;
-use \MultipleAuthors\Classes\Objects\Author as AuthorObject;
+use MultipleAuthors\Classes\Objects\Author as AuthorObject;
+use WP_User;
+use WPSEO_Graph_Piece;
+use WPSEO_Image_Utils;
+use WPSEO_Schema_Context;
+use WPSEO_Schema_IDs;
+use WPSEO_Schema_Image;
+use WPSEO_Schema_Utils;
 
 /**
  * Returns schema Article data.
  *
  * Based on the class \WPSEO_Schema_Article, from Yoast SEO Premium.
  */
-class Person implements \WPSEO_Graph_Piece
+class Person implements WPSEO_Graph_Piece
 {
+    /**
+     * The Schema type we use for this class.
+     *
+     * @var string[]
+     */
+    protected $type = [
+        'Person',
+        'Organization',
+    ];
+    /**
+     * The hash used for images.
+     *
+     * @var string
+     */
+    protected $image_hash;
     /**
      * A value object with context variables.
      *
-     * @var \WPSEO_Schema_Context
+     * @var WPSEO_Schema_Context
      */
     private $context;
-
     /**
      * Array of the social profiles we display for a Person.
      *
@@ -60,30 +81,13 @@ class Person implements \WPSEO_Graph_Piece
     ];
 
     /**
-     * The Schema type we use for this class.
-     *
-     * @var string[]
-     */
-    protected $type = [
-        'Person',
-        'Organization',
-    ];
-
-    /**
-     * The hash used for images.
-     *
-     * @var string
-     */
-    protected $image_hash;
-
-    /**
      * WPSEO_Schema_Person constructor.
      *
-     * @param \WPSEO_Schema_Context $context A value object with context variables.
+     * @param WPSEO_Schema_Context $context A value object with context variables.
      */
-    public function __construct(\WPSEO_Schema_Context $context)
+    public function __construct(WPSEO_Schema_Context $context)
     {
-        $this->image_hash = \WPSEO_Schema_IDs::PERSON_LOGO_HASH;
+        $this->image_hash = WPSEO_Schema_IDs::PERSON_LOGO_HASH;
         $this->context    = $context;
     }
 
@@ -119,18 +123,6 @@ class Person implements \WPSEO_Graph_Piece
     }
 
     /**
-     * @return mixed
-     */
-    protected function getPostAuthor()
-    {
-        // We can only show one author for now - a limitation from the https://schema.org/Article schema.
-        $authorsIterator = new Authors_Iterator($this->context->id, false);
-        $authorsIterator->iterate();
-
-        return $authorsIterator->current_author;
-    }
-
-    /**
      * Determines a User ID for the Person data.
      *
      * @return bool|int User ID or false upon return.
@@ -148,35 +140,6 @@ class Person implements \WPSEO_Graph_Piece
     }
 
     /**
-     * Retrieve a list of social profile URLs for Person.
-     *
-     * @param int $user_id User ID.
-     *
-     * @return string[] $output A list of social profiles.
-     */
-    protected function get_social_profiles($user_id)
-    {
-        /**
-         * Filter: 'wpseo_schema_person_social_profiles' - Allows filtering of social profiles per user.
-         *
-         * @param int $user_id The current user we're grabbing social profiles for.
-         *
-         * @api string[] $social_profiles The array of social profiles to retrieve. Each should be a user meta field
-         *                                key. As they are retrieved using the WordPress function `get_the_author_meta`.
-         */
-        $social_profiles = apply_filters('wpseo_schema_person_social_profiles', $this->social_profiles, $user_id);
-        $output          = [];
-        foreach ($social_profiles as $profile) {
-            $social_url = $this->url_social_site($profile, $user_id);
-            if ($social_url) {
-                $output[] = $social_url;
-            }
-        }
-
-        return $output;
-    }
-
-    /**
      * Builds our array of Schema Person data for a given user ID.
      *
      * @param int $user_id The user ID to use.
@@ -190,13 +153,13 @@ class Person implements \WPSEO_Graph_Piece
 
             $name        = $user_data->display_name;
             $description = $user_data->description;
-            $personId    = \WPSEO_Schema_Utils::get_user_schema_id($user_id, $this->context);
+            $personId    = WPSEO_Schema_Utils::get_user_schema_id($user_id, $this->context);
         } else {
             $user_data = AuthorObject::get_by_term_slug($user_id);
 
             $name        = $user_data->display_name;
             $description = $user_data->description;
-            $personId    = $this->context->site_url . \WPSEO_Schema_IDs::PERSON_HASH . wp_hash($user_data->slug);
+            $personId    = $this->context->site_url . WPSEO_Schema_IDs::PERSON_HASH . wp_hash($user_data->slug);
         }
 
         $data = [
@@ -227,7 +190,7 @@ class Person implements \WPSEO_Graph_Piece
      * Returns an ImageObject for the persons avatar.
      *
      * @param array $data The Person schema.
-     * @param \WP_User $user_data User data.
+     * @param WP_User $user_data User data.
      *
      * @return array $data The Person schema.
      */
@@ -260,10 +223,10 @@ class Person implements \WPSEO_Graph_Piece
         if ($this->context->site_represents !== 'person') {
             return $data;
         }
-        $person_logo_id = \WPSEO_Image_Utils::get_attachment_id_from_settings('person_logo');
+        $person_logo_id = WPSEO_Image_Utils::get_attachment_id_from_settings('person_logo');
 
         if ($person_logo_id) {
-            $image         = new \WPSEO_Schema_Image($schema_id);
+            $image         = new WPSEO_Schema_Image($schema_id);
             $data['image'] = $image->generate_from_attachment_id($person_logo_id, $data['name']);
         }
 
@@ -274,7 +237,7 @@ class Person implements \WPSEO_Graph_Piece
      * Generate the person logo from gravatar.
      *
      * @param array $data The Person schema.
-     * @param \WP_User $user_data User data.
+     * @param WP_User $user_data User data.
      * @param string $schema_id The string used in the `@id` for the schema.
      *
      * @return array    $data      The Person schema.
@@ -301,10 +264,39 @@ class Person implements \WPSEO_Graph_Piece
             return $data;
         }
 
-        $schema_image  = new \WPSEO_Schema_Image($schema_id);
+        $schema_image  = new WPSEO_Schema_Image($schema_id);
         $data['image'] = $schema_image->simple_image_object($url, $user_data->display_name);
 
         return $data;
+    }
+
+    /**
+     * Retrieve a list of social profile URLs for Person.
+     *
+     * @param int $user_id User ID.
+     *
+     * @return string[] $output A list of social profiles.
+     */
+    protected function get_social_profiles($user_id)
+    {
+        /**
+         * Filter: 'wpseo_schema_person_social_profiles' - Allows filtering of social profiles per user.
+         *
+         * @param int $user_id The current user we're grabbing social profiles for.
+         *
+         * @api string[] $social_profiles The array of social profiles to retrieve. Each should be a user meta field
+         *                                key. As they are retrieved using the WordPress function `get_the_author_meta`.
+         */
+        $social_profiles = apply_filters('wpseo_schema_person_social_profiles', $this->social_profiles, $user_id);
+        $output          = [];
+        foreach ($social_profiles as $profile) {
+            $social_url = $this->url_social_site($profile, $user_id);
+            if ($social_url) {
+                $output[] = $social_url;
+            }
+        }
+
+        return $output;
     }
 
     /**
@@ -328,5 +320,17 @@ class Person implements \WPSEO_Graph_Piece
         }
 
         return $url;
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getPostAuthor()
+    {
+        // We can only show one author for now - a limitation from the https://schema.org/Article schema.
+        $authorsIterator = new Authors_Iterator($this->context->id, false);
+        $authorsIterator->iterate();
+
+        return $authorsIterator->current_author;
     }
 }

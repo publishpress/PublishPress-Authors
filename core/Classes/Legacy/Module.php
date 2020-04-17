@@ -9,37 +9,35 @@
 
 namespace MultipleAuthors\Classes\Legacy;
 
-use Twig_Loader_Filesystem;
+use MultipleAuthors\Factory;
 use Twig_Environment;
 use Twig_Extension_Debug;
-use MultipleAuthors\Factory;
+use Twig_Loader_Filesystem;
 
 /**
  * Module
  */
 class Module
 {
-    protected $twig;
-
-    protected $debug = false;
-
-    public $options;
-
-    public $published_statuses = [
+    public    $options;
+    public    $published_statuses = [
         'publish',
         // 'future',
         'private',
     ];
-
+    protected $twig;
+    protected $debug              = false;
     protected $twigPath;
 
     public function __construct()
     {
-        if ( ! empty($this->twigPath)) {
+        if (!empty($this->twigPath)) {
             $loader     = new Twig_Loader_Filesystem($this->twigPath);
-            $this->twig = new Twig_Environment($loader, [
-                'debug' => $this->debug,
-            ]);
+            $this->twig = new Twig_Environment(
+                $loader, [
+                           'debug' => $this->debug,
+                       ]
+            );
 
             if ($this->debug) {
                 $this->twig->addExtension(new Twig_Extension_Debug());
@@ -64,6 +62,36 @@ class Module
     }
 
     /**
+     * Cleans up the 'on' and 'off' for post types on a given module (so we don't get warnings all over)
+     * For every post type that doesn't explicitly have the 'on' value, turn it 'off'
+     * If add_post_type_support() has been used anywhere (legacy support), inherit the state
+     *
+     * @param array $module_post_types Current state of post type options for the module
+     * @param string $post_type_support What the feature is called for post_type_support (e.g. 'ppma_calendar')
+     *
+     * @return array $normalized_post_type_options The setting for each post type, normalized based on rules
+     *
+     * @since 0.7
+     */
+    public function clean_post_type_options($module_post_types = [], $post_type_support = null)
+    {
+        $normalized_post_type_options = [];
+        $all_post_types               = array_keys($this->get_all_post_types());
+        foreach ($all_post_types as $post_type) {
+            if ((isset($module_post_types[$post_type]) && $module_post_types[$post_type] == 'on') || post_type_supports(
+                    $post_type,
+                    $post_type_support
+                )) {
+                $normalized_post_type_options[$post_type] = 'on';
+            } else {
+                $normalized_post_type_options[$post_type] = 'off';
+            }
+        }
+
+        return $normalized_post_type_options;
+    }
+
+    /**
      * Gets an array of allowed post types for a module
      *
      * @return array post-type-slug => post-type-label
@@ -81,34 +109,6 @@ class Module
         }
 
         return $allowed_post_types;
-    }
-
-    /**
-     * Cleans up the 'on' and 'off' for post types on a given module (so we don't get warnings all over)
-     * For every post type that doesn't explicitly have the 'on' value, turn it 'off'
-     * If add_post_type_support() has been used anywhere (legacy support), inherit the state
-     *
-     * @param array  $module_post_types Current state of post type options for the module
-     * @param string $post_type_support What the feature is called for post_type_support (e.g. 'ppma_calendar')
-     *
-     * @return array $normalized_post_type_options The setting for each post type, normalized based on rules
-     *
-     * @since 0.7
-     */
-    public function clean_post_type_options($module_post_types = [], $post_type_support = null)
-    {
-        $normalized_post_type_options = [];
-        $all_post_types               = array_keys($this->get_all_post_types());
-        foreach ($all_post_types as $post_type) {
-            if ((isset($module_post_types[$post_type]) && $module_post_types[$post_type] == 'on') || post_type_supports($post_type,
-                    $post_type_support)) {
-                $normalized_post_type_options[$post_type] = 'on';
-            } else {
-                $normalized_post_type_options[$post_type] = 'off';
-            }
-        }
-
-        return $normalized_post_type_options;
     }
 
     /**
@@ -151,7 +151,7 @@ class Module
         global $pagenow;
 
         // All of the settings views are based on admin.php and a $_GET['page'] parameter
-        if ($pagenow != 'admin.php' || ! isset($_GET['page'])) {
+        if ($pagenow != 'admin.php' || !isset($_GET['page'])) {
             return false;
         }
 
@@ -160,7 +160,7 @@ class Module
                 return true;
             }
 
-            if ( ! isset($_GET['module']) || $_GET['module'] === 'ppma-modules-settings-settings') {
+            if (!isset($_GET['module']) || $_GET['module'] === 'ppma-modules-settings-settings') {
                 if (in_array($module_name, ['editorial_comments', 'notifications', 'dashboard'])) {
                     return true;
                 }
@@ -201,7 +201,7 @@ class Module
     {
         $screen = get_current_screen();
 
-        if ( ! method_exists($screen, 'add_help_tab')) {
+        if (!method_exists($screen, 'add_help_tab')) {
             return;
         }
 

@@ -29,10 +29,9 @@
  */
 
 use MultipleAuthors\Classes\Legacy\Module;
-use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Factory;
 
-if ( ! class_exists('MA_Modules_Settings')) {
+if (!class_exists('MA_Modules_Settings')) {
     /**
      * class MA_Modules_Settings
      * Threaded commenting in the admin for discussion between writers and editors
@@ -57,7 +56,7 @@ if ( ! class_exists('MA_Modules_Settings')) {
                 'icon_class'           => 'dashicons dashicons-admin-settings',
                 'slug'                 => 'modules-settings',
                 'default_options'      => [
-                    'enabled'          => 'on',
+                    'enabled' => 'on',
                 ],
                 'configure_page_cb'    => 'print_configure_view',
                 'autoload'             => false,
@@ -85,8 +84,13 @@ if ( ! class_exists('MA_Modules_Settings')) {
         {
             global $pagenow;
 
-            wp_enqueue_style('publishpress-modules-css', $this->module_url . 'lib/modules-settings.css', false,
-                PP_AUTHORS_VERSION, 'all');
+            wp_enqueue_style(
+                'publishpress-modules-css',
+                $this->module_url . 'lib/modules-settings.css',
+                false,
+                PP_AUTHORS_VERSION,
+                'all'
+            );
 
             if (isset($_GET['page']) && $_GET['page'] === 'ppma-modules-settings') {
                 wp_enqueue_script('jquery-ui-core');
@@ -103,7 +107,6 @@ if ( ! class_exists('MA_Modules_Settings')) {
          */
         public function register_settings()
         {
-            
         }
 
         /**
@@ -127,7 +130,7 @@ if ( ! class_exists('MA_Modules_Settings')) {
          */
         public function settings_save($new_options)
         {
-            if ( ! isset($_POST['multiple_authors_options'])) {
+            if (!isset($_POST['multiple_authors_options'])) {
                 return true;
             }
 
@@ -168,11 +171,11 @@ if ( ! class_exists('MA_Modules_Settings')) {
                  * @return array
                  */
                 $tabs = apply_filters('publishpress_multiple_authors_settings_tabs', []);
-                if ( ! empty($tabs)) {
+                if (!empty($tabs)) {
                     echo '<ul id="publishpress-authors-settings-tabs" class="nav-tab-wrapper">';
                     $i = 0;
                     foreach ($tabs as $tabLink => $tabLabel) {
-                        echo '<li class="nav-tab ' . ($i === 0 ? 'nav-tab-active': '') . '">';
+                        echo '<li class="nav-tab ' . ($i === 0 ? 'nav-tab-active' : '') . '">';
                         echo '<a href="' . $tabLink . '">' . $tabLabel . '</a>';
                         echo '</li>';
                         $i++;
@@ -190,7 +193,7 @@ if ( ! class_exists('MA_Modules_Settings')) {
 
                     if ($mod_data->autoload
                         || $mod_data->slug === $this->module->slug
-                        || ! isset($mod_data->general_options)
+                        || !isset($mod_data->general_options)
                         || $mod_data->options->enabled != 'on') {
                         continue;
                     }
@@ -198,7 +201,9 @@ if ( ! class_exists('MA_Modules_Settings')) {
                     echo sprintf('<h3>%s</h3>', $mod_data->title);
                     echo sprintf('<p>%s</p>', $mod_data->short_description);
 
-                    echo '<input name="multiple_authors_module_name[]" type="hidden" value="' . esc_attr($mod_data->name) . '" />';
+                    echo '<input name="multiple_authors_module_name[]" type="hidden" value="' . esc_attr(
+                            $mod_data->name
+                        ) . '" />';
 
                     $legacyPlugin->$slug->print_configure_view();
                 }
@@ -210,7 +215,7 @@ if ( ! class_exists('MA_Modules_Settings')) {
                 $featuresCount = 0;
 
                 foreach ($legacyPlugin->modules as $mod_name => $mod_data) {
-                    if ( ! $mod_data->autoload && $mod_data->slug !== $this->module->slug) {
+                    if (!$mod_data->autoload && $mod_data->slug !== $this->module->slug) {
                         $featuresCount++;
                     }
                 }
@@ -219,14 +224,18 @@ if ( ! class_exists('MA_Modules_Settings')) {
                 <?php if ($featuresCount > 0) : ?>
                     <div id="modules-wrapper">
                         <h3><?php echo __('Features', 'publishpress-authors'); ?></h3>
-                        <p><?php echo __('Feel free to select only the features you need.',
-                                'publishpress-authors'); ?></p>
+                        <p><?php echo __(
+                                'Feel free to select only the features you need.',
+                                'publishpress-authors'
+                            ); ?></p>
 
                         <table class="form-table">
                             <tbody>
                             <tr>
-                                <th scope="row"><?php echo __('Enabled features',
-                                        'publishpress-authors'); ?></th>
+                                <th scope="row"><?php echo __(
+                                        'Enabled features',
+                                        'publishpress-authors'
+                                    ); ?></th>
                                 <td>
                                     <?php foreach ($legacyPlugin->modules as $mod_name => $mod_data) : ?>
 
@@ -236,7 +245,9 @@ if ( ! class_exists('MA_Modules_Settings')) {
 
                                         <label for="feature-<?php echo esc_attr($mod_data->slug); ?>">
                                             <input id="feature-<?php echo esc_attr($mod_data->slug); ?>"
-                                                   name="multiple_authors_options[features][<?php echo esc_attr($mod_data->slug); ?>]" <?php echo ($mod_data->options->enabled == 'on') ? "checked=\"checked\"" : ""; ?>
+                                                   name="multiple_authors_options[features][<?php echo esc_attr(
+                                                       $mod_data->slug
+                                                   ); ?>]" <?php echo ($mod_data->options->enabled == 'on') ? "checked=\"checked\"" : ""; ?>
                                                    type="checkbox">
                                             &nbsp;&nbsp;&nbsp;<?php echo $mod_data->title; ?>
                                         </label>
@@ -247,7 +258,9 @@ if ( ! class_exists('MA_Modules_Settings')) {
                             </tbody>
                         </table>
 
-                        <?php echo '<input name="multiple_authors_module_name[]" type="hidden" value="' . esc_attr($this->module->name) . '" />'; ?>
+                        <?php echo '<input name="multiple_authors_module_name[]" type="hidden" value="' . esc_attr(
+                                $this->module->name
+                            ) . '" />'; ?>
                     </div>
                 <?php endif; ?>
 

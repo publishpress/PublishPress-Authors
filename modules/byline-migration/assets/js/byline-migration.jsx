@@ -1,7 +1,7 @@
 let {__} = wp.i18n;
 
 class PPAuthorsBylineMigrationBox extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
 
         this.renderDeactivatePluginOption = this.renderDeactivatePluginOption.bind(this);
@@ -26,13 +26,13 @@ class PPAuthorsBylineMigrationBox extends React.Component {
         };
     };
 
-    clickStart (e) {
+    clickStart(e) {
         e.preventDefault();
 
         this.startMigration();
     }
 
-    getBylineMigrationInitialData (next) {
+    getBylineMigrationInitialData(next) {
         var self = this;
 
         this.setState({
@@ -68,7 +68,7 @@ class PPAuthorsBylineMigrationBox extends React.Component {
         }, 1000);
     }
 
-    migrateChunkOfData () {
+    migrateChunkOfData() {
         var self = this;
 
         jQuery.ajax({
@@ -121,7 +121,7 @@ class PPAuthorsBylineMigrationBox extends React.Component {
         });
     }
 
-    startMigration () {
+    startMigration() {
         var self = this;
 
         this.setState(
@@ -147,7 +147,7 @@ class PPAuthorsBylineMigrationBox extends React.Component {
         }, 1000);
     }
 
-    deactivateByline () {
+    deactivateByline() {
         var self = this;
 
         this.setState(
@@ -181,7 +181,7 @@ class PPAuthorsBylineMigrationBox extends React.Component {
         });
     }
 
-    renderDeactivatePluginOption () {
+    renderDeactivatePluginOption() {
         let label = __('Deactivate Byline', 'publishpress-authors');
         let isEnabled = !this.state.disablingByline;
 
@@ -193,23 +193,23 @@ class PPAuthorsBylineMigrationBox extends React.Component {
         );
     }
 
-    reset () {
+    reset() {
         this.setState({progress: 0, inProgress: false});
     }
 
-    renderProgressBar () {
+    renderProgressBar() {
         return (
             <PPAuthorsProgressBar value={this.state.progress}/>
         );
     }
 
-    renderLog () {
+    renderLog() {
         return (
             <PPAuthorsMaintenanceLog log={this.state.log} show={this.state.showDeactivateOption}/>
         );
     }
 
-    render () {
+    render() {
         let isEnabled = !this.state.inProgress;
 
         let progressBar = (this.state.inProgress) ? this.renderProgressBar() : '';
@@ -231,11 +231,11 @@ class PPAuthorsBylineMigrationBox extends React.Component {
 }
 
 class PPAuthorsMaintenanceButton extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
     }
 
-    render () {
+    render() {
         var disabled = !this.props.enabled;
         return (
             <input type="button"
@@ -248,11 +248,11 @@ class PPAuthorsMaintenanceButton extends React.Component {
 }
 
 class PPAuthorsMaintenanceLog extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
     }
 
-    render () {
+    render() {
         return (
             <div>
                 <div class="ppma_maintenance_log" readOnly={true}>{this.props.log}</div>
@@ -262,17 +262,17 @@ class PPAuthorsMaintenanceLog extends React.Component {
 }
 
 class PPAuthorsProgressBar extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
     }
 
-    renderLabel () {
+    renderLabel() {
         return (
             <div className="p-progressbar-label">{this.props.value} %</div>
         );
     }
 
-    render () {
+    render() {
         let className = 'p-progressbar p-component p-progressbar-determinate';
         let label = this.renderLabel();
 
@@ -289,8 +289,8 @@ class PPAuthorsProgressBar extends React.Component {
 
 jQuery(function () {
     ReactDOM.render(<PPAuthorsBylineMigrationBox notMigratedPostsId={ppmaBylineMigration.notMigratedPostsId}
-                                                    nonce={ppmaBylineMigration.nonce}
-                                                    chunkSize={5}/>,
+                                                 nonce={ppmaBylineMigration.nonce}
+                                                 chunkSize={5}/>,
         document.getElementById('publishpress-authors-byline-migration')
     );
 });

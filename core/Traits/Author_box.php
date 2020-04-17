@@ -18,7 +18,7 @@ trait Author_box
     /**
      * Returns true if the post type and current page is valid.
      *
-     * @return boolean
+     * @return bool
      */
     protected function should_display_author_box()
     {
@@ -34,17 +34,17 @@ trait Author_box
      * Returns true if the current page is valid to display. Basically,
      * we should display only if is a post's page.
      *
-     * @return boolean
+     * @return bool
      */
     protected function is_valid_page_to_display_author_box()
     {
-        return ! is_home() && ! is_category() && (is_single() || is_page());
+        return !is_home() && !is_category() && (is_single() || is_page());
     }
 
     /**
      * Returns true if the current post type is valid, selected in the options.
      *
-     * @return boolean
+     * @return bool
      */
     protected function is_valid_post_type_to_display_author_box()
     {
@@ -79,23 +79,28 @@ trait Author_box
         $html = '';
 
         wp_enqueue_style('dashicons');
-        wp_enqueue_style('multiple-authors-widget-css',
+        wp_enqueue_style(
+            'multiple-authors-widget-css',
             PP_AUTHORS_ASSETS_URL . '/css/multiple-authors-widget.css',
             false,
-            PP_AUTHORS_VERSION, 'all');
+            PP_AUTHORS_VERSION,
+            'all'
+        );
 
-        if ( ! function_exists('multiple_authors')) {
+        if (!function_exists('multiple_authors')) {
             require_once PP_AUTHORS_BASE_PATH . 'template-tags.php';
         }
 
         $css_class = '';
-        if ( ! empty($target)) {
+        if (!empty($target)) {
             $css_class = 'multiple-authors-target-' . str_replace('_', '-', $target);
         }
 
         $title = isset($legacyPlugin->modules->multiple_authors->options->title_appended_to_content)
-            ? $legacyPlugin->modules->multiple_authors->options->title_appended_to_content : esc_html__('Authors',
-                'publishpress-authors');
+            ? $legacyPlugin->modules->multiple_authors->options->title_appended_to_content : esc_html__(
+                'Authors',
+                'publishpress-authors'
+            );
         $title = esc_html($title);
 
         if (empty($layout)) {
@@ -110,15 +115,15 @@ trait Author_box
             ? 'yes' === $legacyPlugin->modules->multiple_authors->options->show_site_link : true;
 
         $args = [
-            'show_title'   => $show_title,
-            'css_class'    => $css_class,
-            'title'        => $title,
-            'authors'      => get_multiple_authors($post_id, true, $archive),
-            'target'       => $target,
-            'item_class'   => 'author url fn',
-            'layout'       => $layout,
-            'show_email'   => $show_email,
-            'show_site'    => $show_site,
+            'show_title' => $show_title,
+            'css_class'  => $css_class,
+            'title'      => $title,
+            'authors'    => get_multiple_authors($post_id, true, $archive),
+            'target'     => $target,
+            'item_class' => 'author url fn',
+            'layout'     => $layout,
+            'show_email' => $show_email,
+            'show_site'  => $show_site,
         ];
 
         /**
@@ -147,8 +152,12 @@ trait Author_box
          *
          * @deprecated since 2.4.0, use pp_multiple_authors_author_box_rendered_markup instead.
          */
-        $html = apply_filters('pp_multiple_authors_filter_author_box_markup', $html, $authors_iterator,
-            $target);
+        $html = apply_filters(
+            'pp_multiple_authors_filter_author_box_markup',
+            $html,
+            $authors_iterator,
+            $target
+        );
 
         /**
          * Filter the rendered markup of the author box.
@@ -157,8 +166,12 @@ trait Author_box
          * @param Authors_Iterator $authors_iterator
          * @param string $target
          */
-        $html = apply_filters('pp_multiple_authors_author_box_rendered_markup', $html, $authors_iterator,
-            $target);
+        $html = apply_filters(
+            'pp_multiple_authors_author_box_rendered_markup',
+            $html,
+            $authors_iterator,
+            $target
+        );
 
         return $html;
     }

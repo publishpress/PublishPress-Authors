@@ -669,7 +669,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             if (isset($GLOBALS['coauthors_plus']) && !empty($GLOBALS['coauthors_plus'])) {
                 $actions['copy_coauthor_plus_data'] = [
                     'title'       => __('Copy Co-Authors Plus Data', 'publishpress-authors'),
-                    'description' => 'This action copy the authors from the plugin Co-Authors Plus allowing you to migrate to PublishPress Authors without lose any data. This action can be run multiple times.',
+                    'description' => 'This action will copy the authors from the plugin Co-Authors Plus allowing you to migrate to PublishPress Authors without losing any data. This action can be run multiple times.',
                     'button_link' => '',
                     'after'       => '<div id="publishpress-authors-coauthors-migration"></div>',
                 ];
@@ -813,8 +813,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             $isArchive = empty($postID) && is_author();
             $authors   = get_multiple_authors($postID, true, $isArchive);
 
-            foreach ($authors as $author)
-            {
+            foreach ($authors as $author) {
                 if (!empty($newLink)) {
                     $newLink .= ', ';
                 }
@@ -831,7 +830,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         {
             if (is_author()) {
                 $authors = get_multiple_authors(0, true, true);
-                $author = $authors[0];
+                $author  = $authors[0];
 
                 $title['title'] = $author->display_name;
             }
@@ -847,11 +846,10 @@ if (!class_exists('MA_Multiple_Authors')) {
 
                 if (substr_count($title, $wpAuthor->display_name)) {
                     $authors = get_multiple_authors(0, true, true);
-                    $author = $authors[0];
+                    $author  = $authors[0];
 
                     $title = $author->display_name;
                 }
-
             }
 
             return $title;

@@ -3,11 +3,11 @@
 
 {{ nonce_field( 'edit-publishpress-settings' )|raw }}
 
-<input type="hidden" name="multiple_authors_module_name[]" value="{{ module_name }}" />
-<input type="hidden" name="action" value="update" />
+<input type="hidden" name="multiple_authors_module_name[]" value="{{ module_name }}"/>
+<input type="hidden" name="action" value="update"/>
 
 <script>
-    jQuery(function($) {
+    jQuery(function ($) {
         $(".chosen-select").chosen({
             'width': '95%'
         });

@@ -26,8 +26,10 @@ class Widget extends WP_Widget
             esc_html__('Authors', 'publishpress-authors'),
             [
                 'classname'   => 'multiple_authors_widget',
-                'description' => esc_html__('Display a list of authors for the current post.',
-                                            'publishpress-authors'),
+                'description' => esc_html__(
+                    'Display a list of authors for the current post.',
+                    'publishpress-authors'
+                ),
             ]
         );
     }
@@ -42,9 +44,12 @@ class Widget extends WP_Widget
     {
         $legacyPlugin = Factory::getLegacyPlugin();
 
-        $instance = wp_parse_args((array)$instance, [
-            'title' => esc_html__('Authors', 'publishpress-authors'),
-        ]);
+        $instance = wp_parse_args(
+            (array)$instance,
+            [
+                'title' => esc_html__('Authors', 'publishpress-authors'),
+            ]
+        );
 
         /** This filter is documented in core/src/wp-includes/default-widgets.php */
         $title  = apply_filters('widget_title', $instance['title'], $instance, $this->id_base);
@@ -73,10 +78,13 @@ class Widget extends WP_Widget
     {
         $legacyPlugin = Factory::getLegacyPlugin();
 
-        $instance = wp_parse_args((array)$instance, [
-            'title'  => esc_html__('Authors', 'publishpress-authors'),
-            'layout' => $legacyPlugin->modules->multiple_authors->options->layout,
-        ]);
+        $instance = wp_parse_args(
+            (array)$instance,
+            [
+                'title'  => esc_html__('Authors', 'publishpress-authors'),
+                'layout' => $legacyPlugin->modules->multiple_authors->options->layout,
+            ]
+        );
 
         $title  = strip_tags($instance['title']);
         $layout = strip_tags($instance['layout']);
@@ -123,7 +131,7 @@ class Widget extends WP_Widget
 
         $layouts = apply_filters('pp_multiple_authors_author_layouts', []);
 
-        if ( ! array_key_exists($instance['layout'], $layouts)) {
+        if (!array_key_exists($instance['layout'], $layouts)) {
             $instance['layout'] = $legacyPlugin->modules->multiple_authors->options->layout;
         }
 

@@ -21,15 +21,19 @@ class Authors_Iterator
     {
         global $post, $authordata;
 
-        if ( ! $archive) {
+        if (!$archive) {
             $postID = (int)$postID;
-            if ( ! $postID && $post) {
+            if (!$postID && $post) {
                 $postID = (int)$post->ID;
             }
 
-            if ( ! $postID) {
-                trigger_error(esc_html__('No post ID provided for Multiple_authors_iterator constructor. Are you not in a loop or is $post not set?',
-                    'publishpress-authors')); // return null;
+            if (!$postID) {
+                trigger_error(
+                    esc_html__(
+                        'No post ID provided for Multiple_authors_iterator constructor. Are you not in a loop or is $post not set?',
+                        'publishpress-authors'
+                    )
+                ); // return null;
             }
         } else {
             $postID = 0;
@@ -55,7 +59,7 @@ class Authors_Iterator
         }
 
         //At the beginning of the loop
-        if (0 === $this->position && ! empty($authordata)) {
+        if (0 === $this->position && !empty($authordata)) {
             $this->original_authordata = $authordata;
         }
 

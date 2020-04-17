@@ -24,7 +24,7 @@
 use MultipleAuthors\Classes\Legacy\Module;
 use MultipleAuthors\Factory;
 
-if ( ! class_exists('MA_Default_Layouts')) {
+if (!class_exists('MA_Default_Layouts')) {
     /**
      * class MA_Multiple_Authors
      */
@@ -85,13 +85,13 @@ if ( ! class_exists('MA_Default_Layouts')) {
          */
         public function renderBoxHTML($html, $args)
         {
-            if ( ! isset($args['layout'])) {
+            if (!isset($args['layout'])) {
                 $args['layout'] = apply_filters('pp_multiple_authors_default_layout', 'inline');
             }
 
             // Check if the layout exists
             $twigFile = 'author_layout/' . $args['layout'] . '.twig';
-            if ( ! file_exists(PP_AUTHORS_BASE_PATH . 'twig/' . $twigFile)) {
+            if (!file_exists(PP_AUTHORS_BASE_PATH . 'twig/' . $twigFile)) {
                 error_log('PublishPress Authors twig file not found for the layout: ' . $args['layout']);
 
                 return $html;
