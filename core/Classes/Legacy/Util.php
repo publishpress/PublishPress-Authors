@@ -37,6 +37,8 @@ class Util
             $post_type = get_post($post_id)->post_type;
         } elseif ('edit.php' == $pagenow && empty($_REQUEST['post_type'])) {
             $post_type = 'post';
+        } elseif (@is_author()) {
+            $post_type = 'post';
         } else {
             $post_type = null;
         }

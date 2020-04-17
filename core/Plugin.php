@@ -120,7 +120,7 @@ class Plugin
 
         // Fix the author page.
         // Use posts_selection since it's after WP_Query has built the request and before it's queried any posts
-        add_filter('posts_selection', [$this, 'fix_author_page']);
+        add_filter('posts_selection', [$this, 'fix_query_for_author_page']);
         add_action('the_post', [$this, 'fix_post'], 10);
 
         add_action(
@@ -248,7 +248,7 @@ class Plugin
         // Query modifications.
         add_action(
             'pre_get_posts',
-            ['MultipleAuthors\\Classes\\Query', 'action_pre_get_posts']
+            ['MultipleAuthors\\Classes\\Query', 'fix_query_pre_get_posts']
         );
         add_filter(
             'posts_where',
@@ -265,6 +265,12 @@ class Plugin
         add_filter(
             'posts_groupby',
             ['MultipleAuthors\\Classes\\Query', 'filter_posts_groupby'],
+            10,
+            2
+        );
+        add_filter(
+            'pre_handle_404',
+            [$this, 'fix_404_for_authors'],
             10,
             2
         );
@@ -981,7 +987,7 @@ class Plugin
      *
      * @param string $query_str
      */
-    public function fix_author_page($query_str)
+    public function fix_query_for_author_page($query_str)
     {
         $legacyPlugin = Factory::getLegacyPlugin();
 
@@ -1000,35 +1006,73 @@ class Plugin
             return;
         }
 
-        $author_name = sanitize_title(get_query_var('author_name'));
-
-        $author = null;
-        $term   = null;
-
-        if (!empty($author_name)) {
-            $author = Author::get_by_term_slug($author_name);
-
-            $wp_query->set('author_name', $author_name);
-        } else {
-            $author_id = (int)get_query_var('author');
-
-            $author = Author::get_by_user_id($author_id);
-
-            $wp_query->set('author', $author_id);
+        $author_name = $wp_query->get('author_name');
+        if (!$author_name) {
+            return;
         }
 
-        if (is_object($author)) {
-            $authordata = $author;
+        $author = Author::get_by_user_id_or_slug($author_name);
 
-            $wp_query->queried_object    = $author;
-            $wp_query->queried_object_id = $author->ID;
-            $wp_query->is_404            = false;
-        } else {
+        if (!is_object($author)) {
             $wp_query->queried_object    = null;
             $wp_query->queried_object_id = null;
             $wp_query->is_author         = false;
             $wp_query->is_archive        = false;
+
+            return;
         }
+
+        if ($author->is_guest()) {
+            $wp_query->queried_object    = $author;
+            $wp_query->queried_object_id = $author->slug;
+            $wp_query->set('author_name', $author->slug);
+            $wp_query->set('author', $author->slug);
+
+            $authordata = $author;
+        } else {
+            $user = $author->get_user_object();
+
+            $wp_query->queried_object    = $user;
+            $wp_query->queried_object_id = $user->ID;
+            $wp_query->set('author_name', $author->slug);
+            $wp_query->set('author', $user->ID);
+
+            $authordata = $user;
+        }
+
+        $wp_query->is_404 = false;
+    }
+
+    /**
+     * @param bool $shortCircuit
+     * @param \WP_Query $wp_query
+     */
+    public function fix_404_for_authors($shortCircuit, $wp_query)
+    {
+        if ($shortCircuit || !$wp_query->is_author) {
+            return $shortCircuit;
+        }
+
+        if (is_404()) {
+            return true;
+        }
+
+        if (is_admin() || is_robots() || is_favicon() || $wp_query->posts) {
+            return $shortCircuit;
+        }
+
+        if (!is_paged()) {
+            // Don't 404 for Authors without posts as long as they matched an author on this site.
+
+            if ($wp_query->queried_object instanceof Author) {
+                status_header(200);
+                return true;
+            } else {
+                return $shortCircuit;
+            }
+        }
+
+        return $shortCircuit;
     }
 
     public function fix_post(WP_Post $post)
