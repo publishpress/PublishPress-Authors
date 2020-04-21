@@ -236,27 +236,6 @@ class Author
     }
 
     /**
-     * @param int|string $id_or_slug
-     * @return bool|false|Author
-     */
-    public static function get_by_user_id_or_slug($id_or_slug)
-    {
-        $term = get_term_by('slug', $id_or_slug, 'author');
-
-        if ($term) {
-            return self::get_by_term_slug($id_or_slug);
-        } else {
-            $user = get_user_by('ID', $id_or_slug);
-
-            if (is_object($user)) {
-                return self::get_by_user_id($id_or_slug);
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * @param $name
      *
      * @return bool
