@@ -46,7 +46,7 @@ class Term_Editor
         return $content;
     }
 
-    public function filter_columns($columns)
+    public static function filter_columns($columns)
     {
         if (isset($columns['slug'])) {
             unset($columns['slug']);
