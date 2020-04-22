@@ -9,6 +9,8 @@
 
 namespace MultipleAuthors\Classes\Integrations;
 
+use MultipleAuthors\Classes\Legacy\Util;
+
 /**
  * Filter standard theme template tags.
  *
@@ -28,7 +30,7 @@ class Theme
      */
     public static function filter_get_the_archive_title($title)
     {
-        if (!is_author()) {
+        if (!Util::isAuthor()) {
             return $title;
         }
 
@@ -49,7 +51,7 @@ class Theme
      */
     public static function filter_get_the_archive_description($description)
     {
-        if (!is_author()) {
+        if (!Util::isAuthor()) {
             return $description;
         }
 

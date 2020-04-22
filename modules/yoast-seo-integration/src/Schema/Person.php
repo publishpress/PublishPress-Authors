@@ -25,6 +25,7 @@
 namespace PPAuthors\YoastSEO\Schema;
 
 use MultipleAuthors\Classes\Authors_Iterator;
+use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Classes\Objects\Author as AuthorObject;
 use WP_User;
 use WPSEO_Graph_Piece;
@@ -98,7 +99,7 @@ class Person implements WPSEO_Graph_Piece
      */
     public function is_needed()
     {
-        if (($this->context->site_represents === 'person') || is_author()) {
+        if (($this->context->site_represents === 'person') || Util::isAuthor()) {
             return true;
         }
 

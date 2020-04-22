@@ -8,6 +8,7 @@
  */
 
 use MultipleAuthors\Classes\Authors_Iterator;
+use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Classes\Objects\Author;
 
 
@@ -821,7 +822,7 @@ if (!function_exists('authors_render')) {
 add_filter(
     'document_title_parts',
     function ($parts) {
-        if (isset($parts['title']) && function_exists('get_multiple_authors') && is_author()) {
+        if (isset($parts['title']) && function_exists('get_multiple_authors') && Util::isAuthor()) {
             $authors = get_multiple_authors(0, true, true);
             if (!empty($authors)) {
                 $author         = $authors[0];

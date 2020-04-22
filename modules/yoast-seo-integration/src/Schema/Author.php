@@ -25,6 +25,7 @@
 namespace PPAuthors\YoastSEO\Schema;
 
 
+use MultipleAuthors\Classes\Legacy\Util;
 use WPSEO_Graph_Piece;
 use WPSEO_Schema_Article;
 use WPSEO_Schema_Context;
@@ -79,7 +80,7 @@ class Author extends Person implements WPSEO_Graph_Piece
      */
     public function is_needed()
     {
-        if (is_author()) {
+        if (Util::isAuthor()) {
             return true;
         }
 
@@ -126,7 +127,7 @@ class Author extends Person implements WPSEO_Graph_Piece
         $data = $this->build_person_data($user_id);
 
         // If this is an author page, the Person object is the main object, so we set it as such here.
-        if (is_author()) {
+        if (Util::isAuthor()) {
             $data['mainEntityOfPage'] = [
                 '@id' => $this->context->canonical . WPSEO_Schema_IDs::WEBPAGE_HASH,
             ];
@@ -142,7 +143,7 @@ class Author extends Person implements WPSEO_Graph_Piece
      */
     protected function determine_user_id()
     {
-        if (is_author()) {
+        if (Util::isAuthor()) {
             $author = get_queried_object();
 
             if (get_class($author) === 'WP_User') {

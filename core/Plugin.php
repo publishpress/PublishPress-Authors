@@ -980,7 +980,7 @@ class Plugin
             return;
         }
 
-        if (!is_author() && (empty($wp_query->query) || !array_key_exists('author', $wp_query->query))) {
+        if (!Util::isAuthor() && (empty($wp_query->query) || !array_key_exists('author', $wp_query->query))) {
             return;
         }
 
@@ -1494,7 +1494,7 @@ class Plugin
      */
     public function filter_jetpack_open_graph_tags($og_tags, $image_dimensions)
     {
-        if (is_author()) {
+        if (Util::isAuthor()) {
             $author                        = get_queried_object();
             $og_tags['og:title']           = $author->display_name;
             $og_tags['og:url']             = get_author_posts_url($author->ID, $author->user_nicename);

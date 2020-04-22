@@ -24,6 +24,7 @@
 use MultipleAuthors\Classes\Authors_Iterator;
 use MultipleAuthors\Classes\Installer;
 use MultipleAuthors\Classes\Legacy\Module;
+use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Classes\Utils;
 use MultipleAuthors\Factory;
@@ -810,7 +811,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         {
             $newLink   = '';
             $postID    = get_the_id();
-            $isArchive = empty($postID) && is_author();
+            $isArchive = empty($postID) && Util::isAuthor();
             $authors   = get_multiple_authors($postID, true, $isArchive);
 
             foreach ($authors as $author) {
@@ -828,7 +829,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         public function documentTitleParts($title)
         {
-            if (is_author()) {
+            if (Util::isAuthor()) {
                 $authors = get_multiple_authors(0, true, true);
                 $author  = $authors[0];
 
@@ -840,7 +841,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         public function preGetDocumentTitle($title)
         {
-            if (is_author()) {
+            if (Util::isAuthor()) {
                 // Try to replace the author name in the title
                 $wpAuthor = get_queried_object();
 
@@ -930,7 +931,7 @@ if (!class_exists('MA_Multiple_Authors')) {
          */
         public function filter_body_class($classes)
         {
-            if (is_author()) {
+            if (Util::isAuthor()) {
                 if ($brokenItem = array_search('author-', $classes)) {
                     unset($classes[$brokenItem]);
                 }
@@ -957,7 +958,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function filter_author_headline($value, $user_id, $original_user_id)
         {
             // Try to fix the headline for the guest authors page
-            if (empty($value) && empty($user_id) && is_archive() && is_author()) {
+            if (empty($value) && empty($user_id) && is_archive() && Util::isAuthor()) {
                 $authors = get_multiple_authors(0, true, true);
 
                 if (!empty($authors)) {
@@ -1007,7 +1008,7 @@ if (!class_exists('MA_Multiple_Authors')) {
          */
         public function filter_genesis_archive_title($output, $attributes, $context, $args)
         {
-            if (is_archive() && is_author()) {
+            if (is_archive() && Util::isAuthor()) {
                 $authors = get_multiple_authors(0, true, true);
 
                 if (!empty($authors)) {

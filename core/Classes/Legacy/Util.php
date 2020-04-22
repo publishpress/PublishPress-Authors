@@ -37,13 +37,27 @@ class Util
             $post_type = get_post($post_id)->post_type;
         } elseif ('edit.php' == $pagenow && empty($_REQUEST['post_type'])) {
             $post_type = 'post';
-        } elseif (@is_author()) {
+        } elseif (self::isAuthor()) {
             $post_type = 'post';
         } else {
             $post_type = null;
         }
 
         return $post_type;
+    }
+
+    /**
+     * @return bool|void
+     */
+    public static function isAuthor()
+    {
+        global $wp_query;
+
+        if (!isset($wp_query)) {
+            return;
+        }
+
+        return is_author();
     }
 
     /**
