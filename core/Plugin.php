@@ -165,6 +165,10 @@ class Plugin
             'admin_init',
             ['MultipleAuthors\\Classes\\Post_Editor', 'action_admin_init']
         );
+        add_action(
+            'admin_init',
+            ['MultipleAuthors\\Classes\\Term_Editor', 'action_admin_init']
+        );
         add_filter(
             'manage_edit-author_columns',
             [
