@@ -92,9 +92,24 @@ if (!class_exists('MA_Default_Layouts')) {
             // Check if the layout exists
             $twigFile = 'author_layout/' . $args['layout'] . '.twig';
             if (!file_exists(PP_AUTHORS_BASE_PATH . 'twig/' . $twigFile)) {
-                error_log('[PublishPress Authors] Twig file not found for the layout: ' . $args['layout']);
+                error_log(
+                    sprintf(
+                        '[PublishPress Authors] Twig file not found for the layout: %s. Falling back to "simple_list"',
+                        $args['layout']
+                    )
+                );
 
-                return $html;
+                $args['layout'] = 'simple_list';
+                $twigFile       = 'author_layout/' . $args['layout'] . '.twig';
+            }
+
+            if (!file_exists(PP_AUTHORS_BASE_PATH . 'twig/' . $twigFile)) {
+                error_log(
+                    sprintf(
+                        '[PublishPress Authors] Twig file not found for the layout: %s.',
+                        $args['layout']
+                    )
+                );
             }
 
             $container = Factory::get_container();
