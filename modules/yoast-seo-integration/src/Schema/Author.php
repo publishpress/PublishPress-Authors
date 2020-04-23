@@ -129,7 +129,7 @@ class Author extends Person implements WPSEO_Graph_Piece
         // If this is an author page, the Person object is the main object, so we set it as such here.
         if (Util::isAuthor()) {
             $data['mainEntityOfPage'] = [
-                '@id' => $this->context->canonical . WPSEO_Schema_IDs::WEBPAGE_HASH,
+                '@id' => $data['@id'],
             ];
         }
 
