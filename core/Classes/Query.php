@@ -42,25 +42,17 @@ class Query
             return;
         }
 
-        $authorTerm = get_term_by('slug', $author_name, 'author');
         $user       = get_user_by('slug', $author_name);
+        $authorTerm = get_term_by('slug', $author_name, 'author');
 
-        if (is_object($authorTerm)) {
+        if (is_object($user)) {
+            self::injectUserAuthorDataIntoTheQuery($wp_query, $user);
+        } elseif (is_object($authorTerm)) {
             $author = Author::get_by_term_id($authorTerm->term_id);
 
-            if ($author->is_guest()) {
-                self::injectGuestAuthorDataIntoTheQuery($wp_query, $author);
-            } else {
-                self::injectUserAuthorDataIntoTheQuery($wp_query, $user);
-            }
-        } elseif (is_object($user)) {
-            // Fallback to the user data.
-            self::injectUserAuthorDataIntoTheQuery($wp_query, $user);
+            self::injectGuestAuthorDataIntoTheQuery($wp_query, $author);
         } else {
-            $wp_query->queried_object    = null;
-            $wp_query->queried_object_id = null;
-            $wp_query->is_author         = false;
-            $wp_query->is_archive        = false;
+            self::emptyAuthorDataInTheQuery($wp_query);
         }
     }
 
@@ -86,6 +78,14 @@ class Query
         $wp_query->set('author', $user->ID);
 
         $authordata = $user;
+    }
+
+    private static function emptyAuthorDataInTheQuery($wp_query)
+    {
+        $wp_query->queried_object    = null;
+        $wp_query->queried_object_id = null;
+        $wp_query->is_author         = false;
+        $wp_query->is_archive        = false;
     }
 
     /**
