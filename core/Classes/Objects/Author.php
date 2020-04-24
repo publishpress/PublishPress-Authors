@@ -340,6 +340,17 @@ class Author
     }
 
     /**
+     * @param string $key
+     * @param bool $single
+     *
+     * @return mixed
+     */
+    public function get_meta($key, $single = true)
+    {
+        return get_term_meta($this->term_id, $key, $single);
+    }
+
+    /**
      * @return bool
      */
     public function has_custom_avatar()
