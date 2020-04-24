@@ -180,8 +180,6 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_filter('generate_post_author_output', [$this, 'generatepress_author_output']);
 
             add_filter('the_author_posts_link', [$this, 'theAuthorPostsLink']);
-            add_filter('pre_get_document_title', [$this, 'preGetDocumentTitle'], 999);
-            add_filter('document_title_parts', [$this, 'documentTitleParts'], 20);
 
             // ==========================
             // Genesis framework support
@@ -846,35 +844,6 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             return $newLink;
-        }
-
-        public function documentTitleParts($title)
-        {
-            if (Util::isAuthor()) {
-                $authors = get_multiple_authors(0, true, true);
-                $author  = $authors[0];
-
-                $title['title'] = $author->display_name;
-            }
-
-            return $title;
-        }
-
-        public function preGetDocumentTitle($title)
-        {
-            if (Util::isAuthor()) {
-                // Try to replace the author name in the title
-                $wpAuthor = get_queried_object();
-
-                if (substr_count($title, $wpAuthor->display_name)) {
-                    $authors = get_multiple_authors(0, true, true);
-                    $author  = $authors[0];
-
-                    $title = $author->display_name;
-                }
-            }
-
-            return $title;
         }
 
         /**
