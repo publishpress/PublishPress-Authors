@@ -84,19 +84,16 @@ class Content_Model
             return $link;
         }
 
-        // We probably have a call for a guest author, without an author_id and a undefined author_nicename argument.
-        if (empty($author_id) && empty($author_nicename)) {
-            // Try to identify the current authors.
-
+        // We probably have a call for a guest author if the author_id is a string
+        if (!is_numeric($author_id) && is_string($author_id)) {
+            // Try to identify the current author.
             $authors = get_multiple_authors();
 
             if (!empty($authors)) {
                 // Even for multiple authors, if not specified one, we will always get the first author.
                 $author = $authors[0];
 
-                // Based on the method get_author_posts_url.
-                $link = str_replace('%author%', $author->user_nicename, $permastruct);
-                $link = home_url(user_trailingslashit($link));
+                return $author->link;
             }
         }
 
@@ -104,7 +101,12 @@ class Content_Model
 
         // Check if the author slug is empty in the link.
         if ($link_path === str_replace('%author%', '', $permastruct)) {
-            global $wp;
+            error_log(
+                sprintf(
+                    '[PublishPress Authors] Warning - The link for the author_id="%s" was changed to the post page because the author is not specified in the given url',
+                    $author_id
+                )
+            );
 
             // Redirects to the post page.
             $link = get_the_permalink();
