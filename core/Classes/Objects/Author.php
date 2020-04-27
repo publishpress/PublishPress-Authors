@@ -283,7 +283,11 @@ class Author
         }
 
         if ('ID' === $attribute) {
-            return $this->user_id;
+            if ($this->is_guest()) {
+                return $this->slug;
+            } else {
+                return $this->user_id;
+            }
         }
 
         if ('term_id' === $attribute) {
