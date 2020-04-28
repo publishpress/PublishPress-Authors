@@ -13,7 +13,7 @@ Thumbs.db
 *.sublime-workspace
 
 # Ignores the "dev" composer file
-/src/vendor
+/vendor
 /packages
 
 codeception.yml
