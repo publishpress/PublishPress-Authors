@@ -33,6 +33,10 @@ class Query
      */
     public static function fix_query_pre_get_posts($wp_query)
     {
+        if (is_string($wp_query) || empty($wp_query)) {
+            global $wp_query;
+        }
+
         if (!$wp_query->is_author()) {
             return;
         }
@@ -45,47 +49,30 @@ class Query
         $user       = get_user_by('slug', $author_name);
         $authorTerm = get_term_by('slug', $author_name, 'author');
 
+        $author = null;
         if (is_object($user)) {
-            self::injectUserAuthorDataIntoTheQuery($wp_query, $user);
+            $author = $user;
         } elseif (is_object($authorTerm)) {
             $author = Author::get_by_term_id($authorTerm->term_id);
-
-            self::injectGuestAuthorDataIntoTheQuery($wp_query, $author);
-        } else {
-            self::emptyAuthorDataInTheQuery($wp_query);
         }
-    }
 
-    private static function injectGuestAuthorDataIntoTheQuery($wp_query, $author)
-    {
         global $authordata;
 
-        $wp_query->queried_object    = $author;
-        $wp_query->queried_object_id = $author->slug;
-        $wp_query->set('author_name', $author->slug);
-        $wp_query->set('author', $author->slug);
+        if (is_object($author)) {
+            $wp_query->queried_object    = $author;
+            $wp_query->queried_object_id = $author->ID;
+            $wp_query->set('author_name', $author->user_nicename);
+            $wp_query->set('author', $author->ID);
 
-        $authordata = $author;
-    }
+            $authordata = $author;
+        } else {
+            $wp_query->queried_object    = null;
+            $wp_query->queried_object_id = null;
+            $wp_query->is_author         = false;
+            $wp_query->is_archive        = false;
 
-    private static function injectUserAuthorDataIntoTheQuery($wp_query, $user)
-    {
-        global $authordata;
-
-        $wp_query->queried_object    = $user;
-        $wp_query->queried_object_id = $user->ID;
-        $wp_query->set('author_name', $user->user_nicename);
-        $wp_query->set('author', $user->ID);
-
-        $authordata = $user;
-    }
-
-    private static function emptyAuthorDataInTheQuery($wp_query)
-    {
-        $wp_query->queried_object    = null;
-        $wp_query->queried_object_id = null;
-        $wp_query->is_author         = false;
-        $wp_query->is_archive        = false;
+            $authordata = null;
+        }
     }
 
     /**

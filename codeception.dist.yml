@@ -21,9 +21,12 @@ extensions:
         tad\WPBrowser\Extension\Copier:
             files:
                 src: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/src"
+                vendor: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/vendor"
                 publishpress-authors.php: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/publishpress-authors.php"
 
 params:
     - .env.testing
 settings:
     shuffle: true
+    lint: true
+    report_useless_tests: true

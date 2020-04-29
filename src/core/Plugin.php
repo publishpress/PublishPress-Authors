@@ -279,6 +279,11 @@ class Plugin
             10,
             2
         );
+        add_action(
+            'wp_head',
+            ['MultipleAuthors\\Classes\\Query', 'fix_query_pre_get_posts'],
+            1
+        );
 
         // Author search
         add_action(

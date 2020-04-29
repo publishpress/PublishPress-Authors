@@ -13,6 +13,21 @@ use WP_Error;
 
 /**
  * Representation of an individual author.
+ * @property int $ID
+ * @property string $slug
+ * @property string $nickname
+ * @property string $description
+ * @property string $user_description
+ * @property string $first_name
+ * @property string $user_firstname
+ * @property string $last_name
+ * @property string $user_lastname
+ * @property string $user_nicename
+ * @property string $user_email
+ * @property string $user_url
+ * @property string $display_name
+ * @property string $link
+ * @property string $user_id
  */
 class Author
 {
@@ -25,15 +40,36 @@ class Author
     private $term_id;
 
     /**
+     * @var \WP_Term
+     */
+    private $term;
+
+    /**
      * Instantiate a new author object
      *
      * Authors are always fetched by static fetchers.
      *
-     * @param int $term_id ID for the correlated term.
+     * @param WP_Term|int $term ID for the correlated term or the term instance.
      */
-    private function __construct($term_id)
+    private function __construct($term)
     {
-        $this->term_id = (int)$term_id;
+        if ($term instanceof \WP_Term) {
+            $this->term    = $term;
+            $this->term_id = $term->term_id;
+        } else {
+            $this->term_id = (int)$term;
+        }
+
+        $this->term_id = abs($this->term_id);
+    }
+
+    private function getTerm()
+    {
+        if (empty($this->term)) {
+            $this->term = get_term($this->term_id, 'author');
+        }
+
+        return $this->term;
     }
 
     /**
@@ -56,7 +92,7 @@ class Author
                     maybe_serialize($user)
                 )
             );
-            return new WP_Error('missing-user', __("User doesn't exist", 'publishpress-authors'));
+            return false;
         }
         $existing = self::get_by_user_id($user->ID);
         if ($existing) {
@@ -67,10 +103,7 @@ class Author
                     maybe_serialize($user)
                 )
             );
-            return new WP_Error(
-                'existing-author',
-                __('User already has a author.', 'publishpress-authors')
-            );
+            return false;
         }
         $author = self::create(
             [
@@ -78,11 +111,12 @@ class Author
                 'slug'         => $user->user_nicename,
             ]
         );
+
         if (is_wp_error($author)) {
             error_log(
                 sprintf('[PublishPress Authors] The method %s found an error trying to create an author', __METHOD__)
             );
-            return $author;
+            return false;
         }
 
         self::update_author_from_user($author->term_id, $user->ID);
@@ -123,39 +157,38 @@ class Author
      *
      * @param array $args Arguments with which to create the new object.
      *
-     * @return Author|WP_Error
+     * @return Author|false
      */
     public static function create($args)
     {
         if (empty($args['slug'])) {
             error_log(sprintf('[PublishPress Authors] The method %s is missing the slug in the arguments', __METHOD__));
-            return new WP_Error(
-                'missing-slug',
-                __("'slug' is a required argument", 'publishpress-authors')
-            );
+            return false;
         }
         if (empty($args['display_name'])) {
             error_log(
                 sprintf('[PublishPress Authors] The method %s is missing the display_name in the arguments', __METHOD__)
             );
-            return new WP_Error(
-                'missing-display_name',
-                __("'display_name' is a required argument", 'publishpress-authors')
-            );
+            return false;
         }
-        $term = wp_insert_term(
+
+        $termData = wp_insert_term(
             $args['display_name'],
             'author',
             [
                 'slug' => $args['slug'],
             ]
         );
-        if (is_wp_error($term)) {
-            return $term;
-        }
-        $author = new Author($term['term_id']);
 
-        return $author;
+        if (is_wp_error($termData)) {
+            error_log(
+                sprintf('[PublishPress Authors] %s %s', $termData->get_error_message(), __METHOD__)
+            );
+
+            return false;
+        }
+
+        return new Author($termData['term_id']);
     }
 
     /**
@@ -232,7 +265,7 @@ class Author
             return false;
         }
 
-        return new Author($term->term_id);
+        return new Author($term);
     }
 
     /**
@@ -251,6 +284,7 @@ class Author
         $properties['user_email']    = true;
         $properties['description']   = true;
         $properties['user_url']      = true;
+        $properties['url']           = true;
         $properties['user_id']       = true;
         $properties['ID']            = true;
         $properties['first_name']    = true;
@@ -285,9 +319,23 @@ class Author
         if ('ID' === $attribute) {
             // Negative IDs represents the term ID for guest authors and positive IDs represents the user ID, as expected.
             if ($this->is_guest()) {
-                return $this->term_id * -1;
+                return abs($this->term_id) * -1;
             } else {
                 return $this->user_id;
+            }
+        }
+
+        if ('user_url' === $attribute) {
+            if (!$this->is_guest()) {
+                $user = $this->get_user_object();
+
+                return $user->user_url;
+            }
+        }
+
+        if ('first_name' === $attribute) {
+            if (!$this->is_guest()) {
+                return get_user_meta($this->user_id, 'first_name', true);
             }
         }
 
@@ -321,6 +369,7 @@ class Author
 
         $return = get_term_meta($this->term_id, $attribute, true);
 
+
         if (is_null($return)) {
             return apply_filters('pp_multiple_authors_author_attribute', null, $this->term_id, $attribute);
         }
@@ -352,7 +401,15 @@ class Author
      */
     public function get_meta($key, $single = true)
     {
-        return get_term_meta($this->term_id, $key, $single);
+        $meta = get_term_meta($this->term_id, $key, $single);
+
+        if ($this->is_guest()) {
+            return $meta;
+        } elseif (empty($meta) && '0' !== (string)$meta) {
+            $meta = get_user_meta($this->user_id, $key, $single);
+        }
+
+        return $meta;
     }
 
     /**
@@ -481,10 +538,12 @@ class Author
      * @param $single
      *
      * @return mixed
+     *
+     * @deprecated 3.2.5-beta.6
      */
     public function meta($metaKey, $single = true)
     {
-        return get_term_meta($this->term_id, $metaKey, $single);
+        return $this->get_meta($metaKey, $single);
     }
 
     /**
@@ -492,6 +551,8 @@ class Author
      * @param $single
      *
      * @return mixed
+     *
+     * @deprecated 3.2.5-beta.6
      */
     public function user_meta($metaKey, $single = true)
     {

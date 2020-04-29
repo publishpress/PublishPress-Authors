@@ -84,12 +84,10 @@ class Content_Model
             return $link;
         }
 
-        // @todo: create integration tests for testing the compatibility with functions like "get_author_posts_url"
-
         // We probably have a call for a guest author if the author_id is a string
-        if (!is_numeric($author_id) && is_string($author_id)) {
+        if ($author_id < 0) {
             // Try to identify the current author.
-            $author = Author::get_by_term_slug($author_id);
+            $author = Author::get_by_term_id($author_id * -1);
 
             if (is_object($author)) {
                 return $author->link;
