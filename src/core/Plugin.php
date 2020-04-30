@@ -1048,45 +1048,13 @@ class Plugin
             return $post;
         }
 
-        $author = $authors[0];
-
-        // Includes the name of all authors in the author name.
-        $authors = array_map(
-            function ($value) {
-                if (is_object($value) && isset($value->display_name)) {
-                    $value = $value->display_name;
-                }
-
-                return $value;
-            },
-            $authors
-        );
-
-        $authors_str = implode(', ', $authors);
-
-        // Get the first author and update the author in the post
-        if (isset($author->user_id)) {
-            $author_id = $author->user_id;
-
-            $user = get_user_by('ID', $author_id);
-
-            if (is_object($user)) {
-                $author_slug = $user->user_nicename;
-            } else {
-                $author_slug = $author->slug;
-            }
-        } else {
-            $author_id   = 0;
-            $author_slug = $author->slug;
-        }
+        $firstAuthor = $authors[0];
 
         if (!empty($authordata)) {
-            $authordata->display_name  = $authors_str;
-            $authordata->ID            = $author_id;
-            $authordata->user_nicename = $author_slug;
+            $authordata->display_name  = $firstAuthor->display_name;
+            $authordata->ID            = $firstAuthor->ID;
+            $authordata->user_nicename = $firstAuthor->user_nicename;
         }
-
-        $post->post_author = $author_id;
 
         return $post;
     }

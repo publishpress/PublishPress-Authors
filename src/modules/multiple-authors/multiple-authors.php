@@ -1050,6 +1050,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         {
             $author = $this->get_author_by_id($original_user_id);
 
+
             if (is_object($author)) {
                 $value = $author->display_name;
             }
