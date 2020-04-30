@@ -20,7 +20,6 @@ use MultipleAuthors\Classes\Objects\Author;
  */
 class Query
 {
-
     /**
      * Fix for author pages 404ing or not properly displaying on author pages
      *
@@ -35,6 +34,10 @@ class Query
     {
         if (is_string($wp_query) || empty($wp_query)) {
             global $wp_query;
+        }
+
+        if (isset($wp_query->query['post_type'])  && $wp_query->query['post_type'] === 'ppmacf_field') {
+            return;
         }
 
         if (!$wp_query->is_author()) {

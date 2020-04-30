@@ -290,6 +290,12 @@ class Author
         $properties['first_name']    = true;
         $properties['last_name']     = true;
 
+        // Short circuit to only trigger the filter for additional fields if the property is not already defined.
+        // Save resources and avoid infinity loops on some queries that check is $query->is_author.
+        if (array_key_exists($name, $properties)) {
+            return true;
+        }
+
         /**
          * Filter the author's properties.
          *
