@@ -127,6 +127,37 @@ There are two ways to install the PublishPress Authors plugin:
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.html).
 
+= [3.3.0] - 2020-04-30 =
+
+* Added: Some error messages are now added to the error log;
+* Added: Added links to the slug column in the authors list to open the authors page in the frontend;
+* Changed: Reorganized the folder structure of the plugin moving the code to a "src" folder;
+* Changed: Guest authors are now identified by author->ID < 0, which corresponds to the term_id. If ID > 0, it is a user, otherwise, an author term. This increases the compatibility rate with standard author functions;
+* Fixed: Improved text and fixed typo in the data migration messages;
+* Fixed: Added pointer cursor when hovering the "x" for removing authors from the list;
+* Fixed: Fixed minor style issue in the Simple List layout CSS;
+* Fixed: Centered avatar and fixed minor style issues in the Centered layout;
+* Fixed: Removed the blank '-' char from the Simple List layout due to undefined "age" field;
+* Fixed: Error message when the installed Yoast SEO doesn't have the function add_piece_language;
+* Fixed: Detection of minimum required Yoast SEO version for the module to be activated, so the error message is not displayed if Yoast SEO is not installed;
+* Fixed: Yoast SEO structured data was not displaying pages data correctly;
+* Fixed: Yoast SEO structured data was not working well when a guest author was the first author in posts;
+* Fixed: Yoast SEO structured data with incorrect @id for pages;
+* Fixed: Fixed the method that implements the column for authors in the post list, to only run for enabled post types;
+* Fixed: Fixed PHP Deprecated error for non-static method being called statically in the Term_Editor class;
+* Fixed: Fixed the notice in the frontend saying the is_author was called incorrectly;
+* Fixed: Empty output for shortcodes if the layout doesn't exists. Added fallback layout and an error message in the error log;
+* Fixed: Wrong author data in the query for authors mapped to user;
+* Fixed: The get_author_posts_url function was not working for guest authors;
+* Fixed: The get_the_author_meta function was not working for guest authors;
+* Fixed: The get_the_author_posts_link function was not working for guest authors;
+* Fixed: The get_the_author function was not working for guest authors;
+* Fixed: The the_post function was not working well for posts with guest authors;
+* Fixed: The feed_links_extra function was not working for guest authors;
+* Fixed: For themes that dont't implement support for PublishPress Authors and multiple authors, we were displaying all the author names separated by comma, but only one link (due to the limitations imposed by the theme). Now we display only the first author and its respective link on those cases. The multiple authors can be added creating a child theme and adapting the code;
+* Fixed: The title for authors archive pages of guest authors;
+* Fixed: The author object is now compatible with the main properties of WP_User objects, so guest authors can be treated as users on most cases;
+
 = [3.2.4] - 2020-04-13 =
 
 * Added: Button to migrate data from the Bylines (Daniel Bachhuber) plugin;
