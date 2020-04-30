@@ -94,9 +94,11 @@ if (!class_exists('MA_Yoast_Seo_Integration')) {
             if (version_compare(WPSEO_VERSION, '13.4.1', '<')) {
                 error_log(
                     sprintf(
-                        '[PublishPress Authors] %s %s',
+                        '[PublishPress Authors] %s %s - %s. %s',
                         __METHOD__,
-                        'detected a not supported version of the Yoast SEO plugin. It requires 13.4.1 or later.'
+                        'detected a not supported version of the Yoast SEO plugin',
+                        WPSEO_VERSION,
+                        'It requires 13.4.1 or later. Please, update it'
                     )
                 );
 
