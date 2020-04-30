@@ -16,6 +16,11 @@ use MultipleAuthors\Factory;
 trait Author_box
 {
     /**
+     * @var array
+     */
+    protected $postCache = [];
+
+    /**
      * Returns true if the post type and current page is valid.
      *
      * @return bool
@@ -114,6 +119,14 @@ trait Author_box
         $show_site = isset($legacyPlugin->modules->multiple_authors->options->show_site_link)
             ? 'yes' === $legacyPlugin->modules->multiple_authors->options->show_site_link : true;
 
+        if (!isset($this->postCache[$post_id])) {
+            $post = new \MultipleAuthors\Classes\Objects\Post($post_id);
+
+            $this->postCache[$post_id] = $post;
+        } else {
+            $post = $this->postCache[$post_id];
+        }
+
         $args = [
             'show_title' => $show_title,
             'css_class'  => $css_class,
@@ -124,6 +137,7 @@ trait Author_box
             'layout'     => $layout,
             'show_email' => $show_email,
             'show_site'  => $show_site,
+            'post'       => $post,
         ];
 
         /**
