@@ -213,4 +213,99 @@ class get_the_author_metaCest
             'The ID should match the term_id as negative integer'
         );
     }
+
+    public function tryToGetMetaWithoutSpecifyingTheAuthorIDForAuthorMappedToUser(\WpunitTester $I)
+    {
+        $I->wantToTest(
+            'if get_the_author_meta returns the author meta of the correct author (mapped to user) when we do not provide the author ID'
+        );
+
+        global $post, $authordata;
+
+        $postId = $I->factory()->post->create(
+            [
+                'title' => 'A Fake Post'
+            ]
+        );
+
+        $post = get_post($postId);
+
+        $user1Id           = $I->factory()->user->create(['role' => 'author']);
+        $user              = get_user_by('ID', $user1Id);
+        $user->description = 'A Nice User';
+        wp_update_user($user);
+
+        $author1 = Author::create_from_user($user1Id);
+
+        $authorSlug = sprintf('guest_author_%d_%s', 2, rand(1, PHP_INT_MAX));
+        $author2    = Author::create(
+            [
+                'slug'         => $authorSlug,
+                'display_name' => strtoupper($authorSlug),
+            ]
+        );
+
+        $authordata = $author1;
+
+        wp_set_post_terms(
+            $postId,
+            [$author1->term_id, $author2->term_id],
+            'author'
+        );
+
+        $authorId          = get_the_author_meta('ID');
+        $authorDescription = get_the_author_meta('description');
+
+        $I->assertEquals($author1->ID, $authorId);
+        $I->assertEquals($user->description, $authorDescription);
+    }
+
+    public function tryToGetMetaWithoutSpecifyingTheAuthorIDForGuestAuthor(\WpunitTester $I)
+    {
+        $I->wantToTest(
+            'if get_the_author_meta returns the author meta of the correct guest author when we do not provide the author ID'
+        );
+
+        global $post, $authordata;
+
+        $postId = $I->factory()->post->create(
+            [
+                'title' => 'A Fake Post'
+            ]
+        );
+
+        $post = get_post($postId);
+
+        $authorSlug = sprintf('guest_author_%d_%s', 1, rand(1, PHP_INT_MAX));
+        $author1    = Author::create(
+            [
+                'slug'         => $authorSlug,
+                'display_name' => strtoupper($authorSlug),
+            ]
+        );
+        $author1Description = 'A nice Author';
+        update_term_meta($author1->term_id, 'description', $author1Description);
+
+        $authorSlug = sprintf('guest_author_%d_%s', 2, rand(1, PHP_INT_MAX));
+        $author2    = Author::create(
+            [
+                'slug'         => $authorSlug,
+                'display_name' => strtoupper($authorSlug),
+            ]
+        );
+
+        $authordata = $author1;
+
+        wp_set_post_terms(
+            $postId,
+            [$author1->term_id, $author2->term_id],
+            'author'
+        );
+
+        $authorId          = get_the_author_meta('ID');
+        $authorDescription = get_the_author_meta('description');
+
+        $I->assertEquals($author1->ID, $authorId);
+        $I->assertEquals($author1Description, $authorDescription);
+    }
 }

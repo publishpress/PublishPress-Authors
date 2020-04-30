@@ -194,23 +194,23 @@ if (!class_exists('MA_Multiple_Authors')) {
             // ==========================
 
             // Fix authors metadata.
-            add_filter('get_the_author_display_name', [$this, 'filter_author_metadata_display_name'], 10, 3);
-            add_filter('get_the_author_first_name', [$this, 'filter_author_metadata_first_name'], 10, 3);
-            add_filter('get_the_author_last_name', [$this, 'filter_author_metadata_last_name'], 10, 3);
-            add_filter('get_the_author_ID', [$this, 'filter_author_metadata_ID'], 10, 3);
-            add_filter('get_the_author_headline', [$this, 'filter_author_metadata_headline'], 10, 3);
-            add_filter('get_the_author_aim', [$this, 'filter_author_metadata_aim'], 10, 3);
-            add_filter('get_the_author_description', [$this, 'filter_author_metadata_description'], 10, 3);
-            add_filter('get_the_author_jabber', [$this, 'filter_author_metadata_jabber'], 10, 3);
-            add_filter('get_the_author_nickname', [$this, 'filter_author_metadata_nickname'], 10, 3);
-            add_filter('get_the_author_user_description', [$this, 'filter_author_metadata_user_description'], 10, 3);
-            add_filter('get_the_author_user_email', [$this, 'filter_author_metadata_user_email'], 10, 3);
-            add_filter('get_the_author_user_url', [$this, 'filter_author_metadata_user_url'], 10, 3);
-            add_filter('get_the_author_user_nicename', [$this, 'filter_author_metadata_user_nicename'], 10, 3);
-            add_filter('get_the_author_yim', [$this, 'filter_author_metadata_yim'], 10, 3);
-            add_filter('get_the_author_facebook', [$this, 'filter_author_metadata_facebook'], 10, 3);
-            add_filter('get_the_author_twitter', [$this, 'filter_author_metadata_twitter'], 10, 3);
-            add_filter('get_the_author_instagram', [$this, 'filter_author_metadata_instagram'], 10, 3);
+            add_filter('get_the_author_display_name', [$this, 'filter_author_metadata_display_name'], 10, 2);
+            add_filter('get_the_author_first_name', [$this, 'filter_author_metadata_first_name'], 10, 2);
+            add_filter('get_the_author_last_name', [$this, 'filter_author_metadata_last_name'], 10, 2);
+            add_filter('get_the_author_ID', [$this, 'filter_author_metadata_ID'], 10, 2);
+            add_filter('get_the_author_headline', [$this, 'filter_author_metadata_headline'], 10, 2);
+            add_filter('get_the_author_aim', [$this, 'filter_author_metadata_aim'], 10, 2);
+            add_filter('get_the_author_description', [$this, 'filter_author_metadata_description'], 10, 2);
+            add_filter('get_the_author_jabber', [$this, 'filter_author_metadata_jabber'], 10, 2);
+            add_filter('get_the_author_nickname', [$this, 'filter_author_metadata_nickname'], 10, 2);
+            add_filter('get_the_author_user_description', [$this, 'filter_author_metadata_user_description'], 10, 2);
+            add_filter('get_the_author_user_email', [$this, 'filter_author_metadata_user_email'], 10, 2);
+            add_filter('get_the_author_user_url', [$this, 'filter_author_metadata_user_url'], 10, 2);
+            add_filter('get_the_author_user_nicename', [$this, 'filter_author_metadata_user_nicename'], 10, 2);
+            add_filter('get_the_author_yim', [$this, 'filter_author_metadata_yim'], 10, 2);
+            add_filter('get_the_author_facebook', [$this, 'filter_author_metadata_facebook'], 10, 2);
+            add_filter('get_the_author_twitter', [$this, 'filter_author_metadata_twitter'], 10, 2);
+            add_filter('get_the_author_instagram', [$this, 'filter_author_metadata_instagram'], 10, 2);
         }
 
         /**
@@ -983,11 +983,10 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          * @param string $value The value of the metadata.
          * @param int $user_id The user ID for the value.
-         * @param int|false $original_user_id The original user ID, as passed to the function.
          *
          * @return mixed
          */
-        public function filter_author_metadata_headline($value, $user_id, $original_user_id)
+        public function filter_author_metadata_headline($value, $user_id)
         {
             // Try to fix the headline for the guest authors page
             if (empty($value) && empty($user_id) && is_archive() && Util::isAuthor()) {
@@ -1006,13 +1005,12 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          * @param string $value The value of the metadata.
          * @param int $user_id The user ID for the value.
-         * @param int|false $original_user_id The original user ID, as passed to the function.
          *
          * @return mixed
          */
-        public function filter_author_metadata_aim($value, $user_id, $original_user_id)
+        public function filter_author_metadata_aim($value, $user_id)
         {
-            $author_meta = $this->get_author_meta('aim', $value, $original_user_id);
+            $author_meta = $this->get_author_meta('aim', $value, $user_id);
 
             if (!is_null($author_meta)) {
                 $value = $author_meta;
@@ -1024,13 +1022,12 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          * @param string $value The value of the metadata.
          * @param int $user_id The user ID for the value.
-         * @param int|false $original_user_id The original user ID, as passed to the function.
          *
          * @return mixed
          */
-        public function filter_author_metadata_description($value, $user_id, $original_user_id)
+        public function filter_author_metadata_description($value, $user_id)
         {
-            $author_meta = $this->get_author_meta('description', $value, $original_user_id);
+            $author_meta = $this->get_author_meta('description', $value, $user_id);
 
             if (!is_null($author_meta)) {
                 $value = $author_meta;
@@ -1042,13 +1039,12 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          * @param string $value The value of the metadata.
          * @param int $user_id The user ID for the value.
-         * @param int|false $original_user_id The original user ID, as passed to the function.
          *
          * @return mixed
          */
-        public function filter_author_metadata_display_name($value, $user_id, $original_user_id)
+        public function filter_author_metadata_display_name($value, $user_id)
         {
-            $author = $this->get_author_by_id($original_user_id);
+            $author = $this->get_author_by_id($user_id);
 
 
             if (is_object($author)) {
@@ -1061,13 +1057,12 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          * @param string $value The value of the metadata.
          * @param int $user_id The user ID for the value.
-         * @param int|false $original_user_id The original user ID, as passed to the function.
          *
          * @return mixed
          */
-        public function filter_author_metadata_first_name($value, $user_id, $original_user_id)
+        public function filter_author_metadata_first_name($value, $user_id)
         {
-            $author = $this->get_author_by_id($original_user_id);
+            $author = $this->get_author_by_id($user_id);
 
             if (is_object($author)) {
                 $value = $author->first_name;
@@ -1079,13 +1074,12 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          * @param string $value The value of the metadata.
          * @param int $user_id The user ID for the value.
-         * @param int|false $original_user_id The original user ID, as passed to the function.
          *
          * @return mixed
          */
-        public function filter_author_metadata_last_name($value, $user_id, $original_user_id)
+        public function filter_author_metadata_last_name($value, $user_id)
         {
-            $author = $this->get_author_by_id($original_user_id);
+            $author = $this->get_author_by_id($user_id);
 
             if (is_object($author)) {
                 $value = $author->last_name;
@@ -1097,13 +1091,12 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          * @param string $value The value of the metadata.
          * @param int $user_id The user ID for the value.
-         * @param int|false $original_user_id The original user ID, as passed to the function.
          *
          * @return mixed
          */
-        public function filter_author_metadata_ID($value, $user_id, $original_user_id)
+        public function filter_author_metadata_ID($value, $user_id)
         {
-            $author = $this->get_author_by_id($original_user_id);
+            $author = $this->get_author_by_id($user_id);
 
             if (is_object($author)) {
                 $value = $author->ID;
@@ -1115,13 +1108,12 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          * @param string $value The value of the metadata.
          * @param int $user_id The user ID for the value.
-         * @param int|false $original_user_id The original user ID, as passed to the function.
          *
          * @return mixed
          */
-        public function filter_author_metadata_jabber($value, $user_id, $original_user_id)
+        public function filter_author_metadata_jabber($value, $user_id)
         {
-            $author_meta = $this->get_author_meta('jabber', $value, $original_user_id);
+            $author_meta = $this->get_author_meta('jabber', $value, $user_id);
 
             if (!is_null($author_meta)) {
                 $value = $author_meta;
@@ -1133,13 +1125,12 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          * @param string $value The value of the metadata.
          * @param int $user_id The user ID for the value.
-         * @param int|false $original_user_id The original user ID, as passed to the function.
          *
          * @return mixed
          */
-        public function filter_author_metadata_nickname($value, $user_id, $original_user_id)
+        public function filter_author_metadata_nickname($value, $user_id)
         {
-            $author_meta = $this->get_author_meta('nickname', $value, $original_user_id);
+            $author_meta = $this->get_author_meta('nickname', $value, $user_id);
 
             if (!is_null($author_meta)) {
                 $value = $author_meta;
@@ -1151,13 +1142,12 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          * @param string $value The value of the metadata.
          * @param int $user_id The user ID for the value.
-         * @param int|false $original_user_id The original user ID, as passed to the function.
          *
          * @return mixed
          */
-        public function filter_author_metadata_user_description($value, $user_id, $original_user_id)
+        public function filter_author_metadata_user_description($value, $user_id)
         {
-            $author_meta = $this->get_author_meta('user_description', $value, $original_user_id);
+            $author_meta = $this->get_author_meta('user_description', $value, $user_id);
 
             if (!is_null($author_meta)) {
                 $value = $author_meta;
@@ -1169,13 +1159,12 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          * @param string $value The value of the metadata.
          * @param int $user_id The user ID for the value.
-         * @param int|false $original_user_id The original user ID, as passed to the function.
          *
          * @return mixed
          */
-        public function filter_author_metadata_user_email($value, $user_id, $original_user_id)
+        public function filter_author_metadata_user_email($value, $user_id)
         {
-            $author = $this->get_author_by_id($original_user_id);
+            $author = $this->get_author_by_id($user_id);
 
             if (is_object($author)) {
                 $value = $author->user_email;
@@ -1187,13 +1176,12 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          * @param string $value The value of the metadata.
          * @param int $user_id The user ID for the value.
-         * @param int|false $original_user_id The original user ID, as passed to the function.
          *
          * @return mixed
          */
-        public function filter_author_metadata_user_nicename($value, $user_id, $original_user_id)
+        public function filter_author_metadata_user_nicename($value, $user_id)
         {
-            $author = $this->get_author_by_id($original_user_id);
+            $author = $this->get_author_by_id($user_id);
 
             if (is_object($author)) {
                 $value = $author->user_nicename;
@@ -1205,13 +1193,12 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          * @param string $value The value of the metadata.
          * @param int $user_id The user ID for the value.
-         * @param int|false $original_user_id The original user ID, as passed to the function.
          *
          * @return mixed
          */
-        public function filter_author_metadata_user_url($value, $user_id, $original_user_id)
+        public function filter_author_metadata_user_url($value, $user_id)
         {
-            $author = $this->get_author_by_id($original_user_id);
+            $author = $this->get_author_by_id($user_id);
 
             if (is_object($author)) {
                 $value = $author->user_url;
@@ -1223,13 +1210,12 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          * @param string $value The value of the metadata.
          * @param int $user_id The user ID for the value.
-         * @param int|false $original_user_id The original user ID, as passed to the function.
          *
          * @return mixed
          */
-        public function filter_author_metadata_yim($value, $user_id, $original_user_id)
+        public function filter_author_metadata_yim($value, $user_id)
         {
-            $author_meta = $this->get_author_meta('yim', $value, $original_user_id);
+            $author_meta = $this->get_author_meta('yim', $value, $user_id);
 
             if (!is_null($author_meta)) {
                 $value = $author_meta;
@@ -1241,13 +1227,12 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          * @param string $value The value of the metadata.
          * @param int $user_id The user ID for the value.
-         * @param int|false $original_user_id The original user ID, as passed to the function.
          *
          * @return mixed
          */
-        public function filter_author_metadata_facebook($value, $user_id, $original_user_id)
+        public function filter_author_metadata_facebook($value, $user_id)
         {
-            $author_meta = $this->get_author_meta('facebook', $value, $original_user_id);
+            $author_meta = $this->get_author_meta('facebook', $value, $user_id);
 
             if (!is_null($author_meta)) {
                 $value = $author_meta;
@@ -1259,13 +1244,12 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          * @param string $value The value of the metadata.
          * @param int $user_id The user ID for the value.
-         * @param int|false $original_user_id The original user ID, as passed to the function.
          *
          * @return mixed
          */
-        public function filter_author_metadata_twitter($value, $user_id, $original_user_id)
+        public function filter_author_metadata_twitter($value, $user_id)
         {
-            $author_meta = $this->get_author_meta('twitter', $value, $original_user_id);
+            $author_meta = $this->get_author_meta('twitter', $value, $user_id);
 
             if (!is_null($author_meta)) {
                 $value = $author_meta;
@@ -1277,13 +1261,12 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          * @param string $value The value of the metadata.
          * @param int $user_id The user ID for the value.
-         * @param int|false $original_user_id The original user ID, as passed to the function.
          *
          * @return mixed
          */
-        public function filter_author_metadata_instagram($value, $user_id, $original_user_id)
+        public function filter_author_metadata_instagram($value, $user_id)
         {
-            $author_meta = $this->get_author_meta('instagram', $value, $original_user_id);
+            $author_meta = $this->get_author_meta('instagram', $value, $user_id);
 
             if (!is_null($author_meta)) {
                 $value = $author_meta;

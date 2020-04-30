@@ -59,7 +59,7 @@ class Content_Model
             $link = str_replace('%author%', $author_slug, $permastruct);
             $link = home_url(user_trailingslashit($link));
         } else {
-            $link = add_query_arg('author_name', rawurlencode($author_slug), home_url());
+            $link = add_query_arg('author_name', rawurlencode($author_slug), home_url() . '/');
         }
 
         return $link;
@@ -87,7 +87,7 @@ class Content_Model
         // We probably have a call for a guest author if the author_id is a string
         if ($author_id < 0) {
             // Try to identify the current author.
-            $author = Author::get_by_term_id($author_id * -1);
+            $author = Author::get_by_term_id(abs($author_id ));
 
             if (is_object($author)) {
                 return $author->link;
