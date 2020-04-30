@@ -149,24 +149,18 @@ class Person implements WPSEO_Graph_Piece
      */
     protected function build_person_data($user_id)
     {
-        if (is_numeric($user_id)) {
+        if ($user_id > 0) {
             $user_data = get_userdata($user_id);
-
-            $name        = $user_data->display_name;
-            $description = $user_data->description;
-            $personId    = WPSEO_Schema_Utils::get_user_schema_id($user_id, $this->context);
+            $personId  = WPSEO_Schema_Utils::get_user_schema_id($user_id, $this->context);
         } else {
-            $user_data = AuthorObject::get_by_term_slug($user_id);
-
-            $name        = $user_data->display_name;
-            $description = $user_data->description;
-            $personId    = $this->context->site_url . WPSEO_Schema_IDs::PERSON_HASH . wp_hash($user_data->slug);
+            $user_data = AuthorObject::get_by_term_id($user_id);
+            $personId  = $this->context->site_url . WPSEO_Schema_IDs::PERSON_HASH . wp_hash($user_data->ID);
         }
 
         $data = [
             '@type' => $this->type,
             '@id'   => $personId,
-            'name'  => $name,
+            'name'  => $user_data->display_name,
         ];
 
         $data = $this->add_image($data, $user_data);

@@ -195,7 +195,7 @@ class Webpage implements WPSEO_Graph_Piece
 
             $data['author'] = [
                 '@id' => $this->context->site_url . WPSEO_Schema_IDs::PERSON_HASH . wp_hash(
-                        $author->slug
+                        $author->ID
                     )
             ];
         }
