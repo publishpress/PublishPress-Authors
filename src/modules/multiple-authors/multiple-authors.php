@@ -181,18 +181,6 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             add_filter('the_author_posts_link', [$this, 'theAuthorPostsLink']);
 
-            // ==========================
-            // Genesis framework support
-            // @todo: Move this to a specific module.
-            add_filter(
-                'genesis_post_author_posts_link_shortcode',
-                [$this, 'filter_genesis_post_author_posts_link_shortcode'],
-                10,
-                2
-            );
-            add_filter('genesis_attr_archive-title_output', [$this, 'filter_genesis_archive_title'], 10, 4);
-            // ==========================
-
             // Fix authors metadata.
             add_filter('get_the_author_display_name', [$this, 'filter_author_metadata_display_name'], 10, 2);
             add_filter('get_the_author_first_name', [$this, 'filter_author_metadata_first_name'], 10, 2);
@@ -1273,56 +1261,6 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             return $value;
-        }
-
-        /**
-         * @param $output
-         * @param $attr
-         *
-         * @return string
-         */
-        public function filter_genesis_post_author_posts_link_shortcode($output, $attr)
-        {
-            $authors = get_multiple_authors();
-
-            $output = '';
-            foreach ($authors as $author) {
-                if (!empty($output)) {
-                    $output .= ', ';
-                }
-                $output .= '<span class="entry-author" itemprop="author" itemscope itemtype="https://schema.org/Person">';
-                $output .= $attr['before'];
-                $output .= '<a href="' . $author->link . '" class="entry-author-link" rel="author" itemprop="url">';
-                $output .= '<span class="entry-author-name" itemprop="name">' . $author->display_name;
-                $output .= '</span></a>';
-                $output .= $attr['after'];
-                $output .= '</span>';
-            }
-
-            return $output;
-        }
-
-        /**
-         * @param $output
-         * @param $attributes
-         * @param $context
-         * @param $args
-         *
-         * @return string
-         */
-        public function filter_genesis_archive_title($output, $attributes, $context, $args)
-        {
-            if (is_archive() && Util::isAuthor()) {
-                $authors = get_multiple_authors(0, true, true);
-
-                if (!empty($authors)) {
-                    $author = $authors[0];
-
-                    $output = $author->display_name;
-                }
-            }
-
-            return $output;
         }
 
         /**
