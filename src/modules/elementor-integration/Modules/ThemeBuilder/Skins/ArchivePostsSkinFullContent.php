@@ -21,38 +21,25 @@
  * along with PublishPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace PublishPressAuthors\ElementorIntegration\Modules\Posts\Skins;
-
-use ElementorPro\Modules\Posts\Skins\Skin_Classic;
+namespace PublishPressAuthors\ElementorIntegration\Modules\ThemeBuilder\Skins;
 
 
-class SkinClassicMultipleAuthors extends Skin_Classic
+use ElementorPro\Modules\Posts\Skins\Skin_Content_Base;
+use ElementorPro\Modules\ThemeBuilder\Skins\Posts_Archive_Skin_Base;
+use PublishPressAuthors\ElementorIntegration\Modules\Posts\Skins\PostsSkinFullContent;
+
+class ArchivePostsSkinFullContent extends PostsSkinFullContent
 {
+    use Skin_Content_Base;
+    use Posts_Archive_Skin_Base;
+
     public function get_id()
     {
-        return 'skin-classic-multiple-authors';
+        return 'archive_full_content_pp_authors';
     }
 
-    public function get_title()
+    /* Remove `posts_per_page` control */
+    protected function register_post_count_control()
     {
-        return __('Classic - Multiple Authors');
-    }
-
-    protected function render_author()
-    {
-        ?>
-        <span class="elementor-post-author">
-			<?php
-            $authors     = get_multiple_authors();
-            $authorNames = [];
-
-            foreach ($authors as $author) {
-                $authorNames[] = $author->display_name;
-            }
-
-            echo implode(', ', $authorNames);
-            ?>
-		</span>
-        <?php
     }
 }

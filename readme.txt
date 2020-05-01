@@ -132,6 +132,7 @@ and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec
 * Added: Some error messages are now added to the error log;
 * Added: Added links to the slug column in the authors list to open the authors page in the frontend;
 * Added: Added post data to the twig layout context - #112;
+* Added: Added support multiple authors support to the Elementor Pro, adding new skins to the Posts and Archive Posts widgets;
 * Changed: Reorganized the folder structure of the plugin moving the code to a "src" folder;
 * Changed: Guest authors are now identified by author->ID < 0, which corresponds to the term_id. If ID > 0, it is a user, otherwise, an author term. This increases the compatibility rate with standard author functions;
 * Fixed: Improved text and fixed typo in the data migration messages;

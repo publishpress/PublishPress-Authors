@@ -23,9 +23,12 @@
 
 use MultipleAuthors\Classes\Legacy\Module;
 use MultipleAuthors\Factory;
-use PublishPressAuthors\ElementorIntegration\Modules\Posts\Skins\SkinCardsMultipleAuthors;
-use PublishPressAuthors\ElementorIntegration\Modules\Posts\Skins\SkinClassicMultipleAuthors;
-use PublishPressAuthors\ElementorIntegration\Modules\Posts\Skins\SkinFullContentMultipleAuthors;
+use PublishPressAuthors\ElementorIntegration\Modules\Posts\Skins\PostsSkinCards;
+use PublishPressAuthors\ElementorIntegration\Modules\Posts\Skins\PostsSkinClassic;
+use PublishPressAuthors\ElementorIntegration\Modules\Posts\Skins\PostsSkinFullContent;
+use PublishPressAuthors\ElementorIntegration\Modules\ThemeBuilder\Skins\ArchivePostsSkinCards;
+use PublishPressAuthors\ElementorIntegration\Modules\ThemeBuilder\Skins\ArchivePostsSkinClassic;
+use PublishPressAuthors\ElementorIntegration\Modules\ThemeBuilder\Skins\ArchivePostsSkinFullContent;
 
 if (!class_exists('MA_Elementor_Integration')) {
     /**
@@ -99,10 +102,16 @@ if (!class_exists('MA_Elementor_Integration')) {
                 return false;
             }
 
+            $abort = false;
+
             $requiredClasses = [
+                '\\ElementorPro\\Modules\\Posts\\Skins\\Skin_Base',
                 '\\ElementorPro\\Modules\\Posts\\Skins\\Skin_Cards',
                 '\\ElementorPro\\Modules\\Posts\\Skins\\Skin_Classic',
                 '\\ElementorPro\\Modules\\Posts\\Skins\\Skin_Full_Content',
+                '\\ElementorPro\\Modules\\ThemeBuilder\\Skins\\Posts_Archive_Skin_Cards',
+                '\\ElementorPro\\Modules\\ThemeBuilder\\Skins\\Posts_Archive_Skin_Classic',
+                '\\ElementorPro\\Modules\\ThemeBuilder\\Skins\\Posts_Archive_Skin_Full_Content',
             ];
 
             foreach ($requiredClasses as $className) {
@@ -113,9 +122,31 @@ if (!class_exists('MA_Elementor_Integration')) {
                             $className
                         )
                     );
-                    return false;
+                    $abort = true;
                 }
             }
+
+            $requiredTraits = [
+                '\\ElementorPro\\Modules\\ThemeBuilder\\Skins\\Posts_Archive_Skin_Base',
+                '\\ElementorPro\\Modules\\Posts\\Skins\\Skin_Content_Base',
+            ];
+
+            foreach ($requiredTraits as $traitName) {
+                if (!trait_exists($traitName)) {
+                    error_log(
+                        sprintf(
+                            '[PublishPress Authors] Elementor module did not find the trait %s',
+                            $traitName
+                        )
+                    );
+                    $abort = true;
+                }
+            }
+
+            if ($abort) {
+                return false;
+            }
+
 
             return true;
         }
@@ -129,12 +160,8 @@ if (!class_exists('MA_Elementor_Integration')) {
                 return;
             }
 
-            add_action(
-                'elementor/widget/posts/skins_init',
-                [$this, 'add_posts_skins'],
-                10,
-                2
-            );
+            add_action('elementor/widget/posts/skins_init', [$this, 'add_posts_skins'], 10, 2);
+            add_action('elementor/widget/archive-posts/skins_init', [$this, 'add_archive_posts_skins'], 10, 2);
         }
 
         /**
@@ -143,12 +170,12 @@ if (!class_exists('MA_Elementor_Integration')) {
         public function add_posts_skins($widget)
         {
             $classes = [
-                '\\PublishPressAuthors\\ElementorIntegration\\Modules\\Posts\\Skins\\SkinCardsMultipleAuthors'   =>
-                    __DIR__ . '/Modules/Posts/Skins/SkinCardsMultipleAuthors.php',
-                '\\PublishPressAuthors\\ElementorIntegration\\Modules\\Posts\\Skins\\SkinClassicMultipleAuthors' =>
-                    __DIR__ . '/Modules/Posts/Skins/SkinClassicMultipleAuthors.php',
-                '\\PublishPressAuthors\\ElementorIntegration\\Modules\\Posts\\Skins\\SkinFullContentMultipleAuthors' =>
-                    __DIR__ . '/Modules/Posts/Skins/SkinFullContentMultipleAuthors.php',
+                '\\PublishPressAuthors\\ElementorIntegration\\Modules\\Posts\\Skins\\PostsSkinCards'       =>
+                    __DIR__ . '/Modules/Posts/Skins/PostsSkinCards.php',
+                '\\PublishPressAuthors\\ElementorIntegration\\Modules\\Posts\\Skins\\PostsSkinClassic'     =>
+                    __DIR__ . '/Modules/Posts/Skins/PostsSkinClassic.php',
+                '\\PublishPressAuthors\\ElementorIntegration\\Modules\\Posts\\Skins\\PostsSkinFullContent' =>
+                    __DIR__ . '/Modules/Posts/Skins/PostsSkinFullContent.php',
             ];
 
             foreach ($classes as $className => $path) {
@@ -157,9 +184,41 @@ if (!class_exists('MA_Elementor_Integration')) {
                 }
             }
 
-            $widget->add_skin(new SkinCardsMultipleAuthors($widget));
-            $widget->add_skin(new SkinClassicMultipleAuthors($widget));
-            $widget->add_skin(new SkinFullContentMultipleAuthors($widget));
+            $widget->add_skin(new PostsSkinCards($widget));
+            $widget->add_skin(new PostsSkinClassic($widget));
+            $widget->add_skin(new PostsSkinFullContent($widget));
+        }
+
+        /**
+         * @param $widget
+         */
+        public function add_archive_posts_skins($widget)
+        {
+            $classes = [
+                '\\PublishPressAuthors\\ElementorIntegration\\Modules\\Posts\\Skins\\PostsSkinCards'                     =>
+                    __DIR__ . '/Modules/Posts/Skins/PostsSkinCards.php',
+                '\\PublishPressAuthors\\ElementorIntegration\\Modules\\Posts\\Skins\\PostsSkinClassic'                   =>
+                    __DIR__ . '/Modules/Posts/Skins/PostsSkinClassic.php',
+                '\\PublishPressAuthors\\ElementorIntegration\\Modules\\Posts\\Skins\\PostsSkinFullContent'               =>
+                    __DIR__ . '/Modules/Posts/Skins/PostsSkinFullContent.php',
+                '\\PublishPressAuthors\\ElementorIntegration\\Modules\\ThemeBuilder\\Skins\\ArchivePostsSkinCards'       =>
+                    __DIR__ . '/Modules/ThemeBuilder/Skins/ArchivePostsSkinCards.php',
+                '\\PublishPressAuthors\\ElementorIntegration\\Modules\\ThemeBuilder\\Skins\\ArchivePostsSkinClassic'     =>
+                    __DIR__ . '/Modules/ThemeBuilder/Skins/ArchivePostsSkinClassic.php',
+                '\\PublishPressAuthors\\ElementorIntegration\\Modules\\ThemeBuilder\\Skins\\ArchivePostsSkinFullContent' =>
+                    __DIR__ . '/Modules/ThemeBuilder/Skins/ArchivePostsSkinFullContent.php',
+            ];
+
+            foreach ($classes as $className => $path) {
+                if (!class_exists($className)) {
+                    require_once $path;
+                }
+            }
+
+            $widget->add_skin(new ArchivePostsSkinCards
+                              ($widget));
+            $widget->add_skin(new ArchivePostsSkinClassic($widget));
+            $widget->add_skin(new ArchivePostsSkinFullContent($widget));
         }
     }
 }

@@ -23,19 +23,19 @@
 
 namespace PublishPressAuthors\ElementorIntegration\Modules\Posts\Skins;
 
-use ElementorPro\Modules\Posts\Skins\Skin_Cards;
+use ElementorPro\Modules\Posts\Skins\Skin_Classic;
 
 
-class SkinCardsMultipleAuthors extends Skin_Cards
+class PostsSkinClassic extends Skin_Classic
 {
     public function get_id()
     {
-        return 'skin-cards-multiple-authors';
+        return 'posts_classic_pp_authors';
     }
 
     public function get_title()
     {
-        return __('Cards - Multiple Authors');
+        return __('Classic - PublishPress Authors');
     }
 
     protected function render_author()
@@ -53,21 +53,6 @@ class SkinCardsMultipleAuthors extends Skin_Cards
             echo implode(', ', $authorNames);
             ?>
 		</span>
-        <?php
-    }
-
-    protected function render_avatar()
-    {
-        ?>
-        <div class="elementor-post__avatar">
-            <?php
-            $authors = get_multiple_authors();
-
-            foreach ($authors as $author) {
-                echo $author->get_avatar(128);
-            }
-            ?>
-        </div>
         <?php
     }
 }
