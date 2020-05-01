@@ -49,11 +49,11 @@ if (!class_exists('MA_Yoast_Seo_Integration')) {
 
             // Register the module with PublishPress
             $args = [
-                'title' => __('Yoast SEO Compatibility', 'publishpress-authors'),
+                'title' => __('Yoast SEO Integration', 'publishpress-authors'),
                 'short_description' => __('Add compatibility with the Yoast SEO plugin', 'publishpress-authors'),
                 'module_url' => $this->module_url,
                 'icon_class' => 'dashicons dashicons-feedback',
-                'slug' => 'yoast-seo-compatibility',
+                'slug' => 'yoast-seo-integration',
                 'default_options' => [
                     'enabled' => 'on',
                 ],
