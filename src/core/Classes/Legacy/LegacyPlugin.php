@@ -153,7 +153,8 @@ class LegacyPlugin
             'byline-migration'      => PP_AUTHORS_MODULES_PATH,
             'bylines-migration'     => PP_AUTHORS_MODULES_PATH,
             'yoast-seo-integration' => PP_AUTHORS_MODULES_PATH,
-            'genesis-integration' => PP_AUTHORS_MODULES_PATH,
+            'genesis-integration'   => PP_AUTHORS_MODULES_PATH,
+            'elementor-integration' => PP_AUTHORS_MODULES_PATH,
         ];
 
         return apply_filters('ppma_module_dirs', $defaultDirs);
