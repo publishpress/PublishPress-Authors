@@ -244,13 +244,10 @@ if (!class_exists('MA_Divi_Integration')) {
                         break;
                     }
 
-                    $avatarImgTag = $author->get_avatar();
-                    // Extract only the URL.
-                    preg_match('/src=[\'"]([^\'"]+)[\'"]/', $avatarImgTag, $matches);
-                    if (is_array($matches) && ! empty($matches)) {
-                        $content = $matches[1];
+                    $content = $author->get_avatar_url();
+                    if (is_array($content)) {
+                        $content = $content['url'];
                     }
-                    break;
             }
 
             // Handle in post type URL options.
