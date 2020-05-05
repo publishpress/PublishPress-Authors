@@ -332,7 +332,9 @@ class Author
         }
 
         if ('user_url' === $attribute) {
-            if (!$this->is_guest()) {
+            $url = $this->get_meta('user_url');
+
+            if (empty($url) && !$this->is_guest()) {
                 $user = $this->get_user_object();
 
                 return $user->user_url;
