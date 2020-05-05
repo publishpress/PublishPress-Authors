@@ -155,6 +155,7 @@ class LegacyPlugin
             'yoast-seo-integration' => PP_AUTHORS_MODULES_PATH,
             'genesis-integration'   => PP_AUTHORS_MODULES_PATH,
             'elementor-integration' => PP_AUTHORS_MODULES_PATH,
+            'divi-integration'      => PP_AUTHORS_MODULES_PATH,
         ];
 
         return apply_filters('ppma_module_dirs', $defaultDirs);
