@@ -1,0 +1,10 @@
+{% if show_title %}
+    <h2 class="pp-multiple-authors-layout-inline widget-title">{{ title }}</h2>
+{% endif %}
+
+{% for author in authors %}
+    <span class="pp-multiple-authors-layout-inline author_index_{{ loop.index }}">
+        <a href="{{ author.link }}" class="{{ item_class }}"
+           rel="author">{{ author.display_name }}</a>{% if loop.index < authors|length %},{% endif %}
+    </span>
+{% endfor %}

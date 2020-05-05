@@ -1,0 +1,283 @@
+.inline-edit-group.inline-edit-coauthors {
+    display: none;
+}
+
+.inline-edit-group.inline-edit-coauthors #coauthors-edit {
+    margin-left: 5em;
+}
+
+#coauthors-list {
+    width: 100%;
+    padding: 0;
+    border-top: 1px solid #655997;
+}
+
+#coauthors-list td {
+    padding-left: 0;
+    padding-right: 0;
+    vertical-align: middle;
+    background: #F9F9F9;
+}
+
+#coauthors-list .coauthor-row:not(:last-of-type) {
+    overflow: hidden;
+    border-bottom: 1px solid #655997;
+}
+
+#coauthors-list .coauthor-row:hover:not(:last-of-type) {
+    background: #E8E6F0;
+}
+
+#coauthors-list .coauthor-tag {
+    width: 200px;
+    display: block;
+    padding: 10px 0 5px 5px;
+    font-size: 13px;
+    color: #655997;
+    cursor: text;
+    float: left;
+}
+
+#coauthors-list .coauthor-tag:hover {
+    cursor: text;
+    color: #655997;
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+}
+
+#coauthors-list .ui-state-highlight {
+    border: 2px dashed #655997;
+    height: 31px;
+    margin-top: 3px;
+    width: 100%;
+    background: #fff;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+#coauthors-list .ui-sortable-helper .coauthor-tag {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+}
+
+#coauthors-list .coauthor-gravatar {
+    float: right;
+    height: 25px;
+    margin-right: 5px;
+    margin-top: -5px;
+    width: 25px;
+}
+
+#coauthors-list .coauthor-suggest {
+    border: 1px solid #ddd;
+    -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, .07);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .07);
+    background-color: #fff;
+    color: #32373c;
+    outline: 0;
+    margin: 5px 0 5px 5px;
+    width: 200px;
+}
+
+#coauthors-list .coauthor-suggest:focus {
+    color: #333;
+}
+
+#coauthors-list .coauthors-author-options {
+    overflow: hidden;
+    padding: 7px 5px 0 7px;
+    float: right;
+}
+
+#coauthors-list .delete-coauthor {
+    display: block;
+    float: right;
+    text-decoration: none;
+    color: #FF0000;
+    font-size: 18px;
+}
+
+#coauthors-list .delete-coauthor:hover {
+    cursor: pointer;
+    background: #FF0000;
+    color: #fff;
+
+    border: 1px solid #FF0000;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+#coauthors-loading {
+    margin: 10px 0px 5px 10px;
+}
+
+#coauthors-readonly {
+}
+
+#coauthors-readonly ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#coauthors-readonly ul li {
+}
+
+#coauthors-readonly ul li .avatar {
+    float: left;
+}
+
+#coauthors-readonly ul li .coauthor-tag {
+    display: block;
+    padding: 5px 3px;
+    margin-left: 30px;
+    font-size: 13px;
+}
+
+/* Bylines merge */
+
+ul.authors-list li {
+    border: 1px solid #cccccc;
+    background-color: #fdfdfd;
+    padding-top: 7px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    position: relative;
+    max-width: 250px;
+}
+
+ul.authors-list li .author-remove {
+    display: none;
+}
+
+ul.authors-list li.ui-sortable-helper {
+    cursor: move;
+}
+
+ul.authors-list.authors-current-user-can-assign li:hover {
+    cursor: move;
+}
+
+ul.authors-list.authors-current-user-can-assign li .author-remove {
+    position: absolute;
+    display: block;
+    right: 5px;
+    width: 16px;
+    z-index: 1;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+ul.authors-list.authors-current-user-can-assign li .author-remove .dashicons {
+    height: 16px;
+    width: 16px;
+    font-size: 16px;
+}
+
+body.taxonomy-author .form-field.term-description-wrap {
+    display: none;
+}
+
+.authors-select2-user-select {
+    min-width: 150px;
+}
+
+.column-author_name img {
+    float: left;
+    margin-right: 10px;
+    margin-top: 1px;
+}
+
+.author-image-field-container img {
+    max-width: 150px;
+    height: auto;
+}
+
+.authors-list img.avatar {
+    vertical-align: middle;
+}
+
+.authors-list span.display-name {
+    margin-left: 5px;
+}
+
+/* Fix the width of the Mapped user field in the New Author form */
+.edit-tags-php.taxonomy-author .authors-select2-user-select,
+.term-php.taxonomy-author .authors-select2-user-select {
+    width: 95%;
+}
+
+/* Hide the slug field in the author list page */
+.edit-tags-php.taxonomy-author #addtag .term-slug-wrap {
+    display: none;
+}
+
+/* Hide the default author field when Gutenberg is loaded */
+body.block-editor-page label[for^="post-author-selector-"],
+body.block-editor-page select[id^="post-author-selector-"] {
+    display: none !important;
+}
+
+/* Fix the size of a settings field */
+#multiple_authors_multiple_authors_options_author_for_new_users_chosen {
+    max-width: 350px;
+}
+
+/* Hide the author field in the quick-edit panel until we support it */
+.inline-edit-author {
+    display: none !important;
+}
+
+
+#delete-link {
+    margin-left: 28px;
+}
+
+#ppma_maintenance_settings .ppma_maintenance_action_wrapper {
+    border-bottom: 1px solid silver;
+    padding-bottom: 10px;
+}
+
+#ppma_maintenance_settings .ppma_warning {
+    background-color: #f9fbe4;
+    border: 1px solid #d6d8b6;
+    box-sizing: border-box;
+    padding: 13px 20px;
+    margin-bottom: 10px;
+}
+
+#ppma_maintenance_settings .ppma_maintenance_button {
+    margin-bottom: 5px;
+    margin-right: 10px;
+}
+
+#ppma_maintenance_settings .ppma_maintenance_button .dashicons {
+    height: 12px;
+    margin-right: 10px;
+    margin-top: -9px;
+}
+
+#ppma_maintenance_settings .ppma_maintenance_button .dashicons-warning {
+    color: #f35f5f;
+}
+
+
+.ppma_settings_field_description {
+    margin-bottom: 10px !important;
+    color: gray;
+}
+
+.ppma-module-settings table[id="ppma-tab-maintenance"] th {
+    display: none;
+}
+
+.ppma-module-settings input[type="submit"] {
+    margin-top: 20px;
+}

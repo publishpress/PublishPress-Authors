@@ -1,0 +1,15 @@
+{{ settings_fields(options_group_name)|raw }}
+{{ do_settings_sections(options_group_name)|raw }}
+
+{{ nonce_field( 'edit-publishpress-settings' )|raw }}
+
+<input type="hidden" name="multiple_authors_module_name[]" value="{{ module_name }}"/>
+<input type="hidden" name="action" value="update"/>
+
+<script>
+    jQuery(function ($) {
+        $(".chosen-select").chosen({
+            'width': '95%'
+        });
+    });
+</script>

@@ -1,0 +1,18 @@
+<div class="pp-multiple-authors-wrapper {{ css_class }} pp-multiple-authors-layout-{{ layout }}">
+    {% if show_title %}
+        <h2 class="widget-title">{{ title }}</h2>
+    {% endif %}
+
+    <ul>
+        {% for author in authors %}
+            <li class="author_index_{{ loop.index }}">
+                <a href="{{ author.link }}" class="{{ item_class }}" rel="author">{{ author.display_name }}</a>
+                {% if author.get_avatar %}
+                    {{ author.get_avatar(50)|raw }}
+                {% else %}
+                    {{ get_avatar(author.user_email, 50)|raw }}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</div>

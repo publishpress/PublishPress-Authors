@@ -1,0 +1,124 @@
+.pp-multiple-authors-layout-simple_list ul,
+.pp-multiple-authors-layout-boxed ul {
+    padding-left: 0;
+    margin-left: 0;
+}
+
+.pp-multiple-authors-layout-simple_list ul li {
+    list-style: none;
+    position: relative;
+    min-height: 35px;
+    line-height: 35px;
+    border-bottom: 1px solid #dddddd;
+    border-top: 1px solid #dddddd;
+    border-bottom: 1px solid #dddddd;
+    border-top: 1px solid #dddddd;
+    padding: 0.5em 0;
+    margin: -1px 0 0 0;
+}
+
+.pp-multiple-authors-layout-simple_list .avatar,
+.pp-multiple-authors-layout-simple_list .photo {
+    float: left;
+    margin-right: 10px;
+    width: 35px;
+    height: 35px;
+    display: block;
+    min-height: 35px;
+}
+
+.pp-multiple-authors-layout-boxed ul li {
+    list-style: none;
+    position: relative;
+    min-height: 120px;
+    border: 1px solid #dddddd;
+    padding: 1em;
+    margin-bottom: 1em;
+}
+
+.pp-multiple-authors-layout-boxed .avatar,
+.pp-multiple-authors-layout-boxed .photo {
+    position: static;
+    float: left;
+    margin-right: 1em;
+    width: 80px;
+    height: 80px;
+    min-height: 80px;
+}
+
+.pp-multiple-authors-layout-boxed a {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+.pp-multiple-authors-layout-boxed p {
+    font-size: 0.85em;
+}
+
+.pp-multiple-authors-layout-boxed .ppma-links {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.pp-multiple-authors-layout-centered .ppma-links a,
+.pp-multiple-authors-layout-boxed .ppma-links a {
+    color: #dddddd;
+    text-decoration: none;
+    border-bottom: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.pp-multiple-authors-layout-centered ul {
+    margin: 0;
+    padding: 0;
+}
+
+.pp-multiple-authors-layout-centered ul li {
+    list-style: none;
+    position: relative;
+    min-height: 120px;
+    border: 1px solid #dddddd;
+    padding: 1em;
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+.pp-multiple-authors-layout-centered .avatar,
+.pp-multiple-authors-layout-centered .photo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    min-height: 80px;
+    margin: 0 auto;
+}
+
+.pp-multiple-authors-layout-centered a {
+    font-size: 1.2em;
+}
+
+.pp-multiple-authors-layout-centered a .dashicons,
+.pp-multiple-authors-layout-centered a:hover .dashicons,
+.pp-multiple-authors-layout-centered a:focus .dashicons,
+.pp-multiple-authors-layout-centered a:active .dashicons {
+    text-decoration: none;
+}
+
+.pp-multiple-authors-layout-centered p {
+    font-size: 0.85em;
+    margin: 5px 0;
+}
+
+.pp-multiple-authors-layout-inline .avatar,
+.pp-multiple-authors-layout-inline .photo {
+    width: 30px;
+    height: 30px;
+    margin: auto 2px auto auto;
+    vertical-align: middle;
+    display: inline-block;
+}
