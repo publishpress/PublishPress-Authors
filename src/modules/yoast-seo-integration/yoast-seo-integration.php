@@ -49,16 +49,16 @@ if (!class_exists('MA_Yoast_Seo_Integration')) {
 
             // Register the module with PublishPress
             $args = [
-                'title' => __('Yoast SEO Integration', 'publishpress-authors'),
+                'title'             => __('Yoast SEO Integration', 'publishpress-authors'),
                 'short_description' => __('Add compatibility with the Yoast SEO plugin', 'publishpress-authors'),
-                'module_url' => $this->module_url,
-                'icon_class' => 'dashicons dashicons-feedback',
-                'slug' => 'yoast-seo-integration',
-                'default_options' => [
+                'module_url'        => $this->module_url,
+                'icon_class'        => 'dashicons dashicons-feedback',
+                'slug'              => 'yoast-seo-integration',
+                'default_options'   => [
                     'enabled' => 'on',
                 ],
-                'options_page' => false,
-                'autoload' => true,
+                'options_page'      => false,
+                'autoload'          => true,
             ];
 
             // Apply a filter to the default options
@@ -135,10 +135,13 @@ if (!class_exists('MA_Yoast_Seo_Integration')) {
                 foreach ($replacements as $key => &$value) {
                     if ($key === '%%name%%') {
                         $authors = get_multiple_authors(0, true, true);
-                        $author  = $authors[0];
 
-                        if ($author->is_guest()) {
-                            $value = $author->display_name;
+                        if (is_array($authors) && !empty($authors)) {
+                            $author = $authors[0];
+
+                            if (isset($author->display_name)) {
+                                $value = $author->display_name;
+                            }
                         }
                     }
                 }
