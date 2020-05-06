@@ -8,7 +8,7 @@ class get_the_authorCest
     {
         global $authordata;
 
-        $userID = $I->factory()->user->create(['role' => 'author']);
+        $userID = $I->factory('a new user')->user->create(['role' => 'author']);
         $author = Author::create_from_user($userID);
 
         $authordata = $author->get_user_object();

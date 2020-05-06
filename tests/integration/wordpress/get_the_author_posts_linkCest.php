@@ -10,7 +10,7 @@ class get_the_author_posts_linkCest
 
         $wp_rewrite->author_structure = null;
 
-        $postId = $I->factory()->post->create(
+        $postId = $I->factory('a new post')->post->create(
             [
                 'title' => 'A Fake Post'
             ]
@@ -18,9 +18,9 @@ class get_the_author_posts_linkCest
 
         $post = get_post($postId);
 
-        $user1Id = $I->factory()->user->create(['role' => 'author']);
-        $user2Id = $I->factory()->user->create(['role' => 'author']);
-        $user3Id = $I->factory()->user->create(['role' => 'author']);
+        $user1Id = $I->factory('a new user')->user->create(['role' => 'author']);
+        $user2Id = $I->factory('a new user')->user->create(['role' => 'author']);
+        $user3Id = $I->factory('a new user')->user->create(['role' => 'author']);
 
         $author1 = Author::create_from_user($user1Id);
         $author2 = Author::create_from_user($user2Id);
@@ -58,7 +58,7 @@ class get_the_author_posts_linkCest
 
         $wp_rewrite->author_structure = null;
 
-        $postId = $I->factory()->post->create(
+        $postId = $I->factory('a new post')->post->create(
             [
                 'title' => 'A Fake Post'
             ]
@@ -66,7 +66,7 @@ class get_the_author_posts_linkCest
 
         $post = get_post($postId);
 
-        $user1Id = $I->factory()->user->create(['role' => 'author']);
+        $user1Id = $I->factory('a new user')->user->create(['role' => 'author']);
 
         $author1 = Author::create_from_user($user1Id);
 

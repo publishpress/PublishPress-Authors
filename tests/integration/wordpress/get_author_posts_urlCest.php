@@ -10,7 +10,7 @@ class get_author_posts_urlCest
 
         $wp_rewrite->author_structure = null;
 
-        $userID = $I->factory()->user->create(['role' => 'author']);
+        $userID = $I->factory('a new user')->user->create(['role' => 'author']);
         $author = Author::create_from_user($userID);
 
         $authorLink = get_author_posts_url($author->ID);
@@ -27,7 +27,7 @@ class get_author_posts_urlCest
 
         $wp_rewrite->author_structure = 'author/%author%';
 
-        $userID = $I->factory()->user->create(['role' => 'author']);
+        $userID = $I->factory('a new user')->user->create(['role' => 'author']);
         $author = Author::create_from_user($userID);
 
         $authorLink = get_author_posts_url($author->ID);

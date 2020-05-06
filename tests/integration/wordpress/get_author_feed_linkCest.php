@@ -6,7 +6,7 @@ class get_author_feed_linkCest
 {
     public function tryToGetTheFeedLinkForAuthorMappedToUser(\WpunitTester $I)
     {
-        $userID = $I->factory()->user->create(['role' => 'author']);
+        $userID = $I->factory('a new user')->user->create(['role' => 'author']);
         $author = Author::create_from_user($userID);
 
         $feedLink = get_author_feed_link($author->ID);

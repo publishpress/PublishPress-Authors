@@ -21,6 +21,7 @@
  * along with PublishPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use MultipleAuthors\Classes\Author_Utils;
 use MultipleAuthors\Classes\Authors_Iterator;
 use MultipleAuthors\Classes\Installer;
 use MultipleAuthors\Classes\Legacy\Module;
@@ -199,6 +200,9 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_filter('get_the_author_facebook', [$this, 'filter_author_metadata_facebook'], 10, 2);
             add_filter('get_the_author_twitter', [$this, 'filter_author_metadata_twitter'], 10, 2);
             add_filter('get_the_author_instagram', [$this, 'filter_author_metadata_instagram'], 10, 2);
+
+            // Fix authors avatar.
+            add_filter('pre_get_avatar_data', [$this, 'filter_pre_get_avatar_data'], 15, 2);
         }
 
         /**
@@ -934,7 +938,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         private function get_author_by_id($id)
         {
             $author = false;
-            
+
             if (empty($id)) {
                 return false;
             }
@@ -1261,6 +1265,47 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             return $value;
+        }
+
+        /**
+         * @param array $args Arguments passed to get_avatar_data(), after processing.
+         * @param mixed $id_or_email The Gravatar to retrieve. Accepts a user ID, Gravatar MD5 hash,
+         *                           user email, WP_User object, WP_Post object, or WP_Comment object.
+         */
+        public function filter_pre_get_avatar_data($args, $id_or_email)
+        {
+            // Stop if they are looking for the default avatar, otherwise we can start an infinity loop when get_avatar_data is called again.
+            if (empty($id_or_email)) {
+                return $args;
+            }
+
+            $termId = 0;
+
+            if (is_numeric($id_or_email)) {
+                $id_or_email = (int)$id_or_email;
+
+                if ($id_or_email < 0) {
+                    $termId = $id_or_email * -1;
+                } else {
+                    $author = Author::get_by_user_id($id_or_email);
+
+                    if (is_object($author)) {
+                        $termId = $author->term_id;
+                    }
+                }
+            } else {
+                $termId = Author_Utils::get_author_term_id_by_email($id_or_email);
+            }
+
+            if (!empty($termId)) {
+                $url = Author_Utils::get_avatar_url($termId);
+
+                if (!empty($url)) {
+                    $args['url'] = $url;
+                }
+            }
+
+            return $args;
         }
 
         /**

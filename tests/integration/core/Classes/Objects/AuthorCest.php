@@ -6,7 +6,7 @@ class AuthorCest
 {
     public function tryToCreateAnAuthorFromUserAndCheckIfTheUser_idMatches(\WpunitTester $I)
     {
-        $userAuthorID = $I->factory()->user->create(['role' => 'author']);
+        $userAuthorID = $I->factory('a new user')->user->create(['role' => 'author']);
 
         $author = Author::create_from_user($userAuthorID);
 
@@ -19,7 +19,7 @@ class AuthorCest
 
     public function tryToCreateAnAuthorFromUserAndCheckIfIs_guestReturnsFalse(\WpunitTester $I)
     {
-        $userAuthorID = $I->factory()->user->create(['role' => 'author']);
+        $userAuthorID = $I->factory('a new user')->user->create(['role' => 'author']);
 
         $author = Author::create_from_user($userAuthorID);
 
@@ -31,10 +31,11 @@ class AuthorCest
 
     public function tryToCreateAGuestAuthorAndCheckIfUserIdIsEmpty(\WpunitTester $I)
     {
+        $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
         $author = Author::create(
             [
-                'slug'         => 'iamaguest1',
-                'display_name' => 'Guest Author1',
+                'slug'         => $authorSlug,
+                'display_name' => strtoupper($authorSlug),
             ]
         );
 
@@ -46,10 +47,11 @@ class AuthorCest
 
     public function tryToCreateAGuestAuthorAndCheckIfIs_guestReturnsTrue(\WpunitTester $I)
     {
+        $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
         $author = Author::create(
             [
-                'slug'         => 'iamaguest2',
-                'display_name' => 'Guest Author2',
+                'slug'         => $authorSlug,
+                'display_name' => strtoupper($authorSlug),
             ]
         );
 
@@ -61,7 +63,7 @@ class AuthorCest
 
     public function tryToCreateAnAuthorFromUserAndCheckIfTheIDMatchesUser_id(\WpunitTester $I)
     {
-        $userAuthorID = $I->factory()->user->create(['role' => 'author']);
+        $userAuthorID = $I->factory('a new user')->user->create(['role' => 'author']);
 
         $author = Author::create_from_user($userAuthorID);
 
@@ -74,10 +76,11 @@ class AuthorCest
 
     public function tryToCreateAGuestAuthorAndCheckIfTheIdMatchesTheTermIdButAsNegativeInteger(\WpunitTester $I)
     {
+        $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
         $author = Author::create(
             [
-                'slug'         => 'iamaguest',
-                'display_name' => 'Guest Author',
+                'slug'         => $authorSlug,
+                'display_name' => strtoupper($authorSlug),
             ]
         );
 
@@ -90,7 +93,7 @@ class AuthorCest
 
     public function tryToGetUserMetaFromAuthorMappedToUserAndNoMetaOverrideInTheTerm(\WpunitTester $I)
     {
-        $userAuthorID = $I->factory()->user->create(['role' => 'author']);
+        $userAuthorID = $I->factory('a new user')->user->create(['role' => 'author']);
 
         $author = Author::create_from_user($userAuthorID);
 
@@ -107,7 +110,7 @@ class AuthorCest
 
     public function tryToGetUserMetaFromAuthorMappedToUserWithMetaOverrideInTheTerm(\WpunitTester $I)
     {
-        $userAuthorID = $I->factory()->user->create(['role' => 'author']);
+        $userAuthorID = $I->factory('a new user')->user->create(['role' => 'author']);
 
         $author = Author::create_from_user($userAuthorID);
 
@@ -125,7 +128,7 @@ class AuthorCest
 
     public function tryToGetUserMetaFromAuthorMappedToUserWithZeroAsMetaOverrideInTheTerm(\WpunitTester $I)
     {
-        $userAuthorID = $I->factory()->user->create(['role' => 'author']);
+        $userAuthorID = $I->factory('a new user')->user->create(['role' => 'author']);
 
         $author = Author::create_from_user($userAuthorID);
 
@@ -143,7 +146,7 @@ class AuthorCest
 
     public function tryToGetAuthorByEmailAddressForAuthorMappedToUser(\WpunitTester $I)
     {
-        $userID = $I->factory()->user->create(['role' => 'author', 'user_email']);
+        $userID = $I->factory('a new user')->user->create(['role' => 'author']);
         $author = Author::create_from_user($userID);
 
         $user = get_user_by('ID', $userID);
@@ -156,10 +159,11 @@ class AuthorCest
 
     public function tryToGetAuthorByEmailAddressForGuestAuthor(\WpunitTester $I)
     {
+        $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
         $author = Author::create(
             [
-                'slug'         => 'iamaguest2',
-                'display_name' => 'Guest Author 2',
+                'slug'         => $authorSlug,
+                'display_name' => strtoupper($authorSlug),
             ]
         );
 

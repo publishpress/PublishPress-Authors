@@ -9,6 +9,7 @@
 
 namespace MultipleAuthors\Classes\Objects;
 
+use MultipleAuthors\Classes\Author_Utils;
 use WP_Error;
 
 /**
@@ -410,7 +411,7 @@ class Author
      */
     public function get_meta($key, $single = true)
     {
-        $meta = get_term_meta($this->term_id, $key, $single);
+        $meta = Author_Utils::get_author_meta($this->term_id, $key, $single);
 
         if ($this->is_guest()) {
             return $meta;
@@ -426,9 +427,7 @@ class Author
      */
     public function has_custom_avatar()
     {
-        $avatar_attachment_id = get_term_meta($this->term_id, 'avatar', true);
-
-        return !empty($avatar_attachment_id);
+        return Author_Utils::author_has_custom_avatar($this->term_id);
     }
 
     /**
@@ -596,28 +595,14 @@ class Author
         return empty($this->user_id);
     }
 
-    public function get_by_email($emailAddress)
+    public static function get_by_email($emailAddress)
     {
-        global $wpdb;
+        $authorTermId = Author_Utils::get_author_term_id_by_email($emailAddress);
 
-        // Get all termmeta with that value, for author terms
-        $terms = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT tm.term_id
-                        FROM wp_termmeta as tm 
-                        INNER JOIN wp_term_taxonomy as tt ON (tm.term_id = tt.term_id)
-                        WHERE tm.meta_value = %s AND
-                        tt.taxonomy = 'author'",
-                sanitize_email($emailAddress)
-            )
-        );
-
-        if (empty($terms) || is_wp_error($terms)) {
+        if (empty($authorTermId)) {
             return false;
         }
 
-        $firstTerm = $terms[0];
-
-        return self::get_by_term_id($firstTerm->term_id);
+        return self::get_by_term_id($authorTermId);
     }
 }
