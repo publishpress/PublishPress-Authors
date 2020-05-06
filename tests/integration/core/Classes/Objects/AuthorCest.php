@@ -140,4 +140,36 @@ class AuthorCest
             'For mapped to user authors with 0 as meta set for the term, we should return the term\'s meta'
         );
     }
+
+    public function tryToGetAuthorByEmailAddressForAuthorMappedToUser(\WpunitTester $I)
+    {
+        $userID = $I->factory()->user->create(['role' => 'author', 'user_email']);
+        $author = Author::create_from_user($userID);
+
+        $user = get_user_by('ID', $userID);
+
+        $foundAuthor = Author::get_by_email($user->user_email);
+
+        $I->assertIsObject($foundAuthor);
+        $I->assertEquals($user->user_email, $author->user_email);
+    }
+
+    public function tryToGetAuthorByEmailAddressForGuestAuthor(\WpunitTester $I)
+    {
+        $author = Author::create(
+            [
+                'slug'         => 'iamaguest2',
+                'display_name' => 'Guest Author 2',
+            ]
+        );
+
+        $email = 'imaguest@example.com';
+
+        update_term_meta($author->term_id, 'user_email', $email);
+
+        $foundAuthor = Author::get_by_email($email);
+
+        $I->assertIsObject($foundAuthor);
+        $I->assertEquals($email, $author->user_email);
+    }
 }

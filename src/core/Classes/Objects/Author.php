@@ -268,6 +268,7 @@ class Author
         return new Author($term);
     }
 
+
     /**
      * @param $name
      *
@@ -593,5 +594,30 @@ class Author
     public function is_guest()
     {
         return empty($this->user_id);
+    }
+
+    public function get_by_email($emailAddress)
+    {
+        global $wpdb;
+
+        // Get all termmeta with that value, for author terms
+        $terms = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT tm.term_id
+                        FROM wp_termmeta as tm 
+                        INNER JOIN wp_term_taxonomy as tt ON (tm.term_id = tt.term_id)
+                        WHERE tm.meta_value = %s AND
+                        tt.taxonomy = 'author'",
+                sanitize_email($emailAddress)
+            )
+        );
+
+        if (empty($terms) || is_wp_error($terms)) {
+            return false;
+        }
+
+        $firstTerm = $terms[0];
+
+        return self::get_by_term_id($firstTerm->term_id);
     }
 }
