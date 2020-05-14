@@ -1014,7 +1014,12 @@ class Plugin
             return true;
         }
 
-        if (is_admin() || is_robots() || is_favicon() || $wp_query->posts) {
+        $is_favicon = false;
+        if (function_exists('is_favicon')) {
+            $is_favicon = is_favicon();
+        }
+
+        if (is_admin() || is_robots() || $is_favicon || $wp_query->posts) {
             return $shortCircuit;
         }
 
