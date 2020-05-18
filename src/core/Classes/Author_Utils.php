@@ -21,6 +21,10 @@ abstract class Author_Utils
     {
         global $wpdb;
 
+        if (!is_string($emailAddress)) {
+            return false;
+        }
+
         // Get all termmeta with that value, for author terms
         $terms = $wpdb->get_results(
             $wpdb->prepare(

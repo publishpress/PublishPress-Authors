@@ -1294,6 +1294,10 @@ if (!class_exists('MA_Multiple_Authors')) {
                     }
                 }
             } else {
+                if ($id_or_email instanceof WP_Comment) {
+                    $id_or_email = $id_or_email->comment_author_email;
+                }
+
                 $termId = Author_Utils::get_author_term_id_by_email($id_or_email);
             }
 
