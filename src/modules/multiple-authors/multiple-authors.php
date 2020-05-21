@@ -1516,7 +1516,7 @@ if (!class_exists('MA_Multiple_Authors')) {
          */
         public function filter_map_meta_cap($caps, $cap, $user_id, $args)
         {
-            if ($cap === 'edit_post' && in_array('edit_others_posts', $caps, true)) {
+            if (in_array($cap, ['edit_post', 'edit_others_posts']) && in_array('edit_others_posts', $caps, true)) {
                 if (isset($args[0])) {
                     $post_id = (int)$args[0];
 
