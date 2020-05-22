@@ -166,6 +166,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             // Fix upload permissions for multiple authors.
             add_filter('map_meta_cap', [$this, 'filter_map_meta_cap'], 10, 4);
 
+            add_filter('publishpress_is_author_of_post', [$this, 'filter_is_author_of_post'], 10, 3);
+
             // Menu
             add_action('multiple_authors_admin_menu_page', [$this, 'action_admin_menu_page']);
             add_action('multiple_authors_admin_submenu', [$this, 'action_admin_submenu'], 50);
@@ -1535,6 +1537,31 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             return $caps;
+        }
+
+        /**
+         * @param bool $isAuthor
+         * @param int $userId
+         * @param int $postId
+         *
+         * @return bool
+         */
+        public function filter_is_author_of_post($isAuthor, $userId, $postId)
+        {
+            $postAuthors = get_multiple_authors($postId, false);
+            $userId      = (int)$userId;
+
+            if (empty($userId)) {
+                return false;
+            }
+
+            foreach ($postAuthors as $author) {
+                if ((int)$author->user_id === $userId) {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public function admin_enqueue_scripts()
