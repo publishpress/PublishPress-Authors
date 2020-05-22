@@ -167,6 +167,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_filter('map_meta_cap', [$this, 'filter_map_meta_cap'], 10, 4);
 
             add_filter('publishpress_is_author_of_post', [$this, 'filter_is_author_of_post'], 10, 3);
+            add_filter('publishpress_post_authors_names', [$this, 'filter_post_authors_names'], 10, 2);
 
             // Menu
             add_action('multiple_authors_admin_menu_page', [$this, 'action_admin_menu_page']);
@@ -1562,6 +1563,19 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             return false;
+        }
+
+        public function filter_post_authors_names($names, $postID)
+        {
+            $names = [];
+
+            $authors = get_multiple_authors($postID, false, false);
+
+            foreach ($authors as $author) {
+                $names[] = $author->display_name;
+            }
+
+            return $names;
         }
 
         public function admin_enqueue_scripts()
