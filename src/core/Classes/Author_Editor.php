@@ -9,6 +9,7 @@
 
 namespace MultipleAuthors\Classes;
 
+use Codeception\Lib\Generator\PageObject;
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Factory;
 
@@ -422,7 +423,7 @@ class Author_Editor
         if (!isset($legacyPlugin->modules->multiple_authors)) {
             error_log(
                 sprintf(
-                    '[PublishPress Authors] Module multiple_authors not loaded. %s [user_id="%s"]',
+                    '[PublishPress Authors] Warning: Module multiple_authors not loaded. %s [user_id="%s"]',
                     __METHOD__,
                     $user_id
                 )

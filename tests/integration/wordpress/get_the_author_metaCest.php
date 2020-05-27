@@ -10,7 +10,7 @@ class get_the_author_metaCest
     ) {
         $expected = 'my-aim';
 
-        $userID = $I->factory()->user->create(['role' => 'author']);
+        $userID = $I->factory('a new user')->user->create(['role' => 'author']);
         $author = Author::create_from_user($userID);
         update_term_meta($author->term_id, 'aim', $expected);
 
@@ -46,7 +46,7 @@ class get_the_author_metaCest
     ) {
         $expectedMetaValue = sprintf('meta_%s', $example['metaKey']);
 
-        $userID = $I->factory()->user->create(['role' => 'author']);
+        $userID = $I->factory('a new user')->user->create(['role' => 'author']);
         $author = Author::create_from_user($userID);
 
         update_user_meta($userID, $example['metaKey'], $expectedMetaValue);
@@ -116,7 +116,7 @@ class get_the_author_metaCest
             $userProperty = sprintf('user_%s', $userProperty);
         }
 
-        $userID = $I->factory()->user->create(
+        $userID = $I->factory('a new user')->user->create(
             [
                 'user_nicename' => $authorSlug,
                 'role'          => 'author',
@@ -182,7 +182,7 @@ class get_the_author_metaCest
 
     public function tryToGetIdForWhenAuthorIsMappedToUser(\WpunitTester $I)
     {
-        $userID = $I->factory()->user->create(['role' => 'author']);
+        $userID = $I->factory('a new user')->user->create(['role' => 'author']);
         $author = Author::create_from_user($userID);
 
         $metaValue = get_the_author_meta('ID', $author->ID);
@@ -222,7 +222,7 @@ class get_the_author_metaCest
 
         global $post, $authordata;
 
-        $postId = $I->factory()->post->create(
+        $postId = $I->factory('a new post')->post->create(
             [
                 'title' => 'A Fake Post'
             ]
@@ -230,7 +230,7 @@ class get_the_author_metaCest
 
         $post = get_post($postId);
 
-        $user1Id           = $I->factory()->user->create(['role' => 'author']);
+        $user1Id           = $I->factory('a new user')->user->create(['role' => 'author']);
         $user              = get_user_by('ID', $user1Id);
         $user->description = 'A Nice User';
         wp_update_user($user);
@@ -268,7 +268,7 @@ class get_the_author_metaCest
 
         global $post, $authordata;
 
-        $postId = $I->factory()->post->create(
+        $postId = $I->factory('a new post')->post->create(
             [
                 'title' => 'A Fake Post'
             ]

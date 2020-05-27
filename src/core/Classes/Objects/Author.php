@@ -9,6 +9,7 @@
 
 namespace MultipleAuthors\Classes\Objects;
 
+use MultipleAuthors\Classes\Author_Utils;
 use WP_Error;
 
 /**
@@ -268,6 +269,7 @@ class Author
         return new Author($term);
     }
 
+
     /**
      * @param $name
      *
@@ -409,7 +411,7 @@ class Author
      */
     public function get_meta($key, $single = true)
     {
-        $meta = get_term_meta($this->term_id, $key, $single);
+        $meta = Author_Utils::get_author_meta($this->term_id, $key, $single);
 
         if ($this->is_guest()) {
             return $meta;
@@ -425,9 +427,7 @@ class Author
      */
     public function has_custom_avatar()
     {
-        $avatar_attachment_id = get_term_meta($this->term_id, 'avatar', true);
-
-        return !empty($avatar_attachment_id);
+        return Author_Utils::author_has_custom_avatar($this->term_id);
     }
 
     /**
@@ -593,5 +593,16 @@ class Author
     public function is_guest()
     {
         return empty($this->user_id);
+    }
+
+    public static function get_by_email($emailAddress)
+    {
+        $authorTermId = Author_Utils::get_author_term_id_by_email($emailAddress);
+
+        if (empty($authorTermId)) {
+            return false;
+        }
+
+        return self::get_by_term_id($authorTermId);
     }
 }

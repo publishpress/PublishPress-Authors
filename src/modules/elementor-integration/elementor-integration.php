@@ -162,6 +162,7 @@ if (!class_exists('MA_Elementor_Integration')) {
 
             add_action('elementor/widget/posts/skins_init', [$this, 'add_posts_skins'], 10, 2);
             add_action('elementor/widget/archive-posts/skins_init', [$this, 'add_archive_posts_skins'], 10, 2);
+            add_filter( 'elementor/theme/posts_archive/query_posts/query_vars', [$this, 'filter_posts_archive_query_vars'], 15);
         }
 
         /**
@@ -219,6 +220,11 @@ if (!class_exists('MA_Elementor_Integration')) {
                               ($widget));
             $widget->add_skin(new ArchivePostsSkinClassic($widget));
             $widget->add_skin(new ArchivePostsSkinFullContent($widget));
+        }
+
+        public function filter_posts_archive_query_vars($query_vars)
+        {
+            return $query_vars;
         }
     }
 }

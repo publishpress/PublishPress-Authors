@@ -1,16 +1,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PublishPress Authors\n"
-"POT-Creation-Date: 2018-05-14 12:28-0300\n"
-"PO-Revision-Date: 2019-01-30 23:15-0200\n"
-"Last-Translator: Dionizio Bach | DJIO <wordpress@djio.com.br>\n"
+"POT-Creation-Date: 2020-05-19 13:15-0300\n"
+"PO-Revision-Date: 2020-05-19 14:44-0300\n"
+"Last-Translator: Anderson Grudtner Martins <anderson@publishpress.com>\n"
 "Language-Team: Dionizio Bach | DJIO\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.3.1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-WPHeader: publishpress-authors.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -20,59 +20,52 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: core/Classes/Author_Editor.php:44
+#: src/core/Classes/Author_Editor.php:48
 msgid "Name"
 msgstr "Nome"
 
-#: core/Classes/Author_Editor.php:45 core/Classes/Author_Editor.php:242
+#: src/core/Classes/Author_Editor.php:49 src/core/Classes/Author_Editor.php:260
 msgid "Email"
 msgstr "E-mail"
 
-#: core/Classes/Author_Editor.php:51
-msgid "Count"
-msgstr "Total"
-
-#: core/Classes/Author_Editor.php:85
+#: src/core/Classes/Author_Editor.php:87
 msgid "User"
 msgstr "Usuário"
 
-#: core/Classes/Author_Editor.php:87
+#: src/core/Classes/Author_Editor.php:90
 msgid "Guest Author"
 msgstr "Autor convidado"
 
-#: core/Classes/Author_Editor.php:111 publishpress-authors.php:438
-msgid "View posts by this author"
-msgstr "Visualizar posts por este autor"
-
-#: core/Classes/Author_Editor.php:139 core/Classes/Author_Editor.php:195
+#: src/core/Classes/Author_Editor.php:133
+#: src/core/Classes/Author_Editor.php:200
 msgid "Edit User"
 msgstr "Editar usuário"
 
-#: core/Classes/Author_Editor.php:147
+#: src/core/Classes/Author_Editor.php:143
 msgid "Edit Author"
 msgstr "Editar autor"
 
-#: core/Classes/Author_Editor.php:157
+#: src/core/Classes/Author_Editor.php:157
 msgid "Create Author"
 msgstr "Criar autor"
 
-#: core/Classes/Author_Editor.php:185
+#: src/core/Classes/Author_Editor.php:188
 msgid "Edit Author Profile"
 msgstr "Editar perfil do autor"
 
-#: core/Classes/Author_Editor.php:229
+#: src/core/Classes/Author_Editor.php:247
 msgid "Mapped User"
 msgstr "Usuário Mapeado"
 
-#: core/Classes/Author_Editor.php:234
+#: src/core/Classes/Author_Editor.php:252
 msgid "First Name"
 msgstr "Nome"
 
-#: core/Classes/Author_Editor.php:238
+#: src/core/Classes/Author_Editor.php:256
 msgid "Last Name"
 msgstr "Sobrenome"
 
-#: core/Classes/Author_Editor.php:244
+#: src/core/Classes/Author_Editor.php:263
 msgid ""
 "To show the avatar from the Mapped User, enter the same email address as the "
 "Mapped User. <br> To show the avatar for a Guest Author, enter the email for "
@@ -82,31 +75,35 @@ msgstr ""
 "<br> Para mostrar o avatar de um Autor Convidado, utilize o email da conta "
 "Gravatar dele."
 
-#: core/Classes/Author_Editor.php:248
+#: src/core/Classes/Author_Editor.php:268
+msgid "Custom Avatar"
+msgstr "Avatar Personalizado"
+
+#: src/core/Classes/Author_Editor.php:273
 msgid "Website"
 msgstr "Site"
 
-#: core/Classes/Author_Editor.php:253
+#: src/core/Classes/Author_Editor.php:278
 msgid "Biographical Info"
 msgstr "Informações biográficas"
 
-#: core/Classes/Author_Editor.php:310
+#: src/core/Classes/Author_Editor.php:331
 msgid "Select image"
 msgstr "Selecionar imagem"
 
-#: core/Classes/Author_Editor.php:319
+#: src/core/Classes/Author_Editor.php:335
 msgid "Remove this image"
 msgstr "Remover esta imagem"
 
-#: core/Classes/Author_Editor.php:333
+#: src/core/Classes/Author_Editor.php:349
 msgid "Select a user"
 msgstr "Selecione um usuário"
 
-#: core/Classes/Author_Editor.php:403
+#: src/core/Classes/Author_Editor.php:456
 msgid "Mapped User (optional)"
 msgstr "Usuário mapeado (opcional)"
 
-#: core/Classes/Author_Editor.php:409
+#: src/core/Classes/Author_Editor.php:464
 msgid ""
 "You don’t have to choose a Mapped User. Leave this choice blank and you can "
 "create a Guest Author with no WordPress account."
@@ -114,187 +111,531 @@ msgstr ""
 "Você não precisa selecionar um usuário existente. Deixe esta opção em branco "
 "e você poderá criar um Autor Convidado sem uma conta no WordPress."
 
-#: core/Classes/Authors_Iterator.php:27
-msgid ""
-"No post ID provided for Multiple_authors_iterator constructor. Are you not "
-"in a loop or is $post not set?"
-msgstr ""
-"Nenhum ID de post foi fornecido para o construtor Multiple_authors_iterator. "
-"Você não está em um loop ou a variável $post não está definida?"
+#: src/core/Classes/Author_Editor.php:523
+msgid "Update data from mapped user"
+msgstr "Atualizar dados do usuário mapeado"
 
-#: core/Classes/Integrations/Theme.php:32
+#: src/core/Classes/Author_Editor.php:527
+msgid "Convert into guest author"
+msgstr "Converter em autor convidado"
+
+#: src/core/Classes/Author_Editor.php:588
+msgid "No authors were updated"
+msgstr "Nenhum autor foi atualizado"
+
+#: src/core/Classes/Author_Editor.php:590
+#, php-format
+msgid "Updated %d authors"
+msgstr "Atualizado %d autores"
+
+#: src/core/Classes/Authors_Iterator.php:33
+msgid ""
+"No post ID provided for Authors_Iterator constructor. Are you not in a loop "
+"or is $post not set?"
+msgstr ""
+"Nenhum ID de post foi fornecido para o construtor do Authors_Iterator. Você "
+"não está em um loop ou a variável $post não está definida?"
+
+#: src/core/Classes/Integrations/Theme.php:40
 #, php-format
 msgid "Author: %s"
 msgstr "Autor: %s"
 
-#: core/Classes/Objects/Author.php:49
-msgid "User doesn't exist"
-msgstr "Usuário não existe"
+#: src/core/Classes/Legacy/LegacyPlugin.php:206
+msgid "Configure"
+msgstr "Configurar"
 
-#: core/Classes/Objects/Author.php:54
-msgid "User already has a author."
-msgstr "Usuário já tem um autor."
+#: src/core/Classes/Legacy/LegacyPlugin.php:210
+msgid "Please correct your form errors below and try again."
+msgstr "Por favor, corrija os erros do formulário abaixo e tente novamente."
 
-#: core/Classes/Objects/Author.php:108
-msgid "'slug' is a required argument"
-msgstr "‘slug’ é um argumento obrigatório"
+#: src/core/Classes/Legacy/LegacyPlugin.php:213
+#: src/modules/settings/settings.php:336
+msgid "Cheatin&#8217; uh?"
+msgstr "Trapaceando, hein?"
 
-#: core/Classes/Objects/Author.php:112
-msgid "'display_name' is a required argument"
-msgstr "‘display_name’ é um argumento obrigatório"
+#: src/core/Classes/Legacy/LegacyPlugin.php:215
+msgid "You do not have necessary permissions to complete this action."
+msgstr "Você não tem as permissões necessárias para concluir esta ação."
 
-#: core/Classes/Post_Editor.php:46 core/Classes/Post_Editor.php:94
-#: core/Traits/Author_box.php:75 core/Widget.php:41 core/Widget.php:69
-#: publishpress-authors.php:324 publishpress-authors.php:325
-#: publishpress-authors.php:395 publishpress-authors.php:458
-#: publishpress-authors.php:1107
+#: src/core/Classes/Legacy/LegacyPlugin.php:218
+msgid "Post does not exist"
+msgstr "O post não existe"
+
+#: src/core/Classes/Legacy/Module.php:102
+msgid "Post"
+msgstr "O post não existe"
+
+#: src/core/Classes/Legacy/Module.php:103
+msgid "Page"
+msgstr "Página"
+
+#: src/core/Classes/Post_Editor.php:59 src/core/Classes/Post_Editor.php:125
+#: src/core/Plugin.php:646 src/core/Plugin.php:1404
+#: src/core/Traits/Author_box.php:106 src/core/Widget.php:26
+#: src/core/Widget.php:50 src/core/Widget.php:84
+#: src/modules/multiple-authors/multiple-authors.php:214
+#: src/modules/multiple-authors/multiple-authors.php:215
+#: src/modules/multiple-authors/multiple-authors.php:246
+#: src/modules/multiple-authors/multiple-authors.php:247
 msgid "Authors"
 msgstr "Autores"
 
-#: core/Classes/Post_Editor.php:131 publishpress-authors.php:922
+#: src/core/Classes/Post_Editor.php:101
+msgid "No author"
+msgstr "Sem autor"
+
+#: src/core/Classes/Post_Editor.php:173 src/core/Plugin.php:1241
 msgid "Search for an author"
 msgstr "Procurar por um autor"
 
-#: core/Classes/Utils.php:49
+#: src/core/Classes/Term_Editor.php:56
+#: src/modules/multiple-authors/multiple-authors.php:895
+msgid "Author URL"
+msgstr "URL do autor"
+
+#: src/core/Classes/Utils.php:61
 msgid "Co-Authors Plus must be installed and active."
 msgstr "Co-Authors Plus deve estar instalado e ativo."
 
-#: core/WP_Cli.php:223
+#: src/core/Plugin.php:435
+msgctxt "taxonomy general name"
+msgid "Authors"
+msgstr "Autores"
+
+#: src/core/Plugin.php:440
+msgctxt "taxonomy singular name"
+msgid "Author"
+msgstr "Autor"
+
+#: src/core/Plugin.php:444
+msgid "Search authors"
+msgstr "Pesquisar autores"
+
+#: src/core/Plugin.php:445
+msgid "Popular authors"
+msgstr "Autores populares"
+
+#: src/core/Plugin.php:446
+msgid "All authors"
+msgstr "Todos os autores"
+
+#: src/core/Plugin.php:447
+msgid "Parent author"
+msgstr "Autor ascendente"
+
+#: src/core/Plugin.php:448
+msgid "Parent author:"
+msgstr "Autor ascendente:"
+
+#: src/core/Plugin.php:449
+msgid "Edit author"
+msgstr "Editar autor"
+
+#: src/core/Plugin.php:450
+msgid "View author"
+msgstr "Ver autor"
+
+#: src/core/Plugin.php:451
+msgid "Update author"
+msgstr "Atualizar autor"
+
+#: src/core/Plugin.php:452 src/core/Plugin.php:453
+msgid "New author"
+msgstr "Novo autor"
+
+#: src/core/Plugin.php:455
+msgid "Separate authors with commas"
+msgstr "Separar autores com vírgulas"
+
+#: src/core/Plugin.php:458
+msgid "Add or remove authors"
+msgstr "Adicionar ou remover autores"
+
+#: src/core/Plugin.php:460
+msgid "Choose from the most used authors"
+msgstr "Selecione a partir dos autores mais utilizados"
+
+#: src/core/Plugin.php:463
+msgid "No authors found."
+msgstr "Nenhum autor foi encontrado."
+
+#: src/core/Plugin.php:464
+#: src/modules/multiple-authors/multiple-authors.php:550
+msgid "Author"
+msgstr "Autor"
+
+#: src/core/Plugin.php:465
+msgid "Back to Authors"
+msgstr "Voltar aos Autores"
+
+#. Plugin Name of the plugin/theme
+#: src/core/Plugin.php:576 src/modules/settings/settings.php:59
+msgid "PublishPress Authors"
+msgstr "PublishPress Authors"
+
+#: src/core/Plugin.php:580
+#, php-format
+msgid "If you like %s please leave us a %s rating. Thank you!"
+msgstr "Se você gosta do %s deixe-nos uma avaliação %s. Obrigado!"
+
+#: src/core/Plugin.php:650
+msgid "Click on an author to change them. Drag to change their order."
+msgstr "Clique em um autor para alterá-lo. Arraste para modificar a ordem."
+
+#: src/core/Plugin.php:687
+msgid "No co-author exists for that term"
+msgstr "Nenhum co-autor foi encontrado para este termo"
+
+#: src/core/Plugin.php:1232
+msgid "Edit"
+msgstr "Editar"
+
+#: src/core/Plugin.php:1234
+msgid "Are you sure you want to remove this author?"
+msgstr "Você tem certeza de que deseja remover esse autor?"
+
+#: src/core/Plugin.php:1238
+msgid "Click to change this author, or drag to change their position"
+msgstr "Clique em um autor para alterá-lo, ou arraste para alterar sua posição"
+
+#: src/core/Plugin.php:1243
+msgid ""
+"Click on an author to change them. Drag to change their order. Click on "
+"<strong>Remove</strong> to remove them."
+msgstr ""
+"Clique em um autor para alterá-lo. Arraste para modificar a ordem. Clique em "
+"<strong>Remover</strong> para removê-lo."
+
+#: src/core/Plugin.php:1247
+msgid ""
+"Are you sure you want to delete the authors profiles mapped to users? This "
+"action can't be undone."
+msgstr ""
+"Tem certeza de que deseja excluir os perfis de autores mapeados para os "
+"usuários? Esta ação não pode ser desfeita."
+
+#: src/core/Plugin.php:1251
+msgid ""
+"Are you sure you want to delete the guest authors profiles? This action "
+"can't be undone."
+msgstr ""
+"Tem certeza de que deseja excluir os perfis dos autores convidados? Esta "
+"ação não pode ser desfeita."
+
+#: src/core/Plugin.php:1255
+msgid ""
+"Are you sure you want to create author profiles for the missed post authors?"
+msgstr ""
+"Tem certeza de que deseja criar perfis de autores para os autores de postes "
+"perdidos?"
+
+#: src/core/Plugin.php:1259
+msgid "Are you sure you want to create authors for the selected roles?"
+msgstr "Tem certeza de que deseja criar autores para as funções selecionadas?"
+
+#: src/core/Plugin.php:1264
+msgid "Please, wait..."
+msgstr "Por favor, Aguarde..."
+
+#: src/core/Plugin.php:1266
+msgid "Sorry, the request returned an error."
+msgstr "Desculpe, o pedido retornou um erro."
+
+#: src/core/Plugin.php:1321
+msgid "Mine"
+msgstr "Meu"
+
+#: src/core/WP_Cli.php:249
 msgid "Please specify a valid user_login"
 msgstr "Defina um login válido"
 
-#: core/WP_Cli.php:227
+#: src/core/WP_Cli.php:253
 msgid "Please specify a valid co-author login"
 msgstr "Defina um login de co-autor válido"
 
-#: core/WP_Cli.php:238
+#: src/core/WP_Cli.php:269
 #, php-format
 msgid "Skipping - Post #%d already has co-authors assigned: %s"
 msgstr "Ignorando - O post #%d já tem co-autores atribuídos: %s"
 
-#: core/WP_Cli.php:246
+#: src/core/WP_Cli.php:280
 #, php-format
 msgid "Updating - Adding %s's byline to post #%d"
 msgstr "Atualizando - Adicionando %s autor para o post #%d"
 
-#: core/WP_Cli.php:253
+#: src/core/WP_Cli.php:292
 #, php-format
 msgid "All done! %d posts were affected."
 msgstr "Tudo pronto! %d posts foram afetados."
 
-#: core/Widget.php:20
+#: src/core/Widget.php:30
 msgid "Display a list of authors for the current post."
 msgstr "Mostra uma lista de autores para o post atual."
 
-#: core/Widget.php:26 modules/multiple-authors/multiple-authors.php:68
-msgid "Multiple Authors"
-msgstr "Múltiplos Autores"
-
-#: core/Widget.php:78
+#: src/core/Widget.php:94
 msgid "Title"
 msgstr "Título"
 
-#: core/Widget.php:79
+#: src/core/Widget.php:95
 msgid "Layout"
 msgstr "Layout"
 
-#: modules/multiple-authors/multiple-authors.php:69
-#: modules/multiple-authors/multiple-authors.php:71
-msgid "Add support for multiple authors on your content"
-msgstr "Adiciona suporte para vários autores em seu conteúdo"
+#: src/functions/template-tags.php:170 src/functions/template-tags.php:791
+msgid " and "
+msgstr " e "
 
-#: modules/multiple-authors/multiple-authors.php:103
-#: publishpress-authors.php:415
-msgid "Posts"
-msgstr "Posts"
+#: src/functions/template-tags.php:320
+#, php-format
+msgid "Posts by %s"
+msgstr "Posts de %s"
 
-#: modules/multiple-authors/multiple-authors.php:104
-msgid "Pages"
-msgstr "Páginas"
+#: src/functions/template-tags.php:505 src/functions/template-tags.php:763
+#, php-format
+msgid "Visit %s&#8217;s website"
+msgstr "Visitar site de %s"
 
-#: modules/multiple-authors/multiple-authors.php:265
-msgid "Licensing:"
-msgstr "Licença:"
+#: src/functions/template-tags.php:708
+#, php-format
+msgid "Posts by %1$s"
+msgstr "Posts de %1$s"
 
-#: modules/multiple-authors/multiple-authors.php:272
-msgid "License key:"
-msgstr "Chave de licença:"
+#: src/functions/template-tags.php:792
+msgid ", and "
+msgstr ", e "
 
-#: modules/multiple-authors/multiple-authors.php:285
-msgid "General:"
-msgstr "Geral:"
+#: src/modules/byline-migration/byline-migration.php:71
+msgid "Migrate Byline Data"
+msgstr "Migrar dados do plugin Byline"
 
-#: modules/multiple-authors/multiple-authors.php:292
-msgid "Add to these post types:"
-msgstr "Adicionar a estes tipos de post:"
+#: src/modules/byline-migration/byline-migration.php:72
+#: src/modules/byline-migration/byline-migration.php:73
+msgid "Add migration option for Byline"
+msgstr "Adicionar opção de migração para o plugin Byline"
 
-#: modules/multiple-authors/multiple-authors.php:300
-msgid "Automatically create authors for new users in the following roles:"
-msgstr ""
-"Criar automaticamente autores para os novos usuários nas seguintes funções:"
+#: src/modules/byline-migration/byline-migration.php:164
+msgid "Copy Byline Data"
+msgstr "Copiar dados do plugin Byline"
 
-#: modules/multiple-authors/multiple-authors.php:314
-msgid "Display below the content:"
-msgstr "Mostrar abaixo do conteúdo:"
+#: src/modules/bylines-migration/bylines-migration.php:74
+msgid "Migrate Bylines Data"
+msgstr "Migrar dados do plugin Bylines"
 
-#: modules/multiple-authors/multiple-authors.php:321
-msgid "Show below the content:"
-msgstr "Mostrar após o conteúdo:"
+#: src/modules/bylines-migration/bylines-migration.php:75
+#: src/modules/bylines-migration/bylines-migration.php:76
+msgid "Add migration option for Bylines"
+msgstr "Adicionar opção de migração para o plugin Bylines"
 
-#: modules/multiple-authors/multiple-authors.php:329
-msgid "Title for the author box:"
-msgstr "Título para a caixa de autores:"
+#: src/modules/bylines-migration/bylines-migration.php:167
+msgid "Copy Bylines Data"
+msgstr "Copiar dados do plugin Bylines"
 
-#: modules/multiple-authors/multiple-authors.php:337
-msgid "Layout:"
-msgstr "Layout:"
+#: src/modules/default-layouts/default-layouts.php:53
+msgid "Default Layouts"
+msgstr "Layouts padrão"
 
-#: modules/multiple-authors/multiple-authors.php:345
-msgid "Show email link:"
-msgstr "Mostrar link de email:"
-
-#: modules/multiple-authors/multiple-authors.php:353
-msgid "Show site link:"
-msgstr "Mostrar link do site:"
-
-#: modules/multiple-authors/multiple-authors.php:404
-msgid "This will display the authors box at the end of the content."
-msgstr "Isto irá mostrar a caixa com autores no final do conteúdo."
-
-#: modules/multiple-authors/multiple-authors.php:417
-#: publishpress-authors.php:250
-msgid "Author"
-msgstr "Autor"
-
-#: modules/multiple-authors/multiple-authors.php:481
-msgid "This will display the authors email in the author box."
-msgstr "Isto irá mostrar o e-mail do autor na caixa de autores."
-
-#: modules/multiple-authors/multiple-authors.php:498
-msgid "This will display the authors site in the author box."
-msgstr "Isto irá mostrar o site do autor na caixa de autores."
-
-#: modules/multiple-authors/multiple-authors.php:577
-msgid "Simple list"
-msgstr "Lista simples"
-
-#: modules/multiple-authors/multiple-authors.php:578
+#: src/modules/default-layouts/default-layouts.php:132
 msgid "Boxed"
 msgstr "Encaixotado"
 
-#: modules/multiple-authors/multiple-authors.php:579
+#: src/modules/default-layouts/default-layouts.php:133
 msgid "Centered"
 msgstr "Centralizado"
 
-#: modules/multiple-authors/multiple-authors.php:628
+#: src/modules/default-layouts/default-layouts.php:134
+msgid "Inline"
+msgstr "Em linha"
+
+#: src/modules/default-layouts/default-layouts.php:135
+msgid "Inline with avatar"
+msgstr "Em linha com avatar"
+
+#: src/modules/default-layouts/default-layouts.php:136
+msgid "Simple list"
+msgstr "Lista simples"
+
+#: src/modules/divi-integration/divi-integration.php:52
+msgid "Divi Integration"
+msgstr "Integração com o Divi"
+
+#: src/modules/divi-integration/divi-integration.php:53
+msgid "Add compatibility with the Divi Theme Builder"
+msgstr "Adicionar compatibilidade com o construtor de temas Divi"
+
+#: src/modules/elementor-integration/Modules/Posts/Skins/PostsSkinCards.php:38
+msgid "Cards - PublishPress Authors"
+msgstr "Cartões - PublishPress Authors"
+
+#: src/modules/elementor-integration/Modules/Posts/Skins/PostsSkinClassic.php:38
+msgid "Classic - PublishPress Authors"
+msgstr "Clássico - PublishPress Authors"
+
+#: src/modules/elementor-integration/Modules/Posts/Skins/PostsSkinFullContent.php:36
+msgid "Full Content - PublishPress Authors"
+msgstr "Conteúdo Completo - PublishPress Authors"
+
+#: src/modules/elementor-integration/elementor-integration.php:57
+msgid "Elementor Integration"
+msgstr "Integração com Elementor"
+
+#: src/modules/elementor-integration/elementor-integration.php:59
+msgid "Add compatibility with the Elementor and Elementor Pro page builder"
+msgstr ""
+"Adicionar compatibilidade com o construtor de páginas Elementor e Elementor "
+"Pro"
+
+#: src/modules/genesis-integration/genesis-integration.php:51
+msgid "Genesis Integration"
+msgstr "Integração com Genesis"
+
+#: src/modules/genesis-integration/genesis-integration.php:52
+msgid "Add compatibility with the Genesis framework"
+msgstr "Adicionar compatibilidade com o framework Genesis"
+
+#: src/modules/modules-settings/modules-settings.php:52
+msgid "Authors Settings"
+msgstr "Configurações dos autores"
+
+#: src/modules/modules-settings/modules-settings.php:226
+msgid "Features"
+msgstr "Características"
+
+#: src/modules/modules-settings/modules-settings.php:228
+msgid "Feel free to select only the features you need."
+msgstr ""
+"Sinta-se livre para selecionar somente as funcionalidades de que precisa."
+
+#: src/modules/modules-settings/modules-settings.php:236
+msgid "Enabled features"
+msgstr "Funcionalidades ativadas"
+
+#: src/modules/multiple-authors/multiple-authors.php:74
+msgid "Multiple Authors"
+msgstr "Múltiplos Authors"
+
+#: src/modules/multiple-authors/multiple-authors.php:76
+#: src/modules/multiple-authors/multiple-authors.php:80
+msgid "Add support for multiple authors on your content"
+msgstr "Adiciona suporte para vários autores em seu conteúdo"
+
+#: src/modules/multiple-authors/multiple-authors.php:120
+#: src/modules/settings/settings.php:289
+msgid "Posts"
+msgstr "Posts"
+
+#: src/modules/multiple-authors/multiple-authors.php:121
+#: src/modules/settings/settings.php:290
+msgid "Pages"
+msgstr "Páginas"
+
+#: src/modules/multiple-authors/multiple-authors.php:400
+msgid "Add to these post types:"
+msgstr "Adicionar a estes tipos de post:"
+
+#: src/modules/multiple-authors/multiple-authors.php:409
+msgid "Automatically create author profiles:"
+msgstr "Crie automaticamente perfis de autores:"
+
+#: src/modules/multiple-authors/multiple-authors.php:433
+msgid "Show below the content:"
+msgstr "Mostrar após o conteúdo:"
+
+#: src/modules/multiple-authors/multiple-authors.php:441
+msgid "Title for the author box:"
+msgstr "Título para a caixa de autores:"
+
+#: src/modules/multiple-authors/multiple-authors.php:449
+msgid "Layout:"
+msgstr "Layout:"
+
+#: src/modules/multiple-authors/multiple-authors.php:457
+msgid "Show email link:"
+msgstr "Mostrar link de email:"
+
+#: src/modules/multiple-authors/multiple-authors.php:465
+msgid "Show site link:"
+msgstr "Mostrar link do site:"
+
+#: src/modules/multiple-authors/multiple-authors.php:534
+msgid "This will display the authors box at the end of the content."
+msgstr "Isto irá mostrar a caixa com autores no final do conteúdo."
+
+#: src/modules/multiple-authors/multiple-authors.php:606
+msgid ""
+"Author profiles can be mapped to WordPress user accounts. This option allows "
+"you to automatically create author profiles when users are created in these "
+"roles. You can also do this for existing users by clicking the \"Create "
+"missed authors from role\" button in the Maintenance tab."
+msgstr ""
+"Os perfis dos autores podem ser mapeados para contas de usuários do "
+"WordPress. Essa opção permite criar automaticamente perfis de autores quando "
+"os usuários são criados nessas funções. Você também pode fazer isso para "
+"usuários existentes clicando no botão \"Criar autores perdidos da função\" "
+"na guia Manutenção."
+
+#: src/modules/multiple-authors/multiple-authors.php:627
+msgid "This will display the authors email in the author box."
+msgstr "Isto irá mostrar o e-mail do autor na caixa de autores."
+
+#: src/modules/multiple-authors/multiple-authors.php:647
+msgid "This will display the authors site in the author box."
+msgstr "Isto irá mostrar o site do autor na caixa de autores."
+
+#: src/modules/multiple-authors/multiple-authors.php:665
+#: src/modules/multiple-authors/multiple-authors.php:667
+msgid "Create missed post authors"
+msgstr "Criar autores não encontrados"
+
+#: src/modules/multiple-authors/multiple-authors.php:671
+#: src/modules/multiple-authors/multiple-authors.php:673
+msgid "Create missed authors from role"
+msgstr "Criar autores não encontrados a partir do papel"
+
+#: src/modules/multiple-authors/multiple-authors.php:684
+msgid "Copy Co-Authors Plus Data"
+msgstr "Copiar dados do plugin Co-Authors Plus"
+
+#: src/modules/multiple-authors/multiple-authors.php:692
+msgid "Delete Mapped Authors"
+msgstr "Excluir autores mapeados"
+
+#: src/modules/multiple-authors/multiple-authors.php:694
+msgid "Delete all authors mapped to users"
+msgstr "Exclua todos os autores mapeados aos usuários"
+
+#: src/modules/multiple-authors/multiple-authors.php:699
+msgid "Delete Guest Authors"
+msgstr "Excluir autores convidados"
+
+#: src/modules/multiple-authors/multiple-authors.php:701
+msgid "Delete all guest authors"
+msgstr "Exclua todos os autores convidados"
+
+#: src/modules/multiple-authors/multiple-authors.php:708
+msgid ""
+"Please be careful clicking these buttons. Before clicking, we recommend "
+"taking a site backup in case anything goes wrong."
+msgstr ""
+"Por favor, tenha cuidado clicando nestes botões. Antes de clicar, "
+"recomendamos fazer um backup do site caso algo dê errado."
+
+#: src/modules/multiple-authors/multiple-authors.php:813
+msgid "General"
+msgstr "Geral"
+
+#: src/modules/multiple-authors/multiple-authors.php:814
+msgid "Display"
+msgstr "Mostra uma lista de autores para o post atual."
+
+#: src/modules/multiple-authors/multiple-authors.php:815
+msgid "Maintenance"
+msgstr "Manutenção"
+
+#: src/modules/multiple-authors/multiple-authors.php:886
 msgid "This is how the author’s name will appears on your site."
 msgstr "Assim é como o nome do auto irá aparecer em seu site."
 
-#: modules/multiple-authors/multiple-authors.php:636
-msgid "Author URL"
-msgstr "URL do autor"
-
-#: modules/multiple-authors/multiple-authors.php:640
+#: src/modules/multiple-authors/multiple-authors.php:900
 msgid ""
 "This forms part of the URL for the author’s profile page. If you choose a "
 "Mapped User, this URL is taken from the user’s account and can not be "
@@ -304,334 +645,153 @@ msgstr ""
 "Mapeado, a URL refletirá o que estiver configurado na conta do usuário e não "
 "pode ser alterada."
 
-#: publishpress-authors.php:230
-msgctxt "taxonomy general name"
-msgid "Authors"
-msgstr "Autores"
+#: src/modules/multiple-authors/multiple-authors.php:1490
+msgid "Error. Author terms could not be reseted."
+msgstr "Erro. Os termos do autor não puderam ser redefinidos."
 
-#: publishpress-authors.php:232
-msgctxt "taxonomy singular name"
-msgid "Author"
-msgstr "Autor"
+#: src/modules/multiple-authors/multiple-authors.php:1500
+msgid "Maintenance completed successfully."
+msgstr "Manutenção concluída com sucesso."
 
-#: publishpress-authors.php:234
-msgid "Search authors"
-msgstr "Pesquisar autores"
+#: src/modules/settings/settings.php:102
+msgid "Multiple Authors Settings"
+msgstr "Configurações do PublishPress Authors"
 
-#: publishpress-authors.php:235
-msgid "Popular authors"
-msgstr "Autores populares"
+#: src/modules/settings/settings.php:103
+msgid "Settings"
+msgstr "Configurações"
 
-#: publishpress-authors.php:236
-msgid "All authors"
-msgstr "Todos os autores"
+#: src/modules/settings/settings.php:222
+msgid "There are no PublishPress modules registered"
+msgstr "Não há módulos PublishPress registrados"
 
-#: publishpress-authors.php:237
-msgid "Parent author"
-msgstr "Autor ascendente"
-
-#: publishpress-authors.php:238
-msgid "Parent author:"
-msgstr "Autor ascendente:"
-
-#: publishpress-authors.php:239
-msgid "Edit author"
-msgstr "Editar autor"
-
-#: publishpress-authors.php:240
-msgid "View author"
-msgstr "Ver autor"
-
-#: publishpress-authors.php:241
-msgid "Update author"
-msgstr "Atualizar autor"
-
-#: publishpress-authors.php:242 publishpress-authors.php:243
-msgid "New author"
-msgstr "Novo autor"
-
-#: publishpress-authors.php:244
-msgid "Separate authors with commas"
-msgstr "Separar autores com vírgulas"
-
-#: publishpress-authors.php:246
-msgid "Add or remove authors"
-msgstr "Adicionar ou remover autores"
-
-#: publishpress-authors.php:247
-msgid "Choose from the most used authors"
-msgstr "Selecione a partir dos autores mais utilizados"
-
-#: publishpress-authors.php:249
-msgid "No authors found."
-msgstr "Nenhum autor foi encontrado."
-
-#: publishpress-authors.php:251
-msgid "Back to Authors"
-msgstr "Voltar aos Autores"
-
-#: publishpress-authors.php:460
-msgid "Click on an author to change them. Drag to change their order."
-msgstr "Clique em um autor para alterá-lo. Arraste para modificar a ordem."
-
-#: publishpress-authors.php:506 publishpress-authors.php:525
-msgid "No co-author exists for that term"
-msgstr "Nenhum co-autor foi encontrado para este termo"
-
-#: publishpress-authors.php:917
-msgid "Edit"
-msgstr "Editar"
-
-#: publishpress-authors.php:918
-msgid "Are you sure you want to remove this author?"
-msgstr "Você tem certeza de que deseja remover esse autor?"
-
-#: publishpress-authors.php:920
-msgid "Click to change this author, or drag to change their position"
-msgstr "Clique em um autor para alterá-lo, ou arraste para alterar sua posição"
-
-#: publishpress-authors.php:923
+#: src/modules/settings/settings.php:312
+#, php-format
 msgid ""
-"Click on an author to change them. Drag to change their order. Click on "
-"<strong>Remove</strong> to remove them."
+"Disabled because add_post_type_support('%1$s', '%2$s') is included in a "
+"loaded file."
 msgstr ""
-"Clique em um autor para alterá-lo. Arraste para modificar a ordem. Clique em "
-"<strong>Remover</strong> para removê-lo."
+"Desabilitado, pois add_post_type_support('%1$s', '%2$s') está incluído em um "
+"arquivo já carregado."
 
-#: publishpress-authors.php:968
-msgid "Mine"
-msgstr "Meu"
+#: src/modules/yoast-seo-integration/src/Schema/Article.php:218
+msgid "Uncategorized"
+msgstr "Sem categoria"
 
-#: publishpress-authors.php:1329
+#: src/modules/yoast-seo-integration/yoast-seo-integration.php:52
+msgid "Yoast SEO Integration"
+msgstr "Integração com Yoast SEO"
+
+#: src/modules/yoast-seo-integration/yoast-seo-integration.php:53
+msgid "Add compatibility with the Yoast SEO plugin"
+msgstr "Adicionar compatibilidade com o plugin Yoast SEO"
+
+#: src/plugin.php:45
+#, php-format
+msgid ""
+"Error: %1$s is not compatible with PressPermit Pro v2.7.23 or prior. Sorry, "
+"but we recommend updating PressPermit."
+msgstr ""
+"Erro: %1$s não é compatível com PressPermit Pro v2.7.23 ou anterior. "
+"Desculpe, mas recomendamos atualizar o PressPermit."
+
+#: src/plugin.php:127
 #, php-format
 msgid "New comment on your post \"%s\""
 msgstr "Novo comentário em seu post \"%s\""
 
-#: publishpress-authors.php:1331
+#: src/plugin.php:130
 #, php-format
 msgid "Author : %1$s (IP: %2$s , %3$s)"
 msgstr "Autor : %1$s (IP: %2$s , %3$s)"
 
-#: publishpress-authors.php:1333
+#: src/plugin.php:135
 #, php-format
 msgid "E-mail : %s"
 msgstr "E-mail : %s"
 
-#: publishpress-authors.php:1334
-#: publishpress-authors.php:1346
-#: publishpress-authors.php:1356
+#: src/plugin.php:136 src/plugin.php:154 src/plugin.php:168
 #, php-format
 msgid "URL    : %s"
 msgstr "URL    : %s"
 
-#: publishpress-authors.php:1335
+#: src/plugin.php:138
 #, php-format
 msgid "Whois  : http://whois.arin.net/rest/ip/%s"
 msgstr "Whois  : http://whois.arin.net/rest/ip/%s"
 
-#: publishpress-authors.php:1337
+#: src/plugin.php:141
 msgid "Comment: "
 msgstr "Comentário: "
 
-#: publishpress-authors.php:1338
+#: src/plugin.php:142
 msgid "You can see all comments on this post here: "
 msgstr "Você pode ver todos os comentário deste post aqui: "
 
-#: publishpress-authors.php:1340
+#. translators: 1: blog name, 2: post title
+#: src/plugin.php:144
 #, php-format
 msgid "[%1$s] Comment: \"%2$s\""
 msgstr "[%1$s] Comentário: \"%2$s\""
 
-#: publishpress-authors.php:1342
+#: src/plugin.php:146
 #, php-format
 msgid "New trackback on your post \"%s\""
 msgstr "Novo trackback on your post \"%s\""
 
-#: publishpress-authors.php:1344
-#: publishpress-authors.php:1354
+#: src/plugin.php:149 src/plugin.php:163
 #, php-format
 msgid "Website: %1$s (IP: %2$s , %3$s)"
 msgstr "Website: %1$s (IP: %2$s , %3$s)"
 
-#: publishpress-authors.php:1347
-#: publishpress-authors.php:1357
+#: src/plugin.php:155 src/plugin.php:169
 msgid "Excerpt: "
 msgstr "Resumo: "
 
-#: publishpress-authors.php:1348
+#: src/plugin.php:156
 msgid "You can see all trackbacks on this post here: "
 msgstr "Você pode ver todos os trackbacks para este post aqui: "
 
-#: publishpress-authors.php:1350
+#. translators: 1: blog name, 2: post title
+#: src/plugin.php:158
 #, php-format
 msgid "[%1$s] Trackback: \"%2$s\""
 msgstr "[%1$s] Trackback: \"%2$s\""
 
-#: publishpress-authors.php:1352
+#: src/plugin.php:160
 #, php-format
 msgid "New pingback on your post \"%s\""
 msgstr "Novo pingback em seu post \"%s\""
 
-#: publishpress-authors.php:1359
+#: src/plugin.php:173
 msgid "You can see all pingbacks on this post here: "
 msgstr "Você pode ver todos os pinkbacks deste post aqui: "
 
-#: publishpress-authors.php:1361
+#. translators: 1: blog name, 2: post title
+#: src/plugin.php:175
 #, php-format
 msgid "[%1$s] Pingback: \"%2$s\""
 msgstr "[%1$s] Pingback: \"%2$s\""
 
-#: publishpress-authors.php:1364
+#: src/plugin.php:179
 #, php-format
 msgid "Permalink: %s"
 msgstr "Link permanente: %s"
 
-#: publishpress-authors.php:1367
+#: src/plugin.php:184
 #, php-format
 msgid "Trash it: %s"
 msgstr "Mover para a lixeira: %s"
 
-#: publishpress-authors.php:1370
+#: src/plugin.php:189
 #, php-format
 msgid "Delete it: %s"
 msgstr "Excluir: %s"
 
-#: publishpress-authors.php:1373
+#: src/plugin.php:194
 #, php-format
 msgid "Spam it: %s"
 msgstr "Marcar como spam: %s"
-
-#: template-tags.php:119 template-tags.php:623
-msgid " and "
-msgstr " e "
-
-#: template-tags.php:247
-#, php-format
-msgid "Posts by %s"
-msgstr "Posts de %s"
-
-#: template-tags.php:385 template-tags.php:598
-#, php-format
-msgid "Visit %s&#8217;s website"
-msgstr "Visitar site de %s"
-
-#: template-tags.php:551
-#, php-format
-msgid "Posts by %1$s"
-msgstr "Posts de %1$s"
-
-#: template-tags.php:624
-msgid ", and "
-msgstr ", e "
-
-#: tests/phpunit/bylines/test-bylines-rss.php:53
-msgid "ERROR: This is not a valid feed template."
-msgstr "ERRO: Este não é um template de feed válido."
-
-#: vendor/publishpress/addon-framework/library/Initializer.php:95
-#, php-format
-msgid "Please, install and activate the %s plugin in order to make %s work."
-msgstr "Instale e ative o plugin %s para que %s funcione."
-
-#: vendor/publishpress/addon-framework/library/Initializer.php:111
-#, php-format
-msgid "Sorry, %s requires %s version %s or later."
-msgstr "Desculpe, %s requer %s na versão %s ou superior."
-
-#: vendor/publishpress/addon-framework/library/Initializer.php:126
-#, php-format
-msgid "Sorry, %s requires %s . Please, install it."
-msgstr "Desculpe, %s requer o %s, instale e ative este plugin."
-
-#: vendor/publishpress/edd-license-handler/EDD_License_Handler.php:125
-#, php-format
-msgid "%1$s License Key"
-msgstr "Chave de licença do %1$s"
-
-#: vendor/publishpress/edd-license-handler/EDD_License_Handler.php:251
-msgid "Deactivate License"
-msgstr "Desativar licença"
-
-#: vendor/publishpress/edd-license-handler/EDD_SL_Plugin_Updater.php:203
-#, php-format
-msgid ""
-"There is a new version of %1$s available. %2$sView version %3$s details%4$s."
-msgstr ""
-"Existe uma nova versão de %1$s disponível. %2$sVer detalhes da versão %3$s "
-"%4$s."
-
-#: vendor/publishpress/edd-license-handler/EDD_SL_Plugin_Updater.php:211
-#, php-format
-msgid ""
-"There is a new version of %1$s available. %2$sView version %3$s details%4$s "
-"or %5$supdate now%6$s."
-msgstr ""
-"Existe uma nova versão de %1$s disponível. %2$sVer detalhes da versão %3$s "
-"%4$s ou %5$satualize agora%6$s."
-
-#: vendor/publishpress/edd-license-handler/EDD_SL_Plugin_Updater.php:401
-msgid "You do not have permission to install plugin updates"
-msgstr "Você não tem permissão para instalar atualizações de plugins"
-
-#: vendor/publishpress/edd-license-handler/EDD_SL_Plugin_Updater.php:401
-msgid "Error"
-msgstr "Erro"
-
-#: vendor/publishpress/wordpress-edd-license-integration/src/core/License.php:122
-msgid "An error occurred. Please, try again."
-msgstr "Ocorreu um erro, tente novamente."
-
-#: vendor/publishpress/wordpress-edd-license-integration/src/core/Setting/Field/License_key.php:108
-msgid "Missing license"
-msgstr "Licença não encontrada"
-
-#: vendor/publishpress/wordpress-edd-license-integration/src/core/Setting/Field/License_key.php:111
-msgid "Your license key is expired"
-msgstr "Sua licença expirou"
-
-#: vendor/publishpress/wordpress-edd-license-integration/src/core/Setting/Field/License_key.php:114
-msgid "Your license key has been disabled"
-msgstr "Sua licença foi desativada"
-
-#: vendor/publishpress/wordpress-edd-license-integration/src/core/Setting/Field/License_key.php:118
-msgid "Invalid license"
-msgstr "Licença inválida"
-
-#: vendor/publishpress/wordpress-edd-license-integration/src/core/Setting/Field/License_key.php:121
-msgid "Your license is not active for this URL"
-msgstr "Sua licença não está ativa para este URL"
-
-#: vendor/publishpress/wordpress-edd-license-integration/src/core/Setting/Field/License_key.php:124
-msgid "This appears to be an invalid license key for this product"
-msgstr "Esta parece ser uma licença inválida para este produto"
-
-#: vendor/publishpress/wordpress-edd-license-integration/src/core/Setting/Field/License_key.php:127
-msgid "Your license key has reached its activation limit"
-msgstr "Sua licença atingiu o limite the ativações"
-
-#: vendor/publishpress/wordpress-edd-license-integration/src/core/Setting/Field/License_key.php:132
-msgid "Activated"
-msgstr "Ativo"
-
-#: vendor/publishpress/wordpress-edd-license-integration/src/core/Setting/Field/License_key.php:135
-msgid "Not validated yet"
-msgstr "Ainda não validada"
-
-#: vendor/publishpress/wordpress-edd-license-integration/src/core/Setting/Field/License_key.php:148
-msgid "Status"
-msgstr "Status"
-
-#: vendor/publishpress/wordpress-edd-license-integration/src/core/Setting/Field/License_key.php:150
-msgid "Click here to read more about licenses."
-msgstr "Clique aqui para ler mais sobre as licenças."
-
-#: vendor/publishpress/wordpress-edd-license-integration/src/core/Setting/Field/License_key.php:151
-msgid "More information"
-msgstr "Mais informações"
-
-#. Plugin Name of the plugin/theme
-msgid "PublishPress Authors"
-msgstr "PublishPress Authors"
 
 #. Plugin URI of the plugin/theme
 msgid "https://publishpress.com/"
@@ -641,12 +801,117 @@ msgstr "https://publishpress.com/"
 msgid "Add support for multiple authors"
 msgstr "Adiciona suporte para vários autores"
 
+#. Author of the plugin/theme
+msgid "PublishPress"
+msgstr "PublishPress"
+
 #. Author URI of the plugin/theme
 msgid "https://publishpress.com"
 msgstr "https://publishpress.com"
 
-#~ msgid "Display:"
-#~ msgstr "Mostrar:"
+#~ msgid "Count"
+#~ msgstr "Total"
+
+#~ msgid "View posts by this author"
+#~ msgstr "Visualizar posts por este autor"
+
+#~ msgid "User already has a author."
+#~ msgstr "Usuário já tem um autor."
+
+#~ msgid "'slug' is a required argument"
+#~ msgstr "‘slug’ é um argumento obrigatório"
+
+#~ msgid "'display_name' is a required argument"
+#~ msgstr "‘display_name’ é um argumento obrigatório"
+
+#~ msgid "Licensing:"
+#~ msgstr "Licença:"
+
+#~ msgid "License key:"
+#~ msgstr "Chave de licença:"
+
+#~ msgid "Display below the content:"
+#~ msgstr "Mostrar abaixo do conteúdo:"
+
+#~ msgid "ERROR: This is not a valid feed template."
+#~ msgstr "ERRO: Este não é um template de feed válido."
+
+#, php-format
+#~ msgid "Please, install and activate the %s plugin in order to make %s work."
+#~ msgstr "Instale e ative o plugin %s para que %s funcione."
+
+#, php-format
+#~ msgid "Sorry, %s requires %s version %s or later."
+#~ msgstr "Desculpe, %s requer %s na versão %s ou superior."
+
+#, php-format
+#~ msgid "Sorry, %s requires %s . Please, install it."
+#~ msgstr "Desculpe, %s requer o %s, instale e ative este plugin."
+
+#, php-format
+#~ msgid "%1$s License Key"
+#~ msgstr "Chave de licença do %1$s"
+
+#~ msgid "Deactivate License"
+#~ msgstr "Desativar licença"
+
+#, php-format
+#~ msgid ""
+#~ "There is a new version of %1$s available. %2$sView version %3$s details"
+#~ "%4$s."
+#~ msgstr ""
+#~ "Existe uma nova versão de %1$s disponível. %2$sVer detalhes da versão "
+#~ "%3$s %4$s."
+
+#, php-format
+#~ msgid ""
+#~ "There is a new version of %1$s available. %2$sView version %3$s details"
+#~ "%4$s or %5$supdate now%6$s."
+#~ msgstr ""
+#~ "Existe uma nova versão de %1$s disponível. %2$sVer detalhes da versão "
+#~ "%3$s %4$s ou %5$satualize agora%6$s."
+
+#~ msgid "Error"
+#~ msgstr "Erro"
+
+#~ msgid "An error occurred. Please, try again."
+#~ msgstr "Ocorreu um erro, tente novamente."
+
+#~ msgid "Missing license"
+#~ msgstr "Licença não encontrada"
+
+#~ msgid "Your license key is expired"
+#~ msgstr "Sua licença expirou"
+
+#~ msgid "Your license key has been disabled"
+#~ msgstr "Sua licença foi desativada"
+
+#~ msgid "Invalid license"
+#~ msgstr "Licença inválida"
+
+#~ msgid "Your license is not active for this URL"
+#~ msgstr "Sua licença não está ativa para este URL"
+
+#~ msgid "This appears to be an invalid license key for this product"
+#~ msgstr "Esta parece ser uma licença inválida para este produto"
+
+#~ msgid "Your license key has reached its activation limit"
+#~ msgstr "Sua licença atingiu o limite the ativações"
+
+#~ msgid "Activated"
+#~ msgstr "Ativo"
+
+#~ msgid "Not validated yet"
+#~ msgstr "Ainda não validada"
+
+#~ msgid "Status"
+#~ msgstr "Status"
+
+#~ msgid "Click here to read more about licenses."
+#~ msgstr "Clique aqui para ler mais sobre as licenças."
+
+#~ msgid "More information"
+#~ msgstr "Mais informações"
 
 #~ msgid ""
 #~ "<strong>Note:</strong> To edit post authors, please enable javascript or "
@@ -678,6 +943,3 @@ msgstr "https://publishpress.com"
 
 #~ msgid "Filter"
 #~ msgstr "Filtro"
-
-#~ msgid "Post"
-#~ msgstr "Post"

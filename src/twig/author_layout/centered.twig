@@ -15,7 +15,7 @@
                     <a href="{{ author.link }}" class="{{ item_class }}" rel="author">{{ author.display_name }}</a>
                 </p>
                 {% if author.description %}
-                    <p>{{ author.description }}</p>
+                    <p>{{ author.description|raw }}</p>
                 {% endif %}
                 {% if show_email or show_site %}
                     <p class="multiple-authors-links">

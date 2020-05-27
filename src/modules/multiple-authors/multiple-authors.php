@@ -21,6 +21,7 @@
  * along with PublishPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use MultipleAuthors\Classes\Author_Utils;
 use MultipleAuthors\Classes\Authors_Iterator;
 use MultipleAuthors\Classes\Installer;
 use MultipleAuthors\Classes\Legacy\Module;
@@ -165,6 +166,9 @@ if (!class_exists('MA_Multiple_Authors')) {
             // Fix upload permissions for multiple authors.
             add_filter('map_meta_cap', [$this, 'filter_map_meta_cap'], 10, 4);
 
+            add_filter('publishpress_is_author_of_post', [$this, 'filter_is_author_of_post'], 10, 3);
+            add_filter('publishpress_post_authors_names', [$this, 'filter_post_authors_names'], 10, 2);
+
             // Menu
             add_action('multiple_authors_admin_menu_page', [$this, 'action_admin_menu_page']);
             add_action('multiple_authors_admin_submenu', [$this, 'action_admin_submenu'], 50);
@@ -199,6 +203,9 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_filter('get_the_author_facebook', [$this, 'filter_author_metadata_facebook'], 10, 2);
             add_filter('get_the_author_twitter', [$this, 'filter_author_metadata_twitter'], 10, 2);
             add_filter('get_the_author_instagram', [$this, 'filter_author_metadata_instagram'], 10, 2);
+
+            // Fix authors avatar.
+            add_filter('pre_get_avatar_data', [$this, 'filter_pre_get_avatar_data'], 15, 2);
         }
 
         /**
@@ -934,7 +941,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         private function get_author_by_id($id)
         {
             $author = false;
-            
+
             if (empty($id)) {
                 return false;
             }
@@ -1264,6 +1271,51 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
+         * @param array $args Arguments passed to get_avatar_data(), after processing.
+         * @param mixed $id_or_email The Gravatar to retrieve. Accepts a user ID, Gravatar MD5 hash,
+         *                           user email, WP_User object, WP_Post object, or WP_Comment object.
+         */
+        public function filter_pre_get_avatar_data($args, $id_or_email)
+        {
+            // Stop if they are looking for the default avatar, otherwise we can start an infinity loop when get_avatar_data is called again.
+            if (empty($id_or_email)) {
+                return $args;
+            }
+
+            $termId = 0;
+
+            if (is_numeric($id_or_email)) {
+                $id_or_email = (int)$id_or_email;
+
+                if ($id_or_email < 0) {
+                    $termId = $id_or_email * -1;
+                } else {
+                    $author = Author::get_by_user_id($id_or_email);
+
+                    if (is_object($author)) {
+                        $termId = $author->term_id;
+                    }
+                }
+            } else {
+                if ($id_or_email instanceof WP_Comment) {
+                    $id_or_email = $id_or_email->comment_author_email;
+                }
+
+                $termId = Author_Utils::get_author_term_id_by_email($id_or_email);
+            }
+
+            if (!empty($termId)) {
+                $url = Author_Utils::get_avatar_url($termId);
+
+                if (!empty($url)) {
+                    $args['url'] = $url;
+                }
+            }
+
+            return $args;
+        }
+
+        /**
          * Handle the action to reset author therms.
          * Remove all authors and regenerate based on posts' authors and the setting to automatically create authors
          * for specific roles.
@@ -1467,7 +1519,7 @@ if (!class_exists('MA_Multiple_Authors')) {
          */
         public function filter_map_meta_cap($caps, $cap, $user_id, $args)
         {
-            if ($cap === 'edit_post' && in_array('edit_others_posts', $caps, true)) {
+            if (in_array($cap, ['edit_post', 'edit_others_posts']) && in_array('edit_others_posts', $caps, true)) {
                 if (isset($args[0])) {
                     $post_id = (int)$args[0];
 
@@ -1486,6 +1538,44 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             return $caps;
+        }
+
+        /**
+         * @param bool $isAuthor
+         * @param int $userId
+         * @param int $postId
+         *
+         * @return bool
+         */
+        public function filter_is_author_of_post($isAuthor, $userId, $postId)
+        {
+            $postAuthors = get_multiple_authors($postId, false);
+            $userId      = (int)$userId;
+
+            if (empty($userId)) {
+                return false;
+            }
+
+            foreach ($postAuthors as $author) {
+                if ((int)$author->user_id === $userId) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public function filter_post_authors_names($names, $postID)
+        {
+            $names = [];
+
+            $authors = get_multiple_authors($postID, false, false);
+
+            foreach ($authors as $author) {
+                $names[] = $author->display_name;
+            }
+
+            return $names;
         }
 
         public function admin_enqueue_scripts()
