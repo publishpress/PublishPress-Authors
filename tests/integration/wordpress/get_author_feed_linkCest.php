@@ -12,7 +12,7 @@ class get_author_feed_linkCest
         $feedLink = get_author_feed_link($author->ID);
 
         $I->assertEquals(
-            sprintf('http://localhost/?feed=rss2&amp;author=%d', $author->ID),
+            sprintf('http://%s/?feed=rss2&amp;author=%d', $_ENV['TEST_SITE_WP_DOMAIN'], $author->ID),
             $feedLink
         );
     }
@@ -31,7 +31,7 @@ class get_author_feed_linkCest
         $feedLink = get_author_feed_link($author->ID);
 
         $I->assertEquals(
-            sprintf('http://localhost/?feed=rss2&amp;author=%d', $author->ID),
+            sprintf('http://%s/?feed=rss2&amp;author=%d', $_ENV['TEST_SITE_WP_DOMAIN'], $author->ID),
             $feedLink
         );
     }

@@ -16,7 +16,7 @@ class get_author_posts_urlCest
         $authorLink = get_author_posts_url($author->ID);
 
         $I->assertEquals(
-            sprintf('http://localhost/?author=%d', $author->ID),
+            sprintf('http://%s/?author=%d', $_ENV['TEST_SITE_WP_DOMAIN'], $author->ID),
             $authorLink
         );
     }
@@ -33,7 +33,7 @@ class get_author_posts_urlCest
         $authorLink = get_author_posts_url($author->ID);
 
         $I->assertEquals(
-            sprintf('http://localhost/author/%s', $author->user_nicename),
+            sprintf('http://%s/author/%s', $_ENV['TEST_SITE_WP_DOMAIN'], $author->user_nicename),
             $authorLink
         );
     }
@@ -56,7 +56,7 @@ class get_author_posts_urlCest
         $authorLink = get_author_posts_url($author->ID);
 
         $I->assertEquals(
-            sprintf('http://localhost/?author=%d', $author->ID),
+            sprintf('http://%s/?author=%d', $_ENV['TEST_SITE_WP_DOMAIN'], $author->ID),
             $authorLink
         );
     }
@@ -79,7 +79,7 @@ class get_author_posts_urlCest
         $authorLink = get_author_posts_url($author->ID);
 
         $I->assertEquals(
-            sprintf('http://localhost/author/%s', $author->user_nicename),
+            sprintf('http://%s/author/%s', $_ENV['TEST_SITE_WP_DOMAIN'], $author->user_nicename),
             $authorLink
         );
     }
