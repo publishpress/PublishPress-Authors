@@ -129,14 +129,14 @@ and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec
 
 = [3.3.1] - 2020-05-27 =
 
-* Fixed: Updated the POT file;
-* Changed: Improved error messages;
 * Added: Added the static function "get_by_email" to the Author class for getting an author by his e-mail address;
+* Changed: Improved error messages;
+* Fixed: Fatal error for WP < 5.4 due to the function "is_favicon" not being defined;
 * Fixed: Fix the get_avatar_url output for authors with a custom avatar, #122;
 * Fixed: HTML entities were not rendered in the frontend using the default author layouts, #123;
-* Fixed: Fatal error for WP < 5.4 due to the function "is_favicon" not being defined;
 * Fixed: Secondary authors don't have the edit_others_posts capability for their own posts, #129;
 * Fixed: Improved integration with PublishPress adding support for multiple authors in the calendar. #129, #131;
+* Fixed: Updated the POT file;
 
 = [3.3.0] - 2020-05-05 =
 
