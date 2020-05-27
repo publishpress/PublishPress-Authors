@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: PublishPress Authors\n"
-"POT-Creation-Date: 2020-05-19 14:41-0300\n"
+"POT-Creation-Date: 2020-05-27 11:29-0300\n"
 "PO-Revision-Date: 2019-11-07 12:27-0300\n"
 "Last-Translator: Anderson Grudtner Martins <anderson@publishpress.com>\n"
 "Language-Team: Anderson Grudtner Martins <anderson@publishpress.com>\n"
@@ -163,10 +163,10 @@ msgstr ""
 #: src/core/Plugin.php:646 src/core/Plugin.php:1404
 #: src/core/Traits/Author_box.php:106 src/core/Widget.php:26
 #: src/core/Widget.php:50 src/core/Widget.php:84
-#: src/modules/multiple-authors/multiple-authors.php:214
-#: src/modules/multiple-authors/multiple-authors.php:215
-#: src/modules/multiple-authors/multiple-authors.php:246
-#: src/modules/multiple-authors/multiple-authors.php:247
+#: src/modules/multiple-authors/multiple-authors.php:217
+#: src/modules/multiple-authors/multiple-authors.php:218
+#: src/modules/multiple-authors/multiple-authors.php:249
+#: src/modules/multiple-authors/multiple-authors.php:250
 msgid "Authors"
 msgstr ""
 
@@ -179,7 +179,7 @@ msgid "Search for an author"
 msgstr ""
 
 #: src/core/Classes/Term_Editor.php:56
-#: src/modules/multiple-authors/multiple-authors.php:895
+#: src/modules/multiple-authors/multiple-authors.php:898
 msgid "Author URL"
 msgstr ""
 
@@ -250,7 +250,7 @@ msgid "No authors found."
 msgstr ""
 
 #: src/core/Plugin.php:464
-#: src/modules/multiple-authors/multiple-authors.php:550
+#: src/modules/multiple-authors/multiple-authors.php:553
 msgid "Author"
 msgstr ""
 
@@ -499,109 +499,109 @@ msgstr ""
 msgid "Pages"
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:400
+#: src/modules/multiple-authors/multiple-authors.php:403
 msgid "Add to these post types:"
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:409
+#: src/modules/multiple-authors/multiple-authors.php:412
 msgid "Automatically create author profiles:"
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:433
+#: src/modules/multiple-authors/multiple-authors.php:436
 msgid "Show below the content:"
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:441
+#: src/modules/multiple-authors/multiple-authors.php:444
 msgid "Title for the author box:"
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:449
+#: src/modules/multiple-authors/multiple-authors.php:452
 msgid "Layout:"
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:457
+#: src/modules/multiple-authors/multiple-authors.php:460
 msgid "Show email link:"
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:465
+#: src/modules/multiple-authors/multiple-authors.php:468
 msgid "Show site link:"
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:534
+#: src/modules/multiple-authors/multiple-authors.php:537
 msgid "This will display the authors box at the end of the content."
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:606
+#: src/modules/multiple-authors/multiple-authors.php:609
 msgid "Author profiles can be mapped to WordPress user accounts. This option allows you to automatically create author profiles when users are created in these roles. You can also do this for existing users by clicking the \"Create missed authors from role\" button in the Maintenance tab."
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:627
+#: src/modules/multiple-authors/multiple-authors.php:630
 msgid "This will display the authors email in the author box."
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:647
+#: src/modules/multiple-authors/multiple-authors.php:650
 msgid "This will display the authors site in the author box."
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:665
-#: src/modules/multiple-authors/multiple-authors.php:667
+#: src/modules/multiple-authors/multiple-authors.php:668
+#: src/modules/multiple-authors/multiple-authors.php:670
 msgid "Create missed post authors"
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:671
-#: src/modules/multiple-authors/multiple-authors.php:673
+#: src/modules/multiple-authors/multiple-authors.php:674
+#: src/modules/multiple-authors/multiple-authors.php:676
 msgid "Create missed authors from role"
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:684
+#: src/modules/multiple-authors/multiple-authors.php:687
 msgid "Copy Co-Authors Plus Data"
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:692
+#: src/modules/multiple-authors/multiple-authors.php:695
 msgid "Delete Mapped Authors"
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:694
+#: src/modules/multiple-authors/multiple-authors.php:697
 msgid "Delete all authors mapped to users"
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:699
+#: src/modules/multiple-authors/multiple-authors.php:702
 msgid "Delete Guest Authors"
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:701
+#: src/modules/multiple-authors/multiple-authors.php:704
 msgid "Delete all guest authors"
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:708
+#: src/modules/multiple-authors/multiple-authors.php:711
 msgid "Please be careful clicking these buttons. Before clicking, we recommend taking a site backup in case anything goes wrong."
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:813
+#: src/modules/multiple-authors/multiple-authors.php:816
 msgid "General"
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:814
+#: src/modules/multiple-authors/multiple-authors.php:817
 msgid "Display"
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:815
+#: src/modules/multiple-authors/multiple-authors.php:818
 msgid "Maintenance"
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:886
+#: src/modules/multiple-authors/multiple-authors.php:889
 msgid "This is how the author’s name will appears on your site."
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:900
+#: src/modules/multiple-authors/multiple-authors.php:903
 msgid "This forms part of the URL for the author’s profile page. If you choose a Mapped User, this URL is taken from the user’s account and can not be changed."
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:1490
+#: src/modules/multiple-authors/multiple-authors.php:1493
 msgid "Error. Author terms could not be reseted."
 msgstr ""
 
-#: src/modules/multiple-authors/multiple-authors.php:1500
+#: src/modules/multiple-authors/multiple-authors.php:1503
 msgid "Maintenance completed successfully."
 msgstr ""
 
