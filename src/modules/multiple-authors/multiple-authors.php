@@ -149,6 +149,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_action('multiple_authors_create_role_authors', [$this, 'action_create_role_authors']);
             add_action('multiple_authors_copy_coauthor_plus_data', [$this, 'action_copy_coauthor_plus_data']);
 
+            add_action('deleted_user', [$this, 'handle_deleted_user']);
+
             // Filters the list of authors in the Improved Notifications add-on.
             add_filter(
                 'publishpress_notif_workflow_receiver_post_authors',
@@ -1831,6 +1833,16 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'deactivated' => true,
                 ]
             );
+        }
+
+        public function handle_deleted_user($id)
+        {
+            // Check if we have an author for the user
+            $author = $this->get_author_by_id($id);
+
+            if (false !== $author) {
+                Author::convert_into_guest_author($author->term_id);
+            }
         }
     }
 }

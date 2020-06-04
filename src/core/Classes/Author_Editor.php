@@ -83,7 +83,7 @@ class Author_Editor
                     'author'
                 ) . '">' . $author->display_name . '</a>';
 
-            if (!empty((int)$author->user_id)) {
+            if (!$author->is_guest()) {
                 $retval .= ' — <span class="post-state">' . __('User', 'publishpress-authors') . '</span>';
             } else {
                 $retval .= ' — <span class="post-state">' . __(
