@@ -127,6 +127,13 @@ There are two ways to install the PublishPress Authors plugin:
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.html).
 
+= [3.3.2] - UNRELEASED =
+
+* Fixed: Fix the text domain loading, fixing the translations;
+* Fixed: Fix "orphan" authors when the mapped user is deleted, converting them in guest authors, #142;
+* Changed: Updated the min PHP version to 5.6;
+* Changed: Updated the WordPress tested up to version, to 5.4;
+
 = [3.3.1] - 2020-05-27 =
 
 * Added: Added the static function "get_by_email" to the Author class for getting an author by his e-mail address;
