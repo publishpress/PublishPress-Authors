@@ -22,7 +22,6 @@
  */
 
 use MultipleAuthors\Classes\Author_Utils;
-use MultipleAuthors\Classes\Authors_Iterator;
 use MultipleAuthors\Classes\Installer;
 use MultipleAuthors\Classes\Legacy\Module;
 use MultipleAuthors\Classes\Legacy\Util;
@@ -854,14 +853,17 @@ if (!class_exists('MA_Multiple_Authors')) {
          */
         public function filter_workflow_receiver_post_authors($receivers, $workflow, $args)
         {
-            if (!function_exists('multiple_authors')) {
+            if (!function_exists('get_multiple_authors')) {
                 require_once PP_AUTHORS_SRC_PATH . 'functions/template-tags.php';
             }
 
-            $authors_iterator = new Authors_Iterator($args['post']->ID);
-            while ($authors_iterator->iterate()) {
-                if (!in_array($authors_iterator->current_author->ID, $receivers)) {
-                    $receivers[] = $authors_iterator->current_author->ID;
+            $authors = get_multiple_authors($args['post']->ID);
+
+            if (!empty($authors)) {
+                foreach ($authors as $author) {
+                    if (!$author->is_guest() && !in_array($author->user_id, $receivers)) {
+                        $receivers[] = $author->user_id;
+                    }
                 }
             }
 
