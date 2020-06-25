@@ -405,7 +405,7 @@ class Author_Editor
                 global $wpdb;
 
                 $wpdb->query(
-                    $wpdb->prepare«(
+                    $wpdb->prepare(
                         "UPDATE {$wpdb->terms} SET slug=%s WHERE term_id = %d",
                         $user->user_nicename,
                         $term_id
