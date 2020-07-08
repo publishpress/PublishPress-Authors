@@ -132,6 +132,8 @@ and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec
 * Fixed: Fix the text domain loading, fixing the translations;
 * Fixed: Fix "orphan" authors when the mapped user is deleted, converting them in guest authors, #142;
 * Fixed: Fix infinity loop when user's and author's slug are different and you are trying to save an author profile, #143;
+* Fixed: Fix hardcoded table prefix from a query, #144;
+* Fixed: Fix error about missed Authors_Iterator class, #144;
 * Changed: Updated the min PHP version to 5.6;
 * Changed: Updated the WordPress tested up to version, to 5.4;
 
