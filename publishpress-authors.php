@@ -12,7 +12,7 @@
  * @publishpress-authors
  * Plugin Name: PublishPress Authors
  * Plugin URI:  https://publishpress.com/
- * Version: 3.3.2-beta.3
+ * Version: 3.3.2-rc.1
  * Description: Add support for multiple authors
  * Author:      PublishPress
  * Author URI:  https://publishpress.com
