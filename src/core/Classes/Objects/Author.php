@@ -379,12 +379,7 @@ class Author
 
         $return = get_term_meta($this->term_id, $attribute, true);
 
-
-        if (is_null($return)) {
-            return apply_filters('pp_multiple_authors_author_attribute', null, $this->term_id, $attribute);
-        }
-
-        return $return;
+        return apply_filters('pp_multiple_authors_author_attribute', $return, $this->term_id, $attribute);
     }
 
     /**
