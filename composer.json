@@ -33,7 +33,7 @@
   "require": {
     "php": ">=5.6.20",
     "pimple/pimple": "~3.0",
-    "twig/twig": "1.37.1",
+    "twig/twig": "1.42.5",
     "publishpress/wordpress-version-notices": "^1"
   },
   "require-dev": {
