@@ -22,7 +22,6 @@
  */
 
 use MultipleAuthors\Classes\Author_Utils;
-use MultipleAuthors\Classes\Authors_Iterator;
 use MultipleAuthors\Classes\Installer;
 use MultipleAuthors\Classes\Legacy\Module;
 use MultipleAuthors\Classes\Legacy\Util;
@@ -148,6 +147,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_action('multiple_authors_create_post_authors', [$this, 'action_create_post_authors']);
             add_action('multiple_authors_create_role_authors', [$this, 'action_create_role_authors']);
             add_action('multiple_authors_copy_coauthor_plus_data', [$this, 'action_copy_coauthor_plus_data']);
+
+            add_action('deleted_user', [$this, 'handle_deleted_user']);
 
             // Filters the list of authors in the Improved Notifications add-on.
             add_filter(
@@ -854,14 +855,17 @@ if (!class_exists('MA_Multiple_Authors')) {
          */
         public function filter_workflow_receiver_post_authors($receivers, $workflow, $args)
         {
-            if (!function_exists('multiple_authors')) {
+            if (!function_exists('get_multiple_authors')) {
                 require_once PP_AUTHORS_SRC_PATH . 'functions/template-tags.php';
             }
 
-            $authors_iterator = new Authors_Iterator($args['post']->ID);
-            while ($authors_iterator->iterate()) {
-                if (!in_array($authors_iterator->current_author->ID, $receivers)) {
-                    $receivers[] = $authors_iterator->current_author->ID;
+            $authors = get_multiple_authors($args['post']->ID);
+
+            if (!empty($authors)) {
+                foreach ($authors as $author) {
+                    if (!$author->is_guest() && !in_array($author->user_id, $receivers)) {
+                        $receivers[] = $author->user_id;
+                    }
                 }
             }
 
@@ -1831,6 +1835,16 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'deactivated' => true,
                 ]
             );
+        }
+
+        public function handle_deleted_user($id)
+        {
+            // Check if we have an author for the user
+            $author = $this->get_author_by_id($id);
+
+            if (false !== $author) {
+                Author::convert_into_guest_author($author->term_id);
+            }
         }
     }
 }

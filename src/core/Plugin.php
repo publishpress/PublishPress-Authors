@@ -413,7 +413,7 @@ class Plugin
         load_plugin_textdomain(
             'publishpress-authors',
             null,
-            dirname(plugin_basename(__FILE__)) . '/languages/'
+            plugin_basename(PP_AUTHORS_BASE_PATH) . '/languages/'
         );
 
         // Maybe automatically apply our template tags

@@ -9,7 +9,6 @@
 
 namespace MultipleAuthors\Classes;
 
-use Codeception\Lib\Generator\PageObject;
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Factory;
 
@@ -83,7 +82,7 @@ class Author_Editor
                     'author'
                 ) . '">' . $author->display_name . '</a>';
 
-            if (!empty((int)$author->user_id)) {
+            if (!$author->is_guest()) {
                 $retval .= ' — <span class="post-state">' . __('User', 'publishpress-authors') . '</span>';
             } else {
                 $retval .= ' — <span class="post-state">' . __(
@@ -403,12 +402,15 @@ class Author_Editor
 
             // Do they have the same slug and nicename?
             if ($author->slug !== $user->user_nicename) {
-                $result = wp_update_term($term_id, 'author', ['slug' => $user->user_nicename]);
+                global $wpdb;
 
-                if (is_wp_error($result)) {
-                    // @todo: Display a warning. The slug already exists.
-                    return;
-                }
+                $wpdb->query(
+                    $wpdb->prepare(
+                        "UPDATE {$wpdb->terms} SET slug=%s WHERE term_id = %d",
+                        $user->user_nicename,
+                        $term_id
+                    )
+                );
             }
         }
     }

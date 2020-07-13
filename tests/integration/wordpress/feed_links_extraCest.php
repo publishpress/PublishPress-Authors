@@ -50,8 +50,9 @@ class feed_links_extraCest
         $I->assertNotEmpty($output, 'The output can\'t be empty because the feed link should be printed on it');
         $I->assertStringContainsString(
             sprintf(
-                '<link rel="alternate" type="application/rss+xml" title="Test &raquo; Posts by %s Feed" href="http://localhost/?feed=rss2&#038;author=%s" />',
+                '<link rel="alternate" type="application/rss+xml" title="Test &raquo; Posts by %s Feed" href="http://%s/?feed=rss2&#038;author=%s" />',
                 $authorName,
+                $_ENV['TEST_SITE_WP_DOMAIN'],
                 $author->ID
             ),
             $output,
