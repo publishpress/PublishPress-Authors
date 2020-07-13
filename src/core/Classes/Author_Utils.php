@@ -29,8 +29,8 @@ abstract class Author_Utils
         $terms = $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT tm.term_id
-                        FROM wp_termmeta as tm 
-                        INNER JOIN wp_term_taxonomy as tt ON (tm.term_id = tt.term_id)
+                        FROM {$wpdb->termmeta} as tm 
+                        INNER JOIN {$wpdb->term_taxonomy} as tt ON (tm.term_id = tt.term_id)
                         WHERE tm.meta_value = %s AND
                         tt.taxonomy = 'author'",
                 sanitize_email($emailAddress)
