@@ -127,6 +127,11 @@ There are two ways to install the PublishPress Authors plugin:
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.html).
 
+= [3.4.0] - UNRELEASED =
+
+* Added: Add new filter "publishpress_authors_author_attribute" for customizing author attributes in the layouts;
+* Fixed: Fix syntax on the file AUthor_Editor.php removing an invalid char;
+
 = [3.3.2] - 2020-07-13 =
 
 * Fixed: Fix the text domain loading, fixing the translations;
