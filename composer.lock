@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "118dbc354d7de8b239905fd206bba5a7",
+    "content-hash": "2097a49db82b736387f5ad2971484d62",
     "packages": [
         {
             "name": "pimple/pimple",
@@ -4053,11 +4053,11 @@
         },
         {
             "name": "publishpress/publishpress-plugin-builder",
-            "version": "1.0.3",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/publishpress/PublishPress-Plugin-Builder",
-                "reference": "e817c2ed9d0ae817667712f48e22109857009d38"
+                "reference": "0136ea3fd0542c2242bd7e4e6910fc1941f54ac7"
             },
             "require": {
                 "consolidation/robo": "^2.0",
@@ -4088,7 +4088,7 @@
                 }
             ],
             "description": "Robo tasks for building WordPress plugins",
-            "time": "2020-07-23T01:39:31+00:00"
+            "time": "2020-07-23T02:44:07+00:00"
         },
         {
             "name": "publishpress/wp-browser",
