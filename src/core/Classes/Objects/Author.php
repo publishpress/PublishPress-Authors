@@ -324,46 +324,6 @@ class Author
             return null;
         }
 
-        if ('ID' === $attribute) {
-            // Negative IDs represents the term ID for guest authors and positive IDs represents the user ID, as expected.
-            if ($this->is_guest()) {
-                return abs($this->term_id) * -1;
-            } else {
-                return $this->user_id;
-            }
-        }
-
-        if ('user_url' === $attribute) {
-            $url = $this->get_meta('user_url');
-
-            if (empty($url) && !$this->is_guest()) {
-                $user = $this->get_user_object();
-
-                return $user->user_url;
-            }
-        }
-
-        if ('first_name' === $attribute) {
-            if (!$this->is_guest()) {
-                return get_user_meta($this->user_id, 'first_name', true);
-            }
-        }
-
-        if ('term_id' === $attribute) {
-            return $this->term_id;
-        }
-
-        if ('link' === $attribute) {
-            $user_id = get_term_meta($this->term_id, 'user_id', true);
-
-            // Is a user mapped to this author?
-            if (!empty($user_id)) {
-                return get_author_posts_url($user_id);
-            }
-
-            return get_term_link($this->term_id, 'author');
-        }
-
         // These two fields are actually on the Term object.
         if ('display_name' === $attribute) {
             $attribute = 'name';
@@ -373,16 +333,82 @@ class Author
             $attribute = 'slug';
         }
 
-        if (in_array($attribute, ['name', 'slug'], true)) {
-            return get_term_field($attribute, $this->term_id, 'author', 'raw');
+        $return = null;
+
+        switch ($attribute) {
+            case 'ID':
+                // Negative IDs represents the term ID for guest authors and positive IDs represents the user ID, as expected.
+                if ($this->is_guest()) {
+                    $return = abs($this->term_id) * -1;
+                } else {
+                    $return = $this->user_id;
+                }
+                break;
+
+            case 'user_url':
+                $url = $this->get_meta('user_url');
+
+                if (empty($url) && !$this->is_guest()) {
+                    $user = $this->get_user_object();
+
+                    $return = $user->user_url;
+                } else {
+                    $return = $url;
+                }
+
+                break;
+
+            case 'first_name':
+                if (!$this->is_guest()) {
+                    $return = get_user_meta($this->user_id, 'first_name', true);
+                } else {
+                    $return = get_term_meta($this->term_id, 'first_name', true);
+                }
+                break;
+
+            case 'term_id':
+                $return = $this->term_id;
+                break;
+
+            case 'link':
+                $user_id = get_term_meta($this->term_id, 'user_id', true);
+
+                // Is a user mapped to this author?
+                if (!$this->is_guest()) {
+                    $return = get_author_posts_url($user_id);
+                } else {
+                    $return = get_term_link($this->term_id, 'author');
+                }
+                break;
+
+            case 'name':
+                if (!$this->is_guest()) {
+                    $return = $this->get_user_object()->display_name;
+                } else {
+                    $return = get_term_field('name', $this->term_id, 'author', 'raw');
+                }
+                break;
+
+            case 'slug':
+                if (!$this->is_guest()) {
+                    $return = $this->get_user_object()->user_nicename;
+                } else {
+                    $return = get_term_field('slug', $this->term_id, 'author', 'raw');
+                }
+                break;
+
+            default:
+                $return = get_term_meta($this->term_id, $attribute, true);
+
+                if (is_null($return)) {
+                    /**
+                     * @deprecated
+                     */
+                    $return = apply_filters('pp_multiple_authors_author_attribute', null, $this->term_id, $attribute);
+                }
         }
 
-        $return = get_term_meta($this->term_id, $attribute, true);
-
-
-        if (is_null($return)) {
-            return apply_filters('pp_multiple_authors_author_attribute', null, $this->term_id, $attribute);
-        }
+        $return = apply_filters('publishpress_authors_author_attribute', $return, $this->term_id, $attribute);
 
         return $return;
     }

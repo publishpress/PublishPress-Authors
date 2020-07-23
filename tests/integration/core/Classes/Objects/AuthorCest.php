@@ -32,7 +32,7 @@ class AuthorCest
     public function tryToCreateAGuestAuthorAndCheckIfUserIdIsEmpty(\WpunitTester $I)
     {
         $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
-        $author = Author::create(
+        $author     = Author::create(
             [
                 'slug'         => $authorSlug,
                 'display_name' => strtoupper($authorSlug),
@@ -48,7 +48,7 @@ class AuthorCest
     public function tryToCreateAGuestAuthorAndCheckIfIs_guestReturnsTrue(\WpunitTester $I)
     {
         $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
-        $author = Author::create(
+        $author     = Author::create(
             [
                 'slug'         => $authorSlug,
                 'display_name' => strtoupper($authorSlug),
@@ -77,7 +77,7 @@ class AuthorCest
     public function tryToCreateAGuestAuthorAndCheckIfTheIdMatchesTheTermIdButAsNegativeInteger(\WpunitTester $I)
     {
         $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
-        $author = Author::create(
+        $author     = Author::create(
             [
                 'slug'         => $authorSlug,
                 'display_name' => strtoupper($authorSlug),
@@ -160,7 +160,7 @@ class AuthorCest
     public function tryToGetAuthorByEmailAddressForGuestAuthor(\WpunitTester $I)
     {
         $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
-        $author = Author::create(
+        $author     = Author::create(
             [
                 'slug'         => $authorSlug,
                 'display_name' => strtoupper($authorSlug),
@@ -175,5 +175,182 @@ class AuthorCest
 
         $I->assertIsObject($foundAuthor);
         $I->assertEquals($email, $author->user_email);
+    }
+
+    public function tryToGetUserURLForMappedToUserAuthor(\WpunitTester $I)
+    {
+        $expected = 'http://test.example.com';
+
+        $userAuthorID = $I->factory('a new user')->user->create(
+            [
+                'role'     => 'author',
+                'user_url' => $expected,
+            ]
+        );
+
+        $author = Author::create_from_user($userAuthorID);
+
+        $I->assertEquals(
+            $expected,
+            $author->user_url
+        );
+    }
+
+    public function tryToGetUserURLForGuestAuthors(\WpunitTester $I)
+    {
+        $expected = 'http://test.example.com';
+
+        $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
+        $author     = Author::create(
+            [
+                'slug'         => $authorSlug,
+                'display_name' => strtoupper($authorSlug),
+            ]
+        );
+
+        update_term_meta($author->term_id, 'user_url', $expected);
+
+        $I->assertEquals(
+            $expected,
+            $author->user_url
+        );
+    }
+
+    public function tryToGetFirstNameForMappedToUserAuthor(\WpunitTester $I)
+    {
+        $expected = 'TheFirstName';
+
+        $userAuthorID = $I->factory('a new user')->user->create(
+            [
+                'role'       => 'author',
+                'first_name' => $expected,
+            ]
+        );
+
+        $author = Author::create_from_user($userAuthorID);
+
+        $I->assertEquals(
+            $expected,
+            $author->first_name
+        );
+    }
+
+    public function tryToGetFirstNameForGuestAuthors(\WpunitTester $I)
+    {
+        $expected = 'TheFirstName';
+
+        $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
+        $author     = Author::create(
+            [
+                'slug'         => $authorSlug,
+                'display_name' => strtoupper($authorSlug),
+            ]
+        );
+
+        update_term_meta($author->term_id, 'first_name', $expected);
+
+        $I->assertEquals(
+            $expected,
+            $author->first_name
+        );
+    }
+
+    public function tryToGetLinkForMappedToUserAuthor(\WpunitTester $I)
+    {
+        $userAuthorID = $I->factory('a new user')->user->create(
+            [
+                'role' => 'author',
+            ]
+        );
+
+        $author = Author::create_from_user($userAuthorID);
+
+        $I->assertEquals(
+            get_author_posts_url($userAuthorID),
+            $author->link
+        );
+    }
+
+    public function tryToGetLinkForGuestAuthors(\WpunitTester $I)
+    {
+        $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
+        $author     = Author::create(
+            [
+                'slug'         => $authorSlug,
+                'display_name' => strtoupper($authorSlug),
+            ]
+        );
+
+        $I->assertEquals(
+            sprintf('%s/?author_name=%s', set_url_scheme($_ENV['TEST_SITE_WP_URL'], 'http'), $authorSlug),
+            $author->link
+        );
+    }
+
+    public function tryToGetNameForMappedToUserAuthor(\WpunitTester $I)
+    {
+        $userAuthorID = $I->factory('a new user')->user->create(
+            [
+                'role' => 'author',
+            ]
+        );
+
+        $user = get_user_by('id', $userAuthorID);
+        $author = Author::create_from_user($userAuthorID);
+
+        $I->assertEquals(
+            $user->display_name,
+            $author->name
+        );
+    }
+
+    public function tryToGetNameForGuestAuthors(\WpunitTester $I)
+    {
+        $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
+        $expected   = strtoupper($authorSlug);
+        $author     = Author::create(
+            [
+                'slug'         => $authorSlug,
+                'display_name' => $expected,
+            ]
+        );
+
+        $I->assertEquals(
+            $expected,
+            $author->name
+        );
+    }
+
+    public function tryToGetSlugForMappedToUserAuthor(\WpunitTester $I)
+    {
+        $userAuthorID = $I->factory('a new user')->user->create(
+            [
+                'role' => 'author',
+            ]
+        );
+
+        $user = get_user_by('id', $userAuthorID);
+        $author = Author::create_from_user($userAuthorID);
+
+        $I->assertEquals(
+            $user->user_nicename,
+            $author->slug
+        );
+    }
+
+    public function tryToGetSlugForGuestAuthors(\WpunitTester $I)
+    {
+        $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
+        $author     = Author::create(
+            [
+                'slug'         => $authorSlug,
+                'display_name' => strtoupper($authorSlug),
+            ]
+        );
+
+        $I->assertEquals(
+            $authorSlug,
+            $author->slug
+        );
     }
 }

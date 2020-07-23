@@ -14,7 +14,7 @@ use PPVersionNotices\Module\MenuLink\Module;
 defined('ABSPATH') or die('No direct script access allowed.');
 
 if (!defined('PP_AUTHORS_LOADED')) {
-    define('PP_AUTHORS_VERSION', '3.3.2');
+    define('PP_AUTHORS_VERSION', '3.4.0');
     define('PP_AUTHORS_FILE', 'publishpress-authors/publishpress-authors.php');
     define('PP_AUTHORS_BASE_PATH', plugin_dir_path(realpath(__DIR__ . '/../publishpress-authors.php')));
     define('PP_AUTHORS_SRC_PATH', PP_AUTHORS_BASE_PATH . 'src/');
@@ -23,11 +23,11 @@ if (!defined('PP_AUTHORS_LOADED')) {
     define('PP_AUTHORS_VENDOR_PATH', PP_AUTHORS_BASE_PATH . 'vendor/');
     define('PP_AUTHORS_URL', plugins_url('/', PP_AUTHORS_BASE_PATH . 'publishpress-authors.php'));
     define('PP_AUTHORS_ASSETS_URL', plugins_url('/src/assets/', PP_AUTHORS_SRC_PATH));
-    define('PP_AUTHORS_AUTOLOAD_CLASS_NAME', 'ComposerAutoloaderInitab3c563cda53c2aa64d02f08e2541717');
+    define('PP_AUTHORS_AUTOLOAD_CLASS_NAME', 'ComposerStaticInit861037e2d826162de71f57dffe180138');
 
     define('PP_AUTHORS_LOADED', 1);
 
-    if (!class_exists(PP_AUTHORS_AUTOLOAD_CLASS_NAME)) {
+    if (!class_exists(PP_AUTHORS_AUTOLOAD_CLASS_NAME) && !class_exists('MultipleAuthors\\Plugin')) {
         $autoloadPath = PP_AUTHORS_VENDOR_PATH . 'autoload.php';
         if (file_exists($autoloadPath)) {
             require_once $autoloadPath;
