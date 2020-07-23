@@ -130,7 +130,7 @@ and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec
 = [3.4.0] - UNRELEASED =
 
 * Added: Add new filter "publishpress_authors_author_attribute" for customizing author attributes in the layouts;
-* Fixed: Fix syntax on the file AUthor_Editor.php removing an invalid char;
+* Fixed: Fix syntax on the file Author_Editor.php removing an invalid char;
 
 = [3.3.2] - 2020-07-13 =
 

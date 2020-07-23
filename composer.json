@@ -30,6 +30,16 @@
     }
   },
   "minimum-stability": "stable",
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/publishpress/PublishPress-Plugin-Builder"
+    },
+    {
+      "type": "git",
+      "url": "https://github.com/publishpress/wp-browser"
+    }
+  ],
   "require": {
     "php": ">=5.6.20",
     "pimple/pimple": "~3.0",
@@ -37,13 +47,11 @@
     "publishpress/wordpress-version-notices": "^1"
   },
   "require-dev": {
-    "lucatume/wp-browser": "^2.4",
+    "publishpress/wp-browser": "2.6.5.2",
     "codeception/module-asserts": "^1.2",
     "codeception/module-phpbrowser": "^1.0",
-    "codeception/module-webdriver": "^1.0",
     "codeception/module-db": "^1.0",
-    "codeception/module-filesystem": "^1.0",
-    "codeception/module-cli": "^1.0",
-    "codeception/util-universalframework": "^1.0"
+    "codeception/util-universalframework": "^1.0",
+    "publishpress/publishpress-plugin-builder": "1.0.2"
   }
 }
