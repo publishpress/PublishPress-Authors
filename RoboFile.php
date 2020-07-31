@@ -24,5 +24,7 @@ class RoboFile extends \PublishPressBuilder\PackageBuilderTasks
                 'src/assets/lib/chosen-v1.8.3/package.json',
             ]
         );
+
+        $this->setVersionConstantName('PP_AUTHORS_VERSION');
     }
 }
