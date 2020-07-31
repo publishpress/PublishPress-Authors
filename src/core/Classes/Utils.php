@@ -268,6 +268,7 @@ class Utils
                 'lp_course',
                 'lp_lesson',
                 'lp_quiz',
+                'product',
             ];
 
 
