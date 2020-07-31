@@ -183,7 +183,7 @@ and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec
 * Fixed: The get_the_author function was not working for guest authors;
 * Fixed: The the_post function was not working well for posts with guest authors;
 * Fixed: The feed_links_extra function was not working for guest authors;
-* Fixed: For themes that dont't implement support for PublishPress Authors and multiple authors, we were displaying all the author names separated by comma, but only one link (due to the limitations imposed by the theme). Now we display only the first author and its respective link on those cases. The multiple authors can be added creating a child theme and adapting the code;
+* Fixed: For themes that don't implement support for PublishPress Authors and multiple authors, we were displaying all the author names separated by comma, but only one link (due to the limitations imposed by the theme). Now we display only the first author and its respective link on those cases. The multiple authors can be added creating a child theme and adapting the code;
 * Fixed: The title for authors archive pages of guest authors;
 * Fixed: The author object is now compatible with the main properties of WP_User objects, so guest authors can be treated as users on most cases;
 * Fixed: The custom user_url is not returned for authors mapped to user;
