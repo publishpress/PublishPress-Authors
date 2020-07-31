@@ -5,7 +5,7 @@
  * Description: Add support for multiple authors
  * Author:      PublishPress
  * Author URI:  https://publishpress.com
- * Version: 3.4.0
+ * Version: 3.4.0-hotfix-167
  * Text Domain: publishpress-authors
  *
  * ------------------------------------------------------------------------------
