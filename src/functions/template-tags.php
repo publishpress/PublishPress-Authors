@@ -45,7 +45,14 @@ if (!function_exists('get_multiple_authors')) {
             $terms      = [];
 
             if (!empty($authorName)) {
-                $terms[] = get_term_by('slug', $authorName, 'author');
+                $authorTerm = get_term_by('slug', $authorName, 'author');
+
+                if (empty($authorTerm)) {
+                    // We don't have an author for this user. Fallback to the user object.
+                    $authorTerm = get_user_by('slug', $authorName);
+                }
+
+                $terms[] = $authorTerm;
             }
         }
 
@@ -56,7 +63,17 @@ if (!function_exists('get_multiple_authors')) {
                     $term = get_term($term);
                 }
 
-                $author = Author::get_by_term_id($term->term_id);
+                if (!is_object($term)) {
+                    continue;
+                }
+
+                if ($term instanceof WP_Term) {
+                    $author = Author::get_by_term_id($term->term_id);
+                } elseif ($term instanceof WP_User) {
+                    $author = $term;
+                } else {
+                    continue;
+                }
 
                 if ($filter_the_author) {
                     $author->display_name = apply_filters('the_author', $author->display_name);
