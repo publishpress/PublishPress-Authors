@@ -1,0 +1,7 @@
+{
+    "phpmd.rules": "./phpmd-ruleset.xml",
+    "[php]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "ecodes.vscode-phpmd"
+    }
+}

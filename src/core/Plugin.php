@@ -613,6 +613,7 @@ class Plugin
     public function action_widget_init()
     {
         register_widget('MultipleAuthors\\Widget');
+        register_widget('MultipleAuthors\\Authors_Widget');
     }
 
     /**
