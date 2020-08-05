@@ -33,5 +33,7 @@ class RoboFile extends \PublishPressBuilder\PackageBuilderTasks
                 'vendor/publishpress/wordpress-version-notices/tests',
             ]
         );
+
+        $this->setVersionConstantName('PP_AUTHORS_VERSION');
     }
 }
