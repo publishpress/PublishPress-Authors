@@ -31,7 +31,7 @@ class Content_Model
      */
     public static function get_author_supported_post_types()
     {
-        return Utils::get_supported_post_types();
+        return Utils::get_post_types_that_support_authors();
     }
 
     /**

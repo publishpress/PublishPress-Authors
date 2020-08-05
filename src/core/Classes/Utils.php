@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package     MultipleAuthors
  * @author      PublishPress <help@publishpress.com>
@@ -227,48 +228,62 @@ class Utils
      * Whether or not PublishPress Authors is enabled for this post type
      * Must be called after init
      *
-     * @param string $post_type The name of the post type we're considering
+     * @param string $postType The name of the post type we're considering
      *
      * @return bool Whether or not it's enabled
      * @since 3.0
      *
      */
-    public static function is_post_type_enabled($post_type = null)
+    public static function is_post_type_enabled($postType = null)
     {
         $legacyPlugin = Factory::getLegacyPlugin();
 
         if (empty(self::$supported_post_types)) {
-            self::$supported_post_types = self::get_supported_post_types();
+            self::$supported_post_types = self::get_post_types_that_support_authors();
         }
 
-        if (!$post_type) {
-            $post_type = Util::get_current_post_type();
+        if (!$postType) {
+            $postType = Util::get_current_post_type();
         }
 
-        $supported = (bool)in_array($post_type, self::$supported_post_types);
+        $isSupported = (bool)in_array($postType, self::$supported_post_types);
 
-        $post_types = Util::get_post_types_for_module($legacyPlugin->multiple_authors->module);
+        $postTypesArray = Util::get_post_types_for_module($legacyPlugin->multiple_authors->module);
 
-        $is_enabled = (bool)in_array($post_type, $post_types);
+        $isEnabled = (bool)in_array($postType, $postTypesArray);
 
-        return $supported && $is_enabled;
+        return $isSupported && $isEnabled;
+    }
+
+    private static function get_post_types_to_force_authors_support()
+    {
+        $postTypesToForceAuthorsSupport = [
+            // LearnPress.
+            'lp_course',
+            'lp_lesson',
+            'lp_quiz',
+            // WooCommerce.
+            'product',
+        ];
+
+        $postTypesToForceAuthorsSupport = apply_filters(
+            'publishpress_authors_post_types_to_force_author_support',
+            $postTypesToForceAuthorsSupport
+        );
+
+        return $postTypesToForceAuthorsSupport;
     }
 
     /**
      * Returns a list of post types which supports authors.
      */
-    public static function get_supported_post_types()
+    public static function get_post_types_that_support_authors()
     {
         if (empty(self::$supported_post_types)) {
             // Get the post types which supports authors
             $post_types_with_authors = array_values(get_post_types());
             // Get post types which doesn't support authors, but should support Multiple Authors.
-            $thirdPartySupport = [
-                // LearnPress
-                'lp_course',
-                'lp_lesson',
-                'lp_quiz',
-            ];
+            $thirdPartySupport = self::get_post_types_to_force_authors_support();
 
 
             foreach ($post_types_with_authors as $key => $name) {
@@ -282,27 +297,59 @@ class Utils
                 }
             }
 
-            self::$supported_post_types = apply_filters('coauthors_supported_post_types', $post_types_with_authors);
+            /**
+             * @depreacted
+             *
+             * @param array $post_types_with_authors Post types that support authors.
+             */
+            self::$supported_post_types = apply_filters_deprecated(
+                'coauthors_supported_post_types',
+                [$post_types_with_authors],
+                '3.5.0',
+                'publishpress_authors_supported_post_types'
+            );
+
+            /**
+             * Modify post types that use authors.
+             *
+             * @depreacted
+             *
+             * @param array $post_types_with_authors Post types that support authors.
+             */
+            self::$supported_post_types = apply_filters_deprecated(
+                'authors_post_types',
+                [self::$supported_post_types],
+                '3.5.0',
+                'publishpress_authors_supported_post_types'
+            );
+
+            /**
+             * Modify post types that use authors.
+             *
+             * @param array $post_types_with_authors Post types that support authors.
+             */
+            self::$supported_post_types = apply_filters(
+                'publishpress_authors_supported_post_types',
+                self::$supported_post_types
+            );
         }
 
-        /**
-         * Modify post types that use authors.
-         *
-         * @param array $post_types_with_authors Post types that support authors.
-         */
-        self::$supported_post_types = apply_filters('authors_post_types', self::$supported_post_types);
 
         return self::$supported_post_types;
     }
 
     /**
      * Checks to see if the current user can set authors or not
+     *
+     * @param null $post
+     *
+     * @return bool|mixed|void
      */
     public static function current_user_can_set_authors($post = null)
     {
-        if (!$post) {
+        if (empty($post)) {
             $post = get_post();
-            if (!$post) {
+            if (empty($post)) {
                 if (isset($_GET['post'])) {
                     $post = get_post($_GET['post']);
                 } else {
@@ -311,17 +358,20 @@ class Utils
             }
         }
 
-        $post_type = $post->post_type;
-
-        // TODO: need to fix this; shouldn't just say no if don't have post_type
-        if (!$post_type) {
+        if (empty($post)) {
             return false;
         }
 
+        $post_type = $post->post_type;
+
+        // TODO: need to fix this; shouldn't just say no if don't have post_type
+        if (empty($post_type)) {
+            return false;
+        }
 
         $current_user = wp_get_current_user();
 
-        if (!$current_user) {
+        if (empty($current_user)) {
             return false;
         }
         // Super admins can do anything

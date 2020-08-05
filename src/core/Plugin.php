@@ -489,7 +489,7 @@ class Plugin
             add_action('edited_term_taxonomy', [$this, 'action_edited_term_taxonomy_flush_cache'], 10, 2);
         }
 
-        $supported_post_types = Utils::get_supported_post_types();
+        $supported_post_types = Utils::get_post_types_that_support_authors();
         register_taxonomy($this->coauthor_taxonomy, $supported_post_types, $args);
     }
 
@@ -613,6 +613,7 @@ class Plugin
     public function action_widget_init()
     {
         register_widget('MultipleAuthors\\Widget');
+        register_widget('MultipleAuthors\\Authors_Widget');
     }
 
     /**
@@ -1279,7 +1280,7 @@ class Plugin
     public function load_edit()
     {
         $screen               = get_current_screen();
-        $supported_post_types = Utils::get_supported_post_types();
+        $supported_post_types = Utils::get_post_types_that_support_authors();
         if (in_array($screen->post_type, $supported_post_types)) {
             add_filter('views_' . $screen->id, [$this, 'filter_views']);
         }
