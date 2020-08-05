@@ -74,6 +74,7 @@ if (!class_exists('MA_Default_Layouts')) {
         public function init()
         {
             add_filter('pp_multiple_authors_author_box_html', [$this, 'renderBoxHTML'], 10, 2);
+            add_filter('pp_multiple_authors_authors_list_box_html', [$this, 'renderBoxHTML'], 10, 2);
             add_filter('pp_multiple_authors_author_layouts', [$this, 'getListOfLayouts'], 10, 2);
         }
 
