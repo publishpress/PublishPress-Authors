@@ -116,12 +116,14 @@ if (!function_exists('multiple_authors_get_all_authors')) {
         $args = wp_parse_args($args, $defaults);
 
         $terms = get_terms('author', $args);
-
-        foreach ($terms as &$term) {
-            $term = Author::get_by_term_id($term->term_id);
+        $authors = [];
+        foreach ($terms as $term) {
+            $author = Author::get_by_term_id($term->term_id);
+            $author->display_name = apply_filters('the_author', $author->display_name);
+            $authors[] = $author;
         }
 
-        return $terms;
+        return $authors;
     }
 }
 
