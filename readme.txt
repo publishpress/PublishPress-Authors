@@ -127,6 +127,15 @@ There are two ways to install the PublishPress Authors plugin:
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.html).
 
+= [3.5.0] - UNRELEASED =
+
+* Added: Added a new widget to display all the authors, #76;
+* Added: Added option to display the username in the authors search field, #162;
+* Fixed: Fix compatibility with WooCommerce products, #169;
+* Fixed: Performance issue in the frontend. Added cache for queries that can run multiple times in the frontend, #171;
+* Fixed: Fix PHP notice on author page when user is not an author, #156;
+* Fixed: Fixed notice when a post doesn't exist after deleting the post, #167;
+
 = [3.4.0] - 2020-07-23 =
 
 * Added: Add new filter "publishpress_authors_author_attribute" for customizing author attributes in the layouts;
