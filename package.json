@@ -24,7 +24,7 @@
     "webpack-cli": "3.2.3"
   },
   "scripts": {
-    "dev": "webpack --watch",
+    "watch": "webpack --watch",
     "build": "cross-env NODE_ENV=production webpack"
   }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package     MultipleAuthors
  * @author      PublishPress <help@publishpress.com>
@@ -339,12 +340,16 @@ class Utils
 
     /**
      * Checks to see if the current user can set authors or not
+     *
+     * @param null $post
+     *
+     * @return bool|mixed|void
      */
     public static function current_user_can_set_authors($post = null)
     {
-        if (!$post) {
+        if (empty($post)) {
             $post = get_post();
-            if (!$post) {
+            if (empty($post)) {
                 if (isset($_GET['post'])) {
                     $post = get_post($_GET['post']);
                 } else {
@@ -353,17 +358,20 @@ class Utils
             }
         }
 
-        $post_type = $post->post_type;
-
-        // TODO: need to fix this; shouldn't just say no if don't have post_type
-        if (!$post_type) {
+        if (empty($post)) {
             return false;
         }
 
+        $post_type = $post->post_type;
+
+        // TODO: need to fix this; shouldn't just say no if don't have post_type
+        if (empty($post_type)) {
+            return false;
+        }
 
         $current_user = wp_get_current_user();
 
-        if (!$current_user) {
+        if (empty($current_user)) {
             return false;
         }
         // Super admins can do anything
