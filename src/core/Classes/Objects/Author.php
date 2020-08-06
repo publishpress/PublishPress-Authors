@@ -11,6 +11,7 @@ namespace MultipleAuthors\Classes\Objects;
 
 use MultipleAuthors\Classes\Author_Utils;
 use WP_Error;
+use WP_User;
 
 /**
  * Representation of an individual author.
@@ -44,6 +45,56 @@ class Author
      * @var \WP_Term
      */
     private $term;
+
+    /**
+     * @var array
+     */
+    private static $authorsByIdCache = [];
+
+    /**
+     * @var array
+     */
+    private static $authorsBySlugCache = [];
+
+    /**
+     * @var array
+     */
+    private static $authorsByTermIdCache = [];
+
+    /**
+     * @var array
+     */
+    private static $authorsByEmailCache = [];
+
+    /**
+     * @var array
+     */
+    private $metaCache;
+
+    /**
+     * @var WP_User
+     */
+    private $userObject;
+
+    /**
+     * @var bool|null
+     */
+    private $hasCustomAvatar = null;
+
+    /**
+     * @var null|array
+     */
+    private $customAvatarUrl = null;
+
+    /**
+     * @var null|string
+     */
+    private $avatarUrl = null;
+
+    /**
+     * @var array
+     */
+    private $avatarBySize = [];
 
     /**
      * Instantiate a new author object
@@ -136,21 +187,23 @@ class Author
     {
         global $wpdb;
 
-        $term_id = $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT te.term_id
+        if (!isset(self::$authorsByIdCache[$user_id])) {
+            $term_id = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT te.term_id
 				 FROM {$wpdb->termmeta} AS te
 				 LEFT JOIN {$wpdb->term_taxonomy} AS ta ON (te.term_id = ta.term_id)
 				 WHERE  ta.taxonomy = 'author' AND meta_key=%s",
-                'user_id_' . $user_id
-            )
-        );
+                    'user_id_' . $user_id
+                )
+            );
 
-        if (!$term_id) {
-            return false;
+            if (!empty($term_id) && is_numeric($term_id)) {
+                self::$authorsByIdCache[$user_id] = new Author($term_id);
+            }
         }
 
-        return new Author($term_id);
+        return isset(self::$authorsByIdCache[$user_id]) ? self::$authorsByIdCache[$user_id] : false;
     }
 
     /**
@@ -249,7 +302,11 @@ class Author
      */
     public static function get_by_term_id($term_id)
     {
-        return new Author($term_id);
+        if (!isset(self::$authorsByTermIdCache[$term_id])) {
+            self::$authorsByTermIdCache[$term_id] = new Author($term_id);
+        }
+
+        return isset(self::$authorsByTermIdCache[$term_id]) ? self::$authorsByTermIdCache[$term_id] : false;
     }
 
     /**
@@ -261,12 +318,16 @@ class Author
      */
     public static function get_by_term_slug($slug)
     {
-        $term = get_term_by('slug', $slug, 'author');
-        if (!$term || is_wp_error($term)) {
-            return false;
+        if (!isset(self::$authorsBySlugCache[$slug])) {
+            $term = get_term_by('slug', $slug, 'author');
+            if (!$term || is_wp_error($term)) {
+                return false;
+            }
+
+            self::$authorsBySlugCache[$slug] = new Author($term);
         }
 
-        return new Author($term);
+        return isset(self::$authorsBySlugCache[$slug]) ? self::$authorsBySlugCache[$slug] : false;
     }
 
 
@@ -346,24 +407,11 @@ class Author
                 break;
 
             case 'user_url':
-                $url = $this->get_meta('user_url');
-
-                if (empty($url) && !$this->is_guest()) {
-                    $user = $this->get_user_object();
-
-                    $return = $user->user_url;
-                } else {
-                    $return = $url;
-                }
-
+                $return = $this->get_meta('user_url');
                 break;
 
             case 'first_name':
-                if (!$this->is_guest()) {
-                    $return = get_user_meta($this->user_id, 'first_name', true);
-                } else {
-                    $return = get_term_meta($this->term_id, 'first_name', true);
-                }
+                $return = $this->get_meta('first_name');
                 break;
 
             case 'term_id':
@@ -371,7 +419,7 @@ class Author
                 break;
 
             case 'link':
-                $user_id = get_term_meta($this->term_id, 'user_id', true);
+                $user_id = $this->get_meta('user_id');
 
                 // Is a user mapped to this author?
                 if (!$this->is_guest()) {
@@ -398,7 +446,7 @@ class Author
                 break;
 
             default:
-                $return = get_term_meta($this->term_id, $attribute, true);
+                $return = $this->get_meta($attribute);
 
                 if (is_null($return)) {
                     /**
@@ -420,13 +468,17 @@ class Author
      */
     public function get_avatar_url($size = 96)
     {
-        if ($this->has_custom_avatar()) {
-            $url = $this->get_custom_avatar_url($size);
-        } else {
-            $url = get_avatar_url($this->user_email, $size);
+        if (!is_null($this->avatarUrl)) {
+            if ($this->has_custom_avatar()) {
+                $url = $this->get_custom_avatar_url($size);
+            } else {
+                $url = get_avatar_url($this->user_email, $size);
+            }
+
+            $this->avatarUrl = $url;
         }
 
-        return $url;
+        return $this->avatarUrl;
     }
 
     /**
@@ -437,15 +489,19 @@ class Author
      */
     public function get_meta($key, $single = true)
     {
-        $meta = Author_Utils::get_author_meta($this->term_id, $key, $single);
+        if (!isset($this->metaCache[$key])) {
+            $meta = Author_Utils::get_author_meta($this->term_id, $key, $single);
 
-        if ($this->is_guest()) {
-            return $meta;
-        } elseif (empty($meta) && '0' !== (string)$meta) {
-            $meta = get_user_meta($this->user_id, $key, $single);
+            if ($this->is_guest()) {
+                return $meta;
+            } elseif (empty($meta) && '0' !== (string)$meta) {
+                $meta = get_user_meta($this->user_id, $key, $single);
+            }
+
+            $this->metaCache[$key] = $meta;
         }
 
-        return $meta;
+        return $this->metaCache[$key];
     }
 
     /**
@@ -453,7 +509,11 @@ class Author
      */
     public function has_custom_avatar()
     {
-        return Author_Utils::author_has_custom_avatar($this->term_id);
+        if (is_null($this->hasCustomAvatar)) {
+            $this->hasCustomAvatar = Author_Utils::author_has_custom_avatar($this->term_id);
+        }
+
+        return $this->hasCustomAvatar;
     }
 
     /**
@@ -463,27 +523,31 @@ class Author
      */
     protected function get_custom_avatar_url($size = 96)
     {
-        $avatar_attachment_id = get_term_meta($this->term_id, 'avatar', true);
+        if (is_null($this->customAvatarUrl)) {
+            $avatar_attachment_id = get_term_meta($this->term_id, 'avatar', true);
 
-        // Get the avatar from the attachments.
-        $url   = '';
-        $url2x = '';
-        if (!empty($avatar_attachment_id)) {
-            $url   = wp_get_attachment_image_url($avatar_attachment_id, $size);
-            $url2x = wp_get_attachment_image_url($avatar_attachment_id, $size * 2);
+            // Get the avatar from the attachments.
+            $url   = '';
+            $url2x = '';
+            if (!empty($avatar_attachment_id)) {
+                $url   = wp_get_attachment_image_url($avatar_attachment_id, $size);
+                $url2x = wp_get_attachment_image_url($avatar_attachment_id, $size * 2);
+            }
+
+            // Check if it should return the default avatar.
+            if (empty($url)) {
+                $avatar_data = get_avatar_data(0);
+                $url         = $avatar_data['url'];
+                $url2x       = $avatar_data['url'] . '2x';
+            }
+
+            $this->customAvatarUrl = [
+                'url'   => $url,
+                'url2x' => $url2x,
+            ];
         }
 
-        // Check if it should return the default avatar.
-        if (empty($url)) {
-            $avatar_data = get_avatar_data(0);
-            $url         = $avatar_data['url'];
-            $url2x       = $avatar_data['url'] . '2x';
-        }
-
-        return [
-            'url'   => $url,
-            'url2x' => $url2x,
-        ];
+        return $this->customAvatarUrl;
     }
 
     /**
@@ -496,43 +560,47 @@ class Author
      */
     public function get_avatar($size = 96)
     {
-        /**
-         * Filters whether to retrieve the avatar early.
-         *
-         * Passing a non-null value will effectively short-circuit get_avatar(), passing
-         * the value through the {@see 'multiple_authors_get_avatar'} filter and returning early.
-         *
-         * @param string $avatar HTML for the author's avatar. Default null.
-         * @param Author $author The author's instance.
-         * @param int $size The size of the avatar.
-         *
-         * @since 2.2.1
-         *
-         */
-        $avatar = apply_filters('multiple_authors_pre_get_avatar', null, $this, $size);
+        if (!isset($this->avatarBySize[$size])) {
+            /**
+             * Filters whether to retrieve the avatar early.
+             *
+             * Passing a non-null value will effectively short-circuit get_avatar(), passing
+             * the value through the {@see 'multiple_authors_get_avatar'} filter and returning early.
+             *
+             * @param string $avatar HTML for the author's avatar. Default null.
+             * @param Author $author The author's instance.
+             * @param int $size The size of the avatar.
+             *
+             * @since 2.2.1
+             *
+             */
+            $avatar = apply_filters('multiple_authors_pre_get_avatar', null, $this, $size);
 
-        if (!is_null($avatar)) {
-            /** This filter is documented in core/Classes/Objects/Author.php */
-            return apply_filters('multiple_authors_get_avatar', $avatar, $this, $size);
+            if (!is_null($avatar)) {
+                /** This filter is documented in core/Classes/Objects/Author.php */
+                return apply_filters('multiple_authors_get_avatar', $avatar, $this, $size);
+            }
+
+            if ($this->has_custom_avatar()) {
+                $avatar = $this->get_custom_avatar($size);
+            } else {
+                $avatar = get_avatar($this->user_email, $size);
+            }
+
+            /**
+             * Filters the avatar to retrieve.
+             *
+             * @param string $avatar HTML for the author's avatar.
+             * @param Author $author The author's instance.
+             * @param int $size The size of the avatar.
+             *
+             * @since 2.2.1
+             *
+             */
+            $this->avatarBySize[$size] = apply_filters('multiple_authors_get_avatar', $avatar, $this, $size);
         }
 
-        if ($this->has_custom_avatar()) {
-            $avatar = $this->get_custom_avatar($size);
-        } else {
-            $avatar = get_avatar($this->user_email, $size);
-        }
-
-        /**
-         * Filters the avatar to retrieve.
-         *
-         * @param string $avatar HTML for the author's avatar.
-         * @param Author $author The author's instance.
-         * @param int $size The size of the avatar.
-         *
-         * @since 2.2.1
-         *
-         */
-        return apply_filters('multiple_authors_get_avatar', $avatar, $this, $size);
+        return isset($this->avatarBySize[$size]) ? $this->avatarBySize[$size] : false;
     }
 
     /**
@@ -600,7 +668,7 @@ class Author
     }
 
     /**
-     * @return bool|\WP_User
+     * @return bool|WP_User
      */
     public function get_user_object()
     {
@@ -608,7 +676,11 @@ class Author
             return false;
         }
 
-        return get_user_by('ID', $this->user_id);
+        if (empty($this->userObject)) {
+            $this->userObject = get_user_by('ID', $this->user_id);
+        }
+
+        return !empty($this->userObject) ? $this->userObject : false;
     }
 
     /**
@@ -623,12 +695,14 @@ class Author
 
     public static function get_by_email($emailAddress)
     {
-        $authorTermId = Author_Utils::get_author_term_id_by_email($emailAddress);
+        if (!isset(self::$authorsByEmailCache[$emailAddress])) {
+            $authorTermId = Author_Utils::get_author_term_id_by_email($emailAddress);
 
-        if (empty($authorTermId)) {
-            return false;
+            if (!empty($authorTermId)) {
+                self::$authorsByEmailCache[$emailAddress] = self::get_by_term_id($authorTermId);
+            }
         }
 
-        return self::get_by_term_id($authorTermId);
+        return isset(self::$authorsByEmailCache[$emailAddress]) ? self::$authorsByEmailCache[$emailAddress] : false;
     }
 }

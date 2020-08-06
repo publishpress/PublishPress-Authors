@@ -10,6 +10,7 @@
 namespace MultipleAuthors\Classes;
 
 use MultipleAuthors\Classes\Objects\Author;
+use MultipleAuthors\Factory;
 
 /**
  * Admin ajax endpoints
@@ -53,15 +54,19 @@ class Admin_Ajax
      */
     public static function get_possible_authors_for_search($search, $ignored = [])
     {
+        $legacyPlugin = Factory::getLegacyPlugin();
+
         $authors   = [];
         $term_args = [
             'taxonomy'   => 'author',
             'hide_empty' => false,
             'number'     => 20,
         ];
+
         if (!empty($search)) {
             $term_args['search'] = $search;
         }
+
         if (!empty($ignored)) {
             $term_args['exclude'] = [];
             $ignored_users        = [];
@@ -76,17 +81,30 @@ class Admin_Ajax
             }
             $ignored = array_merge($ignored, $ignored_users);
         }
+
         $terms = get_terms($term_args);
         if ($terms && !is_wp_error($terms)) {
+            $show_user_name = $legacyPlugin->modules->multiple_authors->options->username_in_search_field === 'yes';
             foreach ($terms as $term) {
-                $author    = Author::get_by_term_id($term->term_id);
+                $author = Author::get_by_term_id($term->term_id);
+
+                $text = $term->name;
+
+                if ($show_user_name) {
+                    if (!$author->is_guest()) {
+                        $user = $author->get_user_object();
+
+                        if (!is_wp_error($user) && is_object($user)) {
+                            $text .= sprintf(' (%s)', $user->user_nicename);
+                        }
+                    }
+                }
+
                 $authors[] = [
-                    // Select2 specific.
                     'id'           => (int)$term->term_id,
-                    'text'         => $term->name,
-                    // Bylines specific.
+                    'text'         => $text,
                     'term'         => (int)$term->term_id,
-                    'display_name' => $term->name,
+                    'display_name' => $text,
                     'user_id'      => $author->user_id,
                     'avatar'       => $author->get_avatar(20),
                 ];

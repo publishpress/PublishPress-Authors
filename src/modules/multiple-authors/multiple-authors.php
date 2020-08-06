@@ -83,15 +83,16 @@ if (!class_exists('MA_Multiple_Authors')) {
                 'icon_class'           => 'dashicons dashicons-feedback',
                 'slug'                 => 'multiple-authors',
                 'default_options'      => [
-                    'enabled'              => 'on',
-                    'post_types'           => [
+                    'enabled'                  => 'on',
+                    'post_types'               => [
                         'post' => 'on',
                         'page' => 'on',
                     ],
-                    'append_to_content'    => 'yes',
-                    'author_for_new_users' => [],
-                    'layout'               => 'simple_list',
-                    'force_empty_author'   => 'no',
+                    'append_to_content'        => 'yes',
+                    'author_for_new_users'     => [],
+                    'layout'                   => 'simple_list',
+                    'force_empty_author'       => 'no',
+                    'username_in_search_field' => 'no',
                 ],
                 'options_page'         => false,
                 'autoload'             => true,
@@ -418,6 +419,17 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $this->module->options_group_name . '_general'
             );
 
+            add_settings_field(
+                'username_in_search_field',
+                __(
+                    'Show username in the search field:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_username_in_search_field'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_general'
+            );
+
             do_action('publishpress_authors_register_settings_after');
 
             /**
@@ -615,6 +627,29 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
+         * @param array $args
+         */
+        public function settings_username_in_search_field($args = [])
+        {
+            $id     = $this->module->options_group_name . '_username_in_search_field';
+            $value = isset($this->module->options->username_in_search_field) ? $this->module->options->username_in_search_field : '';
+
+            echo '<label for="' . $id . '">';
+
+            echo '<input type="checkbox" id="' . $id . '" name="' . $this->module->options_group_name . '[username_in_search_field]" value="yes" ' . ($value === 'yes' ? 'checked="checked"':'') . '/>';
+
+            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
+                . esc_html__(
+                    'If the Author is mapped to a WordPress user, this will display the authors\' "Display name" and their "Username". The default is to show only the "Display name". Showing the "Username" is useful if you have several authors with similar names.',
+                    'publishpress-authors'
+                )
+                . '</span>';
+
+
+            echo '</label>';
+        }
+
+        /**
          * Displays the field to choose display or not the email link/icon.
          *
          * @param array
@@ -782,6 +817,10 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             if (!isset($new_options['show_site_link'])) {
                 $new_options['show_site_link'] = 'no';
+            }
+
+            if (!isset($new_options['username_in_search_field'])) {
+                $new_options['username_in_search_field'] = 'no';
             }
 
             if (isset($new_options['layout'])) {

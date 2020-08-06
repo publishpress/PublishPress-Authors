@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
 Tested up to: 5.4
-Stable tag: 3.4.0
+Stable tag: 3.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -127,6 +127,15 @@ There are two ways to install the PublishPress Authors plugin:
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.html).
 
+= [3.5.0] - 2020-08-06 =
+
+* Added: Added a new widget to display all the authors, #76;
+* Added: Added option to display the username in the authors search field, #162;
+* Fixed: Fix compatibility with WooCommerce products, #169;
+* Fixed: Performance issue in the frontend. Added cache for queries that can run multiple times in the frontend, #171;
+* Fixed: Fix PHP notice on author page when user is not an author, #156;
+* Fixed: Fixed notice when a post doesn't exist after deleting the post, #167;
+
 = [3.4.0] - 2020-07-23 =
 
 * Added: Add new filter "publishpress_authors_author_attribute" for customizing author attributes in the layouts;
@@ -183,7 +192,7 @@ and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec
 * Fixed: The get_the_author function was not working for guest authors;
 * Fixed: The the_post function was not working well for posts with guest authors;
 * Fixed: The feed_links_extra function was not working for guest authors;
-* Fixed: For themes that dont't implement support for PublishPress Authors and multiple authors, we were displaying all the author names separated by comma, but only one link (due to the limitations imposed by the theme). Now we display only the first author and its respective link on those cases. The multiple authors can be added creating a child theme and adapting the code;
+* Fixed: For themes that don't implement support for PublishPress Authors and multiple authors, we were displaying all the author names separated by comma, but only one link (due to the limitations imposed by the theme). Now we display only the first author and its respective link on those cases. The multiple authors can be added creating a child theme and adapting the code;
 * Fixed: The title for authors archive pages of guest authors;
 * Fixed: The author object is now compatible with the main properties of WP_User objects, so guest authors can be treated as users on most cases;
 * Fixed: The custom user_url is not returned for authors mapped to user;
