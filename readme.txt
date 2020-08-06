@@ -127,7 +127,7 @@ There are two ways to install the PublishPress Authors plugin:
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.html).
 
-= [3.5.0] - UNRELEASED =
+= [3.5.0] - 2020-08-06 =
 
 * Added: Added a new widget to display all the authors, #76;
 * Added: Added option to display the username in the authors search field, #162;
