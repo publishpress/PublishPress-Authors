@@ -20,6 +20,10 @@ if (!function_exists('get_multiple_authors')) {
      * @param bool             $filter_the_author If false, will not trigger the filter for the author, to avoid infinite
      *                                            loop.
      * @param bool             $archive
+     * @param bool             $ignoreCache       This cache cause sometimes errors in data received especially
+     *                                            in quick edit after saving.
+     *                                            That's why in Post_Editor we called this function with overriding
+     *                                            ignoreCache value to be equal true.
      *
      * @return array Array of Author objects, a single WP_User object, or empty.
      */
