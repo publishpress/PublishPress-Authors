@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package   MultipleAuthors
  * @author    PublishPress <help@publishpress.com>
@@ -47,8 +48,8 @@ class Post_Editor
     {
         if (Utils::is_post_type_enabled($post_type)) {
             switch ($column_name) {
-            case 'authors':
-                ?>
+                case 'authors':
+                    ?>
                     <fieldset class="inline-edit-col-left">
                         <div class="inline-edit-col">
                             <label style="display: inline-flex">
@@ -60,8 +61,8 @@ class Post_Editor
 
                         </div>
                     </fieldset>
-                        <?php
-                break;
+                            <?php
+                    break;
             }
         }
     }
@@ -262,7 +263,8 @@ class Post_Editor
             return;
         }
 
-        if (!isset($_POST['authors-save'])
+        if (
+            !isset($_POST['authors-save'])
             || !wp_verify_nonce($_POST['authors-save'], 'authors-save')
             || !current_user_can(get_taxonomy('author')->cap->assign_terms)
         ) {
