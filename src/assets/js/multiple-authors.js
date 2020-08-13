@@ -122,9 +122,6 @@ jQuery(document).ready(function ($) {
         sortedAuthorsList($(".authors-current-user-can-assign"));
     }
     $(document).on("click", ".editinline", function () {
-      // revert Quick Edit menu so that it refreshes properly
-        console.log(inlineEditPost);
-
         var postId = $(this)
         .closest("tr")
         .attr("id")
