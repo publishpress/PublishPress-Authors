@@ -186,42 +186,42 @@ class Post_Editor
         }
         ?>
         <ul class="<?php echo (implode(' ', $classes) ); ?>">
-                            <?php
-                            if (!empty($authors)) {
-                                foreach ($authors as $author) {
-                                    $display_name = $author->display_name;
-                                    $term         = is_a($author, 'WP_User') ? 'u' . $author->ID : $author->term_id;
-                                    echo self::get_rendered_author_partial(
-                                        [
-                                            'display_name' => $display_name,
-                                            'avatar'       => $author->get_avatar(20),
-                                            'term'         => $term,
-                                        ]
-                                    );
-                                }
-                            }
-                            ?>
+            <?php
+            if (!empty($authors)) {
+                foreach ($authors as $author) {
+                    $display_name = $author->display_name;
+                    $term         = is_a($author, 'WP_User') ? 'u' . $author->ID : $author->term_id;
+                    echo self::get_rendered_author_partial(
+                        [
+                            'display_name' => $display_name,
+                            'avatar'       => $author->get_avatar(20),
+                            'term'         => $term,
+                        ]
+                    );
+                }
+            }
+            ?>
         </ul>
-                            <?php wp_nonce_field('authors-save', 'authors-save'); ?>
-                            <?php if (current_user_can(get_taxonomy('author')->cap->assign_terms)) : ?>
+        <?php wp_nonce_field('authors-save', 'authors-save'); ?>
+        <?php if (current_user_can(get_taxonomy('author')->cap->assign_terms)) : ?>
         <select data-nonce="<?php echo esc_attr(wp_create_nonce('authors-search')); ?>"
                 class="authors-select2 authors-search"
                 data-placeholder="<?php esc_attr_e('Search for an author', 'authors'); ?>" style="width: 100%">
             <option></option>
         </select>
         <script type="text/html" id="tmpl-authors-author-partial">
-                                <?php
-                                echo self::get_rendered_author_partial(
-                                    [
-                                    'display_name' => '{{ data.display_name }}',
-                                    'avatar'       => '{{{ data.avatar }}}',
-                                    'term'         => '{{ data.term }}',
-                                    ]
-                                );
-                                ?>
+            <?php
+            echo self::get_rendered_author_partial(
+                [
+                'display_name' => '{{ data.display_name }}',
+                'avatar'       => '{{{ data.avatar }}}',
+                'term'         => '{{ data.term }}',
+                ]
+            );
+            ?>
         </script>
-                                <?php
-                            endif;
+            <?php
+        endif;
     }
 
     /**
@@ -245,8 +245,8 @@ class Post_Editor
             <span class="display-name"><?php echo wp_kses_post($args['display_name']); ?></span>
             <input type="hidden" name="authors[]" value="<?php echo esc_attr($args['term']); ?>">
         </li>
-                            <?php
-                            return ob_get_clean();
+        <?php
+        return ob_get_clean();
     }
 
     /**
