@@ -430,11 +430,12 @@ class Author
                 break;
 
             case 'name':
-                if (!$this->is_guest()) {
+                $return = get_term_field('name', $this->term_id, 'author', 'raw');
+
+                if (empty($return) && !$this->is_guest()) {
                     $return = $this->get_user_object()->display_name;
-                } else {
-                    $return = get_term_field('name', $this->term_id, 'author', 'raw');
                 }
+
                 break;
 
             case 'slug':
