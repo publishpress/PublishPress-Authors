@@ -11,13 +11,15 @@
 
 defined('ABSPATH') or die('No direct script access allowed.');
 
-define('PP_AUTHORS_VERSION', '3.5.0');
-define('PP_AUTHORS_FILE', 'publishpress-authors/publishpress-authors.php');
-define('PP_AUTHORS_BASE_PATH', plugin_dir_path(realpath(__DIR__ . '/../publishpress-authors.php')));
-define('PP_AUTHORS_SRC_PATH', PP_AUTHORS_BASE_PATH . 'src/');
-define('PP_AUTHORS_MODULES_PATH', PP_AUTHORS_SRC_PATH . 'modules/');
-define('PP_AUTHORS_TWIG_PATH', PP_AUTHORS_SRC_PATH . 'twig/');
-define('PP_AUTHORS_VENDOR_PATH', PP_AUTHORS_BASE_PATH . 'vendor/');
-define('PP_AUTHORS_URL', plugins_url('/', PP_AUTHORS_BASE_PATH . 'publishpress-authors.php'));
-define('PP_AUTHORS_ASSETS_URL', plugins_url('/src/assets/', PP_AUTHORS_SRC_PATH));
-define('PP_AUTHORS_AUTOLOAD_CLASS_NAME', 'ComposerStaticInit861037e2d826162de71f57dffe180138');
+if (!defined('PP_AUTHORS_VERSION')) {
+    define('PP_AUTHORS_VERSION', '3.5.0');
+    define('PP_AUTHORS_FILE', 'publishpress-authors/publishpress-authors.php');
+    define('PP_AUTHORS_BASE_PATH', plugin_dir_path(realpath(__DIR__ . '/../publishpress-authors.php')));
+    define('PP_AUTHORS_SRC_PATH', PP_AUTHORS_BASE_PATH . 'src/');
+    define('PP_AUTHORS_MODULES_PATH', PP_AUTHORS_SRC_PATH . 'modules/');
+    define('PP_AUTHORS_TWIG_PATH', PP_AUTHORS_SRC_PATH . 'twig/');
+    define('PP_AUTHORS_VENDOR_PATH', PP_AUTHORS_BASE_PATH . 'vendor/');
+    define('PP_AUTHORS_URL', plugins_url('/', PP_AUTHORS_BASE_PATH . 'publishpress-authors.php'));
+    define('PP_AUTHORS_ASSETS_URL', plugins_url('/src/assets/', PP_AUTHORS_SRC_PATH));
+    define('PP_AUTHORS_AUTOLOAD_CLASS_NAME', 'ComposerStaticInit861037e2d826162de71f57dffe180138');
+}
