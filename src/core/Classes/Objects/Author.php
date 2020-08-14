@@ -456,6 +456,19 @@ class Author
                 }
         }
 
+        if (is_wp_error($return)) {
+            $return = false;
+
+            error_log(
+                sprintf(
+                    '[PublishPress Authors] Error found while getting author\'s %s attribute (term_id = %d): %s',
+                    $attribute,
+                    $this->term_id,
+                    $return->get_error_message()
+                )
+            );
+        }
+
         $return = apply_filters('publishpress_authors_author_attribute', $return, $this->term_id, $attribute);
 
         return $return;
