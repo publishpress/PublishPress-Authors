@@ -37,7 +37,11 @@ if (!function_exists('get_multiple_authors')) {
         $cacheKey .= $archive ? 1 : 0;
         $authors  = [];
 
-        if (empty($multipleAuthorsForPost) || !isset($multipleAuthorsForPost[$cacheKey])) {
+        if (empty($multipleAuthorsForPost)) {
+            $multipleAuthorsForPost = [];
+        }
+
+        if (!isset($multipleAuthorsForPost[$cacheKey])) {
             if (!$archive) {
                 // If not archive, we get the authors from the current post, or from the given post.
                 if (is_null($post)) {
