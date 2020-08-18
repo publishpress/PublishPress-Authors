@@ -432,11 +432,12 @@ class Author
                 break;
 
             case 'name':
-                if (!$this->is_guest()) {
+                $return = get_term_field('name', $this->term_id, 'author', 'raw');
+
+                if (empty($return) && !$this->is_guest()) {
                     $return = $this->get_user_object()->display_name;
-                } else {
-                    $return = get_term_field('name', $this->term_id, 'author', 'raw');
                 }
+
                 break;
 
             case 'slug':
@@ -456,6 +457,19 @@ class Author
                      */
                     $return = apply_filters('pp_multiple_authors_author_attribute', null, $this->term_id, $attribute);
                 }
+        }
+
+        if (is_wp_error($return)) {
+            $return = false;
+
+            error_log(
+                sprintf(
+                    '[PublishPress Authors] Error found while getting author\'s %s attribute (term_id = %d): %s',
+                    $attribute,
+                    $this->term_id,
+                    $return->get_error_message()
+                )
+            );
         }
 
         $return = apply_filters('publishpress_authors_author_attribute', $return, $this->term_id, $attribute);

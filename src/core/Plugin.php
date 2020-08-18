@@ -1338,7 +1338,8 @@ class Plugin
         $user_id = isset($args[1]) ? $args[1] : 0;
         $post_id = isset($args[2]) ? $args[2] : 0;
 
-        $obj = get_post_type_object(Util::get_current_post_type($post_id));
+        $postType = empty($post_id) ? Util::getCurrentPostType() : Util::getPostPostType($post_id);
+        $obj      = get_post_type_object($postType);
         if (!$obj || 'revision' == $obj->name) {
             return $allcaps;
         }
