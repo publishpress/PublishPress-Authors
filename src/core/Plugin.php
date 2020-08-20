@@ -73,7 +73,7 @@ class Plugin
         add_filter('get_authornumposts', [$this, 'filter_count_author_posts'], 10, 2);
 
         // Filter to allow coauthors to edit posts
-        add_filter('user_has_cap', [$this, 'filter_user_has_cap'], 10, 3);
+        add_filter('user_has_cap', [$this, 'filter_user_has_cap'], 10, 4);
 
         // Restricts WordPress from blowing away term order on bulk edit
         add_filter('wp_get_object_terms', [$this, 'filter_wp_get_object_terms'], 10, 4);
@@ -1332,14 +1332,14 @@ class Plugin
     /**
      * Allows coauthors to edit the post they're coauthors of
      */
-    public function filter_user_has_cap($allcaps, $caps, $args)
+    public function filter_user_has_cap($allcaps, $caps, $args, $user)
     {
         $cap     = $args[0];
-        $user_id = isset($args[1]) ? $args[1] : 0;
         $post_id = isset($args[2]) ? $args[2] : 0;
 
         $postType = empty($post_id) ? Util::getCurrentPostType() : Util::getPostPostType($post_id);
         $obj      = get_post_type_object($postType);
+
         if (!$obj || 'revision' == $obj->name) {
             return $allcaps;
         }
@@ -1357,7 +1357,7 @@ class Plugin
             return $allcaps;
         }
 
-        $allowEdit = is_multiple_author_for_post($user_id, $post_id);
+        $allowEdit = is_multiple_author_for_post($user->ID, $post_id);
 
         // Not an author, does the post has an author? If not, can we edit it?
         if (!$allowEdit) {
@@ -1369,14 +1369,13 @@ class Plugin
         }
 
         if ($allowEdit) {
-            $current_user = wp_get_current_user();
             $post_status  = get_post_status($post_id);
 
             if ('publish' == $post_status &&
-                (isset($obj->cap->edit_published_posts) && !empty($current_user->allcaps[$obj->cap->edit_published_posts]))) {
+                (isset($obj->cap->edit_published_posts) && !empty($user->allcaps[$obj->cap->edit_published_posts]))) {
                 $allcaps[$obj->cap->edit_published_posts] = true;
             } elseif ('private' == $post_status &&
-                (isset($obj->cap->edit_private_posts) && !empty($current_user->allcaps[$obj->cap->edit_private_posts]))) {
+                (isset($obj->cap->edit_private_posts) && !empty($user->allcaps[$obj->cap->edit_private_posts]))) {
                 $allcaps[$obj->cap->edit_private_posts] = true;
             }
 
