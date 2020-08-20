@@ -72,11 +72,11 @@ if (!class_exists('MA_Multiple_Authors')) {
             $args = [
                 'title'                => __('Multiple Authors', 'publishpress-authors'),
                 'short_description'    => __(
-                    'Add support for multiple authors on your content',
+                    'PublishPress Authors allows you to add multiple authors and guest authors to WordPress posts',
                     'publishpress-authors'
                 ),
                 'extended_description' => __(
-                    'Add support for multiple authors on your content',
+                    'PublishPress Authors allows you to add multiple authors and guest authors to WordPress posts',
                     'publishpress-authors'
                 ),
                 'module_url'           => $this->module_url,

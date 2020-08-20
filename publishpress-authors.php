@@ -2,7 +2,7 @@
 /**
  * Plugin Name: PublishPress Authors
  * Plugin URI:  https://wordpress.org/plugins/publishpress-authors/
- * Description: Add support for multiple authors
+ * Description: PublishPress Authors allows you to add multiple authors and guest authors to WordPress posts
  * Author:      PublishPress
  * Author URI:  https://publishpress.com
  * Version: 3.5.1
