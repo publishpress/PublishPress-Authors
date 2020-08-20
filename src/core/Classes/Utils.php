@@ -381,10 +381,6 @@ class Utils
 
         $can_set_authors = isset($current_user->allcaps['edit_others_posts']) ? $current_user->allcaps['edit_others_posts'] : false;
 
-        if (!$can_set_authors) {
-            $can_set_authors = isset($current_user->allcaps['ppma_edit_orphan_post']) ? $current_user->allcaps['ppma_edit_orphan_post'] : false;
-        }
-
         return apply_filters('coauthors_plus_edit_authors', $can_set_authors);
     }
 

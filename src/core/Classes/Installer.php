@@ -160,7 +160,6 @@ class Installer
     private static function add_capabilities()
     {
         $role = get_role('administrator');
-        $role->add_cap('ppma_edit_orphan_post');
         $role->add_cap('ppma_manage_authors');
         $role->add_cap('manage_options');
     }
