@@ -171,6 +171,8 @@ class Author
             return false;
         }
 
+        $author->userObject = $user;
+
         self::update_author_from_user($author->term_id, $user->ID);
 
         return $author;
