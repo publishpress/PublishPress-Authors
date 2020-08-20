@@ -1359,15 +1359,6 @@ class Plugin
 
         $allowEdit = is_multiple_author_for_post($user->ID, $post_id);
 
-        // Not an author, does the post has an author? If not, can we edit it?
-        if (!$allowEdit) {
-            $post_authors = get_multiple_authors($post_id);
-
-            if (empty($post_authors) && isset($allcaps['ppma_edit_orphan_post']) && $allcaps['ppma_edit_orphan_post']) {
-                $allowEdit = true;
-            }
-        }
-
         if ($allowEdit) {
             $post_status  = get_post_status($post_id);
 
