@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
 Tested up to: 5.5
-Stable tag: 3.5.0
+Stable tag: 3.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -126,6 +126,16 @@ There are two ways to install the PublishPress Authors plugin:
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.html).
+
+= [3.5.1] - 2020-08-20 =
+
+* Fixed: Avoid warnings regarding constants already defined;
+* Fixed: Fixed the cache for the get_multiple_authors function for archive pages, #190;
+* Fixed: Fixed fatal error Object of class WP_Error could not be converted to string, #182;
+* Fixed: Fixed the value for $author->display_name which was returning the value from the user object instead of the custom value set for the author, #183;
+* Fixed: Fixed Plugin::filter_user_has_cap() is passing a param to Util::get_current_post_type() which doesn't support params, #187;
+* Fixed: Fixed Plugin::filter_user_has_cap() to use the correct user, not the current one, #186;
+* Fixed: Removed leftovers from the deprecated capability: ppma_edit_orphan_post, #193;
 
 = [3.5.0] - 2020-08-06 =
 
