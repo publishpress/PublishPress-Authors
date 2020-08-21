@@ -12,7 +12,7 @@
 defined('ABSPATH') or die('No direct script access allowed.');
 
 if (!defined('PP_AUTHORS_VERSION')) {
-    define('PP_AUTHORS_VERSION', '3.5.1');
+    define('PP_AUTHORS_VERSION', '3.5.2-beta.1');
     define('PP_AUTHORS_FILE', 'publishpress-authors/publishpress-authors.php');
     define('PP_AUTHORS_BASE_PATH', plugin_dir_path(realpath(__DIR__ . '/../publishpress-authors.php')));
     define('PP_AUTHORS_SRC_PATH', PP_AUTHORS_BASE_PATH . 'src/');
