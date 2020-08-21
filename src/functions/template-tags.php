@@ -33,7 +33,10 @@ if (!function_exists('get_multiple_authors')) {
 
         if (is_object($post)) {
             $post = $post->ID;
+        } elseif (empty($post)) {
+            $post = get_post()->ID;
         }
+
         $postId = (int)$post;
 
         $cacheKey = [

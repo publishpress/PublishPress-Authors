@@ -426,4 +426,46 @@ class get_multiple_authorsCest
             $this->serializeArrayOfAuthors($returnedAuthorList1)
         );
     }
+
+    public function testGetMultipleAuthors_WithNoArgumentsForMultiplePosts_isDetectingTheCorrectGlobalPost(WpunitTester $I)
+    {
+        global $multipleAuthorsForPost;
+
+        $multipleAuthorsForPost = [];
+
+        $userId0 = $I->factory('create user0')->user->create();
+        $userId1 = $I->factory('create user1')->user->create();
+        $userId2 = $I->factory('create user2')->user->create();
+
+        $author0 = Author::create_from_user($userId0);
+        $author1 = Author::create_from_user($userId1);
+        $author2 = Author::create_from_user($userId2);
+
+        $postId0 = $I->factory('create post0')->post->create();
+        $postId1 = $I->factory('create post1')->post->create();
+        $postId2 = $I->factory('create post2')->post->create();
+
+        $post0   = get_post($postId0);
+        $post1   = get_post($postId1);
+        $post2   = get_post($postId2);
+
+        wp_set_post_terms($postId0, [$author0->term_id, $author1->term_id, $author2->term_id], 'author');
+        wp_set_post_terms($postId1, [$author0->term_id], 'author');
+        wp_set_post_terms($postId2, [$author0->term_id, $author1->term_id], 'author');
+
+        $GLOBALS['post'] = $post0;
+        $authors = get_multiple_authors();
+
+        $I->assertCount(3, $authors);
+
+        $GLOBALS['post'] = $post1;
+        $authors = get_multiple_authors();
+
+        $I->assertCount(1, $authors);
+
+        $GLOBALS['post'] = $post2;
+        $authors = get_multiple_authors();
+
+        $I->assertCount(2, $authors);
+    }
 }
