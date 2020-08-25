@@ -73,10 +73,10 @@ if (!function_exists('get_multiple_authors')) {
 
                 $terms = $wpdb->get_results(
                     $wpdb->prepare(
-                        'SELECT tt.term_id
-                            FROM wp_term_relationships AS tr
-                            INNER JOIN wp_term_taxonomy AS tt ON (tr.`term_taxonomy_id` = tt.`term_taxonomy_id`)
-                            WHERE tr.object_id = %d AND tt.taxonomy = "author"',
+                        "SELECT tt.term_id
+                            FROM {$wpdb->term_relationships} AS tr
+                            INNER JOIN {$wpdb->term_taxonomy} AS tt ON (tr.`term_taxonomy_id` = tt.`term_taxonomy_id`)
+                            WHERE tr.object_id = %d AND tt.taxonomy = 'author'",
                         $postId
                     )
                 );
