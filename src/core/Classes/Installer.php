@@ -34,10 +34,9 @@ class Installer
      */
     public static function install($current_version)
     {
-        self::convert_post_author_into_taxonomy();
-
         // Do not execute the post_author migration to post terms if Co-Authors Plus is activated.
         if (!isset($GLOBALS['coauthors_plus']) || empty($GLOBALS['coauthors_plus'])) {
+            self::convert_post_author_into_taxonomy();
             self::add_author_term_for_posts();
         }
 
@@ -219,13 +218,13 @@ class Installer
     public static function upgrade($previous_version)
     {
         if (version_compare($previous_version, '2.0.2', '<')) {
-            self::convert_post_author_into_taxonomy();
-            self::fix_author_url();
 
             // Do not execute the post_author migration to post terms if Co-Authors Plus is activated.
             if (!isset($GLOBALS['coauthors_plus']) || empty($GLOBALS['coauthors_plus'])) {
+                self::convert_post_author_into_taxonomy();
                 self::add_author_term_for_posts();
             }
+            self::fix_author_url();
         }
 
         /**
