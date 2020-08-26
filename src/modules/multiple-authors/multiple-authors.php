@@ -181,6 +181,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_action('wp_ajax_migrate_coauthors', [$this, 'migrateCoAuthorsData']);
             add_action('wp_ajax_get_coauthors_migration_data', [$this, 'getCoauthorsMigrationData']);
             add_action('wp_ajax_deactivate_coauthors_plus', [$this, 'deactivateCoAuthorsPlus']);
+            add_action('wp_ajax_finish_coauthors_migration', [$this, 'finishCoAuthorsMigration']);
 
             // Add compatibility with GeneratePress theme.
             add_filter('generate_post_author_output', [$this, 'generatepress_author_output']);
@@ -631,12 +632,12 @@ if (!class_exists('MA_Multiple_Authors')) {
          */
         public function settings_username_in_search_field($args = [])
         {
-            $id     = $this->module->options_group_name . '_username_in_search_field';
+            $id    = $this->module->options_group_name . '_username_in_search_field';
             $value = isset($this->module->options->username_in_search_field) ? $this->module->options->username_in_search_field : '';
 
             echo '<label for="' . $id . '">';
 
-            echo '<input type="checkbox" id="' . $id . '" name="' . $this->module->options_group_name . '[username_in_search_field]" value="yes" ' . ($value === 'yes' ? 'checked="checked"':'') . '/>';
+            echo '<input type="checkbox" id="' . $id . '" name="' . $this->module->options_group_name . '[username_in_search_field]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
 
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
@@ -1456,8 +1457,12 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         public function action_create_post_authors()
         {
-            Installer::convert_post_author_into_taxonomy();
-            Installer::add_author_term_for_posts();
+            // Do not execute the post_author migration to post terms if Co-Authors Plus is activated.
+            // The user need to manually run the Co-Authors migration task before running this again.
+            if (!isset($GLOBALS['coauthors_plus']) || empty($GLOBALS['coauthors_plus'])) {
+                Installer::convert_post_author_into_taxonomy();
+                Installer::add_author_term_for_posts();
+            }
         }
 
         public function action_create_role_authors()
@@ -1519,6 +1524,10 @@ if (!class_exists('MA_Multiple_Authors')) {
                     $output .= $author_text . $separators['between'];
                 }
             } while ($i->iterate());
+
+            // Co-Authors sometimes don't have a taxonomy term for the author, but uses the post_author value instead.
+            Installer::convert_post_author_into_taxonomy();
+            Installer::add_author_term_for_posts();
         }
 
         /**
@@ -1872,6 +1881,25 @@ if (!class_exists('MA_Multiple_Authors')) {
             wp_send_json(
                 [
                     'deactivated' => true,
+                ]
+            );
+        }
+
+        public function finishCoAuthorsMigration()
+        {
+            if (!wp_verify_nonce($_GET['nonce'], 'migrate_coauthors')) {
+                wp_send_json_error(null, 403);
+            }
+
+            // Co-Authors sometimes don't have a taxonomy term for the author, but uses the post_author value instead.
+            Installer::convert_post_author_into_taxonomy();
+            Installer::add_author_term_for_posts();
+            Installer::fix_author_url();
+
+            // nonce: migrate_coauthors
+            wp_send_json(
+                [
+                    'success' => true,
                 ]
             );
         }

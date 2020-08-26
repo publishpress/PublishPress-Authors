@@ -24,7 +24,7 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
             showDeactivateOption: false,
             disablingCoAuthors: false
         };
-    };
+    }
 
     clickStart(e) {
         e.preventDefault();
@@ -68,6 +68,39 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
         }, 1000);
     }
 
+    finishCoAuthorsMigration(onFinishCallBack) {
+        var self = this;
+
+        this.setState({
+            progress: 99,
+            'log': __('Creating missed post authors...', 'publishpress-authors')
+        });
+
+        window.setTimeout(() => {
+            jQuery.ajax({
+                type: 'GET',
+                dataType: 'json',
+                url: ajaxurl,
+                async: false,
+                data: {
+                    action: 'finish_coauthors_migration',
+                    nonce: this.props.nonce
+                },
+                success: function (response) {
+                    onFinishCallBack();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    self.setState({
+                        progress: 0,
+                        inProgress: false,
+                        log: __('Error: ', 'publishpress-authors') + errorThrown + ' [' + textStatus + ']',
+                        showDeactivateOption: false
+                    });
+                }
+            });
+        }, 1000);
+    }
+
     migrateChunkOfData() {
         var self = this;
 
@@ -95,17 +128,19 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
                 if (totalMigrated < self.state.totalToMigrate) {
                     self.migrateChunkOfData();
                 } else {
-                    self.setState({
-                        progress: 100,
-                        log: __('Done! Co-Authors Plus data was copied.', 'publishpress-authors'),
-                        showDeactivateOption: true
-                    });
-
-                    window.setTimeout(() => {
+                    self.finishCoAuthorsMigration(function () {
                         self.setState({
-                            inProgress: false
+                            progress: 100,
+                            log: __('Done! Co-Authors Plus data was copied.', 'publishpress-authors'),
+                            showDeactivateOption: true
                         });
-                    }, 1000);
+
+                        window.setTimeout(() => {
+                            self.setState({
+                                inProgress: false
+                            });
+                        }, 1000);
+                    });
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
