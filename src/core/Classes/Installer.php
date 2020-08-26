@@ -35,7 +35,12 @@ class Installer
     public static function install($current_version)
     {
         self::convert_post_author_into_taxonomy();
-        self::add_author_term_for_posts();
+
+        // Do not execute the post_author migration to post terms if Co-Authors Plus is activated.
+        if (!isset($GLOBALS['coauthors_plus']) || empty($GLOBALS['coauthors_plus'])) {
+            self::add_author_term_for_posts();
+        }
+
         self::add_capabilities();
         self::fix_author_url();
         self::flush_permalinks();
@@ -151,7 +156,8 @@ class Installer
                 if (is_object($author)) {
                     $authors = [$author];
                     $authors = wp_list_pluck($authors, 'term_id');
-                    wp_set_object_terms($post_data->ID, $authors, 'author');
+
+                    wp_add_object_terms($post_data->ID, $authors, 'author');
                 }
             }
         }
@@ -214,8 +220,12 @@ class Installer
     {
         if (version_compare($previous_version, '2.0.2', '<')) {
             self::convert_post_author_into_taxonomy();
-            self::add_author_term_for_posts();
             self::fix_author_url();
+
+            // Do not execute the post_author migration to post terms if Co-Authors Plus is activated.
+            if (!isset($GLOBALS['coauthors_plus']) || empty($GLOBALS['coauthors_plus'])) {
+                self::add_author_term_for_posts();
+            }
         }
 
         /**

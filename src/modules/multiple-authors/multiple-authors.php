@@ -1457,7 +1457,11 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function action_create_post_authors()
         {
             Installer::convert_post_author_into_taxonomy();
-            Installer::add_author_term_for_posts();
+
+            // Do not execute the post_author migration to post terms if Co-Authors Plus is activated.
+            if (!isset($GLOBALS['coauthors_plus']) || empty($GLOBALS['coauthors_plus'])) {
+                Installer::add_author_term_for_posts();
+            }
         }
 
         public function action_create_role_authors()
