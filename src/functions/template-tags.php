@@ -96,6 +96,10 @@ if (!function_exists('get_multiple_authors')) {
             if (!empty($terms)) {
                 // We found authors
                 foreach ($terms as $term) {
+                    if (is_wp_error($term) || empty($term)) {
+                        continue;
+                    }
+
                     if (is_object($term)) {
                         $term = $term->term_id;
                     }
@@ -104,7 +108,7 @@ if (!function_exists('get_multiple_authors')) {
 
                     $author = Author::get_by_term_id($termId);
 
-                    if ($filter_the_author) {
+                    if ($filter_the_author && !is_wp_error($author)) {
                         $author->display_name = apply_filters('the_author', $author->display_name);
                     }
 
