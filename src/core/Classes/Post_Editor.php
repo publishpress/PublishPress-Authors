@@ -1,15 +1,17 @@
 <?php
 /**
- * @package     MultipleAuthors
- * @author      PublishPress <help@publishpress.com>
- * @copyright   Copyright (C) 2018 PublishPress. All rights reserved.
- * @license     GPLv2 or later
- * @since       1.1.0
+ * @package   MultipleAuthors
+ * @author    PublishPress <help@publishpress.com>
+ * @copyright Copyright (C) 2018 PublishPress. All rights reserved.
+ * @license   GPLv2 or later
+ * @since     1.1.0
  */
 
 namespace MultipleAuthors\Classes;
 
 use MultipleAuthors\Classes\Objects\Author;
+use MultipleAuthors\Factory;
+
 
 /**
  * Class Post_Editor
@@ -68,8 +70,8 @@ class Post_Editor
     /**
      * Render the authors for a post in the table
      *
-     * @param string $column Name of the column.
-     * @param int $post_id ID of the post being rendered.
+     * @param string $column  Name of the column.
+     * @param int    $post_id ID of the post being rendered.
      */
     public static function action_manage_posts_custom_column($column, $post_id)
     {
@@ -98,9 +100,9 @@ class Post_Editor
 
         if (empty($authors_str)) {
             $authors_str[] = '<span aria-hidden="true">—</span><span class="screen-reader-text">' . __(
-                    'No author',
-                    'publishpress-authors'
-                ) . '</span>';
+                'No author',
+                'publishpress-authors'
+            ) . '</span>';
         }
 
         echo implode(', ', $authors_str);
@@ -184,8 +186,8 @@ class Post_Editor
             );
             ?>
         </script>
-    <?php
-    endif;
+            <?php
+        endif;
     }
 
     /**
@@ -216,8 +218,8 @@ class Post_Editor
     /**
      * Handle saving of the Author meta box
      *
-     * @param int $post_id ID for the post being saved.
-     * @param WP_Post $post Object for the post being saved.
+     * @param int     $post_id ID for the post being saved.
+     * @param WP_Post $post    Object for the post being saved.
      */
     public static function action_save_post_authors_metabox($post_id, $post)
     {
@@ -229,7 +231,8 @@ class Post_Editor
 
         if (!isset($_POST['authors-save'])
             || !wp_verify_nonce($_POST['authors-save'], 'authors-save')
-            || !current_user_can(get_taxonomy('author')->cap->assign_terms)) {
+            || !current_user_can(get_taxonomy('author')->cap->assign_terms)
+        ) {
             return;
         }
 
@@ -270,9 +273,9 @@ class Post_Editor
     /**
      * Assign a author term when a post is initially created
      *
-     * @param int $post_id Post ID.
-     * @param WP_Post $post Post object.
-     * @param bool $update Whether this is an update.
+     * @param int     $post_id Post ID.
+     * @param WP_Post $post    Post object.
+     * @param bool    $update  Whether this is an update.
      */
     public static function action_save_post_set_initial_author($post_id, $post, $update)
     {
@@ -283,9 +286,18 @@ class Post_Editor
             return;
         }
 
+
         $default_author = false;
-        if ($post->post_author) {
-            $default_author = Author::get_by_user_id($post->post_author);
+
+        $legacyPlugin = Factory::getLegacyPlugin();
+        $default_author_setting= $legacyPlugin->modules->multiple_authors
+            ->options->default_author_for_new_posts;
+        if (!empty($default_author_setting)) {
+            $default_author = Author::get_by_term_id($default_author_setting);
+        } else {
+            if ($post->post_author) {
+                $default_author = Author::get_by_user_id($post->post_author);
+            }
         }
 
         /**
