@@ -150,11 +150,6 @@ class Query
             $where = preg_replace($regex, '(' . $maybe_both_query . ' ' . $terms_implode . ')', $where, -1);
         }
 
-        // Allow users to edit orphan posts.
-        if (current_user_can('ppma_edit_orphan_post')) {
-            $where .= " OR (post_author = 0 && {$wpdb->posts}.post_type = 'post' && {$wpdb->posts}.post_status IN ('publish', 'private'))";
-        }
-
         return $where;
     }
 

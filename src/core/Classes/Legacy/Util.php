@@ -15,35 +15,70 @@ class Util
      * Checks for the current post type
      *
      * @return string|null $post_type The post type we've found, or null if no post type
+     *
+     * @deprecated getCurrentPostType
      */
     public static function get_current_post_type()
     {
+        return static::getCurrentPostType();
+    }
+
+    /**
+     * Checks for the current post type
+     *
+     * @return string|null $post_type The post type we've found, or null if no post type
+     */
+    public static function getCurrentPostType()
+    {
         global $post, $typenow, $pagenow, $current_screen;
 
-        // get_post() needs a variable
         $post_id = isset($_REQUEST['post']) ? (int)$_REQUEST['post'] : false;
 
+        $post_type = null;
+
         if ($post && $post->post_type) {
-            $post_type = $post->post_type;
+            $post_type = static::getPostPostType($post);
         } elseif ($typenow) {
             $post_type = $typenow;
         } elseif ($current_screen && !empty($current_screen->post_type)) {
             $post_type = $current_screen->post_type;
-        } elseif (isset($_REQUEST['post_type'])) {
+        } elseif (isset($_REQUEST['post_type']) && !empty($_REQUEST['post_type'])) {
             $post_type = sanitize_key($_REQUEST['post_type']);
-        } elseif ('post.php' == $pagenow
-            && $post_id
-            && !empty(get_post($post_id)->post_type)) {
-            $post_type = get_post($post_id)->post_type;
+        } elseif ('post.php' == $pagenow && !empty($post_id)) {
+            $post_type = static::getPostPostType($post_id);
         } elseif ('edit.php' == $pagenow && empty($_REQUEST['post_type'])) {
             $post_type = 'post';
         } elseif (self::isAuthor()) {
             $post_type = 'post';
-        } else {
-            $post_type = null;
         }
 
         return $post_type;
+    }
+
+    /**
+     * @param \WP_Post|int $postOrPostId
+     *
+     * @return string|false
+     */
+    public static function getPostPostType($postOrPostId)
+    {
+        $post = null;
+
+        if (is_numeric($postOrPostId)) {
+            $postOrPostId = (int)$postOrPostId;
+
+            if (!empty($postOrPostId)) {
+                $post = get_post($postOrPostId);
+            }
+        } else {
+            $post = $postOrPostId;
+        }
+
+        if (!$post instanceof \WP_Post) {
+            return false;
+        }
+
+        return $post->post_type;
     }
 
     /**

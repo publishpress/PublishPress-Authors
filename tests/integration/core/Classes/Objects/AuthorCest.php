@@ -287,7 +287,7 @@ class AuthorCest
         );
     }
 
-    public function tryToGetNameForMappedToUserAuthor(\WpunitTester $I)
+    public function tryToGetNameForMappedToUserAuthorWithoutChangingAuthorsName(\WpunitTester $I)
     {
         $userAuthorID = $I->factory('a new user')->user->create(
             [
@@ -295,12 +295,48 @@ class AuthorCest
             ]
         );
 
-        $user = get_user_by('id', $userAuthorID);
+        $user   = get_user_by('id', $userAuthorID);
         $author = Author::create_from_user($userAuthorID);
 
         $I->assertEquals(
             $user->display_name,
             $author->name
+        );
+
+        $I->assertEquals(
+            $user->display_name,
+            $author->display_name
+        );
+    }
+
+    public function tryToGetAuthorsDisplayNameForMappedToUserAuthorChangingAuthorsName(\WpunitTester $I)
+    {
+        $expected = 'Aslam Jorge';
+
+        $userAuthorID = $I->factory('a new user')->user->create(
+            [
+                'role' => 'author',
+            ]
+        );
+
+        $user   = get_user_by('id', $userAuthorID);
+        $author = Author::create_from_user($userAuthorID);
+        wp_update_term($author->term_id, 'author', ['name' => $expected]);
+
+        $I->assertEquals(
+            $expected,
+            $author->display_name,
+        );
+
+        $I->assertEquals(
+            $expected,
+            $author->name,
+        );
+
+        $I->assertNotEquals(
+            $user->display_name,
+            $author->display_name,
+            'If the author has a different display_name, that is the expected value, not the user\'s display_name.'
         );
     }
 
@@ -329,7 +365,7 @@ class AuthorCest
             ]
         );
 
-        $user = get_user_by('id', $userAuthorID);
+        $user   = get_user_by('id', $userAuthorID);
         $author = Author::create_from_user($userAuthorID);
 
         $I->assertEquals(

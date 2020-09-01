@@ -29,50 +29,84 @@ if (!function_exists('get_multiple_authors')) {
      */
     function get_multiple_authors($post = 0, $filter_the_author = true, $archive = false, $ignoreCache = false)
     {
-        global $multipleAuthorsForPost;
+        global $multipleAuthorsForPost, $wpdb;
 
-        $cacheKey = null;
-        if (is_object($post)) {
-            $cacheKey = $post->ID;
-        } else {
-            $cacheKey = (int)$post;
+        if (empty($multipleAuthorsForPost)) {
+            $multipleAuthorsForPost = [];
         }
-        $cacheKey .= $filter_the_author ? 1 : 0;
-        $cacheKey .= $archive ? 1 : 0;
-        $authors  = [];
+
+        if (is_object($post)) {
+            $post = $post->ID;
+        }
+        $postId = (int)$post;
+
+        $cacheKey = [
+            'post-id'           => $postId,
+            'filter-the-author' => $filter_the_author ? 1 : 0,
+            'archive'           => $archive ? 1 : 0,
+            // Needed for the author page (archive)
+            'author_name'       => '',
+        ];
+
+        $authorName = '';
+        if ($archive) {
+            $authorName = get_query_var('author_name');
+
+            $cacheKey['author_name'] = $authorName;
+        }
+
+        $cacheKey = md5(json_encode($cacheKey));
+
+        $authors = [];
 
         if (empty($multipleAuthorsForPost) || !isset($multipleAuthorsForPost[$cacheKey]) || $ignoreCache) {
+            $terms = [];
+          
             if (!$archive) {
-                // If not archive, we get the authors from the current post, or from the given post.
-                if (is_null($post)) {
+                if (empty($postId)) {
                     $post = get_post();
-                } elseif (is_int($post) || is_numeric($post)) {
-                    $post = get_post((int)$post);
+
+                    if (!empty($post)) {
+                        $postId = $post->ID;
+                    }
                 }
 
-                if (!$post) {
+                if (empty($postId)) {
                     return [];
                 }
 
-                $taxonomy = 'author';
-                $terms    = wp_get_post_terms($post->ID, $taxonomy, ['fields' => 'ids']);
+                $terms = $wpdb->get_results(
+                    $wpdb->prepare(
+                        "SELECT tt.term_id
+                            FROM {$wpdb->term_relationships} AS tr
+                            INNER JOIN {$wpdb->term_taxonomy} AS tt ON (tr.`term_taxonomy_id` = tt.`term_taxonomy_id`)
+                            WHERE tr.object_id = %d AND tt.taxonomy = 'author'",
+                        $postId
+                    )
+                );
             } else {
                 // Get the term related to the current author from the archive page.
-                $authorName = get_query_var('author_name');
-                $terms      = [];
+                $terms = [];
 
                 if (!empty($authorName)) {
                     $terms[] = get_term_by('slug', $authorName, 'author');
                 }
             }
 
-            if ($terms && !is_wp_error($terms)) {
+            if (is_wp_error($terms)) {
+                return [];
+            }
+
+            if (!empty($terms)) {
+                // We found authors
                 foreach ($terms as $term) {
-                    if (is_numeric($term)) {
-                        $term = get_term($term);
+                    if (is_object($term)) {
+                        $term = $term->term_id;
                     }
 
-                    $author = Author::get_by_term_id($term->term_id);
+                    $termId = (int)$term;
+
+                    $author = Author::get_by_term_id($termId);
 
                     if ($filter_the_author) {
                         $author->display_name = apply_filters('the_author', $author->display_name);
@@ -80,7 +114,9 @@ if (!function_exists('get_multiple_authors')) {
 
                     $authors[] = $author;
                 }
-            } elseif (!$terms) {
+            } else {
+                // Fallback to the post author
+                $post = get_post($postId);
                 $user = get_user_by('id', $post->post_author);
 
                 if ($user) {
@@ -115,12 +151,12 @@ if (!function_exists('multiple_authors_get_all_authors')) {
 
         $args = wp_parse_args($args, $defaults);
 
-        $terms = get_terms('author', $args);
+        $terms   = get_terms('author', $args);
         $authors = [];
         foreach ($terms as $term) {
-            $author = Author::get_by_term_id($term->term_id);
+            $author               = Author::get_by_term_id($term->term_id);
             $author->display_name = apply_filters('the_author', $author->display_name);
-            $authors[] = $author;
+            $authors[]            = $author;
         }
 
         return $authors;
