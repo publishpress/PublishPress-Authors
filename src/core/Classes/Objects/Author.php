@@ -435,14 +435,22 @@ class Author
                 $return = get_term_field('name', $this->term_id, 'author', 'raw');
 
                 if (empty($return) && !$this->is_guest()) {
-                    $return = $this->get_user_object()->display_name;
+                    $userObject = $this->get_user_object();
+
+                    if (!empty($userObject) && !is_wp_error($userObject)) {
+                        $return = $userObject->display_name;
+                    }
                 }
 
                 break;
 
             case 'slug':
                 if (!$this->is_guest()) {
-                    $return = $this->get_user_object()->user_nicename;
+                    $userObject = $this->get_user_object();
+
+                    if (!empty($userObject) && !is_wp_error($userObject)) {
+                        $return = $this->get_user_object()->user_nicename;
+                    }
                 } else {
                     $return = get_term_field('slug', $this->term_id, 'author', 'raw');
                 }

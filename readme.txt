@@ -127,6 +127,10 @@ There are two ways to install the PublishPress Authors plugin:
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.html).
 
+= [3.5.1] - 2020-09-02 =
+
+* Fixed: Optimize performance issue in the get_multiple_authors , #190;
+
 = [3.5.1] - 2020-08-20 =
 
 * Fixed: Avoid warnings regarding constants already defined;
