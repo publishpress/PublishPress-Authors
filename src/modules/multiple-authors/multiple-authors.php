@@ -703,13 +703,13 @@ if (!class_exists('MA_Multiple_Authors')) {
             $actions = [
                 'create_post_authors' => [
                     'title'        => __('Create missed post authors', 'publishpress-authors'),
-                    'description'  => 'This action is very helpful if you\'re installing Multiple Authors on an existing WordPress site. This action analyzes all the posts on your site. If the action finds a WordPress user is set as an author, it will automatically share that data with Multiple Authors.',
+                    'description'  => 'This action is very helpful if you\'re installing PublishPress Authors on an existing WordPress site. This action analyzes all the posts on your site. If the action finds a WordPress user is set as an author, it will automatically share that data with PublishPress Authors.',
                     'button_label' => __('Create missed post authors', 'publishpress-authors'),
                 ],
 
                 'create_role_authors' => [
                     'title'        => __('Create missed authors from role', 'publishpress-authors'),
-                    'description'  => 'This action is very helpful if you\'re installing Multiple Authors on an existing WordPress site. This action finds all the users in a role and creates author profiles for them. You can choose the roles using the "Automatically create author profiles" setting.',
+                    'description'  => 'This action is very helpful if you\'re installing PublishPress Authors on an existing WordPress site. This action finds all the users in a role and creates author profiles for them. You can choose the roles using the "Automatically create author profiles" setting.',
                     'button_label' => __('Create missed authors from role', 'publishpress-authors'),
                 ],
             ];
@@ -730,14 +730,14 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             $actions['delete_mapped_authors'] = [
                 'title'        => __('Delete Mapped Authors', 'publishpress-authors'),
-                'description'  => 'This action can reset the Multiple Authors data before using other maintenance options. It will delete all author profiles that are mapped to a WordPress user account. This will not delete the WordPress user accounts, but any links between the posts and multiple authors will be lost.',
+                'description'  => 'This action can reset the PublishPress Authors data before using other maintenance options. It will delete all author profiles that are mapped to a WordPress user account. This will not delete the WordPress user accounts, but any links between the posts and multiple authors will be lost.',
                 'button_label' => __('Delete all authors mapped to users', 'publishpress-authors'),
                 'button_icon'  => 'dashicons-warning',
             ];
 
             $actions['delete_guest_authors'] = [
                 'title'        => __('Delete Guest Authors', 'publishpress-authors'),
-                'description'  => 'This action can reset the Multiple Authors data before using other maintenance options. Guest authors are author profiles that are not mapped to a WordPress user account. This action will delete all guest authors.',
+                'description'  => 'This action can reset the PublishPress Authors data before using other maintenance options. Guest authors are author profiles that are not mapped to a WordPress user account. This action will delete all guest authors.',
                 'button_label' => __('Delete all guest authors', 'publishpress-authors'),
                 'button_icon'  => 'dashicons-warning',
             ];
