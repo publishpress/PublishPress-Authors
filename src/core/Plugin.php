@@ -1622,6 +1622,7 @@ class Plugin
             $capabilities,
             [
                 'ppma_manage_authors',
+                'ppma_edit_post_authors',
             ]
         );
 
