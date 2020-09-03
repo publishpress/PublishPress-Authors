@@ -896,7 +896,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function filter_workflow_receiver_post_authors($receivers, $workflow, $args)
         {
             if (!function_exists('get_multiple_authors')) {
-                require_once PP_AUTHORS_SRC_PATH . 'functions/template-tags.php';
+                require_once PP_AUTHORS_BASE_PATH . 'functions/template-tags.php';
             }
 
             $authors = get_multiple_authors($args['post']->ID);

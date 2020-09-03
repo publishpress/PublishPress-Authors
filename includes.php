@@ -23,9 +23,9 @@ if (!defined('PP_AUTHORS_LOADED')) {
         }
     }
 
-    require_once PP_AUTHORS_SRC_PATH . '/deprecated.php';
-    require_once PP_AUTHORS_SRC_PATH . '/functions/template-tags.php';
-    require_once PP_AUTHORS_SRC_PATH . '/functions/amp.php';
+    require_once PP_AUTHORS_BASE_PATH . 'deprecated.php';
+    require_once PP_AUTHORS_BASE_PATH . 'src/functions/template-tags.php';
+    require_once PP_AUTHORS_BASE_PATH . 'src/functions/amp.php';
 
     if (is_admin() && !defined('PUBLISHPRESS_AUTHORS_SKIP_VERSION_NOTICES')) {
         if (!defined('PP_VERSION_NOTICES_LOADED')) {
