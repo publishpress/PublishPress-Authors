@@ -14,7 +14,7 @@ use MultipleAuthors\Classes\Legacy\LegacyPlugin;
 defined('ABSPATH') or die('No direct script access allowed.');
 
 if (!defined('MULTIPLE_AUTHORS_LOADED')) {
-    require_once __DIR__ . '/../includes.php';
+    require_once __DIR__ . '/../../includes.php';
 }
 
 /**

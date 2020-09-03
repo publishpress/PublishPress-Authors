@@ -34,9 +34,14 @@ class Installer
      */
     public static function install($current_version)
     {
-        self::convert_post_author_into_taxonomy();
-        self::add_author_term_for_posts();
-        self::add_capabilities();
+        // Do not execute the post_author migration to post terms if Co-Authors Plus is activated.
+        if (!isset($GLOBALS['coauthors_plus']) || empty($GLOBALS['coauthors_plus'])) {
+            self::convert_post_author_into_taxonomy();
+            self::add_author_term_for_posts();
+        }
+
+        self::add_administrator_capabilities();
+        self::add_new_edit_post_authors_cap();
         self::fix_author_url();
         self::flush_permalinks();
 
@@ -151,17 +156,19 @@ class Installer
                 if (is_object($author)) {
                     $authors = [$author];
                     $authors = wp_list_pluck($authors, 'term_id');
-                    wp_set_object_terms($post_data->ID, $authors, 'author');
+
+                    wp_add_object_terms($post_data->ID, $authors, 'author');
                 }
             }
         }
     }
 
-    private static function add_capabilities()
+    private static function add_administrator_capabilities()
     {
         $role = get_role('administrator');
         $role->add_cap('ppma_manage_authors');
         $role->add_cap('manage_options');
+        $role->add_cap('ppma_edit_post_authors');
     }
 
     /**
@@ -205,6 +212,20 @@ class Installer
         }
     }
 
+    private static function add_new_edit_post_authors_cap()
+    {
+        $cap = 'ppma_edit_post_authors';
+
+        $role = get_role('author');
+        $role->add_cap($cap);
+
+        $role = get_role('editor');
+        $role->add_cap($cap);
+
+        $role = get_role('contributor');
+        $role->add_cap($cap);
+    }
+
     /**
      * Runs methods when the plugin is being upgraded to a most recent version.
      *
@@ -213,9 +234,16 @@ class Installer
     public static function upgrade($previous_version)
     {
         if (version_compare($previous_version, '2.0.2', '<')) {
-            self::convert_post_author_into_taxonomy();
-            self::add_author_term_for_posts();
+            // Do not execute the post_author migration to post terms if Co-Authors Plus is activated.
+            if (!isset($GLOBALS['coauthors_plus']) || empty($GLOBALS['coauthors_plus'])) {
+                self::convert_post_author_into_taxonomy();
+                self::add_author_term_for_posts();
+            }
             self::fix_author_url();
+        }
+
+        if (version_compare($previous_version, '3.6.0', '<')) {
+            self::add_new_edit_post_authors_cap();
         }
 
         /**
@@ -223,7 +251,7 @@ class Installer
          */
         do_action('pp_authors_upgrade', $previous_version);
 
-        self::add_capabilities();
+        self::add_administrator_capabilities();
         self::flush_permalinks();
     }
 }
