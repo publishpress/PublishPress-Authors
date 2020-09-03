@@ -131,10 +131,15 @@ and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec
 
 * Added: Added support to update authors for posts using the quick edit form, #180;
 * Added: Added argument "$ignoreCache" to the get_multiple_authors;
+* Added: Added new capability (ppma_edit_post_authors) to control who can edit post authors, #213;
+* Added: Added an admin notice if Co-Authors Plus is installed asking to read the documentation for migrating data, #209;
+* Fixed: Removed mentions to the old name: Multiple Authors;
+* Fixed: Error message "The plugin does not have a valid header" in PHP 5.6, #215;
 * Fixed: Optimize performance in the get_multiple_authors again, replacing a function call with a specific db query; #190;
-* Fixed: Fixed Co-Authors data migration after installing. We still require to manually run the maintenance task to migrate the data;
+* Fixed: Fixed Co-Authors Plus data migration after installing. We still require to manually run the maintenance task to migrate the data;
 * Fixed: Fixed get_multiple_authors cache when no arguments are passed to the functions;
 * Fixed: Fixed fatal error that happens when get_term returns an error;
+* Fixed: Upgrade link and banner were displayed for all users with access to the admin, #208;
 
 = [3.5.1] - 2020-08-20 =
 
