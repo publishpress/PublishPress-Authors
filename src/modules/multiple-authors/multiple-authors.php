@@ -1926,6 +1926,10 @@ if (!class_exists('MA_Multiple_Authors')) {
         {
             global $pagenow;
 
+            if (!isset($GLOBALS['coauthors_plus']) || empty($GLOBALS['coauthors_plus'])) {
+                return;
+            }
+
             $requirements = [
                 (isset($_GET['page']) && $_GET['page'] === 'ppma-modules-settings') ? 1 : 0,
                 ($pagenow === 'edit-tags.php' && isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'author') ? 1 : 0

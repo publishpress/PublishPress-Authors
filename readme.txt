@@ -127,6 +127,10 @@ There are two ways to install the PublishPress Authors plugin:
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.html).
 
+= [3.6.1] - 2020-09-03 =
+
+* Fixed: Fix admin notice for Co-Authors Plus displaying even when the plugin is not installed;
+
 = [3.6.0] - 2020-09-02 =
 
 * Added: Added support to update authors for posts using the quick edit form, #180;
