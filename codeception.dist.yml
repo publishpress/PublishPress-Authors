@@ -23,6 +23,9 @@ extensions:
                 src: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/src"
                 vendor: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/vendor"
                 publishpress-authors.php: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/publishpress-authors.php"
+                includes.php: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/includes.php"
+                deprecated.php: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/deprecated.php"
+                defines.php: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/defines.php"
 
 params:
     - .env.testing
