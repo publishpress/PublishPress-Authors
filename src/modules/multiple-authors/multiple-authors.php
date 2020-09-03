@@ -141,6 +141,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_action('admin_init', [$this, 'register_settings']);
             add_action('admin_init', [$this, 'handle_action_reset_author_terms']);
             add_action('admin_init', [$this, 'migrate_legacy_settings']);
+            add_action('admin_init', [$this, 'dismissCoAuthorsMigrationNotice']);
+            add_action('admin_notices', [$this, 'coauthorsMigrationNotice']);
             add_action('admin_notices', [$this, 'handle_action_reset_author_terms_notice']);
 
             add_action('multiple_authors_delete_mapped_authors', [$this, 'action_delete_mapped_authors']);
@@ -703,13 +705,13 @@ if (!class_exists('MA_Multiple_Authors')) {
             $actions = [
                 'create_post_authors' => [
                     'title'        => __('Create missed post authors', 'publishpress-authors'),
-                    'description'  => 'This action is very helpful if you\'re installing Multiple Authors on an existing WordPress site. This action analyzes all the posts on your site. If the action finds a WordPress user is set as an author, it will automatically share that data with Multiple Authors.',
+                    'description'  => 'This action is very helpful if you\'re installing PublishPress Authors on an existing WordPress site. This action analyzes all the posts on your site. If the action finds a WordPress user is set as an author, it will automatically share that data with PublishPress Authors.',
                     'button_label' => __('Create missed post authors', 'publishpress-authors'),
                 ],
 
                 'create_role_authors' => [
                     'title'        => __('Create missed authors from role', 'publishpress-authors'),
-                    'description'  => 'This action is very helpful if you\'re installing Multiple Authors on an existing WordPress site. This action finds all the users in a role and creates author profiles for them. You can choose the roles using the "Automatically create author profiles" setting.',
+                    'description'  => 'This action is very helpful if you\'re installing PublishPress Authors on an existing WordPress site. This action finds all the users in a role and creates author profiles for them. You can choose the roles using the "Automatically create author profiles" setting.',
                     'button_label' => __('Create missed authors from role', 'publishpress-authors'),
                 ],
             ];
@@ -730,14 +732,14 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             $actions['delete_mapped_authors'] = [
                 'title'        => __('Delete Mapped Authors', 'publishpress-authors'),
-                'description'  => 'This action can reset the Multiple Authors data before using other maintenance options. It will delete all author profiles that are mapped to a WordPress user account. This will not delete the WordPress user accounts, but any links between the posts and multiple authors will be lost.',
+                'description'  => 'This action can reset the PublishPress Authors data before using other maintenance options. It will delete all author profiles that are mapped to a WordPress user account. This will not delete the WordPress user accounts, but any links between the posts and multiple authors will be lost.',
                 'button_label' => __('Delete all authors mapped to users', 'publishpress-authors'),
                 'button_icon'  => 'dashicons-warning',
             ];
 
             $actions['delete_guest_authors'] = [
                 'title'        => __('Delete Guest Authors', 'publishpress-authors'),
-                'description'  => 'This action can reset the Multiple Authors data before using other maintenance options. Guest authors are author profiles that are not mapped to a WordPress user account. This action will delete all guest authors.',
+                'description'  => 'This action can reset the PublishPress Authors data before using other maintenance options. Guest authors are author profiles that are not mapped to a WordPress user account. This action will delete all guest authors.',
                 'button_label' => __('Delete all guest authors', 'publishpress-authors'),
                 'button_icon'  => 'dashicons-warning',
             ];
@@ -896,7 +898,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function filter_workflow_receiver_post_authors($receivers, $workflow, $args)
         {
             if (!function_exists('get_multiple_authors')) {
-                require_once PP_AUTHORS_SRC_PATH . 'functions/template-tags.php';
+                require_once PP_AUTHORS_BASE_PATH . 'functions/template-tags.php';
             }
 
             $authors = get_multiple_authors($args['post']->ID);
@@ -1459,11 +1461,17 @@ if (!class_exists('MA_Multiple_Authors')) {
         {
             // Do not execute the post_author migration to post terms if Co-Authors Plus is activated.
             // The user need to manually run the Co-Authors migration task before running this again.
-            if (!isset($GLOBALS['coauthors_plus']) || empty($GLOBALS['coauthors_plus'])) {
+            if (!$this->isCoAuthorsPlusActivated()) {
                 Installer::convert_post_author_into_taxonomy();
                 Installer::add_author_term_for_posts();
             }
         }
+
+        private function isCoAuthorsPlusActivated()
+        {
+            return (isset($GLOBALS['coauthors_plus']) && !empty($GLOBALS['coauthors_plus']));
+        }
+
 
         public function action_create_role_authors()
         {
@@ -1640,7 +1648,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     PP_AUTHORS_VERSION
                 );
 
-                if (isset($GLOBALS['coauthors_plus']) && !empty($GLOBALS['coauthors_plus'])) {
+                if ($this->isCoAuthorsPlusActivated()) {
                     wp_enqueue_script(
                         'publishpress-authors-coauthors-migration',
                         PP_AUTHORS_URL . '/src/assets/js/coauthors-migration.min.js',
@@ -1912,6 +1920,54 @@ if (!class_exists('MA_Multiple_Authors')) {
             if (false !== $author) {
                 Author::convert_into_guest_author($author->term_id);
             }
+        }
+
+        public function coauthorsMigrationNotice()
+        {
+            global $pagenow;
+
+            $requirements = [
+                (isset($_GET['page']) && $_GET['page'] === 'ppma-modules-settings') ? 1 : 0,
+                ($pagenow === 'edit-tags.php' && isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'author') ? 1 : 0
+            ];
+
+            if (array_sum($requirements) === 0) {
+                return;
+            }
+
+            if (!current_user_can('manage_options')) {
+                return;
+            }
+
+            if (get_option('publishpress_authors_dismiss_coauthors_migration_notice') == 1) {
+                return;
+            }
+
+            ?>
+            <div class="notice notice-success is-dismissible">
+                <p>
+                    <?php _e('It looks like you have Co-Authors Plus installed.', 'publishpress-authors'); ?>
+                    <a href="https://publishpress.com/knowledge-base/co-authors-plus/"><?php _e(
+                            'Please click here and read this guide!',
+                            'publishpress-authors'
+                        ); ?></a>
+                    |
+                    <a href="<?php echo add_query_arg(['action' => 'dismiss_coauthors_migration_notice']); ?>"><?php _e(
+                            'Dismiss',
+                            'publishpress-authors'
+                        ); ?></a>
+                </p>
+            </div>
+            <?php
+        }
+
+        public function dismissCoAuthorsMigrationNotice()
+        {
+            if (!isset($_GET['action']) || $_GET['action'] !== 'dismiss_coauthors_migration_notice') {
+                return;
+            }
+
+            update_option('publishpress_authors_dismiss_coauthors_migration_notice', 1);
         }
     }
 }
