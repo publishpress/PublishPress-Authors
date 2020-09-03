@@ -202,7 +202,6 @@ class Utils
 
         $valid = (bool)in_array($pagenow, self::$pages_whitelist);
 
-
         if (!$valid) {
             return false;
         }
@@ -379,7 +378,12 @@ class Utils
             return true;
         }
 
-        $can_set_authors = isset($current_user->allcaps['edit_others_posts']) ? $current_user->allcaps['edit_others_posts'] : false;
+        $taxonomy = get_taxonomy('author');
+        if ($taxonomy !== false && current_user_can($taxonomy->cap->assign_terms)) {
+            $can_set_authors = true;
+        } else {
+            $can_set_authors = isset($current_user->allcaps['edit_others_posts']) ? $current_user->allcaps['edit_others_posts'] : false;
+        }
 
         return apply_filters('coauthors_plus_edit_authors', $can_set_authors);
     }
