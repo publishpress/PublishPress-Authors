@@ -24,6 +24,7 @@
 namespace MultipleAuthors\Classes;
 
 use MultipleAuthors\Classes\Objects\Author;
+use WP_Role;
 
 class Installer
 {
@@ -215,15 +216,19 @@ class Installer
     private static function add_new_edit_post_authors_cap()
     {
         $cap = 'ppma_edit_post_authors';
+        $roles = [
+            'author',
+            'editor',
+            'contributor',
+        ];
 
-        $role = get_role('author');
-        $role->add_cap($cap);
-
-        $role = get_role('editor');
-        $role->add_cap($cap);
-
-        $role = get_role('contributor');
-        $role->add_cap($cap);
+        foreach ($roles as $roleNmae)
+        {
+            $role = get_role($roleNmae);
+            if ($role instanceof WP_Role) {
+                $role->add_cap($cap);
+            }
+        }
     }
 
     /**
