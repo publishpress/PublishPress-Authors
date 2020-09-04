@@ -468,8 +468,6 @@ class Author
         }
 
         if (is_wp_error($return)) {
-            $return = false;
-
             error_log(
                 sprintf(
                     '[PublishPress Authors] Error found while getting author\'s %s attribute (term_id = %d): %s',
@@ -478,6 +476,8 @@ class Author
                     $return->get_error_message()
                 )
             );
+
+            $return = false;
         }
 
         $return = apply_filters('publishpress_authors_author_attribute', $return, $this->term_id, $attribute);
