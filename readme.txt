@@ -127,6 +127,10 @@ There are two ways to install the PublishPress Authors plugin:
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.html).
 
+= UNRELEASED =
+
+* Changed: Temporarily disabled the support to update authors for posts using the quick edit form, #180;
+
 = [3.6.3] - 2020-09-04 =
 
 * Fixed: Fix error "Uncaught Error: Call to a member function add_cap() on null", #223;
