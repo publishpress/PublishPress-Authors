@@ -667,7 +667,6 @@ if (!class_exists('MA_Multiple_Authors')) {
          */
         public function settings_default_author_for_new_posts()
         {
-
             $id    = $this->module->options_group_name . '_default_author_for_new_posts';
             $value = isset($this->module->options->default_author_for_new_posts) ? $this->module->options->default_author_for_new_posts : '';
             ob_start();
@@ -681,6 +680,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         $author               = Author::get_by_term_id($value);
                         $author->display_name = apply_filters('the_author', $author->display_name);
                         ?>
+                        <option value=""></option>
                         <option value="<?php echo $value; ?>" selected="selected"><?php echo $author->display_name; ?></option> 
                     <?php } ?>
                 </select>
