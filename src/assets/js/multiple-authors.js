@@ -5,9 +5,9 @@
  * @license   GPLv2 or later
  * @since     1.0.0
  */
-jQuery(document).ready(function ($) {
+jQuery(document).ready(function($) {
   // Copied from ExtJS.
-  window.htmlEnDeCode = (function () {
+  window.htmlEnDeCode = (function() {
     var charToEntityRegex, entityToCharRegex, charToEntity, entityToChar;
 
     function resetCharacterEntities() {
@@ -43,7 +43,7 @@ jQuery(document).ready(function ($) {
     }
 
     function htmlEncode(value) {
-      var htmlEncodeReplaceFn = function (match, capture) {
+      var htmlEncodeReplaceFn = function(match, capture) {
         return charToEntity[capture];
       };
 
@@ -53,7 +53,7 @@ jQuery(document).ready(function ($) {
     }
 
     function htmlDecode(value) {
-      var htmlDecodeReplaceFn = function (match, capture) {
+      var htmlDecodeReplaceFn = function(match, capture) {
         return capture in entityToChar ?
           entityToChar[capture] :
           String.fromCharCode(parseInt(capture.substr(2), 10));
@@ -77,7 +77,7 @@ jQuery(document).ready(function ($) {
    * Based on Bylines.
    */
   function authorsSelect2(selector) {
-    selector.each(function () {
+    selector.each(function() {
       var authorsSearch = $(this).ppma_select2({
         placeholder: $(this).data("placeholder"),
         allowClear: true,
@@ -86,12 +86,12 @@ jQuery(document).ready(function ($) {
             "?action=authors_search&nonce=" +
             $(this).data("nonce"),
           dataType: "json",
-          data: function (params) {
+          data: function(params) {
             var ignored = [];
             selector
               .closest("div")
               .find(".authors-list input")
-              .each(function () {
+              .each(function() {
                 ignored.push($(this).val());
               });
             return {
@@ -102,7 +102,7 @@ jQuery(document).ready(function ($) {
         }
       });
 
-      authorsSearch.on("select2:select", function (e) {
+      authorsSearch.on("select2:select", function(e) {
         var template = wp.template("authors-author-partial");
         $(".authors-list").append(
           window.htmlEnDeCode.htmlDecode(template(e.params.data))
@@ -116,13 +116,13 @@ jQuery(document).ready(function ($) {
     authorsSelect2($(".authors-select2.authors-search"));
     sortedAuthorsList($(".authors-current-user-can-assign"));
   }
-  $(document).on("click", ".editinline", function () {
+  $(document).on("click", ".editinline", function() {
     var postId = $(this)
       .closest("tr")
       .attr("id")
       .replace("post-", "")
       .trim();
-    var timeoutFn = setTimeout(function () {
+    var timeoutFn = setTimeout(function() {
       var trSelector = $("#edit-" + postId);
       var searchSelector = trSelector.find(".authors-select2.authors-search");
       var authorsListSelector = trSelector.find(
@@ -133,11 +133,11 @@ jQuery(document).ready(function ($) {
       var authorsSlugs = [];
       $("#post-" + postId)
         .find("td.column-authors > a")
-        .each(function () {
+        .each(function() {
           authorsSlugs.push($(this).text());
         });
       var renderedAuthorsSlugs = [];
-      authorsListSelector.find("li").each(function () {
+      authorsListSelector.find("li").each(function() {
         var displayName = $(this)
           .find(".display-name")
           .text()
@@ -155,13 +155,13 @@ jQuery(document).ready(function ($) {
   });
 
   function sortedAuthorsList(selector) {
-    selector.sortable().on("click", ".author-remove", function () {
+    selector.sortable().on("click", ".author-remove", function() {
       var el = $(this);
       el.closest("li").remove();
     });
   }
 
-  $(".authors-select2-user-select").each(function () {
+  $(".authors-select2-user-select").each(function() {
     $(this).ppma_select2({
       allowClear: true,
       placeholder: $(this).attr("placeholder"),
@@ -170,7 +170,7 @@ jQuery(document).ready(function ($) {
           "?action=authors_users_search&nonce=" +
           $(this).data("nonce"),
         dataType: "json",
-        data: function (params) {
+        data: function(params) {
           return {
             q: params.term
           };
@@ -179,7 +179,7 @@ jQuery(document).ready(function ($) {
     });
   });
 
-  $(".author-image-field-wrapper").each(function () {
+  $(".author-image-field-wrapper").each(function() {
     var frame,
       target = $(this), // Your meta box id here
       deleteImgLink = target.find(".select-author-image-field"),
@@ -187,7 +187,7 @@ jQuery(document).ready(function ($) {
       imgContainer = target.find(".author-image-field-container"),
       imgIdInput = target.find(".author-image-field-id");
 
-    deleteImgLink.on("click", function (event) {
+    deleteImgLink.on("click", function(event) {
       event.preventDefault();
 
       if (frame) {
@@ -204,7 +204,7 @@ jQuery(document).ready(function ($) {
           type: "image"
         }
       });
-      frame.on("select", function () {
+      frame.on("select", function() {
         var attachment = frame
           .state()
           .get("selection")
@@ -225,7 +225,7 @@ jQuery(document).ready(function ($) {
       frame.open();
     });
 
-    delImgLink.on("click", function (event) {
+    delImgLink.on("click", function(event) {
       event.preventDefault();
       imgContainer.html("");
       deleteImgLink.removeClass("hidden");
@@ -278,7 +278,7 @@ jQuery(document).ready(function ($) {
         .before($mappedUser.parent().parent())
     );
 
-    $mappedUser.on("change", function (event) {
+    $mappedUser.on("change", function(event) {
       var selected = $mappedUser.val();
 
       // Update the status of the slug field
@@ -292,10 +292,10 @@ jQuery(document).ready(function ($) {
         MultipleAuthorsStrings.ajax_get_author_data_url, {
           user_id: selected
         },
-        function (data) {
+        function(data) {
           var fields = ["first_name", "last_name", "user_email", "user_url"];
 
-          $.each(fields, function (i, item) {
+          $.each(fields, function(i, item) {
             var $field = $('input[name="authors-' + item + '"]');
             if ($field.val() === "") {
               $field.val(data[item]);
@@ -318,7 +318,7 @@ jQuery(document).ready(function ($) {
   $mappedUser = $(".taxonomy-author .authors-select2-user-select");
 
   if ($mappedUser.length > 0) {
-    $mappedUser.on("change", function () {
+    $mappedUser.on("change", function() {
       if ($("#tag-name").val() == "") {
         $("#tag-name").val(
           $mappedUser[0].options[$mappedUser[0].selectedIndex].text
@@ -328,8 +328,8 @@ jQuery(document).ready(function ($) {
   }
 
   // Reset the field after the form was submitted.
-  $("#submit").click(function (event) {
-    window.setTimeout(function () {
+  $("#submit").click(function(event) {
+    window.setTimeout(function() {
       $mappedUser.val("").trigger("change");
       $("#tag-name").focus();
     }, 1000);
@@ -349,8 +349,8 @@ jQuery(document).ready(function ($) {
   ];
   var msg;
 
-  $.each(buttons, function (index, item) {
-    $(item).click(function (event) {
+  $.each(buttons, function(index, item) {
+    $(item).click(function(event) {
       msg = "confirm_" + item.replace("#", "");
       if (confirm(MultipleAuthorsStrings[msg])) {
         return true;
@@ -364,6 +364,6 @@ jQuery(document).ready(function ($) {
 
 if (typeof console === "undefined") {
   var console = {};
-  console.log = console.error = function () {
+  console.log = console.error = function() {
   };
 }
