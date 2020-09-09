@@ -87,19 +87,18 @@ jQuery(document).ready(function ($) {
                 placeholder: $(this).data("placeholder"),
                 allowClear: true,
                 ajax: {
-                    url:
-                    window.ajaxurl +
-                    "?action=authors_search&nonce=" +
-                    $(this).data("nonce"),
+                    url: window.ajaxurl +
+                        "?action=authors_search&nonce=" +
+                        $(this).data("nonce"),
                     dataType: "json",
                     data: function (params) {
                         var ignored = [];
                         selector
-                        .closest("div")
-                        .find(".authors-list input")
-                        .each(function () {
-                            ignored.push($(this).val());
-                        });
+                            .closest("div")
+                            .find(".authors-list input")
+                            .each(function () {
+                                ignored.push($(this).val());
+                            });
                         return {
                             q: params.term,
                             ignored: ignored
@@ -107,6 +106,7 @@ jQuery(document).ready(function ($) {
                     }
                 }
             });
+
             authorsSearch.on("select2:select", function (e) {
                 var template = wp.template("authors-author-partial");
                 $(".authors-list").append(
