@@ -45,6 +45,11 @@ class Utils
     ];
 
     /**
+     * @var array
+     */
+    private static $enabledPostTypes = null;
+
+    /**
      * Convert co-authors to authors on a post.
      *
      * Errors if the post already has authors. To re-convert, remove authors
@@ -202,7 +207,6 @@ class Utils
 
         $valid = (bool)in_array($pagenow, self::$pages_whitelist);
 
-
         if (!$valid) {
             return false;
         }
@@ -242,17 +246,21 @@ class Utils
             self::$supported_post_types = self::get_post_types_that_support_authors();
         }
 
-        if (!$postType) {
-            $postType = Util::get_current_post_type();
+        if (empty($postType)) {
+            $postType = Util::getCurrentPostType();
         }
 
         $isSupported = (bool)in_array($postType, self::$supported_post_types);
 
-        $postTypesArray = Util::get_post_types_for_module($legacyPlugin->multiple_authors->module);
+        if (!$isSupported) {
+            return false;
+        }
 
-        $isEnabled = (bool)in_array($postType, $postTypesArray);
+        if (self::$enabledPostTypes === null) {
+            self::$enabledPostTypes = Util::get_post_types_for_module($legacyPlugin->multiple_authors->module);
+        }
 
-        return $isSupported && $isEnabled;
+        return (bool)in_array($postType, self::$enabledPostTypes);
     }
 
     private static function get_post_types_to_force_authors_support()
@@ -379,7 +387,12 @@ class Utils
             return true;
         }
 
-        $can_set_authors = isset($current_user->allcaps['edit_others_posts']) ? $current_user->allcaps['edit_others_posts'] : false;
+        $taxonomy = get_taxonomy('author');
+        if ($taxonomy !== false && current_user_can($taxonomy->cap->assign_terms)) {
+            $can_set_authors = true;
+        } else {
+            $can_set_authors = isset($current_user->allcaps['edit_others_posts']) ? $current_user->allcaps['edit_others_posts'] : false;
+        }
 
         return apply_filters('coauthors_plus_edit_authors', $can_set_authors);
     }

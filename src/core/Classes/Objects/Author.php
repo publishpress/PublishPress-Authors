@@ -435,14 +435,22 @@ class Author
                 $return = get_term_field('name', $this->term_id, 'author', 'raw');
 
                 if (empty($return) && !$this->is_guest()) {
-                    $return = $this->get_user_object()->display_name;
+                    $userObject = $this->get_user_object();
+
+                    if (!empty($userObject) && !is_wp_error($userObject)) {
+                        $return = $userObject->display_name;
+                    }
                 }
 
                 break;
 
             case 'slug':
                 if (!$this->is_guest()) {
-                    $return = $this->get_user_object()->user_nicename;
+                    $userObject = $this->get_user_object();
+
+                    if (!empty($userObject) && !is_wp_error($userObject)) {
+                        $return = $this->get_user_object()->user_nicename;
+                    }
                 } else {
                     $return = get_term_field('slug', $this->term_id, 'author', 'raw');
                 }
@@ -460,8 +468,6 @@ class Author
         }
 
         if (is_wp_error($return)) {
-            $return = false;
-
             error_log(
                 sprintf(
                     '[PublishPress Authors] Error found while getting author\'s %s attribute (term_id = %d): %s',
@@ -470,6 +476,8 @@ class Author
                     $return->get_error_message()
                 )
             );
+
+            $return = false;
         }
 
         $return = apply_filters('publishpress_authors_author_attribute', $return, $this->term_id, $attribute);

@@ -1,9 +1,9 @@
 /**
- * @package     MultipleAuthors
- * @author      PublishPress <help@publishpress.com>
- * @copyright   Copyright (C) 2018 PublishPress. All rights reserved.
- * @license     GPLv2 or later
- * @since       1.0.0
+ * @package   MultipleAuthors
+ * @author    PublishPress <help@publishpress.com>
+ * @copyright Copyright (C) 2018 PublishPress. All rights reserved.
+ * @license   GPLv2 or later
+ * @since     1.0.0
  */
 jQuery(document).ready(function($) {
   // Copied from ExtJS.
@@ -76,7 +76,6 @@ jQuery(document).ready(function($) {
   /**
    * Based on Bylines.
    */
-
   $(".authors-select2.authors-search").each(function() {
     var authorsSearch = $(this).ppma_select2({
       placeholder: $(this).data("placeholder"),
@@ -132,12 +131,6 @@ jQuery(document).ready(function($) {
         }
       }
     });
-    // if ($(this).data("value")) {
-    //   console.log($(this).data("value"));
-    //   $(this)
-    //     .val($(this).data("value"))
-    //     .trigger("change");
-    // }
   });
 
   $(".authors-list.authors-current-user-can-assign")

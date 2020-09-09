@@ -24,6 +24,7 @@
 namespace MultipleAuthors\Classes;
 
 use MultipleAuthors\Classes\Objects\Author;
+use WP_Role;
 
 class Installer
 {
@@ -40,7 +41,8 @@ class Installer
             self::add_author_term_for_posts();
         }
 
-        self::add_capabilities();
+        self::add_administrator_capabilities();
+        self::add_new_edit_post_authors_cap();
         self::fix_author_url();
         self::flush_permalinks();
 
@@ -162,11 +164,12 @@ class Installer
         }
     }
 
-    private static function add_capabilities()
+    private static function add_administrator_capabilities()
     {
         $role = get_role('administrator');
         $role->add_cap('ppma_manage_authors');
         $role->add_cap('manage_options');
+        $role->add_cap('ppma_edit_post_authors');
     }
 
     /**
@@ -210,6 +213,24 @@ class Installer
         }
     }
 
+    private static function add_new_edit_post_authors_cap()
+    {
+        $cap = 'ppma_edit_post_authors';
+        $roles = [
+            'author',
+            'editor',
+            'contributor',
+        ];
+
+        foreach ($roles as $roleNmae)
+        {
+            $role = get_role($roleNmae);
+            if ($role instanceof WP_Role) {
+                $role->add_cap($cap);
+            }
+        }
+    }
+
     /**
      * Runs methods when the plugin is being upgraded to a most recent version.
      *
@@ -218,7 +239,6 @@ class Installer
     public static function upgrade($previous_version)
     {
         if (version_compare($previous_version, '2.0.2', '<')) {
-
             // Do not execute the post_author migration to post terms if Co-Authors Plus is activated.
             if (!isset($GLOBALS['coauthors_plus']) || empty($GLOBALS['coauthors_plus'])) {
                 self::convert_post_author_into_taxonomy();
@@ -227,12 +247,16 @@ class Installer
             self::fix_author_url();
         }
 
+        if (version_compare($previous_version, '3.6.0', '<')) {
+            self::add_new_edit_post_authors_cap();
+        }
+
         /**
          * @param string $previousVersion
          */
         do_action('pp_authors_upgrade', $previous_version);
 
-        self::add_capabilities();
+        self::add_administrator_capabilities();
         self::flush_permalinks();
     }
 }

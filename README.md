@@ -3,9 +3,9 @@
 
 ## Description
 
-By default, WordPress only allows you to add one author to each post. The Multiple Authors add-on allows you to add as many authors you want.
+By default, WordPress only allows you to add one author to each post. The PublishPress Authors plugin allows you to add as many authors you want.
 
-The Multiple authors plugin allows you to add the authors, and also it enables you to display their information. With this add-on, you can show the authors’ names, images and bios.
+The PublishPress Authors plugin allows you to add the authors, also it enables you to display their information. With this plugin, you can show the authors’ names, images and bios.
 
 ## Installation
 

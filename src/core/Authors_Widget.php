@@ -15,7 +15,7 @@ class Authors_Widget extends WP_Widget {
     /**
 	 * Sets up the widgets name etc
 	 */
-    public function __construct() 
+    public function __construct()
     {
 		$this->title = esc_html__( 'Authors List', 'publishpress-authors' );
 		Parent::__construct(
@@ -37,7 +37,7 @@ class Authors_Widget extends WP_Widget {
 	 * @param array $args
 	 * @param array $instance
 	 */
-	public function widget( $args, $instance ) 
+	public function widget( $args, $instance )
 	{
 
 		$instance = wp_parse_args(
@@ -66,7 +66,7 @@ class Authors_Widget extends WP_Widget {
 	 *
 	 * @param array $instance The widget options
 	 */
-	public function form( $instance ) 
+	public function form( $instance )
 	{
 		$legacyPlugin = Factory::getLegacyPlugin();
 
@@ -135,16 +135,16 @@ class Authors_Widget extends WP_Widget {
 
 
     /**
-     * Get HTML markdown 
-     * 
+     * Get HTML markdown
+     *
      * @param array $args     The args.
      * @param array $instance The object instance.
-     * 
+     *
      * @return string $html The html.
      */
-    private function get_author_box_markup( 
+    private function get_author_box_markup(
         $args,
-        $instance, 
+        $instance,
         $target = 'widget'
     ) {
         $html = '';
@@ -161,7 +161,7 @@ class Authors_Widget extends WP_Widget {
         );
 
         if (!function_exists('multiple_authors')) {
-            require_once PP_AUTHORS_SRC_PATH . 'functions/template-tags.php';
+            require_once PP_AUTHORS_BASE_PATH . 'functions/template-tags.php';
         }
 
         $css_class = '';

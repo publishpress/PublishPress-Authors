@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package   MultipleAuthors
  * @author    PublishPress <help@publishpress.com>
@@ -22,7 +23,6 @@ use MultipleAuthors\Factory;
  */
 class Post_Editor
 {
-
     /**
      * Register callbacks for managing custom columns
      */
@@ -37,7 +37,31 @@ class Post_Editor
                     10,
                     2
                 );
+                // add_action('bulk_edit_custom_box', [__CLASS__, 'add_author_bulk_quick_edit_custom_box'], 10, 2);
+                add_action('quick_edit_custom_box', [__CLASS__, 'add_author_bulk_quick_edit_custom_box'], 10, 2);
             }
+        }
+    }
+
+    /**
+     * Add author quick edit custom box.
+     */
+    public static function add_author_bulk_quick_edit_custom_box($column_name, $post_type)
+    {
+        if (Utils::is_post_type_enabled($post_type) && $column_name === 'authors') {
+            ?>
+            <fieldset class="inline-edit-col-left">
+                <div class="inline-edit-col">
+                    <label style="display: inline-flex">
+                        <span class="title">Post Author</span>
+                    </label>
+                    <?php
+                    $authors = multiple_authors_get_all_authors();
+                    echo self::get_rendered_authors_selection($authors, false);
+                    ?>
+                </div>
+            </fieldset>
+            <?php
         }
     }
 
@@ -75,37 +99,36 @@ class Post_Editor
      */
     public static function action_manage_posts_custom_column($column, $post_id)
     {
-        if ('authors' !== $column) {
-            return;
-        }
-        $authors     = get_multiple_authors($post_id);
-        $post_type   = get_post_type($post_id);
-        $authors_str = [];
-        foreach ($authors as $author) {
-            if (is_a($author, 'WP_User')) {
-                $author = Author::get_by_user_id($author->ID);
-            }
-
-            if (is_object($author)) {
-                $args = [
-                    'author_name' => $author->slug,
-                ];
-                if ('post' !== $post_type) {
-                    $args['post_type'] = $post_type;
+        if ('authors' === $column) {
+            $authors     = get_multiple_authors($post_id, true, false, true);
+            $post_type   = get_post_type($post_id);
+            $authors_str = [];
+            foreach ($authors as $author) {
+                if (is_a($author, 'WP_User')) {
+                    $author = Author::get_by_user_id($author->ID);
                 }
-                $url           = add_query_arg(array_map('rawurlencode', $args), admin_url('edit.php'));
-                $authors_str[] = '<a href="' . esc_url($url) . '">' . esc_html($author->display_name) . '</a>';
+
+                if (is_object($author)) {
+                    $args = [
+                        'author_name' => $author->slug,
+                    ];
+                    if ('post' !== $post_type) {
+                        $args['post_type'] = $post_type;
+                    }
+                    $url           = add_query_arg(array_map('rawurlencode', $args), admin_url('edit.php'));
+                    $authors_str[] = '<a href="' . esc_url($url) . '">' . esc_html($author->display_name) . '</a>';
+                }
             }
-        }
 
-        if (empty($authors_str)) {
-            $authors_str[] = '<span aria-hidden="true">—</span><span class="screen-reader-text">' . __(
-                'No author',
-                'publishpress-authors'
-            ) . '</span>';
-        }
+            if (empty($authors_str)) {
+                $authors_str[] = '<span aria-hidden="true">—</span><span class="screen-reader-text">' . __(
+                        'No author',
+                        'publishpress-authors'
+                    ) . '</span>';
+            }
 
-        echo implode(', ', $authors_str);
+            echo implode(', ', $authors_str);
+        }
     }
 
     /**
@@ -144,6 +167,14 @@ class Post_Editor
 
         $authors = get_multiple_authors();
 
+        echo self::get_rendered_authors_selection($authors);
+    }
+
+    /**
+     * Get rendered authors selection.
+     */
+    public static function get_rendered_authors_selection($authors, $showAvatars = true)
+    {
         $classes = [
             'authors-list',
         ];
@@ -151,43 +182,49 @@ class Post_Editor
             $classes[] = 'authors-current-user-can-assign';
         }
         ?>
-        <ul class="<?php echo esc_attr(implode(' ', $classes)); ?>">
+        <ul class="<?php echo(implode(' ', $classes)); ?>">
             <?php
             if (!empty($authors)) {
                 foreach ($authors as $author) {
                     $display_name = $author->display_name;
                     $term         = is_a($author, 'WP_User') ? 'u' . $author->ID : $author->term_id;
-                    echo self::get_rendered_author_partial(
-                        [
-                            'display_name' => $display_name,
-                            'avatar'       => $author->get_avatar(20),
-                            'term'         => $term,
-                        ]
-                    );
+
+                    $args = [
+                        'display_name' => $display_name,
+                        'term'         => $term,
+                    ];
+
+                    if ($showAvatars) {
+                        $args['avatar'] = $author->get_avatar(20);
+                    }
+
+                    echo self::get_rendered_author_partial($args);
                 }
             }
             ?>
         </ul>
-        <?php wp_nonce_field('authors-save', 'authors-save'); ?>
-        <?php if (current_user_can(get_taxonomy('author')->cap->assign_terms)) : ?>
-        <select data-nonce="<?php echo esc_attr(wp_create_nonce('authors-search')); ?>"
-                class="authors-select2 authors-search"
-                data-placeholder="<?php esc_attr_e('Search for an author', 'authors'); ?>" style="width: 100%">
-            <option></option>
-        </select>
-        <script type="text/html" id="tmpl-authors-author-partial">
-            <?php
-            echo self::get_rendered_author_partial(
-                [
-                    'display_name' => '{{ data.display_name }}',
-                    'avatar'       => '{{{ data.avatar }}}',
-                    'term'         => '{{ data.term }}',
-                ]
-            );
+        <?php
+        wp_nonce_field('authors-save', 'authors-save');
+
+        if (current_user_can(get_taxonomy('author')->cap->assign_terms)) {
             ?>
-        </script>
+            <select data-nonce="<?php echo esc_attr(wp_create_nonce('authors-search')); ?>"
+                    class="authors-select2 authors-search"
+                    data-placeholder="<?php esc_attr_e('Search for an author', 'authors'); ?>" style="width: 100%">
+                <option></option>
+            </select>
+            <script type="text/html" id="tmpl-authors-author-partial">
+                <?php
+                echo self::get_rendered_author_partial(
+                    [
+                        'display_name' => '{{ data.display_name }}',
+                        'term'         => '{{ data.term }}',
+                    ]
+                );
+                ?>
+            </script>
             <?php
-        endif;
+        }
     }
 
     /**
@@ -206,8 +243,12 @@ class Post_Editor
         ob_start();
         ?>
         <li>
-            <span class="author-remove"><span class="dashicons dashicons-no-alt"></span></span>
-            <?php echo $args['avatar']; ?>
+            <span class="author-remove">
+                <span class="dashicons dashicons-no-alt"></span>
+            </span>
+            <?php if (!empty($args['avatar'])) : ?>
+                <?php echo $args['avatar']; ?>
+            <?php endif; ?>
             <span class="display-name"><?php echo wp_kses_post($args['display_name']); ?></span>
             <input type="hidden" name="authors[]" value="<?php echo esc_attr($args['term']); ?>">
         </li>
@@ -229,12 +270,14 @@ class Post_Editor
             return;
         }
 
-        if (!isset($_POST['authors-save'])
+        if (
+            !isset($_POST['authors-save'])
             || !wp_verify_nonce($_POST['authors-save'], 'authors-save')
             || !current_user_can(get_taxonomy('author')->cap->assign_terms)
         ) {
             return;
         }
+
 
         $dirty_authors = isset($_POST['authors']) ? $_POST['authors'] : [];
         $authors       = [];
@@ -311,5 +354,4 @@ class Post_Editor
             Utils::set_post_authors($post_id, [$default_author]);
         }
     }
-
 }

@@ -1,29 +1,33 @@
 <?php
+
 /**
- * @package     MultipleAuthors
- * @author      PublishPress <help@publishpress.com>
- * @copyright   Copyright (C) 2018 PublishPress. All rights reserved.
- * @license     GPLv2 or later
- * @since       1.0.0
+ * @package   MultipleAuthors
+ * @author    PublishPress <help@publishpress.com>
+ * @copyright Copyright (C) 2018 PublishPress. All rights reserved.
+ * @license   GPLv2 or later
+ * @since     1.0.0
  */
 
 use MultipleAuthors\Classes\Authors_Iterator;
 use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Classes\Objects\Author;
 
-
 if (!function_exists('get_multiple_authors')) {
     /**
      * Get all authors for a post.
      *
-     * @param WP_Post|int|null $post Post to fetch authors for. Defaults to global post.
-     * @param bool $filter_the_author If false, will not trigger the filter for the author, to avoid infinite
+     * @param WP_Post|int|null $post              Post to fetch authors for. Defaults to global post.
+     * @param bool             $filter_the_author If false, will not trigger the filter for the author, to avoid infinite
      *                                            loop.
-     * @param bool $archive
+     * @param bool             $archive
+     * @param bool             $ignoreCache       This cache cause sometimes errors in data received especially
+     *                                            in quick edit after saving.
+     *                                            That's why in Post_Editor we called this function with overriding
+     *                                            ignoreCache value to be equal true.
      *
      * @return array Array of Author objects, a single WP_User object, or empty.
      */
-    function get_multiple_authors($post = 0, $filter_the_author = true, $archive = false)
+    function get_multiple_authors($post = 0, $filter_the_author = true, $archive = false, $ignoreCache = false)
     {
         global $multipleAuthorsForPost, $wpdb;
 
@@ -33,7 +37,10 @@ if (!function_exists('get_multiple_authors')) {
 
         if (is_object($post)) {
             $post = $post->ID;
+        } elseif (empty($post)) {
+            $post = get_post()->ID;
         }
+
         $postId = (int)$post;
 
         $cacheKey = [
@@ -55,9 +62,9 @@ if (!function_exists('get_multiple_authors')) {
 
         $authors = [];
 
-        if (!isset($multipleAuthorsForPost[$cacheKey])) {
+        if (empty($multipleAuthorsForPost) || !isset($multipleAuthorsForPost[$cacheKey]) || $ignoreCache) {
             $terms = [];
-
+          
             if (!$archive) {
                 if (empty($postId)) {
                     $post = get_post();
@@ -96,6 +103,10 @@ if (!function_exists('get_multiple_authors')) {
             if (!empty($terms)) {
                 // We found authors
                 foreach ($terms as $term) {
+                    if (is_wp_error($term) || empty($term)) {
+                        continue;
+                    }
+
                     if (is_object($term)) {
                         $term = $term->term_id;
                     }
@@ -104,7 +115,7 @@ if (!function_exists('get_multiple_authors')) {
 
                     $author = Author::get_by_term_id($termId);
 
-                    if ($filter_the_author) {
+                    if ($filter_the_author && !is_wp_error($author)) {
                         $author->display_name = apply_filters('the_author', $author->display_name);
                     }
 
@@ -164,7 +175,7 @@ if (!function_exists('is_multiple_author_for_post')) {
      * Checks to see if the the specified user is author of the current global post or post (if specified)
      *
      * @param object|int $user
-     * @param int $post_id
+     * @param int        $post_id
      */
     function is_multiple_author_for_post($user, $post_id = 0)
     {
@@ -298,11 +309,11 @@ if (!function_exists('multiple_authors')) {
      * Outputs the co-authors display names, without links to their posts.
      * PublishPress Authors equivalent of the_author() template tag.
      *
-     * @param string $between Delimiter that should appear between the co-authors
+     * @param string $between     Delimiter that should appear between the co-authors
      * @param string $betweenLast Delimiter that should appear between the last two co-authors
-     * @param string $before What should appear before the presentation of co-authors
-     * @param string $after What should appear after the presentation of co-authors
-     * @param bool $echo Whether the co-authors should be echoed or returned. Defaults to true.
+     * @param string $before      What should appear before the presentation of co-authors
+     * @param string $after       What should appear after the presentation of co-authors
+     * @param bool   $echo        Whether the co-authors should be echoed or returned. Defaults to true.
      */
     function multiple_authors($between = null, $betweenLast = null, $before = null, $after = null, $echo = true)
     {
@@ -326,11 +337,11 @@ if (!function_exists('multiple_authors_posts_links')) {
      * Outputs the co-authors display names, with links to their posts.
      * PublishPress Authors equivalent of the_author_posts_link() template tag.
      *
-     * @param string $between Delimiter that should appear between the co-authors
+     * @param string $between     Delimiter that should appear between the co-authors
      * @param string $betweenLast Delimiter that should appear between the last two co-authors
-     * @param string $before What should appear before the presentation of co-authors
-     * @param string $after What should appear after the presentation of co-authors
-     * @param bool $echo Whether the co-authors should be echoed or returned. Defaults to true.
+     * @param string $before      What should appear before the presentation of co-authors
+     * @param string $after       What should appear after the presentation of co-authors
+     * @param bool   $echo        Whether the co-authors should be echoed or returned. Defaults to true.
      */
     function multiple_authors_posts_links(
         $between = null,
@@ -404,11 +415,11 @@ if (!function_exists('multiple_authors_firstnames')) {
     /**
      * Outputs the co-authors first names, without links to their posts.
      *
-     * @param string $between Delimiter that should appear between the co-authors
+     * @param string $between     Delimiter that should appear between the co-authors
      * @param string $betweenLast Delimiter that should appear between the last two co-authors
-     * @param string $before What should appear before the presentation of co-authors
-     * @param string $after What should appear after the presentation of co-authors
-     * @param bool $echo Whether the co-authors should be echoed or returned. Defaults to true.
+     * @param string $before      What should appear before the presentation of co-authors
+     * @param string $after       What should appear after the presentation of co-authors
+     * @param bool   $echo        Whether the co-authors should be echoed or returned. Defaults to true.
      */
     function multiple_authors_firstnames(
         $between = null,
@@ -436,11 +447,11 @@ if (!function_exists('multiple_authors_lastnames')) {
     /**
      * Outputs the co-authors last names, without links to their posts.
      *
-     * @param string $between Delimiter that should appear between the co-authors
+     * @param string $between     Delimiter that should appear between the co-authors
      * @param string $betweenLast Delimiter that should appear between the last two co-authors
-     * @param string $before What should appear before the presentation of co-authors
-     * @param string $after What should appear after the presentation of co-authors
-     * @param bool $echo Whether the co-authors should be echoed or returned. Defaults to true.
+     * @param string $before      What should appear before the presentation of co-authors
+     * @param string $after       What should appear after the presentation of co-authors
+     * @param bool   $echo        Whether the co-authors should be echoed or returned. Defaults to true.
      */
     function multiple_authors_lastnames(
         $between = null,
@@ -468,11 +479,11 @@ if (!function_exists('multiple_authors_nicknames')) {
     /**
      * Outputs the co-authors nicknames, without links to their posts.
      *
-     * @param string $between Delimiter that should appear between the co-authors
+     * @param string $between     Delimiter that should appear between the co-authors
      * @param string $betweenLast Delimiter that should appear between the last two co-authors
-     * @param string $before What should appear before the presentation of co-authors
-     * @param string $after What should appear after the presentation of co-authors
-     * @param bool $echo Whether the co-authors should be echoed or returned. Defaults to true.
+     * @param string $before      What should appear before the presentation of co-authors
+     * @param string $after       What should appear after the presentation of co-authors
+     * @param bool   $echo        Whether the co-authors should be echoed or returned. Defaults to true.
      */
     function multiple_authors_nicknames(
         $between = null,
@@ -500,11 +511,11 @@ if (!function_exists('multiple_authors_links')) {
     /**
      * Outputs the co-authors display names, with links to their websites if they've provided them.
      *
-     * @param string $between Delimiter that should appear between the co-authors
+     * @param string $between     Delimiter that should appear between the co-authors
      * @param string $betweenLast Delimiter that should appear between the last two co-authors
-     * @param string $before What should appear before the presentation of co-authors
-     * @param string $after What should appear after the presentation of co-authors
-     * @param bool $echo Whether the co-authors should be echoed or returned. Defaults to true.
+     * @param string $before      What should appear before the presentation of co-authors
+     * @param string $after       What should appear after the presentation of co-authors
+     * @param bool   $echo        Whether the co-authors should be echoed or returned. Defaults to true.
      */
     function multiple_authors_links($between = null, $betweenLast = null, $before = null, $after = null, $echo = true)
     {
@@ -527,11 +538,11 @@ if (!function_exists('multiple_authors_emails')) {
     /**
      * Outputs the co-authors email addresses
      *
-     * @param string $between Delimiter that should appear between the email addresses
+     * @param string $between     Delimiter that should appear between the email addresses
      * @param string $betweenLast Delimiter that should appear between the last two email addresses
-     * @param string $before What should appear before the presentation of email addresses
-     * @param string $after What should appear after the presentation of email addresses
-     * @param bool $echo Whether the co-authors should be echoed or returned. Defaults to true.
+     * @param string $before      What should appear before the presentation of email addresses
+     * @param string $after       What should appear after the presentation of email addresses
+     * @param bool   $echo        Whether the co-authors should be echoed or returned. Defaults to true.
      */
     function multiple_authors_emails($between = null, $betweenLast = null, $before = null, $after = null, $echo = true)
     {
@@ -577,11 +588,11 @@ if (!function_exists('multiple_authors_ids')) {
     /**
      * Outputs the co-authors IDs
      *
-     * @param string $between Delimiter that should appear between the co-authors
+     * @param string $between     Delimiter that should appear between the co-authors
      * @param string $betweenLast Delimiter that should appear between the last two co-authors
-     * @param string $before What should appear before the presentation of co-authors
-     * @param string $after What should appear after the presentation of co-authors
-     * @param bool $echo Whether the co-authors should be echoed or returned. Defaults to true.
+     * @param string $before      What should appear before the presentation of co-authors
+     * @param string $after       What should appear after the presentation of co-authors
+     * @param bool   $echo        Whether the co-authors should be echoed or returned. Defaults to true.
      */
     function multiple_authors_ids($between = null, $betweenLast = null, $before = null, $after = null, $echo = true)
     {
@@ -675,7 +686,7 @@ if (!function_exists('multiple_authors_get_avatar')) {
      * between Guest Authors (who may share an email) and regular user accounts
      *
      * @param object $coauthor The Co Author
-     * @param int $size The desired size
+     * @param int    $size     The desired size
      *
      * @return string             The image tag for the avatar, or an empty string if none could be determined
      */
@@ -837,15 +848,17 @@ if (!function_exists('authors_render')) {
     /**
      * Display one or more authors, according to arguments provided.
      *
-     * @param array $authors Set of authors to display.
+     * @param array    $authors         Set of authors to display.
      * @param callable $render_callback Callback to return rendered author.
-     * @param array $args Arguments to affect display.
+     * @param array    $args            Arguments to affect display.
      */
     function authors_render($authors, $render_callback, $args = [])
     {
-        if (empty($authors)
+        if (
+            empty($authors)
             || empty($render_callback)
-            || !is_callable($render_callback)) {
+            || !is_callable($render_callback)
+        ) {
             return '';
         }
         $defaults = [
@@ -895,5 +908,5 @@ add_filter(
 );
 
 // Keep backward compatibility with Bylines, legacy versions of PublishPress Authors and CoAuthors
-include_once 'coauthors-functions.php';
-include_once 'bylines-functions.php';
+require_once 'coauthors-functions.php';
+require_once 'bylines-functions.php';
