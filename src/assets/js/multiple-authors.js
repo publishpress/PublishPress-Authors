@@ -47,21 +47,21 @@ jQuery(document).ready(function($) {
         return charToEntity[capture];
       };
 
-      return !value ?
-        value :
-        String(value).replace(charToEntityRegex, htmlEncodeReplaceFn);
+      return !value
+        ? value
+        : String(value).replace(charToEntityRegex, htmlEncodeReplaceFn);
     }
 
     function htmlDecode(value) {
       var htmlDecodeReplaceFn = function(match, capture) {
-        return capture in entityToChar ?
-          entityToChar[capture] :
-          String.fromCharCode(parseInt(capture.substr(2), 10));
+        return capture in entityToChar
+          ? entityToChar[capture]
+          : String.fromCharCode(parseInt(capture.substr(2), 10));
       };
 
-      return !value ?
-        value :
-        String(value).replace(entityToCharRegex, htmlDecodeReplaceFn);
+      return !value
+        ? value
+        : String(value).replace(entityToCharRegex, htmlDecodeReplaceFn);
     }
 
     resetCharacterEntities();
@@ -76,97 +76,77 @@ jQuery(document).ready(function($) {
   /**
    * Based on Bylines.
    */
-  function authorsSelect2(selector) {
-    selector.each(function() {
-      var authorsSearch = $(this).ppma_select2({
-        placeholder: $(this).data("placeholder"),
-        allowClear: true,
-        ajax: {
-          url: window.ajaxurl +
-            "?action=authors_search&nonce=" +
-            $(this).data("nonce"),
-          dataType: "json",
-          data: function(params) {
-            var ignored = [];
-            selector
-              .closest("div")
-              .find(".authors-list input")
-              .each(function() {
-                ignored.push($(this).val());
-              });
-            return {
-              q: params.term,
-              ignored: ignored
-            };
-          }
+  $(".authors-select2.authors-search").each(function() {
+    var authorsSearch = $(this).ppma_select2({
+      placeholder: $(this).data("placeholder"),
+      allowClear: true,
+      ajax: {
+        url:
+          window.ajaxurl +
+          "?action=authors_search&nonce=" +
+          $(this).data("nonce"),
+        dataType: "json",
+        data: function(params) {
+          var ignored = [];
+          $(".authors-list input").each(function() {
+            ignored.push($(this).val());
+          });
+          return {
+            q: params.term,
+            ignored: ignored
+          };
         }
-      });
-
-      authorsSearch.on("select2:select", function(e) {
-        var template = wp.template("authors-author-partial");
-        $(".authors-list").append(
-          window.htmlEnDeCode.htmlDecode(template(e.params.data))
-        );
-        authorsSearch.val(null).trigger("change");
-      });
+      }
     });
-  }
-
-  if ($("body").hasClass("post-php")) {
-    authorsSelect2($(".authors-select2.authors-search"));
-    sortedAuthorsList($(".authors-current-user-can-assign"));
-  }
-  $(document).on("click", ".editinline", function() {
-    var postId = $(this)
-      .closest("tr")
-      .attr("id")
-      .replace("post-", "")
-      .trim();
-    var timeoutFn = setTimeout(function() {
-      var trSelector = $("#edit-" + postId);
-      var searchSelector = trSelector.find(".authors-select2.authors-search");
-      var authorsListSelector = trSelector.find(
-        ".authors-current-user-can-assign"
+    authorsSearch.on("select2:select", function(e) {
+      var template = wp.template("authors-author-partial");
+      $(".authors-list").append(
+        window.htmlEnDeCode.htmlDecode(template(e.params.data))
       );
-      authorsSelect2(searchSelector);
-      sortedAuthorsList(authorsListSelector);
-      var authorsSlugs = [];
-      $("#post-" + postId)
-        .find("td.column-authors > a")
-        .each(function() {
-          authorsSlugs.push($(this).text());
-        });
-      var renderedAuthorsSlugs = [];
-      authorsListSelector.find("li").each(function() {
-        var displayName = $(this)
-          .find(".display-name")
-          .text()
-          .trim();
-        if (
-          !authorsSlugs.includes(displayName) ||
-          renderedAuthorsSlugs.includes(displayName)
-        ) {
-          $(this).remove();
-        }
-        renderedAuthorsSlugs.push(displayName);
-      });
-      clearTimeout(timeoutFn);
-    }, 50);
+      authorsSearch.val(null).trigger("change");
+    });
   });
 
-  function sortedAuthorsList(selector) {
-    selector.sortable().on("click", ".author-remove", function() {
+  // Setting value if data-value is existing
+  $(".default-authors-select2").each(function() {
+    $(this).ppma_select2({
+      placeholder: $(this).data("placeholder"),
+      allowClear: true,
+      multiple: false,
+      ajax: {
+        url:
+          window.ajaxurl +
+          "?action=authors_search&nonce=" +
+          $(this).data("nonce"),
+        dataType: "json",
+        data: function(params) {
+          var ignored = [];
+          $(".authors-list input").each(function() {
+            ignored.push($(this).val());
+          });
+          return {
+            q: params.term,
+            ignored: ignored
+          };
+        }
+      }
+    });
+  });
+
+  $(".authors-list.authors-current-user-can-assign")
+    .sortable()
+    .on("click", ".author-remove", function() {
       var el = $(this);
       el.closest("li").remove();
     });
-  }
 
   $(".authors-select2-user-select").each(function() {
     $(this).ppma_select2({
       allowClear: true,
       placeholder: $(this).attr("placeholder"),
       ajax: {
-        url: window.ajaxurl +
+        url:
+          window.ajaxurl +
           "?action=authors_users_search&nonce=" +
           $(this).data("nonce"),
         dataType: "json",
@@ -211,9 +191,9 @@ jQuery(document).ready(function($) {
           .first()
           .toJSON();
         var attachment_src =
-          "undefined" === typeof attachment.sizes.thumbnail ?
-            attachment.url :
-            attachment.sizes.thumbnail.url;
+          "undefined" === typeof attachment.sizes.thumbnail
+            ? attachment.url
+            : attachment.sizes.thumbnail.url;
         var imgEl = $("<img />");
         imgEl.attr("src", attachment_src);
         imgContainer.append(imgEl);
@@ -253,7 +233,7 @@ jQuery(document).ready(function($) {
       .removeClass("wp-not-current-submenu")
       .addClass(
         "wp-has-current-submenu wp-menu-open toplevel_page_" +
-        MultipleAuthorsStrings.menu_slug
+          MultipleAuthorsStrings.menu_slug
       );
     $("#toplevel_page_" + MultipleAuthorsStrings.menu_slug + " > a")
       .removeClass("wp-not-current-submenu")
@@ -289,7 +269,8 @@ jQuery(document).ready(function($) {
       }
 
       $.getJSON(
-        MultipleAuthorsStrings.ajax_get_author_data_url, {
+        MultipleAuthorsStrings.ajax_get_author_data_url,
+        {
           user_id: selected
         },
         function(data) {
@@ -364,6 +345,5 @@ jQuery(document).ready(function($) {
 
 if (typeof console === "undefined") {
   var console = {};
-  console.log = console.error = function() {
-  };
+  console.log = console.error = function() {};
 }
