@@ -129,7 +129,7 @@ and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec
 
 = UNRELEASED =
 
-* Fixed: Fixed performance issue in the post edit page removing avatars from the authors fields, #227;
+* Fixed: Fixed performance issue in the post list and edit page removing avatars from the authors fields, #227;
 * Added: Added option to change the default author for new posts in the site, #50;
 
 = [3.6.3] - 2020-09-04 =

@@ -167,7 +167,7 @@ class Post_Editor
 
         $authors = get_multiple_authors();
 
-        echo self::get_rendered_authors_selection($authors);
+        echo self::get_rendered_authors_selection($authors, false);
     }
 
     /**
