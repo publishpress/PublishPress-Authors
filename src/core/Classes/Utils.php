@@ -45,6 +45,11 @@ class Utils
     ];
 
     /**
+     * @var array
+     */
+    private static $enabledPostTypes = null;
+
+    /**
      * Convert co-authors to authors on a post.
      *
      * Errors if the post already has authors. To re-convert, remove authors
@@ -241,17 +246,21 @@ class Utils
             self::$supported_post_types = self::get_post_types_that_support_authors();
         }
 
-        if (!$postType) {
-            $postType = Util::get_current_post_type();
+        if (empty($postType)) {
+            $postType = Util::getCurrentPostType();
         }
 
         $isSupported = (bool)in_array($postType, self::$supported_post_types);
 
-        $postTypesArray = Util::get_post_types_for_module($legacyPlugin->multiple_authors->module);
+        if (!$isSupported) {
+            return false;
+        }
 
-        $isEnabled = (bool)in_array($postType, $postTypesArray);
+        if (self::$enabledPostTypes === null) {
+            self::$enabledPostTypes = Util::get_post_types_for_module($legacyPlugin->multiple_authors->module);
+        }
 
-        return $isSupported && $isEnabled;
+        return (bool)in_array($postType, self::$enabledPostTypes);
     }
 
     private static function get_post_types_to_force_authors_support()

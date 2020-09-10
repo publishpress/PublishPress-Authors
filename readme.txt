@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
 Tested up to: 5.5
-Stable tag: 3.6.3
+Stable tag: 3.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -126,6 +126,11 @@ There are two ways to install the PublishPress Authors plugin:
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.html).
+
+= [3.7.0] - 2020-09-10 =
+
+* Fixed: Fixed performance issue in the post list and edit page removing avatars from the authors fields, #227;
+* Added: Added option to change the default author for new posts in the site, #50;
 
 = [3.6.3] - 2020-09-04 =
 

@@ -106,7 +106,6 @@ class Admin_Ajax
                     'term'         => (int)$term->term_id,
                     'display_name' => $text,
                     'user_id'      => $author->user_id,
-                    'avatar'       => $author->get_avatar(20),
                 ];
                 if ($author->user_id) {
                     $ignored[] = 'u' . $author->user_id;
