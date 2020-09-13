@@ -1,10 +1,10 @@
 <?php
 /**
- * @package     MultipleAuthors
- * @author      PublishPress <help@publishpress.com>
- * @copyright   Copyright (C) 2018 PublishPress. All rights reserved.
- * @license     GPLv2 or later
- * @since       1.0.0
+ * @package   MultipleAuthors
+ * @author    PublishPress <help@publishpress.com>
+ * @copyright Copyright (C) 2018 PublishPress. All rights reserved.
+ * @license   GPLv2 or later
+ * @since     1.0.0
  */
 
 namespace MultipleAuthors\Traits;
@@ -27,7 +27,7 @@ trait Author_box
      */
     protected function should_display_author_box()
     {
-        $display = $this->is_valid_page_to_display_author_box() && $this->is_valid_post_type_to_display_author_box();
+        $display = ($this->is_valid_page_to_display_author_box() && $this->is_valid_post_type_to_display_author_box());
 
         // Apply a filter
         $display = apply_filters('pp_multiple_authors_filter_should_display_author_box', $display);
@@ -65,10 +65,10 @@ trait Author_box
      * Returns the HTML markup for the author box.
      *
      * @param string $target
-     * @param bool $show_title
+     * @param bool   $show_title
      * @param string $layout
-     * @param bool $archive
-     * @param int $post_id
+     * @param bool   $archive
+     * @param int    $post_id
      *
      * @return string
      */
@@ -93,7 +93,7 @@ trait Author_box
         );
 
         if (!function_exists('multiple_authors')) {
-            require_once PP_AUTHORS_BASE_PATH . 'functions/template-tags.php';
+            include_once PP_AUTHORS_BASE_PATH . 'functions/template-tags.php';
         }
 
         $css_class = '';
