@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
 Tested up to: 5.5
-Stable tag: 3.7.1
+Stable tag: 3.7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -126,6 +126,10 @@ There are two ways to install the PublishPress Authors plugin:
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.html).
+
+= [3.7.2] - 2020-09-14 =
+
+* Fixed: Fixed the reordering issue on authors in the post edit page;
 
 = [3.7.1] - 2020-09-11 =
 
