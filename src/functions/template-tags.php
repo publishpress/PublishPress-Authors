@@ -83,7 +83,8 @@ if (!function_exists('get_multiple_authors')) {
                         "SELECT tt.term_id
                             FROM {$wpdb->term_relationships} AS tr
                             INNER JOIN {$wpdb->term_taxonomy} AS tt ON (tr.`term_taxonomy_id` = tt.`term_taxonomy_id`)
-                            WHERE tr.object_id = %d AND tt.taxonomy = 'author'",
+                            WHERE tr.object_id = %d AND tt.taxonomy = 'author'
+                            ORDER BY tr.term_order",
                         $postId
                     )
                 );
