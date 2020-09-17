@@ -117,10 +117,11 @@ jQuery(document).ready(function ($) {
         });
     }
 
-    if ($("body").hasClass("post-php")) {
+    if ($("body").hasClass("post-php") || $("body").hasClass("post-new-php")) {
         authorsSelect2($(".authors-select2.authors-search"));
         sortedAuthorsList($(".authors-current-user-can-assign"));
     }
+
     $(document).on("click", ".editinline", function () {
         var postId = $(this)
           .closest("tr")
