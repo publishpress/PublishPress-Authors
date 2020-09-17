@@ -15,6 +15,7 @@ use WP_User;
 
 /**
  * Representation of an individual author.
+ *
  * @property int $ID
  * @property string $slug
  * @property string $nickname
@@ -486,6 +487,8 @@ class Author
     }
 
     /**
+     * Return the URL for the avatar image.
+     *
      * @param int $size
      *
      * @return string|array
@@ -506,6 +509,8 @@ class Author
     }
 
     /**
+     * Get a metadata for the author term. If not found and is mapped to a user, returns the user's meta.
+     *
      * @param string $key
      * @param bool $single
      *
@@ -529,6 +534,8 @@ class Author
     }
 
     /**
+     * Returns true if the author has a custom avatar image.
+     *
      * @return bool
      */
     public function has_custom_avatar()
@@ -692,6 +699,8 @@ class Author
     }
 
     /**
+     * Return the user object of an author mapped to a user.
+     *
      * @return bool|WP_User
      */
     public function get_user_object()
@@ -708,7 +717,8 @@ class Author
     }
 
     /**
-     * Returns true if the author is a guest author.
+     * Returns true if the author is a guest author. Guest authors are authors that are not
+     * mapped to a site user.
      *
      * @return bool
      */
@@ -717,6 +727,14 @@ class Author
         return empty($this->user_id);
     }
 
+    /**
+     * Get an author searching it by the email address. This function can cause performance issues
+     * if called too many times on the same request.
+     *
+     * @param $emailAddress
+     *
+     * @return false|mixed|Author
+     */
     public static function get_by_email($emailAddress)
     {
         if (!isset(self::$authorsByEmailCache[$emailAddress])) {
