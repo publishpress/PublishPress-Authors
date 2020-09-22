@@ -127,6 +127,11 @@ There are two ways to install the PublishPress Authors plugin:
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.html).
 
+= UNRELEASED =
+
+* Fixed: Fixed PHP warning about undefined "default_author_for_new_posts" attribute for the module options;
+* Fixed: Fixed the empty setting field "Default author for new posts", #242;
+
 = [3.7.3] - 2020-09-21 =
 
 * Fixed: Fixed unresponsive author select box for new posts, #244;
