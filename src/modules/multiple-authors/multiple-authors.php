@@ -672,7 +672,6 @@ if (!class_exists('MA_Multiple_Authors')) {
         {
             $id    = $this->module->options_group_name . '_default_author_for_new_posts';
             $value = isset($this->module->options->default_author_for_new_posts) ? $this->module->options->default_author_for_new_posts : '';
-            ob_start();
             ?>
             <label for="<?php echo $id; ?>">
                 <select data-value="<?php echo $value; ?>" name="<?php echo $this->module->options_group_name . '[default_author_for_new_posts]'; ?>" data-nonce="<?php echo esc_attr(wp_create_nonce('authors-search')); ?>"
@@ -690,7 +689,6 @@ if (!class_exists('MA_Multiple_Authors')) {
             </label>
 
             <?php
-            echo ob_get_clean();
         }
 
         /**
