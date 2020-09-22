@@ -677,17 +677,16 @@ if (!class_exists('MA_Multiple_Authors')) {
                 <select data-value="<?php echo $value; ?>" name="<?php echo $this->module->options_group_name . '[default_author_for_new_posts]'; ?>" data-nonce="<?php echo esc_attr(wp_create_nonce('authors-search')); ?>"
                         class="default-authors-select2"
                         data-placeholder="<?php esc_attr_e('Search for an author', 'authors'); ?>" style="width: 350px">
+                    <option value=""></option>
                     <?php
                     if (!empty($value)) {
-                        $author               = Author::get_by_term_id($value);
+                        $author = Author::get_by_term_id($value);
                         ?>
-                        <option value=""></option>
                         <option value="<?php echo $value; ?>" selected="selected"><?php echo $author->display_name; ?></option>
                     <?php } ?>
                 </select>
 
             </label>
-
             <?php
         }
 

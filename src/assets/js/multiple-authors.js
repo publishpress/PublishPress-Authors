@@ -122,6 +122,10 @@ jQuery(document).ready(function ($) {
         sortedAuthorsList($(".authors-current-user-can-assign"));
     }
 
+    if ($("body").hasClass("authors_page_ppma-modules-settings")) {
+        authorsSelect2($(".default-authors-select2"));
+    }
+
     $(document).on("click", ".editinline", function () {
         var postId = $(this)
           .closest("tr")
