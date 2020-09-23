@@ -261,6 +261,8 @@ class Post_Editor
      *
      * @param int     $post_id ID for the post being saved.
      * @param WP_Post $post    Object for the post being saved.
+     *
+     * @return mixed
      */
     public static function action_save_post_authors_metabox($post_id, $post)
     {
@@ -278,14 +280,13 @@ class Post_Editor
             return;
         }
 
-
-        $dirty_authors = isset($_POST['authors']) ? $_POST['authors'] : [];
+        $selected_authors = isset($_POST['authors']) ? $_POST['authors'] : [];
         $authors       = [];
-        foreach ($dirty_authors as $dirty_author) {
-            if (is_numeric($dirty_author)) {
-                $authors[] = Author::get_by_term_id($dirty_author);
-            } elseif ('u' === $dirty_author[0]) {
-                $user_id = (int)substr($dirty_author, 1);
+        foreach ($selected_authors as $selected_author) {
+            if (is_numeric($selected_author)) {
+                $authors[] = Author::get_by_term_id($selected_author);
+            } elseif ('u' === $selected_author[0]) {
+                $user_id = (int)substr($selected_author, 1);
                 $author  = Author::get_by_user_id($user_id);
                 if (!$author) {
                     $author = Author::create_from_user($user_id);
@@ -325,10 +326,10 @@ class Post_Editor
         if ($update) {
             return;
         }
+
         if (!in_array($post->post_type, Content_Model::get_author_supported_post_types(), true)) {
             return;
         }
-
 
         $default_author = false;
 

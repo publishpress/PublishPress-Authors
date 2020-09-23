@@ -150,15 +150,54 @@ class Utils
     /**
      * Set the authors for a post
      *
-     * @param int $post_id ID for the post to modify.
+     * @param int $postId ID for the post to modify.
      * @param array $authors Bylines to set on the post.
      */
-    public static function set_post_authors($post_id, $authors)
+    public static function set_post_authors($postId, $authors)
     {
-        static::set_post_authors_name_meta($post_id, $authors);
+        static::set_post_authors_name_meta($postId, $authors);
+        static::sync_post_author_column($postId, $authors);
 
         $authors = wp_list_pluck($authors, 'term_id');
-        wp_set_object_terms($post_id, $authors, 'author');
+        wp_set_object_terms($postId, $authors, 'author');
+    }
+
+    /**
+     * @param int $postId ID for the post to modify.
+     * @param array $authors Bylines to set on the post.
+     */
+    public static function sync_post_author_column($postId, $authors)
+    {
+        if (empty($authors)) {
+            return;
+        }
+
+        $functionSetPostAuthor = function($postId, $authorId) {
+            global $wpdb;
+
+            $wpdb->query(
+                $wpdb->prepare(
+                    "UPDATE {$wpdb->posts} SET post_author = %d WHERE ID = %d",
+                    $authorId,
+                    $postId
+                )
+            );
+        };
+
+        $postAuthorWasChanged = false;
+        foreach ($authors as $author) {
+            if (!is_object($author) || $author->is_guest() || empty($author)) {
+                continue;
+            }
+
+            $functionSetPostAuthor($postId, $author->user_id);
+            $postAuthorWasChanged = true;
+            break;
+        }
+
+        if (!$postAuthorWasChanged) {
+            $functionSetPostAuthor($postId, get_current_user_id());
+        }
     }
 
     /**
@@ -168,7 +207,7 @@ class Utils
      * @param $post_id
      * @param $authors
      */
-    protected static function set_post_authors_name_meta($post_id, $authors)
+    public static function set_post_authors_name_meta($post_id, $authors)
     {
         if (!is_array($authors)) {
             $authors = [];
