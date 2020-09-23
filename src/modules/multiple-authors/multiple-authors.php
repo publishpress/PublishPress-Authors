@@ -151,6 +151,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_action('multiple_authors_delete_guest_authors', [$this, 'action_delete_guest_authors']);
             add_action('multiple_authors_create_post_authors', [$this, 'action_create_post_authors']);
             add_action('multiple_authors_create_role_authors', [$this, 'action_create_role_authors']);
+            add_action('multiple_authors_sync_post_author', [$this, 'action_sync_post_author']);
             add_action('multiple_authors_copy_coauthor_plus_data', [$this, 'action_copy_coauthor_plus_data']);
 
             add_action('deleted_user', [$this, 'handle_deleted_user']);
@@ -751,6 +752,12 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'title'        => __('Create missed authors from role', 'publishpress-authors'),
                     'description'  => 'This action is very helpful if you\'re installing PublishPress Authors on an existing WordPress site. This action finds all the users in a role and creates author profiles for them. You can choose the roles using the "Automatically create author profiles" setting.',
                     'button_label' => __('Create missed authors from role', 'publishpress-authors'),
+                ],
+
+                'sync_post_author' => [
+                    'title'        => __('Update author column on posts', 'publishpress-authors'),
+                    'description'  => 'This action is very helpful if you\'re updating PublishPress Authors from versions lower or equals than v3.7.3. This action finds all the posts on your site and synchronize the "post_author" column with the first author\'s user ID, ignoring guest authors.',
+                    'button_label' => __('Update author column on posts', 'publishpress-authors'),
                 ],
             ];
 
@@ -1412,6 +1419,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 'create_post_authors',
                 'create_role_authors',
                 'copy_coauthor_plus_data',
+                'sync_post_author',
             ];
 
             if (!isset($_GET['ppma_action']) || isset($_GET['author_term_reset_notice'])
@@ -1503,6 +1511,24 @@ if (!class_exists('MA_Multiple_Authors')) {
             if (!$this->isCoAuthorsPlusActivated()) {
                 Installer::convert_post_author_into_taxonomy();
                 Installer::add_author_term_for_posts();
+            }
+        }
+
+        public function action_sync_post_author()
+        {
+            global $wpdb;
+
+            $posts_to_update = $wpdb->get_results(
+                "SELECT p.ID
+				FROM {$wpdb->posts} as p
+				WHERE p.post_type = 'post' AND p.post_status NOT IN ('trash')"
+            );
+
+            if (!empty($posts_to_update)) {
+                foreach ($posts_to_update as $post_data) {
+                    $authors = get_multiple_authors($post_data->ID);
+                    Utils::sync_post_author_column($post_data->ID, $authors);
+                }
             }
         }
 
