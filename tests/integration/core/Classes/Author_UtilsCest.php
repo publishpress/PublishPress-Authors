@@ -185,56 +185,9 @@ class Author_UtilsCest
     {
         global $wpdb;
 
-        return $wpdb->get_var(
+        return (int) $wpdb->get_var(
             $wpdb->prepare("SELECT post_author FROM {$wpdb->posts} WHERE ID = %d", $post_id)
         );
-    }
-
-    public function methodSync_post_author_columnShouldSetPost_authorWithArrayOfAuthorsInstances(\WpunitTester $I)
-    {
-        $originalPostAuthorUserId = $I->factory('the original post author user')->user->create(['role' => 'author']);
-
-        $postId = $I->factory('the post')->post->create(['post_type' => 'post', 'post_author' => $originalPostAuthorUserId]);
-
-        $selectedAuthorUserId = $I->factory('a new user for the selected author')->user->create(['role' => 'author']);
-        $selectedAuthor = Author::create_from_user($selectedAuthorUserId);
-
-        $post = get_post($postId);
-        $I->assertEquals($originalPostAuthorUserId, $post->post_author);
-
-        Utils::sync_post_author_column($postId, [$selectedAuthor]);
-
-        $postAuthor = $this->get_post_author($postId);
-
-        $I->assertEquals($selectedAuthorUserId, $postAuthor);
-    }
-
-    public function methodSync_post_author_columnShouldSetPost_authorIgnoringGuestAuthorsWithArrayOfAuthorsInstances(\WpunitTester $I)
-    {
-        $originalPostAuthorUserId = $I->factory('the original post author user')->user->create(['role' => 'author']);
-
-        $postId = $I->factory('the post')->post->create(
-            ['post_type' => 'post', 'post_author' => $originalPostAuthorUserId]
-        );
-
-        $selectedGuestAuthor = Author::create(
-            [
-                'slug' => 'guest1',
-                'display_name' => 'Guest 1',
-            ]
-        );
-
-        $secondSelectedAuthorUserId = $I->factory('a new user for the second selected author')->user->create(['role' => 'author']);
-        $secondSelectedAuthor       = Author::create_from_user($secondSelectedAuthorUserId);
-
-        $post = get_post($postId);
-        $I->assertEquals($originalPostAuthorUserId, $post->post_author);
-
-        Utils::sync_post_author_column($postId, [$selectedGuestAuthor, $secondSelectedAuthor]);
-
-        $postAuthor = $this->get_post_author($postId);
-
-        $I->assertEquals($secondSelectedAuthorUserId, $postAuthor);
     }
 
     public function methodSync_post_author_columnShouldSetPost_authorAsCurrentUserWithArrayOfGuestAuthorsOnly(\WpunitTester $I)
@@ -279,17 +232,108 @@ class Author_UtilsCest
         $I->assertEquals(get_current_user_id(), $postAuthor);
     }
 
-    public function methodSync_post_author_columnShouldNotSetPost_authorIfAuthorListIsEmpty(\WpunitTester $I)
+    public function methodSync_post_author_columnShouldSetPost_authorUsingFirstMappedToUserAuthorButIgnoringGuestAuthorsWithArrayOfAuthorsInstances(
+        \WpunitTester $I
+    ) {
+        $originalPostAuthorUserId = $I->factory('the original post author user')->user->create(['role' => 'author']);
+
+        $postId = $I->factory('the post')->post->create(
+            ['post_type' => 'post', 'post_author' => $originalPostAuthorUserId]
+        );
+
+        $firstAuthorWhichIsGuest = Author::create(
+            [
+                'slug'         => 'guest1',
+                'display_name' => 'Guest 1',
+            ]
+        );
+
+        $secondAuthorWhichIsGuest = Author::create(
+            [
+                'slug'         => 'guest2',
+                'display_name' => 'Guest 2',
+            ]
+        );
+
+        $thirdAuthorUsersId     = $I->factory('a new user for the third selected author')->user->create(
+            ['role' => 'author']
+        );
+        $thirdAuthorWhichIsUser = Author::create_from_user($thirdAuthorUsersId);
+
+        $post = get_post($postId);
+        $I->assertEquals($originalPostAuthorUserId, $post->post_author);
+
+        Utils::sync_post_author_column($postId, [$firstAuthorWhichIsGuest, $secondAuthorWhichIsGuest, $thirdAuthorWhichIsUser]);
+
+        $postAuthor = $this->get_post_author($postId);
+
+        $I->assertEquals($thirdAuthorUsersId, $postAuthor);
+    }
+
+    public function methodSync_post_author_columnShouldSetPost_authorUsingFirstAuthorWithArrayOfAuthorsInstances(\WpunitTester $I)
     {
-        $userId = $I->factory('a new user')->post->create(['role' => 'author']);
+        $originalPostAuthorUserId = $I->factory('the original post author user')->user->create(['role' => 'author']);
+
+        $postId = $I->factory('the post')->post->create(['post_type' => 'post', 'post_author' => $originalPostAuthorUserId]);
+
+        $selectedAuthorUserId = $I->factory('a new user for the selected author')->user->create(['role' => 'author']);
+        $selectedAuthor = Author::create_from_user($selectedAuthorUserId);
+
+        $post = get_post($postId);
+        $I->assertEquals($originalPostAuthorUserId, $post->post_author);
+
+        Utils::sync_post_author_column($postId, [$selectedAuthor]);
+
+        $postAuthor = $this->get_post_author($postId);
+
+        $I->assertEquals($selectedAuthorUserId, $postAuthor);
+    }
+
+    public function methodSync_post_author_columnShouldSetPost_authorAsCurrentUserIfAuthorListIsEmpty(\WpunitTester $I)
+    {
+        $userId = $I->factory('a new user for the original post_author')->user->create(['role' => 'author']);
         $postId = $I->factory('a new post')->post->create(['post_type' => 'post', 'post_author' => $userId]);
         $post = get_post($postId);
-        $originalPostAuthor = $post->post_author;
+
+        $I->assertEquals($userId, $post->post_author);
+
+        $currentUserId = $I->factory('a new user for being the current user')->user->create(['role' => 'author']);
+        wp_set_current_user($currentUserId);
 
         Utils::sync_post_author_column($postId, []);
 
-        $post = get_post($postId);
+        $postAuthor = $this->get_post_author($postId);
 
-        $I->assertEquals($originalPostAuthor, $post->post_author);
+        $I->assertEquals($currentUserId, $postAuthor);
+    }
+
+    public function methodSync_post_author_columnShouldSetPost_authorAfterAuthorsOrderChangesWithArrayOfAuthorsInstances(\WpunitTester $I)
+    {
+        $originalPostAuthorUserId = $I->factory('the original post author user')->user->create(['role' => 'author']);
+        $postId = $I->factory('the post')->post->create(['post_type' => 'post', 'post_author' => $originalPostAuthorUserId]);
+
+        $authorAUserId = $I->factory('a new user for Author A')->user->create(['role' => 'author']);
+        $authorA = Author::create_from_user($authorAUserId);
+
+        $authorBUserId = $I->factory('a new user for Author B')->user->create(['role' => 'author']);
+        $authorB = Author::create_from_user($authorBUserId);
+
+        // Make sure the post_author is correct.
+        $post = get_post($postId);
+        $I->assertEquals($originalPostAuthorUserId, $post->post_author);
+
+        // Set with Author A first.
+        Utils::sync_post_author_column($postId, [$authorA, $authorB]);
+
+        $postAuthor = $this->get_post_author($postId);
+
+        $I->assertEquals($authorAUserId, $postAuthor, 'Author A should be in the post_author');
+
+        // Set with Author B first.
+        Utils::sync_post_author_column($postId, [$authorB, $authorA]);
+
+        $postAuthor = $this->get_post_author($postId);
+
+        $I->assertEquals($authorBUserId, $postAuthor, 'Author B should be in the post_author');
     }
 }

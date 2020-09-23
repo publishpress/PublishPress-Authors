@@ -168,10 +168,6 @@ class Utils
      */
     public static function sync_post_author_column($postId, $authors)
     {
-        if (empty($authors)) {
-            return;
-        }
-
         $functionSetPostAuthor = function($postId, $authorId) {
             global $wpdb;
 
