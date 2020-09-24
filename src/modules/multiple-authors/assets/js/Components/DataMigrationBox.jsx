@@ -9,7 +9,7 @@ class DataMigrationBox extends React.Component {
         super(props);
 
         this.startMigration = this.startMigration.bind(this);
-        this.reset = this.reset.bind(this);
+        this.resetState = this.resetState.bind(this);
         this.migrateChunkOfData = this.migrateChunkOfData.bind(this);
         this.getInitialData = this.getInitialData.bind(this);
         this.finishCoAuthorsMigration = this.finishCoAuthorsMigration.bind(this);
@@ -61,6 +61,8 @@ class DataMigrationBox extends React.Component {
     startMigration() {
         var self = this;
 
+        self.resetState();
+
         self.setState(
             {
                 progress: 1,
@@ -102,9 +104,12 @@ class DataMigrationBox extends React.Component {
                     totalMigrated = self.state.totalToMigrate;
                 }
 
+                let logMessage = self.props.messageProgress.replace('%d', totalMigrated).replace('%d', self.state.totalToMigrate);
+
                 self.setState({
                     totalMigrated: totalMigrated,
-                    progress: 2 + (Math.floor((98 / self.state.totalToMigrate) * totalMigrated))
+                    progress: 2 + (Math.floor((98 / self.state.totalToMigrate) * totalMigrated)),
+                    log: logMessage,
                 });
 
                 if (totalMigrated < self.state.totalToMigrate) {
@@ -113,7 +118,7 @@ class DataMigrationBox extends React.Component {
                     self.finishCoAuthorsMigration(function () {
                         self.setState({
                             progress: 100,
-                            log: self.props.messageDone
+                            log: self.props.messageDone.replace('%d', self.state.totalMigrated)
                         });
 
                         window.setTimeout(() => {
@@ -166,8 +171,14 @@ class DataMigrationBox extends React.Component {
         }, 1000);
     }
 
-    reset() {
-        this.setState({progress: 0, inProgress: false});
+    resetState() {
+        this.setState({
+            totalToMigrate: 0,
+            totalMigrated: 0,
+            inProgress: false,
+            progress: 0,
+            log: ''
+        });
     }
 
     render() {

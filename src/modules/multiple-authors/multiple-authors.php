@@ -759,7 +759,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
                 'sync_post_author' => [
                     'title'        => __('Update author field on posts', 'publishpress-authors'),
-                    'description'  => 'This action is very helpful if you\'re updating PublishPress Authors from versions lower or equals than v3.7.3. This action finds all the posts on your site and synchronize the "post_author" column with the first author\'s user ID, ignoring guest authors.',
+                    'description'  => 'This action is very helpful if you\'re updating PublishPress Authors from versions lower or equals than v3.7.3. This action finds all the posts on your site and synchronize the "post_author" column with the first author\'s user ID, ignoring guest authors. It considers all the posts of the selected post types in the "General > Add to these post types setting.',
                     'button_link' => '',
                     'after'       => '<div id="publishpress-authors-sync-post-authors"></div>',
                 ],
@@ -1871,8 +1871,11 @@ if (!class_exists('MA_Multiple_Authors')) {
                 wp_send_json_error(null, 403);
             }
 
+            $postTypes = array_values(Util::get_post_types_for_module($this->module));
+            $postTypes = '"' . implode('","', $postTypes) . '"';
+
             $result = $wpdb->get_results(
-                "SELECT ID FROM {$wpdb->posts} WHERE post_type = 'post' AND post_status NOT IN ('trash')",
+                "SELECT ID FROM {$wpdb->posts} WHERE post_type IN ({$postTypes}) AND post_status NOT IN ('trash')",
                 ARRAY_N
             );
 

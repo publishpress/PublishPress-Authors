@@ -15,9 +15,10 @@ jQuery(function () {
                           buttonLabel={__('Update author field on posts', 'publishpress-authors')}
                           messageCollectingData={__('Collecting data...', 'publishpress-authors')}
                           messageEndingProcess={__('Finishing the process...', 'publishpress-authors')}
-                          messageDone={__('Done! The posts were updated.', 'publishpress-authors')}
+                          messageDone={__('Done! %d posts were updated.', 'publishpress-authors')}
                           messageWait={__('Please, wait...', 'publishpress-authors')}
                           messageStarting={__('Updating author field on posts...', 'publishpress-authors')}
+                          messageProgress={__('Updated %d of %d posts...', 'publishpress-authors')}
         />,
         document.getElementById('publishpress-authors-sync-post-authors')
     );
