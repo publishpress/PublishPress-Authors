@@ -333,7 +333,8 @@ class Post_Editor
         $default_author = false;
 
         $legacyPlugin = Factory::getLegacyPlugin();
-        $default_author_setting = $legacyPlugin->modules->multiple_authors->options->default_author_for_new_posts;
+        $default_author_setting = isset($legacyPlugin->modules->multiple_authors->options->default_author_for_new_posts) ?
+            $legacyPlugin->modules->multiple_authors->options->default_author_for_new_posts : '';
 
         if (!empty($default_author_setting)) {
             $default_author = Author::get_by_term_id($default_author_setting);
