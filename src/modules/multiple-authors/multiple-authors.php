@@ -151,6 +151,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_action('multiple_authors_delete_guest_authors', [$this, 'action_delete_guest_authors']);
             add_action('multiple_authors_create_post_authors', [$this, 'action_create_post_authors']);
             add_action('multiple_authors_create_role_authors', [$this, 'action_create_role_authors']);
+            add_action('multiple_authors_sync_post_author', [$this, 'action_sync_post_author']);
             add_action('multiple_authors_copy_coauthor_plus_data', [$this, 'action_copy_coauthor_plus_data']);
 
             add_action('deleted_user', [$this, 'handle_deleted_user']);
@@ -184,8 +185,11 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             add_action('wp_ajax_migrate_coauthors', [$this, 'migrateCoAuthorsData']);
             add_action('wp_ajax_get_coauthors_migration_data', [$this, 'getCoauthorsMigrationData']);
-            add_action('wp_ajax_deactivate_coauthors_plus', [$this, 'deactivateCoAuthorsPlus']);
             add_action('wp_ajax_finish_coauthors_migration', [$this, 'finishCoAuthorsMigration']);
+            add_action('wp_ajax_get_sync_post_author_data', [$this, 'getSyncPostAuthorData']);
+            add_action('wp_ajax_sync_post_author', [$this, 'syncPostAuthor']);
+            add_action('wp_ajax_finish_sync_post_author', [$this, 'finishSyncPostAuthor']);
+            add_action('wp_ajax_deactivate_coauthors_plus', [$this, 'deactivateCoAuthorsPlus']);
 
             // Add compatibility with GeneratePress theme.
             add_filter('generate_post_author_output', [$this, 'generatepress_author_output']);
@@ -751,6 +755,13 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'title'        => __('Create missed authors from role', 'publishpress-authors'),
                     'description'  => 'This action is very helpful if you\'re installing PublishPress Authors on an existing WordPress site. This action finds all the users in a role and creates author profiles for them. You can choose the roles using the "Automatically create author profiles" setting.',
                     'button_label' => __('Create missed authors from role', 'publishpress-authors'),
+                ],
+
+                'sync_post_author' => [
+                    'title'        => __('Update author field on posts', 'publishpress-authors'),
+                    'description'  => 'This action is very helpful if you\'re updating PublishPress Authors from versions lower or equals than v3.7.3. This action finds all the posts on your site and synchronize the "post_author" column with the first author\'s user ID, ignoring guest authors. It considers all the posts of the selected post types in the "General > Add to these post types setting.',
+                    'button_link' => '',
+                    'after'       => '<div id="publishpress-authors-sync-post-authors"></div>',
                 ],
             ];
 
@@ -1412,6 +1423,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 'create_post_authors',
                 'create_role_authors',
                 'copy_coauthor_plus_data',
+                'sync_post_author',
             ];
 
             if (!isset($_GET['ppma_action']) || isset($_GET['author_term_reset_notice'])
@@ -1503,6 +1515,24 @@ if (!class_exists('MA_Multiple_Authors')) {
             if (!$this->isCoAuthorsPlusActivated()) {
                 Installer::convert_post_author_into_taxonomy();
                 Installer::add_author_term_for_posts();
+            }
+        }
+
+        public function action_sync_post_author()
+        {
+            global $wpdb;
+
+            $posts_to_update = $wpdb->get_results(
+                "SELECT p.ID
+				FROM {$wpdb->posts} as p
+				WHERE p.post_type = 'post' AND p.post_status NOT IN ('trash')"
+            );
+
+            if (!empty($posts_to_update)) {
+                foreach ($posts_to_update as $post_data) {
+                    $authors = get_multiple_authors($post_data->ID);
+                    Utils::sync_post_author_column($post_data->ID, $authors);
+                }
             }
         }
 
@@ -1687,6 +1717,37 @@ if (!class_exists('MA_Multiple_Authors')) {
                     PP_AUTHORS_VERSION
                 );
 
+                wp_enqueue_script(
+                    'publishpress-authors-sync-post-author',
+                    PP_AUTHORS_URL . '/src/assets/js/sync-post-author.min.js',
+                    [
+                        'react',
+                        'react-dom',
+                        'jquery',
+                        'multiple-authors-settings',
+                        'wp-element',
+                        'wp-hooks',
+                        'wp-i18n',
+                    ],
+                    PP_AUTHORS_VERSION
+                );
+
+                wp_localize_script(
+                    'publishpress-authors-sync-post-author',
+                    'ppmaSyncPostAuthor',
+                    [
+                        'nonce'     => wp_create_nonce('sync_post_author'),
+                        'chunkSize' => 10,
+                    ]
+                );
+
+                wp_enqueue_style(
+                    'publishpress-authors-data-migration-box',
+                    PP_AUTHORS_URL . '/src/modules/multiple-authors/assets/css/data-migration-box.css',
+                    false,
+                    PP_AUTHORS_VERSION
+                );
+
                 if ($this->isCoAuthorsPlusActivated()) {
                     wp_enqueue_script(
                         'publishpress-authors-coauthors-migration',
@@ -1707,27 +1768,11 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'publishpress-authors-coauthors-migration',
                         'ppmaCoAuthorsMigration',
                         [
-                            'notMigratedPostsId' => $this->getNotMigratedPostsId(),
-                            'nonce'              => wp_create_nonce('migrate_coauthors'),
+                            'nonce' => wp_create_nonce('migrate_coauthors'),
                         ]
-                    );
-
-                    wp_enqueue_style(
-                        'publishpress-authors-coauthors-migration-css',
-                        PP_AUTHORS_URL . '/src/modules/multiple-authors/assets/css/coauthors-migration.css',
-                        false,
-                        PP_AUTHORS_VERSION
                     );
                 }
             }
-        }
-
-        private function getNotMigratedPostsId()
-        {
-            $migratedPostIds = get_option('publishpress_multiple_authors_coauthors_migrated_posts', []);
-
-
-            return [];
         }
 
         /**
@@ -1816,6 +1861,34 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             return false;
+        }
+
+        public function getSyncPostAuthorData()
+        {
+            global $wpdb;
+
+            if (!wp_verify_nonce($_GET['nonce'], 'sync_post_author')) {
+                wp_send_json_error(null, 403);
+            }
+
+            $postTypes = array_values(Util::get_post_types_for_module($this->module));
+            $postTypes = '"' . implode('","', $postTypes) . '"';
+
+            $result = $wpdb->get_results(
+                "SELECT ID FROM {$wpdb->posts} WHERE post_type IN ({$postTypes}) AND post_status NOT IN ('trash')",
+                ARRAY_N
+            );
+
+            $postIds = array_map(function($value) {return (int)$value[0];}, $result);
+
+            set_transient('publishpress_authors_sync_post_author_ids', $postIds, 24 * 60 * 60);
+
+            // nonce: migrate_coauthors
+            wp_send_json(
+                [
+                    'total' => count($postIds),
+                ]
+            );
         }
 
         private function getCoAuthorUserAuthorBySlug($slug)
@@ -1916,6 +1989,42 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
         }
 
+        public function syncPostAuthor()
+        {
+            if (!wp_verify_nonce($_GET['nonce'], 'sync_post_author')) {
+                wp_send_json_error(null, 403);
+            }
+
+            $postIdsToSync = get_transient('publishpress_authors_sync_post_author_ids');
+
+            $totalMigrated = 0;
+
+            if (!empty($postIdsToSync)) {
+                $chunkSize = isset($_GET['chunkSize']) ? (int)$_GET['chunkSize'] : 10;
+
+                reset($postIdsToSync);
+                for ($i = 0; $i < $chunkSize; $i++) {
+                    $postId = (int)current($postIdsToSync);
+
+                    if (!empty($postId)) {
+                        $authors = get_multiple_authors($postId);
+                        Utils::sync_post_author_column($postId, $authors);
+                        $totalMigrated++;
+                    }
+                    unset($postIdsToSync[key($postIdsToSync)]);
+                }
+            }
+
+            set_transient('publishpress_authors_sync_post_author_ids', $postIdsToSync, 24 * 60 * 60);
+
+            wp_send_json(
+                [
+                    'success'       => true,
+                    'totalMigrated' => $totalMigrated,
+                ]
+            );
+        }
+
         public function deactivateCoAuthorsPlus()
         {
             if (!wp_verify_nonce($_GET['nonce'], 'migrate_coauthors')) {
@@ -1944,6 +2053,21 @@ if (!class_exists('MA_Multiple_Authors')) {
             Installer::fix_author_url();
 
             // nonce: migrate_coauthors
+            wp_send_json(
+                [
+                    'success' => true,
+                ]
+            );
+        }
+
+        public function finishSyncPostAuthor()
+        {
+            if (!wp_verify_nonce($_GET['nonce'], 'sync_post_author')) {
+                wp_send_json_error(null, 403);
+            }
+
+            delete_transient('publishpress_authors_sync_post_author_ids');
+
             wp_send_json(
                 [
                     'success' => true,

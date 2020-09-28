@@ -357,6 +357,7 @@ jQuery(document).ready(function ($) {
     var buttons = [
         "#create_post_authors",
         "#create_role_authors",
+        "#sync_post_author",
         "#delete_mapped_authors",
         "#delete_guest_authors"
     ];
