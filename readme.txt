@@ -131,6 +131,7 @@ and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec
 
 * Fixed: Fixed PHP warning about undefined "default_author_for_new_posts" attribute for the module options;
 * Fixed: Fixed the empty setting field "Default author for new posts", #242;
+* Fixed: Fixed empty post_author on posts saved without any author. The current user will be added as the author, #238;
 * Fixed: Fixed post_author field on posts when saving posts to store the user ID of the first author, ignoring guest authors, #171;
 * Added: Added new maintenance task to sync post_author with author terms for all posts, #171;
 
