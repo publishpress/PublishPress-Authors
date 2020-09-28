@@ -304,7 +304,7 @@ class Post_Editor
             $wpdb->update(
                 $wpdb->posts,
                 [
-                    'post_author' => 0,
+                    'post_author' => get_current_user_id(),
                 ],
                 [
                     'ID' => $post_id,
