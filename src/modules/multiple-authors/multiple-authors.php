@@ -759,7 +759,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
                 'sync_post_author' => [
                     'title'        => __('Update author field on posts', 'publishpress-authors'),
-                    'description'  => 'This action is very helpful if you\'re updating PublishPress Authors from versions lower or equals than v3.7.3. This action finds all the posts on your site and synchronize the "post_author" column with the first author\'s user ID, ignoring guest authors. It considers all the posts of the selected post types in the "General > Add to these post types setting.',
+                    'description'  => 'This action is useful if you\'re updating PublishPress Authors from versions lower or equals than 3.7.4. This action can help compatibility with some 3rd party themes and plugins.',
                     'button_link' => '',
                     'after'       => '<div id="publishpress-authors-sync-post-authors"></div>',
                 ],
