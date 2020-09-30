@@ -202,6 +202,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 2
             );
             add_filter('publishpress_calendar_default_author', [$this, 'publishpressCalendarDefaultAuthor'], 10, 2);
+            add_filter('publishpress_author_filter_selected_option', [$this, 'publishpressAuthorFilterSelectedOption'], 10, 2);
 
             // Add compatibility with GeneratePress theme.
             add_filter('generate_post_author_output', [$this, 'generatepress_author_output']);
@@ -2220,6 +2221,16 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             return $defaultAuthor;
+        }
+
+        public function publishpressAuthorFilterSelectedOption($option, $authorId)
+        {
+            if ($authorId < 0) {
+                $author = Author::get_by_term_id($authorId);
+                $option = '<option value="' . esc_attr($authorId) . '" selected="selected">' . esc_html($author->display_name) . '</option>';
+            }
+
+            return $option;
         }
     }
 }
