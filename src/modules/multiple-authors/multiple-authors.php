@@ -203,6 +203,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
             add_filter('publishpress_calendar_default_author', [$this, 'publishpressCalendarDefaultAuthor'], 10, 2);
             add_filter('publishpress_author_filter_selected_option', [$this, 'publishpressAuthorFilterSelectedOption'], 10, 2);
+            add_filter('PP_Content_Overview_posts_query_args', [$this, 'publishpressContentOverviewPostQueryArgs']);
+            add_filter('publishpress_content_overview_author_column', [$this, 'publishpressContentOverviewAuthorColumn'], 10, 2);
 
             // Add compatibility with GeneratePress theme.
             add_filter('generate_post_author_output', [$this, 'generatepress_author_output']);
@@ -2171,7 +2173,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
                 foreach ($authors as $author) {
                     $results[] = [
-                        'id'   => empty($author['user_id']) ? -$author['term'] : $author['user_id'],
+                        'id'   => $author['term'] * -1,
                         'text' => $author['text'],
                     ];
                 }
@@ -2231,6 +2233,48 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             return $option;
+        }
+
+        public function publishpressContentOverviewPostQueryArgs($args)
+        {
+            // Add support for guest authors in the post query
+            $selectedPostTypes = array_values(Util::get_post_types_for_module($this->module));
+
+            if (isset($args['author']) && $args['author'] < 0 && in_array($args['post_type'], $selectedPostTypes)) {
+                if (isset($args['tax_query'])) {
+                    $args['tax_query']['relation'] = 'AND';
+                }
+
+                $authorId = abs($args['author']);
+                unset($args['author']);
+
+                $args['tax_query'][] = [
+                    'taxonomy' => 'author',
+                    'field' => 'id',
+                    'terms' => [$authorId],
+                ];
+            }
+
+            return $args;
+        }
+
+        public function publishpressContentOverviewAuthorColumn($authorName, $post)
+        {
+            $selectedPostTypes = array_values(Util::get_post_types_for_module($this->module));
+
+            if (in_array($post->post_type, $selectedPostTypes)) {
+                $authors = get_multiple_authors($post->ID);
+
+                $authorNamesArray = [];
+                foreach ($authors as $author)
+                {
+                    $authorNamesArray[] = $author->display_name;
+                }
+
+                $authorName = implode(', ', $authorNamesArray);
+            }
+
+            return $authorName;
         }
     }
 }
