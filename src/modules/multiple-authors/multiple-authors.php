@@ -203,8 +203,9 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
             add_filter('publishpress_calendar_default_author', [$this, 'publishpressCalendarDefaultAuthor'], 10, 2);
             add_filter('publishpress_author_filter_selected_option', [$this, 'publishpressAuthorFilterSelectedOption'], 10, 2);
-            add_filter('PP_Content_Overview_posts_query_args', [$this, 'publishpressContentOverviewPostQueryArgs']);
+            add_filter('PP_Content_Overview_posts_query_args', [$this, 'publishpressPostQueryArgs']);
             add_filter('publishpress_content_overview_author_column', [$this, 'publishpressContentOverviewAuthorColumn'], 10, 2);
+            add_filter('pp_calendar_posts_query_args', [$this, 'publishpressPostQueryArgs']);
 
             // Add compatibility with GeneratePress theme.
             add_filter('generate_post_author_output', [$this, 'generatepress_author_output']);
@@ -2235,12 +2236,12 @@ if (!class_exists('MA_Multiple_Authors')) {
             return $option;
         }
 
-        public function publishpressContentOverviewPostQueryArgs($args)
+        public function publishpressPostQueryArgs($args)
         {
             // Add support for guest authors in the post query
             $selectedPostTypes = array_values(Util::get_post_types_for_module($this->module));
 
-            if (isset($args['author']) && $args['author'] < 0 && in_array($args['post_type'], $selectedPostTypes)) {
+            if (isset($args['author']) && $args['author'] < 0) {
                 if (isset($args['tax_query'])) {
                     $args['tax_query']['relation'] = 'AND';
                 }
