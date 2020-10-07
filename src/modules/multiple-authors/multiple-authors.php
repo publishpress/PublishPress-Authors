@@ -21,6 +21,7 @@
  * along with PublishPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use MultipleAuthors\Classes\Admin_Ajax;
 use MultipleAuthors\Classes\Author_Utils;
 use MultipleAuthors\Classes\Installer;
 use MultipleAuthors\Classes\Legacy\Module;
@@ -190,6 +191,21 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_action('wp_ajax_sync_post_author', [$this, 'syncPostAuthor']);
             add_action('wp_ajax_finish_sync_post_author', [$this, 'finishSyncPostAuthor']);
             add_action('wp_ajax_deactivate_coauthors_plus', [$this, 'deactivateCoAuthorsPlus']);
+
+            // PublishPress compatibility hooks.
+            add_filter('publishpress_search_authors_results_pre_search', [$this, 'publishpressSearchAuthors'], 10, 2);
+            add_filter('publishpress_author_can_edit_posts', [$this, 'publishpressAuthorCanEditPosts'], 10, 2);
+            add_filter(
+                'publishpress_calendar_after_create_post',
+                [$this, 'publishpressCalendarAfterCreatePost'],
+                10,
+                2
+            );
+            add_filter('publishpress_calendar_default_author', [$this, 'publishpressCalendarDefaultAuthor'], 10, 2);
+            add_filter('publishpress_author_filter_selected_option', [$this, 'publishpressAuthorFilterSelectedOption'], 10, 2);
+            add_filter('PP_Content_Overview_posts_query_args', [$this, 'publishpressPostQueryArgs']);
+            add_filter('publishpress_content_overview_author_column', [$this, 'publishpressContentOverviewAuthorColumn'], 10, 2);
+            add_filter('pp_calendar_posts_query_args', [$this, 'publishpressPostQueryArgs']);
 
             // Add compatibility with GeneratePress theme.
             add_filter('generate_post_author_output', [$this, 'generatepress_author_output']);
@@ -565,9 +581,9 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '<input type="checkbox" value="yes" id="' . $id . '" name="' . $this->module->options_group_name . '[append_to_content]" '
                 . checked($value, 'yes', false) . ' />';
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">' . esc_html__(
-                'This will display the authors box at the end of the content.',
-                'publishpress-authors'
-            ) . '</span>';
+                    'This will display the authors box at the end of the content.',
+                    'publishpress-authors'
+                ) . '</span>';
             echo '</label>';
         }
 
@@ -587,8 +603,8 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '<label for="' . $id . '">';
             echo '<input type="text" value="' . esc_attr(
-                $value
-            ) . '" id="' . $id . '" name="' . $this->module->options_group_name . '[title_appended_to_content]" class="regular-text" />';
+                    $value
+                ) . '" id="' . $id . '" name="' . $this->module->options_group_name . '[title_appended_to_content]" class="regular-text" />';
             echo '</label>';
         }
 
@@ -637,9 +653,9 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '</select>';
 
             echo '<p class="ppma_settings_field_description">' . __(
-                'Author profiles can be mapped to WordPress user accounts. This option allows you to automatically create author profiles when users are created in these roles. You can also do this for existing users by clicking the "Create missed authors from role" button in the Maintenance tab.',
-                'publishpress-authors'
-            );
+                    'Author profiles can be mapped to WordPress user accounts. This option allows you to automatically create author profiles when users are created in these roles. You can also do this for existing users by clicking the "Create missed authors from role" button in the Maintenance tab.',
+                    'publishpress-authors'
+                );
 
             echo '</label>';
         }
@@ -678,7 +694,9 @@ if (!class_exists('MA_Multiple_Authors')) {
             $value = isset($this->module->options->default_author_for_new_posts) ? $this->module->options->default_author_for_new_posts : '';
             ?>
             <label for="<?php echo $id; ?>">
-                <select data-value="<?php echo $value; ?>" name="<?php echo $this->module->options_group_name . '[default_author_for_new_posts]'; ?>" data-nonce="<?php echo esc_attr(wp_create_nonce('authors-search')); ?>"
+                <select data-value="<?php echo $value; ?>"
+                        name="<?php echo $this->module->options_group_name . '[default_author_for_new_posts]'; ?>"
+                        data-nonce="<?php echo esc_attr(wp_create_nonce('authors-search')); ?>"
                         class="default-authors-select2"
                         data-placeholder="<?php esc_attr_e('Search for an author', 'authors'); ?>" style="width: 350px">
                     <option value=""></option>
@@ -686,7 +704,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                     if (!empty($value)) {
                         $author = Author::get_by_term_id($value);
                         ?>
-                        <option value="<?php echo $value; ?>" selected="selected"><?php echo $author->display_name; ?></option>
+                        <option value="<?php echo $value; ?>"
+                                selected="selected"><?php echo $author->display_name; ?></option>
                     <?php } ?>
                 </select>
 
@@ -708,9 +727,9 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '<input type="checkbox" value="yes" id="' . $id . '" name="' . $this->module->options_group_name . '[show_email_link]" '
                 . checked($value, 'yes', false) . ' />';
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">' . esc_html__(
-                'This will display the authors email in the author box.',
-                'publishpress-authors'
-            ) . '</span>';
+                    'This will display the authors email in the author box.',
+                    'publishpress-authors'
+                ) . '</span>';
             echo '</label>';
         }
 
@@ -728,9 +747,9 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '<input type="checkbox" value="yes" id="' . $id . '" name="' . $this->module->options_group_name . '[show_site_link]" '
                 . checked($value, 'yes', false) . ' />';
             echo '&nbsp;&nbsp;&nbsp; <span class="ppma_settings_field_description">' . esc_html__(
-                'This will display the authors site in the author box.',
-                'publishpress-authors'
-            ) . '</span>';
+                    'This will display the authors site in the author box.',
+                    'publishpress-authors'
+                ) . '</span>';
             echo '</label>';
         }
 
@@ -758,8 +777,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                 ],
 
                 'sync_post_author' => [
-                    'title'        => __('Update author field on posts', 'publishpress-authors'),
-                    'description'  => 'This action is useful if you\'re updating PublishPress Authors from versions lower or equals than 3.7.4. This action can help compatibility with some 3rd party themes and plugins.',
+                    'title'       => __('Update author field on posts', 'publishpress-authors'),
+                    'description' => 'This action is useful if you\'re updating PublishPress Authors from versions lower or equals than 3.7.4. This action can help compatibility with some 3rd party themes and plugins.',
                     'button_link' => '',
                     'after'       => '<div id="publishpress-authors-sync-post-authors"></div>',
                 ],
@@ -796,9 +815,9 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '<div id="ppma_maintenance_settings">';
 
             echo '<p class="ppma_warning">' . __(
-                'Please be careful clicking these buttons. Before clicking, we recommend taking a site backup in case anything goes wrong.',
-                'publishpress-authors'
-            );
+                    'Please be careful clicking these buttons. Before clicking, we recommend taking a site backup in case anything goes wrong.',
+                    'publishpress-authors'
+                );
             echo '</p>';
 
             foreach ($actions as $actionName => $actionInfo) {
@@ -938,9 +957,9 @@ if (!class_exists('MA_Multiple_Authors')) {
          * Filters the list of receivers in the notification workflows provided
          * by the improved notifications add-on.
          *
-         * @param array   $receivers
+         * @param array $receivers
          * @param WP_Post $workflow
-         * @param array   $args
+         * @param array $args
          *
          * @return array
          */
@@ -967,8 +986,8 @@ if (!class_exists('MA_Multiple_Authors')) {
          * Over hide some strings for Authors.
          *
          * @param string $translation Translated text.
-         * @param string $text        Text to translate.
-         * @param string $domain      Text domain. Unique identifier for retrieving translated strings.
+         * @param string $text Text to translate.
+         * @param string $domain Text domain. Unique identifier for retrieving translated strings.
          *
          * @return string
          */
@@ -1030,7 +1049,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
-         * @param  int $id
+         * @param int $id
          * @return false|Author
          */
         private function get_author_by_id($id)
@@ -1071,8 +1090,8 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
-         * @param string $value   The value of the metadata.
-         * @param int    $user_id The user ID for the value.
+         * @param string $value The value of the metadata.
+         * @param int $user_id The user ID for the value.
          *
          * @return mixed
          */
@@ -1093,8 +1112,8 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
-         * @param string $value   The value of the metadata.
-         * @param int    $user_id The user ID for the value.
+         * @param string $value The value of the metadata.
+         * @param int $user_id The user ID for the value.
          *
          * @return mixed
          */
@@ -1110,8 +1129,8 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
-         * @param string $value   The value of the metadata.
-         * @param int    $user_id The user ID for the value.
+         * @param string $value The value of the metadata.
+         * @param int $user_id The user ID for the value.
          *
          * @return mixed
          */
@@ -1127,8 +1146,8 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
-         * @param string $value   The value of the metadata.
-         * @param int    $user_id The user ID for the value.
+         * @param string $value The value of the metadata.
+         * @param int $user_id The user ID for the value.
          *
          * @return mixed
          */
@@ -1145,8 +1164,8 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
-         * @param string $value   The value of the metadata.
-         * @param int    $user_id The user ID for the value.
+         * @param string $value The value of the metadata.
+         * @param int $user_id The user ID for the value.
          *
          * @return mixed
          */
@@ -1162,8 +1181,8 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
-         * @param string $value   The value of the metadata.
-         * @param int    $user_id The user ID for the value.
+         * @param string $value The value of the metadata.
+         * @param int $user_id The user ID for the value.
          *
          * @return mixed
          */
@@ -1179,8 +1198,8 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
-         * @param string $value   The value of the metadata.
-         * @param int    $user_id The user ID for the value.
+         * @param string $value The value of the metadata.
+         * @param int $user_id The user ID for the value.
          *
          * @return mixed
          */
@@ -1196,8 +1215,8 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
-         * @param string $value   The value of the metadata.
-         * @param int    $user_id The user ID for the value.
+         * @param string $value The value of the metadata.
+         * @param int $user_id The user ID for the value.
          *
          * @return mixed
          */
@@ -1213,8 +1232,8 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
-         * @param string $value   The value of the metadata.
-         * @param int    $user_id The user ID for the value.
+         * @param string $value The value of the metadata.
+         * @param int $user_id The user ID for the value.
          *
          * @return mixed
          */
@@ -1230,8 +1249,8 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
-         * @param string $value   The value of the metadata.
-         * @param int    $user_id The user ID for the value.
+         * @param string $value The value of the metadata.
+         * @param int $user_id The user ID for the value.
          *
          * @return mixed
          */
@@ -1247,8 +1266,8 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
-         * @param string $value   The value of the metadata.
-         * @param int    $user_id The user ID for the value.
+         * @param string $value The value of the metadata.
+         * @param int $user_id The user ID for the value.
          *
          * @return mixed
          */
@@ -1264,8 +1283,8 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
-         * @param string $value   The value of the metadata.
-         * @param int    $user_id The user ID for the value.
+         * @param string $value The value of the metadata.
+         * @param int $user_id The user ID for the value.
          *
          * @return mixed
          */
@@ -1281,8 +1300,8 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
-         * @param string $value   The value of the metadata.
-         * @param int    $user_id The user ID for the value.
+         * @param string $value The value of the metadata.
+         * @param int $user_id The user ID for the value.
          *
          * @return mixed
          */
@@ -1298,8 +1317,8 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
-         * @param string $value   The value of the metadata.
-         * @param int    $user_id The user ID for the value.
+         * @param string $value The value of the metadata.
+         * @param int $user_id The user ID for the value.
          *
          * @return mixed
          */
@@ -1315,8 +1334,8 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
-         * @param string $value   The value of the metadata.
-         * @param int    $user_id The user ID for the value.
+         * @param string $value The value of the metadata.
+         * @param int $user_id The user ID for the value.
          *
          * @return mixed
          */
@@ -1332,8 +1351,8 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
-         * @param string $value   The value of the metadata.
-         * @param int    $user_id The user ID for the value.
+         * @param string $value The value of the metadata.
+         * @param int $user_id The user ID for the value.
          *
          * @return mixed
          */
@@ -1349,8 +1368,8 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
-         * @param string $value   The value of the metadata.
-         * @param int    $user_id The user ID for the value.
+         * @param string $value The value of the metadata.
+         * @param int $user_id The user ID for the value.
          *
          * @return mixed
          */
@@ -1366,7 +1385,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
-         * @param array $args        Arguments passed to get_avatar_data(), after processing.
+         * @param array $args Arguments passed to get_avatar_data(), after processing.
          * @param mixed $id_or_email The Gravatar to retrieve. Accepts a user ID, Gravatar MD5 hash,
          *                           user email, WP_User object, WP_Post object, or WP_Comment object.
          */
@@ -1619,9 +1638,9 @@ if (!class_exists('MA_Multiple_Authors')) {
             if ($_GET['author_term_reset_notice'] === 'fail') {
                 echo '<div class="notice notice - error is - dismissible">';
                 echo '<p>' . __(
-                    'Error. Author terms could not be reseted.',
-                    'publishpress-authors'
-                ) . '</p>';
+                        'Error. Author terms could not be reseted.',
+                        'publishpress-authors'
+                    ) . '</p>';
                 echo '</div>';
 
                 return;
@@ -1671,8 +1690,8 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         /**
          * @param bool $isAuthor
-         * @param int  $userId
-         * @param int  $postId
+         * @param int $userId
+         * @param int $postId
          *
          * @return bool
          */
@@ -1879,7 +1898,12 @@ if (!class_exists('MA_Multiple_Authors')) {
                 ARRAY_N
             );
 
-            $postIds = array_map(function($value) {return (int)$value[0];}, $result);
+            $postIds = array_map(
+                function ($value) {
+                    return (int)$value[0];
+                },
+                $result
+            );
 
             set_transient('publishpress_authors_sync_post_author_ids', $postIds, 24 * 60 * 60);
 
@@ -2135,6 +2159,123 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             update_option('publishpress_authors_dismiss_coauthors_migration_notice', 1);
+        }
+
+        /**
+         * @param $results
+         * @param $searchText
+         */
+        public function publishpressSearchAuthors($results, $searchText)
+        {
+            $authors = Admin_Ajax::get_possible_authors_for_search($searchText);
+
+            if (!empty($authors)) {
+                $results = [];
+
+                foreach ($authors as $author) {
+                    $results[] = [
+                        'id'   => $author['term'] * -1,
+                        'text' => $author['text'],
+                    ];
+                }
+            }
+
+            return $results;
+        }
+
+        public function publishpressAuthorCanEditPosts($canEdit, $authorId)
+        {
+            try {
+                if ($authorId > 0) {
+                    $author  = Author::get_by_user_id($authorId);
+                    $user    = $author->get_user_object();
+                    $canEdit = $user->has_cap('edit_posts');
+                } else {
+                    $author  = Author::get_by_term_id($authorId);
+                    $canEdit = $author->is_guest();
+                }
+            } catch (Exception $e) {
+            }
+
+            return $canEdit;
+        }
+
+        public function publishpressCalendarAfterCreatePost($postId, $postAuthorId)
+        {
+            $author = null;
+            if ($postAuthorId > 0) {
+                $author = Author::get_by_user_id($postAuthorId);
+            } else {
+                $author = Author::get_by_term_id(abs($postAuthorId));
+            }
+
+            if (!empty($author)) {
+                Utils::set_post_authors($postId, [$author]);
+            }
+        }
+
+        public function publishpressCalendarDefaultAuthor($defaultAuthor)
+        {
+            $default_author_setting = isset($this->module->options->default_author_for_new_posts) ?
+                $this->module->options->default_author_for_new_posts : '';
+
+            if (!empty($default_author_setting)) {
+                $defaultAuthor = -$default_author_setting;
+            }
+
+            return $defaultAuthor;
+        }
+
+        public function publishpressAuthorFilterSelectedOption($option, $authorId)
+        {
+            if ($authorId < 0) {
+                $author = Author::get_by_term_id($authorId);
+                $option = '<option value="' . esc_attr($authorId) . '" selected="selected">' . esc_html($author->display_name) . '</option>';
+            }
+
+            return $option;
+        }
+
+        public function publishpressPostQueryArgs($args)
+        {
+            // Add support for guest authors in the post query
+            $selectedPostTypes = array_values(Util::get_post_types_for_module($this->module));
+
+            if (isset($args['author']) && $args['author'] < 0) {
+                if (isset($args['tax_query'])) {
+                    $args['tax_query']['relation'] = 'AND';
+                }
+
+                $authorId = abs($args['author']);
+                unset($args['author']);
+
+                $args['tax_query'][] = [
+                    'taxonomy' => 'author',
+                    'field' => 'id',
+                    'terms' => [$authorId],
+                ];
+            }
+
+            return $args;
+        }
+
+        public function publishpressContentOverviewAuthorColumn($authorName, $post)
+        {
+            $selectedPostTypes = array_values(Util::get_post_types_for_module($this->module));
+
+            if (in_array($post->post_type, $selectedPostTypes)) {
+                $authors = get_multiple_authors($post->ID);
+
+                $authorNamesArray = [];
+                foreach ($authors as $author)
+                {
+                    $authorNamesArray[] = $author->display_name;
+                }
+
+                $authorName = implode(', ', $authorNamesArray);
+            }
+
+            return $authorName;
         }
     }
 }
