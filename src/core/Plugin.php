@@ -1256,6 +1256,10 @@ class Plugin
                 'Are you sure you want to create author profiles for the missed post authors?',
                 'publishpress-authors'
             ),
+            'confirm_sync_post_author'      => __(
+                'Are you sure you want to update the author column for all the posts?',
+                'publishpress-authors'
+            ),
             'confirm_create_role_authors'   => __(
                 'Are you sure you want to create authors for the selected roles?',
                 'publishpress-authors'
