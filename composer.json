@@ -2,6 +2,7 @@
   "name": "publishpress/publishpress-authors",
   "type": "wordpress-plugin",
   "license": "GPL-2.0-or-later",
+  "description": "",
   "authors": [
     {
       "name": "PublishPress",
