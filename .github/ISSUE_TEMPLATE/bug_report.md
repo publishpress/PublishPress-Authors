@@ -6,9 +6,8 @@ labels: 'bug'
 assignees: ''
 
 ---
-
-Your issue may already be reported!
-Please search on the [issue track](../) before creating one.
+<!--- Your issue may already be reported! -->
+<!--- Please search on the [issue track](../) before creating one. -->
 
 ## Expected Behavior
 
