@@ -156,6 +156,10 @@ class Installer
 
                 if (is_object($author)) {
                     $authors = [$author];
+
+                    Utils::set_post_authors_name_meta($post_data->ID, $authors);
+                    Utils::sync_post_author_column($post_data->ID, $authors);
+
                     $authors = wp_list_pluck($authors, 'term_id');
 
                     wp_add_object_terms($post_data->ID, $authors, 'author');
