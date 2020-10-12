@@ -7,9 +7,9 @@
         {% for author in authors %}
             <li class="author_index_{{ loop.index }}">
                 {% if author.get_avatar %}
-                    {{ author.get_avatar(160)|raw }}
+                    {{ author.get_avatar(80)|raw }}
                 {% else %}
-                    {{ get_avatar(author.user_email, 160)|raw }}
+                    {{ get_avatar(author.user_email, 80)|raw }}
                 {% endif %}
                 <a href="{{ author.link }}" class="{{ item_class }}" rel="author">{{ author.display_name }}</a>
                 <p class="multiple-authors-description">{{ author.description|raw }}</p>
