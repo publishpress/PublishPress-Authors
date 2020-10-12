@@ -127,6 +127,10 @@ There are two ways to install the PublishPress Authors plugin:
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.html).
 
+= UNRELEASED =
+
+* Fixed: Fixed the consistency of avatar dimensions between the img tag attributes and the CSS, #258;
+
 = [3.8.0] - 2020-10-08 =
 
 * Fixed: Fixed PHP warning about undefined "default_author_for_new_posts" attribute for the module options;
