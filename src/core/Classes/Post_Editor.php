@@ -37,8 +37,9 @@ class Post_Editor
                     10,
                     2
                 );
-                // add_action('bulk_edit_custom_box', [__CLASS__, 'add_author_bulk_quick_edit_custom_box'], 10, 2);
+                add_action('bulk_edit_custom_box', [__CLASS__, 'add_author_bulk_quick_edit_custom_box'], 10, 2);
                 add_action('quick_edit_custom_box', [__CLASS__, 'add_author_bulk_quick_edit_custom_box'], 10, 2);
+                add_action('wp_ajax_save_bulk_edit_authors', [__CLASS__, 'save_bulk_edit_authors'], 10, 2);
             }
         }
     }
@@ -125,7 +126,7 @@ class Post_Editor
                         'No author',
                         'publishpress-authors'
                     ) . '</span>';
-            }
+            }  
 
             echo implode(', ', $authors_str);
         }
@@ -257,6 +258,45 @@ class Post_Editor
     }
 
     /**
+     * Save bulk edit authors via ajax
+     */
+    public static function save_bulk_edit_authors() 
+    {
+        global $wpdb;
+
+        $post_ids = $_POST['post_ids'];
+        if (!isset($_POST['bulkEditNonce'])
+            || !wp_verify_nonce($_POST['bulkEditNonce'], 'bulk-edit-nonce') 
+            || !current_user_can(get_taxonomy('author')->cap->assign_terms)
+        ) {
+            return;
+        }
+        $authors = isset($_POST['authors_ids']) ? $_POST['authors_ids'] : [];
+        $authors = self::remove_dirty_authors_from_authors_arr($authors);
+
+        if (!empty($post_ids)) {
+            foreach ($post_ids as $post_id) {
+                Utils::set_post_authors($post_id, $authors); 
+            }
+        }
+
+        if (empty($authors)) {
+            $wpdb->update(
+                $wpdb->posts,
+                [
+                    'post_author' => 0,
+                ],
+                [
+                    'ID' => $post_id,
+                ]
+            );
+            clean_post_cache($post_id);
+        }
+       
+        wp_send_json_success(true, 200);
+    }
+
+    /** 
      * Handle saving of the Author meta box
      *
      * @param int     $post_id ID for the post being saved.
@@ -279,23 +319,8 @@ class Post_Editor
         }
 
 
-        $dirty_authors = isset($_POST['authors']) ? $_POST['authors'] : [];
-        $authors       = [];
-        foreach ($dirty_authors as $dirty_author) {
-            if (is_numeric($dirty_author)) {
-                $authors[] = Author::get_by_term_id($dirty_author);
-            } elseif ('u' === $dirty_author[0]) {
-                $user_id = (int)substr($dirty_author, 1);
-                $author  = Author::get_by_user_id($user_id);
-                if (!$author) {
-                    $author = Author::create_from_user($user_id);
-                    if (is_wp_error($author)) {
-                        continue;
-                    }
-                }
-                $authors[] = $author;
-            }
-        }
+        $authors = isset($_POST['authors']) ? $_POST['authors'] : [];
+        $authors = self::remove_dirty_authors_from_authors_arr($authors);
 
         Utils::set_post_authors($post_id, $authors);
 
@@ -313,6 +338,36 @@ class Post_Editor
         }
     }
 
+    /**
+     * Remove dirty authors from authors array
+     * 
+     * @access private
+     * 
+     * @param array $authors_arr The authors array that should 
+     *                           be filtered from dirty authors.
+     * 
+     * @return array The filtered authors array
+     */
+    private static function remove_dirty_authors_from_authors_arr($authors_arr) {
+        $dirty_authors = $authors_arr;
+        $authors       = [];
+        foreach ($dirty_authors as $dirty_author) {
+            if (is_numeric($dirty_author)) {
+                $authors[] = Author::get_by_term_id($dirty_author);
+            } elseif ('u' === $dirty_author[0]) {
+                $user_id = (int)substr($dirty_author, 1);
+                $author  = Author::get_by_user_id($user_id);
+                if (!$author) {
+                    $author = Author::create_from_user($user_id);
+                    if (is_wp_error($author)) {
+                        continue;
+                    }
+                }
+                $authors[] = $author;
+            }
+        }
+        return $authors;
+    }   
     /**
      * Assign a author term when a post is initially created
      *
