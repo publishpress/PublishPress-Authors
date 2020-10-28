@@ -281,16 +281,18 @@ class Post_Editor
         }
 
         if (empty($authors)) {
-            $wpdb->update(
-                $wpdb->posts,
-                [
-                    'post_author' => 0,
-                ],
-                [
-                    'ID' => $post_id,
-                ]
-            );
-            clean_post_cache($post_id);
+            foreach ($post_ids as $post_id) {
+                $wpdb->update(
+                    $wpdb->posts,
+                    [
+                        'post_author' => 0,
+                    ],
+                    [
+                        'ID' => $post_id,
+                    ]
+                );
+                clean_post_cache($post_id);
+            }
         }
        
         wp_send_json_success(true, 200);
