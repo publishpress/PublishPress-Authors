@@ -127,12 +127,9 @@ There are two ways to install the PublishPress Authors plugin:
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.html).
 
-= UNRELEASED =
-
-* Fixed: Fixed the consistency of avatar dimensions between the img tag attributes and the CSS, #258;
-
 = [3.8.1] - UNRELEASED =
 
+* Fixed: Fixed the consistency of avatar dimensions between the img tag attributes and the CSS, #258;
 * Fixed: Fixed edit_posts permission check for the PublishPress calendar, #264;
 * Fixed: Restored the post count column in the Authors list, #95;
 
