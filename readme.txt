@@ -131,6 +131,11 @@ and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec
 
 * Fixed: Fixed the consistency of avatar dimensions between the img tag attributes and the CSS, #258;
 
+= [3.8.1] - UNRELEASED =
+
+* Fixed: Fixed edit_posts permission check for the PublishPress calendar, #264;
+* Fixed: Restored the post count column in the Authors list, #95;
+
 = [3.8.0] - 2020-10-08 =
 
 * Fixed: Fixed PHP warning about undefined "default_author_for_new_posts" attribute for the module options;
