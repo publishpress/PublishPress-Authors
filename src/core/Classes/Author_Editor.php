@@ -35,11 +35,6 @@ class Author_Editor
             unset($columns['description']);
         }
 
-        // Remove the posts count to replace with a correct number
-        if (isset($columns['posts'])) {
-            unset($columns['posts']);
-        }
-
         // Add our own columns too.
         $new_columns = [];
         foreach ($columns as $key => $title) {
@@ -49,6 +44,10 @@ class Author_Editor
             } else {
                 $new_columns[$key] = $title;
             }
+        }
+
+        if (isset($new_columns['posts'])) {
+            $new_columns['posts'] = __('Published Posts', 'publishpress-authors');
         }
 
         return $new_columns;
@@ -529,6 +528,10 @@ class Author_Editor
             'Convert into guest author',
             'publishpress-authors'
         );
+        $bulk_actions['update_post_count'] = __(
+            'Update post count',
+            'publishpress-authors'
+        );
 
         return $bulk_actions;
     }
@@ -547,6 +550,7 @@ class Author_Editor
         $bulkActions = [
             'update_mapped_author_data',
             'convert_into_guest_author',
+            'update_post_count',
         ];
 
         if (empty($terms_ids) || !in_array($do_action, $bulkActions, true)) {
@@ -566,6 +570,8 @@ class Author_Editor
                 Author::update_author_from_user($term_id, $author->user_id);
             } elseif ($do_action === 'convert_into_guest_author') {
                 Author::convert_into_guest_author($term_id);
+            } elseif ($do_action === 'update_post_count') {
+                wp_update_term_count($term_id, 'author');
             }
 
             $updated++;

@@ -2191,8 +2191,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                     $user    = $author->get_user_object();
                     $canEdit = $user->has_cap('edit_posts');
                 } else {
-                    $author  = Author::get_by_term_id($authorId);
-                    $canEdit = $author->is_guest();
+                    $author  = Author::get_by_term_id($authorId * -1);
+                    $canEdit = $author->is_guest() ? true : $author->get_user_object()->has_cap('edit_posts');
                 }
             } catch (Exception $e) {
             }
