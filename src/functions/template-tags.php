@@ -39,7 +39,11 @@ function get_multiple_authors($post = 0, $filter_the_author = true, $archive = f
         if (is_object($post)) {
             $post = $post->ID;
         } elseif (empty($post)) {
-            $post = get_post()->ID;
+            $post = get_post();
+
+            if (is_object($post) && !is_wp_error($post)) {
+                $post = $post->ID;
+            }
         }
 
         $postId = (int)$post;
