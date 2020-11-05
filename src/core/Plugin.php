@@ -1189,20 +1189,23 @@ class Plugin
             PP_AUTHORS_VERSION
         );
 
-        wp_enqueue_style(
-            'multiple-authors-chosen',
-            PP_AUTHORS_ASSETS_URL . 'lib/chosen-v1.8.3/chosen.min.css',
-            false,
-            PP_AUTHORS_VERSION,
-            'all'
-        );
+        // Fix compatibility issue with the WP RSS Aggregator plugin
+        if (!wp_script_is('wprss_ftp_admin_ajax_chosen')) {
+            wp_enqueue_style(
+                'multiple-authors-chosen',
+                PP_AUTHORS_ASSETS_URL . 'lib/chosen-v1.8.3/chosen.min.css',
+                false,
+                PP_AUTHORS_VERSION,
+                'all'
+            );
 
-        wp_enqueue_script(
-            'multiple-authors-chosen',
-            PP_AUTHORS_ASSETS_URL . 'lib/chosen-v1.8.3/chosen.jquery.min.js',
-            ['jquery'],
-            PP_AUTHORS_VERSION
-        );
+            wp_enqueue_script(
+                'multiple-authors-chosen',
+                PP_AUTHORS_ASSETS_URL . 'lib/chosen-v1.8.3/chosen.jquery.min.js',
+                ['jquery'],
+                PP_AUTHORS_VERSION
+            );
+        }
 
         wp_enqueue_script(
             'multiple-authors-select2',
