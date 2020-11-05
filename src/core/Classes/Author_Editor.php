@@ -46,6 +46,10 @@ class Author_Editor
             }
         }
 
+        if (isset($new_columns['posts'])) {
+            $new_columns['posts'] = __('Published Posts', 'publishpress-authors');
+        }
+
         return $new_columns;
     }
 
