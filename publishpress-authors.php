@@ -5,7 +5,7 @@
  * Description: PublishPress Authors allows you to add multiple authors and guest authors to WordPress posts
  * Author:      PublishPress
  * Author URI:  https://publishpress.com
- * Version: 3.8.1
+ * Version: 3.8.1-hotfix-275-user-post-count
  * Text Domain: publishpress-authors
  *
  * ------------------------------------------------------------------------------
