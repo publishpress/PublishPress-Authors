@@ -141,7 +141,7 @@ class Query
                 $query->authors_having_terms .= ' ' . $wpdb->term_taxonomy . '.term_id = \'' . $term->term_id . '\' OR ';
             }
 
-            $terms_implode = rtrim($terms_implode, ' OR');
+                $terms_implode = rtrim($terms_implode, ' OR');
 
             $query->authors_having_terms = rtrim($query->authors_having_terms, ' OR');
 
@@ -203,11 +203,149 @@ class Query
             return $groupby;
         }
 
-
         $having  = 'MAX( IF ( ' . $wpdb->term_taxonomy . '.taxonomy = "author", IF ( ' . $query->authors_having_terms . ',2,1 ),0 ) ) <> 1 ';
         $groupby = $wpdb->posts . '.ID HAVING ' . $having;
 
         return $groupby;
     }
 
+    /**
+     * Modify the WHERE clause on author queries.
+     *
+     * @param string $where Existing WHERE clause.
+     * @param WP_Query $query Query object.
+     *
+     * @return string
+     */
+    public static function filter_posts_list_where($where, $query)
+    {
+        global $wpdb;
+
+        if (!isset($query->query_vars['author'])) {
+            return $where;
+        }
+
+        if (!empty($query->query_vars['post_type']) && !is_object_in_taxonomy(
+                $query->query_vars['post_type'],
+                'author'
+            )) {
+            return $where;
+        }
+
+        $author_id = (int)$query->get('author');
+
+        if (empty($author_id)) {
+            return $where;
+        }
+
+        $author = Author::get_by_user_id($author_id);
+
+        if (!is_object($author) || is_wp_error($author)) {
+            return $where;
+        }
+
+        $terms_implode = '(' . $wpdb->term_taxonomy . '.taxonomy = "author" AND ' . $wpdb->term_taxonomy . '.term_id = \'' . $author->getTerm()->term_id . '\') OR ';
+        $terms_implode = rtrim($terms_implode, ' OR');
+
+        // post_author = 2 OR post_author IN (2).'/\b(?:' . $wpdb->posts . '\.)?post_author\s*(?:=|IN)\s*\(?(\d+)\)?/'
+        $regex = '/\(?\b(?:' . $wpdb->posts . '\.)?post_author\s*(?:=|IN)\s*\(?(\d+)\)?/';
+        $where = preg_replace($regex, '(' . ' ' . $terms_implode . ')', $where, -1);
+
+        return $where;
+    }
+
+    /**
+     * Modify the JOIN clause on author queries.
+     *
+     * @param string $join Existing JOIN clause.
+     * @param WP_Query $query Query object.
+     *
+     * @return string
+     */
+    public static function filter_posts_list_join($join, $query)
+    {
+        global $wpdb;
+
+        if (!isset($query->query_vars['author'])) {
+            return $join;
+        }
+
+        if (!empty($query->query_vars['post_type']) && !is_object_in_taxonomy(
+                $query->query_vars['post_type'],
+                'author'
+            )) {
+            return $join;
+        }
+
+        $author_id = (int)$query->get('author');
+
+        if (empty($author_id)) {
+            return $join;
+        }
+
+        $author = Author::get_by_user_id($author_id);
+
+        if (!is_object($author) || is_wp_error($author)) {
+            return $join;
+        }
+
+        // Check to see that JOIN hasn't already been added. Props michaelingp and nbaxley.
+        $term_relationship_inner_join = " INNER JOIN {$wpdb->term_relationships} ON ({$wpdb->posts}.ID = {$wpdb->term_relationships}.object_id)";
+        $term_relationship_left_join  = " LEFT JOIN {$wpdb->term_relationships} ON ({$wpdb->posts}.ID = {$wpdb->term_relationships}.object_id)";
+        $term_taxonomy_join           = " INNER JOIN {$wpdb->term_taxonomy} ON ( {$wpdb->term_relationships}.term_taxonomy_id = {$wpdb->term_taxonomy}.term_taxonomy_id )";
+
+        // 4.6+ uses a LEFT JOIN for tax queries so we need to check for both.
+        if (false === strpos($join, trim($term_relationship_inner_join))
+            && false === strpos($join, trim($term_relationship_left_join))) {
+            $join .= $term_relationship_left_join;
+        }
+
+        if (false === strpos($join, trim($term_taxonomy_join))
+            && false === strpos($join, trim($term_relationship_left_join))) {
+            $join .= str_replace('INNER JOIN', 'LEFT JOIN', $term_taxonomy_join);
+        }
+
+        return $join;
+    }
+
+    /**
+     * Modify the GROUP BY clause on author queries.
+     *
+     * @param string $groupby Existing GROUP BY clause.
+     * @param WP_Query $query Query object.
+     *
+     * @return string
+     */
+    public static function filter_posts_list_groupby($groupby, $query)
+    {
+        global $wpdb;
+
+        if (!isset($query->query_vars['author'])) {
+            return $groupby;
+        }
+
+        if (!empty($query->query_vars['post_type']) && !is_object_in_taxonomy(
+                $query->query_vars['post_type'],
+                'author'
+            )) {
+            return $groupby;
+        }
+
+        $author_id = (int)$query->get('author');
+
+        if (empty($author_id)) {
+            return $groupby;
+        }
+
+        $author = Author::get_by_user_id($author_id);
+
+        if (!is_object($author) || is_wp_error($author)) {
+            return $groupby;
+        }
+
+//        $having  = 'MAX( IF ( ' . $wpdb->term_taxonomy . '.taxonomy = "author", 1,0 ) ) <> 1 ';
+        $groupby = $wpdb->posts . '.ID';
+
+        return $groupby;
+    }
 }

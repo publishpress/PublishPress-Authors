@@ -116,7 +116,7 @@ class Author
         $this->term_id = abs($this->term_id);
     }
 
-    private function getTerm()
+    public function getTerm()
     {
         if (empty($this->term)) {
             $this->term = get_term($this->term_id, 'author');

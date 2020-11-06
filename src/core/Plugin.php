@@ -250,7 +250,7 @@ class Plugin
             ['MultipleAuthors\\Classes\\Author_Editor', 'admin_notices']
         );
 
-        // Query modifications.
+        // Query modifications for the author page
         add_action(
             'pre_get_posts',
             ['MultipleAuthors\\Classes\\Query', 'fix_query_pre_get_posts']
@@ -283,6 +283,26 @@ class Plugin
             'wp_head',
             ['MultipleAuthors\\Classes\\Query', 'fix_query_pre_get_posts'],
             1
+        );
+
+        // Query modifications for the admin posts lists
+        add_filter(
+            'posts_where',
+            ['MultipleAuthors\\Classes\\Query', 'filter_posts_list_where'],
+            10,
+            2
+        );
+        add_filter(
+            'posts_join',
+            ['MultipleAuthors\\Classes\\Query', 'filter_posts_list_join'],
+            10,
+            2
+        );
+        add_filter(
+            'posts_groupby',
+            ['MultipleAuthors\\Classes\\Query', 'filter_posts_list_groupby'],
+            10,
+            2
         );
 
         // Author search
@@ -506,6 +526,7 @@ class Plugin
 
         // Hooks to modify the published post number count on the Users WP List Table
         add_filter('manage_users_columns', [$this, '_filter_manage_users_columns']);
+        add_action('manage_users_custom_column', [$this, 'addUsersPostsCountColumn'], 10, 3);
 
         // Apply some targeted filters
         add_action('load-edit.php', [$this, 'load_edit']);
@@ -621,15 +642,37 @@ class Plugin
      */
     public function _filter_manage_users_columns($columns)
     {
-        $new_columns = [];
-        // Unset and add our column while retaining the order of the columns
-        foreach ($columns as $column_name => $column_title) {
-            if ('posts' != $column_name) {
-                $new_columns[$column_name] = $column_title;
-            }
+        if (isset($columns['posts'])) {
+            unset($columns['posts']);
         }
 
-        return $new_columns;
+        $columns['posts_count'] = __('Published Posts', 'publishpress-authors');
+
+        return $columns;
+    }
+
+    public function addUsersPostsCountColumn($value, $column_name, $user_id)
+    {
+        $author = Author::get_by_user_id($user_id);
+
+        if (!is_object($author) || is_wp_error($author)) {
+            return 0;
+        }
+
+        $numPosts = $author->getTerm()->count;
+
+        $value = sprintf(
+            '<a href="%s" class="edit"><span aria-hidden="true">%s</span><span class="screen-reader-text">%s</span></a>',
+            "edit.php?author={$user_id}",
+            $numPosts,
+            sprintf(
+            /* translators: %s: Number of posts. */
+                _n( '%s post by this author', '%s posts by this author', $numPosts ),
+                number_format_i18n( $numPosts )
+            )
+        );
+
+        return $value;
     }
 
     /**
@@ -915,45 +958,42 @@ class Plugin
     /**
      * Filter the number of author posts. The author can be mapped to a user or not.
      *
+     * @param int $count
+     * @param Author|int $author
+     *
      * @return int
      */
-    public function filter_count_author_posts($count, $term_id)
+    public function filter_count_author_posts($count, $author)
     {
-        global $wpdb;
+        if (is_numeric($author)) {
+            $author = Author::get_by_term_id(absint($author));
+        }
 
-        $items = $wpdb->get_results(
-            "SELECT *
-                     FROM {$wpdb->posts} AS p
-                     INNER JOIN {$wpdb->term_relationships} AS tr ON (tr.`object_id` = p.ID)
-                     INNER JOIN {$wpdb->term_taxonomy} AS tt ON (tt.`term_taxonomy_id` = tr.`term_taxonomy_id`)
-                     WHERE
-                      p.post_type = 'post'
-                      AND p.post_status NOT IN ('trash', 'auto-draft')
-                      AND tt.`term_id` = {$term_id}"
-        );
+        if (!is_object($author) || empty($author) || is_wp_error($author)) {
+            return 0;
+        }
 
-        $count = count($items);
-
-        return $count;
+        return $author->getTerm()->count;
     }
 
     /**
      * Filter the count_users_posts() core function to include our correct count.
      * The author is always mapped to a user.
      *
+     * @param $count
+     * @param $user_id
+     *
      * @return int
      */
     public function filter_count_user_posts($count, $user_id)
     {
-        global $wpdb;
-
         $author = Author::get_by_user_id($user_id);
 
         if (!is_object($author)) {
             return 0;
         }
 
-        $count = apply_filters('get_authornumposts', $count, $author->term_id);
+        $count = apply_filters('get_authornumposts', $count, $author);
 
         return $count;
     }
@@ -1189,20 +1229,23 @@ class Plugin
             PP_AUTHORS_VERSION
         );
 
-        wp_enqueue_style(
-            'multiple-authors-chosen',
-            PP_AUTHORS_ASSETS_URL . 'lib/chosen-v1.8.3/chosen.min.css',
-            false,
-            PP_AUTHORS_VERSION,
-            'all'
-        );
+        // Fix compatibility issue with the WP RSS Aggregator plugin
+        if (!wp_script_is('wprss_ftp_admin_ajax_chosen')) {
+            wp_enqueue_style(
+                'multiple-authors-chosen',
+                PP_AUTHORS_ASSETS_URL . 'lib/chosen-v1.8.3/chosen.min.css',
+                false,
+                PP_AUTHORS_VERSION,
+                'all'
+            );
 
-        wp_enqueue_script(
-            'multiple-authors-chosen',
-            PP_AUTHORS_ASSETS_URL . 'lib/chosen-v1.8.3/chosen.jquery.min.js',
-            ['jquery'],
-            PP_AUTHORS_VERSION
-        );
+            wp_enqueue_script(
+                'multiple-authors-chosen',
+                PP_AUTHORS_ASSETS_URL . 'lib/chosen-v1.8.3/chosen.jquery.min.js',
+                ['jquery'],
+                PP_AUTHORS_VERSION
+            );
+        }
 
         wp_enqueue_script(
             'multiple-authors-select2',
