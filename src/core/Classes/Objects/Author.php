@@ -201,9 +201,12 @@ class Author
                 )
             );
 
+            $author = false;
             if (!empty($term_id) && is_numeric($term_id)) {
-                self::$authorsByIdCache[$user_id] = new Author($term_id);
+                $author = self::$authorsByIdCache[$user_id] = new Author($term_id);
             }
+
+            self::$authorsByIdCache[$user_id] = $author;
         }
 
         return isset(self::$authorsByIdCache[$user_id]) ? self::$authorsByIdCache[$user_id] : false;
