@@ -653,6 +653,10 @@ class Plugin
 
     public function addUsersPostsCountColumn($value, $column_name, $user_id)
     {
+        if ($column_name !== 'posts_count') {
+            return $value;
+        }
+
         $author = Author::get_by_user_id($user_id);
 
         if (!is_object($author) || is_wp_error($author)) {
