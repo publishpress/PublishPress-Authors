@@ -16,6 +16,7 @@ use MultipleAuthors\Classes\Query;
 use MultipleAuthors\Classes\Utils;
 use MultipleAuthors\Traits\Author_box;
 use WP_Post;
+use WP_Query;
 
 defined('ABSPATH') or die('No direct script access allowed.');
 
@@ -527,6 +528,8 @@ class Plugin
         // Hooks to modify the published post number count on the Users WP List Table
         add_filter('manage_users_columns', [$this, '_filter_manage_users_columns']);
         add_action('manage_users_custom_column', [$this, 'addUsersPostsCountColumn'], 10, 3);
+        add_action('manage_users_sortable_columns', [$this, 'makeUsersPostsColumnSortable'], 10, 3);
+        add_action('pre_user_query', [$this, 'addUsersPostsColumnToQuery']);
 
         // Apply some targeted filters
         add_action('load-edit.php', [$this, 'load_edit']);
@@ -639,6 +642,9 @@ class Plugin
 
     /**
      * Unset the post count column because it's going to be inaccurate and provide our own
+     * @param $columns
+     *
+     * @return mixed
      */
     public function _filter_manage_users_columns($columns)
     {
@@ -646,7 +652,14 @@ class Plugin
             unset($columns['posts']);
         }
 
-        $columns['posts_count'] = __('Published Posts', 'publishpress-authors');
+        $columns['posts_count'] = sprintf(
+            '%s <i class="dashicons dashicons-info" title="%s"></i>',
+            __('Published Posts', 'publishpress-authors'),
+            sprintf(
+                __('Published posts of the following post types: %s', 'publishpress-authors'),
+                implode(', ', Utils::getAuthorTaxonomyPostTypes())
+            )
+        );
 
         return $columns;
     }
@@ -664,6 +677,7 @@ class Plugin
         }
 
         $numPosts = $author->getTerm()->count;
+        $taxonomy = get_taxonomy('author');
 
         $value = sprintf(
             '<a href="%s" class="edit"><span aria-hidden="true">%s</span><span class="screen-reader-text">%s</span></a>',
@@ -671,12 +685,40 @@ class Plugin
             $numPosts,
             sprintf(
             /* translators: %s: Number of posts. */
-                _n( '%s post by this author', '%s posts by this author', $numPosts ),
-                number_format_i18n( $numPosts )
+                _n('%s post by this author', '%s posts by this author', $numPosts),
+                number_format_i18n($numPosts)
             )
         );
 
         return $value;
+    }
+
+    public function makeUsersPostsColumnSortable($columns)
+    {
+        $columns['posts_count'] = 'posts_count';
+
+        return $columns;
+    }
+
+    /**
+     * @param WP_User_Query $query
+     */
+    public function addUsersPostsColumnToQuery($query)
+    {
+        if (!is_admin()) {
+            return;
+        }
+
+        $orderBy = $query->get('orderby');
+
+        if ('posts_count' === $orderBy) {
+            global $wpdb;
+
+            $query->query_fields .= ', tt.count as posts_count';
+            $query->query_from .= " LEFT JOIN $wpdb->termmeta as tm ON ($wpdb->users.ID = tm.meta_value AND tm.meta_key = \"user_id\")";
+            $query->query_from .= " LEFT JOIN $wpdb->term_taxonomy as tt ON (tm.`term_id` = tt.term_id AND tt.taxonomy = \"author\")";
+            $query->query_orderby = 'ORDER BY posts_count ' . $query->get('order');
+        }
     }
 
     /**
@@ -1047,7 +1089,7 @@ class Plugin
 
     /**
      * @param bool $shortCircuit
-     * @param \WP_Query $wp_query
+     * @param WP_Query $wp_query
      */
     public function fix_404_for_authors($shortCircuit, $wp_query)
     {
