@@ -142,11 +142,11 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function init()
         {
             add_action('admin_init', [$this, 'register_settings']);
-            add_action('admin_init', [$this, 'handle_action_reset_author_terms']);
+            add_action('admin_init', [$this, 'handle_maintenance_task']);
             add_action('admin_init', [$this, 'migrate_legacy_settings']);
             add_action('admin_init', [$this, 'dismissCoAuthorsMigrationNotice']);
             add_action('admin_notices', [$this, 'coauthorsMigrationNotice']);
-            add_action('admin_notices', [$this, 'handle_action_reset_author_terms_notice']);
+            add_action('admin_notices', [$this, 'handle_maintenance_task_notice']);
 
             add_action('multiple_authors_delete_mapped_authors', [$this, 'action_delete_mapped_authors']);
             add_action('multiple_authors_delete_guest_authors', [$this, 'action_delete_guest_authors']);
@@ -1434,7 +1434,7 @@ if (!class_exists('MA_Multiple_Authors')) {
          * Remove all authors and regenerate based on posts' authors and the setting to automatically create authors
          * for specific roles.
          */
-        public function handle_action_reset_author_terms()
+        public function handle_maintenance_task()
         {
             $actions = [
                 'delete_mapped_authors',
@@ -1451,6 +1451,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 return;
             }
 
+
             $nonce = isset($_GET['nonce']) ? $_GET['nonce'] : '';
             if (!wp_verify_nonce($nonce, 'multiple_authors_maintenance')) {
                 wp_redirect(
@@ -1462,7 +1463,9 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             try {
-                $result = do_action('multiple_authors_' . $_GET['ppma_action']);
+                $action = sanitize_key($_GET['ppma_action']);
+
+                do_action('multiple_authors_' . $action);
 
                 wp_redirect(
                     admin_url('/admin.php?page=ppma-modules-settings&author_term_reset_notice=success'),
@@ -1541,10 +1544,13 @@ if (!class_exists('MA_Multiple_Authors')) {
         {
             global $wpdb;
 
+            $enabledPostTypes = Utils::get_enabled_post_types();
+            $enabledPostTypes = '"' . implode('","', $enabledPostTypes) . '"';
+
             $posts_to_update = $wpdb->get_results(
                 "SELECT p.ID
 				FROM {$wpdb->posts} as p
-				WHERE p.post_type = 'post' AND p.post_status NOT IN ('trash')"
+				WHERE p.post_type IN({$enabledPostTypes}) AND p.post_status NOT IN ('trash')"
             );
 
             if (!empty($posts_to_update)) {
@@ -1629,7 +1635,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          *
          */
-        public function handle_action_reset_author_terms_notice()
+        public function handle_maintenance_task_notice()
         {
             if (!isset($_GET['author_term_reset_notice'])) {
                 return;
