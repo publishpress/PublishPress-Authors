@@ -303,6 +303,8 @@ class Post_Editor
      *
      * @param int     $post_id ID for the post being saved.
      * @param WP_Post $post    Object for the post being saved.
+     *
+     * @return mixed
      */
     public static function action_save_post_authors_metabox($post_id, $post)
     {
@@ -320,7 +322,6 @@ class Post_Editor
             return;
         }
 
-
         $authors = isset($_POST['authors']) ? $_POST['authors'] : [];
         $authors = self::remove_dirty_authors_from_authors_arr($authors);
 
@@ -330,7 +331,7 @@ class Post_Editor
             $wpdb->update(
                 $wpdb->posts,
                 [
-                    'post_author' => 0,
+                    'post_author' => get_current_user_id(),
                 ],
                 [
                     'ID' => $post_id,
@@ -382,22 +383,21 @@ class Post_Editor
         if ($update) {
             return;
         }
+
         if (!in_array($post->post_type, Content_Model::get_author_supported_post_types(), true)) {
             return;
         }
 
-
         $default_author = false;
 
         $legacyPlugin = Factory::getLegacyPlugin();
-        $default_author_setting= $legacyPlugin->modules->multiple_authors
-            ->options->default_author_for_new_posts;
+        $default_author_setting = isset($legacyPlugin->modules->multiple_authors->options->default_author_for_new_posts) ?
+            $legacyPlugin->modules->multiple_authors->options->default_author_for_new_posts : '';
+
         if (!empty($default_author_setting)) {
             $default_author = Author::get_by_term_id($default_author_setting);
-        } else {
-            if ($post->post_author) {
-                $default_author = Author::get_by_user_id($post->post_author);
-            }
+        } elseif ($post->post_author) {
+            $default_author = Author::get_by_user_id($post->post_author);
         }
 
         /**

@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
 Tested up to: 5.5
-Stable tag: 3.7.1
+Stable tag: 3.8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -126,6 +126,30 @@ There are two ways to install the PublishPress Authors plugin:
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.html).
+
+= [3.8.1] - 2020-11-05 =
+
+* Fixed: Fixed the consistency of avatar dimensions between the img tag attributes and the CSS, #258;
+* Fixed: Fixed edit_posts permission check for the PublishPress calendar, #264;
+* Fixed: Restored the post count column in the Authors list, #95;
+
+= [3.8.0] - 2020-10-08 =
+
+* Fixed: Fixed PHP warning about undefined "default_author_for_new_posts" attribute for the module options;
+* Fixed: Fixed the empty setting field "Default author for new posts", #242;
+* Fixed: Fixed empty post_author on posts saved without any author. The current user will be added as the author, #238;
+* Fixed: Fixed post_author field on posts when saving posts to store the user ID of the first author, ignoring guest authors, #171;
+* Fixed: Fixed support for authors and guest authors in the PublishPress' calendar and content overview filters, #249;
+* Added: Added new maintenance task to sync post_author with author terms for all posts, #171;
+* Added: Added basic support for multiple authors in the Ultimate Members plugin's posts, #251;
+
+= [3.7.3] - 2020-09-21 =
+
+* Fixed: Fixed unresponsive author select box for new posts, #244;
+
+= [3.7.2] - 2020-09-14 =
+
+* Fixed: Fixed the reordering issue on authors in the post edit page;
 
 = [3.7.1] - 2020-09-11 =
 

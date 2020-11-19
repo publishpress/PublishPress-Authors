@@ -5,9 +5,14 @@ let path = require('path');
 module.exports = {
     mode: NODE_ENV,
     entry: {
+        'Components/ProgressBar': './src/modules/multiple-authors/assets/js/Components/ProgressBar.jsx',
+        'Components/Button': './src/modules/multiple-authors/assets/js/Components/Button.jsx',
+        'Components/LogBox': './src/modules/multiple-authors/assets/js/Components/LogBox.jsx',
+        'Components/DataMigrationBox': './src/modules/multiple-authors/assets/js/Components/DataMigrationBox.jsx',
         'coauthors-migration': './src/modules/multiple-authors/assets/js/coauthors-migration.jsx',
+        'sync-post-author': './src/modules/multiple-authors/assets/js/sync-post-author.jsx',
         'byline-migration': './src/modules/byline-migration/assets/js/byline-migration.jsx',
-        'bylines-migration': './src/modules/bylines-migration/assets/js/bylines-migration.jsx'
+        'bylines-migration': './src/modules/bylines-migration/assets/js/bylines-migration.jsx',
     },
     output: {
         path: path.join(__dirname, 'src/assets/js'),

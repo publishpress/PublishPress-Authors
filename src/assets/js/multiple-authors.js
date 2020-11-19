@@ -173,45 +173,6 @@ jQuery(document).ready(function($) {
         .each(function() {
           $(this).remove();
         });
-
-      // The following code is for having the common authors between selected posts but no need for this functionality now.
-      //   var authorSlugArr = [];
-      //   $("#bulk-edit #bulk-titles > div").each(function() {
-      //     var postId = $(this)
-      //       .attr("id")
-      //       .replace("ttle", "");
-
-      //     var authorsSlugs = [];
-      //     $("#post-" + postId)
-      //       .find("td.column-authors > a")
-      //       .each(function() {
-      //         authorsSlugs.push($(this).text());
-      //       });
-      //     authorSlugArr.push(authorsSlugs);
-      //   });
-
-      //   var intersectedSlugs = authorSlugArr.reduce(function(a, b) {
-      //     return a.filter(function(c) {
-      //       return b.includes(c);
-      //     });
-      //   });
-
-      //   var renderedAuthorsSlugs = [];
-      //   $("#bulk-edit .authors-current-user-can-assign")
-      //     .find("li")
-      //     .each(function() {
-      //       var displayName = $(this)
-      //         .find(".display-name")
-      //         .text()
-      //         .trim();
-      //       if (
-      //         !intersectedSlugs.includes(displayName) ||
-      //         renderedAuthorsSlugs.includes(displayName)
-      //       ) {
-      //         $(this).remove();
-      //       }
-      //       renderedAuthorsSlugs.push(displayName);
-      //     });
     }
   });
 

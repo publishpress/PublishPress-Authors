@@ -13,21 +13,22 @@ use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Classes\Objects\Author;
 
 if (!function_exists('get_multiple_authors')) {
-    /**
-     * Get all authors for a post.
-     *
-     * @param WP_Post|int|null $post              Post to fetch authors for. Defaults to global post.
-     * @param bool             $filter_the_author If false, will not trigger the filter for the author, to avoid infinite
-     *                                            loop.
-     * @param bool             $archive
-     * @param bool             $ignoreCache       This cache cause sometimes errors in data received especially
-     *                                            in quick edit after saving.
-     *                                            That's why in Post_Editor we called this function with overriding
-     *                                            ignoreCache value to be equal true.
-     *
-     * @return array Array of Author objects, a single WP_User object, or empty.
-     */
-    function get_multiple_authors($post = 0, $filter_the_author = true, $archive = false, $ignoreCache = false)
+/**
+ * Get all authors for a post.
+ *
+ * @param WP_Post|int|null $post              Post to fetch authors for. Defaults to global post.
+ * @param bool             $filter_the_author If false, will not trigger the filter for the author, to avoid infinite
+ *                                            loop.
+ * @param bool             $archive           If true, will ignore the $post param and return the current author
+ *                                            specified by the "author_name" URL param - for author pages.
+ * @param bool             $ignoreCache       This cache cause sometimes errors in data received especially
+ *                                            in quick edit after saving.
+ *                                            That's why in Post_Editor we called this function with overriding
+ *                                            ignoreCache value to be equal true.
+ *
+ * @return array Array of Author objects, a single WP_User object, or empty.
+ */
+function get_multiple_authors($post = 0, $filter_the_author = true, $archive = false, $ignoreCache = false)
     {
         global $multipleAuthorsForPost, $wpdb;
 
@@ -38,7 +39,11 @@ if (!function_exists('get_multiple_authors')) {
         if (is_object($post)) {
             $post = $post->ID;
         } elseif (empty($post)) {
-            $post = get_post()->ID;
+            $post = get_post();
+
+            if (is_object($post) && !is_wp_error($post)) {
+                $post = $post->ID;
+            }
         }
 
         $postId = (int)$post;
@@ -64,7 +69,7 @@ if (!function_exists('get_multiple_authors')) {
 
         if (empty($multipleAuthorsForPost) || !isset($multipleAuthorsForPost[$cacheKey]) || $ignoreCache) {
             $terms = [];
-          
+
             if (!$archive) {
                 if (empty($postId)) {
                     $post = get_post();
@@ -83,7 +88,8 @@ if (!function_exists('get_multiple_authors')) {
                         "SELECT tt.term_id
                             FROM {$wpdb->term_relationships} AS tr
                             INNER JOIN {$wpdb->term_taxonomy} AS tt ON (tr.`term_taxonomy_id` = tt.`term_taxonomy_id`)
-                            WHERE tr.object_id = %d AND tt.taxonomy = 'author'",
+                            WHERE tr.object_id = %d AND tt.taxonomy = 'author'
+                            ORDER BY tr.term_order",
                         $postId
                     )
                 );
