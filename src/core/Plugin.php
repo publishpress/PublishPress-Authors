@@ -1362,8 +1362,17 @@ class Plugin
             ),
         ];
 
-        wp_localize_script('multiple-authors-js', 'MultipleAuthorsStrings', $js_strings);
-
+        wp_localize_script(
+            'multiple-authors-js', 
+            'MultipleAuthorsStrings', 
+            $js_strings
+        );
+        wp_localize_script(
+            'multiple-authors-js', 
+            'bulkEditNonce', array(
+                'nonce' => wp_create_nonce('bulk-edit-nonce')
+            )
+        );
         wp_enqueue_media();
     }
 
