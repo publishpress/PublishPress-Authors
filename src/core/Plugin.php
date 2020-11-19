@@ -16,6 +16,7 @@ use MultipleAuthors\Classes\Query;
 use MultipleAuthors\Classes\Utils;
 use MultipleAuthors\Traits\Author_box;
 use WP_Post;
+use WP_Query;
 
 defined('ABSPATH') or die('No direct script access allowed.');
 
@@ -250,7 +251,7 @@ class Plugin
             ['MultipleAuthors\\Classes\\Author_Editor', 'admin_notices']
         );
 
-        // Query modifications.
+        // Query modifications for the author page
         add_action(
             'pre_get_posts',
             ['MultipleAuthors\\Classes\\Query', 'fix_query_pre_get_posts']
@@ -283,6 +284,26 @@ class Plugin
             'wp_head',
             ['MultipleAuthors\\Classes\\Query', 'fix_query_pre_get_posts'],
             1
+        );
+
+        // Query modifications for the admin posts lists
+        add_filter(
+            'posts_where',
+            ['MultipleAuthors\\Classes\\Query', 'filter_posts_list_where'],
+            10,
+            2
+        );
+        add_filter(
+            'posts_join',
+            ['MultipleAuthors\\Classes\\Query', 'filter_posts_list_join'],
+            10,
+            2
+        );
+        add_filter(
+            'posts_groupby',
+            ['MultipleAuthors\\Classes\\Query', 'filter_posts_list_groupby'],
+            10,
+            2
         );
 
         // Author search
@@ -506,6 +527,9 @@ class Plugin
 
         // Hooks to modify the published post number count on the Users WP List Table
         add_filter('manage_users_columns', [$this, '_filter_manage_users_columns']);
+        add_action('manage_users_custom_column', [$this, 'addUsersPostsCountColumn'], 10, 3);
+        add_action('manage_users_sortable_columns', [$this, 'makeUsersPostsColumnSortable'], 10, 3);
+        add_action('pre_user_query', [$this, 'addUsersPostsColumnToQuery']);
 
         // Apply some targeted filters
         add_action('load-edit.php', [$this, 'load_edit']);
@@ -618,18 +642,83 @@ class Plugin
 
     /**
      * Unset the post count column because it's going to be inaccurate and provide our own
+     * @param $columns
+     *
+     * @return mixed
      */
     public function _filter_manage_users_columns($columns)
     {
-        $new_columns = [];
-        // Unset and add our column while retaining the order of the columns
-        foreach ($columns as $column_name => $column_title) {
-            if ('posts' != $column_name) {
-                $new_columns[$column_name] = $column_title;
-            }
+        if (isset($columns['posts'])) {
+            unset($columns['posts']);
         }
 
-        return $new_columns;
+        $columns['posts_count'] = sprintf(
+            '%s <i class="dashicons dashicons-info" title="%s"></i>',
+            __('Published Posts', 'publishpress-authors'),
+            sprintf(
+                __('Published posts of the following post types: %s', 'publishpress-authors'),
+                implode(', ', Utils::getAuthorTaxonomyPostTypes())
+            )
+        );
+
+        return $columns;
+    }
+
+    public function addUsersPostsCountColumn($value, $column_name, $user_id)
+    {
+        if ($column_name !== 'posts_count') {
+            return $value;
+        }
+
+        $author = Author::get_by_user_id($user_id);
+
+        if (!is_object($author) || is_wp_error($author)) {
+            return 0;
+        }
+
+        $numPosts = $author->getTerm()->count;
+        $taxonomy = get_taxonomy('author');
+
+        $value = sprintf(
+            '<a href="%s" class="edit"><span aria-hidden="true">%s</span><span class="screen-reader-text">%s</span></a>',
+            "edit.php?author={$user_id}",
+            $numPosts,
+            sprintf(
+            /* translators: %s: Number of posts. */
+                _n('%s post by this author', '%s posts by this author', $numPosts),
+                number_format_i18n($numPosts)
+            )
+        );
+
+        return $value;
+    }
+
+    public function makeUsersPostsColumnSortable($columns)
+    {
+        $columns['posts_count'] = 'posts_count';
+
+        return $columns;
+    }
+
+    /**
+     * @param WP_User_Query $query
+     */
+    public function addUsersPostsColumnToQuery($query)
+    {
+        if (!is_admin()) {
+            return;
+        }
+
+        $orderBy = $query->get('orderby');
+
+        if ('posts_count' === $orderBy) {
+            global $wpdb;
+
+            $query->query_fields .= ', tt.count as posts_count';
+            $query->query_from .= " LEFT JOIN $wpdb->termmeta as tm ON ($wpdb->users.ID = tm.meta_value AND tm.meta_key = \"user_id\")";
+            $query->query_from .= " LEFT JOIN $wpdb->term_taxonomy as tt ON (tm.`term_id` = tt.term_id AND tt.taxonomy = \"author\")";
+            $query->query_orderby = 'ORDER BY posts_count ' . $query->get('order');
+        }
     }
 
     /**
@@ -915,45 +1004,42 @@ class Plugin
     /**
      * Filter the number of author posts. The author can be mapped to a user or not.
      *
+     * @param int $count
+     * @param Author|int $author
+     *
      * @return int
      */
-    public function filter_count_author_posts($count, $term_id)
+    public function filter_count_author_posts($count, $author)
     {
-        global $wpdb;
+        if (is_numeric($author)) {
+            $author = Author::get_by_term_id(absint($author));
+        }
 
-        $items = $wpdb->get_results(
-            "SELECT *
-                     FROM {$wpdb->posts} AS p
-                     INNER JOIN {$wpdb->term_relationships} AS tr ON (tr.`object_id` = p.ID)
-                     INNER JOIN {$wpdb->term_taxonomy} AS tt ON (tt.`term_taxonomy_id` = tr.`term_taxonomy_id`)
-                     WHERE
-                      p.post_type = 'post'
-                      AND p.post_status NOT IN ('trash', 'auto-draft')
-                      AND tt.`term_id` = {$term_id}"
-        );
+        if (!is_object($author) || empty($author) || is_wp_error($author)) {
+            return 0;
+        }
 
-        $count = count($items);
-
-        return $count;
+        return $author->getTerm()->count;
     }
 
     /**
      * Filter the count_users_posts() core function to include our correct count.
      * The author is always mapped to a user.
      *
+     * @param $count
+     * @param $user_id
+     *
      * @return int
      */
     public function filter_count_user_posts($count, $user_id)
     {
-        global $wpdb;
-
         $author = Author::get_by_user_id($user_id);
 
         if (!is_object($author)) {
             return 0;
         }
 
-        $count = apply_filters('get_authornumposts', $count, $author->term_id);
+        $count = apply_filters('get_authornumposts', $count, $author);
 
         return $count;
     }
@@ -1003,7 +1089,7 @@ class Plugin
 
     /**
      * @param bool $shortCircuit
-     * @param \WP_Query $wp_query
+     * @param WP_Query $wp_query
      */
     public function fix_404_for_authors($shortCircuit, $wp_query)
     {
