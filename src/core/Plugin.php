@@ -653,8 +653,8 @@ class Plugin
         }
 
         $columns['posts_count'] = sprintf(
-            '%s <i class="dashicons dashicons-info" title="%s"></i>',
-            __('Published Posts', 'publishpress-authors'),
+            '%s <i class="dashicons dashicons-info-outline" title="%s"></i>',
+            __('Posts', 'publishpress-authors'),
             sprintf(
                 __('Published posts of the following post types: %s', 'publishpress-authors'),
                 implode(', ', Utils::getAuthorTaxonomyPostTypes())
@@ -1363,12 +1363,12 @@ class Plugin
         ];
 
         wp_localize_script(
-            'multiple-authors-js', 
-            'MultipleAuthorsStrings', 
+            'multiple-authors-js',
+            'MultipleAuthorsStrings',
             $js_strings
         );
         wp_localize_script(
-            'multiple-authors-js', 
+            'multiple-authors-js',
             'bulkEditNonce', array(
                 'nonce' => wp_create_nonce('bulk-edit-nonce')
             )

@@ -49,8 +49,8 @@ class Author_Editor
 
         if (isset($new_columns['posts'])) {
             $new_columns['posts'] = sprintf(
-                '%s <i class="dashicons dashicons-info" title="%s"></i>',
-                __('Published Posts', 'publishpress-authors'),
+                '%s <i class="dashicons dashicons-info-outline" title="%s"></i>',
+                __('Posts', 'publishpress-authors'),
                 sprintf(
                     __('Published posts of the following post types: %s', 'publishpress-authors'),
                     implode(', ', Utils::getAuthorTaxonomyPostTypes())
