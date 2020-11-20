@@ -129,7 +129,7 @@ and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec
 
 = [3.9.0] - 2020-11-19 =
 
-* Added: Added support to Bulk Edit for authors in the post list, #263;
+* Added: Added support to Bulk Edit for authors in the post list, #263 and #280;
 * Fixed: Fixed maintenance tasks to consider all the selected post types and not "post" only, #276;
 * Fixed: Fixed compatibility issue with the WP RSS Aggregator plugin, #278;
 * Fixed: Restored the posts count in the Authors and Users list, #275;
