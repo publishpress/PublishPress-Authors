@@ -291,11 +291,20 @@ class Utils
             return false;
         }
 
+        $enabledPostTypes = self::get_enabled_post_types();
+
+        return (bool)in_array($postType, $enabledPostTypes);
+    }
+
+    public static function get_enabled_post_types()
+    {
+        $legacyPlugin = Factory::getLegacyPlugin();
+
         if (self::$enabledPostTypes === null) {
             self::$enabledPostTypes = Util::get_post_types_for_module($legacyPlugin->multiple_authors->module);
         }
 
-        return (bool)in_array($postType, self::$enabledPostTypes);
+        return self::$enabledPostTypes;
     }
 
     private static function get_post_types_to_force_authors_support()
@@ -460,5 +469,17 @@ class Utils
         }
 
         return false;
+    }
+
+    public static function getAuthorTaxonomyPostTypes()
+    {
+        $taxonomy  = get_taxonomy('author');
+        $postTypes = $taxonomy->object_type;
+
+        if (($keyToUnset = array_search('customize_changeset', $postTypes)) !== false ) {
+            unset($postTypes[$keyToUnset]);
+        }
+
+        return $postTypes;
     }
 }

@@ -9,6 +9,7 @@
 
 namespace MultipleAuthors\Classes;
 
+use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Factory;
 
@@ -47,7 +48,14 @@ class Author_Editor
         }
 
         if (isset($new_columns['posts'])) {
-            $new_columns['posts'] = __('Published Posts', 'publishpress-authors');
+            $new_columns['posts'] = sprintf(
+                '%s <i class="dashicons dashicons-info-outline" title="%s"></i>',
+                __('Posts', 'publishpress-authors'),
+                sprintf(
+                    __('Published posts of the following post types: %s', 'publishpress-authors'),
+                    implode(', ', Utils::getAuthorTaxonomyPostTypes())
+                )
+            );
         }
 
         return $new_columns;
