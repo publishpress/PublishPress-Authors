@@ -59,6 +59,9 @@ class Installer
     {
         global $wpdb;
 
+        $enabledPostTypes = Utils::get_enabled_post_types();
+        $enabledPostTypes = '"' . implode('","', $enabledPostTypes) . '"';
+
         // Get a list of authors (users) from the posts which has no terms.
         $authors = $wpdb->get_results(
             "SELECT DISTINCT p.post_author, u.display_name, u.user_nicename, u.user_email, u.user_url
@@ -75,7 +78,7 @@ class Installer
 						 AND meta.meta_key = 'user_id'
 						 AND meta.meta_value <> 0
 				 	)
-				 	AND p.post_type = 'post'
+				 	AND p.post_type IN ({$enabledPostTypes})
 				 	AND p.post_author <> 0
 					AND u.display_name != ''
 			    "

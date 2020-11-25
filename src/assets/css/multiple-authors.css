@@ -281,3 +281,7 @@ body.block-editor-page select[id^="post-author-selector-"] {
 .ppma-module-settings input[type="submit"] {
     margin-top: 20px;
 }
+
+.fixed .column-posts {
+    width: 100px;
+}
