@@ -289,7 +289,7 @@ class Author_UtilsCest
         $I->assertEquals($selectedAuthorUserId, $postAuthor);
     }
 
-    public function methodSync_post_author_columnShouldSetPost_authorAsCurrentUserIfAuthorListIsEmpty(\WpunitTester $I)
+    public function methodSync_post_author_columnShouldNotSetPost_authorAsCurrentUserIfAuthorListIsEmpty(\WpunitTester $I)
     {
         $userId = $I->factory('a new user for the original post_author')->user->create(['role' => 'author']);
         $postId = $I->factory('a new post')->post->create(['post_type' => 'post', 'post_author' => $userId]);
@@ -304,7 +304,7 @@ class Author_UtilsCest
 
         $postAuthor = $this->get_post_author($postId);
 
-        $I->assertEquals($currentUserId, $postAuthor);
+        $I->assertNotEquals($currentUserId, $postAuthor);
     }
 
     public function methodSync_post_author_columnShouldSetPost_authorAfterAuthorsOrderChangesWithArrayOfAuthorsInstances(\WpunitTester $I)
@@ -335,5 +335,65 @@ class Author_UtilsCest
         $postAuthor = $this->get_post_author($postId);
 
         $I->assertEquals($authorBUserId, $postAuthor, 'Author B should be in the post_author');
+    }
+
+    public function methodSync_post_author_columnShouldSetAuthorTermsAsCurrentPost_authorIfNoTermsAreFoundAndThereIsAUserAsAuthorInThePostWichHasAuthorTerm(\WpunitTester $I)
+    {
+        $originalPostAuthorUserId = $I->factory('the original post author user')->user->create(['role' => 'author']);
+
+        $postId = $I->factory('the post')->post->create(
+            ['post_type' => 'post', 'post_author' => $originalPostAuthorUserId]
+        );
+
+        // We create the author, but we won't set it to the post.
+        $originalAuthor = Author::create_from_user($originalPostAuthorUserId);
+
+        $post = get_post($postId);
+
+        $emptyAuthorsList = [];
+
+        Utils::sync_post_author_column($postId, $emptyAuthorsList);
+
+        $postAuthorColumn = $this->get_post_author($postId);
+        $postAuthors = wp_get_post_terms($postId, 'author');
+
+        $firstAuthorUserId = -1;
+        if (!empty($postAuthors)) {
+            $firstAuthorUserId = get_term_meta($postAuthors[0]->term_id, 'user_id', true);
+        }
+
+        $I->assertEquals($originalPostAuthorUserId, $post->post_author, 'Make sure the original was set as author for the post');
+        $I->assertEquals($originalPostAuthorUserId, $postAuthorColumn, 'The post_author should still match the user we set as author initially');
+        $I->assertEquals(1, count($postAuthors), 'There should have one author term set for the post');
+        $I->assertEquals($originalAuthor->term_id, $postAuthors[0]->term_id, 'The first author term found for the post should be same one we created for the user');
+        $I->assertEquals($postAuthorColumn, $firstAuthorUserId, 'The user_id of the author term should match the post_author');
+    }
+
+    public function methodSync_post_author_columnShouldSetAuthorTermsAsCurrentPost_authorIfNoTermsAreFoundAndThereIsAUserAsAuthorInThePostWichHasNotAnAuthorTerm(\WpunitTester $I)
+    {
+        $originalPostAuthorUserId = $I->factory('the original post author user')->user->create(['role' => 'author']);
+
+        $postId = $I->factory('the post')->post->create(
+            ['post_type' => 'post', 'post_author' => $originalPostAuthorUserId]
+        );
+
+        $post = get_post($postId);
+
+        $emptyAuthorsList = [];
+
+        Utils::sync_post_author_column($postId, $emptyAuthorsList);
+
+        $postAuthorColumn = $this->get_post_author($postId);
+        $postAuthors = wp_get_post_terms($postId, 'author');
+
+        $firstAuthorUserId = -1;
+        if (!empty($postAuthors)) {
+            $firstAuthorUserId = get_term_meta($postAuthors[0]->term_id, 'user_id', true);
+        }
+
+        $I->assertEquals($originalPostAuthorUserId, $post->post_author, 'Make sure the original was set as author for the post');
+        $I->assertEquals($originalPostAuthorUserId, $postAuthorColumn, 'The post_author should still match the user we set as author initially');
+        $I->assertEquals(1, count($postAuthors), 'There should have one author term set for the post');
+        $I->assertEquals($postAuthorColumn, $firstAuthorUserId, 'The user_id of the author term should match the post_author');
     }
 }

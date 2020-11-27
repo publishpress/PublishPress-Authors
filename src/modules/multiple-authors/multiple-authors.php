@@ -1547,14 +1547,14 @@ if (!class_exists('MA_Multiple_Authors')) {
             $enabledPostTypes = Utils::get_enabled_post_types();
             $enabledPostTypes = '"' . implode('","', $enabledPostTypes) . '"';
 
-            $posts_to_update = $wpdb->get_results(
+            $postsToUpdate = $wpdb->get_results(
                 "SELECT p.ID
 				FROM {$wpdb->posts} as p
 				WHERE p.post_type IN({$enabledPostTypes}) AND p.post_status NOT IN ('trash')"
             );
 
-            if (!empty($posts_to_update)) {
-                foreach ($posts_to_update as $post_data) {
+            if (!empty($postsToUpdate)) {
+                foreach ($postsToUpdate as $post_data) {
                     $authors = get_multiple_authors($post_data->ID);
                     Utils::sync_post_author_column($post_data->ID, $authors);
                 }

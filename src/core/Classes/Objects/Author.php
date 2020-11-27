@@ -134,8 +134,8 @@ class Author
      */
     public static function create_from_user($user)
     {
-        if (is_int($user)) {
-            $user = get_user_by('id', $user);
+        if (is_numeric($user)) {
+            $user = get_user_by('id', (int)$user);
         }
         if (!is_a($user, 'WP_User')) {
             error_log(
@@ -190,7 +190,7 @@ class Author
     {
         global $wpdb;
 
-        if (!isset(self::$authorsByIdCache[$user_id])) {
+        if (!isset(self::$authorsByIdCache[$user_id]) || empty(self::$authorsByIdCache[$user_id])) {
             $term_id = $wpdb->get_var(
                 $wpdb->prepare(
                     "SELECT te.term_id
