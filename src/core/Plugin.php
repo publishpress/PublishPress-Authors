@@ -65,7 +65,9 @@ class Plugin
             ['MultipleAuthors\\Classes\\Installer', 'upgrade']
         );
 
-        add_action('init', [$this, 'manage_installation'], 2000);
+        if (!defined('PUBLISHPRESS_AUTHORS_BYPASS_INSTALLER') || !PUBLISHPRESS_AUTHORS_BYPASS_INSTALLER) {
+            add_action('init', [$this, 'manage_installation'], 2000);
+        }
 
         // Load admin_init function
         add_action('admin_init', [$this, 'admin_init']);
