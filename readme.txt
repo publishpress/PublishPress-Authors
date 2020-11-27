@@ -108,6 +108,10 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= UNRELEASED =
+
+* Fixed: Changed the way we sync post_author column: Current user will only be set as author if no terms where found for the post, or there are only guest authors. If post_author is empty, we set it for the current user, creating an author term for it.
+
 = [3.9.0] - 2020-11-24 =
 
 * Added: Added support to Bulk Edit for authors in the post list, #263 and #280;
