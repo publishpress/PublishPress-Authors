@@ -165,6 +165,36 @@ class Utils
         wp_set_object_terms($postId, $authors, 'author');
     }
 
+    public static function detect_author_slug_mismatch() {
+        global $wpdb;
+
+        $results = $wpdb->get_results(
+            "SELECT t.term_id, u.user_login
+                FROM $wpdb->terms AS t 
+                INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id
+                INNER JOIN $wpdb->termmeta AS tm ON tm.term_id = tt.term_id
+                INNER JOIN $wpdb->users AS u ON u.ID = tm.meta_value
+                WHERE
+                    tt.taxonomy = 'author'
+                    AND tm.meta_key = 'user_id'
+                    AND u.user_login != t.slug"
+        );
+
+        return $results;
+    }
+
+    public static function sync_author_slug_to_user_login($authors = false) {
+        global $wpdb;
+
+        if (false === $authors) {
+            $authors = static::detect_author_slug_mismatch();
+        }
+
+        foreach($authors as $row) {
+            $wpdb->update($wpdb->terms, ['slug' => $row->user_login], ['term_id' => $row->term_id]);
+        }
+    }
+
     /**
      * @param int $postId ID for the post to modify.
      * @param array $authors Bylines to set on the post.

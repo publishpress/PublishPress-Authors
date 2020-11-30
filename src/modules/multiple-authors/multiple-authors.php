@@ -782,6 +782,12 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'button_link' => '',
                     'after'       => '<div id="publishpress-authors-sync-post-authors"></div>',
                 ],
+
+                'sync_author_slug' => [
+                    'title'       => __('Synchronize Author slugs to User logins', 'publishpress-authors'),
+                    'description' => 'For compatibility with PublishPress Permissions, each Author\'s slug needs to match their User login.',
+                    'button_label' => __('Sync Author slugs to User logins', 'publishpress-authors'),
+                ],
             ];
 
             /**
@@ -1443,6 +1449,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 'create_role_authors',
                 'copy_coauthor_plus_data',
                 'sync_post_author',
+                'sync_author_slug',
             ];
 
             if (!isset($_GET['ppma_action']) || isset($_GET['author_term_reset_notice'])
@@ -1559,6 +1566,11 @@ if (!class_exists('MA_Multiple_Authors')) {
                     Utils::sync_post_author_column($post_data->ID, $authors);
                 }
             }
+        }
+
+        public function action_sync_author_slug()
+        {
+            Utils::sync_author_slug_to_user_login();
         }
 
         private function isCoAuthorsPlusActivated()
