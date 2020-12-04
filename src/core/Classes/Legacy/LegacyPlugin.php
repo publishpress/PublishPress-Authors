@@ -148,6 +148,7 @@ class LegacyPlugin
         $defaultDirs = [
             'modules-settings'           => PP_AUTHORS_MODULES_PATH,
             'settings'                   => PP_AUTHORS_MODULES_PATH,
+            'debug'                      => PP_AUTHORS_MODULES_PATH,
             'multiple-authors'           => PP_AUTHORS_MODULES_PATH,
             'default-layouts'            => PP_AUTHORS_MODULES_PATH,
             'byline-migration'           => PP_AUTHORS_MODULES_PATH,
