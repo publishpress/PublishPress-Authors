@@ -74,6 +74,16 @@ if (!class_exists('MA_Yoast_Seo_Integration')) {
             parent::__construct();
         }
 
+        private function hasNotCompatibleYoastSeoWarningLogTransient()
+        {
+            return false !== get_transient('publishpress_authors_not_compatible_yoast_warning');
+        }
+
+        private function addNotCompatibleYoastSeoWarningLogTransient()
+        {
+            set_transient('publishpress_authors_not_compatible_yoast_warning', true, 24 * 60 * 60 * 2);
+        }
+
         /**
          *
          */
@@ -92,15 +102,19 @@ if (!class_exists('MA_Yoast_Seo_Integration')) {
             }
 
             if (version_compare(WPSEO_VERSION, '13.4.1', '<')) {
-                error_log(
-                    sprintf(
-                        '[PublishPress Authors] %s %s - %s. %s',
-                        __METHOD__,
-                        'detected a not supported version of the Yoast SEO plugin',
-                        WPSEO_VERSION,
-                        'It requires 13.4.1 or later. Please, update it'
-                    )
-                );
+                if (!$this->hasNotCompatibleYoastSeoWarningLogTransient()) {
+                    error_log(
+                        sprintf(
+                            '[PublishPress Authors] %s %s - %s. %s',
+                            __METHOD__,
+                            'detected a not supported version of the Yoast SEO plugin',
+                            WPSEO_VERSION,
+                            'It requires 13.4.1 or later. Please, update it'
+                        )
+                    );
+
+                    $this->addNotCompatibleYoastSeoWarningLogTransient();
+                }
 
                 return false;
             }
