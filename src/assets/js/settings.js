@@ -24,4 +24,29 @@ jQuery(function ($) {
         $('table[id^="ppma-"]').hide();
         $(panel).show();
     });
+
+    $('.default-authors-select2').ppma_select2({
+        placeholder: $(this).data("placeholder"),
+        allowClear: true,
+        ajax: {
+            url:
+                window.ajaxurl +
+                "?action=authors_search&nonce=" +
+                $('.default-authors-select2').data("nonce"),
+            dataType: "json",
+            data: function(params) {
+                var ignored = [];
+                $('.default-authors-select2')
+                    .closest("div")
+                    .find(".authors-list input")
+                    .each(function() {
+                        ignored.push($(this).val());
+                    });
+                return {
+                    q: params.term,
+                    ignored: ignored
+                };
+            }
+        }
+    });
 });

@@ -102,7 +102,7 @@ jQuery(document).ready(function($) {
           }
         }
       });
-      authorsSearch.on("select2:select", function(e) {
+      authorsSearch.on("ppma_select2:select", function(e) {
         var template = wp.template("authors-author-partial");
         $(".authors-list").append(
           window.htmlEnDeCode.htmlDecode(template(e.params.data))
