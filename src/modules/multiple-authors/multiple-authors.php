@@ -1744,7 +1744,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
                 wp_enqueue_script(
                     'publishpress-authors-sync-post-author',
-                    PP_AUTHORS_URL . '/src/assets/js/sync-post-author.min.js',
+                    PP_AUTHORS_URL . 'src/assets/js/sync-post-author.min.js',
                     [
                         'react',
                         'react-dom',
@@ -1768,7 +1768,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
                 wp_enqueue_style(
                     'publishpress-authors-data-migration-box',
-                    PP_AUTHORS_URL . '/src/modules/multiple-authors/assets/css/data-migration-box.css',
+                    PP_AUTHORS_URL . 'src/modules/multiple-authors/assets/css/data-migration-box.css',
                     false,
                     PP_AUTHORS_VERSION
                 );
@@ -1776,7 +1776,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 if ($this->isCoAuthorsPlusActivated()) {
                     wp_enqueue_script(
                         'publishpress-authors-coauthors-migration',
-                        PP_AUTHORS_URL . '/src/assets/js/coauthors-migration.min.js',
+                        PP_AUTHORS_URL . 'src/assets/js/coauthors-migration.min.js',
                         [
                             'react',
                             'react-dom',

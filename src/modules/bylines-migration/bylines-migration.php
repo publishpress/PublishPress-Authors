@@ -131,7 +131,7 @@ if (!class_exists('MA_Bylines_Migration')) {
         {
             wp_enqueue_script(
                 'publishpress-authors-bylines-migration',
-                PP_AUTHORS_URL . '/src/assets/js/bylines-migration.min.js',
+                PP_AUTHORS_URL . 'src/assets/js/bylines-migration.min.js',
                 [
                     'react',
                     'react-dom',
@@ -155,7 +155,7 @@ if (!class_exists('MA_Bylines_Migration')) {
 
             wp_enqueue_style(
                 'publishpress-authors-bylines-migration-css',
-                PP_AUTHORS_URL . '/src/modules/bylines-migration/assets/css/bylines-migration.css',
+                PP_AUTHORS_URL . 'src/modules/bylines-migration/assets/css/bylines-migration.css',
                 false,
                 PP_AUTHORS_VERSION
             );
