@@ -1296,21 +1296,19 @@ class Plugin
         }
 
         // Fix compatibility issue with the WS Form Plugin.
-        if (!wp_script_is('ws-form-external-select2-js')) {
-            wp_enqueue_script(
-                'multiple-authors-select2',
-                PP_AUTHORS_ASSETS_URL . 'lib/select2/js/select2.min.js',
-                ['jquery'],
-                PP_AUTHORS_VERSION
-            );
+        wp_enqueue_script(
+            'multiple-authors-select2',
+            PP_AUTHORS_ASSETS_URL . 'lib/select2/js/select2.min.js',
+            ['jquery'],
+            PP_AUTHORS_VERSION
+        );
 
-            wp_enqueue_style(
-                'multiple-authors-select2',
-                PP_AUTHORS_ASSETS_URL . 'lib/select2/css/select2.min.css',
-                [],
-                PP_AUTHORS_VERSION
-            );
-        }
+        wp_enqueue_style(
+            'multiple-authors-select2',
+            PP_AUTHORS_ASSETS_URL . 'lib/select2/css/select2.min.css',
+            [],
+            PP_AUTHORS_VERSION
+        );
 
         wp_enqueue_script(
             'multiple-authors-js',
