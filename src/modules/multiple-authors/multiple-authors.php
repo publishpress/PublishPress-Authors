@@ -152,9 +152,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_action('multiple_authors_delete_guest_authors', [$this, 'action_delete_guest_authors']);
             add_action('multiple_authors_create_post_authors', [$this, 'action_create_post_authors']);
             add_action('multiple_authors_create_role_authors', [$this, 'action_create_role_authors']);
-            add_action('multiple_authors_sync_post_author', [$this, 'action_sync_post_author']);
             add_action('multiple_authors_copy_coauthor_plus_data', [$this, 'action_copy_coauthor_plus_data']);
-            add_action('multiple_authors_sync_author_slug', [$this, 'action_sync_author_slug']);
 
             add_action('deleted_user', [$this, 'handle_deleted_user']);
 
@@ -191,6 +189,9 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_action('wp_ajax_get_sync_post_author_data', [$this, 'getSyncPostAuthorData']);
             add_action('wp_ajax_sync_post_author', [$this, 'syncPostAuthor']);
             add_action('wp_ajax_finish_sync_post_author', [$this, 'finishSyncPostAuthor']);
+            add_action('wp_ajax_get_sync_author_slug_data', [$this, 'getSyncAuthorSlugData']);
+            add_action('wp_ajax_sync_author_slug', [$this, 'syncAuthorSlug']);
+            add_action('wp_ajax_finish_sync_author_slug', [$this, 'finishSyncAuthorSlug']);
             add_action('wp_ajax_deactivate_coauthors_plus', [$this, 'deactivateCoAuthorsPlus']);
 
             // PublishPress compatibility hooks.
@@ -787,7 +788,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                 'sync_author_slug' => [
                     'title'       => __('Synchronize Author slugs to User logins', 'publishpress-authors'),
                     'description' => 'For compatibility with PublishPress Permissions, each Author\'s slug needs to match their User login.',
-                    'button_label' => __('Sync Author slugs to User logins', 'publishpress-authors'),
+                    'button_link' => '',
+                    'after'       => '<div id="publishpress-authors-sync-author-slug"></div>',
                 ],
             ];
 
@@ -1548,32 +1550,6 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
         }
 
-        public function action_sync_post_author()
-        {
-            global $wpdb;
-
-            $enabledPostTypes = Utils::get_enabled_post_types();
-            $enabledPostTypes = '"' . implode('","', $enabledPostTypes) . '"';
-
-            $postsToUpdate = $wpdb->get_results(
-                "SELECT p.ID
-				FROM {$wpdb->posts} as p
-				WHERE p.post_type IN({$enabledPostTypes}) AND p.post_status NOT IN ('trash')"
-            );
-
-            if (!empty($postsToUpdate)) {
-                foreach ($postsToUpdate as $post_data) {
-                    $authors = get_multiple_authors($post_data->ID);
-                    Utils::sync_post_author_column($post_data->ID, $authors);
-                }
-            }
-        }
-
-        public function action_sync_author_slug()
-        {
-            Utils::sync_author_slug_to_user_nicename();
-        }
-
         private function isCoAuthorsPlusActivated()
         {
             return (isset($GLOBALS['coauthors_plus']) && !empty($GLOBALS['coauthors_plus']));
@@ -1779,6 +1755,30 @@ if (!class_exists('MA_Multiple_Authors')) {
                     ]
                 );
 
+                wp_enqueue_script(
+                    'publishpress-authors-sync-author-slug',
+                    PP_AUTHORS_URL . '/src/assets/js/sync-author-slug.min.js',
+                    [
+                        'react',
+                        'react-dom',
+                        'jquery',
+                        'multiple-authors-settings',
+                        'wp-element',
+                        'wp-hooks',
+                        'wp-i18n',
+                    ],
+                    PP_AUTHORS_VERSION
+                );
+
+                wp_localize_script(
+                    'publishpress-authors-sync-author-slug',
+                    'ppmaSyncAuthorSlug',
+                    [
+                        'nonce'     => wp_create_nonce('sync_author_slug'),
+                        'chunkSize' => 10,
+                    ]
+                );
+
                 wp_enqueue_style(
                     'publishpress-authors-data-migration-box',
                     PP_AUTHORS_URL . '/src/modules/multiple-authors/assets/css/data-migration-box.css',
@@ -1934,6 +1934,26 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
         }
 
+        public function getSyncAuthorSlugData()
+        {
+            global $wpdb;
+
+            if (!wp_verify_nonce($_GET['nonce'], 'sync_author_slug')) {
+                wp_send_json_error(null, 403);
+            }
+
+            $authorsToUpdate = Utils::detect_author_slug_mismatch();
+
+            set_transient('publishpress_authors_sync_author_slug_ids', $authorsToUpdate, 24 * 60 * 60);
+
+            // nonce: migrate_coauthors
+            wp_send_json(
+                [
+                    'total' => count($authorsToUpdate),
+                ]
+            );
+        }
+
         private function getCoAuthorUserAuthorBySlug($slug)
         {
             return get_user_by('slug', $slug);
@@ -2068,6 +2088,41 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
         }
 
+        public function syncAuthorSlug()
+        {
+            if (!wp_verify_nonce($_GET['nonce'], 'sync_author_slug')) {
+                wp_send_json_error(null, 403);
+            }
+
+            $termToSync = get_transient('publishpress_authors_sync_author_slug_ids');
+
+            $totalMigrated = 0;
+
+            if (!empty($termToSync)) {
+                $chunkSize = isset($_GET['chunkSize']) ? (int)$_GET['chunkSize'] : 10;
+
+                reset($termToSync);
+                for ($i = 0; $i < $chunkSize; $i++) {
+                    $term = current($termToSync);
+
+                    if (!empty($term)) {
+                        Utils::sync_author_slug_to_user_nicename([$term]);
+                        $totalMigrated++;
+                    }
+                    unset($termToSync[key($termToSync)]);
+                }
+            }
+
+            set_transient('publishpress_authors_sync_author_slug_ids', $termToSync, 24 * 60 * 60);
+
+            wp_send_json(
+                [
+                    'success'       => true,
+                    'totalMigrated' => $totalMigrated,
+                ]
+            );
+        }
+
         public function deactivateCoAuthorsPlus()
         {
             if (!wp_verify_nonce($_GET['nonce'], 'migrate_coauthors')) {
@@ -2110,6 +2165,21 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             delete_transient('publishpress_authors_sync_post_author_ids');
+
+            wp_send_json(
+                [
+                    'success' => true,
+                ]
+            );
+        }
+
+        public function finishSyncAuthorSlug()
+        {
+            if (!wp_verify_nonce($_GET['nonce'], 'sync_author_slug')) {
+                wp_send_json_error(null, 403);
+            }
+
+            delete_transient('publishpress_authors_sync_author_slug_ids');
 
             wp_send_json(
                 [
