@@ -283,9 +283,9 @@ if (!function_exists('multiple_authors__echo')) {
                 }
             }
 
-            // Fallback to user_login if we get something empty
+            // Fallback to user_nicename if we get something empty
             if (empty($author_text)) {
-                $author_text = $authors_iterator->current_author->user_login;
+                $author_text = $authors_iterator->current_author->user_nicename;
             }
 
             // Append separators

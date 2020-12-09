@@ -1601,9 +1601,9 @@ if (!class_exists('MA_Multiple_Authors')) {
                     $author_text = call_user_func($tag, $i->current_author);
                 }
 
-                // Fallback to user_login if we get something empty
+                // Fallback to user_nicename if we get something empty
                 if (empty($author_text)) {
-                    $author_text = $i->current_author->user_login;
+                    $author_text = $i->current_author->user_nicename;
                 }
 
                 // Append separators
