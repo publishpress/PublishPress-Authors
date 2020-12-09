@@ -152,7 +152,6 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_action('multiple_authors_delete_guest_authors', [$this, 'action_delete_guest_authors']);
             add_action('multiple_authors_create_post_authors', [$this, 'action_create_post_authors']);
             add_action('multiple_authors_create_role_authors', [$this, 'action_create_role_authors']);
-            add_action('multiple_authors_sync_post_author', [$this, 'action_sync_post_author']);
             add_action('multiple_authors_copy_coauthor_plus_data', [$this, 'action_copy_coauthor_plus_data']);
 
             add_action('deleted_user', [$this, 'handle_deleted_user']);
@@ -190,6 +189,9 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_action('wp_ajax_get_sync_post_author_data', [$this, 'getSyncPostAuthorData']);
             add_action('wp_ajax_sync_post_author', [$this, 'syncPostAuthor']);
             add_action('wp_ajax_finish_sync_post_author', [$this, 'finishSyncPostAuthor']);
+            add_action('wp_ajax_get_sync_author_slug_data', [$this, 'getSyncAuthorSlugData']);
+            add_action('wp_ajax_sync_author_slug', [$this, 'syncAuthorSlug']);
+            add_action('wp_ajax_finish_sync_author_slug', [$this, 'finishSyncAuthorSlug']);
             add_action('wp_ajax_deactivate_coauthors_plus', [$this, 'deactivateCoAuthorsPlus']);
 
             // PublishPress compatibility hooks.
@@ -781,6 +783,13 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'description' => 'This action is useful if you\'re updating PublishPress Authors from versions lower or equals than 3.7.4. This action can help compatibility with some 3rd party themes and plugins.',
                     'button_link' => '',
                     'after'       => '<div id="publishpress-authors-sync-post-authors"></div>',
+                ],
+
+                'sync_author_slug' => [
+                    'title'       => __('Synchronize Author slugs to User logins', 'publishpress-authors'),
+                    'description' => 'For compatibility with PublishPress Permissions, each Author\'s slug needs to match their User login.',
+                    'button_link' => '',
+                    'after'       => '<div id="publishpress-authors-sync-author-slug"></div>',
                 ],
             ];
 
@@ -1443,6 +1452,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 'create_role_authors',
                 'copy_coauthor_plus_data',
                 'sync_post_author',
+                'sync_author_slug',
             ];
 
             if (!isset($_GET['ppma_action']) || isset($_GET['author_term_reset_notice'])
@@ -1540,27 +1550,6 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
         }
 
-        public function action_sync_post_author()
-        {
-            global $wpdb;
-
-            $enabledPostTypes = Utils::get_enabled_post_types();
-            $enabledPostTypes = '"' . implode('","', $enabledPostTypes) . '"';
-
-            $postsToUpdate = $wpdb->get_results(
-                "SELECT p.ID
-				FROM {$wpdb->posts} as p
-				WHERE p.post_type IN({$enabledPostTypes}) AND p.post_status NOT IN ('trash')"
-            );
-
-            if (!empty($postsToUpdate)) {
-                foreach ($postsToUpdate as $post_data) {
-                    $authors = get_multiple_authors($post_data->ID);
-                    Utils::sync_post_author_column($post_data->ID, $authors);
-                }
-            }
-        }
-
         private function isCoAuthorsPlusActivated()
         {
             return (isset($GLOBALS['coauthors_plus']) && !empty($GLOBALS['coauthors_plus']));
@@ -1612,9 +1601,9 @@ if (!class_exists('MA_Multiple_Authors')) {
                     $author_text = call_user_func($tag, $i->current_author);
                 }
 
-                // Fallback to user_login if we get something empty
+                // Fallback to user_nicename if we get something empty
                 if (empty($author_text)) {
-                    $author_text = $i->current_author->user_login;
+                    $author_text = $i->current_author->user_nicename;
                 }
 
                 // Append separators
@@ -1766,6 +1755,34 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'ppmaSyncPostAuthor',
                     [
                         'nonce'     => wp_create_nonce('sync_post_author'),
+                        'chunkSize' => $chunkSize,
+                    ]
+                );
+
+                wp_enqueue_script(
+                    'publishpress-authors-sync-author-slug',
+                    PP_AUTHORS_URL . '/src/assets/js/sync-author-slug.min.js',
+                    [
+                        'react',
+                        'react-dom',
+                        'jquery',
+                        'multiple-authors-settings',
+                        'wp-element',
+                        'wp-hooks',
+                        'wp-i18n',
+                    ],
+                    PP_AUTHORS_VERSION
+                );
+
+                $defaultChunkSize = apply_filters('publishpress_authors_sync_author_slug_chunk_size', 50);
+                $chunkSize = defined('PUBLISHPRESS_AUTHORS_SYNC_AUTHOR_SLUG_CHUNK_SIZE') ?
+                    PUBLISHPRESS_AUTHORS_SYNC_AUTHOR_SLUG_CHUNK_SIZE : $defaultChunkSize;
+
+                wp_localize_script(
+                    'publishpress-authors-sync-author-slug',
+                    'ppmaSyncAuthorSlug',
+                    [
+                        'nonce'     => wp_create_nonce('sync_author_slug'),
                         'chunkSize' => $chunkSize,
                     ]
                 );
@@ -1925,6 +1942,26 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
         }
 
+        public function getSyncAuthorSlugData()
+        {
+            global $wpdb;
+
+            if (!wp_verify_nonce($_GET['nonce'], 'sync_author_slug')) {
+                wp_send_json_error(null, 403);
+            }
+
+            $authorsToUpdate = Utils::detect_author_slug_mismatch();
+
+            set_transient('publishpress_authors_sync_author_slug_ids', $authorsToUpdate, 24 * 60 * 60);
+
+            // nonce: migrate_coauthors
+            wp_send_json(
+                [
+                    'total' => count($authorsToUpdate),
+                ]
+            );
+        }
+
         private function getCoAuthorUserAuthorBySlug($slug)
         {
             return get_user_by('slug', $slug);
@@ -2059,6 +2096,41 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
         }
 
+        public function syncAuthorSlug()
+        {
+            if (!wp_verify_nonce($_GET['nonce'], 'sync_author_slug')) {
+                wp_send_json_error(null, 403);
+            }
+
+            $termToSync = get_transient('publishpress_authors_sync_author_slug_ids');
+
+            $totalMigrated = 0;
+
+            if (!empty($termToSync)) {
+                $chunkSize = isset($_GET['chunkSize']) ? (int)$_GET['chunkSize'] : 10;
+
+                reset($termToSync);
+                for ($i = 0; $i < $chunkSize; $i++) {
+                    $term = current($termToSync);
+
+                    if (!empty($term)) {
+                        Utils::sync_author_slug_to_user_nicename([$term]);
+                        $totalMigrated++;
+                    }
+                    unset($termToSync[key($termToSync)]);
+                }
+            }
+
+            set_transient('publishpress_authors_sync_author_slug_ids', $termToSync, 24 * 60 * 60);
+
+            wp_send_json(
+                [
+                    'success'       => true,
+                    'totalMigrated' => $totalMigrated,
+                ]
+            );
+        }
+
         public function deactivateCoAuthorsPlus()
         {
             if (!wp_verify_nonce($_GET['nonce'], 'migrate_coauthors')) {
@@ -2084,7 +2156,6 @@ if (!class_exists('MA_Multiple_Authors')) {
             // Co-Authors sometimes don't have a taxonomy term for the author, but uses the post_author value instead.
             Installer::convert_post_author_into_taxonomy();
             Installer::add_author_term_for_posts();
-            Installer::fix_author_url();
 
             // nonce: migrate_coauthors
             wp_send_json(
@@ -2101,6 +2172,21 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             delete_transient('publishpress_authors_sync_post_author_ids');
+
+            wp_send_json(
+                [
+                    'success' => true,
+                ]
+            );
+        }
+
+        public function finishSyncAuthorSlug()
+        {
+            if (!wp_verify_nonce($_GET['nonce'], 'sync_author_slug')) {
+                wp_send_json_error(null, 403);
+            }
+
+            delete_transient('publishpress_authors_sync_author_slug_ids');
 
             wp_send_json(
                 [
