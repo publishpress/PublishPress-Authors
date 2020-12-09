@@ -111,6 +111,7 @@ There are two ways to install the PublishPress Authors plugin:
 = UNRELEASED =
 
 * Fixed: Changed the way we sync post_author column: Current user will only be set as author if no terms where found for the post, or there are only guest authors. If post_author is empty, we set it for the current user, creating an author term for it.
+* Added: Added new maintenance task for syncing the authors' slug with the respective user's sanitized login (user_nicename). There is a new constant "PUBLISHPRESS_AUTHORS_SYNC_AUTHOR_SLUG_CHUNK_SIZE" and filter "publishpress_authors_sync_author_slug_chunk_size" for customizing the size of the chunk of authors to update at a time, #287;
 
 = [3.9.0] - 2020-11-24 =
 
