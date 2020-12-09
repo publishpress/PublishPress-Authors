@@ -311,19 +311,6 @@ class Post_Editor
         $authors = self::remove_dirty_authors_from_authors_arr($authors);
 
         Utils::set_post_authors($post_id, $authors);
-
-        if (empty($authors)) {
-            $wpdb->update(
-                $wpdb->posts,
-                [
-                    'post_author' => get_current_user_id(),
-                ],
-                [
-                    'ID' => $post_id,
-                ]
-            );
-            clean_post_cache($post_id);
-        }
     }
 
     /**

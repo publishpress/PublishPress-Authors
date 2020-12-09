@@ -1746,12 +1746,16 @@ if (!class_exists('MA_Multiple_Authors')) {
                     PP_AUTHORS_VERSION
                 );
 
+                $defaultChunkSize = apply_filters('publishpress_authors_sync_post_author_chunk_size', 10);
+                $chunkSize = defined('PUBLISHPRESS_AUTHORS_SYNC_POST_AUTHOR_CHUNK_SIZE') ?
+                    PUBLISHPRESS_AUTHORS_SYNC_POST_AUTHOR_CHUNK_SIZE : $defaultChunkSize;
+
                 wp_localize_script(
                     'publishpress-authors-sync-post-author',
                     'ppmaSyncPostAuthor',
                     [
                         'nonce'     => wp_create_nonce('sync_post_author'),
-                        'chunkSize' => 10,
+                        'chunkSize' => $chunkSize,
                     ]
                 );
 

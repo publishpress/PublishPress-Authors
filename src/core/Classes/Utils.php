@@ -204,33 +204,52 @@ class Utils
         $functionSetPostAuthor = function($postId, $authorId) {
             global $wpdb;
 
-            $wpdb->query(
-                $wpdb->prepare(
-                    "UPDATE {$wpdb->posts} SET post_author = %d WHERE ID = %d",
-                    $authorId,
-                    $postId
-                )
+            // Avoid to corrupt the post_author with an empty value.
+            if (empty((int)$authorId)) {
+                return false;
+            }
+
+            $wpdb->update(
+                $wpdb->posts,
+                [
+                    'post_author' => (int)$authorId,
+                ],
+                [
+                    'ID' => $postId,
+                ]
             );
+            clean_post_cache($postId);
+
+            return true;
         };
 
-        $postAuthorWasChanged = false;
+        $postAuthorHasChanged = false;
         if (!empty($authors)) {
             foreach ($authors as $index => $author) {
-                if (!is_object($author) || is_wp_error($author) || $author->is_guest() || empty($author)) {
-                    if (method_exists($author, 'is_guest') && !$author->is_guest()) {
+                $isGuest = (method_exists($author, 'is_guest') && $author->is_guest());
+
+                if (
+                    !is_object($author)
+                    || is_wp_error($author)
+                    || $isGuest
+                    || empty($author)
+                ) {
+                    if (!$isGuest) {
                         unset($authors[$index]);
                     }
 
                     continue;
                 }
 
-                $functionSetPostAuthor($postId, $author->user_id);
-                $postAuthorWasChanged = true;
+                if ($functionSetPostAuthor($postId, $author->user_id)) {
+                    $postAuthorHasChanged = true;
+                }
+
                 break;
             }
         }
 
-        if (!$postAuthorWasChanged) {
+        if (!$postAuthorHasChanged) {
             // Check if the post has any author set. If not an existent author, create one and set the author term.
             $post = get_post($postId);
 
