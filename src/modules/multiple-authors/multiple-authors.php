@@ -2152,7 +2152,6 @@ if (!class_exists('MA_Multiple_Authors')) {
             // Co-Authors sometimes don't have a taxonomy term for the author, but uses the post_author value instead.
             Installer::convert_post_author_into_taxonomy();
             Installer::add_author_term_for_posts();
-            Installer::fix_author_url();
 
             // nonce: migrate_coauthors
             wp_send_json(

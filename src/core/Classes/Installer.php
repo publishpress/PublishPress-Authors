@@ -43,7 +43,6 @@ class Installer
 
         self::add_administrator_capabilities();
         self::add_new_edit_post_authors_cap();
-        self::fix_author_url();
         self::flush_permalinks();
 
         /**
@@ -180,35 +179,6 @@ class Installer
     }
 
     /**
-     * Fix the author URL for authors with mapped users, to make sure the slug is the same.
-     */
-    public static function fix_author_url()
-    {
-        global $wpdb;
-
-        // Get list of authors with mapped users.
-        $authors = $wpdb->get_results(
-            "SELECT term.term_id, meta.meta_value AS user_id, term.slug, `user`.user_nicename
-						 FROM {$wpdb->terms} AS term
-						 INNER JOIN {$wpdb->term_taxonomy} AS tax ON (term.term_id = tax.term_id)
-						 INNER JOIN {$wpdb->termmeta} AS meta ON (term.term_id = meta.`term_id`)
-						 INNER JOIN {$wpdb->users} AS `user` ON (meta.meta_value = `user`.ID)
-						 WHERE tax.`taxonomy` = 'author'
-						 AND meta.meta_key = 'user_id'
-						 AND meta.meta_value > 0
-			    "
-        );
-
-        if (!empty($authors)) {
-            foreach ($authors as $author) {
-                if ($author->slug !== $author->user_nicename) {
-                    wp_update_term($author->term_id, 'author', ['slug' => $author->user_nicename]);
-                }
-            }
-        }
-    }
-
-    /**
      * Flushes the permalinks rules.
      */
     protected static function flush_permalinks()
@@ -251,7 +221,6 @@ class Installer
                 self::convert_post_author_into_taxonomy();
                 self::add_author_term_for_posts();
             }
-            self::fix_author_url();
         }
 
         if (version_compare($previous_version, '3.6.0', '<')) {
