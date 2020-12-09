@@ -154,6 +154,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_action('multiple_authors_create_role_authors', [$this, 'action_create_role_authors']);
             add_action('multiple_authors_sync_post_author', [$this, 'action_sync_post_author']);
             add_action('multiple_authors_copy_coauthor_plus_data', [$this, 'action_copy_coauthor_plus_data']);
+            add_action('multiple_authors_sync_author_slug', [$this, 'action_sync_author_slug']);
 
             add_action('deleted_user', [$this, 'handle_deleted_user']);
 
@@ -1570,7 +1571,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         public function action_sync_author_slug()
         {
-            Utils::sync_author_slug_to_user_login();
+            Utils::sync_author_slug_to_user_nicename();
         }
 
         private function isCoAuthorsPlusActivated()

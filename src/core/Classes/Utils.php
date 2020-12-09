@@ -169,7 +169,7 @@ class Utils
         global $wpdb;
 
         $results = $wpdb->get_results(
-            "SELECT t.term_id, u.user_login
+            "SELECT t.term_id, u.user_nicename
                 FROM $wpdb->terms AS t 
                 INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id
                 INNER JOIN $wpdb->termmeta AS tm ON tm.term_id = tt.term_id
@@ -177,13 +177,13 @@ class Utils
                 WHERE
                     tt.taxonomy = 'author'
                     AND tm.meta_key = 'user_id'
-                    AND u.user_login != t.slug"
+                    AND u.user_nicename != t.slug"
         );
 
         return $results;
     }
 
-    public static function sync_author_slug_to_user_login($authors = false) {
+    public static function sync_author_slug_to_user_nicename($authors = false) {
         global $wpdb;
 
         if (false === $authors) {
@@ -191,7 +191,7 @@ class Utils
         }
 
         foreach($authors as $row) {
-            $wpdb->update($wpdb->terms, ['slug' => $row->user_login], ['term_id' => $row->term_id]);
+            $wpdb->update($wpdb->terms, ['slug' => $row->user_nicename], ['term_id' => $row->term_id]);
         }
     }
 
