@@ -2298,7 +2298,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             // Sync script already run
             if (get_option('publishpress_multiple_authors_usernicename_sync')) {
-                //return;
+                return;
             }
 
             // Notice is non-dismissible on Authors and Permissions plugin screens
@@ -2306,7 +2306,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             // This notice is not forced, and has been dismissed
             if (!$ignore_dismissal && get_option('publishpress_authors_dismiss_permissions_sync_notice') == 1) {
-               // return;
+                return;
             }
 
             // User cannot run this script
