@@ -47,11 +47,11 @@ abstract class Author_Utils
             );
 
             if (empty($terms) || is_wp_error($terms)) {
-                return false;
+                $cachedValue = 0;
+            } else {
+                $firstTerm = $terms[0];
+                $cachedValue = $firstTerm->term_id;
             }
-
-            $firstTerm = $terms[0];
-            $cachedValue = $firstTerm->term_id;
 
             wp_cache_set($emailAddress, $cachedValue, __METHOD__);
         }
