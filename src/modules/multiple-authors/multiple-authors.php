@@ -145,7 +145,9 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_action('admin_init', [$this, 'handle_maintenance_task']);
             add_action('admin_init', [$this, 'migrate_legacy_settings']);
             add_action('admin_init', [$this, 'dismissCoAuthorsMigrationNotice']);
+            add_action('admin_init', [$this, 'dismissPermissionsSyncNotice']);
             add_action('admin_notices', [$this, 'coauthorsMigrationNotice']);
+            add_action('admin_notices', [$this, 'permissionsSyncNotice']);
             add_action('admin_notices', [$this, 'handle_maintenance_task_notice']);
 
             add_action('multiple_authors_delete_mapped_authors', [$this, 'action_delete_mapped_authors']);
@@ -1731,6 +1733,13 @@ if (!class_exists('MA_Multiple_Authors')) {
                     PP_AUTHORS_VERSION
                 );
 
+                if (!empty($_REQUEST['ppma_tab'])) {
+                    wp_localize_script('multiple-authors-settings', 'ppmaSettings', [
+                        'tab' => 'ppma-tab-' . sanitize_key($_REQUEST['ppma_tab']),
+                        'runScript' => !empty($_REQUEST['ppma_maint']) ? sanitize_key($_REQUEST['ppma_maint']) : '',
+                    ]);
+                }
+
                 wp_enqueue_script(
                     'publishpress-authors-sync-post-author',
                     PP_AUTHORS_URL . '/src/assets/js/sync-post-author.min.js',
@@ -2123,6 +2132,8 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             set_transient('publishpress_authors_sync_author_slug_ids', $termToSync, 24 * 60 * 60);
 
+            update_option('publishpress_multiple_authors_usernicename_sync', 1);
+
             wp_send_json(
                 [
                     'success'       => true,
@@ -2255,6 +2266,80 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             update_option('publishpress_authors_dismiss_coauthors_migration_notice', 1);
+        }
+
+        public function permissionsSyncNotice($args = [])
+        {
+            global $pagenow;
+
+            // Only request the script if also running a PublishPress Permissions version which supports posts query integration
+            if (!defined('PRESSPERMIT_VERSION') || version_compare(constant('PRESSPERMIT_VERSION'), '3.4-alpha', '<') || defined('PRESSPERMIT_DISABLE_AUTHORS_JOIN')) {
+                return;
+            }
+
+            // Display the notice on Authors and Permissions plugin screens
+            $is_pp_plugin_page = isset($_GET['page']) && in_array($_GET['page'], ['ppma-modules-settings', 'presspermit-settings', 'presspermit-groups']);
+
+            $requirements = [
+                in_array($pagenow, ['plugins.php', 'edit.php', 'edit-tags.php']),
+                $is_pp_plugin_page,
+            ];
+
+            // Only display the notice on specified admin pages
+            if (array_sum($requirements) === 0) {
+                return;
+            }
+
+            // This request is launching Sync script directly 
+            if (!empty($_REQUEST['ppma_maint']) && ('ppma_maint=sync-user-login' == $_REQUEST['ppma_maint'])) {
+                return;
+            }
+
+            // Sync script already run
+            if (get_option('publishpress_multiple_authors_usernicename_sync')) {
+                return;
+            }
+
+            // Notice is non-dismissible on Authors and Permissions plugin screens
+            $ignore_dismissal = $is_pp_plugin_page || !empty($args['ignore_dismissal']);
+
+            // This notice is not forced, and has been dismissed
+            if (!$ignore_dismissal && get_option('publishpress_authors_dismiss_permissions_sync_notice') == 1) {
+                return;
+            }
+
+            // User cannot run this script
+            if (!current_user_can('ppma_manage_authors')) {
+                return;
+            }
+
+            ?>
+            <div class="updated">
+                <p>
+                    <?php _e('PublishPress Authors needs a database update for Permissions integration.', 'publishpress-authors'); ?>
+                    &nbsp;<a href="<?php echo admin_url('admin.php?page=ppma-modules-settings&ppma_tab=maintenance&ppma_maint=sync-user-login#publishpress-authors-sync-author-slug');?>"><?php _e(
+                            'Click to run the update now',
+                            'publishpress-authors'
+                        ); ?></a>
+                    <?php if (!$ignore_dismissal):?>
+                    &nbsp;|&nbsp;
+                    <a href="<?php echo add_query_arg(['action' => 'dismiss_permissions_sync_notice']); ?>"><?php _e(
+                            'Dismiss',
+                            'publishpress-authors'
+                        ); ?></a>
+                    <?php endif;?>
+                </p>
+            </div>
+            <?php
+        }
+
+        public function dismissPermissionsSyncNotice()
+        {
+            if (!isset($_GET['action']) || $_GET['action'] !== 'dismiss_permissions_sync_notice') {
+                return;
+            }
+
+            update_option('publishpress_authors_dismiss_permissions_sync_notice', 1);
         }
 
         /**
