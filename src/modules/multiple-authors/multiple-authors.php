@@ -2278,7 +2278,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             // Display the notice on Authors and Permissions plugin screens
-            $is_pp_plugin_page = isset($_GET['page']) && in_array($_GET['page'], ['ppma-modules-settings', 'presspermit-settings', 'presspermit-groups']);
+            $is_pp_plugin_page = (isset($_GET['page']) && in_array($_GET['page'], ['ppma-modules-settings', 'presspermit-settings', 'presspermit-groups']))
+            || ('edit-tags.php' == $pagenow && !empty($_REQUEST['taxonomy']) && ('author' == $_REQUEST['taxonomy']));
 
             $requirements = [
                 in_array($pagenow, ['plugins.php', 'edit.php', 'edit-tags.php']),
@@ -2297,7 +2298,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             // Sync script already run
             if (get_option('publishpress_multiple_authors_usernicename_sync')) {
-                return;
+                //return;
             }
 
             // Notice is non-dismissible on Authors and Permissions plugin screens
@@ -2305,7 +2306,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             // This notice is not forced, and has been dismissed
             if (!$ignore_dismissal && get_option('publishpress_authors_dismiss_permissions_sync_notice') == 1) {
-                return;
+               // return;
             }
 
             // User cannot run this script
