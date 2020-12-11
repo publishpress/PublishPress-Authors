@@ -1471,59 +1471,6 @@ class Plugin
     }
 
     /**
-     * Filter Edit Flow's 'ef_calendar_item_information_fields' to add co-authors
-     *
-     * @param array $information_fields
-     * @param int $post_id
-     *
-     * @return array
-     */
-    public function filter_ef_calendar_item_information_fields($information_fields, $post_id)
-    {
-        // Don't add the author row again if another plugin has removed
-        if (!array_key_exists('author', $information_fields)) {
-            return $information_fields;
-        }
-
-        $co_authors = get_multiple_authors($post_id);
-        if (count($co_authors) > 1) {
-            $information_fields['author']['label'] = __('Authors', 'publishpress-authors');
-        }
-        $co_authors_names = '';
-        foreach ($co_authors as $co_author) {
-            $co_authors_names .= $co_author->display_name . ', ';
-        }
-        $information_fields['author']['value'] = rtrim($co_authors_names, ', ');
-
-        return $information_fields;
-    }
-
-    /**
-     * Filter Edit Flow's 'ef_story_budget_term_column_value' to add co-authors to the story budget
-     *
-     * @param string $column_name
-     * @param object $post
-     * @param object $parent_term
-     *
-     * @return string
-     */
-    public function filter_ef_story_budget_term_column_value($column_name, $post, $parent_term)
-    {
-        // We only want to modify the 'author' column
-        if ('author' != $column_name) {
-            return $column_name;
-        }
-
-        $co_authors       = get_multiple_authors($post->ID);
-        $co_authors_names = '';
-        foreach ($co_authors as $co_author) {
-            $co_authors_names .= $co_author->display_name . ', ';
-        }
-
-        return rtrim($co_authors_names, ', ');
-    }
-
-    /**
      * Filter non-native users added by Co-Author-Plus in Jetpack
      *
      * @param array $og_tags Required. Array of Open Graph Tags.
