@@ -53,3 +53,12 @@ class_alias(
 if (!defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION')) {
     define('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION', PP_AUTHORS_VERSION);
 }
+
+if (!class_exists('Multiple_authors_iterator')) {
+    /**
+     * @deprecated 1.0.0 We are keeping for backward compatibility
+     */
+    class Multiple_authors_iterator extends Authors_Iterator
+    {
+    }
+}
