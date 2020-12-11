@@ -113,10 +113,13 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: Changed the way we sync post_author column: Current user will only be set as author if no terms where found for the post, or there are only guest authors. If post_author is empty, we set it for the current user, creating an author term for it;
 * Fixed: Duplicated queries for the same given email in the method MultipleAuthors\Classes\Author_Utils::get_author_term_id_by_email(). Added a cache for the query results and an option to ignore the cache, #293;
 * Fixed: Performance issue. Optimized some methods and modules loading for reducing the server overload. Some modules now are only loaded if the required plugin is installed, #297;
+* Fixed: Fix the path for the template-tags.php file when called by the author box, if not loaded yet;
+* Fixed: Only register admin hooks if in the admin, #297;
 * Changed: Deprecated functions and classes now can be disabled if you define the constant "PUBLISHPRESS_AUTHORS_LOAD_DEPRECATED_LEGACY_CODE" as false. Default is true, #297;
 * Changed: CoAuthors' backward compatibility functions now can be disabled if you define the constant "PUBLISHPRESS_AUTHORS_LOAD_COAUTHORS_FUNCTIONS" as false. Default is true, #297;
 * Changed: Bylines' backward compatibility functions now can be disabled if you define the constant "PUBLISHPRESS_AUTHORS_LOAD_BYLINES_FUNCTIONS" as false. Default is true, #297;
 * Added: Added new maintenance task for syncing the authors' slug with the respective user's sanitized login (user_nicename). There is a new constant "PUBLISHPRESS_AUTHORS_SYNC_AUTHOR_SLUG_CHUNK_SIZE" for customizing the size of the chunk of authors to update at a time (default to 50), #287;
+* Removed: Removed the support to the filter "coauthors_auto_apply_template_tags", #297;
 
 = [3.9.0] - 2020-11-24 =
 
