@@ -914,5 +914,12 @@ add_filter(
 );
 
 // Keep backward compatibility with Bylines, legacy versions of PublishPress Authors and CoAuthors
-require_once 'coauthors-functions.php';
-require_once 'bylines-functions.php';
+if (defined('PUBLISHPRESS_AUTHORS_LOAD_COAUTHORS_COMPATIBILITY_LAYER')
+    && PUBLISHPRESS_AUTHORS_LOAD_COAUTHORS_COMPATIBILITY_LAYER) {
+    require_once 'coauthors-functions.php';
+}
+
+if (defined('PUBLISHPRESS_AUTHORS_LOAD_BYLINES_COMPATIBILITY_LAYER')
+    && PUBLISHPRESS_AUTHORS_LOAD_BYLINES_COMPATIBILITY_LAYER) {
+    require_once 'bylines-functions.php';
+}
