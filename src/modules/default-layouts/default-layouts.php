@@ -26,7 +26,7 @@ use MultipleAuthors\Factory;
 
 if (!class_exists('MA_Default_Layouts')) {
     /**
-     * class MA_Multiple_Authors
+     * class MA_Default_Layouts
      */
     class MA_Default_Layouts extends Module
     {
@@ -42,7 +42,7 @@ if (!class_exists('MA_Default_Layouts')) {
         public $module;
 
         /**
-         * Construct the MA_Multiple_Authors class
+         * Construct the MA_Default_Layouts class
          */
         public function __construct()
         {
