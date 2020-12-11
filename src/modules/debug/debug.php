@@ -71,8 +71,6 @@ if (!class_exists('MA_Debug')) {
             $legacyPlugin = Factory::getLegacyPlugin();
 
             $this->module = $legacyPlugin->register_module($this->module_name, $args);
-
-            parent::__construct();
         }
 
         /**
@@ -80,7 +78,7 @@ if (!class_exists('MA_Debug')) {
          */
         public function init()
         {
-            if (Utils::is_valid_page() && (isset($_GET['authors_debug']) && (int)$_GET['authors_debug'] === 1)) {
+            if (is_admin()) {
                 add_action(
                     'add_meta_boxes',
                     [$this, 'addMetaBoxForDebugInformation'],

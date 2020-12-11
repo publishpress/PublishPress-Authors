@@ -44,10 +44,6 @@ if (!class_exists('MA_Editflow_Integration')) {
          */
         public function __construct()
         {
-            if (!$this->isEditflowInstalled()) {
-                return;
-            }
-
             $this->module_url = $this->get_module_url(__FILE__);
 
             // Register the module with PublishPress
@@ -78,20 +74,11 @@ if (!class_exists('MA_Editflow_Integration')) {
             parent::__construct();
         }
 
-        private function isEditflowInstalled()
-        {
-            return defined('EDIT_FLOW_VERSION') && defined('EDIT_FLOW_ROOT');
-        }
-
         /**
          * Initialize the module. Conditionally loads if the module is enabled
          */
         public function init()
         {
-            if (!$this->isEditflowInstalled()) {
-                return;
-            }
-
             add_filter(
                 'ef_calendar_item_information_fields',
                 [$this, 'filterCalendarItemFields'],

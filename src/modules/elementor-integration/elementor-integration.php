@@ -80,86 +80,11 @@ if (!class_exists('MA_Elementor_Integration')) {
             parent::__construct();
         }
 
-        private function isElementorInstalled()
-        {
-            // For now we only integrate with the Pro version because the Free one doesn't have the posts modules.
-
-            if (!defined('ELEMENTOR_PRO_VERSION')) {
-                return false;
-            }
-
-            $minRequiredVersion = '2.9.3';
-
-            if (version_compare(ELEMENTOR_PRO_VERSION, $minRequiredVersion, '<')) {
-                error_log(
-                    sprintf(
-                        '[PublishPress Authors] Elementor module is disabled because it requires Elementor Pro %s and we found %s',
-                        $minRequiredVersion,
-                        ELEMENTOR_PRO_VERSION
-                    )
-                );
-
-                return false;
-            }
-
-            $abort = false;
-
-            $requiredClasses = [
-                '\\ElementorPro\\Modules\\Posts\\Skins\\Skin_Base',
-                '\\ElementorPro\\Modules\\Posts\\Skins\\Skin_Cards',
-                '\\ElementorPro\\Modules\\Posts\\Skins\\Skin_Classic',
-                '\\ElementorPro\\Modules\\Posts\\Skins\\Skin_Full_Content',
-                '\\ElementorPro\\Modules\\ThemeBuilder\\Skins\\Posts_Archive_Skin_Cards',
-                '\\ElementorPro\\Modules\\ThemeBuilder\\Skins\\Posts_Archive_Skin_Classic',
-                '\\ElementorPro\\Modules\\ThemeBuilder\\Skins\\Posts_Archive_Skin_Full_Content',
-            ];
-
-            foreach ($requiredClasses as $className) {
-                if (!class_exists($className)) {
-                    error_log(
-                        sprintf(
-                            '[PublishPress Authors] Elementor module did not find the class %s',
-                            $className
-                        )
-                    );
-                    $abort = true;
-                }
-            }
-
-            $requiredTraits = [
-                '\\ElementorPro\\Modules\\ThemeBuilder\\Skins\\Posts_Archive_Skin_Base',
-                '\\ElementorPro\\Modules\\Posts\\Skins\\Skin_Content_Base',
-            ];
-
-            foreach ($requiredTraits as $traitName) {
-                if (!trait_exists($traitName)) {
-                    error_log(
-                        sprintf(
-                            '[PublishPress Authors] Elementor module did not find the trait %s',
-                            $traitName
-                        )
-                    );
-                    $abort = true;
-                }
-            }
-
-            if ($abort) {
-                return false;
-            }
-
-
-            return true;
-        }
-
         /**
          * Initialize the module. Conditionally loads if the module is enabled
          */
         public function init()
         {
-            if (!$this->isElementorInstalled()) {
-                return;
-            }
-
             add_action('elementor/widget/posts/skins_init', [$this, 'add_posts_skins'], 10, 2);
             add_action('elementor/widget/archive-posts/skins_init', [$this, 'add_archive_posts_skins'], 10, 2);
             add_filter( 'elementor/theme/posts_archive/query_posts/query_vars', [$this, 'filter_posts_archive_query_vars'], 15);

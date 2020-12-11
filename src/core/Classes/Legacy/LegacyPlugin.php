@@ -9,6 +9,7 @@
 
 namespace MultipleAuthors\Classes\Legacy;
 
+use MultipleAuthors\Classes\Utils;
 use stdClass;
 
 /**
@@ -148,18 +149,45 @@ class LegacyPlugin
         $defaultDirs = [
             'modules-settings'           => PP_AUTHORS_MODULES_PATH,
             'settings'                   => PP_AUTHORS_MODULES_PATH,
-            'debug'                      => PP_AUTHORS_MODULES_PATH,
             'multiple-authors'           => PP_AUTHORS_MODULES_PATH,
             'default-layouts'            => PP_AUTHORS_MODULES_PATH,
-            'editflow-integration'       => PP_AUTHORS_MODULES_PATH,
-            'byline-migration'           => PP_AUTHORS_MODULES_PATH,
-            'bylines-migration'          => PP_AUTHORS_MODULES_PATH,
-            'yoast-seo-integration'      => PP_AUTHORS_MODULES_PATH,
-            'genesis-integration'        => PP_AUTHORS_MODULES_PATH,
-            'elementor-integration'      => PP_AUTHORS_MODULES_PATH,
-            'divi-integration'           => PP_AUTHORS_MODULES_PATH,
-            'ultimatemember-integration' => PP_AUTHORS_MODULES_PATH,
         ];
+
+        if (Utils::isBylineInstalled()) {
+            $defaultDirs['byline-migration'] = PP_AUTHORS_MODULES_PATH;
+        }
+
+        if (Utils::isBylinesInstalled()) {
+            $defaultDirs['bylines-migration'] = PP_AUTHORS_MODULES_PATH;
+        }
+
+        if (Utils::isDebugActivated()) {
+            $defaultDirs['debug'] = PP_AUTHORS_MODULES_PATH;
+        }
+
+        if (Utils::isDiviInstalled()) {
+            $defaultDirs['divi-integration'] = PP_AUTHORS_MODULES_PATH;
+        }
+
+        if (Utils::isEditflowInstalled()) {
+            $defaultDirs['editflow-integration'] = PP_AUTHORS_MODULES_PATH;
+        }
+
+        if (Utils::isElementorInstalled()) {
+            $defaultDirs['elementor-integration'] = PP_AUTHORS_MODULES_PATH;
+        }
+
+        if (Utils::isGenesisInstalled()) {
+            $defaultDirs['genesis-integration'] = PP_AUTHORS_MODULES_PATH;
+        }
+
+        if (Utils::isUltimateMemberInstalled()) {
+            $defaultDirs['ultimatemember-integration'] = PP_AUTHORS_MODULES_PATH;
+        }
+
+        if (Utils::isCompatibleYoastSeoInstalled()) {
+            $defaultDirs['yoast-seo-integration'] = PP_AUTHORS_MODULES_PATH;
+        }
 
         return apply_filters('ppma_module_dirs', $defaultDirs);
     }

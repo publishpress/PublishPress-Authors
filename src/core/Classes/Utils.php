@@ -555,4 +555,146 @@ class Utils
 
         return $postTypes;
     }
+
+    public static function isBylineInstalled()
+    {
+        return function_exists('byline');
+    }
+
+    public static function isBylinesInstalled()
+    {
+        return defined('BYLINES_VERSION') || class_exists('\\Bylines\\Objects\\Byline');
+    }
+
+    public static function isDebugActivated()
+    {
+        return static::is_valid_page() && (isset($_GET['authors_debug']) && (int)$_GET['authors_debug'] === 1);
+    }
+
+    public static function isDiviInstalled()
+    {
+        if (!function_exists('et_get_theme_version')) {
+            return false;
+        }
+
+        if (!defined('ET_CORE')) {
+            return false;
+        }
+
+        if (version_compare(et_get_theme_version(), '4.4.4', '<')) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static function isEditflowInstalled()
+    {
+        return defined('EDIT_FLOW_VERSION') && defined('EDIT_FLOW_ROOT');
+    }
+
+    public static function isElementorInstalled()
+    {
+        // For now we only integrate with the Pro version because the Free one doesn't have the posts modules.
+
+        if (!defined('ELEMENTOR_PRO_VERSION')) {
+            return false;
+        }
+
+        if (version_compare(ELEMENTOR_PRO_VERSION, '2.9.3', '<')) {
+            return false;
+        }
+
+        $abort = false;
+
+        $requiredClasses = [
+            '\\ElementorPro\\Modules\\Posts\\Skins\\Skin_Base',
+            '\\ElementorPro\\Modules\\Posts\\Skins\\Skin_Cards',
+            '\\ElementorPro\\Modules\\Posts\\Skins\\Skin_Classic',
+            '\\ElementorPro\\Modules\\Posts\\Skins\\Skin_Full_Content',
+            '\\ElementorPro\\Modules\\ThemeBuilder\\Skins\\Posts_Archive_Skin_Cards',
+            '\\ElementorPro\\Modules\\ThemeBuilder\\Skins\\Posts_Archive_Skin_Classic',
+            '\\ElementorPro\\Modules\\ThemeBuilder\\Skins\\Posts_Archive_Skin_Full_Content',
+        ];
+
+        foreach ($requiredClasses as $className) {
+            if (!class_exists($className)) {
+                error_log(
+                    sprintf(
+                        '[PublishPress Authors] Elementor module did not find the class %s',
+                        $className
+                    )
+                );
+                $abort = true;
+            }
+        }
+
+        $requiredTraits = [
+            '\\ElementorPro\\Modules\\ThemeBuilder\\Skins\\Posts_Archive_Skin_Base',
+            '\\ElementorPro\\Modules\\Posts\\Skins\\Skin_Content_Base',
+        ];
+
+        foreach ($requiredTraits as $traitName) {
+            if (!trait_exists($traitName)) {
+                error_log(
+                    sprintf(
+                        '[PublishPress Authors] Elementor module did not find the trait %s',
+                        $traitName
+                    )
+                );
+                $abort = true;
+            }
+        }
+
+        if ($abort) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static function isGenesisInstalled()
+    {
+        return function_exists('genesis_autoload_register');
+    }
+
+    public static function isUltimateMemberInstalled()
+    {
+        return class_exists('UM_Functions');
+    }
+
+    public static function isCompatibleYoastSeoInstalled()
+    {
+        if (!defined('WPSEO_VERSION')) {
+            return false;
+        }
+
+        if (!defined('WPSEO_FILE')) {
+            return false;
+        }
+
+        if (!class_exists('WPSEO_Schema_Context')) {
+            return false;
+        }
+
+        if (version_compare(WPSEO_VERSION, '13.4.1', '<')) {
+            if (!$this->hasNotCompatibleYoastSeoWarningLogTransient()) {
+                error_log(
+                    sprintf(
+                        '[PublishPress Authors] %s %s - %s. %s',
+                        __METHOD__,
+                        'detected a not supported version of the Yoast SEO plugin',
+                        WPSEO_VERSION,
+                        'It requires 13.4.1 or later. Please, update it'
+                    )
+                );
+
+                $this->addNotCompatibleYoastSeoWarningLogTransient();
+            }
+
+            return false;
+        }
+
+        return true;
+    }
 }
