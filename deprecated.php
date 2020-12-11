@@ -28,6 +28,10 @@ class_alias(
     MultipleAuthors\Classes\Authors_Iterator::class,
     PublishPress\Addon\Multiple_authors\Classes\Authors_Iterator::class
 );
+class_alias(
+    \MultipleAuthors\Classes\Authors_Iterator::class,
+    'Multiple_authors_iterator'
+);
 class_alias(MultipleAuthors\Classes\CLI::class, PublishPress\Addon\Multiple_authors\Classes\CLI::class);
 class_alias(
     MultipleAuthors\Classes\Content_Model::class,
@@ -52,13 +56,4 @@ class_alias(
 
 if (!defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION')) {
     define('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION', PP_AUTHORS_VERSION);
-}
-
-if (!class_exists('Multiple_authors_iterator')) {
-    /**
-     * @deprecated 1.0.0 We are keeping for backward compatibility
-     */
-    class Multiple_authors_iterator extends Authors_Iterator
-    {
-    }
 }
