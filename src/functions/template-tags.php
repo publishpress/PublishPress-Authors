@@ -897,12 +897,10 @@ if (!function_exists('authors_render')) {
 }
 
 // Keep backward compatibility with Bylines, legacy versions of PublishPress Authors and CoAuthors
-if (defined('PUBLISHPRESS_AUTHORS_LOAD_COAUTHORS_COMPATIBILITY_LAYER')
-    && PUBLISHPRESS_AUTHORS_LOAD_COAUTHORS_COMPATIBILITY_LAYER) {
+if (PUBLISHPRESS_AUTHORS_LOAD_COAUTHORS_FUNCTIONS) {
     require_once 'coauthors-functions.php';
 }
 
-if (defined('PUBLISHPRESS_AUTHORS_LOAD_BYLINES_COMPATIBILITY_LAYER')
-    && PUBLISHPRESS_AUTHORS_LOAD_BYLINES_COMPATIBILITY_LAYER) {
+if (PUBLISHPRESS_AUTHORS_LOAD_BYLINES_FUNCTIONS) {
     require_once 'bylines-functions.php';
 }

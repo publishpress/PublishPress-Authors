@@ -21,4 +21,16 @@ if (!defined('PP_AUTHORS_VERSION')) {
     define('PP_AUTHORS_URL', plugins_url('/', PP_AUTHORS_BASE_PATH . 'publishpress-authors.php'));
     define('PP_AUTHORS_ASSETS_URL', PP_AUTHORS_URL . 'src/assets/');
     define('PP_AUTHORS_AUTOLOAD_CLASS_NAME', 'ComposerStaticInit92fc51e620da052063312bd38c6157a4');
+
+    if (!defined('PUBLISHPRESS_AUTHORS_LOAD_DEPRECATED_LEGACY_CODE')) {
+        define('PUBLISHPRESS_AUTHORS_LOAD_DEPRECATED_LEGACY_CODE', true);
+    }
+
+    if (!defined('PUBLISHPRESS_AUTHORS_LOAD_COAUTHORS_FUNCTIONS')) {
+        define('PUBLISHPRESS_AUTHORS_LOAD_COAUTHORS_FUNCTIONS', true);
+    }
+
+    if (!defined('PUBLISHPRESS_AUTHORS_LOAD_BYLINES_FUNCTIONS')) {
+        define('PUBLISHPRESS_AUTHORS_LOAD_BYLINES_FUNCTIONS', true);
+    }
 }
