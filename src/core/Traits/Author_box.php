@@ -93,7 +93,7 @@ trait Author_box
         );
 
         if (!function_exists('multiple_authors')) {
-            require_once PP_AUTHORS_BASE_PATH . 'functions/template-tags.php';
+            require_once PP_AUTHORS_BASE_PATH . 'src/functions/template-tags.php';
         }
 
         $css_class = '';
