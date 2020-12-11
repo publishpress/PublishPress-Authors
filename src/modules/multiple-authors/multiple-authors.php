@@ -1776,16 +1776,12 @@ if (!class_exists('MA_Multiple_Authors')) {
                     PP_AUTHORS_VERSION
                 );
 
-                $defaultChunkSize = apply_filters('publishpress_authors_sync_author_slug_chunk_size', 50);
-                $chunkSize = defined('PUBLISHPRESS_AUTHORS_SYNC_AUTHOR_SLUG_CHUNK_SIZE') ?
-                    PUBLISHPRESS_AUTHORS_SYNC_AUTHOR_SLUG_CHUNK_SIZE : $defaultChunkSize;
-
                 wp_localize_script(
                     'publishpress-authors-sync-author-slug',
                     'ppmaSyncAuthorSlug',
                     [
                         'nonce'     => wp_create_nonce('sync_author_slug'),
-                        'chunkSize' => $chunkSize,
+                        'chunkSize' => PUBLISHPRESS_AUTHORS_SYNC_AUTHOR_SLUG_CHUNK_SIZE,
                     ]
                 );
 
