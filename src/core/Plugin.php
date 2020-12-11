@@ -69,9 +69,6 @@ class Plugin
             add_action('init', [$this, 'manage_installation'], 2000);
         }
 
-        // Load admin_init function
-        add_action('admin_init', [$this, 'admin_init']);
-
         add_filter('get_usernumposts', [$this, 'filter_count_user_posts'], 10, 2);
         add_filter('get_authornumposts', [$this, 'filter_count_author_posts'], 10, 2);
 
@@ -151,93 +148,99 @@ class Plugin
         );
 
         // Admin customizations.
-        add_action(
-            'admin_init',
-            ['MultipleAuthors\\Classes\\Post_Editor', 'action_admin_init']
-        );
-        add_action(
-            'admin_init',
-            ['MultipleAuthors\\Classes\\Term_Editor', 'action_admin_init']
-        );
-        add_filter(
-            'manage_edit-author_columns',
-            [
-                'MultipleAuthors\\Classes\\Author_Editor',
-                'filter_manage_edit_author_columns',
-            ]
-        );
-        add_filter(
-            'list_table_primary_column',
-            [
-                'MultipleAuthors\\Classes\\Author_Editor',
-                'filter_list_table_primary_column',
-            ]
-        );
-        add_filter(
-            'manage_author_custom_column',
-            [
-                'MultipleAuthors\\Classes\\Author_Editor',
-                'filter_manage_author_custom_column',
-            ],
-            10,
-            3
-        );
-        add_filter(
-            'user_row_actions',
-            ['MultipleAuthors\\Classes\\Author_Editor', 'filter_user_row_actions'],
-            10,
-            2
-        );
-        add_filter(
-            'author_row_actions',
-            ['MultipleAuthors\\Classes\\Author_Editor', 'filter_author_row_actions'],
-            10,
-            2
-        );
-        add_action(
-            'author_edit_form_fields',
-            ['MultipleAuthors\\Classes\\Author_Editor', 'action_author_edit_form_fields']
-        );
-        add_action(
-            'user_register',
-            ['MultipleAuthors\\Classes\\Author_Editor', 'action_user_register'],
-            20
-        );
-        add_action(
-            'author_term_new_form_tag',
-            ['MultipleAuthors\\Classes\\Author_Editor', 'action_new_form_tag'],
-            10
-        );
-        add_filter(
-            'wp_insert_term_data',
-            ['MultipleAuthors\\Classes\\Author_Editor', 'filter_insert_term_data'],
-            10,
-            3
-        );
-        add_filter(
-            'created_author',
-            ['MultipleAuthors\\Classes\\Author_Editor', 'action_created_author'],
-            10
-        );
-        add_action(
-            'edited_author',
-            ['MultipleAuthors\\Classes\\Author_Editor', 'action_edited_author']
-        );
+        if (is_admin()) {
+            add_action('admin_init', [$this, 'admin_init']);
 
-        add_filter(
-            'bulk_actions-edit-author',
-            ['MultipleAuthors\\Classes\\Author_Editor', 'filter_author_bulk_actions']
-        );
-        add_filter(
-            'handle_bulk_actions-edit-author',
-            ['MultipleAuthors\\Classes\\Author_Editor', 'handle_author_bulk_actions'],
-            10,
-            3
-        );
-        add_action(
-            'admin_notices',
-            ['MultipleAuthors\\Classes\\Author_Editor', 'admin_notices']
-        );
+            add_action(
+                'admin_init',
+                ['MultipleAuthors\\Classes\\Post_Editor', 'action_admin_init']
+            );
+            add_action(
+                'admin_init',
+                ['MultipleAuthors\\Classes\\Term_Editor', 'action_admin_init']
+            );
+            add_filter(
+                'manage_edit-author_columns',
+                [
+                    'MultipleAuthors\\Classes\\Author_Editor',
+                    'filter_manage_edit_author_columns',
+                ]
+            );
+            add_filter(
+                'list_table_primary_column',
+                [
+                    'MultipleAuthors\\Classes\\Author_Editor',
+                    'filter_list_table_primary_column',
+                ]
+            );
+            add_filter(
+                'manage_author_custom_column',
+                [
+                    'MultipleAuthors\\Classes\\Author_Editor',
+                    'filter_manage_author_custom_column',
+                ],
+                10,
+                3
+            );
+            add_filter(
+                'user_row_actions',
+                ['MultipleAuthors\\Classes\\Author_Editor', 'filter_user_row_actions'],
+                10,
+                2
+            );
+            add_filter(
+                'author_row_actions',
+                ['MultipleAuthors\\Classes\\Author_Editor', 'filter_author_row_actions'],
+                10,
+                2
+            );
+            add_action(
+                'author_edit_form_fields',
+                ['MultipleAuthors\\Classes\\Author_Editor', 'action_author_edit_form_fields']
+            );
+            add_action(
+                'user_register',
+                ['MultipleAuthors\\Classes\\Author_Editor', 'action_user_register'],
+                20
+            );
+            add_action(
+                'author_term_new_form_tag',
+                ['MultipleAuthors\\Classes\\Author_Editor', 'action_new_form_tag'],
+                10
+            );
+            add_filter(
+                'wp_insert_term_data',
+                ['MultipleAuthors\\Classes\\Author_Editor', 'filter_insert_term_data'],
+                10,
+                3
+            );
+            add_filter(
+                'created_author',
+                ['MultipleAuthors\\Classes\\Author_Editor', 'action_created_author'],
+                10
+            );
+            add_action(
+                'edited_author',
+                ['MultipleAuthors\\Classes\\Author_Editor', 'action_edited_author']
+            );
+
+            add_filter(
+                'bulk_actions-edit-author',
+                ['MultipleAuthors\\Classes\\Author_Editor', 'filter_author_bulk_actions']
+            );
+            add_filter(
+                'handle_bulk_actions-edit-author',
+                ['MultipleAuthors\\Classes\\Author_Editor', 'handle_author_bulk_actions'],
+                10,
+                3
+            );
+            add_action(
+                'admin_notices',
+                ['MultipleAuthors\\Classes\\Author_Editor', 'admin_notices']
+            );
+
+            add_filter('admin_footer_text', [$this, 'update_footer_admin']);
+        }
 
         // Query modifications for the author page
         add_action(
@@ -358,7 +361,6 @@ class Plugin
             ]
         );
 
-        add_filter('admin_footer_text', [$this, 'update_footer_admin']);
 
         add_shortcode('ppma_test', [$this, 'ppma_test']);
 

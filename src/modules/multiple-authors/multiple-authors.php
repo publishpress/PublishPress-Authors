@@ -141,12 +141,21 @@ if (!class_exists('MA_Multiple_Authors')) {
          */
         public function init()
         {
-            add_action('admin_init', [$this, 'register_settings']);
-            add_action('admin_init', [$this, 'handle_maintenance_task']);
-            add_action('admin_init', [$this, 'migrate_legacy_settings']);
-            add_action('admin_init', [$this, 'dismissCoAuthorsMigrationNotice']);
-            add_action('admin_notices', [$this, 'coauthorsMigrationNotice']);
-            add_action('admin_notices', [$this, 'handle_maintenance_task_notice']);
+            if (is_admin()) {
+                add_action('admin_init', [$this, 'register_settings']);
+                add_action('admin_init', [$this, 'handle_maintenance_task']);
+                add_action('admin_init', [$this, 'migrate_legacy_settings']);
+                add_action('admin_init', [$this, 'dismissCoAuthorsMigrationNotice']);
+                add_action('admin_notices', [$this, 'coauthorsMigrationNotice']);
+                add_action('admin_notices', [$this, 'handle_maintenance_task_notice']);
+
+                // Menu
+                add_action('multiple_authors_admin_menu_page', [$this, 'action_admin_menu_page']);
+                add_action('multiple_authors_admin_submenu', [$this, 'action_admin_submenu'], 50);
+                add_filter('custom_menu_order', [$this, 'filter_custom_menu_order']);
+
+                add_action('admin_enqueue_scripts', [$this, 'admin_enqueue_scripts']);
+            }
 
             add_action('multiple_authors_delete_mapped_authors', [$this, 'action_delete_mapped_authors']);
             add_action('multiple_authors_delete_guest_authors', [$this, 'action_delete_guest_authors']);
@@ -175,13 +184,6 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             add_filter('publishpress_is_author_of_post', [$this, 'filter_is_author_of_post'], 10, 3);
             add_filter('publishpress_post_authors_names', [$this, 'filter_post_authors_names'], 10, 2);
-
-            // Menu
-            add_action('multiple_authors_admin_menu_page', [$this, 'action_admin_menu_page']);
-            add_action('multiple_authors_admin_submenu', [$this, 'action_admin_submenu'], 50);
-            add_filter('custom_menu_order', [$this, 'filter_custom_menu_order']);
-
-            add_action('admin_enqueue_scripts', [$this, 'admin_enqueue_scripts']);
 
             add_action('wp_ajax_migrate_coauthors', [$this, 'migrateCoAuthorsData']);
             add_action('wp_ajax_get_coauthors_migration_data', [$this, 'getCoauthorsMigrationData']);
