@@ -424,12 +424,6 @@ class Plugin
             null,
             plugin_basename(PP_AUTHORS_BASE_PATH) . '/languages/'
         );
-
-        // Maybe automatically apply our template tags
-        if (apply_filters('coauthors_auto_apply_template_tags', false)) {
-            global $multiple_authors_addon_template_filters;
-            $multiple_authors_addon_template_filters = new Multiple_Authors_Template_Filters();
-        }
     }
 
     /**
