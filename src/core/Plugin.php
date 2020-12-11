@@ -81,20 +81,6 @@ class Plugin
         // Restricts WordPress from blowing away term order on bulk edit
         add_filter('wp_get_object_terms', [$this, 'filter_wp_get_object_terms'], 10, 4);
 
-        // Support for Edit Flow's calendar and story budget
-        add_filter(
-            'ef_calendar_item_information_fields',
-            [$this, 'filter_ef_calendar_item_information_fields'],
-            10,
-            2
-        );
-        add_filter(
-            'ef_story_budget_term_column_value',
-            [$this, 'filter_ef_story_budget_term_column_value'],
-            10,
-            3
-        );
-
         // Support Jetpack Open Graph Tags
         add_filter('jetpack_open_graph_tags', [$this, 'filter_jetpack_open_graph_tags'], 10, 2);
 

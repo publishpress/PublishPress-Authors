@@ -151,6 +151,7 @@ class LegacyPlugin
             'debug'                      => PP_AUTHORS_MODULES_PATH,
             'multiple-authors'           => PP_AUTHORS_MODULES_PATH,
             'default-layouts'            => PP_AUTHORS_MODULES_PATH,
+            'editflow-integration'       => PP_AUTHORS_MODULES_PATH,
             'byline-migration'           => PP_AUTHORS_MODULES_PATH,
             'bylines-migration'          => PP_AUTHORS_MODULES_PATH,
             'yoast-seo-integration'      => PP_AUTHORS_MODULES_PATH,
