@@ -361,10 +361,14 @@ class Plugin
             ]
         );
 
-
-        add_shortcode('ppma_test', [$this, 'ppma_test']);
-
         add_filter('cme_multiple_authors_capabilities', [$this, 'filterCMECapabilities'], 20);
+
+        $this->addTestShortcode();
+    }
+
+    private function addTestShortcode()
+    {
+        add_shortcode('ppma_test', [$this, 'ppma_test']);
     }
 
     public function ppma_test()
