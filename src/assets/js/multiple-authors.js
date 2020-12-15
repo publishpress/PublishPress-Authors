@@ -102,7 +102,7 @@ jQuery(document).ready(function($) {
           }
         }
       });
-      authorsSearch.on("select2:select", function(e) {
+      authorsSearch.on("ppma_select2:select", function(e) {
         var template = wp.template("authors-author-partial");
         $(".authors-list").append(
           window.htmlEnDeCode.htmlDecode(template(e.params.data))
@@ -112,7 +112,7 @@ jQuery(document).ready(function($) {
     });
   }
 
-  if ($("body").hasClass("post-php")) {
+  if ($("body").hasClass("post-php") || $("body").hasClass("post-new-php") ) {
     authorsSelect2($(".authors-select2.authors-search"));
     sortedAuthorsList($(".authors-current-user-can-assign"));
   }

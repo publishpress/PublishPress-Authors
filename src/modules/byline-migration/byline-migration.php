@@ -121,7 +121,7 @@ if (!class_exists('MA_Byline_Migration')) {
         {
             wp_enqueue_script(
                 'publishpress-authors-byline-migration',
-                PP_AUTHORS_URL . '/src/assets/js/byline-migration.min.js',
+                PP_AUTHORS_URL . 'src/assets/js/byline-migration.min.js',
                 [
                     'react',
                     'react-dom',
@@ -145,7 +145,7 @@ if (!class_exists('MA_Byline_Migration')) {
 
             wp_enqueue_style(
                 'publishpress-authors-byline-migration-css',
-                PP_AUTHORS_URL . '/src/modules/byline-migration/assets/css/byline-migration.css',
+                PP_AUTHORS_URL . 'src/modules/byline-migration/assets/css/byline-migration.css',
                 false,
                 PP_AUTHORS_VERSION
             );

@@ -175,12 +175,10 @@ if (!class_exists('MA_Modules_Settings')) {
                 $tabs = apply_filters('publishpress_multiple_authors_settings_tabs', []);
                 if (!empty($tabs)) {
                     echo '<ul id="publishpress-authors-settings-tabs" class="nav-tab-wrapper">';
-                    $i = 0;
                     foreach ($tabs as $tabLink => $tabLabel) {
-                        echo '<li class="nav-tab ' . ($i === 0 ? 'nav-tab-active' : '') . '">';
+                        echo '<li class="nav-tab ' . ($tabLink === '#ppma-tab-general' ? 'nav-tab-active' : '') . '">';
                         echo '<a href="' . $tabLink . '">' . $tabLabel . '</a>';
                         echo '</li>';
-                        $i++;
                     }
                     echo '</ul>';
                 }

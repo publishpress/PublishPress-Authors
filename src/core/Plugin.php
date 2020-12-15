@@ -1281,9 +1281,10 @@ class Plugin
             );
         }
 
+        // Fix compatibility issue with the WS Form Plugin.
         wp_enqueue_script(
             'multiple-authors-select2',
-            PP_AUTHORS_ASSETS_URL . 'lib/select2/js/select2.min.js',
+            PP_AUTHORS_ASSETS_URL . 'lib/select2/js/select2.full.min.js',
             ['jquery'],
             PP_AUTHORS_VERSION
         );
