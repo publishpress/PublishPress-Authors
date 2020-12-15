@@ -165,6 +165,36 @@ class Utils
         wp_set_object_terms($postId, $authors, 'author');
     }
 
+    public static function detect_author_slug_mismatch() {
+        global $wpdb;
+
+        $results = $wpdb->get_results(
+            "SELECT t.term_id, u.user_nicename
+                FROM $wpdb->terms AS t 
+                INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id
+                INNER JOIN $wpdb->termmeta AS tm ON tm.term_id = tt.term_id
+                INNER JOIN $wpdb->users AS u ON u.ID = tm.meta_value
+                WHERE
+                    tt.taxonomy = 'author'
+                    AND tm.meta_key = 'user_id'
+                    AND u.user_nicename != t.slug"
+        );
+
+        return $results;
+    }
+
+    public static function sync_author_slug_to_user_nicename($authors = false) {
+        global $wpdb;
+
+        if (false === $authors) {
+            $authors = static::detect_author_slug_mismatch();
+        }
+
+        foreach($authors as $row) {
+            $wpdb->update($wpdb->terms, ['slug' => $row->user_nicename], ['term_id' => $row->term_id]);
+        }
+    }
+
     /**
      * @param int $postId ID for the post to modify.
      * @param array $authors Bylines to set on the post.
@@ -174,33 +204,52 @@ class Utils
         $functionSetPostAuthor = function($postId, $authorId) {
             global $wpdb;
 
-            $wpdb->query(
-                $wpdb->prepare(
-                    "UPDATE {$wpdb->posts} SET post_author = %d WHERE ID = %d",
-                    $authorId,
-                    $postId
-                )
+            // Avoid to corrupt the post_author with an empty value.
+            if (empty((int)$authorId)) {
+                return false;
+            }
+
+            $wpdb->update(
+                $wpdb->posts,
+                [
+                    'post_author' => (int)$authorId,
+                ],
+                [
+                    'ID' => $postId,
+                ]
             );
+            clean_post_cache($postId);
+
+            return true;
         };
 
-        $postAuthorWasChanged = false;
+        $postAuthorHasChanged = false;
         if (!empty($authors)) {
             foreach ($authors as $index => $author) {
-                if (!is_object($author) || is_wp_error($author) || $author->is_guest() || empty($author)) {
-                    if (method_exists($author, 'is_guest') && !$author->is_guest()) {
+                $isGuest = (method_exists($author, 'is_guest') && $author->is_guest());
+
+                if (
+                    !is_object($author)
+                    || is_wp_error($author)
+                    || $isGuest
+                    || empty($author)
+                ) {
+                    if (!$isGuest) {
                         unset($authors[$index]);
                     }
 
                     continue;
                 }
 
-                $functionSetPostAuthor($postId, $author->user_id);
-                $postAuthorWasChanged = true;
+                if ($functionSetPostAuthor($postId, $author->user_id)) {
+                    $postAuthorHasChanged = true;
+                }
+
                 break;
             }
         }
 
-        if (!$postAuthorWasChanged) {
+        if (!$postAuthorHasChanged) {
             // Check if the post has any author set. If not an existent author, create one and set the author term.
             $post = get_post($postId);
 
