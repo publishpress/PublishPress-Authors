@@ -141,14 +141,23 @@ if (!class_exists('MA_Multiple_Authors')) {
          */
         public function init()
         {
-            add_action('admin_init', [$this, 'register_settings']);
-            add_action('admin_init', [$this, 'handle_maintenance_task']);
-            add_action('admin_init', [$this, 'migrate_legacy_settings']);
-            add_action('admin_init', [$this, 'dismissCoAuthorsMigrationNotice']);
-            add_action('admin_init', [$this, 'dismissPermissionsSyncNotice']);
-            add_action('admin_notices', [$this, 'coauthorsMigrationNotice']);
-            add_action('admin_notices', [$this, 'permissionsSyncNotice']);
-            add_action('admin_notices', [$this, 'handle_maintenance_task_notice']);
+            if (is_admin()) {
+                add_action('admin_init', [$this, 'register_settings']);
+                add_action('admin_init', [$this, 'handle_maintenance_task']);
+                add_action('admin_init', [$this, 'migrate_legacy_settings']);
+                add_action('admin_init', [$this, 'dismissCoAuthorsMigrationNotice']);
+                add_action('admin_init', [$this, 'dismissPermissionsSyncNotice']);
+                add_action('admin_notices', [$this, 'coauthorsMigrationNotice']);
+                add_action('admin_notices', [$this, 'permissionsSyncNotice']);
+                add_action('admin_notices', [$this, 'handle_maintenance_task_notice']);
+
+                // Menu
+                add_action('multiple_authors_admin_menu_page', [$this, 'action_admin_menu_page']);
+                add_action('multiple_authors_admin_submenu', [$this, 'action_admin_submenu'], 50);
+                add_filter('custom_menu_order', [$this, 'filter_custom_menu_order']);
+
+                add_action('admin_enqueue_scripts', [$this, 'admin_enqueue_scripts']);
+            }
 
             add_action('multiple_authors_delete_mapped_authors', [$this, 'action_delete_mapped_authors']);
             add_action('multiple_authors_delete_guest_authors', [$this, 'action_delete_guest_authors']);
@@ -177,13 +186,6 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             add_filter('publishpress_is_author_of_post', [$this, 'filter_is_author_of_post'], 10, 3);
             add_filter('publishpress_post_authors_names', [$this, 'filter_post_authors_names'], 10, 2);
-
-            // Menu
-            add_action('multiple_authors_admin_menu_page', [$this, 'action_admin_menu_page']);
-            add_action('multiple_authors_admin_submenu', [$this, 'action_admin_submenu'], 50);
-            add_filter('custom_menu_order', [$this, 'filter_custom_menu_order']);
-
-            add_action('admin_enqueue_scripts', [$this, 'admin_enqueue_scripts']);
 
             add_action('wp_ajax_migrate_coauthors', [$this, 'migrateCoAuthorsData']);
             add_action('wp_ajax_get_coauthors_migration_data', [$this, 'getCoauthorsMigrationData']);
@@ -1755,16 +1757,12 @@ if (!class_exists('MA_Multiple_Authors')) {
                     PP_AUTHORS_VERSION
                 );
 
-                $defaultChunkSize = apply_filters('publishpress_authors_sync_post_author_chunk_size', 10);
-                $chunkSize = defined('PUBLISHPRESS_AUTHORS_SYNC_POST_AUTHOR_CHUNK_SIZE') ?
-                    PUBLISHPRESS_AUTHORS_SYNC_POST_AUTHOR_CHUNK_SIZE : $defaultChunkSize;
-
                 wp_localize_script(
                     'publishpress-authors-sync-post-author',
                     'ppmaSyncPostAuthor',
                     [
                         'nonce'     => wp_create_nonce('sync_post_author'),
-                        'chunkSize' => $chunkSize,
+                        'chunkSize' => PUBLISHPRESS_AUTHORS_SYNC_POST_AUTHOR_CHUNK_SIZE,
                     ]
                 );
 
@@ -1783,16 +1781,12 @@ if (!class_exists('MA_Multiple_Authors')) {
                     PP_AUTHORS_VERSION
                 );
 
-                $defaultChunkSize = apply_filters('publishpress_authors_sync_author_slug_chunk_size', 50);
-                $chunkSize = defined('PUBLISHPRESS_AUTHORS_SYNC_AUTHOR_SLUG_CHUNK_SIZE') ?
-                    PUBLISHPRESS_AUTHORS_SYNC_AUTHOR_SLUG_CHUNK_SIZE : $defaultChunkSize;
-
                 wp_localize_script(
                     'publishpress-authors-sync-author-slug',
                     'ppmaSyncAuthorSlug',
                     [
                         'nonce'     => wp_create_nonce('sync_author_slug'),
-                        'chunkSize' => $chunkSize,
+                        'chunkSize' => PUBLISHPRESS_AUTHORS_SYNC_AUTHOR_SLUG_CHUNK_SIZE,
                     ]
                 );
 

@@ -139,3 +139,52 @@ if (!function_exists('coauthors_get_avatar')) {
         return multiple_authors_get_avatar($coauthor, $size, $default, $alt);
     }
 }
+
+if (!function_exists('cap_filter_comment_moderation_email_recipients')) {
+    /**
+     * Filter array of moderation notification email addresses
+     *
+     * @param array $recipients
+     * @param int $comment_id
+     *
+     * @return array
+     */
+    function cap_filter_comment_moderation_email_recipients($recipients, $comment_id)
+    {
+        $comment = get_comment($comment_id);
+        $post_id = $comment->comment_post_ID;
+
+        if (isset($post_id)) {
+            $coauthors        = get_multiple_authors($post_id);
+            $extra_recipients = [];
+            foreach ($coauthors as $user) {
+                if (!empty($user->user_email)) {
+                    $extra_recipients[] = $user->user_email;
+                }
+            }
+
+            return array_unique(array_merge($recipients, $extra_recipients));
+        }
+
+        return $recipients;
+    }
+}
+
+if (!function_exists('cap_get_coauthor_terms_for_post')) {
+    /**
+     * Retrieve a list of coauthor terms for a single post.
+     *
+     * Grabs a correctly ordered list of authors for a single post, appropriately
+     * cached because it requires `wp_get_object_terms()` to succeed.
+     *
+     * @param int $post_id ID of the post for which to retrieve authors.
+     *
+     * @return array Array of coauthor WP_Term objects
+     */
+    function cap_get_coauthor_terms_for_post($post_id)
+    {
+        global $multiple_authors_addon;
+
+        return $multiple_authors_addon->get_coauthor_terms_for_post($post_id);
+    }
+}

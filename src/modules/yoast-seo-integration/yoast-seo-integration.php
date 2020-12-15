@@ -85,53 +85,11 @@ if (!class_exists('MA_Yoast_Seo_Integration')) {
         }
 
         /**
-         *
-         */
-        private function isCompatibleYoastSeoInstalled()
-        {
-            if (!defined('WPSEO_VERSION')) {
-                return false;
-            }
-
-            if (!defined('WPSEO_FILE')) {
-                return false;
-            }
-
-            if (!class_exists('WPSEO_Schema_Context')) {
-                return false;
-            }
-
-            if (version_compare(WPSEO_VERSION, '13.4.1', '<')) {
-                if (!$this->hasNotCompatibleYoastSeoWarningLogTransient()) {
-                    error_log(
-                        sprintf(
-                            '[PublishPress Authors] %s %s - %s. %s',
-                            __METHOD__,
-                            'detected a not supported version of the Yoast SEO plugin',
-                            WPSEO_VERSION,
-                            'It requires 13.4.1 or later. Please, update it'
-                        )
-                    );
-
-                    $this->addNotCompatibleYoastSeoWarningLogTransient();
-                }
-
-                return false;
-            }
-
-            return true;
-        }
-
-        /**
          * Initialize the module. Conditionally loads if the module is enabled
          */
         public function init()
         {
             try {
-                if (!$this->isCompatibleYoastSeoInstalled()) {
-                    return;
-                }
-
                 $schemaFacade = new SchemaFacade();
                 $schemaFacade->addSupportForMultipleAuthors();
 
@@ -164,7 +122,6 @@ if (!class_exists('MA_Yoast_Seo_Integration')) {
                     sprintf('[PublishPress Authors] Method %s caught the exception: %s', __METHOD__, $e->getMessage())
                 );
             }
-
 
             return $replacements;
         }

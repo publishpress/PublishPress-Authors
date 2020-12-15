@@ -95,14 +95,6 @@ if (!class_exists('MA_Bylines_Migration')) {
         }
 
         /**
-         *
-         */
-        private function isBylineInstalled()
-        {
-            return defined('BYLINES_VERSION') || class_exists('\\Bylines\\Objects\\Byline');
-        }
-
-        /**
          * @return array
          */
         private function getNotMigratedPostsId()
@@ -117,14 +109,14 @@ if (!class_exists('MA_Bylines_Migration')) {
          */
         public function init()
         {
-            if ($this->isBylineInstalled()) {
+            if (is_admin()) {
                 add_filter('pp_authors_maintenance_actions', [$this, 'registerMaintenanceAction']);
                 add_action('admin_enqueue_scripts', [$this, 'adminEnqueueScripts']);
-
-                add_action('wp_ajax_migrate_bylines', [$this, 'migrateBylinesData']);
-                add_action('wp_ajax_get_bylines_migration_data', [$this, 'getBylinesMigrationData']);
-                add_action('wp_ajax_deactivate_bylines', [$this, 'deactivateBylines']);
             }
+
+            add_action('wp_ajax_migrate_bylines', [$this, 'migrateBylinesData']);
+            add_action('wp_ajax_get_bylines_migration_data', [$this, 'getBylinesMigrationData']);
+            add_action('wp_ajax_deactivate_bylines', [$this, 'deactivateBylines']);
         }
 
         public function adminEnqueueScripts()

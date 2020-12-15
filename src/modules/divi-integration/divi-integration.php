@@ -75,47 +75,11 @@ if (!class_exists('MA_Divi_Integration')) {
         }
 
         /**
-         *
-         */
-        private function isCompatibleDiviInstalled()
-        {
-            if (!function_exists('et_get_theme_version')) {
-                return false;
-            }
-
-            if (!defined('ET_CORE')) {
-                return false;
-            }
-
-            $diviVersion = et_get_theme_version();
-            $minVersion  = '4.4.4';
-
-            if (version_compare($diviVersion, $minVersion, '<')) {
-                error_log(
-                    sprintf(
-                        '[PublishPress Authors] %s detected a not supported version of the DIVI Theme Builder installed: %s. It requires %s or later. Please, update it',
-                        __METHOD__,
-                        $diviVersion,
-                        $minVersion
-                    )
-                );
-
-                return false;
-            }
-
-            return true;
-        }
-
-        /**
          * Initialize the module. Conditionally loads if the module is enabled
          */
         public function init()
         {
             try {
-                if (!$this->isCompatibleDiviInstalled()) {
-                    return;
-                }
-
                 add_filter('et_builder_resolve_dynamic_content', [$this, 'resolveDefaultDynamicContent'], 15, 6);
             } catch (Exception $e) {
                 error_log(
