@@ -83,16 +83,23 @@ if (!function_exists('get_multiple_authors')) {
                     return [];
                 }
 
-                $terms = $wpdb->get_results(
-                    $wpdb->prepare(
-                        "SELECT tt.term_id
-                            FROM {$wpdb->term_relationships} AS tr
-                            INNER JOIN {$wpdb->term_taxonomy} AS tt ON (tr.`term_taxonomy_id` = tt.`term_taxonomy_id`)
-                            WHERE tr.object_id = %d AND tt.taxonomy = 'author'
-                            ORDER BY tr.term_order",
-                        $postId
-                    )
-                );
+                $terms = wp_cache_get($postId, 'get_multiple_authors:terms');
+
+                if (false === $terms) {
+                    $terms = $wpdb->get_results(
+                        $wpdb->prepare(
+                            "SELECT tt.term_id
+                                FROM {$wpdb->term_relationships} AS tr
+                                INNER JOIN {$wpdb->term_taxonomy} AS tt ON (tr.`term_taxonomy_id` = tt.`term_taxonomy_id`)
+                                WHERE tr.object_id = %d AND tt.taxonomy = 'author'
+                                ORDER BY tr.term_order",
+                            $postId
+                        )
+                    );
+
+                    wp_cache_set($postId, $terms, 'get_multiple_authors:terms');
+                }
+
             } else {
                 // Get the term related to the current author from the archive page.
                 $terms = [];
