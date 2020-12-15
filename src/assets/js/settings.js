@@ -20,7 +20,7 @@ jQuery(document).ready(function ($) {
        $('#publishpress-authors-settings-tabs a[href="#' + ppmaTab + '"]').click();
     }
 
-    $hiddenFields = $('input[id^="ppma-tab-"]');
+    var $hiddenFields = $('input[id^="ppma-tab-"]');
 
     $hiddenFields.each(function () {
         var $this = $(this);
