@@ -2132,8 +2132,6 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             set_transient('publishpress_authors_sync_author_slug_ids', $termToSync, 24 * 60 * 60);
 
-            update_option('publishpress_multiple_authors_usernicename_sync', 1);
-
             wp_send_json(
                 [
                     'success'       => true,
@@ -2198,6 +2196,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             delete_transient('publishpress_authors_sync_author_slug_ids');
+
+            update_option('publishpress_multiple_authors_usernicename_sync', 1);
 
             wp_send_json(
                 [
@@ -2291,7 +2291,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 return;
             }
 
-            // This request is launching Sync script directly 
+            // This request is launching Sync script directly
             if (!empty($_REQUEST['ppma_maint']) && ('ppma_maint=sync-user-login' == $_REQUEST['ppma_maint'])) {
                 return;
             }
