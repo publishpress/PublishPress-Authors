@@ -166,7 +166,7 @@ class WP_Cli extends WP_CLI_Command
                 $existing_coauthors = get_multiple_authors($single_post->ID);
                 $already_associated = false;
                 foreach ($existing_coauthors as $existing_coauthor) {
-                    if ($original_author == $existing_coauthor->user_login) {
+                    if ($original_author == $existing_coauthor->user_nicename) {
                         $already_associated = true;
                     }
                 }
@@ -179,9 +179,9 @@ class WP_Cli extends WP_CLI_Command
                 }
 
                 // Make sure this original author exists as a co-author
-                if ((!$coauthor = $multiple_authors_addon->get_coauthor_by('user_login', $original_author)) &&
+                if ((!$coauthor = $multiple_authors_addon->get_coauthor_by('user_nicename', $original_author)) &&
                     (!$coauthor = $multiple_authors_addon->get_coauthor_by(
-                        'user_login',
+                        'user_nicename',
                         sanitize_title($original_author)
                     ))) {
                     $posts_missing_coauthor++;

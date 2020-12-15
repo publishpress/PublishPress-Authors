@@ -17,7 +17,9 @@ namespace MultipleAuthors\Classes;
  */
 abstract class Author_Utils
 {
-    public static function get_author_term_id_by_email($emailAddress)
+    private static $authorTermByEmail = [];
+
+    public static function get_author_term_id_by_email($emailAddress, $ignoreCache = false)
     {
         global $wpdb;
 
@@ -25,25 +27,35 @@ abstract class Author_Utils
             return false;
         }
 
-        // Get all termmeta with that value, for author terms
-        $terms = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT tm.term_id
-                        FROM {$wpdb->termmeta} as tm 
-                        INNER JOIN {$wpdb->term_taxonomy} as tt ON (tm.term_id = tt.term_id)
-                        WHERE tm.meta_value = %s AND
-                        tt.taxonomy = 'author'",
-                sanitize_email($emailAddress)
-            )
-        );
+        $emailAddress = sanitize_email($emailAddress);
 
-        if (empty($terms) || is_wp_error($terms)) {
+        if (empty($emailAddress)) {
             return false;
         }
 
-        $firstTerm = $terms[0];
+        if (!isset(static::$authorTermByEmail[$emailAddress]) || $ignoreCache) {
+            // Get all termmeta with that value, for author terms
+            $terms = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT tm.term_id
+                            FROM {$wpdb->termmeta} as tm 
+                            INNER JOIN {$wpdb->term_taxonomy} as tt ON (tm.term_id = tt.term_id)
+                            WHERE tm.meta_value = %s AND
+                            tt.taxonomy = 'author'",
+                    $emailAddress
+                )
+            );
 
-        return $firstTerm->term_id;
+            if (empty($terms) || is_wp_error($terms)) {
+                return false;
+            }
+
+            $firstTerm = $terms[0];
+
+            static::$authorTermByEmail[$emailAddress] = $firstTerm->term_id;
+        }
+
+        return static::$authorTermByEmail[$emailAddress];
     }
 
     public static function author_has_custom_avatar($termId)

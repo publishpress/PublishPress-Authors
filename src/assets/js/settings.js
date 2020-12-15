@@ -1,17 +1,5 @@
-jQuery(function ($) {
+jQuery(document).ready(function ($) {
     // Tabs
-    $hiddenFields = $('input[id^="ppma-tab-"]');
-
-    $hiddenFields.each(function () {
-        var $this = $(this);
-        var $wrapper = $this.next('table');
-        $wrapper.attr('id', $this.attr('id'));
-        $this.remove();
-
-        if ($wrapper.attr('id') !== 'ppma-tab-general') {
-            $wrapper.hide();
-        }
-    });
 
     var $tabsWrapper = $('#publishpress-authors-settings-tabs');
     $tabsWrapper.find('li').click(function (e) {
@@ -24,6 +12,45 @@ jQuery(function ($) {
         $('table[id^="ppma-"]').hide();
         $(panel).show();
     });
+
+    var ppmaTab = 'ppma-tab-general';
+
+    if (typeof ppmaSettings != 'undefined' && typeof ppmaSettings.tab != 'undefined') {
+       ppmaTab = ppmaSettings.tab;
+       $('#publishpress-authors-settings-tabs a[href="#' + ppmaTab + '"]').click();
+    }
+
+    $hiddenFields = $('input[id^="ppma-tab-"]');
+
+    $hiddenFields.each(function () {
+        var $this = $(this);
+        var $wrapper = $this.next('table');
+        $wrapper.attr('id', $this.attr('id'));
+        $this.remove();
+
+        if ($wrapper.attr('id') !== ppmaTab) {
+            $wrapper.hide();
+        }
+    });
+
+    if ('ppma-tab-maintenance' == ppmaTab) {
+        if (typeof ppmaSettings.runScript != 'undefined') {
+            switch (ppmaSettings.runScript) {
+                case 'sync-user-login':
+                    var intSyncUserLogin = setInterval( function() {
+                        if ($('#publishpress-authors-sync-author-slug div input').length) {
+                            $('#publishpress-authors-sync-author-slug div input').click();
+
+                            clearInterval(intSyncUserLogin);
+                        }
+                    }, 100);
+
+                    break;
+
+                default:
+            }
+        }
+    }
 
     $('.default-authors-select2').ppma_select2({
         placeholder: $(this).data("placeholder"),
