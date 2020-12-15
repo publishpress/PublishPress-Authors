@@ -373,8 +373,8 @@ class Utils
     {
         $legacyPlugin = Factory::getLegacyPlugin();
 
-        if (self::$enabledPostTypes === null) {
-            self::$enabledPostTypes = Util::get_post_types_for_module($legacyPlugin->multiple_authors->module);
+        if (empty(self::$enabledPostTypes)) {
+            self::$enabledPostTypes = Util::get_post_types_for_module($legacyPlugin->modules->multiple_authors);
         }
 
         return self::$enabledPostTypes;
@@ -568,7 +568,7 @@ class Utils
 
     public static function isDebugActivated()
     {
-        return static::is_valid_page() && (isset($_GET['authors_debug']) && (int)$_GET['authors_debug'] === 1);
+        return isset($_GET['authors_debug']) && (int)$_GET['authors_debug'] === 1;
     }
 
     public static function isDiviInstalled()

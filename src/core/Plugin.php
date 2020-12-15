@@ -714,7 +714,7 @@ class Plugin
      */
     public function _action_quick_edit_custom_box($column_name, $post_type)
     {
-        if ('author' != $column_name || !Utils::is_post_type_enabled(
+        if ('authors' != $column_name || !Utils::is_post_type_enabled(
                 $post_type
             ) || !Utils::current_user_can_set_authors()) {
             return;
