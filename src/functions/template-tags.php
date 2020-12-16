@@ -30,11 +30,7 @@ if (!function_exists('get_multiple_authors')) {
      */
     function get_multiple_authors($post = 0, $filter_the_author = true, $archive = false, $ignoreCache = false)
     {
-        global $multipleAuthorsForPost, $wpdb;
-
-        if (empty($multipleAuthorsForPost)) {
-            $multipleAuthorsForPost = [];
-        }
+        global $wpdb;
 
         if (is_object($post)) {
             $post = $post->ID;
@@ -48,26 +44,19 @@ if (!function_exists('get_multiple_authors')) {
 
         $postId = (int)$post;
 
-        $cacheKey = [
-            'post-id'           => $postId,
-            'filter-the-author' => $filter_the_author ? 1 : 0,
-            'archive'           => $archive ? 1 : 0,
-            // Needed for the author page (archive)
-            'author_name'       => '',
-        ];
+
+        $cacheKey = $postId . ':' . ($filter_the_author ? 1 : 0) . ':' . ($archive ? 1 : 0);
 
         $authorName = '';
         if ($archive) {
             $authorName = get_query_var('author_name');
 
-            $cacheKey['author_name'] = $authorName;
+            $cacheKey .= ':' . $authorName;
         }
 
-        $cacheKey = md5(json_encode($cacheKey));
+        $authors = wp_cache_get($cacheKey, 'get_multiple_authors:authors');
 
-        $authors = [];
-
-        if (empty($multipleAuthorsForPost) || !isset($multipleAuthorsForPost[$cacheKey]) || $ignoreCache) {
+        if (false === $authors || $ignoreCache) {
             $terms = [];
 
             if (!$archive) {
@@ -150,10 +139,10 @@ if (!function_exists('get_multiple_authors')) {
                 }
             }
 
-            $multipleAuthorsForPost[$cacheKey] = $authors;
+            wp_cache_set($cacheKey, $authors, 'get_multiple_authors:authors');
         }
 
-        return isset($multipleAuthorsForPost[$cacheKey]) ? $multipleAuthorsForPost[$cacheKey] : [];
+        return empty($authors) ? [] : $authors;
     }
 }
 
