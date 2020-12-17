@@ -54,7 +54,7 @@ class Post_Editor
             <fieldset class="inline-edit-col-left">
                 <div class="inline-edit-col">
                     <label style="display: inline-flex">
-                        <span class="title">Post Author</span>
+                        <span class="title">Authors</span>
                     </label>
                     <?php
                     echo self::get_rendered_authors_selection([], false);
