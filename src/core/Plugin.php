@@ -65,7 +65,9 @@ class Plugin
             ['MultipleAuthors\\Classes\\Installer', 'upgrade']
         );
 
-        add_action('init', [$this, 'manage_installation'], 2000);
+        if (!defined('PUBLISHPRESS_AUTHORS_BYPASS_INSTALLER') || !PUBLISHPRESS_AUTHORS_BYPASS_INSTALLER) {
+            add_action('init', [$this, 'manage_installation'], 2000);
+        }
 
         // Load admin_init function
         add_action('admin_init', [$this, 'admin_init']);
@@ -1347,6 +1349,10 @@ class Plugin
             ),
             'confirm_sync_post_author'      => __(
                 'Are you sure you want to update the author column for all the posts?',
+                'publishpress-authors'
+            ),
+            'confirm_sync_author_slug'      => __(
+                'Are you sure you want to update the author slug for all the users?',
                 'publishpress-authors'
             ),
             'confirm_create_role_authors'   => __(

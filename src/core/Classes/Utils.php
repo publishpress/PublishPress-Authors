@@ -153,13 +153,46 @@ class Utils
      * @param int $postId ID for the post to modify.
      * @param array $authors Bylines to set on the post.
      */
-    public static function set_post_authors($postId, $authors)
+    public static function set_post_authors($postId, $authors, $syncPostAuthor = true)
     {
         static::set_post_authors_name_meta($postId, $authors);
-        static::sync_post_author_column($postId, $authors);
+
+        if ($syncPostAuthor) {
+            static::sync_post_author_column($postId, $authors);
+        }
 
         $authors = wp_list_pluck($authors, 'term_id');
         wp_set_object_terms($postId, $authors, 'author');
+    }
+
+    public static function detect_author_slug_mismatch() {
+        global $wpdb;
+
+        $results = $wpdb->get_results(
+            "SELECT t.term_id, u.user_nicename
+                FROM $wpdb->terms AS t 
+                INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id
+                INNER JOIN $wpdb->termmeta AS tm ON tm.term_id = tt.term_id
+                INNER JOIN $wpdb->users AS u ON u.ID = tm.meta_value
+                WHERE
+                    tt.taxonomy = 'author'
+                    AND tm.meta_key = 'user_id'
+                    AND u.user_nicename != t.slug"
+        );
+
+        return $results;
+    }
+
+    public static function sync_author_slug_to_user_nicename($authors = false) {
+        global $wpdb;
+
+        if (false === $authors) {
+            $authors = static::detect_author_slug_mismatch();
+        }
+
+        foreach($authors as $row) {
+            $wpdb->update($wpdb->terms, ['slug' => $row->user_nicename], ['term_id' => $row->term_id]);
+        }
     }
 
     /**
@@ -171,28 +204,68 @@ class Utils
         $functionSetPostAuthor = function($postId, $authorId) {
             global $wpdb;
 
-            $wpdb->query(
-                $wpdb->prepare(
-                    "UPDATE {$wpdb->posts} SET post_author = %d WHERE ID = %d",
-                    $authorId,
-                    $postId
-                )
-            );
-        };
-
-        $postAuthorWasChanged = false;
-        foreach ($authors as $author) {
-            if (!is_object($author) || $author->is_guest() || empty($author)) {
-                continue;
+            // Avoid to corrupt the post_author with an empty value.
+            if (empty((int)$authorId)) {
+                return false;
             }
 
-            $functionSetPostAuthor($postId, $author->user_id);
-            $postAuthorWasChanged = true;
-            break;
+            $wpdb->update(
+                $wpdb->posts,
+                [
+                    'post_author' => (int)$authorId,
+                ],
+                [
+                    'ID' => $postId,
+                ]
+            );
+            clean_post_cache($postId);
+
+            return true;
+        };
+
+        $postAuthorHasChanged = false;
+        if (!empty($authors)) {
+            foreach ($authors as $index => $author) {
+                $isGuest = (method_exists($author, 'is_guest') && $author->is_guest());
+
+                if (
+                    !is_object($author)
+                    || is_wp_error($author)
+                    || $isGuest
+                    || empty($author)
+                ) {
+                    if (!$isGuest) {
+                        unset($authors[$index]);
+                    }
+
+                    continue;
+                }
+
+                if ($functionSetPostAuthor($postId, $author->user_id)) {
+                    $postAuthorHasChanged = true;
+                }
+
+                break;
+            }
         }
 
-        if (!$postAuthorWasChanged) {
-            $functionSetPostAuthor($postId, get_current_user_id());
+        if (!$postAuthorHasChanged) {
+            // Check if the post has any author set. If not an existent author, create one and set the author term.
+            $post = get_post($postId);
+
+            if (empty($authors) && !empty($post->post_author)) {
+                $author = Author::get_by_user_id($post->post_author);
+
+                if (empty($author)) {
+                    $author = Author::create_from_user($post->post_author);
+                }
+
+                if (is_object($author) && !is_wp_error($author)) {
+                    Utils::set_post_authors($postId, [$author], false);
+                }
+            } else {
+                $functionSetPostAuthor($postId, get_current_user_id());
+            }
         }
     }
 
