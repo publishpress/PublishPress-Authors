@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
 Tested up to: 5.6
-Stable tag: 3.9.0
+Stable tag: 3.10.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,12 +108,22 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= UNRELEASED =
+= [3.10.0] - 2020-12-15 =
 
-* Fixed: Changed the way we sync post_author column: Current user will only be set as author if no terms where found for the post, or there are only guest authors. If post_author is empty, we set it for the current user, creating an author term for it;
+* Fixed: Changed the way we sync post_author column: Current user will only be set as author if no terms where found for the post, or there are only guest authors. If post_author is empty, we set it for the current user, creating an author term for it, #286.
 * Fixed: Duplicated queries for the same given email in the method MultipleAuthors\Classes\Author_Utils::get_author_term_id_by_email(). Added a cache for the query results and an option to ignore the cache, #293;
-* Added: Added constant and filter for customizing the chunk size for the "Update author field on posts" maintenance task. The new constant is "PUBLISHPRESS_AUTHORS_SYNC_POST_AUTHOR_CHUNK_SIZE" and the filter is "publishpress_authors_sync_post_author_chunk_size". Default value is 10;
-* Added: Added new maintenance task for syncing the authors' slug with the respective user's sanitized login (user_nicename). There is a new constant "PUBLISHPRESS_AUTHORS_SYNC_AUTHOR_SLUG_CHUNK_SIZE" and filter "publishpress_authors_sync_author_slug_chunk_size" for customizing the size of the chunk of authors to update at a time, #287;
+* Fixed: Performance issue. Optimized some methods and modules loading for reducing the server overload and reduce duplicated queries. Some modules now are only loaded if the required plugin is installed, #297;
+* Fixed: Fix the path for the template-tags.php file when called by the author box, if not loaded yet;
+* Fixed: Only register admin hooks if in the admin, #297;
+* Fixed: Fixed JS warning about variable being implicitly defined;
+* Fixed: Fixed compatibility issue with Select2 library loaded by WS Form Plugin, #292;
+* Fixed: Improved performance when opening the post edit page and quick edit panel for sites with thousands of authors;
+* Changed: Deprecated functions and classes now can be disabled if you define the constant "PUBLISHPRESS_AUTHORS_LOAD_DEPRECATED_LEGACY_CODE" as false. Default is true, #297;
+* Changed: CoAuthors' backward compatibility functions now can be disabled if you define the constant "PUBLISHPRESS_AUTHORS_LOAD_COAUTHORS_FUNCTIONS" as false. Default is true, #297;
+* Changed: Bylines' backward compatibility functions now can be disabled if you define the constant "PUBLISHPRESS_AUTHORS_LOAD_BYLINES_FUNCTIONS" as false. Default is true, #297;
+* Added: Added new maintenance task for syncing the authors' slug with the respective user's sanitized login (user_nicename). There is a new constant "PUBLISHPRESS_AUTHORS_SYNC_AUTHOR_SLUG_CHUNK_SIZE" for customizing the size of the chunk of authors to update at a time (default to 50), #287;
+* Added: Added new constant "PUBLISHPRESS_AUTHORS_SYNC_POST_AUTHOR_CHUNK_SIZE" for defining the size of the chunck of posts to convert authors in the maintenance task: Update author field on posts. Default to 10;
+* Removed: Removed the support to the filter "coauthors_auto_apply_template_tags", #297;
 
 = [3.9.0] - 2020-11-24 =
 

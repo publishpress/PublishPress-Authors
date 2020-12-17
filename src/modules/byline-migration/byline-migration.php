@@ -86,17 +86,10 @@ if (!class_exists('MA_Byline_Migration')) {
 
             $legacyPlugin = Factory::getLegacyPlugin();
 
+
             $this->module = $legacyPlugin->register_module($this->module_name, $args);
 
             parent::__construct();
-        }
-
-        /**
-         *
-         */
-        private function isBylineInstalled()
-        {
-            return function_exists('byline');
         }
 
         /**
@@ -110,25 +103,25 @@ if (!class_exists('MA_Byline_Migration')) {
         }
 
         /**
-         * Initialize the module. Conditionally loads if the module is enabled
+         * Initialize the module.
          */
         public function init()
         {
-            if ($this->isBylineInstalled()) {
+            if (is_admin()) {
                 add_filter('pp_authors_maintenance_actions', [$this, 'registerMaintenanceAction']);
                 add_action('admin_enqueue_scripts', [$this, 'adminEnqueueScripts']);
-
-                add_action('wp_ajax_migrate_byline', [$this, 'migrateBylineData']);
-                add_action('wp_ajax_get_byline_migration_data', [$this, 'getBylineMigrationData']);
-                add_action('wp_ajax_deactivate_byline', [$this, 'deactivateByline']);
             }
+
+            add_action('wp_ajax_migrate_byline', [$this, 'migrateBylineData']);
+            add_action('wp_ajax_get_byline_migration_data', [$this, 'getBylineMigrationData']);
+            add_action('wp_ajax_deactivate_byline', [$this, 'deactivateByline']);
         }
 
         public function adminEnqueueScripts()
         {
             wp_enqueue_script(
                 'publishpress-authors-byline-migration',
-                PP_AUTHORS_URL . '/src/assets/js/byline-migration.min.js',
+                PP_AUTHORS_URL . 'src/assets/js/byline-migration.min.js',
                 [
                     'react',
                     'react-dom',
@@ -152,7 +145,7 @@ if (!class_exists('MA_Byline_Migration')) {
 
             wp_enqueue_style(
                 'publishpress-authors-byline-migration-css',
-                PP_AUTHORS_URL . '/src/modules/byline-migration/assets/css/byline-migration.css',
+                PP_AUTHORS_URL . 'src/modules/byline-migration/assets/css/byline-migration.css',
                 false,
                 PP_AUTHORS_VERSION
             );

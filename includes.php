@@ -23,7 +23,10 @@ if (!defined('PP_AUTHORS_LOADED')) {
         }
     }
 
-    require_once PP_AUTHORS_BASE_PATH . 'deprecated.php';
+    if (PUBLISHPRESS_AUTHORS_LOAD_DEPRECATED_LEGACY_CODE) {
+        require_once PP_AUTHORS_BASE_PATH . 'deprecated.php';
+    }
+
     require_once PP_AUTHORS_BASE_PATH . 'src/functions/template-tags.php';
     require_once PP_AUTHORS_BASE_PATH . 'src/functions/amp.php';
 
