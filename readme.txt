@@ -112,7 +112,7 @@ There are two ways to install the PublishPress Authors plugin:
 
 * Fixed: Changed the way we sync post_author column: Current user will only be set as author if no terms where found for the post, or there are only guest authors. If post_author is empty, we set it for the current user, creating an author term for it, #286.
 * Fixed: Duplicated queries for the same given email in the method MultipleAuthors\Classes\Author_Utils::get_author_term_id_by_email(). Added a cache for the query results and an option to ignore the cache, #293;
-* Fixed: Performance issue. Optimized some methods and modules loading for reducing the server overload. Some modules now are only loaded if the required plugin is installed, #297;
+* Fixed: Performance issue. Optimized some methods and modules loading for reducing the server overload and reduce duplicated queries. Some modules now are only loaded if the required plugin is installed, #297;
 * Fixed: Fix the path for the template-tags.php file when called by the author box, if not loaded yet;
 * Fixed: Only register admin hooks if in the admin, #297;
 * Fixed: Fixed JS warning about variable being implicitly defined;
