@@ -28,6 +28,10 @@ class_alias(
     MultipleAuthors\Classes\Authors_Iterator::class,
     PublishPress\Addon\Multiple_authors\Classes\Authors_Iterator::class
 );
+class_alias(
+    \MultipleAuthors\Classes\Authors_Iterator::class,
+    'Multiple_authors_iterator'
+);
 class_alias(MultipleAuthors\Classes\CLI::class, PublishPress\Addon\Multiple_authors\Classes\CLI::class);
 class_alias(
     MultipleAuthors\Classes\Content_Model::class,

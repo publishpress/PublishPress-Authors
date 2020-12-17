@@ -22,6 +22,7 @@
  */
 
 use MultipleAuthors\Classes\Legacy\Module;
+use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Factory;
 
 if (!class_exists('MA_Genesis_Integration')) {
@@ -83,6 +84,23 @@ if (!class_exists('MA_Genesis_Integration')) {
                 [$this, 'filter_genesis_post_author_posts_link_shortcode'],
                 10,
                 2
+            );
+
+            // Fix compatibility with the Genesis framework in the Authors page.
+            add_filter(
+                'document_title_parts',
+                function ($parts) {
+                    if (isset($parts['title']) && function_exists('get_multiple_authors') && Util::isAuthor()) {
+                        $authors = get_multiple_authors(0, true, true);
+                        if (!empty($authors)) {
+                            $author         = $authors[0];
+                            $parts['title'] = $author->display_name;
+                        }
+                    }
+
+                    return $parts;
+                },
+                20
             );
         }
 

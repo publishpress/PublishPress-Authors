@@ -54,11 +54,10 @@ class Post_Editor
             <fieldset class="inline-edit-col-left">
                 <div class="inline-edit-col">
                     <label style="display: inline-flex">
-                        <span class="title">Post Author</span>
+                        <span class="title">Authors</span>
                     </label>
                     <?php
-                    $authors = multiple_authors_get_all_authors();
-                    echo self::get_rendered_authors_selection($authors, false);
+                    echo self::get_rendered_authors_selection([], false);
                     ?>
                 </div>
             </fieldset>
@@ -75,10 +74,11 @@ class Post_Editor
      */
     public static function filter_manage_posts_columns($columns)
     {
-        $new_columns = [];
         if (!Utils::is_post_type_enabled()) {
             return $columns;
         }
+
+        $new_columns = [];
 
         foreach ($columns as $key => $value) {
             if ('author' === $key) {
@@ -101,7 +101,10 @@ class Post_Editor
     public static function action_manage_posts_custom_column($column, $post_id)
     {
         if ('authors' === $column) {
+            // We need to ignore the cache for following call when this method were called after saved the post in a
+            // quick edit operation, otherwise the authors column will show old values.
             $authors     = get_multiple_authors($post_id, true, false, true);
+
             $post_type   = get_post_type($post_id);
             $authors_str = [];
             foreach ($authors as $author) {
@@ -117,7 +120,14 @@ class Post_Editor
                         $args['post_type'] = $post_type;
                     }
                     $url           = add_query_arg(array_map('rawurlencode', $args), admin_url('edit.php'));
-                    $authors_str[] = '<a href="' . esc_url($url) . '">' . esc_html($author->display_name) . '</a>';
+                    $authors_str[] = sprintf(
+                            '<a href="%s" data-author-term-id="%d" data-author-slug="%s" data-author-display-name="%s" class="author_name">%s</a>',
+                            esc_url($url),
+                            esc_attr($author->term_id),
+                            esc_attr($author->slug),
+                            esc_attr($author->display_name),
+                            esc_html($author->display_name)
+                    );
                 }
             }
 
@@ -219,7 +229,7 @@ class Post_Editor
                 echo self::get_rendered_author_partial(
                     [
                         'display_name' => '{{ data.display_name }}',
-                        'term'         => '{{ data.term }}',
+                        'term'         => '{{ data.id }}',
                     ]
                 );
                 ?>
