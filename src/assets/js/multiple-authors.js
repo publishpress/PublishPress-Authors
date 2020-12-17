@@ -154,44 +154,6 @@ jQuery(document).ready(function ($) {
             $select.val(null).trigger('change');
 
             clearTimeout(timeoutFn);
-
-            // Save button.
-            // $quickEditTr.find('button.save').on('click', function () {
-            //     var $authorsColumnTd = $('#post-' + postId + ' td.column-authors'),
-            //         authorLinkTmpl = wp.template("authors-author-link");
-            //
-            //     $authorsColumnTd.empty();
-            //
-            //     var selectedAuthors = [];
-            //
-            //     $('#edit-' + postId)
-            //         .find('ul.authors-current-user-can-assign > li')
-            //         .each(function (i, item) {
-            //             selectedAuthors.push($(item).find('input').val());
-            //         });
-            //
-            //     // Update the authors column value.
-            //     setTimeout(function() {
-            //         $.ajax({
-            //             url: ajaxurl,
-            //             type: "GET",
-            //             async: true,
-            //             cache: false,
-            //             data: {
-            //                 action: "get_author_link_markup",
-            //                 authorIds: selectedAuthors,
-            //                 bulkEditNonce: bulkEditNonce.nonce
-            //             },
-            //             'success': function (data) {
-            //                 debugger;
-            //                 var $td = $('#post-' + postId).find('td.column-authors');
-            //
-            //                 $td.empty();
-            //                 $td.html(data.data.markup);
-            //             }
-            //         });
-            //     }, 200);
-            // });
         }, 50);
     });
 
