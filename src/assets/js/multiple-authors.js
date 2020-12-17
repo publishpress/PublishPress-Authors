@@ -120,41 +120,78 @@ jQuery(document).ready(function ($) {
     /****************
      * Quick Edit
      ****************/
-    $(document).on("click", ".editinline", function () {
+    $(document).on('click', '.editinline', function () {
         var postId = $(this)
-            .closest("tr")
-            .attr("id")
-            .replace("post-", "")
+            .closest('tr')
+            .attr('id')
+            .replace('post-', '')
             .trim();
+
         var timeoutFn = setTimeout(function () {
-            var trSelector = $("#edit-" + postId);
-            var searchSelector = trSelector.find(".authors-select2.authors-search");
-            var authorsListSelector = trSelector.find(
-                ".authors-current-user-can-assign"
-            );
-            authorsSelect2(searchSelector);
-            sortedAuthorsList(authorsListSelector);
-            var authorsSlugs = [];
-            $("#post-" + postId)
-                .find("td.column-authors > a")
+            var $quickEditTr = $('#edit-' + postId);
+            var $select = $quickEditTr.find('.authors-select2.authors-search');
+            var $authorsList = $quickEditTr.find('.authors-current-user-can-assign');
+
+            authorsSelect2($select);
+            $authorsList.empty();
+
+            $('#post-' + postId)
+                .find('td.column-authors > a.author_name')
                 .each(function () {
-                    authorsSlugs.push($(this).text());
+                    var listItemTmpl = wp.template("authors-author-partial");
+
+                    $authorsList.append(
+                        window.htmlEnDeCode.htmlDecode(
+                            listItemTmpl({
+                                'display_name': $(this).data('author-display-name'),
+                                'id': $(this).data('author-term-id')
+                            })
+                        )
+                    );
                 });
-            var renderedAuthorsSlugs = [];
-            authorsListSelector.find("li").each(function () {
-                var displayName = $(this)
-                    .find(".display-name")
-                    .text()
-                    .trim();
-                if (
-                    !authorsSlugs.includes(displayName) ||
-                    renderedAuthorsSlugs.includes(displayName)
-                ) {
-                    $(this).remove();
-                }
-                renderedAuthorsSlugs.push(displayName);
-            });
+
+            sortedAuthorsList($authorsList);
+            $select.val(null).trigger('change');
+
             clearTimeout(timeoutFn);
+
+            // Save button.
+            // $quickEditTr.find('button.save').on('click', function () {
+            //     var $authorsColumnTd = $('#post-' + postId + ' td.column-authors'),
+            //         authorLinkTmpl = wp.template("authors-author-link");
+            //
+            //     $authorsColumnTd.empty();
+            //
+            //     var selectedAuthors = [];
+            //
+            //     $('#edit-' + postId)
+            //         .find('ul.authors-current-user-can-assign > li')
+            //         .each(function (i, item) {
+            //             selectedAuthors.push($(item).find('input').val());
+            //         });
+            //
+            //     // Update the authors column value.
+            //     setTimeout(function() {
+            //         $.ajax({
+            //             url: ajaxurl,
+            //             type: "GET",
+            //             async: true,
+            //             cache: false,
+            //             data: {
+            //                 action: "get_author_link_markup",
+            //                 authorIds: selectedAuthors,
+            //                 bulkEditNonce: bulkEditNonce.nonce
+            //             },
+            //             'success': function (data) {
+            //                 debugger;
+            //                 var $td = $('#post-' + postId).find('td.column-authors');
+            //
+            //                 $td.empty();
+            //                 $td.html(data.data.markup);
+            //             }
+            //         });
+            //     }, 200);
+            // });
         }, 50);
     });
 

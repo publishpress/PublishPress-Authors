@@ -61,6 +61,7 @@ class Admin_Ajax
             'taxonomy'   => 'author',
             'hide_empty' => false,
             'number'     => 20,
+            'order_by'   => 'name',
         ];
 
         if (!empty($search)) {
@@ -69,25 +70,19 @@ class Admin_Ajax
 
         if (!empty($ignored)) {
             $term_args['exclude'] = [];
-            $ignored_users        = [];
             foreach ($ignored as $val) {
                 if (is_numeric($val)) {
                     $term_args['exclude'][] = (int)$val;
-                    $user_id                = get_term_meta($val, 'user_id', true);
-                    if ($user_id) {
-                        $ignored_users[] = 'u' . $user_id;
-                    }
                 }
             }
-            $ignored = array_merge($ignored, $ignored_users);
         }
 
         $terms = get_terms($term_args);
         if ($terms && !is_wp_error($terms)) {
             $show_user_name = $legacyPlugin->modules->multiple_authors->options->username_in_search_field === 'yes';
+
             foreach ($terms as $term) {
                 $author = Author::get_by_term_id($term->term_id);
-
                 $text = $term->name;
 
                 if ($show_user_name) {
@@ -107,19 +102,8 @@ class Admin_Ajax
                     'display_name' => $text,
                     'user_id'      => $author->user_id,
                 ];
-                if ($author->user_id) {
-                    $ignored[] = 'u' . $author->user_id;
-                }
             }
         }
-
-        // Sort alphabetically by display name.
-        usort(
-            $authors,
-            function ($a, $b) {
-                return strcmp($a['display_name'], $b['display_name']);
-            }
-        );
 
         return $authors;
     }

@@ -117,6 +117,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: Only register admin hooks if in the admin, #297;
 * Fixed: Fixed JS warning about variable being implicitly defined;
 * Fixed: Fixed compatibility issue with Select2 library loaded by WS Form Plugin, #292;
+* Fixed: Improved performance when opening the post edit page and quick edit panel for sites with thousands of authors;
 * Changed: Deprecated functions and classes now can be disabled if you define the constant "PUBLISHPRESS_AUTHORS_LOAD_DEPRECATED_LEGACY_CODE" as false. Default is true, #297;
 * Changed: CoAuthors' backward compatibility functions now can be disabled if you define the constant "PUBLISHPRESS_AUTHORS_LOAD_COAUTHORS_FUNCTIONS" as false. Default is true, #297;
 * Changed: Bylines' backward compatibility functions now can be disabled if you define the constant "PUBLISHPRESS_AUTHORS_LOAD_BYLINES_FUNCTIONS" as false. Default is true, #297;

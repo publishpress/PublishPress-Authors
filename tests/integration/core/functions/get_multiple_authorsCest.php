@@ -6,16 +6,8 @@ use WpunitTester;
 
 class get_multiple_authorsCest
 {
-
-    //function get_multiple_authors($post = 0, $filter_the_author = true, $archive = false)
-
-
     public function testGetMultipleAuthors_WithPostAsObject_ReturnListOfAuthors(WpunitTester $I)
     {
-        global $multipleAuthorsForPost;
-
-        $multipleAuthorsForPost = [];
-
         $userId0 = $I->factory('create user0')->user->create();
         $userId1 = $I->factory('create user1')->user->create();
         $userId2 = $I->factory('create user2')->user->create();
@@ -41,12 +33,41 @@ class get_multiple_authorsCest
         $I->assertEquals($author2->term_id, $authorsList[2]->term_id);
     }
 
+    public function testGetMultipleAuthors_CalledMultipleTimes_ReturnSameListOfCachedAuthors(WpunitTester $I)
+    {
+        $userId0 = $I->factory('create user0')->user->create();
+        $userId1 = $I->factory('create user1')->user->create();
+        $userId2 = $I->factory('create user2')->user->create();
+
+        $author0 = Author::create_from_user($userId0);
+        $author1 = Author::create_from_user($userId1);
+        $author2 = Author::create_from_user($userId2);
+
+        $postId = $I->factory('create a new post')->post->create();
+
+        wp_set_post_terms($postId, [$author0->term_id, $author1->term_id, $author2->term_id], 'author');
+
+        $authorsList = get_multiple_authors($postId, false, false);
+        get_multiple_authors($postId, false, false);
+        get_multiple_authors($postId, false, false);
+
+        $cacheKey = $postId . ':0:0';
+        $cachedList = wp_cache_get($cacheKey, 'get_multiple_authors:authors');
+
+        $I->assertIsArray($authorsList);
+        $I->assertCount(3, $authorsList);
+        $I->assertCount(3, $cachedList);
+        $I->assertInstanceOf(Author::class, $authorsList[0]);
+        $I->assertInstanceOf(Author::class, $authorsList[1]);
+        $I->assertInstanceOf(Author::class, $authorsList[2]);
+        $I->assertEquals($author0->term_id, $authorsList[0]->term_id);
+        $I->assertEquals($author1->term_id, $authorsList[1]->term_id);
+        $I->assertEquals($author2->term_id, $authorsList[2]->term_id);
+        $I->assertEquals(maybe_serialize($authorsList), maybe_serialize($cachedList));
+    }
+
     public function testGetMultipleAuthors_WithPostAsInt_ReturnListOfAuthors(WpunitTester $I)
     {
-        global $multipleAuthorsForPost;
-
-        $multipleAuthorsForPost = [];
-
         $userId0 = $I->factory('create user0')->user->create();
         $userId1 = $I->factory('create user1')->user->create();
         $userId2 = $I->factory('create user2')->user->create();
@@ -73,10 +94,6 @@ class get_multiple_authorsCest
 
     public function testGetMultipleAuthors_WithPostAsString_ReturnListOfAuthors(WpunitTester $I)
     {
-        global $multipleAuthorsForPost;
-
-        $multipleAuthorsForPost = [];
-
         $userId0 = $I->factory('create user0')->user->create();
         $userId1 = $I->factory('create user1')->user->create();
         $userId2 = $I->factory('create user2')->user->create();
@@ -109,10 +126,6 @@ class get_multiple_authorsCest
      */
     public function testGetMultipleAuthors_WithGlobalPost_ReturnListOfAuthors(WpunitTester $I, Example $example)
     {
-        global $multipleAuthorsForPost;
-
-        $multipleAuthorsForPost = [];
-
         $userId0 = $I->factory('create user0')->user->create();
         $userId1 = $I->factory('create user1')->user->create();
         $userId2 = $I->factory('create user2')->user->create();
@@ -142,10 +155,6 @@ class get_multiple_authorsCest
 
     public function testGetMultipleAuthors_WithFilterAuthor_ShouldFilterTheAuthorsDisplayName(WpunitTester $I)
     {
-        global $multipleAuthorsForPost, $testFilterAdded;
-
-        $multipleAuthorsForPost = [];
-
         $userId0 = $I->factory('create user0')->user->create();
         $userId1 = $I->factory('create user1')->user->create();
         $userId2 = $I->factory('create user2')->user->create();
@@ -186,10 +195,6 @@ class get_multiple_authorsCest
 
     public function testGetMultipleAuthors_WithArchiveParam_ShouldReturnCurrentAuthor(WpunitTester $I)
     {
-        global $multipleAuthorsForPost;
-
-        $multipleAuthorsForPost = [];
-
         $userId0 = $I->factory('create user0')->user->create();
 
         $author0 = Author::create_from_user($userId0);

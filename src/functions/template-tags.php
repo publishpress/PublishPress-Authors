@@ -57,7 +57,7 @@ if (!function_exists('get_multiple_authors')) {
         $authors = wp_cache_get($cacheKey, 'get_multiple_authors:authors');
 
         if (false === $authors || $ignoreCache) {
-            $terms = [];
+            $authors = [];
 
             if (!$archive) {
                 if (empty($postId)) {
@@ -74,7 +74,7 @@ if (!function_exists('get_multiple_authors')) {
 
                 $terms = wp_cache_get($postId, 'get_multiple_authors:terms');
 
-                if (false === $terms) {
+                if (false === $terms || $ignoreCache) {
                     $terms = $wpdb->get_results(
                         $wpdb->prepare(
                             "SELECT tt.term_id
