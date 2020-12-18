@@ -108,6 +108,12 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [UNRELEASED] =
+
+* Fixed: Removed meaningless warnings when the post doesn't have an author: "[PublishPress Authors] Warning - The link for the author_id="" was changed to the post page because the author is not specified in the given url", #308;
+* Fixed: If the post doesn't have an author term, the function filter_author_link doesn't recognized the user from "post_author" as author of the post, #308;
+* Fixed: If the post doesn't have an author term, the function "get_multiple_authors" returns a WP_User instance (based on "post_author") even if the user is mapped to an author term, #306;
+
 = [3.10.0] - 2020-12-15 =
 
 * Fixed: Changed the way we sync post_author column: Current user will only be set as author if no terms where found for the post, or there are only guest authors. If post_author is empty, we set it for the current user, creating an author term for it, #286.
