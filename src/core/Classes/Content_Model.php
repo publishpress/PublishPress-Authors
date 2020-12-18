@@ -98,7 +98,7 @@ class Content_Model
 
         // Check if the author slug is empty in the link.
         if ($link_path === str_replace('%author%', '', $permastruct)) {
-            // Redirects to the post page.
+            // Redirects to the post page, or home page on some situations.
             $link = get_the_permalink();
         }
 
