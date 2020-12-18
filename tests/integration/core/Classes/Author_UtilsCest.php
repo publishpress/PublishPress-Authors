@@ -243,8 +243,8 @@ class Author_UtilsCest
 
         $firstAuthorWhichIsGuest = Author::create(
             [
-                'slug'         => 'guest1',
-                'display_name' => 'Guest 1',
+                'slug'         => 'guest4',
+                'display_name' => 'Guest 4',
             ]
         );
 
