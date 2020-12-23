@@ -41,4 +41,11 @@ if (!defined('PP_AUTHORS_VERSION')) {
     if (!defined('PUBLISHPRESS_AUTHORS_SYNC_AUTHOR_SLUG_CHUNK_SIZE')) {
         define('PUBLISHPRESS_AUTHORS_SYNC_AUTHOR_SLUG_CHUNK_SIZE', 50);
     }
+
+    if (!defined('PUBLISHPRESS_AUTHORS_LOAD_STYLE_IN_FRONTEND')) {
+        define(
+            'PUBLISHPRESS_AUTHORS_LOAD_STYLE_IN_FRONTEND',
+            apply_filters('publishpress_authors_load_style_in_frontend', true)
+        );
+    }
 }
