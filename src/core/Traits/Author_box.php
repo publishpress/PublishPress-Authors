@@ -83,7 +83,7 @@ trait Author_box
 
         $html = '';
 
-        if (PUBLISHPRESS_AUTHORS_LOAD_STYLE_IN_FRONTEND) {
+        if (apply_filters('publishpress_authors_load_style_in_frontend', PUBLISHPRESS_AUTHORS_LOAD_STYLE_IN_FRONTEND)) {
             wp_enqueue_style('dashicons');
             wp_enqueue_style(
                 'multiple-authors-widget-css',
