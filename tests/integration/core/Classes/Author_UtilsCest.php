@@ -302,9 +302,13 @@ class Author_UtilsCest
 
         Utils::sync_post_author_column($postId, []);
 
+        unset($post);
+        $post = get_post($postId);
+
         $postAuthor = $this->get_post_author($postId);
 
         $I->assertNotEquals($currentUserId, $postAuthor);
+        $I->assertEquals($userId, $post->post_author);
     }
 
     public function methodSync_post_author_columnShouldSetPost_authorAfterAuthorsOrderChangesWithArrayOfAuthorsInstances(\WpunitTester $I)
