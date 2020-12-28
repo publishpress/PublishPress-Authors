@@ -396,4 +396,32 @@ class Author_UtilsCest
         $I->assertEquals(1, count($postAuthors), 'There should have one author term set for the post');
         $I->assertEquals($postAuthorColumn, $firstAuthorUserId, 'The user_id of the author term should match the post_author');
     }
+
+    public function methodSync_post_author_columnShouldCreateAuthorTermForCurrentPost_authorIfNoTermsAreFoundAndThereIsAUserAsAuthorInThePostWichHasNotAnAuthorTerm(\WpunitTester $I)
+    {
+        $originalPostAuthorUserId = $I->factory('the original post author user')->user->create(['role' => 'author']);
+
+        $postId = $I->factory('the post')->post->create(
+            ['post_type' => 'post', 'post_author' => $originalPostAuthorUserId]
+        );
+
+        wp_delete_object_term_relationships($postId, 'author');
+
+        $emptyAuthorsList = [];
+
+        Utils::sync_post_author_column($postId, $emptyAuthorsList);
+
+        $terms = wp_get_post_terms($postId, 'author');
+        $I->assertCount(1, $terms, 'There should have one author term for the post');
+
+        $term = $terms[0];
+
+        $termUserId = get_term_meta($term->term_id, 'user_id', true);
+
+        $user = get_user_by('ID', $originalPostAuthorUserId);
+
+        $I->assertEquals($user->display_name, $term->name);
+        $I->assertEquals($user->user_nicename, $term->slug);
+        $I->assertEquals($originalPostAuthorUserId, $termUserId);
+    }
 }
