@@ -4,7 +4,7 @@ use MultipleAuthors\Classes\Objects\Author;
 
 class get_author_posts_urlCest
 {
-    public function tryToGetAuthorPostsUrlForAuthorMappedToUserAndNoPermastruct(\WpunitTester $I)
+    public function tryToGetAuthorPostsUrlForAuthorMappedToUserAndNoPermalinkStruct(\WpunitTester $I)
     {
         global $wp_rewrite;
 
@@ -21,7 +21,7 @@ class get_author_posts_urlCest
         );
     }
 
-    public function tryToGetAuthorPostsUrlForAuthorMappedToUserAndCustomPermastruct(\WpunitTester $I)
+    public function tryToGetAuthorPostsUrlForAuthorMappedToUserAndCustomPermalinkStruct(\WpunitTester $I)
     {
         global $wp_rewrite;
 
@@ -36,9 +36,11 @@ class get_author_posts_urlCest
             sprintf('http://%s/author/%s', $_ENV['TEST_SITE_WP_DOMAIN'], $author->user_nicename),
             $authorLink
         );
+
+        $wp_rewrite->author_structure = null;
     }
 
-    public function tryToGetAuthorPostsUrlForGuestAuthorAndNoPermastruct(\WpunitTester $I)
+    public function tryToGetAuthorPostsUrlForGuestAuthorAndNoPermalinkStruct(\WpunitTester $I)
     {
         global $wp_rewrite;
 
@@ -61,7 +63,7 @@ class get_author_posts_urlCest
         );
     }
 
-    public function tryToGetAuthorPostsUrlForGuestAuthorAndCustomPermastruct(\WpunitTester $I)
+    public function tryToGetAuthorPostsUrlForGuestAuthorAndCustomPermalinkStruct(\WpunitTester $I)
     {
         global $wp_rewrite;
 
