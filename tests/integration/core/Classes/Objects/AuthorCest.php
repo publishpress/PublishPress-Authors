@@ -273,6 +273,10 @@ class AuthorCest
 
     public function tryToGetLinkForGuestAuthors(\WpunitTester $I)
     {
+        global $wp_rewrite;
+
+        $wp_rewrite->author_structure = null;
+
         $authorSlug = sprintf('guest_author_%d', rand(1, PHP_INT_MAX));
         $author     = Author::create(
             [

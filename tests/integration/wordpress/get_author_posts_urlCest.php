@@ -84,5 +84,7 @@ class get_author_posts_urlCest
             sprintf('http://%s/author/%s', $_ENV['TEST_SITE_WP_DOMAIN'], $author->user_nicename),
             $authorLink
         );
+
+        $wp_rewrite->author_structure = null;
     }
 }
