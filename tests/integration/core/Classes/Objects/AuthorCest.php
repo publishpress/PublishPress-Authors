@@ -31,7 +31,7 @@ class AuthorCest
 
     public function tryToCreateAGuestAuthorAndCheckIfUserIdIsEmpty(\WpunitTester $I)
     {
-        $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
+        $authorSlug = sprintf('guest_author_%d', rand(1, PHP_INT_MAX));
         $author     = Author::create(
             [
                 'slug'         => $authorSlug,
@@ -47,7 +47,7 @@ class AuthorCest
 
     public function tryToCreateAGuestAuthorAndCheckIfIs_guestReturnsTrue(\WpunitTester $I)
     {
-        $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
+        $authorSlug = sprintf('guest_author_%d', rand(1, PHP_INT_MAX));
         $author     = Author::create(
             [
                 'slug'         => $authorSlug,
@@ -76,7 +76,7 @@ class AuthorCest
 
     public function tryToCreateAGuestAuthorAndCheckIfTheIdMatchesTheTermIdButAsNegativeInteger(\WpunitTester $I)
     {
-        $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
+        $authorSlug = sprintf('guest_author_%d', rand(1, PHP_INT_MAX));
         $author     = Author::create(
             [
                 'slug'         => $authorSlug,
@@ -159,7 +159,7 @@ class AuthorCest
 
     public function tryToGetAuthorByEmailAddressForGuestAuthor(\WpunitTester $I)
     {
-        $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
+        $authorSlug = sprintf('guest_author_%d', rand(1, PHP_INT_MAX));
         $author     = Author::create(
             [
                 'slug'         => $authorSlug,
@@ -200,7 +200,7 @@ class AuthorCest
     {
         $expected = 'http://test.example.com';
 
-        $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
+        $authorSlug = sprintf('guest_author_%d', rand(1, PHP_INT_MAX));
         $author     = Author::create(
             [
                 'slug'         => $authorSlug,
@@ -239,7 +239,7 @@ class AuthorCest
     {
         $expected = 'TheFirstName';
 
-        $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
+        $authorSlug = sprintf('guest_author_%d', rand(1, PHP_INT_MAX));
         $author     = Author::create(
             [
                 'slug'         => $authorSlug,
@@ -273,7 +273,7 @@ class AuthorCest
 
     public function tryToGetLinkForGuestAuthors(\WpunitTester $I)
     {
-        $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
+        $authorSlug = sprintf('guest_author_%d', rand(1, PHP_INT_MAX));
         $author     = Author::create(
             [
                 'slug'         => $authorSlug,
@@ -342,7 +342,7 @@ class AuthorCest
 
     public function tryToGetNameForGuestAuthors(\WpunitTester $I)
     {
-        $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
+        $authorSlug = sprintf('guest_author_%d', rand(1, PHP_INT_MAX));
         $expected   = strtoupper($authorSlug);
         $author     = Author::create(
             [
@@ -376,7 +376,7 @@ class AuthorCest
 
     public function tryToGetSlugForGuestAuthors(\WpunitTester $I)
     {
-        $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
+        $authorSlug = sprintf('guest_author_%d', rand(1, PHP_INT_MAX));
         $author     = Author::create(
             [
                 'slug'         => $authorSlug,
