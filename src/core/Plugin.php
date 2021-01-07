@@ -126,7 +126,9 @@ class Plugin
         );
         add_filter(
             'author_link',
-            ['MultipleAuthors\\Classes\\Content_Model', 'filter_author_link']
+            ['MultipleAuthors\\Classes\\Content_Model', 'filter_author_link'],
+            10,
+            2
         );
         add_filter(
             'the_author_display_name',
