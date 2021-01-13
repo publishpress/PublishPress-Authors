@@ -83,14 +83,16 @@ trait Author_box
 
         $html = '';
 
-        wp_enqueue_style('dashicons');
-        wp_enqueue_style(
-            'multiple-authors-widget-css',
-            PP_AUTHORS_ASSETS_URL . 'css/multiple-authors-widget.css',
-            false,
-            PP_AUTHORS_VERSION,
-            'all'
-        );
+        if (apply_filters('publishpress_authors_load_style_in_frontend', PUBLISHPRESS_AUTHORS_LOAD_STYLE_IN_FRONTEND)) {
+            wp_enqueue_style('dashicons');
+            wp_enqueue_style(
+                'multiple-authors-widget-css',
+                PP_AUTHORS_ASSETS_URL . 'css/multiple-authors-widget.css',
+                false,
+                PP_AUTHORS_VERSION,
+                'all'
+            );
+        }
 
         if (!function_exists('multiple_authors')) {
             require_once PP_AUTHORS_BASE_PATH . 'src/functions/template-tags.php';

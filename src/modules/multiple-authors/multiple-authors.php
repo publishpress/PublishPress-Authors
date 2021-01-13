@@ -239,6 +239,8 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             // Fix authors avatar.
             add_filter('pre_get_avatar_data', [$this, 'filter_pre_get_avatar_data'], 15, 2);
+
+            add_action('publishpress_authors_set_post_authors', [$this, 'actionSetPostAuthors'], 10, 2);
         }
 
         /**
@@ -2452,6 +2454,11 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             return $authorName;
+        }
+
+        public function actionSetPostAuthors($postId, $authors)
+        {
+            Utils::set_post_authors($postId, $authors);
         }
     }
 }
