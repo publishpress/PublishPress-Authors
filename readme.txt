@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
 Tested up to: 5.6
-Stable tag: 3.10.0
+Stable tag: 3.11.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,13 +108,18 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= [UNRELEASED] =
+= [3.11.0] - 2021-01-14 =
 
+* Added: Added Rest API support to list the post's authors, #311;
+* Added: Added new action to set authors to a post: "publishpress_authors_set_post_authors";
+* Added: Added filter and constant for specifying to not load styles in the frontend, so users can use their own styles, #313;
+* Added: Added more automated tests;
 * Fixed: Removed meaningless warnings when the post doesn't have an author: "[PublishPress Authors] Warning - The link for the author_id="" was changed to the post page because the author is not specified in the given url", #308;
 * Fixed: If the post doesn't have an author term, the function filter_author_link doesn't recognized the user from "post_author" as author of the post, #308;
 * Fixed: If the post doesn't have an author term, the function "get_multiple_authors" returns a WP_User instance (based on "post_author") even if the user is mapped to an author term, #306;
+* Fixed: In the function "is_multiple_author_for_post", recognize user as author of a post even if he doesn't have a term, #307;
 * Fixed: One test is trying to create a term which already exists, logging the error message: "A term with the name provided already exists";
-* Added: Added Rest API support to list the post's authors, #311;
+* Fixed: Fixed multiple footers displayed when both Free and Pro are activated, #312;
 
 = [3.10.0] - 2020-12-15 =
 
