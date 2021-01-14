@@ -122,7 +122,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: In the function "is_multiple_author_for_post", recognize user as author of a post even if he doesn't have a term, #307;
 * Fixed: One test is trying to create a term which already exists, logging the error message: "A term with the name provided already exists";
 * Fixed: Fixed multiple footers displayed when both Free and Pro are activated, #312;
-* Fixed: Fix PHP error for the "not compatible YoastSEO" warning;
+* Fixed: Fix PHP error when an older version of YoastSEO is installed and the warning "not compatible YoastSEO" is showed;
 
 = [3.10.0] - 2020-12-15 =
 
