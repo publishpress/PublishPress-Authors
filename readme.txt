@@ -113,8 +113,9 @@ There are two ways to install the PublishPress Authors plugin:
 * Added: Added Rest API support to list the post's authors, #311;
 * Added: Added new action to set authors to a post: "publishpress_authors_set_post_authors";
 * Added: Added filter and constant for specifying to not load styles in the frontend, so users can use their own styles, #313;
-* Added: Added Italian translation files. Thanks to Angelo Giammarresi;
+* Added: Added Italian language files. Thanks to Angelo Giammarresi;
 * Added: Added more automated tests;
+* Changed: Updated Brazilian Portuguese language files;
 * Fixed: Fixed support to PHP 5.6 downgrading the Twig's requirement "symfony/polyfill-ctype" to v1.19, the last one that supports PHP 5, #323;
 * Fixed: Fixed support to PHP 5.6 downgrading "pimple/pimple" to v3.2.3, the last one that supports PHP 5, #323;
 * Fixed: Removed meaningless warnings when the post doesn't have an author: "[PublishPress Authors] Warning - The link for the author_id="" was changed to the post page because the author is not specified in the given url", #308;
