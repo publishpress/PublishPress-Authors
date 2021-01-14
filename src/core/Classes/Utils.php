@@ -689,7 +689,7 @@ class Utils
                     )
                 );
 
-                set_transient('publishpress_authors_not_compatible_yoast_warning', true, 24 * 60 * 60 * 2)
+                set_transient('publishpress_authors_not_compatible_yoast_warning', true, 24 * 60 * 60 * 2);
             }
 
             return false;
