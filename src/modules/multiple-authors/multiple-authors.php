@@ -180,7 +180,9 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_filter('multiple_authors_validate_module_settings', [$this, 'validate_module_settings'], 10, 2);
             add_filter('publishpress_multiple_authors_settings_tabs', [$this, 'settings_tab']);
 
-            add_filter('body_class', [$this, 'filter_body_class']);
+            if (!is_admin()) {
+                add_filter('body_class', [$this, 'filter_body_class']);
+            }
 
             // Fix upload permissions for multiple authors.
             add_filter('map_meta_cap', [$this, 'filter_map_meta_cap'], 10, 4);

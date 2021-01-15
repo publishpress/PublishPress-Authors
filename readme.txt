@@ -117,6 +117,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Added: Added more automated tests;
 * Changed: Updated Brazilian Portuguese language files;
 * Fixed: Improved general performance removing unnecessary permissions validation on every text in the page, #325;
+* Fixed: Improved general performance ignoring the body class change method if not in the frontend;
 * Fixed: Fixed support to PHP 5.6 downgrading the Twig's requirement "symfony/polyfill-ctype" to v1.19, the last one that supports PHP 5, #323;
 * Fixed: Fixed support to PHP 5.6 downgrading "pimple/pimple" to v3.2.3, the last one that supports PHP 5, #323;
 * Fixed: Removed meaningless warnings when the post doesn't have an author: "[PublishPress Authors] Warning - The link for the author_id="" was changed to the post page because the author is not specified in the given url", #308;
