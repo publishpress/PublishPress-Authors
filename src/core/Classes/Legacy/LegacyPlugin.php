@@ -190,6 +190,12 @@ class LegacyPlugin
             $defaultDirs['yoast-seo-integration'] = PP_AUTHORS_MODULES_PATH;
         }
 
+        if (Utils::isWPEngineInstalled()) {
+            var_dump('wpengine');
+            $defaultDirs['wpengine-integration'] = PP_AUTHORS_MODULES_PATH;
+        }
+
+
         return apply_filters('ppma_module_dirs', $defaultDirs);
     }
 

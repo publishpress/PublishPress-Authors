@@ -697,4 +697,9 @@ class Utils
 
         return true;
     }
+
+    public static function isWPEngineInstalled()
+    {
+        return defined('WPE_PLUGIN_VERSION');
+    }
 }
