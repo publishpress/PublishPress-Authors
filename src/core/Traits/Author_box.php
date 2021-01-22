@@ -21,6 +21,11 @@ trait Author_box
     protected $postCache = [];
 
     /**
+     * @var int
+     */
+    protected $authorsCount = 0;
+
+    /**
      * Returns true if the post type and current page is valid.
      *
      * @return bool
@@ -103,13 +108,6 @@ trait Author_box
             $css_class = 'multiple-authors-target-' . str_replace('_', '-', $target);
         }
 
-        $title = isset($legacyPlugin->modules->multiple_authors->options->title_appended_to_content)
-            ? $legacyPlugin->modules->multiple_authors->options->title_appended_to_content : esc_html__(
-                'Authors',
-                'publishpress-authors'
-            );
-        $title = esc_html($title);
-
         if (empty($layout)) {
             $layout = isset($legacyPlugin->modules->multiple_authors->options->layout)
                 ? $legacyPlugin->modules->multiple_authors->options->layout : 'simple_list';
@@ -129,11 +127,31 @@ trait Author_box
             $post = $this->postCache[$post_id];
         }
 
+        $authorsList = get_multiple_authors($post_id, true, $archive);
+
+        $this->authorsCount = count($authorsList);
+
+        if ($this->authorsCount === 1) {
+            $title = isset($legacyPlugin->modules->multiple_authors->options->title_appended_to_content)
+                ? $legacyPlugin->modules->multiple_authors->options->title_appended_to_content : esc_html__(
+                    'Author',
+                    'publishpress-authors'
+                );
+        } else {
+            $title = isset($legacyPlugin->modules->multiple_authors->options->title_appended_to_content_plural)
+                ? $legacyPlugin->modules->multiple_authors->options->title_appended_to_content_plural : esc_html__(
+                    'Authors',
+                    'publishpress-authors'
+                );
+        }
+
+        $title = esc_html($title);
+
         $args = [
             'show_title' => $show_title,
             'css_class'  => $css_class,
             'title'      => $title,
-            'authors'    => get_multiple_authors($post_id, true, $archive),
+            'authors'    => $authorsList,
             'target'     => $target,
             'item_class' => 'author url fn',
             'layout'     => $layout,
