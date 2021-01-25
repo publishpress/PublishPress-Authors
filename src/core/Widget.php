@@ -112,13 +112,13 @@ class Widget extends WP_Widget {
 			)
 		);
 
-        $titleSingular = strip_tags($instance['title']);
-        $titlePlural   = strip_tags($instance['title_plural']);
-        $layout        = strip_tags($instance['layout']);
+        $titleSingle = strip_tags($instance['title']);
+        $titlePlural = strip_tags($instance['title_plural']);
+        $layout      = strip_tags($instance['layout']);
 
 		$context = array(
 			'labels'  => array(
-				'title'  => esc_html__( 'Singular Title', 'publishpress-authors' ),
+				'title'  => esc_html__( 'Single Title', 'publishpress-authors' ),
 				'title_plural'  => esc_html__( 'Plural Title', 'publishpress-authors' ),
 				'layout' => esc_html__( 'Layout', 'publishpress-authors' ),
 			),
@@ -133,7 +133,7 @@ class Widget extends WP_Widget {
 				'layout' => $this->get_field_name( 'layout' ),
 			),
 			'values'  => array(
-				'title'  => $titleSingular,
+				'title'  => $titleSingle,
 				'title_plural'  => $titlePlural,
 				'layout' => $layout,
 			),

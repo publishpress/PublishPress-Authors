@@ -606,8 +606,8 @@ if (!class_exists('MA_Multiple_Authors')) {
          */
         public function settings_title_appended_to_content_option($args = [])
         {
-            $idSingular    = $this->module->options_group_name . '_title_appended_to_content';
-            $singularValue = isset($this->module->options->title_appended_to_content) ? $this->module->options->title_appended_to_content : esc_html__(
+            $idSingle    = $this->module->options_group_name . '_title_appended_to_content';
+            $singleValue = isset($this->module->options->title_appended_to_content) ? $this->module->options->title_appended_to_content : esc_html__(
                 'Author',
                 'publishpress-authors'
             );
@@ -619,10 +619,10 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
 
             echo '<div class="ppma-settings-left-column">';
-            echo '<label for="' . $idSingular . '">' . esc_html__('Singular', 'publishpress-authors') . '</label>';
+            echo '<label for="' . $idSingle . '">' . esc_html__('Single', 'publishpress-authors') . '</label>';
             echo '<input type="text" value="' . esc_attr(
-                    $singularValue
-                ) . '" id="' . $idSingular . '" name="' . $this->module->options_group_name . '[title_appended_to_content]" class="regular-text" />';
+                    $singleValue
+                ) . '" id="' . $idSingle . '" name="' . $this->module->options_group_name . '[title_appended_to_content]" class="regular-text" />';
             echo '</div>';
 
             echo '<div class="ppma-settings-left-column">';
