@@ -151,6 +151,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                 add_action('admin_notices', [$this, 'permissionsSyncNotice']);
                 add_action('admin_notices', [$this, 'handle_maintenance_task_notice']);
 
+                add_filter('gettext', [$this, 'filter_get_text'], 101, 3);
+
                 // Menu
                 add_action('multiple_authors_admin_menu_page', [$this, 'action_admin_menu_page']);
                 add_action('multiple_authors_admin_submenu', [$this, 'action_admin_submenu'], 50);
@@ -178,8 +180,9 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_filter('multiple_authors_validate_module_settings', [$this, 'validate_module_settings'], 10, 2);
             add_filter('publishpress_multiple_authors_settings_tabs', [$this, 'settings_tab']);
 
-            add_filter('gettext', [$this, 'filter_get_text'], 101, 3);
-            add_filter('body_class', [$this, 'filter_body_class']);
+            if (!is_admin()) {
+                add_filter('body_class', [$this, 'filter_body_class']);
+            }
 
             // Fix upload permissions for multiple authors.
             add_filter('map_meta_cap', [$this, 'filter_map_meta_cap'], 10, 4);
@@ -603,17 +606,31 @@ if (!class_exists('MA_Multiple_Authors')) {
          */
         public function settings_title_appended_to_content_option($args = [])
         {
-            $id    = $this->module->options_group_name . '_title_appended_to_content';
-            $value = isset($this->module->options->title_appended_to_content) ? $this->module->options->title_appended_to_content : esc_html__(
+            $idSingle    = $this->module->options_group_name . '_title_appended_to_content';
+            $singleValue = isset($this->module->options->title_appended_to_content) ? $this->module->options->title_appended_to_content : esc_html__(
                 'Author',
                 'publishpress-authors'
             );
 
-            echo '<label for="' . $id . '">';
+            $idPlural    = $this->module->options_group_name . '_title_appended_to_content_plural';
+            $pluralValue = isset($this->module->options->title_appended_to_content_plural) ? $this->module->options->title_appended_to_content_plural : esc_html__(
+                'Authors',
+                'publishpress-authors'
+            );
+
+            echo '<div class="ppma-settings-left-column">';
+            echo '<label for="' . $idSingle . '">' . esc_html__('Single', 'publishpress-authors') . '</label>';
             echo '<input type="text" value="' . esc_attr(
-                    $value
-                ) . '" id="' . $id . '" name="' . $this->module->options_group_name . '[title_appended_to_content]" class="regular-text" />';
-            echo '</label>';
+                    $singleValue
+                ) . '" id="' . $idSingle . '" name="' . $this->module->options_group_name . '[title_appended_to_content]" class="regular-text" />';
+            echo '</div>';
+
+            echo '<div class="ppma-settings-left-column">';
+            echo '<label for="' . $idPlural . '">' . esc_html__('Plural', 'publishpress-authors') . '</label>';
+            echo '<input type="text" value="' . esc_attr(
+                    $pluralValue
+                ) . '" id="' . $idPlural . '" name="' . $this->module->options_group_name . '[title_appended_to_content_plural]" class="regular-text" />';
+            echo '</div>';
         }
 
         /**
@@ -1008,7 +1025,15 @@ if (!class_exists('MA_Multiple_Authors')) {
          */
         public function filter_get_text($translation, $text, $domain)
         {
-            if (!Utils::is_valid_page()) {
+            global $pagenow;
+
+            if (!in_array($pagenow, ['edit-tags.php', 'term.php'])) {
+                return $translation;
+            }
+
+            $taxonomy = isset($_GET['taxonomy']) ? $_GET['taxonomy'] : null;
+
+            if ('author' !== $taxonomy) {
                 return $translation;
             }
 

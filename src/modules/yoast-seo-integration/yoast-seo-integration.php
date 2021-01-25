@@ -74,16 +74,6 @@ if (!class_exists('MA_Yoast_Seo_Integration')) {
             parent::__construct();
         }
 
-        private function hasNotCompatibleYoastSeoWarningLogTransient()
-        {
-            return false !== get_transient('publishpress_authors_not_compatible_yoast_warning');
-        }
-
-        private function addNotCompatibleYoastSeoWarningLogTransient()
-        {
-            set_transient('publishpress_authors_not_compatible_yoast_warning', true, 24 * 60 * 60 * 2);
-        }
-
         /**
          * Initialize the module. Conditionally loads if the module is enabled
          */
