@@ -678,7 +678,7 @@ class Utils
         }
 
         if (version_compare(WPSEO_VERSION, '13.4.1', '<')) {
-            if (!$this->hasNotCompatibleYoastSeoWarningLogTransient()) {
+            if (!get_transient('publishpress_authors_not_compatible_yoast_warning')) {
                 error_log(
                     sprintf(
                         '[PublishPress Authors] %s %s - %s. %s',
@@ -689,7 +689,7 @@ class Utils
                     )
                 );
 
-                $this->addNotCompatibleYoastSeoWarningLogTransient();
+                set_transient('publishpress_authors_not_compatible_yoast_warning', true, 24 * 60 * 60 * 2);
             }
 
             return false;

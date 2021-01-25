@@ -12,7 +12,7 @@
 defined('ABSPATH') or die('No direct script access allowed.');
 
 if (!defined('PP_AUTHORS_VERSION')) {
-    define('PP_AUTHORS_VERSION', '3.10.0');
+    define('PP_AUTHORS_VERSION', '3.11.0');
     define('PP_AUTHORS_FILE', 'publishpress-authors/publishpress-authors.php');
     define('PP_AUTHORS_BASE_PATH', plugin_dir_path(__DIR__ . '/publishpress-authors.php'));
     define('PP_AUTHORS_MODULES_PATH', PP_AUTHORS_BASE_PATH . 'src/modules/');
@@ -40,5 +40,9 @@ if (!defined('PP_AUTHORS_VERSION')) {
 
     if (!defined('PUBLISHPRESS_AUTHORS_SYNC_AUTHOR_SLUG_CHUNK_SIZE')) {
         define('PUBLISHPRESS_AUTHORS_SYNC_AUTHOR_SLUG_CHUNK_SIZE', 50);
+    }
+
+    if (!defined('PUBLISHPRESS_AUTHORS_LOAD_STYLE_IN_FRONTEND')) {
+        define('PUBLISHPRESS_AUTHORS_LOAD_STYLE_IN_FRONTEND', true);
     }
 }

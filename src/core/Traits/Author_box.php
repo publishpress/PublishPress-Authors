@@ -21,6 +21,11 @@ trait Author_box
     protected $postCache = [];
 
     /**
+     * @var int
+     */
+    protected $authorsCount = 0;
+
+    /**
      * Returns true if the post type and current page is valid.
      *
      * @return bool
@@ -83,14 +88,16 @@ trait Author_box
 
         $html = '';
 
-        wp_enqueue_style('dashicons');
-        wp_enqueue_style(
-            'multiple-authors-widget-css',
-            PP_AUTHORS_ASSETS_URL . 'css/multiple-authors-widget.css',
-            false,
-            PP_AUTHORS_VERSION,
-            'all'
-        );
+        if (apply_filters('publishpress_authors_load_style_in_frontend', PUBLISHPRESS_AUTHORS_LOAD_STYLE_IN_FRONTEND)) {
+            wp_enqueue_style('dashicons');
+            wp_enqueue_style(
+                'multiple-authors-widget-css',
+                PP_AUTHORS_ASSETS_URL . 'css/multiple-authors-widget.css',
+                false,
+                PP_AUTHORS_VERSION,
+                'all'
+            );
+        }
 
         if (!function_exists('multiple_authors')) {
             require_once PP_AUTHORS_BASE_PATH . 'src/functions/template-tags.php';
@@ -100,13 +107,6 @@ trait Author_box
         if (!empty($target)) {
             $css_class = 'multiple-authors-target-' . str_replace('_', '-', $target);
         }
-
-        $title = isset($legacyPlugin->modules->multiple_authors->options->title_appended_to_content)
-            ? $legacyPlugin->modules->multiple_authors->options->title_appended_to_content : esc_html__(
-                'Authors',
-                'publishpress-authors'
-            );
-        $title = esc_html($title);
 
         if (empty($layout)) {
             $layout = isset($legacyPlugin->modules->multiple_authors->options->layout)
@@ -127,11 +127,31 @@ trait Author_box
             $post = $this->postCache[$post_id];
         }
 
+        $authorsList = get_multiple_authors($post_id, true, $archive);
+
+        $this->authorsCount = count($authorsList);
+
+        if ($this->authorsCount === 1) {
+            $title = isset($legacyPlugin->modules->multiple_authors->options->title_appended_to_content)
+                ? $legacyPlugin->modules->multiple_authors->options->title_appended_to_content : esc_html__(
+                    'Author',
+                    'publishpress-authors'
+                );
+        } else {
+            $title = isset($legacyPlugin->modules->multiple_authors->options->title_appended_to_content_plural)
+                ? $legacyPlugin->modules->multiple_authors->options->title_appended_to_content_plural : esc_html__(
+                    'Authors',
+                    'publishpress-authors'
+                );
+        }
+
+        $title = esc_html($title);
+
         $args = [
             'show_title' => $show_title,
             'css_class'  => $css_class,
             'title'      => $title,
-            'authors'    => get_multiple_authors($post_id, true, $archive),
+            'authors'    => $authorsList,
             'target'     => $target,
             'item_class' => 'author url fn',
             'layout'     => $layout,

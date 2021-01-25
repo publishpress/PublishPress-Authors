@@ -262,4 +262,24 @@ class get_multiple_authorsCest
 
         $I->assertCount(2, $authors);
     }
+
+    public function testGetMultipleAuthors_WithNoAuthorTermsForThePostButAnAuthorWithTaxonomy_shouldReturnAnAuthorInstance(WpunitTester $I)
+    {
+        global $wpdb;
+
+        $userId = $I->factory('create user0')->user->create();
+
+        $author = Author::create_from_user($userId);
+
+        $postId = $I->factory('create post0')->post->create(
+            ['post_type' => 'post', 'post_author' => $userId]
+        );
+
+        // Force to remove the author term relationship to the post.
+        wp_remove_object_terms($postId, [$author->term_id], 'author');
+
+        $authors = get_multiple_authors($postId);
+
+        $I->assertInstanceOf('MultipleAuthors\\Classes\\Objects\\Author', $authors[0]);
+    }
 }

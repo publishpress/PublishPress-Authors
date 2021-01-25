@@ -285,3 +285,12 @@ body.block-editor-page select[id^="post-author-selector-"] {
 .fixed .column-posts {
     width: 100px;
 }
+
+.ppma-settings-left-column {
+    display: block;
+    margin-bottom: 15px;
+}
+
+.ppma-settings-left-column label {
+    display: block;
+}

@@ -544,6 +544,10 @@ class Plugin
             // Add the wordpress footer
             $html .= $footer;
 
+            if (!defined('PUBLISHPRESS_AUTHORS_FOOTER_DISPLAYED')) {
+                define('PUBLISHPRESS_AUTHORS_FOOTER_DISPLAYED', true);
+            }
+
             return $html;
         }
 
@@ -606,6 +610,10 @@ class Plugin
     public function filterDisplayFooter($shouldDisplay = true)
     {
         global $current_screen;
+
+        if (defined('PUBLISHPRESS_AUTHORS_FOOTER_DISPLAYED')) {
+            return false;
+        }
 
         if ($current_screen->base === 'edit-tags' && $current_screen->taxonomy === 'author') {
             return true;

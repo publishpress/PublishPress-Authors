@@ -44,7 +44,6 @@ if (!function_exists('get_multiple_authors')) {
 
         $postId = (int)$post;
 
-
         $cacheKey = $postId . ':' . ($filter_the_author ? 1 : 0) . ':' . ($archive ? 1 : 0);
 
         $authorName = '';
@@ -126,17 +125,26 @@ if (!function_exists('get_multiple_authors')) {
             } else {
                 // Fallback to the post author
                 $post = get_post($postId);
-                $user = get_user_by('id', $post->post_author);
 
-                if ($user) {
-                    $user->link = get_author_posts_url($user->ID);
+                $author = Author::get_by_user_id($post->post_author);
 
-                    if ($filter_the_author) {
-                        $user->display_name = apply_filters('the_author', $user->display_name);
+                if (empty($author) || is_wp_error($author)) {
+                    $user = get_user_by('id', $post->post_author);
+
+                    if ($user) {
+                        $user->link = get_author_posts_url($user->ID);
+
+                        if ($filter_the_author) {
+                            $user->display_name = apply_filters('the_author', $user->display_name);
+                        }
+
+                        $author = $user;
+                    } else {
+                        return [];
                     }
-
-                    $authors = [$user];
                 }
+
+                $authors[] = $author;
             }
 
             wp_cache_set($cacheKey, $authors, 'get_multiple_authors:authors');
@@ -207,7 +215,6 @@ if (!function_exists('is_multiple_author_for_post')) {
         }
         $coauthors = $postAuthorsCache[$post_id];
 
-
         if (is_numeric($user)) {
             $user = (int)$user;
 
@@ -221,7 +228,15 @@ if (!function_exists('is_multiple_author_for_post')) {
         }
 
         if (empty($user_term) || is_wp_error($user_term)) {
-            return false;
+            $post = get_post($post_id);
+
+            if (is_numeric($user)) {
+                $userId = $user;
+            } else {
+                $userId = $user->ID;
+            }
+
+            return (int)$post->post_author === (int)$userId;
         }
 
         foreach ($coauthors as $coauthor) {
