@@ -9,10 +9,10 @@
     position: relative;
     min-height: 35px;
     line-height: 35px;
-    border-bottom: 1px solid #dddddd;
-    border-top: 1px solid #dddddd;
-    border-bottom: 1px solid #dddddd;
-    border-top: 1px solid #dddddd;
+    border-bottom: 1px solid #999;
+    border-top: 1px solid #999;
+    border-bottom: 1px solid #999;
+    border-top: 1px solid #999;
     padding: 0.5em 0;
     margin: -1px 0 0 0;
 }
@@ -31,9 +31,10 @@
     list-style: none;
     position: relative;
     min-height: 120px;
-    border: 1px solid #dddddd;
+    border: 1px solid #999;
     padding: 1.5em;
     margin-bottom: 1em;
+    margin-left: 0;
 }
 
 .pp-multiple-authors-layout-boxed .avatar,
@@ -70,6 +71,7 @@
     color: #fff;
     margin-bottom: 0;
     margin-right: 1px;
+    text-decoration: none;
 }
 
 .pp-multiple-authors-layout-boxed .multiple-authors-links a:hover,
@@ -93,6 +95,7 @@
 
 .pp-multiple-authors-layout-boxed .multiple-authors-links a:nth-child(1) span {
     font-size: 14px;
+    vertical-align: middle;
 }
 
 .pp-multiple-authors-layout-boxed p {
@@ -107,7 +110,7 @@
 
 .pp-multiple-authors-layout-centered .ppma-links a,
 .pp-multiple-authors-layout-boxed .ppma-links a {
-    color: #dddddd;
+    color: #999;
     text-decoration: none;
     border-bottom: none;
     -webkit-box-shadow: none;
@@ -124,7 +127,7 @@
     list-style: none;
     position: relative;
     min-height: 120px;
-    border: 1px solid #dddddd;
+    border: 1px solid #999;
     padding: 1em;
     margin-bottom: 1em;
     text-align: center;
@@ -174,7 +177,7 @@
     }
 
     .pp-multiple-authors-layout-boxed ul li > div:nth-child(1) {
-        flex: 0 0 115px;
+        flex: 0 0 110px;
     }
 
     .pp-multiple-authors-layout-boxed ul li > div:nth-child(2) {
