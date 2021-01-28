@@ -19,19 +19,21 @@
                     </div>
                     <p class="multiple-authors-description">{{ author.description|raw }}</p>
 
-                    {% if show_email or show_site %}
-                        <p class="multiple-authors-links">
-                            {% if show_email and author.user_email %}
-                                <a href="mailto:{{ author.user_email }}" target="_blank"><span
-                                            class="dashicons dashicons-email"></span></a>
-                            {% endif %}
+                    <p class="multiple-authors-links">
+                        <a href="{{ author.link }}">
+                            <span>View all posts</span>
+                        </a>
 
-                            {% if show_site and author.user_url %}
-                                <a href="{{ author.user_url }}" target="_blank"><span
-                                            class="dashicons dashicons-admin-links"></span></a>
-                            {% endif %}
-                        </p>
-                    {% endif %}
+                        {% if show_email and author.user_email %}
+                            <a href="mailto:{{ author.user_email }}" target="_blank"><span
+                                        class="dashicons dashicons-email"></span></a>
+                        {% endif %}
+
+                        {% if show_site and author.user_url %}
+                            <a href="{{ author.user_url }}" target="_blank"><span
+                                        class="dashicons dashicons-admin-links"></span></a>
+                        {% endif %}
+                    </p>
                 </div>
             </li>
         {% endfor %}

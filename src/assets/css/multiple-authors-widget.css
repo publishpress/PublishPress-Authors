@@ -62,9 +62,9 @@
 }
 
 .pp-multiple-authors-layout-boxed .multiple-authors-links a {
-    border-radius: 50%;
+    border-radius: 20px;
     background: #655997;
-    width: 30px;
+    min-width: 30px;
     height: 30px;
     line-height: 30px;
     color: #fff;
@@ -80,10 +80,19 @@
 }
 
 .pp-multiple-authors-layout-boxed .multiple-authors-links a span {
-    width: 30px;
+    min-width: 30px;
     height: 30px;
     line-height: 30px;
-    font-size: 17px;
+    font-size: 16px;
+}
+
+.pp-multiple-authors-layout-boxed .multiple-authors-links a:nth-child(1) {
+    padding: 0 14px;
+    margin-right: 2px;
+}
+
+.pp-multiple-authors-layout-boxed .multiple-authors-links a:nth-child(1) span {
+    font-size: 14px;
 }
 
 .pp-multiple-authors-layout-boxed p {
