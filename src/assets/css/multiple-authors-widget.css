@@ -38,12 +38,8 @@
 
 .pp-multiple-authors-layout-boxed .avatar,
 .pp-multiple-authors-layout-boxed .photo {
-    position: static;
-    float: left;
-    margin-right: 1em;
     width: 80px;
-    height: 80px;
-    min-height: 80px;
+    height: auto;
 }
 
 .pp-multiple-authors-layout-boxed a {
@@ -121,4 +117,20 @@
     margin: auto 2px auto auto;
     vertical-align: middle;
     display: inline-block;
+}
+
+@media (min-width:769px) {
+    
+    .pp-multiple-authors-layout-boxed ul li {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .pp-multiple-authors-layout-boxed ul li > div:nth-child(1) {
+        flex: 0 0 100px;
+    }
+
+    .pp-multiple-authors-layout-boxed ul li > div:nth-child(2) {
+        flex: 1;
+    }
 }
