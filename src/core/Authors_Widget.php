@@ -17,7 +17,7 @@ class Authors_Widget extends WP_Widget
     /**
      * Sets up the widgets name etc
      */
-    public function __construct( $id_base, $name, $widget_options = array(), $control_options = array() ) {
+    public function __construct()
     {
         $this->title = esc_html__('Authors List', 'publishpress-authors');
         parent::__construct(
