@@ -50,7 +50,12 @@ class PostsSkinCards extends Skin_Cards
                 $authorNames[] = $author->display_name;
             }
 
-            echo implode(', ', $authorNames);
+            echo apply_filters(
+                'publishpress_authors_elementor_posts_skin_cards_byline',
+                implode(', ', $authorNames),
+                $authorNames,
+                $authors
+            );
             ?>
 		</span>
         <?php
