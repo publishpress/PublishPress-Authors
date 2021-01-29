@@ -37,7 +37,7 @@ class Widget extends WP_Widget {
 	/**
 	 * Sets up the widgets name etc
 	 */
-	public function __construct()
+    public function __construct( $id_base, $name, $widget_options = array(), $control_options = array() ) {
 	{
 		$this->title = esc_html__( 'Post Author', 'publishpress-authors' );
 		parent::__construct(

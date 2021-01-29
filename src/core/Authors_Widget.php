@@ -17,10 +17,10 @@ class Authors_Widget extends WP_Widget
     /**
      * Sets up the widgets name etc
      */
-    public function __construct()
+    public function __construct( $id_base, $name, $widget_options = array(), $control_options = array() ) {
     {
         $this->title = esc_html__('Authors List', 'publishpress-authors');
-        Parent::__construct(
+        parent::__construct(
             'multiple_authors_list_widget',
             $this->title,
             array(
@@ -51,7 +51,6 @@ class Authors_Widget extends WP_Widget
         /** This filter is documented in core/src/wp-includes/default-widgets.php */
         $title  = apply_filters('widget_title', $instance['title'], $instance, $this->id_base);
         $output = '';
-
 
         $output .= $this->get_author_box_markup($args, $instance);
         if (!empty($output)) {
