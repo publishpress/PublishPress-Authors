@@ -142,7 +142,10 @@ class Utils
                 "Failed to convert some authors for post {$post_id}."
             );
         }
+
         Utils::set_post_authors($post_id, $authors);
+
+        do_action('publishpress_authors_flush_cache');
 
         return $result;
     }
@@ -163,8 +166,6 @@ class Utils
 
         $authors = wp_list_pluck($authors, 'term_id');
         wp_set_object_terms($postId, $authors, 'author');
-
-        do_action('publishpress_authors_post_updated', $postId, $authors);
     }
 
     public static function detect_author_slug_mismatch() {

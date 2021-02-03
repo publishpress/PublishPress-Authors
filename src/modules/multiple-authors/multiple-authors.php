@@ -2187,6 +2187,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             Installer::convert_post_author_into_taxonomy();
             Installer::add_author_term_for_posts();
 
+            do_action('publishpress_authors_flush_cache');
+
             // nonce: migrate_coauthors
             wp_send_json(
                 [
@@ -2202,6 +2204,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             delete_transient('publishpress_authors_sync_post_author_ids');
+
+            do_action('publishpress_authors_flush_cache');
 
             wp_send_json(
                 [
@@ -2219,6 +2223,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             delete_transient('publishpress_authors_sync_author_slug_ids');
 
             update_option('publishpress_multiple_authors_usernicename_sync', 1);
+
+            do_action('publishpress_authors_flush_cache');
 
             wp_send_json(
                 [
@@ -2414,6 +2420,8 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             if (!empty($author)) {
                 Utils::set_post_authors($postId, [$author]);
+
+                do_action('publishpress_authors_flush_cache');
             }
         }
 
@@ -2484,6 +2492,8 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function actionSetPostAuthors($postId, $authors)
         {
             Utils::set_post_authors($postId, $authors);
+
+            do_action('publishpress_authors_flush_cache');
         }
     }
 }
