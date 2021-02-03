@@ -606,17 +606,31 @@ if (!class_exists('MA_Multiple_Authors')) {
          */
         public function settings_title_appended_to_content_option($args = [])
         {
-            $id    = $this->module->options_group_name . '_title_appended_to_content';
-            $value = isset($this->module->options->title_appended_to_content) ? $this->module->options->title_appended_to_content : esc_html__(
+            $idSingle    = $this->module->options_group_name . '_title_appended_to_content';
+            $singleValue = isset($this->module->options->title_appended_to_content) ? $this->module->options->title_appended_to_content : esc_html__(
                 'Author',
                 'publishpress-authors'
             );
 
-            echo '<label for="' . $id . '">';
+            $idPlural    = $this->module->options_group_name . '_title_appended_to_content_plural';
+            $pluralValue = isset($this->module->options->title_appended_to_content_plural) ? $this->module->options->title_appended_to_content_plural : esc_html__(
+                'Authors',
+                'publishpress-authors'
+            );
+
+            echo '<div class="ppma-settings-left-column">';
+            echo '<label for="' . $idSingle . '">' . esc_html__('Single', 'publishpress-authors') . '</label>';
             echo '<input type="text" value="' . esc_attr(
-                    $value
-                ) . '" id="' . $id . '" name="' . $this->module->options_group_name . '[title_appended_to_content]" class="regular-text" />';
-            echo '</label>';
+                    $singleValue
+                ) . '" id="' . $idSingle . '" name="' . $this->module->options_group_name . '[title_appended_to_content]" class="regular-text" />';
+            echo '</div>';
+
+            echo '<div class="ppma-settings-left-column">';
+            echo '<label for="' . $idPlural . '">' . esc_html__('Plural', 'publishpress-authors') . '</label>';
+            echo '<input type="text" value="' . esc_attr(
+                    $pluralValue
+                ) . '" id="' . $idPlural . '" name="' . $this->module->options_group_name . '[title_appended_to_content_plural]" class="regular-text" />';
+            echo '</div>';
         }
 
         /**

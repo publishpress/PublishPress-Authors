@@ -1,10 +1,11 @@
 <?php namespace wordpress;
 
 use MultipleAuthors\Classes\Objects\Author;
+use WpunitTester;
 
 class the_postCest
 {
-    public function tryToGetTheFirstAuthorDataWhenPostHasMultipleAuthors(\WpunitTester $I)
+    public function tryToGetTheFirstAuthorDataWhenPostHasMultipleAuthors(WpunitTester $I)
     {
         global $post, $authordata;
 

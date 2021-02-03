@@ -7,7 +7,7 @@
  * @since       1.0.0
  */
 
-namespace MultipleAuthors;   
+namespace MultipleAuthors;
 
 use MultipleAuthors\Traits\Author_box;
 use WP_Widget;
@@ -18,17 +18,26 @@ class Widget extends WP_Widget {
 
 	/**
 	 * Widget Title
-	 * 
+	 *
 	 * @var string
-	 * 
+	 *
 	 * @since 3.4.0
 	 */
 	protected $title;
 
+    /**
+     * Widget Title for Plural
+     *
+     * @var string
+     *
+     * @since 3.4.0
+     */
+    protected $titlePlural;
+
 	/**
 	 * Sets up the widgets name etc
 	 */
-	public function __construct() 
+	public function __construct()
 	{
 		$this->title = esc_html__( 'Post Author', 'publishpress-authors' );
 		parent::__construct(
@@ -50,25 +59,31 @@ class Widget extends WP_Widget {
 	 * @param array $args
 	 * @param array $instance
 	 */
-	public function widget( $args, $instance ) 
+	public function widget( $args, $instance )
 	{
 		$legacyPlugin = Factory::getLegacyPlugin();
 
 		$instance = wp_parse_args(
 			(array) $instance,
 			array(
-				'title' => $this->title,
+                'title'        => $this->title,
+                'title_plural' => !empty($this->titlePlural) ? $this->titlePlural : $this->title,
 			)
 		);
 
-		/** This filter is documented in core/src/wp-includes/default-widgets.php */
-		$title  = apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base );
 		$output = '';
 
 		if ( $this->should_display_author_box() ) {
 			$layout = isset( $instance['layout'] ) ? $instance['layout'] : $legacyPlugin->modules->multiple_authors->options->layout;
 
 			$output .= $this->get_author_box_markup( 'widget', false, $layout );
+
+            /** This filter is documented in core/src/wp-includes/default-widgets.php */
+            if ($this->authorsCount <= 1) {
+                $title = apply_filters('widget_title', $instance['title'], $instance, $this->id_base);
+            } else {
+                $title = apply_filters('widget_title', $instance['title_plural'], $instance, $this->id_base);
+            }
 
 			if ( ! empty( $output ) ) {
 				echo $args['before_widget'];
@@ -84,7 +99,7 @@ class Widget extends WP_Widget {
 	 *
 	 * @param array $instance The widget options
 	 */
-	public function form( $instance ) 
+	public function form( $instance )
 	{
 		$legacyPlugin = Factory::getLegacyPlugin();
 
@@ -92,28 +107,34 @@ class Widget extends WP_Widget {
 			(array) $instance,
 			array(
 				'title'  => $this->title,
+				'title_plural'  => $this->titlePlural,
 				'layout' => $legacyPlugin->modules->multiple_authors->options->layout,
 			)
 		);
 
-		$title  = strip_tags( $instance['title'] );
-		$layout = strip_tags( $instance['layout'] );
+        $titleSingle = strip_tags($instance['title']);
+        $titlePlural = strip_tags($instance['title_plural']);
+        $layout      = strip_tags($instance['layout']);
 
 		$context = array(
 			'labels'  => array(
-				'title'  => esc_html__( 'Title', 'publishpress-authors' ),
+				'title'  => esc_html__( 'Single Title', 'publishpress-authors' ),
+				'title_plural'  => esc_html__( 'Plural Title', 'publishpress-authors' ),
 				'layout' => esc_html__( 'Layout', 'publishpress-authors' ),
 			),
 			'ids'     => array(
 				'title'  => $this->get_field_id( 'title' ),
+				'title_plural'  => $this->get_field_id( 'title_plural' ),
 				'layout' => $this->get_field_id( 'layout' ),
 			),
 			'names'   => array(
 				'title'  => $this->get_field_name( 'title' ),
+				'title_plural'  => $this->get_field_name( 'title_plural' ),
 				'layout' => $this->get_field_name( 'layout' ),
 			),
 			'values'  => array(
-				'title'  => $title,
+				'title'  => $titleSingle,
+				'title_plural'  => $titlePlural,
 				'layout' => $layout,
 			),
 			'layouts' => apply_filters( 'pp_multiple_authors_author_layouts', array() ),
@@ -136,8 +157,9 @@ class Widget extends WP_Widget {
 
 		$instance = array();
 
-		$instance['title']  = sanitize_text_field( $new_instance['title'] );
-		$instance['layout'] = sanitize_text_field( $new_instance['layout'] );
+        $instance['title']        = sanitize_text_field($new_instance['title']);
+        $instance['title_plural'] = sanitize_text_field($new_instance['title_plural']);
+        $instance['layout']       = sanitize_text_field($new_instance['layout']);
 
 		$layouts = apply_filters( 'pp_multiple_authors_author_layouts', array() );
 
