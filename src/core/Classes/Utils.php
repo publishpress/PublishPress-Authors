@@ -164,41 +164,7 @@ class Utils
         $authors = wp_list_pluck($authors, 'term_id');
         wp_set_object_terms($postId, $authors, 'author');
 
-        static::flushWPECache();
-    }
-
-    /**
-     * Full WP Engine cache flush.
-     *
-     * Based on WP Engine Cache Flush by Aaron Holbrook
-     * https://github.org/a7/wpe-cache-flush/
-     * http://github.org/a7/
-     */
-    public static function flushWPECache()
-    {
-        if (!class_exists('WpeCommon')) {
-            return false;
-        }
-
-        if (function_exists('WpeCommon::purge_memcached')) {
-            \WpeCommon::purge_memcached();
-        }
-
-        if (function_exists('WpeCommon::clear_maxcdn_cache')) {
-            \WpeCommon::clear_maxcdn_cache();
-        }
-
-        if (function_exists('WpeCommon::purge_varnish_cache')) {
-            \WpeCommon::purge_varnish_cache();
-        }
-
-        global $wp_object_cache;
-        // Check for valid cache. Sometimes this is broken -- we don't know why! -- and it crashes when we flush.
-        // If there's no cache, we don't need to flush anyway.
-
-        if (!empty($wp_object_cache) && is_object($wp_object_cache)) {
-            @wp_cache_flush();
-        }
+        do_action('publishpress_authors_post_updated', $postId, $authors);
     }
 
     public static function detect_author_slug_mismatch() {
@@ -736,6 +702,6 @@ class Utils
 
     public static function isWPEngineInstalled()
     {
-        return defined('WPE_PLUGIN_VERSION');
+        return class_exists('WpeCommon');
     }
 }
