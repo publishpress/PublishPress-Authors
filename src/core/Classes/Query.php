@@ -20,8 +20,6 @@ use MultipleAuthors\Classes\Objects\Author;
  */
 class Query
 {
-    private static $userCacheBySlug = [];
-
     /**
      * Fix for author pages 404ing or not properly displaying on author pages
      *
@@ -51,14 +49,9 @@ class Query
             return;
         }
 
-        if (!isset(static::$userCacheBySlug[$author_name])) {
-            static::$userCacheBySlug[$author_name] = get_user_by('slug', $author_name);
-        }
+        $author = Utils::getUserBySlug($author_name);
 
-        $author = null;
-        if (is_object(static::$userCacheBySlug[$author_name])) {
-            $author = static::$userCacheBySlug[$author_name];
-        } else {
+        if (empty($author)) {
             $authorTerm = get_term_by('slug', $author_name, 'author');
 
             if (is_object($authorTerm)) {
@@ -113,18 +106,14 @@ class Query
         if (empty($author_name)) {
             $author_id = (int)$query->get('author');
 
-            $user = null;
-            if (!isset(static::$userCacheBySlug[$author_name])) {
-                static::$userCacheBySlug[$author_name] = get_user_by('id', $author_id);
-                $user = static::$userCacheBySlug[$author_name];
-            }
+            $author = Utils::getUserBySlug($author_name);
 
-            if (!$author_id || !$user) {
+            if (!$author_id || !$author) {
                 return $where;
             }
 
-            $query->queried_object = $user;
-            $query->queried_object_id = $user->ID;
+            $query->queried_object = $author;
+            $query->queried_object_id = $author->ID;
         }
 
         if (is_a($query->queried_object, 'WP_User')) {
