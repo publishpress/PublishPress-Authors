@@ -178,6 +178,10 @@ class LegacyPlugin
             $defaultDirs['elementor-integration'] = PP_AUTHORS_MODULES_PATH;
         }
 
+        if (Utils::isPolylangInstalled()) {
+            $defaultDirs['polylang-integration'] = PP_AUTHORS_MODULES_PATH;
+        }
+
         if (Utils::isGenesisInstalled()) {
             $defaultDirs['genesis-integration'] = PP_AUTHORS_MODULES_PATH;
         }
