@@ -5,7 +5,7 @@
  * Description: PublishPress Authors allows you to add multiple authors and guest authors to WordPress posts
  * Author:      PublishPress
  * Author URI:  https://publishpress.com
- * Version: 3.11.0
+ * Version: 3.11.0-hotfix-345-nested-pages-php-warnings
  * Text Domain: publishpress-authors
  *
  * ------------------------------------------------------------------------------
