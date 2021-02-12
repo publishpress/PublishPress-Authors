@@ -697,4 +697,9 @@ class Utils
 
         return true;
     }
+
+    public function isTheSEOFrameworkInstalled()
+    {
+        return defined('THE_SEO_FRAMEWORK_VERSION');
+    }
 }
