@@ -115,6 +115,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: Fixed encoding of UTF-8 chars in the Author URL column in the Authors list, #352;
 * Fixed: Fixed PHP warnings on Nested Pages plugin, #345;
 * Fixed: Improved performance on author pages reducing the number of database queries only looking for an author taxonomy if a user was not found;
+* Fixed: Fix compatibility with the SEO Framework archive title for guest authors, #351;
 
 = [3.11.0] - 2021-01-25 =
 
