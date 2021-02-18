@@ -50,6 +50,11 @@ class Utils
     private static $enabledPostTypes = null;
 
     /**
+     * @var string
+     */
+    protected static $defaultLayout = null;
+
+    /**
      * Convert co-authors to authors on a post.
      *
      * Errors if the post already has authors. To re-convert, remove authors
@@ -696,5 +701,16 @@ class Utils
         }
 
         return true;
+    }
+
+    public static function getDefaultLayout()
+    {
+        if (!is_null(self::$defaultLayout)) {
+            return self::$defaultLayout;
+        }
+
+        self::$defaultLayout = apply_filters('pp_multiple_authors_default_layout', 'boxed');
+
+        return self::$defaultLayout;
     }
 }
