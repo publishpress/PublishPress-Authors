@@ -108,6 +108,10 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [3.12.0] - UNRELEASED =
+
+* Fixed: Fixed encoding of UTF-8 chars in the Author URL column in the Authors list, #352;
+
 = [3.11.0] - 2021-01-25 =
 
 * Added: Added fields for setting the plural and single title to the author box and widget, #75;
