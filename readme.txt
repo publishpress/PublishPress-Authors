@@ -116,6 +116,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: Fixed PHP warnings on Nested Pages plugin, #345;
 * Fixed: Improved performance on author pages reducing the number of database queries only looking for an author taxonomy if a user was not found;
 * Fixed: Fix compatibility with the SEO Framework archive title for guest authors, #351;
+* Fixed: Fixed the query to list authors considering only published posts, #350;
 
 = [3.11.0] - 2021-01-25 =
 
