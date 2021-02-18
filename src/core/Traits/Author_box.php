@@ -11,6 +11,7 @@ namespace MultipleAuthors\Traits;
 
 use MultipleAuthors\Classes\Authors_Iterator;
 use MultipleAuthors\Classes\Legacy\Util;
+use MultipleAuthors\Classes\Objects\Post;
 use MultipleAuthors\Factory;
 
 trait Author_box
@@ -120,7 +121,7 @@ trait Author_box
             ? 'yes' === $legacyPlugin->modules->multiple_authors->options->show_site_link : true;
 
         if (!isset($this->postCache[$post_id])) {
-            $post = new \MultipleAuthors\Classes\Objects\Post($post_id);
+            $post = new Post($post_id);
 
             $this->postCache[$post_id] = $post;
         } else {

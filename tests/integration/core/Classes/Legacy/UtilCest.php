@@ -2,28 +2,16 @@
 
 use Codeception\Example;
 use MultipleAuthors\Classes\Legacy\Util;
-
-use function tad\WPBrowser\vendorDir;
+use WP_Query;
+use WP_Screen;
+use WpunitTester;
 
 class UtilCest
 {
-    protected function cleanUp(\WpunitTester $I)
-    {
-        global $post, $typenow, $pagenow, $current_screen;
-
-        $post           = null;
-        $typenow        = null;
-        $pagenow        = null;
-        $current_screen = null;
-
-        $_REQUEST['post_type'] = null;
-        $_REQUEST['post']      = null;
-    }
-
     /**
      * @before cleanup
      */
-    public function testGetPostPostType_WithExistingPostId_ReturnsThePostTypeForThePost(\WpunitTester $I)
+    public function testGetPostPostType_WithExistingPostId_ReturnsThePostTypeForThePost(WpunitTester $I)
     {
         $expectedPostType = 'page';
 
@@ -37,7 +25,7 @@ class UtilCest
     /**
      * @before cleanup
      */
-    public function testGetPostPostType_WithExistingPost_ReturnsThePostTypeForThePost(\WpunitTester $I)
+    public function testGetPostPostType_WithExistingPost_ReturnsThePostTypeForThePost(WpunitTester $I)
     {
         $expectedPostType = 'page';
 
@@ -61,7 +49,7 @@ class UtilCest
      *
      * @before cleanup
      */
-    public function testGetPostPostType_WithNonExistingPostId_ReturnsFalse(\WpunitTester $I, Example $example)
+    public function testGetPostPostType_WithNonExistingPostId_ReturnsFalse(WpunitTester $I, Example $example)
     {
         $postType = Util::getPostPostType($example[0]);
 
@@ -71,7 +59,7 @@ class UtilCest
     /**
      * @before cleanup
      */
-    public function testGetCurrentPostType_ForPostInTheGlobalVar_ReturnsPostPostType(\WpunitTester $I)
+    public function testGetCurrentPostType_ForPostInTheGlobalVar_ReturnsPostPostType(WpunitTester $I)
     {
         $expectedPostType = 'page';
 
@@ -89,7 +77,7 @@ class UtilCest
     /**
      * @before cleanup
      */
-    public function testGetCurrentPostType_ForTypenowGlobalVar_ReturnsPostPostType(\WpunitTester $I)
+    public function testGetCurrentPostType_ForTypenowGlobalVar_ReturnsPostPostType(WpunitTester $I)
     {
         global $typenow;
 
@@ -103,13 +91,13 @@ class UtilCest
     /**
      * @before cleanup
      */
-    public function testGetCurrentPostType_ForCurrentScreenPostType_ReturnsPostPostType(\WpunitTester $I)
+    public function testGetCurrentPostType_ForCurrentScreenPostType_ReturnsPostPostType(WpunitTester $I)
     {
         global $current_screen;
 
         $expectedPostType = 'page';
 
-        $current_screen            = \WP_Screen::get('pp_authors_test');
+        $current_screen            = WP_Screen::get('pp_authors_test');
         $current_screen->post_type = $expectedPostType;
 
         $postType = Util::getCurrentPostType();
@@ -120,7 +108,7 @@ class UtilCest
     /**
      * @before cleanup
      */
-    public function testGetCurrentPostType_ForRequestVar_ReturnsPostPostType(\WpunitTester $I)
+    public function testGetCurrentPostType_ForRequestVar_ReturnsPostPostType(WpunitTester $I)
     {
         $expectedPostType = 'page';
 
@@ -134,7 +122,7 @@ class UtilCest
     /**
      * @before cleanup
      */
-    public function testGetCurrentPostType_ForPostPagenow_ReturnsPostPostType(\WpunitTester $I)
+    public function testGetCurrentPostType_ForPostPagenow_ReturnsPostPostType(WpunitTester $I)
     {
         global $pagenow;
 
@@ -151,7 +139,7 @@ class UtilCest
     /**
      * @before cleanup
      */
-    public function testGetCurrentPostType_ForEditPagenowWithNoGetParam_ReturnsPost(\WpunitTester $I)
+    public function testGetCurrentPostType_ForEditPagenowWithNoGetParam_ReturnsPost(WpunitTester $I)
     {
         global $pagenow;
 
@@ -165,15 +153,28 @@ class UtilCest
     /**
      * @before cleanup
      */
-    public function testGetCurrentPostType_ForAuthorPage_ReturnsPost(\WpunitTester $I)
+    public function testGetCurrentPostType_ForAuthorPage_ReturnsPost(WpunitTester $I)
     {
         global $wp_query;
 
-        $wp_query            = new \WP_Query();
+        $wp_query            = new WP_Query();
         $wp_query->is_author = true;
 
         $postType = Util::getCurrentPostType();
 
         $I->assertEquals('post', $postType);
+    }
+
+    protected function cleanUp(WpunitTester $I)
+    {
+        global $post, $typenow, $pagenow, $current_screen;
+
+        $post           = null;
+        $typenow        = null;
+        $pagenow        = null;
+        $current_screen = null;
+
+        $_REQUEST['post_type'] = null;
+        $_REQUEST['post']      = null;
     }
 }
