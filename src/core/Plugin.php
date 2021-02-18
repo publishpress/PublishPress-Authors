@@ -1082,7 +1082,6 @@ class Plugin
         }
 
         global $wp_query;
-        global $authordata;
 
         if (!is_object($wp_query)) {
             return;
