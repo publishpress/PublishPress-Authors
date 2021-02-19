@@ -117,6 +117,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: Improved performance on author pages reducing the number of database queries only looking for an author taxonomy if a user was not found;
 * Fixed: Fix compatibility with the SEO Framework archive title for guest authors, #351;
 * Fixed: Fixed the query to list authors considering only published posts, #350;
+* Fixed: Fixed warning about undefined index: ID, the rest-api.php file, #342;
 
 = [3.11.0] - 2021-01-25 =
 
