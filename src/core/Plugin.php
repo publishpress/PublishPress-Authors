@@ -437,6 +437,25 @@ class Plugin
      */
     public function action_init_late()
     {
+        // Avoid PHP Warnings with Nested Pages plugin due to unexpected object variable type in $post->post_author array
+        // Also hide the Author selector in the NP modal until we develop an integration
+        //
+        // see NestedPages\Entities\Post\PostRepository\getTaxonomyCSS()
+        if (is_admin() && !empty($_REQUEST['page']) && ('nestedpages' == $_REQUEST['page'])) {
+            add_action(
+                'admin_print_scripts', 
+                function() {
+                    ?>
+                    <style type="text/css">
+                        div.np-inline-modal div.np_author {display:none;}
+                    </style>
+                    <?php
+                }
+            );
+
+            return;
+        }
+
         // Register new taxonomy so that we can store all of the relationships
         $args = [
             'labels'             => [
@@ -1063,7 +1082,6 @@ class Plugin
         }
 
         global $wp_query;
-        global $authordata;
 
         if (!is_object($wp_query)) {
             return;
