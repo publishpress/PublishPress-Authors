@@ -122,6 +122,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: Fix the PHP warning "Call to a member function get_user_object() on bool", #348;
 * Fixed: Duplicated queries caused by multiple calls to "get_user_by" for the same slug, #343;
 * Fixed: Fix the authors list widget form removing not used field, #339;
+* Fixed: Fix error: "Twig file not found" for shortcodes in the Pro version using a custom layout. And avoid to show the authors twice if Free and Pro are activated, #336;
 
 = [3.11.0] - 2021-01-25 =
 
