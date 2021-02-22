@@ -706,7 +706,7 @@ class Utils
     {
         return class_exists('WpeCommon');
     }
-  
+
     public static function getUserBySlug($slug)
     {
         $found = null;
@@ -723,8 +723,8 @@ class Utils
 
         return $user;
     }
-  
-    public function isTheSEOFrameworkInstalled()
+
+    public static function isTheSEOFrameworkInstalled()
     {
         return defined('THE_SEO_FRAMEWORK_VERSION');
     }
