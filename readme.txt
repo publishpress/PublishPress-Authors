@@ -108,6 +108,10 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [3.12.0] - UNRELEASED =
+
+* Fixed: Fixed the invalid taxonomy error message, #326;
+
 = [3.11.0] - UNRELEASED =
 
 * Added: Added Rest API support to list the post's authors, #311;
