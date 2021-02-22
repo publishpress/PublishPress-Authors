@@ -53,7 +53,7 @@ class Plugin
     {
         // Register our models
         add_action('init', [$this, 'action_init']);
-        add_action('init', [$this, 'action_init_late'], 100);
+        add_action('init', [$this, 'action_init_late'], 10);
 
         // Installation hooks
         add_action(
@@ -116,7 +116,7 @@ class Plugin
                 'MultipleAuthors\\Classes\\Content_Model',
                 'action_init_late_register_taxonomy_for_object_type',
             ],
-            100
+            10
         );
         add_filter(
             'term_link',
