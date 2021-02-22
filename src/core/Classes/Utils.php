@@ -715,4 +715,9 @@ class Utils
 
         return $user;
     }
+  
+    public function isTheSEOFrameworkInstalled()
+    {
+        return defined('THE_SEO_FRAMEWORK_VERSION');
+    }
 }

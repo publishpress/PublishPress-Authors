@@ -105,13 +105,13 @@ if (!class_exists('MA_REST_API')) {
 
             $selectedPostTypes = array_values(Util::get_post_types_for_module($legacyPlugin->modules->multiple_authors));
 
-            $post = get_post($postData['ID']);
+            $post = get_post($postData['id']);
 
             if (!in_array($post->post_type, $selectedPostTypes)) {
                 return [];
             }
 
-            $authors = get_multiple_authors($postData['ID']);
+            $authors = get_multiple_authors($postData['id']);
 
             $authorsData = [];
 
