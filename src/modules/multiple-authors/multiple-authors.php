@@ -171,7 +171,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             // Filters the list of authors in the Improved Notifications add-on.
             add_filter(
-                'publishpress_notif_workflow_receiver_post_authors',
+                'publishpress_notifications_receiver_post_authors',
                 [$this, 'filter_workflow_receiver_post_authors'],
                 10,
                 3
@@ -992,23 +992,27 @@ if (!class_exists('MA_Multiple_Authors')) {
          * by the improved notifications add-on.
          *
          * @param array $receivers
-         * @param WP_Post $workflow
+         * @param int $workflowPostID
          * @param array $args
          *
          * @return array
          */
-        public function filter_workflow_receiver_post_authors($receivers, $workflow, $args)
+        public function filter_workflow_receiver_post_authors($receivers, $workflowPostID, $args)
         {
             if (!function_exists('get_multiple_authors')) {
                 include_once PP_AUTHORS_SRC_PATH . 'functions/template-tags.php';
             }
 
-            $authors = get_multiple_authors($args['post']->ID);
+            $authors = get_multiple_authors($args['params']['post_id']);
 
             if (!empty($authors)) {
                 foreach ($authors as $author) {
                     if (!$author->is_guest() && !in_array($author->user_id, $receivers)) {
                         $receivers[] = $author->user_id;
+                    }
+
+                    if ($author->is_guest() && !empty($author->user_email)) {
+                        $receivers[] = $author->user_email;
                     }
                 }
             }
