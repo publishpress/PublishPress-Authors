@@ -70,11 +70,10 @@ class Content_Model
      *
      * @param $link
      * @param $author_id
-     * @param $author_nicename
      *
      * @return string
      */
-    public static function filter_author_link($link, $author_id, $author_nicename)
+    public static function filter_author_link($link, $author_id)
     {
         global $wp_rewrite;
 
@@ -98,6 +97,16 @@ class Content_Model
 
         // Check if the author slug is empty in the link.
         if ($link_path === str_replace('%author%', '', $permastruct)) {
+            error_log(
+                sprintf(
+                    '[PublishPress Authors] Warning - The link for the author_id="%s" was changed to the post page because the author is not specified in the given url: %s. permastruct=%s and home_url=%s',
+                    $author_id,
+                    $link,
+                    $permastruct,
+                    home_url()
+                )
+            );
+
             // Redirects to the post page, or home page on some situations.
             $link = get_the_permalink();
         }
