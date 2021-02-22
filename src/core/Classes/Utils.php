@@ -143,7 +143,10 @@ class Utils
                 "Failed to convert some authors for post {$post_id}."
             );
         }
+
         Utils::set_post_authors($post_id, $authors);
+
+        do_action('publishpress_authors_flush_cache');
 
         return $result;
     }
@@ -699,6 +702,11 @@ class Utils
         return true;
     }
 
+    public static function isWPEngineInstalled()
+    {
+        return class_exists('WpeCommon');
+    }
+  
     public static function getUserBySlug($slug)
     {
         $found = null;
