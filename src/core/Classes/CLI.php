@@ -133,8 +133,11 @@ class CLI
                 Utils::set_post_authors($post_id, [$author]);
                 WP_CLI::log("Created author and assigned to post {$post_id}.");
             }
+
             $successes++;
         } // End foreach().
+
+        do_action('publishpress_authors_flush_cache');
 
         WP_CLI\Utils\report_batch_operation_results('post author', 'convert', $total, $successes, $failures);
     }

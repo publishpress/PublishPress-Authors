@@ -53,7 +53,7 @@ class Plugin
     {
         // Register our models
         add_action('init', [$this, 'action_init']);
-        add_action('init', [$this, 'action_init_late'], 100);
+        add_action('init', [$this, 'action_init_late'], 10);
 
         // Installation hooks
         add_action(
@@ -116,7 +116,7 @@ class Plugin
                 'MultipleAuthors\\Classes\\Content_Model',
                 'action_init_late_register_taxonomy_for_object_type',
             ],
-            100
+            10
         );
         add_filter(
             'term_link',
@@ -128,7 +128,7 @@ class Plugin
             'author_link',
             ['MultipleAuthors\\Classes\\Content_Model', 'filter_author_link'],
             10,
-            3
+            2
         );
         add_filter(
             'the_author_display_name',
@@ -437,6 +437,25 @@ class Plugin
      */
     public function action_init_late()
     {
+        // Avoid PHP Warnings with Nested Pages plugin due to unexpected object variable type in $post->post_author array
+        // Also hide the Author selector in the NP modal until we develop an integration
+        //
+        // see NestedPages\Entities\Post\PostRepository\getTaxonomyCSS()
+        if (is_admin() && !empty($_REQUEST['page']) && ('nestedpages' == $_REQUEST['page'])) {
+            add_action(
+                'admin_print_scripts', 
+                function() {
+                    ?>
+                    <style type="text/css">
+                        div.np-inline-modal div.np_author {display:none;}
+                    </style>
+                    <?php
+                }
+            );
+
+            return;
+        }
+
         // Register new taxonomy so that we can store all of the relationships
         $args = [
             'labels'             => [
@@ -1063,7 +1082,6 @@ class Plugin
         }
 
         global $wp_query;
-        global $authordata;
 
         if (!is_object($wp_query)) {
             return;

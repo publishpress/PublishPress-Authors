@@ -20,7 +20,7 @@ class Authors_Widget extends WP_Widget
     public function __construct()
     {
         $this->title = esc_html__('Authors List', 'publishpress-authors');
-        Parent::__construct(
+        parent::__construct(
             'multiple_authors_list_widget',
             $this->title,
             array(
@@ -56,7 +56,11 @@ class Authors_Widget extends WP_Widget
         $output .= $this->get_author_box_markup($args, $instance);
         if (!empty($output)) {
             echo $args['before_widget'];
-            echo $args['before_title'] . apply_filters('widget_title', $title) . $args['after_title'];
+
+            if (!isset($instance['show_title']) || true === $instance['show_title']) {
+                echo $args['before_title'] . apply_filters('widget_title', $title) . $args['after_title'];
+            }
+
             echo $output;
             echo $args['after_widget'];
         }
