@@ -127,7 +127,6 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: Fixed the invalid taxonomy error message, #326;
 * Fixed: Improved performance on author pages reducing the number of database queries only looking for an author taxonomy if a user was not found;
 
-
 = [3.11.0] - 2021-01-25 =
 
 * Added: Added fields for setting the plural and single title to the author box and widget, #75;
