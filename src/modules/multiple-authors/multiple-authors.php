@@ -171,7 +171,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             // Filters the list of authors in the Improved Notifications add-on.
             add_filter(
-                'publishpress_notif_workflow_receiver_post_authors',
+                'publishpress_notifications_receiver_post_authors',
                 [$this, 'filter_workflow_receiver_post_authors'],
                 10,
                 3
@@ -244,6 +244,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_filter('pre_get_avatar_data', [$this, 'filter_pre_get_avatar_data'], 15, 2);
 
             add_action('publishpress_authors_set_post_authors', [$this, 'actionSetPostAuthors'], 10, 2);
+
+            add_action('profile_update', [$this, 'userProfileUpdate'], 10, 2);
         }
 
         /**
@@ -990,23 +992,27 @@ if (!class_exists('MA_Multiple_Authors')) {
          * by the improved notifications add-on.
          *
          * @param array $receivers
-         * @param WP_Post $workflow
+         * @param int $workflowPostID
          * @param array $args
          *
          * @return array
          */
-        public function filter_workflow_receiver_post_authors($receivers, $workflow, $args)
+        public function filter_workflow_receiver_post_authors($receivers, $workflowPostID, $args)
         {
             if (!function_exists('get_multiple_authors')) {
                 include_once PP_AUTHORS_SRC_PATH . 'functions/template-tags.php';
             }
 
-            $authors = get_multiple_authors($args['post']->ID);
+            $authors = get_multiple_authors($args['params']['post_id']);
 
             if (!empty($authors)) {
                 foreach ($authors as $author) {
                     if (!$author->is_guest() && !in_array($author->user_id, $receivers)) {
                         $receivers[] = $author->user_id;
+                    }
+
+                    if ($author->is_guest() && !empty($author->user_email)) {
+                        $receivers[] = $author->user_email;
                     }
                 }
             }
@@ -2491,6 +2497,23 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function actionSetPostAuthors($postId, $authors)
         {
             Utils::set_post_authors($postId, $authors);
+        }
+
+        public function userProfileUpdate($userId, $oldUserData)
+        {
+            $author = Author::get_by_user_id($userId);
+
+            if (is_object($author) && !is_wp_error($author)) {
+                $user = get_user_by('id', $userId);
+
+                global $wpdb, $wp_rewrite;
+
+                $wpdb->update($wpdb->terms, ['slug' => $user->user_nicename], ['term_id' => $author->term_id]);
+
+                if (is_object($wp_rewrite)) {
+                    $wp_rewrite->flush_rules();
+                }
+            }
         }
     }
 }

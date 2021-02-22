@@ -49,14 +49,17 @@ class Query
             return;
         }
 
-        $user       = get_user_by('slug', $author_name);
-        $authorTerm = get_term_by('slug', $author_name, 'author');
+        $user = get_user_by('slug', $author_name);
 
         $author = null;
         if (is_object($user)) {
             $author = $user;
-        } elseif (is_object($authorTerm)) {
-            $author = Author::get_by_term_id($authorTerm->term_id);
+        } else {
+            $authorTerm = get_term_by('slug', $author_name, 'author');
+
+            if (is_object($authorTerm)) {
+                $author = Author::get_by_term_id($authorTerm->term_id);
+            }
         }
 
         global $authordata;
