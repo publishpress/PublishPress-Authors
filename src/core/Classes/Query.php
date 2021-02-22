@@ -49,12 +49,9 @@ class Query
             return;
         }
 
-        $user = get_user_by('slug', $author_name);
+        $author = Utils::getUserBySlug($author_name);
 
-        $author = null;
-        if (is_object($user)) {
-            $author = $user;
-        } else {
+        if (empty($author)) {
             $authorTerm = get_term_by('slug', $author_name, 'author');
 
             if (is_object($authorTerm)) {
@@ -108,20 +105,25 @@ class Query
 
         if (empty($author_name)) {
             $author_id = (int)$query->get('author');
-            $user      = get_user_by('id', $author_id);
 
-            if (!$author_id || !$user) {
+            $author = Utils::getUserBySlug($author_name);
+
+            if (!$author_id || !$author) {
                 return $where;
             }
 
-            $author_name = $user->user_nicename;
+            $query->queried_object = $author;
+            $query->queried_object_id = $author->ID;
         }
 
-        $terms = [];
-        $term  = get_term_by('slug', $author_name, 'author');
+        if (is_a($query->queried_object, 'WP_User')) {
+            $term = Author::get_by_user_id($query->queried_object_id);
+        } else {
+            $term = $query->queried_object;
+        }
 
-        if (!empty($term)) {
-            $terms[] = $term;
+        if (empty($term)) {
+            return $where;
         }
 
         // Shamelessly copied from CAP, because it'd be a shame to have to deal with this twice.
@@ -133,25 +135,14 @@ class Query
 
         $maybe_both_query = $maybe_both ? '$0 OR ' : '';
 
-        if (!empty($terms)) {
-            $terms_implode = '';
+        $query->authors_having_terms = ' ' . $wpdb->term_taxonomy . '.term_id = \'' . $term->term_id . '\' ';
 
-            $query->authors_having_terms = '';
-
-            foreach ($terms as $term) {
-                $terms_implode .= '(' . $wpdb->term_taxonomy . '.taxonomy = "author" AND ' . $wpdb->term_taxonomy . '.term_id = \'' . $term->term_id . '\') OR ';
-
-                $query->authors_having_terms .= ' ' . $wpdb->term_taxonomy . '.term_id = \'' . $term->term_id . '\' OR ';
-            }
-
-                $terms_implode = rtrim($terms_implode, ' OR');
-
-            $query->authors_having_terms = rtrim($query->authors_having_terms, ' OR');
-
-            // post_author = 2 OR post_author IN (2).'/\b(?:' . $wpdb->posts . '\.)?post_author\s*(?:=|IN)\s*\(?(\d+)\)?/'
-            $regex = '/\(?\b(?:' . $wpdb->posts . '\.)?post_author\s*(?:=|IN)\s*\(?(\d+)\)?/';
-            $where = preg_replace($regex, '(' . $maybe_both_query . ' ' . $terms_implode . ')', $where, -1);
-        }
+        $where = preg_replace(
+            '/\(?\b(?:' . $wpdb->posts . '\.)?post_author\s*(?:=|IN)\s*\(?(\d+)\)?/',
+            '(' . $maybe_both_query . ' ' . '(' . $wpdb->term_taxonomy . '.taxonomy = "author" AND ' . $wpdb->term_taxonomy . '.term_id = \'' . $term->term_id . '\') ' . ')',
+            $where,
+            -1
+        );
 
         return $where;
     }
@@ -241,18 +232,24 @@ class Query
             return $where;
         }
 
-        $author = Author::get_by_user_id($author_id);
+        if (is_a($query->queried_object, 'WP_User')) {
+            $author = Author::get_by_user_id($query->queried_object_id);
+        } else {
+            $author = $query->queried_object;
+        }
 
         if (!is_object($author) || is_wp_error($author)) {
             return $where;
         }
 
-        $terms_implode = '(' . $wpdb->term_taxonomy . '.taxonomy = "author" AND ' . $wpdb->term_taxonomy . '.term_id = \'' . $author->getTerm()->term_id . '\') OR ';
-        $terms_implode = rtrim($terms_implode, ' OR');
+        $terms_implode = '(' . $wpdb->term_taxonomy . '.taxonomy = "author" AND ' . $wpdb->term_taxonomy . '.term_id = \'' . $author->getTerm()->term_id . '\') ';
 
-        // post_author = 2 OR post_author IN (2).'/\b(?:' . $wpdb->posts . '\.)?post_author\s*(?:=|IN)\s*\(?(\d+)\)?/'
-        $regex = '/\(?\b(?:' . $wpdb->posts . '\.)?post_author\s*(?:=|IN)\s*\(?(\d+)\)?/';
-        $where = preg_replace($regex, '(' . ' ' . $terms_implode . ')', $where, -1);
+        $where = preg_replace(
+            '/\(?\b(?:' . $wpdb->posts . '\.)?post_author\s*(?:=|IN)\s*\(?(\d+)\)?/',
+            '(' . ' ' . $terms_implode . ')',
+            $where,
+            -1
+        );
 
         return $where;
     }
@@ -286,7 +283,11 @@ class Query
             return $join;
         }
 
-        $author = Author::get_by_user_id($author_id);
+        if (is_a($query->queried_object, 'WP_User')) {
+            $author = Author::get_by_user_id($query->queried_object_id);
+        } else {
+            $author = $query->queried_object;
+        }
 
         if (!is_object($author) || is_wp_error($author)) {
             return $join;
@@ -340,13 +341,16 @@ class Query
             return $groupby;
         }
 
-        $author = Author::get_by_user_id($author_id);
+        if (is_a($query->queried_object, 'WP_User')) {
+            $author = Author::get_by_user_id($query->queried_object_id);
+        } else {
+            $author = $query->queried_object;
+        }
 
         if (!is_object($author) || is_wp_error($author)) {
             return $groupby;
         }
 
-//        $having  = 'MAX( IF ( ' . $wpdb->term_taxonomy . '.taxonomy = "author", 1,0 ) ) <> 1 ';
         $groupby = $wpdb->posts . '.ID';
 
         return $groupby;

@@ -120,6 +120,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: Fixed warning about undefined index: ID, the rest-api.php file, #342;
 * Fixed: Fix PublishPress notifications for guest authors with email address, #349;
 * Fixed: Fix the PHP warning "Call to a member function get_user_object() on bool", #348;
+* Fixed: Duplicated queries caused by multiple calls to "get_user_by" for the same slug, #343;
 
 = [3.11.0] - 2021-01-25 =
 
