@@ -2396,12 +2396,19 @@ if (!class_exists('MA_Multiple_Authors')) {
         {
             try {
                 if ($authorId > 0) {
-                    $author  = Author::get_by_user_id($authorId);
-                    $user    = $author->get_user_object();
-                    $canEdit = $user->has_cap('edit_posts');
+                    $author = Author::get_by_user_id($authorId);
+                    $user   = $author->get_user_object();
+
+                    if (is_object($user)) {
+                        $canEdit = $user->has_cap('edit_posts');
+                    }
                 } else {
-                    $author  = Author::get_by_term_id($authorId * -1);
-                    $canEdit = $author->is_guest() ? true : $author->get_user_object()->has_cap('edit_posts');
+                    $author = Author::get_by_term_id($authorId * -1);
+                    $user   = $author->get_user_object();
+
+                    if (is_object($user)) {
+                        $canEdit = $author->is_guest() ? true : $user->has_cap('edit_posts');
+                    }
                 }
             } catch (Exception $e) {
             }
