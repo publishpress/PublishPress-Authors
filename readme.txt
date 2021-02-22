@@ -110,6 +110,7 @@ There are two ways to install the PublishPress Authors plugin:
 
 = [3.12.0] - UNRELEASED =
 
+* Added: Added new shortcode: authors_list. It displays a list of all authors, and accept a "layout" argument, #338;
 * Changed: Improved the style for the Boxed layout, #332;
 * Changed: Automatically sync the author URL with the user nicename when the user is saved, #53;
 * Fixed: Fixed encoding of UTF-8 chars in the Author URL column in the Authors list, #352;
