@@ -244,6 +244,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_filter('pre_get_avatar_data', [$this, 'filter_pre_get_avatar_data'], 15, 2);
 
             add_action('publishpress_authors_set_post_authors', [$this, 'actionSetPostAuthors'], 10, 2);
+
+            add_action('profile_update', [$this, 'userProfileUpdate'], 10, 2);
         }
 
         /**
@@ -606,17 +608,31 @@ if (!class_exists('MA_Multiple_Authors')) {
          */
         public function settings_title_appended_to_content_option($args = [])
         {
-            $id    = $this->module->options_group_name . '_title_appended_to_content';
-            $value = isset($this->module->options->title_appended_to_content) ? $this->module->options->title_appended_to_content : esc_html__(
+            $idSingle    = $this->module->options_group_name . '_title_appended_to_content';
+            $singleValue = isset($this->module->options->title_appended_to_content) ? $this->module->options->title_appended_to_content : esc_html__(
                 'Author',
                 'publishpress-authors'
             );
 
-            echo '<label for="' . $id . '">';
+            $idPlural    = $this->module->options_group_name . '_title_appended_to_content_plural';
+            $pluralValue = isset($this->module->options->title_appended_to_content_plural) ? $this->module->options->title_appended_to_content_plural : esc_html__(
+                'Authors',
+                'publishpress-authors'
+            );
+
+            echo '<div class="ppma-settings-left-column">';
+            echo '<label for="' . $idSingle . '">' . esc_html__('Single', 'publishpress-authors') . '</label>';
             echo '<input type="text" value="' . esc_attr(
-                    $value
-                ) . '" id="' . $id . '" name="' . $this->module->options_group_name . '[title_appended_to_content]" class="regular-text" />';
-            echo '</label>';
+                    $singleValue
+                ) . '" id="' . $idSingle . '" name="' . $this->module->options_group_name . '[title_appended_to_content]" class="regular-text" />';
+            echo '</div>';
+
+            echo '<div class="ppma-settings-left-column">';
+            echo '<label for="' . $idPlural . '">' . esc_html__('Plural', 'publishpress-authors') . '</label>';
+            echo '<input type="text" value="' . esc_attr(
+                    $pluralValue
+                ) . '" id="' . $idPlural . '" name="' . $this->module->options_group_name . '[title_appended_to_content_plural]" class="regular-text" />';
+            echo '</div>';
         }
 
         /**
@@ -2470,6 +2486,23 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function actionSetPostAuthors($postId, $authors)
         {
             Utils::set_post_authors($postId, $authors);
+        }
+
+        public function userProfileUpdate($userId, $oldUserData)
+        {
+            $author = Author::get_by_user_id($userId);
+
+            if (is_object($author) && !is_wp_error($author)) {
+                $user = get_user_by('id', $userId);
+
+                global $wpdb, $wp_rewrite;
+
+                $wpdb->update($wpdb->terms, ['slug' => $user->user_nicename], ['term_id' => $author->term_id]);
+
+                if (is_object($wp_rewrite)) {
+                    $wp_rewrite->flush_rules();
+                }
+            }
         }
     }
 }

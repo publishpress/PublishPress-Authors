@@ -1,12 +1,13 @@
 <?php namespace modules\multiple_authors;
 
-use WpunitTester;
 use MultipleAuthors\Classes\Objects\Author;
+use WpunitTester;
 
 class MultipleAuthorsCest
 {
-    public function testActionSetAuthors_withMultipleAuthorTerms_shouldAddRelationshipBetweenThePostAndAuthors(WpunitTester $I)
-    {
+    public function testActionSetAuthors_withMultipleAuthorTerms_shouldAddRelationshipBetweenThePostAndAuthors(
+        WpunitTester $I
+    ) {
         $userId0 = $I->factory('create user0')->user->create();
         $userId1 = $I->factory('create user1')->user->create();
         $userId2 = $I->factory('create user2')->user->create();

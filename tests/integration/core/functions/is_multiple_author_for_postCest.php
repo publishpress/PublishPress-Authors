@@ -1,13 +1,13 @@
 <?php namespace core\Classes\Objects;
 
-use Codeception\Example;
 use MultipleAuthors\Classes\Objects\Author;
 use WpunitTester;
 
 class is_multiple_author_for_postCest
 {
-    public function testIsMultipleAuthorForPost_ForAUserThatIsTheAuthorButHasNoAuthorTerm_ShouldReturnTrue(WpunitTester $I)
-    {
+    public function testIsMultipleAuthorForPost_ForAUserThatIsTheAuthorButHasNoAuthorTerm_ShouldReturnTrue(
+        WpunitTester $I
+    ) {
         $userId = $I->factory('create user0')->user->create();
 
         $postId = $I->factory('create post0')->post->create(

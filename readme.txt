@@ -114,6 +114,12 @@ There are two ways to install the PublishPress Authors plugin:
 
 = [3.11.0] - UNRELEASED =
 
+* Fixed: Improved performance on author pages reducing the number of database queries only looking for an author taxonomy if a user was not found;
+* Changed: Automatically sync the author URL with the user nicename when the user is saved, #53;
+
+= [3.11.0] - 2021-01-25 =
+
+* Added: Added fields for setting the plural and single title to the author box and widget, #75;
 * Added: Added Rest API support to list the post's authors, #311;
 * Added: Added new action to set authors to a post: "publishpress_authors_set_post_authors";
 * Added: Added filter and constant for specifying to not load styles in the frontend, so users can use their own styles, #313;

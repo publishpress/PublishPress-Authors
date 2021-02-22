@@ -1,10 +1,11 @@
 <?php namespace core\Classes\Objects;
 
 use MultipleAuthors\Classes\Objects\Author;
+use WpunitTester;
 
 class AuthorCest
 {
-    public function tryToCreateAnAuthorFromUserAndCheckIfTheUser_idMatches(\WpunitTester $I)
+    public function tryToCreateAnAuthorFromUserAndCheckIfTheUser_idMatches(WpunitTester $I)
     {
         $userAuthorID = $I->factory('a new user')->user->create(['role' => 'author']);
 
@@ -17,7 +18,7 @@ class AuthorCest
         );
     }
 
-    public function tryToCreateAnAuthorFromUserAndCheckIfIs_guestReturnsFalse(\WpunitTester $I)
+    public function tryToCreateAnAuthorFromUserAndCheckIfIs_guestReturnsFalse(WpunitTester $I)
     {
         $userAuthorID = $I->factory('a new user')->user->create(['role' => 'author']);
 
@@ -29,7 +30,7 @@ class AuthorCest
         );
     }
 
-    public function tryToCreateAGuestAuthorAndCheckIfUserIdIsEmpty(\WpunitTester $I)
+    public function tryToCreateAGuestAuthorAndCheckIfUserIdIsEmpty(WpunitTester $I)
     {
         $authorSlug = sprintf('guest_author_%d', rand(1, PHP_INT_MAX));
         $author     = Author::create(
@@ -45,7 +46,7 @@ class AuthorCest
         );
     }
 
-    public function tryToCreateAGuestAuthorAndCheckIfIs_guestReturnsTrue(\WpunitTester $I)
+    public function tryToCreateAGuestAuthorAndCheckIfIs_guestReturnsTrue(WpunitTester $I)
     {
         $authorSlug = sprintf('guest_author_%d', rand(1, PHP_INT_MAX));
         $author     = Author::create(
@@ -61,7 +62,7 @@ class AuthorCest
         );
     }
 
-    public function tryToCreateAnAuthorFromUserAndCheckIfTheIDMatchesUser_id(\WpunitTester $I)
+    public function tryToCreateAnAuthorFromUserAndCheckIfTheIDMatchesUser_id(WpunitTester $I)
     {
         $userAuthorID = $I->factory('a new user')->user->create(['role' => 'author']);
 
@@ -74,7 +75,7 @@ class AuthorCest
         );
     }
 
-    public function tryToCreateAGuestAuthorAndCheckIfTheIdMatchesTheTermIdButAsNegativeInteger(\WpunitTester $I)
+    public function tryToCreateAGuestAuthorAndCheckIfTheIdMatchesTheTermIdButAsNegativeInteger(WpunitTester $I)
     {
         $authorSlug = sprintf('guest_author_%d', rand(1, PHP_INT_MAX));
         $author     = Author::create(
@@ -91,7 +92,7 @@ class AuthorCest
         );
     }
 
-    public function tryToGetUserMetaFromAuthorMappedToUserAndNoMetaOverrideInTheTerm(\WpunitTester $I)
+    public function tryToGetUserMetaFromAuthorMappedToUserAndNoMetaOverrideInTheTerm(WpunitTester $I)
     {
         $userAuthorID = $I->factory('a new user')->user->create(['role' => 'author']);
 
@@ -108,7 +109,7 @@ class AuthorCest
         );
     }
 
-    public function tryToGetUserMetaFromAuthorMappedToUserWithMetaOverrideInTheTerm(\WpunitTester $I)
+    public function tryToGetUserMetaFromAuthorMappedToUserWithMetaOverrideInTheTerm(WpunitTester $I)
     {
         $userAuthorID = $I->factory('a new user')->user->create(['role' => 'author']);
 
@@ -126,7 +127,7 @@ class AuthorCest
         );
     }
 
-    public function tryToGetUserMetaFromAuthorMappedToUserWithZeroAsMetaOverrideInTheTerm(\WpunitTester $I)
+    public function tryToGetUserMetaFromAuthorMappedToUserWithZeroAsMetaOverrideInTheTerm(WpunitTester $I)
     {
         $userAuthorID = $I->factory('a new user')->user->create(['role' => 'author']);
 
@@ -144,7 +145,7 @@ class AuthorCest
         );
     }
 
-    public function tryToGetAuthorByEmailAddressForAuthorMappedToUser(\WpunitTester $I)
+    public function tryToGetAuthorByEmailAddressForAuthorMappedToUser(WpunitTester $I)
     {
         $userID = $I->factory('a new user')->user->create(['role' => 'author']);
         $author = Author::create_from_user($userID);
@@ -157,7 +158,7 @@ class AuthorCest
         $I->assertEquals($user->user_email, $author->user_email);
     }
 
-    public function tryToGetAuthorByEmailAddressForGuestAuthor(\WpunitTester $I)
+    public function tryToGetAuthorByEmailAddressForGuestAuthor(WpunitTester $I)
     {
         $authorSlug = sprintf('guest_author_%d', rand(1, PHP_INT_MAX));
         $author     = Author::create(
@@ -177,7 +178,7 @@ class AuthorCest
         $I->assertEquals($email, $author->user_email);
     }
 
-    public function tryToGetUserURLForMappedToUserAuthor(\WpunitTester $I)
+    public function tryToGetUserURLForMappedToUserAuthor(WpunitTester $I)
     {
         $expected = 'http://test.example.com';
 
@@ -196,7 +197,7 @@ class AuthorCest
         );
     }
 
-    public function tryToGetUserURLForGuestAuthors(\WpunitTester $I)
+    public function tryToGetUserURLForGuestAuthors(WpunitTester $I)
     {
         $expected = 'http://test.example.com';
 
@@ -216,7 +217,7 @@ class AuthorCest
         );
     }
 
-    public function tryToGetFirstNameForMappedToUserAuthor(\WpunitTester $I)
+    public function tryToGetFirstNameForMappedToUserAuthor(WpunitTester $I)
     {
         $expected = 'TheFirstName';
 
@@ -235,7 +236,7 @@ class AuthorCest
         );
     }
 
-    public function tryToGetFirstNameForGuestAuthors(\WpunitTester $I)
+    public function tryToGetFirstNameForGuestAuthors(WpunitTester $I)
     {
         $expected = 'TheFirstName';
 
@@ -255,7 +256,7 @@ class AuthorCest
         );
     }
 
-    public function tryToGetLinkForMappedToUserAuthor(\WpunitTester $I)
+    public function tryToGetLinkForMappedToUserAuthor(WpunitTester $I)
     {
         $userAuthorID = $I->factory('a new user')->user->create(
             [
@@ -271,7 +272,7 @@ class AuthorCest
         );
     }
 
-    public function tryToGetLinkForGuestAuthors(\WpunitTester $I)
+    public function tryToGetLinkForGuestAuthors(WpunitTester $I)
     {
         global $wp_rewrite;
 
@@ -291,7 +292,7 @@ class AuthorCest
         );
     }
 
-    public function tryToGetNameForMappedToUserAuthorWithoutChangingAuthorsName(\WpunitTester $I)
+    public function tryToGetNameForMappedToUserAuthorWithoutChangingAuthorsName(WpunitTester $I)
     {
         $userAuthorID = $I->factory('a new user')->user->create(
             [
@@ -313,7 +314,7 @@ class AuthorCest
         );
     }
 
-    public function tryToGetAuthorsDisplayNameForMappedToUserAuthorChangingAuthorsName(\WpunitTester $I)
+    public function tryToGetAuthorsDisplayNameForMappedToUserAuthorChangingAuthorsName(WpunitTester $I)
     {
         $expected = 'Aslam Jorge';
 
@@ -344,7 +345,7 @@ class AuthorCest
         );
     }
 
-    public function tryToGetNameForGuestAuthors(\WpunitTester $I)
+    public function tryToGetNameForGuestAuthors(WpunitTester $I)
     {
         $authorSlug = sprintf('guest_author_%d', rand(1, PHP_INT_MAX));
         $expected   = strtoupper($authorSlug);
@@ -361,7 +362,7 @@ class AuthorCest
         );
     }
 
-    public function tryToGetSlugForMappedToUserAuthor(\WpunitTester $I)
+    public function tryToGetSlugForMappedToUserAuthor(WpunitTester $I)
     {
         $userAuthorID = $I->factory('a new user')->user->create(
             [
@@ -378,7 +379,7 @@ class AuthorCest
         );
     }
 
-    public function tryToGetSlugForGuestAuthors(\WpunitTester $I)
+    public function tryToGetSlugForGuestAuthors(WpunitTester $I)
     {
         $authorSlug = sprintf('guest_author_%d', rand(1, PHP_INT_MAX));
         $author     = Author::create(
