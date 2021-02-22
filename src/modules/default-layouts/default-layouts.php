@@ -86,6 +86,10 @@ if (!class_exists('MA_Default_Layouts')) {
          */
         public function renderBoxHTML($html, $args)
         {
+            if (defined('PP_AUTHORS_PRO_LOADED')) {
+                return $html;
+            }
+
             if (!isset($args['layout'])) {
                 $args['layout'] = apply_filters('pp_multiple_authors_default_layout', 'inline');
             }
