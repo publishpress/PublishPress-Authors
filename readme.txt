@@ -121,6 +121,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: Fix PublishPress notifications for guest authors with email address, #349;
 * Fixed: Fix the PHP warning "Call to a member function get_user_object() on bool", #348;
 * Fixed: Duplicated queries caused by multiple calls to "get_user_by" for the same slug, #343;
+* Fixed: Fix the authors list widget form removing not used field, #339;
 
 = [3.11.0] - 2021-01-25 =
 
