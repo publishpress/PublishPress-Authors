@@ -244,6 +244,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_filter('pre_get_avatar_data', [$this, 'filter_pre_get_avatar_data'], 15, 2);
 
             add_action('publishpress_authors_set_post_authors', [$this, 'actionSetPostAuthors'], 10, 2);
+
+            add_action('profile_update', [$this, 'userProfileUpdate'], 10, 2);
         }
 
         /**
@@ -2488,6 +2490,23 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function actionSetPostAuthors($postId, $authors)
         {
             Utils::set_post_authors($postId, $authors);
+        }
+
+        public function userProfileUpdate($userId, $oldUserData)
+        {
+            $author = Author::get_by_user_id($userId);
+
+            if (is_object($author) && !is_wp_error($author)) {
+                $user = get_user_by('id', $userId);
+
+                global $wpdb, $wp_rewrite;
+
+                $wpdb->update($wpdb->terms, ['slug' => $user->user_nicename], ['term_id' => $author->term_id]);
+
+                if (is_object($wp_rewrite)) {
+                    $wp_rewrite->flush_rules();
+                }
+            }
         }
     }
 }

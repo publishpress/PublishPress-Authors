@@ -39,7 +39,7 @@ class Term_Editor
             $content = sprintf(
                 '<a href="%s" target="_blank">%s</a>',
                 $author->link,
-                $author->slug
+                urldecode($author->slug)
             );
         }
 
