@@ -110,6 +110,10 @@ There are two ways to install the PublishPress Authors plugin:
 
 = [3.12.0] - UNRELEASED =
 
+* Fixed: Fixed the invalid taxonomy error message, #326;
+
+= [3.11.0] - UNRELEASED =
+
 * Fixed: Improved performance on author pages reducing the number of database queries only looking for an author taxonomy if a user was not found;
 * Changed: Automatically sync the author URL with the user nicename when the user is saved, #53;
 
