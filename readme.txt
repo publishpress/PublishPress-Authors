@@ -111,7 +111,7 @@ There are two ways to install the PublishPress Authors plugin:
 = [3.12.0] - UNRELEASED =
 
 * Added: Added new shortcode: authors_list. It displays a list of all authors, and accept a "layout" argument, #338;
-* Added: Added 2 new filters for the Elementor classic and cards skins allowing users to change the output of the author byline: "publishpress_authors_elementor_posts_skin_classic_byline" and "publishpress_authors_elementor_posts_skin_cards_byline", #335;
+* Added: Added filters for customizing the byline on Elementor skins: publishpress_authors_elementor_posts_skin_cards_byline, publishpress_authors_elementor_posts_skin_classic_byline, #335;
 * Changed: Improved the style for the Boxed layout, #332;
 * Changed: Automatically sync the author URL with the user nicename when the user is saved, #53;
 * Fixed: Fixed encoding of UTF-8 chars in the Author URL column in the Authors list, #352;
