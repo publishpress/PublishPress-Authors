@@ -1,4 +1,4 @@
-{% extends "widget-form.twig" %} 
+{% extends "widget-form.twig" %}
 {% block other_options %}
 <p>
     <input class="checkbox" id="{{ esc_attr( ids.show_empty ) }}" name="{{ esc_attr( names.show_empty ) }}" type="checkbox"
@@ -6,4 +6,7 @@
     />
     <label for="{{ esc_attr( ids.show_empty ) }}">{{ labels.show_empty }}</label>
 </p>
+{% endblock %}
+
+{% block plural_field %}
 {% endblock %}

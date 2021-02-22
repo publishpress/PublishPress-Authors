@@ -188,7 +188,8 @@ class Content_Model
             return $query;
         }
 
-        $author = get_user_by('slug', sanitize_title($query->query_vars['author_name']));
+        $author = Utils::getUserBySlug(sanitize_title($query->query_vars['author_name']));
+
         if (is_a($author, 'WP_User')) {
             $author = Author::get_by_user_id($author->ID);
             if ($author && $query->query_vars['author_name'] !== $author->slug) {
