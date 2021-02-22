@@ -108,6 +108,10 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [3.12.0] - UNRELEASED =
+
+* Fixed: Fix error: "Twig file not found" for shortcodes in the Pro version using a custom layout. And avoid to show the authors twice if Free and Pro are activated, #336;
+
 = [3.11.0] - 2021-01-25 =
 
 * Added: Added fields for setting the plural and single title to the author box and widget, #75;
