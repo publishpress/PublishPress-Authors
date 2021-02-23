@@ -50,7 +50,12 @@ class PostsSkinClassic extends Skin_Classic
                 $authorNames[] = $author->display_name;
             }
 
-            echo implode(', ', $authorNames);
+            echo apply_filters(
+                'publishpress_authors_elementor_posts_skin_classic_byline',
+                implode(', ', $authorNames),
+                $authorNames,
+                $authors
+            );
             ?>
 		</span>
         <?php

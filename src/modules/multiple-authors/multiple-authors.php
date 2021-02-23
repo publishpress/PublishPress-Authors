@@ -171,7 +171,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             // Filters the list of authors in the Improved Notifications add-on.
             add_filter(
-                'publishpress_notif_workflow_receiver_post_authors',
+                'publishpress_notifications_receiver_post_authors',
                 [$this, 'filter_workflow_receiver_post_authors'],
                 10,
                 3
@@ -992,23 +992,27 @@ if (!class_exists('MA_Multiple_Authors')) {
          * by the improved notifications add-on.
          *
          * @param array $receivers
-         * @param WP_Post $workflow
+         * @param int $workflowPostID
          * @param array $args
          *
          * @return array
          */
-        public function filter_workflow_receiver_post_authors($receivers, $workflow, $args)
+        public function filter_workflow_receiver_post_authors($receivers, $workflowPostID, $args)
         {
             if (!function_exists('get_multiple_authors')) {
                 include_once PP_AUTHORS_SRC_PATH . 'functions/template-tags.php';
             }
 
-            $authors = get_multiple_authors($args['post']->ID);
+            $authors = get_multiple_authors($args['params']['post_id']);
 
             if (!empty($authors)) {
                 foreach ($authors as $author) {
                     if (!$author->is_guest() && !in_array($author->user_id, $receivers)) {
                         $receivers[] = $author->user_id;
+                    }
+
+                    if ($author->is_guest() && !empty($author->user_email)) {
+                        $receivers[] = $author->user_email;
                     }
                 }
             }
@@ -2189,6 +2193,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             Installer::convert_post_author_into_taxonomy();
             Installer::add_author_term_for_posts();
 
+            do_action('publishpress_authors_flush_cache');
+
             // nonce: migrate_coauthors
             wp_send_json(
                 [
@@ -2204,6 +2210,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             delete_transient('publishpress_authors_sync_post_author_ids');
+
+            do_action('publishpress_authors_flush_cache');
 
             wp_send_json(
                 [
@@ -2221,6 +2229,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             delete_transient('publishpress_authors_sync_author_slug_ids');
 
             update_option('publishpress_multiple_authors_usernicename_sync', 1);
+
+            do_action('publishpress_authors_flush_cache');
 
             wp_send_json(
                 [
@@ -2392,12 +2402,19 @@ if (!class_exists('MA_Multiple_Authors')) {
         {
             try {
                 if ($authorId > 0) {
-                    $author  = Author::get_by_user_id($authorId);
-                    $user    = $author->get_user_object();
-                    $canEdit = $user->has_cap('edit_posts');
+                    $author = Author::get_by_user_id($authorId);
+                    $user   = $author->get_user_object();
+
+                    if (is_object($user)) {
+                        $canEdit = $user->has_cap('edit_posts');
+                    }
                 } else {
-                    $author  = Author::get_by_term_id($authorId * -1);
-                    $canEdit = $author->is_guest() ? true : $author->get_user_object()->has_cap('edit_posts');
+                    $author = Author::get_by_term_id($authorId * -1);
+                    $user   = $author->get_user_object();
+
+                    if (is_object($user)) {
+                        $canEdit = $author->is_guest() ? true : $user->has_cap('edit_posts');
+                    }
                 }
             } catch (Exception $e) {
             }
@@ -2416,6 +2433,8 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             if (!empty($author)) {
                 Utils::set_post_authors($postId, [$author]);
+
+                do_action('publishpress_authors_flush_cache');
             }
         }
 
@@ -2486,6 +2505,8 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function actionSetPostAuthors($postId, $authors)
         {
             Utils::set_post_authors($postId, $authors);
+
+            do_action('publishpress_authors_flush_cache');
         }
 
         public function userProfileUpdate($userId, $oldUserData)

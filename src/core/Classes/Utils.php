@@ -26,6 +26,7 @@ use WP_Error;
  */
 class Utils
 {
+    const USER_BY_SLUG_CACHE_GROUP = 'publishpress-authors-user-by-slug';
 
     /**
      * @var array
@@ -142,7 +143,10 @@ class Utils
                 "Failed to convert some authors for post {$post_id}."
             );
         }
+
         Utils::set_post_authors($post_id, $authors);
+
+        do_action('publishpress_authors_flush_cache');
 
         return $result;
     }
@@ -696,5 +700,32 @@ class Utils
         }
 
         return true;
+    }
+
+    public static function isWPEngineInstalled()
+    {
+        return class_exists('WpeCommon');
+    }
+
+    public static function getUserBySlug($slug)
+    {
+        $found = null;
+        $user = wp_cache_get($slug, static::USER_BY_SLUG_CACHE_GROUP, false, $found);
+        if (false === $user && false !== $found) {
+            $user = get_user_by('slug', $slug);
+
+            wp_cache_add($slug, $user, static::USER_BY_SLUG_CACHE_GROUP);
+        }
+
+        if (is_wp_error($user)) {
+            $user = false;
+        }
+
+        return $user;
+    }
+
+    public static function isTheSEOFrameworkInstalled()
+    {
+        return defined('THE_SEO_FRAMEWORK_VERSION');
     }
 }
