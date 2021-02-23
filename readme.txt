@@ -127,6 +127,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: Fix compatibility with WP Engine object cache, #327;
 * Fixed: Fixed the invalid taxonomy error message, #326;
 * Fixed: Improved performance on author pages reducing the number of database queries only looking for an author taxonomy if a user was not found;
+* Fixed: Fix the Authors List widget title alignment wrapping it on a H2 tag;
 
 = [3.11.0] - 2021-01-25 =
 
