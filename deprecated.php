@@ -13,6 +13,8 @@
  */
 
 // Class aliases for backward compatibility
+use MultipleAuthors\Classes\Authors_Iterator;
+
 class_alias(MultipleAuthors\Plugin::class, PP_Multiple_authors_plugin::class);
 class_alias(MultipleAuthors\Container::class, PublishPress\Addon\Multiple_authors\Container::class);
 class_alias(MultipleAuthors\Factory::class, PublishPress\Addon\Multiple_authors\Factory::class);
@@ -29,7 +31,7 @@ class_alias(
     PublishPress\Addon\Multiple_authors\Classes\Authors_Iterator::class
 );
 class_alias(
-    \MultipleAuthors\Classes\Authors_Iterator::class,
+    Authors_Iterator::class,
     'Multiple_authors_iterator'
 );
 class_alias(MultipleAuthors\Classes\CLI::class, PublishPress\Addon\Multiple_authors\Classes\CLI::class);

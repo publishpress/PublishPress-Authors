@@ -288,6 +288,8 @@ class Post_Editor
             foreach ($post_ids as $post_id) {
                 Utils::set_post_authors($post_id, $authors);
             }
+
+            do_action('publishpress_authors_flush_cache');
         }
 
         wp_send_json_success(true, 200);
@@ -321,6 +323,8 @@ class Post_Editor
         $authors = self::remove_dirty_authors_from_authors_arr($authors);
 
         Utils::set_post_authors($post_id, $authors);
+
+        do_action('publishpress_authors_flush_cache');
     }
 
     /**
@@ -391,6 +395,8 @@ class Post_Editor
         $default_author = apply_filters('authors_default_author', $default_author, $post);
         if ($default_author) {
             Utils::set_post_authors($post_id, [$default_author]);
+
+            do_action('publishpress_authors_flush_cache');
         }
     }
 }
