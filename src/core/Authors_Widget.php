@@ -52,13 +52,17 @@ class Authors_Widget extends WP_Widget
         $title  = apply_filters('widget_title', $instance['title'], $instance, $this->id_base);
         $output = '';
 
-
         $output .= $this->get_author_box_markup($args, $instance);
         if (!empty($output)) {
             echo $args['before_widget'];
 
             if (!isset($instance['show_title']) || true === $instance['show_title']) {
-                echo $args['before_title'] . apply_filters('widget_title', $title) . $args['after_title'];
+                echo sprintf(
+                    '%s<h2 class="widget-title">%s</h2>%s',
+                    $args['before_title'],
+                    apply_filters('widget_title', $title),
+                    $args['after_title']
+                );
             }
 
             echo $output;
