@@ -108,6 +108,10 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= UNRELEASED =
+
+* Fixed: Fix link for authors in the Genesis Framework Featured Posts widget, #378;
+
 = [3.12.0] - 2021-02-23 =
 
 * Added: Added filters for customizing the byline on Elementor skins: publishpress_authors_elementor_posts_skin_cards_byline, publishpress_authors_elementor_posts_skin_classic_byline, #335;
