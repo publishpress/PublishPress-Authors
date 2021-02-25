@@ -27,7 +27,8 @@
     min-height: 35px;
 }
 
-.pp-multiple-authors-layout-boxed ul li {
+.pp-multiple-authors-layout-boxed ul li,
+.pp-multiple-authors-layout-centered ul li {
     list-style: none;
     position: relative;
     min-height: 120px;
@@ -114,7 +115,7 @@
 }
 
 .pp-multiple-authors-layout-boxed .multiple-authors-links a:nth-child(1) span,
-.pp-multiple-authors-layout-centred .multiple-authors-links a:nth-child(1) span  {
+.pp-multiple-authors-layout-centered .multiple-authors-links a:nth-child(1) span  {
     font-size: 14px;
     vertical-align: middle;
 }
@@ -146,13 +147,11 @@
 }
 
 .pp-multiple-authors-layout-centered ul li {
-    list-style: none;
-    position: relative;
-    min-height: 120px;
-    border: 1px solid #999;
-    padding: 1em;
-    margin-bottom: 1em;
     text-align: center;
+}
+
+.pp-multiple-authors-layout-centered img {
+    display: inline-block;
 }
 
 .pp-multiple-authors-layout-centered p {
