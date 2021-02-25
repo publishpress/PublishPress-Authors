@@ -38,31 +38,38 @@
 }
 
 .pp-multiple-authors-layout-boxed .avatar,
-.pp-multiple-authors-layout-boxed .photo {
+.pp-multiple-authors-layout-boxed .photo,
+.pp-multiple-authors-layout-centered .avatar,
+.pp-multiple-authors-layout-centered .photo {
     width: 80px;
     height: auto;
     border-radius: 50%;
 }
 
-.pp-multiple-authors-layout-boxed .multiple-authors-description {
+.pp-multiple-authors-layout-boxed .multiple-authors-description,
+.pp-multiple-authors-layout-centered .multiple-authors-description {
     margin: 10px 0 20px;
 }
 
-.pp-multiple-authors-layout-boxed .multiple-authors-name a {
+.pp-multiple-authors-layout-boxed .multiple-authors-name a,
+.pp-multiple-authors-layout-centered .multiple-authors-name a {
     margin-bottom: 0;
 }
 
-.pp-multiple-authors-layout-boxed a {
+.pp-multiple-authors-layout-boxed a,
+.pp-multiple-authors-layout-centered a {
     font-size: 1.2em;
     margin-bottom: 10px;
     display: inline-block;
 }
 
-.pp-multiple-authors-layout-boxed .multiple-authors-links {
+.pp-multiple-authors-layout-boxed .multiple-authors-links,
+.pp-multiple-authors-layout-centered .multiple-authors-links {
     margin-bottom: 0;
 }
 
-.pp-multiple-authors-layout-boxed .multiple-authors-links a {
+.pp-multiple-authors-layout-boxed .multiple-authors-links a,
+.pp-multiple-authors-layout-centered .multiple-authors-links a {
     border-radius: 20px;
     background: #655997;
     min-width: 30px;
@@ -76,29 +83,44 @@
 
 .pp-multiple-authors-layout-boxed .multiple-authors-links a:hover,
 .pp-multiple-authors-layout-boxed .multiple-authors-links a:focus,
-.pp-multiple-authors-layout-boxed .multiple-authors-links a:active {
+.pp-multiple-authors-layout-boxed .multiple-authors-links a:active,
+.pp-multiple-authors-layout-centered .multiple-authors-links a:hover,
+.pp-multiple-authors-layout-centered .multiple-authors-links a:focus,
+.pp-multiple-authors-layout-centered .multiple-authors-links a:active {
     background: #483f6b;
     color: #fff;
 }
 
-.pp-multiple-authors-layout-boxed .multiple-authors-links a span {
+.pp-multiple-authors-layout-boxed .multiple-authors-links a span,
+.pp-multiple-authors-layout-centered .multiple-authors-links a span {
     min-width: 30px;
     height: 30px;
     line-height: 30px;
     font-size: 16px;
 }
 
-.pp-multiple-authors-layout-boxed .multiple-authors-links a:nth-child(1) {
+.pp-multiple-authors-layout-boxed .multiple-authors-links a:nth-child(1),
+.pp-multiple-authors-layout-centered .multiple-authors-links a:nth-child(1) {
     padding: 0 14px;
+}
+
+.pp-multiple-authors-layout-boxed .multiple-authors-links a:nth-child(1) {
     margin-right: 2px;
 }
 
-.pp-multiple-authors-layout-boxed .multiple-authors-links a:nth-child(1) span {
+.pp-multiple-authors-layout-centered .multiple-authors-links a:nth-child(1) {
+    margin-right: 1px;
+    margin-left: 1px
+}
+
+.pp-multiple-authors-layout-boxed .multiple-authors-links a:nth-child(1) span,
+.pp-multiple-authors-layout-centred .multiple-authors-links a:nth-child(1) span  {
     font-size: 14px;
     vertical-align: middle;
 }
 
-.pp-multiple-authors-layout-boxed p {
+.pp-multiple-authors-layout-boxed p,
+.pp-multiple-authors-layout-centered p {
     font-size: 0.85em;
 }
 
@@ -133,30 +155,7 @@
     text-align: center;
 }
 
-.pp-multiple-authors-layout-centered .avatar,
-.pp-multiple-authors-layout-centered .photo {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    -moz-border-radius: 50%;
-    -webkit-border-radius: 50%;
-    min-height: 80px;
-    margin: 0 auto;
-}
-
-.pp-multiple-authors-layout-centered a {
-    font-size: 1.2em;
-}
-
-.pp-multiple-authors-layout-centered a .dashicons,
-.pp-multiple-authors-layout-centered a:hover .dashicons,
-.pp-multiple-authors-layout-centered a:focus .dashicons,
-.pp-multiple-authors-layout-centered a:active .dashicons {
-    text-decoration: none;
-}
-
 .pp-multiple-authors-layout-centered p {
-    font-size: 0.85em;
     margin: 5px 0;
 }
 
@@ -170,7 +169,7 @@
 }
 
 @media (min-width:769px) {
-    
+
     .pp-multiple-authors-layout-boxed ul li {
         display: flex;
         flex-wrap: wrap;
