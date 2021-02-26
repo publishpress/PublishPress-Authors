@@ -126,7 +126,7 @@ if (!class_exists('MA_Default_Layouts')) {
             // Color scheme
             wp_add_inline_style(
                 'multiple-authors-widget-css',
-                '.custom-color-scheme { color: ' . $args['color_scheme'] . '; }'
+                ':root { --ppa-color-scheme: ' . $args['color_scheme'] . '; }'
             );
 
             return $html;

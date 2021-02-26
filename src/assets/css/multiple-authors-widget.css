@@ -64,7 +64,7 @@
 
 .pp-multiple-authors-layout-boxed .multiple-authors-links a {
     border-radius: 20px;
-    background: #655997;
+    background: var(--ppa-color-scheme);
     min-width: 30px;
     height: 30px;
     line-height: 30px;
@@ -170,7 +170,7 @@
 }
 
 @media (min-width:769px) {
-    
+
     .pp-multiple-authors-layout-boxed ul li {
         display: flex;
         flex-wrap: wrap;
