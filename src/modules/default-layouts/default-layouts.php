@@ -151,15 +151,13 @@ if (!class_exists('MA_Default_Layouts')) {
         }
 
         /**
-        * Lightens/darkens a given colour (hex format), returning the altered colour in hex format
-        * @credits: https://gist.github.com/stephenharris/5532899
-        *
-        * @param    string  $hex Colour as hexadecimal (with or without hash);
-        * @percent  float   $percent Decimal ( 0.2 = lighten by 20%(), -0.4 = darken by 40%() )
-        *
-        * @return   string  Lightened/Darkend colour as hexadecimal (with hash)
+         * Lightens/darkens a given colour (hex format), returning the altered colour in hex format
+         * @credits: https://gist.github.com/stephenharris/5532899
          *
-         * @return  string
+         * @param    string  $hex       Colour as hexadecimal (with or without hash)
+         * @param    float   $percent   Decimal (0.2 = lighten by 20%(), -0.4 = darken by 40%)
+         *
+         * @return   string  Lightened/Darkend colour as hexadecimal (with hash)
          */
         public function luminanceColor($color, $percent = -0.2)
         {
