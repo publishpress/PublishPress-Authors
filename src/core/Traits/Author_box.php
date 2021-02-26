@@ -114,7 +114,6 @@ trait Author_box
                 ? $legacyPlugin->modules->multiple_authors->options->layout : 'simple_list';
         }
 
-        $color_scheme = $instance['color_scheme'];
         if (empty($color_scheme)) {
             $color_scheme = isset($legacyPlugin->modules->multiple_authors->options->color_scheme)
                 ? $legacyPlugin->modules->multiple_authors->options->color_scheme : '#655997';
