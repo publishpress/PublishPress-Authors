@@ -77,7 +77,7 @@
 .pp-multiple-authors-layout-boxed .multiple-authors-links a:hover,
 .pp-multiple-authors-layout-boxed .multiple-authors-links a:focus,
 .pp-multiple-authors-layout-boxed .multiple-authors-links a:active {
-    background: #483f6b;
+    background: var(--ppa-color-scheme-active);
     color: #fff;
 }
 

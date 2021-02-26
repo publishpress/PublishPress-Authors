@@ -679,7 +679,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 echo '<input type="text" class="color-picker" data-default-color="#655997" name="' . $this->module->options_group_name . '[color_scheme]" value="' . sanitize_text_field(
                 $value
                 ) . '"/>';
-                
+
             echo '</label>';
         }
 
