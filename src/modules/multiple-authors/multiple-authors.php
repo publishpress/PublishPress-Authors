@@ -521,7 +521,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                 __('Color scheme:', 'publishpress-authors'),
                 [$this, 'settings_color_scheme_option'],
                 $this->module->options_group_name,
-                $this->module->options_group_name . '_display'
+                $this->module->options_group_name . '_display',
+                ['class' => 'ppauthors-color-scheme-field']
             );
 
             add_settings_field(
