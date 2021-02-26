@@ -517,6 +517,14 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
 
             add_settings_field(
+                'color_scheme',
+                __('Color scheme:', 'publishpress-authors'),
+                [$this, 'settings_color_scheme_option'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_display'
+            );
+
+            add_settings_field(
                 'show_email_link',
                 __('Show email link:', 'publishpress-authors'),
                 [$this, 'settings_show_email_link_option'],
@@ -655,6 +663,23 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             echo '</select>';
+            echo '</label>';
+        }
+
+        /**
+         * @param array $args
+         */
+        public function settings_color_scheme_option($args = [])
+        {
+            $id    = $this->module->options_group_name . '_color_scheme';
+            $value = isset($this->module->options->color_scheme) ? $this->module->options->color_scheme : '#655997';
+
+            echo '<label for="' . $id . '">';
+
+                echo '<input type="text" class="color-picker" data-default-color="#655997" name="' . $this->module->options_group_name . '[color_scheme]" value="' . sanitize_text_field(
+                $value
+                ) . '"/>';
+
             echo '</label>';
         }
 
@@ -1854,6 +1879,15 @@ if (!class_exists('MA_Multiple_Authors')) {
                         ]
                     );
                 }
+
+                wp_enqueue_style('wp-color-picker');
+                wp_enqueue_script(
+                    'ppauthors-color-picker',
+                    PP_AUTHORS_ASSETS_URL . 'js/color-picker.js',
+                    ['wp-color-picker'],
+                    false,
+                    true
+                );
             }
         }
 

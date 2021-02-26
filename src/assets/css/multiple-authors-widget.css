@@ -72,7 +72,7 @@
 .pp-multiple-authors-layout-boxed .multiple-authors-links a,
 .pp-multiple-authors-layout-centered .multiple-authors-links a {
     border-radius: 20px;
-    background: #655997;
+    background: var(--ppa-color-scheme);
     min-width: 30px;
     height: 30px;
     line-height: 30px;
@@ -88,7 +88,7 @@
 .pp-multiple-authors-layout-centered .multiple-authors-links a:hover,
 .pp-multiple-authors-layout-centered .multiple-authors-links a:focus,
 .pp-multiple-authors-layout-centered .multiple-authors-links a:active {
-    background: #483f6b;
+    background: var(--ppa-color-scheme-active);
     color: #fff;
 }
 
