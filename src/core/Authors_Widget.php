@@ -192,6 +192,12 @@ class Authors_Widget extends WP_Widget
                 ? $legacyPlugin->modules->multiple_authors->options->layout : 'simple_list';
         }
 
+        $color_scheme = $instance['color_scheme'];
+        if (empty($color_scheme)) {
+            $color_scheme = isset($legacyPlugin->modules->multiple_authors->options->color_scheme)
+                ? $legacyPlugin->modules->multiple_authors->options->color_scheme : '#655997';
+        }
+
         $show_email = isset($legacyPlugin->modules->multiple_authors->options->show_email_link)
             ? 'yes' === $legacyPlugin->modules->multiple_authors->options->show_email_link : true;
 
@@ -201,15 +207,16 @@ class Authors_Widget extends WP_Widget
         $showEmpty = isset($instance['show_empty']) ? $instance['show_empty'] : false;
 
         $args = [
-            'show_title' => false,
-            'css_class'  => $css_class,
-            'title'      => $title,
-            'authors'    => multiple_authors_get_all_authors(array('hide_empty' => !$showEmpty)),
-            'target'     => $target,
-            'item_class' => 'author url fn',
-            'layout'     => $layout,
-            'show_email' => $show_email,
-            'show_site'  => $show_site
+            'show_title'    => false,
+            'css_class'     => $css_class,
+            'title'         => $title,
+            'authors'       => multiple_authors_get_all_authors(array('hide_empty' => !$showEmpty)),
+            'target'        => $target,
+            'item_class'    => 'author url fn',
+            'layout'        => $layout,
+            'color_scheme'  => $color_scheme,
+            'show_email'    => $show_email,
+            'show_site'     => $show_site
         ];
 
         /**

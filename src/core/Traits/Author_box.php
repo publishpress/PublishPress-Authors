@@ -114,6 +114,12 @@ trait Author_box
                 ? $legacyPlugin->modules->multiple_authors->options->layout : 'simple_list';
         }
 
+        $color_scheme = $instance['color_scheme'];
+        if (empty($color_scheme)) {
+            $color_scheme = isset($legacyPlugin->modules->multiple_authors->options->color_scheme)
+                ? $legacyPlugin->modules->multiple_authors->options->color_scheme : '#655997';
+        }
+
         $show_email = isset($legacyPlugin->modules->multiple_authors->options->show_email_link)
             ? 'yes' === $legacyPlugin->modules->multiple_authors->options->show_email_link : true;
 
@@ -149,16 +155,17 @@ trait Author_box
         $title = esc_html($title);
 
         $args = [
-            'show_title' => $show_title,
-            'css_class'  => $css_class,
-            'title'      => $title,
-            'authors'    => $authorsList,
-            'target'     => $target,
-            'item_class' => 'author url fn',
-            'layout'     => $layout,
-            'show_email' => $show_email,
-            'show_site'  => $show_site,
-            'post'       => $post,
+            'show_title'    => $show_title,
+            'css_class'     => $css_class,
+            'title'         => $title,
+            'authors'       => $authorsList,
+            'target'        => $target,
+            'item_class'    => 'author url fn',
+            'layout'        => $layout,
+            'color_scheme'  => $color_scheme,
+            'show_email'    => $show_email,
+            'show_site'     => $show_site,
+            'post'          => $post,
         ];
 
         /**

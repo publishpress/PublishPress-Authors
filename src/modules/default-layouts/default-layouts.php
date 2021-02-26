@@ -123,6 +123,12 @@ if (!class_exists('MA_Default_Layouts')) {
 
             $html = $twig->render($twigFile, $args);
 
+            // Color scheme
+            wp_add_inline_style(
+                'multiple-authors-widget-css',
+                '.custom-color-scheme { color: ' . $args['color_scheme'] . '; }'
+            );
+
             return $html;
         }
 
