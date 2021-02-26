@@ -164,20 +164,20 @@ if (!class_exists('MA_Default_Layouts')) {
         public function luminanceColor($color, $percent = -0.2)
         {
             $color      = preg_replace( '/[^0-9a-f]/i', '', $color );
-        	$new_color = '#';
+            $new_color = '#';
 
-        	if (strlen($color) < 6) {
-        		$color = $color[0] + $color[0] + $color[1] + $color[1] + $color[2] + $color[2];
-        	}
+            if (strlen($color) < 6) {
+            	$color = $color[0] + $color[0] + $color[1] + $color[1] + $color[2] + $color[2];
+            }
 
-        	// convert to decimal and change luminosity
-        	for ($i = 0; $i < 3; $i++) {
-        		$dec        = hexdec(substr($color, $i*2, 2));
-        		$dec        = min(max(0, $dec + $dec * $percent), 255);
-        		$new_color .= str_pad(dechex($dec), 2, 0, STR_PAD_LEFT);
-        	}
+            // convert to decimal and change luminosity
+            for ($i = 0; $i < 3; $i++) {
+            	$dec        = hexdec(substr($color, $i*2, 2));
+            	$dec        = min(max(0, $dec + $dec * $percent), 255);
+            	$new_color .= str_pad(dechex($dec), 2, 0, STR_PAD_LEFT);
+            }
 
-        	return $new_color;
+            return $new_color;
         }
     }
 }
