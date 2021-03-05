@@ -113,7 +113,7 @@ class Post
             return $this->postObject->{$attribute};
         }
 
-        return apply_filters('publishpress_authors_layout_post_properties', null, $attribute);
+        return apply_filters('publishpress_authors_layout_post_properties', null, $this->postObject, $attribute);
     }
 
     public function get_meta($metaKey, $single = true)
