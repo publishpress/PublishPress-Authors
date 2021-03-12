@@ -108,6 +108,10 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= UNRELEASED =
+
+* Fixed: Fix relationship between post and author if not existent when running the function "get_multiple_authors". It fallbacks to the current post author, creating the Author term and relationship with the post, #396;
+
 = [3.12.0] - 2021-02-23 =
 
 * Added: Added filters for customizing the byline on Elementor skins: publishpress_authors_elementor_posts_skin_cards_byline, publishpress_authors_elementor_posts_skin_classic_byline, #335;

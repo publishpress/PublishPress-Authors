@@ -11,6 +11,7 @@
 use MultipleAuthors\Classes\Authors_Iterator;
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Classes\Utils;
+use MultipleAuthors\Factory;
 
 if (!function_exists('get_multiple_authors')) {
     /**
@@ -123,7 +124,7 @@ if (!function_exists('get_multiple_authors')) {
                     $authors[] = $author;
                 }
             } else {
-                // Fallback to the post author
+                // Fallback to the post author, creating an author term
                 $post = get_post($postId);
 
                 $author = Author::get_by_user_id($post->post_author);
@@ -132,19 +133,23 @@ if (!function_exists('get_multiple_authors')) {
                     $user = get_user_by('id', $post->post_author);
 
                     if ($user) {
-                        $user->link = get_author_posts_url($user->ID);
+                        $author = Author::get_by_user_id($user->ID);
 
-                        if ($filter_the_author) {
-                            $user->display_name = apply_filters('the_author', $user->display_name);
+                        if (empty($author)) {
+                            $author = Author::create_from_user($user);
+
+                            if ($filter_the_author && !is_wp_error($author)) {
+                                $author->display_name = apply_filters('the_author', $author->display_name);
+                            }
                         }
 
-                        $author = $user;
+                        Utils::set_post_authors($postId, [$author]);
                     } else {
                         return [];
                     }
                 }
 
-                $authors[] = $author;
+                $authors = [$author];
             }
 
             wp_cache_set($cacheKey, $authors, 'get_multiple_authors:authors');
@@ -153,6 +158,7 @@ if (!function_exists('get_multiple_authors')) {
         return empty($authors) ? [] : $authors;
     }
 }
+
 
 if (!function_exists('multiple_authors_get_all_authors')) {
     /**
