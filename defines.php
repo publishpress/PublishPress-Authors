@@ -14,7 +14,7 @@ defined('ABSPATH') or die('No direct script access allowed.');
 if (!defined('PP_AUTHORS_VERSION')) {
     define('PP_AUTHORS_VERSION', '3.12.0-feature-384-conditional-layout-taxonomies');
     define('PP_AUTHORS_FILE', 'publishpress-authors/publishpress-authors.php');
-    define('PP_AUTHORS_BASE_PATH', wp_slash(plugin_dir_path(__DIR__ . '/publishpress-authors.php')));
+    define('PP_AUTHORS_BASE_PATH', plugin_dir_path(__DIR__ . '/publishpress-authors.php'));
     define('PP_AUTHORS_MODULES_PATH', PP_AUTHORS_BASE_PATH . 'src/modules/');
     define('PP_AUTHORS_TWIG_PATH', PP_AUTHORS_BASE_PATH . 'src/twig/');
     define('PP_AUTHORS_VENDOR_PATH', PP_AUTHORS_BASE_PATH . 'vendor/');
