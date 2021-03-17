@@ -76,4 +76,14 @@ jQuery(document).ready(function ($) {
             }
         }
     });
+
+    // Show color scheme field only when boxed or centered layouts are selected
+    $('#multiple_authors_multiple_authors_options_layout').on('change', function(){
+        $selected_layout = $(this).val();
+        if($selected_layout == 'centered' || $selected_layout == 'boxed') {
+            $('.ppauthors-color-scheme-field').show();
+        } else {
+            $('.ppauthors-color-scheme-field').hide();
+        }
+    });
 });
