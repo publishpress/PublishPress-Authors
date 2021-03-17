@@ -116,6 +116,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: Fixed Notice: Undefined index: title_plural in the Widget.php file, #393;
 * Fixed: Error Cannot access private property MultipleAuthors\Classes\Objects\Author::$term_id, #386;
 * Fixed: The authors field is not displayed for custom post types created by Toolset, or other plugins, #385;
+* Fixed: Fix link for authors in the Genesis Framework Featured Posts widget, #378;
 
 = [3.12.0] - 2021-02-23 =
 
