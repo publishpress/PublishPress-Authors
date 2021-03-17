@@ -12,7 +12,7 @@
 defined('ABSPATH') or die('No direct script access allowed.');
 
 if (!defined('PP_AUTHORS_VERSION')) {
-    define('PP_AUTHORS_VERSION', '3.12.0-hotfix-393-undefined-index-title_plural');
+    define('PP_AUTHORS_VERSION', '3.12.0-hotfix-389-sort-authors-widget-by-name');
     define('PP_AUTHORS_FILE', 'publishpress-authors/publishpress-authors.php');
     define('PP_AUTHORS_BASE_PATH', plugin_dir_path(__DIR__ . '/publishpress-authors.php'));
     define('PP_AUTHORS_MODULES_PATH', PP_AUTHORS_BASE_PATH . 'src/modules/');
