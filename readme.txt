@@ -110,6 +110,7 @@ There are two ways to install the PublishPress Authors plugin:
 
 = UNRELEASED =
 
+* Added: Added new filter to extend the "post" variable exposed to the layouts. The new filter: "publishpress_authors_layout_post_properties", #384;
 * Fixed: Fix the Authors List widget sorting by the author name, #389;
 
 = [3.12.0] - 2021-02-23 =
