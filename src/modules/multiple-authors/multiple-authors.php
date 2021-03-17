@@ -92,7 +92,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     ],
                     'append_to_content'            => 'yes',
                     'author_for_new_users'         => [],
-                    'layout'                       => 'simple_list',
+                    'layout'                       => Utils::getDefaultLayout(),
                     'force_empty_author'           => 'no',
                     'username_in_search_field'     => 'no',
                     'default_author_for_new_posts' => null,
@@ -650,7 +650,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function settings_layout_option($args = [])
         {
             $id    = $this->module->options_group_name . '_layout';
-            $value = isset($this->module->options->layout) ? $this->module->options->layout : 'simple_list';
+            $value = isset($this->module->options->layout) ? $this->module->options->layout : Utils::getDefaultLayout();
 
             echo '<label for="' . $id . '">';
 
@@ -961,7 +961,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $layouts = apply_filters('pp_multiple_authors_author_layouts', []);
 
                 if (!array_key_exists($new_options['layout'], $layouts)) {
-                    $new_options['layout'] = 'simple_list';
+                    $new_options['layout'] = Utils::getDefaultLayout();
                 }
             }
 

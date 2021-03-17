@@ -9,11 +9,11 @@
 
 namespace MultipleAuthors;
 
+use MultipleAuthors\Classes\Utils;
 use WP_Widget;
 
 class Authors_Widget extends WP_Widget
 {
-
     /**
      * Sets up the widgets name etc
      */
@@ -139,7 +139,7 @@ class Authors_Widget extends WP_Widget
         $layouts                = apply_filters('pp_multiple_authors_author_layouts', array());
 
         if (!array_key_exists($instance['layout'], $layouts)) {
-            $instance['layout'] = 'simple_list';
+            $instance['layout'] = Utils::getDefaultLayout();
         }
 
         return $instance;
@@ -189,7 +189,7 @@ class Authors_Widget extends WP_Widget
         $layout = $instance['layout'];
         if (empty($layout)) {
             $layout = isset($legacyPlugin->modules->multiple_authors->options->layout)
-                ? $legacyPlugin->modules->multiple_authors->options->layout : 'simple_list';
+                ? $legacyPlugin->modules->multiple_authors->options->layout : Utils::getDefaultLayout();
         }
 
         if (empty($color_scheme)) {

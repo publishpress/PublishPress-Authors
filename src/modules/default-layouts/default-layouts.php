@@ -22,6 +22,7 @@
  */
 
 use MultipleAuthors\Classes\Legacy\Module;
+use MultipleAuthors\Classes\Utils;
 use MultipleAuthors\Factory;
 
 if (!class_exists('MA_Default_Layouts')) {
@@ -91,7 +92,7 @@ if (!class_exists('MA_Default_Layouts')) {
             }
 
             if (!isset($args['layout'])) {
-                $args['layout'] = apply_filters('pp_multiple_authors_default_layout', 'inline');
+                $args['layout'] = Utils::getDefaultLayout();
             }
 
             // Check if the layout exists
@@ -99,12 +100,13 @@ if (!class_exists('MA_Default_Layouts')) {
             if (!file_exists(PP_AUTHORS_TWIG_PATH . $twigFile)) {
                 error_log(
                     sprintf(
-                        '[PublishPress Authors] Twig file not found for the layout: %s. Falling back to "simple_list"',
-                        $args['layout']
+                        '[PublishPress Authors] Twig file not found for the layout: %s. Falling back to "%s"',
+                        $args['layout'],
+                        Utils::getDefaultLayout()
                     )
                 );
 
-                $args['layout'] = 'simple_list';
+                $args['layout'] = Utils::getDefaultLayout();
                 $twigFile       = 'author_layout/' . $args['layout'] . '.twig';
             }
 
