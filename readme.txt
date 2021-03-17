@@ -108,6 +108,14 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= UNRELEASED =
+
+* Added: Improve layout for Centered box and add a color picker to choose a base color, #376, #377;
+* Added: Added new filter to extend the "post" variable exposed to the layouts. The new filter: "publishpress_authors_layout_post_properties", #384;
+* Fixed: Fix the Authors List widget sorting by the author name, #389;
+* Fixed: Fixed Notice: Undefined index: title_plural in the Widget.php file, #393;
+* Fixed: Error Cannot access private property MultipleAuthors\Classes\Objects\Author::$term_id, #386;
+
 = [3.12.0] - 2021-02-23 =
 
 * Added: Added filters for customizing the byline on Elementor skins: publishpress_authors_elementor_posts_skin_cards_byline, publishpress_authors_elementor_posts_skin_classic_byline, #335;
