@@ -14,7 +14,7 @@ use PPVersionNotices\Module\MenuLink\Module;
 defined('ABSPATH') or die('No direct script access allowed.');
 
 if (!defined('PP_AUTHORS_LOADED')) {
-    require_once 'defines.php';
+    require_once __DIR__ . '/defines.php';
 
     if (!class_exists(PP_AUTHORS_AUTOLOAD_CLASS_NAME) && !class_exists('MultipleAuthors\\Plugin')) {
         $autoloadPath = PP_AUTHORS_VENDOR_PATH . 'autoload.php';
