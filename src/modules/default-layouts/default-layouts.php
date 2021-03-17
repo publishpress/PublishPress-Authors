@@ -87,6 +87,10 @@ if (!class_exists('MA_Default_Layouts')) {
          */
         public function renderBoxHTML($html, $args)
         {
+            if (defined('PP_AUTHORS_PRO_LOADED')) {
+                return $html;
+            }
+
             if (!isset($args['layout'])) {
                 $args['layout'] = Utils::getDefaultLayout();
             }
@@ -121,6 +125,12 @@ if (!class_exists('MA_Default_Layouts')) {
 
             $html = $twig->render($twigFile, $args);
 
+            // Color scheme
+            wp_add_inline_style(
+                'multiple-authors-widget-css',
+                ':root { --ppa-color-scheme: ' . $args['color_scheme'] . '; --ppa-color-scheme-active: ' . $this->luminanceColor($args['color_scheme'])  . '; }'
+            );
+
             return $html;
         }
 
@@ -140,6 +150,34 @@ if (!class_exists('MA_Default_Layouts')) {
             ];
 
             return $layouts;
+        }
+
+        /**
+         * Lightens/darkens a given colour (hex format), returning the altered colour in hex format
+         * @credits: https://gist.github.com/stephenharris/5532899
+         *
+         * @param    string  $hex       Colour as hexadecimal (with or without hash)
+         * @param    float   $percent   Decimal (0.2 = lighten by 20%(), -0.4 = darken by 40%)
+         *
+         * @return   string  Lightened/Darkend colour as hexadecimal (with hash)
+         */
+        public function luminanceColor($color, $percent = -0.2)
+        {
+            $color      = preg_replace( '/[^0-9a-f]/i', '', $color );
+            $new_color = '#';
+
+            if (strlen($color) < 6) {
+            	$color = $color[0] + $color[0] + $color[1] + $color[1] + $color[2] + $color[2];
+            }
+
+            // convert to decimal and change luminosity
+            for ($i = 0; $i < 3; $i++) {
+            	$dec        = hexdec(substr($color, $i*2, 2));
+            	$dec        = min(max(0, $dec + $dec * $percent), 255);
+            	$new_color .= str_pad(dechex($dec), 2, 0, STR_PAD_LEFT);
+            }
+
+            return $new_color;
         }
     }
 }

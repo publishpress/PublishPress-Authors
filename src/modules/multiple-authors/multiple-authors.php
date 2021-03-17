@@ -171,7 +171,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             // Filters the list of authors in the Improved Notifications add-on.
             add_filter(
-                'publishpress_notif_workflow_receiver_post_authors',
+                'publishpress_notifications_receiver_post_authors',
                 [$this, 'filter_workflow_receiver_post_authors'],
                 10,
                 3
@@ -244,6 +244,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_filter('pre_get_avatar_data', [$this, 'filter_pre_get_avatar_data'], 15, 2);
 
             add_action('publishpress_authors_set_post_authors', [$this, 'actionSetPostAuthors'], 10, 2);
+
+            add_action('profile_update', [$this, 'userProfileUpdate'], 10, 2);
         }
 
         /**
@@ -515,6 +517,15 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
 
             add_settings_field(
+                'color_scheme',
+                __('Color scheme:', 'publishpress-authors'),
+                [$this, 'settings_color_scheme_option'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_display',
+                ['class' => 'ppauthors-color-scheme-field']
+            );
+
+            add_settings_field(
                 'show_email_link',
                 __('Show email link:', 'publishpress-authors'),
                 [$this, 'settings_show_email_link_option'],
@@ -653,6 +664,23 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             echo '</select>';
+            echo '</label>';
+        }
+
+        /**
+         * @param array $args
+         */
+        public function settings_color_scheme_option($args = [])
+        {
+            $id    = $this->module->options_group_name . '_color_scheme';
+            $value = isset($this->module->options->color_scheme) ? $this->module->options->color_scheme : '#655997';
+
+            echo '<label for="' . $id . '">';
+
+                echo '<input type="text" class="color-picker" data-default-color="#655997" name="' . $this->module->options_group_name . '[color_scheme]" value="' . sanitize_text_field(
+                $value
+                ) . '"/>';
+
             echo '</label>';
         }
 
@@ -990,23 +1018,27 @@ if (!class_exists('MA_Multiple_Authors')) {
          * by the improved notifications add-on.
          *
          * @param array $receivers
-         * @param WP_Post $workflow
+         * @param int $workflowPostID
          * @param array $args
          *
          * @return array
          */
-        public function filter_workflow_receiver_post_authors($receivers, $workflow, $args)
+        public function filter_workflow_receiver_post_authors($receivers, $workflowPostID, $args)
         {
             if (!function_exists('get_multiple_authors')) {
                 include_once PP_AUTHORS_SRC_PATH . 'functions/template-tags.php';
             }
 
-            $authors = get_multiple_authors($args['post']->ID);
+            $authors = get_multiple_authors($args['params']['post_id']);
 
             if (!empty($authors)) {
                 foreach ($authors as $author) {
                     if (!$author->is_guest() && !in_array($author->user_id, $receivers)) {
                         $receivers[] = $author->user_id;
+                    }
+
+                    if ($author->is_guest() && !empty($author->user_email)) {
+                        $receivers[] = $author->user_email;
                     }
                 }
             }
@@ -1848,6 +1880,15 @@ if (!class_exists('MA_Multiple_Authors')) {
                         ]
                     );
                 }
+
+                wp_enqueue_style('wp-color-picker');
+                wp_enqueue_script(
+                    'ppauthors-color-picker',
+                    PP_AUTHORS_ASSETS_URL . 'js/color-picker.js',
+                    ['wp-color-picker'],
+                    false,
+                    true
+                );
             }
         }
 
@@ -2187,6 +2228,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             Installer::convert_post_author_into_taxonomy();
             Installer::add_author_term_for_posts();
 
+            do_action('publishpress_authors_flush_cache');
+
             // nonce: migrate_coauthors
             wp_send_json(
                 [
@@ -2202,6 +2245,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             delete_transient('publishpress_authors_sync_post_author_ids');
+
+            do_action('publishpress_authors_flush_cache');
 
             wp_send_json(
                 [
@@ -2219,6 +2264,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             delete_transient('publishpress_authors_sync_author_slug_ids');
 
             update_option('publishpress_multiple_authors_usernicename_sync', 1);
+
+            do_action('publishpress_authors_flush_cache');
 
             wp_send_json(
                 [
@@ -2390,12 +2437,19 @@ if (!class_exists('MA_Multiple_Authors')) {
         {
             try {
                 if ($authorId > 0) {
-                    $author  = Author::get_by_user_id($authorId);
-                    $user    = $author->get_user_object();
-                    $canEdit = $user->has_cap('edit_posts');
+                    $author = Author::get_by_user_id($authorId);
+                    $user   = $author->get_user_object();
+
+                    if (is_object($user)) {
+                        $canEdit = $user->has_cap('edit_posts');
+                    }
                 } else {
-                    $author  = Author::get_by_term_id($authorId * -1);
-                    $canEdit = $author->is_guest() ? true : $author->get_user_object()->has_cap('edit_posts');
+                    $author = Author::get_by_term_id($authorId * -1);
+                    $user   = $author->get_user_object();
+
+                    if (is_object($user)) {
+                        $canEdit = $author->is_guest() ? true : $user->has_cap('edit_posts');
+                    }
                 }
             } catch (Exception $e) {
             }
@@ -2414,6 +2468,8 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             if (!empty($author)) {
                 Utils::set_post_authors($postId, [$author]);
+
+                do_action('publishpress_authors_flush_cache');
             }
         }
 
@@ -2484,6 +2540,25 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function actionSetPostAuthors($postId, $authors)
         {
             Utils::set_post_authors($postId, $authors);
+
+            do_action('publishpress_authors_flush_cache');
+        }
+
+        public function userProfileUpdate($userId, $oldUserData)
+        {
+            $author = Author::get_by_user_id($userId);
+
+            if (is_object($author) && !is_wp_error($author)) {
+                $user = get_user_by('id', $userId);
+
+                global $wpdb, $wp_rewrite;
+
+                $wpdb->update($wpdb->terms, ['slug' => $user->user_nicename], ['term_id' => $author->term_id]);
+
+                if (is_object($wp_rewrite)) {
+                    $wp_rewrite->flush_rules();
+                }
+            }
         }
     }
 }

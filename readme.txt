@@ -6,8 +6,8 @@ Author URI: https://publishpress.com
 Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
-Tested up to: 5.6
-Stable tag: 3.11.0
+Tested up to: 5.7
+Stable tag: 3.12.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,37 @@ There are two ways to install the PublishPress Authors plugin:
 - Go to write a new post and you'll see the box for selecting multiple authors in the sidebar.
 
 == Changelog ==
+
+= UNRELEASED =
+
+* Added: Improve layout for Centered box and add a color picker to choose a base color, #376, #377;
+* Added: Added new filter to extend the "post" variable exposed to the layouts. The new filter: "publishpress_authors_layout_post_properties", #384;
+* Fixed: Fix the Authors List widget sorting by the author name, #389;
+* Fixed: Fixed Notice: Undefined index: title_plural in the Widget.php file, #393;
+* Fixed: Error Cannot access private property MultipleAuthors\Classes\Objects\Author::$term_id, #386;
+* Fixed: The authors field is not displayed for custom post types created by Toolset, or other plugins, #385;
+* Fixed: Fix link for authors in the Genesis Framework Featured Posts widget, #378;
+
+= [3.12.0] - 2021-02-23 =
+
+* Added: Added filters for customizing the byline on Elementor skins: publishpress_authors_elementor_posts_skin_cards_byline, publishpress_authors_elementor_posts_skin_classic_byline, #335;
+* Changed: Improved the style for the Boxed layout, #332;
+* Changed: Automatically sync the author URL with the user nicename when the user is saved, #53;
+* Fixed: Fixed encoding of UTF-8 chars in the Author URL column in the Authors list, #352;
+* Fixed: Fixed PHP warnings on Nested Pages plugin, #345;
+* Fixed: Improved performance on author pages reducing the number of database queries only looking for an author taxonomy if a user was not found;
+* Fixed: Fix compatibility with the SEO Framework archive title for guest authors, #351;
+* Fixed: Fixed the query to list authors considering only published posts, #350;
+* Fixed: Fixed warning about undefined index: ID, the rest-api.php file, #342;
+* Fixed: Fix PublishPress notifications for guest authors with email address, #349;
+* Fixed: Fix the PHP warning "Call to a member function get_user_object() on bool", #348;
+* Fixed: Duplicated queries caused by multiple calls to "get_user_by" for the same slug, #343;
+* Fixed: Fix the authors list widget form removing not used field, #339;
+* Fixed: Fix error: "Twig file not found" for shortcodes in the Pro version using a custom layout. And avoid to show the authors twice if Free and Pro are activated, #336;
+* Fixed: Fix compatibility with WP Engine object cache, #327;
+* Fixed: Fixed the invalid taxonomy error message, #326;
+* Fixed: Improved performance on author pages reducing the number of database queries only looking for an author taxonomy if a user was not found;
+* Fixed: Fix the Authors List widget title alignment wrapping it on a H2 tag;
 
 = [3.11.0] - 2021-01-25 =
 

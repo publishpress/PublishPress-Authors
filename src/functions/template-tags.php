@@ -9,8 +9,8 @@
  */
 
 use MultipleAuthors\Classes\Authors_Iterator;
-use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Classes\Objects\Author;
+use MultipleAuthors\Classes\Utils;
 
 if (!function_exists('get_multiple_authors')) {
     /**
@@ -164,11 +164,42 @@ if (!function_exists('multiple_authors_get_all_authors')) {
     {
         $defaults = [
             'hide_empty' => false,
+            'orderby'    => 'name',
+            'order'      => 'ASC',
         ];
 
         $args = wp_parse_args($args, $defaults);
 
-        $terms   = get_terms('author', $args);
+
+        if (true === $args['hide_empty']) {
+            global $wpdb;
+
+            $postTypes = Utils::get_enabled_post_types();
+            $postTypes = array_map(function($item) {
+                return '"' . $item . '"';
+            }, $postTypes);
+            $postTypes = implode(', ', $postTypes);
+
+            $terms = $wpdb->get_results(
+                "SELECT
+                    t.term_id as `term_id`
+                FROM
+                    wp_terms AS t
+                    INNER JOIN wp_term_taxonomy AS tt ON (tt.term_id = t.term_id)
+                    INNER JOIN wp_term_relationships AS tr ON (tt.term_taxonomy_id = tr.term_taxonomy_id)
+                    INNER JOIN wp_posts AS p ON (tr.object_id = p.ID)
+                WHERE
+                    tt.taxonomy = 'author'
+                    AND p.post_status IN ('publish')
+                    AND p.post_type IN ({$postTypes})
+                GROUP BY
+                    t.term_id
+                ORDER BY t.name ASC"
+            );
+        } else {
+            $terms   = get_terms('author', $args);
+        }
+
         $authors = [];
         foreach ($terms as $term) {
             $author               = Author::get_by_term_id($term->term_id);
