@@ -164,6 +164,8 @@ if (!function_exists('multiple_authors_get_all_authors')) {
     {
         $defaults = [
             'hide_empty' => false,
+            'orderby'    => 'name',
+            'order'      => 'ASC',
         ];
 
         $args = wp_parse_args($args, $defaults);
@@ -191,7 +193,8 @@ if (!function_exists('multiple_authors_get_all_authors')) {
                     AND p.post_status IN ('publish')
                     AND p.post_type IN ({$postTypes})
                 GROUP BY
-                    t.term_id"
+                    t.term_id
+                ORDER BY t.name ASC"
             );
         } else {
             $terms   = get_terms('author', $args);

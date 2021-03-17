@@ -6,7 +6,7 @@ Author URI: https://publishpress.com
 Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
-Tested up to: 5.6
+Tested up to: 5.7
 Stable tag: 3.12.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -110,6 +110,12 @@ There are two ways to install the PublishPress Authors plugin:
 
 = UNRELEASED =
 
+* Added: Improve layout for Centered box and add a color picker to choose a base color, #376, #377;
+* Added: Added new filter to extend the "post" variable exposed to the layouts. The new filter: "publishpress_authors_layout_post_properties", #384;
+* Fixed: Fix the Authors List widget sorting by the author name, #389;
+* Fixed: Fixed Notice: Undefined index: title_plural in the Widget.php file, #393;
+* Fixed: Error Cannot access private property MultipleAuthors\Classes\Objects\Author::$term_id, #386;
+* Fixed: The authors field is not displayed for custom post types created by Toolset, or other plugins, #385;
 * Fixed: Fix link for authors in the Genesis Framework Featured Posts widget, #378;
 
 = [3.12.0] - 2021-02-23 =
