@@ -6,30 +6,35 @@
     <ul>
         {% for author in authors %}
             <li class="author_index_{{ loop.index }}">
-                {% if author.get_avatar %}
-                    {{ author.get_avatar(80)|raw }}
-                {% else %}
-                    {{ get_avatar(author.user_email, 80)|raw }}
-                {% endif %}
-                <p>
+                <div>
+                    {% if author.get_avatar %}
+                        {{ author.get_avatar(80)|raw }}
+                    {% else %}
+                        {{ get_avatar(author.user_email, 80)|raw }}
+                    {% endif %}
+                </div>
+                <div class="multiple-authors-name">
                     <a href="{{ author.link }}" class="{{ item_class }}" rel="author">{{ author.display_name }}</a>
-                </p>
+                </div>
                 {% if author.description %}
-                    <p>{{ author.description|raw }}</p>
+                    <p class="multiple-authors-description">{{ author.description|raw }}</p>
                 {% endif %}
-                {% if show_email or show_site %}
-                    <p class="multiple-authors-links">
-                        {% if show_email and author.user_email %}
-                            <a href="mailto:{{ author.user_email }}" target="_blank"><span
-                                        class="dashicons dashicons-email"></span></a>
-                        {% endif %}
 
-                        {% if show_site and author.user_url %}
-                            <a href="{{ author.user_url }}" target="_blank"><span
-                                        class="dashicons dashicons-admin-site"></span></a>
-                        {% endif %}
-                    </p>
-                {% endif %}
+                <p class="multiple-authors-links">
+                    <a href="{{ author.link }}">
+                        <span>{{ __('View all posts', 'publishpress-authors') }}</span>
+                    </a>
+
+                    {% if show_email and author.user_email %}
+                        <a href="mailto:{{ author.user_email }}" target="_blank"><span
+                                    class="dashicons dashicons-email-alt"></span></a>
+                    {% endif %}
+
+                    {% if show_site and author.user_url %}
+                        <a href="{{ author.user_url }}" target="_blank"><span
+                                    class="dashicons dashicons-admin-links"></span></a>
+                    {% endif %}
+                </p>
             </li>
         {% endfor %}
     </ul>
