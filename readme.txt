@@ -113,6 +113,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Added: Improve layout for Centered box and add a color picker to choose a base color, #376, #377;
 * Added: Added new filter to extend the "post" variable exposed to the layouts. The new filter: "publishpress_authors_layout_post_properties", #384;
 * Fixed: Fix the Authors List widget sorting by the author name, #389;
+* Fixed: Fixed Notice: Undefined index: title_plural in the Widget.php file, #393;
 
 = [3.12.0] - 2021-02-23 =
 
