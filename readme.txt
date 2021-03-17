@@ -6,7 +6,7 @@ Author URI: https://publishpress.com
 Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
-Tested up to: 5.6
+Tested up to: 5.7
 Stable tag: 3.12.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -107,6 +107,10 @@ There are two ways to install the PublishPress Authors plugin:
 - Go to write a new post and you'll see the box for selecting multiple authors in the sidebar.
 
 == Changelog ==
+
+= UNRELEASED =
+
+* Fixed: Fix the Authors List widget sorting by the author name, #389;
 
 = [3.12.0] - 2021-02-23 =
 
