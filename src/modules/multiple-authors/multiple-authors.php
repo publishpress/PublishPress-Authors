@@ -1032,6 +1032,10 @@ if (!class_exists('MA_Multiple_Authors')) {
             $authors = get_multiple_authors($args['params']['post_id']);
 
             if (!empty($authors)) {
+                if (!is_array($receivers)) {
+                    $receivers = [$receivers];
+                }
+
                 foreach ($authors as $author) {
                     if (!$author->is_guest() && !in_array($author->user_id, $receivers)) {
                         $receivers[] = $author->user_id;
