@@ -40,7 +40,7 @@ class Author
      *
      * @var int
      */
-    private $term_id;
+    public $term_id;
 
     /**
      * @var \WP_Term

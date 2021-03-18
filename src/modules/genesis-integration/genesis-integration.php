@@ -80,6 +80,20 @@ if (!class_exists('MA_Genesis_Integration')) {
         public function init()
         {
             add_filter(
+                'genesis_post_author_shortcode',
+                [$this, 'filter_genesis_post_author_shortcode'],
+                10,
+                2
+            );
+
+            add_filter(
+                'genesis_post_author_link_shortcode',
+                [$this, 'filter_genesis_post_author_link_shortcode'],
+                10,
+                2
+            );
+
+            add_filter(
                 'genesis_post_author_posts_link_shortcode',
                 [$this, 'filter_genesis_post_author_posts_link_shortcode'],
                 10,
@@ -125,6 +139,82 @@ if (!class_exists('MA_Genesis_Integration')) {
                 $output .= '<span class="entry-author-name" itemprop="name">' . $author->display_name;
                 $output .= '</span></a>';
                 $output .= $attr['after'];
+                $output .= '</span>';
+            }
+
+            return $output;
+        }
+
+        public function filter_genesis_post_author_shortcode($output, $atts)
+        {
+            if (!post_type_supports(get_post_type(), 'author')) {
+                return '';
+            }
+
+            $authors = get_multiple_authors();
+
+            if (empty($authors)) {
+                return '';
+            }
+
+            $defaults = [
+                'after'  => '',
+                'before' => '',
+            ];
+
+            $atts = shortcode_atts($defaults, $atts, 'post_author');
+
+            $output = '';
+            foreach ($authors as $author) {
+                if (!empty($output)) {
+                    $output .= ', ';
+                }
+                $output = sprintf('<span %s>', genesis_attr('entry-author'));
+                $output .= $atts['before'];
+                $output .= '<a href="' . $author->link . '" class="entry-author-link" rel="author" itemprop="url">';
+                $output .= sprintf('<span %s>', genesis_attr('entry-author-name')) . esc_html(
+                        $author->display_name
+                    ) . '</span>';
+                $output .= '</span></a>';
+                $output .= $atts['after'];
+                $output .= '</span>';
+            }
+
+            return $output;
+        }
+
+        public function filter_genesis_post_author_link_shortcode($output, $atts)
+        {
+            if (!post_type_supports(get_post_type(), 'author')) {
+                return '';
+            }
+
+            $authors = get_multiple_authors();
+
+            if (empty($authors)) {
+                return '';
+            }
+
+            $defaults = [
+                'after'  => '',
+                'before' => '',
+            ];
+
+            $atts = shortcode_atts($defaults, $atts, 'post_author_link');
+
+            $output = '';
+            foreach ($authors as $author) {
+                if (!empty($output)) {
+                    $output .= ', ';
+                }
+                $output = sprintf('<span %s>', genesis_attr('entry-author'));
+                $output .= $atts['before'];
+                $output .= sprintf('<a href="%s" %s>', $author->link, genesis_attr('entry-author-link'));
+                $output .= sprintf('<span %s>', genesis_attr('entry-author-name')) . esc_html(
+                        $author->display_name
+                    ) . '</span>';
+                $output .= '</span></a>';
+                $output .= $atts['after'];
                 $output .= '</span>';
             }
 
