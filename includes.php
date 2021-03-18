@@ -39,42 +39,45 @@ if (!defined('PP_AUTHORS_LOADED')) {
             }
         }
 
-        add_action('init', function() {
-            if (current_user_can('install_plugins')) {
-                add_filter(
-                    \PPVersionNotices\Module\TopNotice\Module::SETTINGS_FILTER,
-                    function ($settings) {
-                        $settings['publishpress-authors'] = [
-                            'message' => 'You\'re using PublishPress Authors Free. The Pro version has more features and support. %sUpgrade to Pro%s',
-                            'link'    => 'https://publishpress.com/links/authors-banner',
-                            'screens' => [
-                                ['base' => 'edit-tags', 'id' => 'edit-author', 'taxonomy' => 'author'],
-                                ['base' => 'term', 'id' => 'edit-author', 'taxonomy' => 'author'],
-                                [
-                                    'base' => 'authors_page_ppma-modules-settings',
-                                    'id'   => 'authors_page_ppma-modules-settings'
-                                ],
-                            ]
-                        ];
+        add_action(
+            'plugins_loaded',
+            function () {
+                if (current_user_can('install_plugins')) {
+                    add_filter(
+                        \PPVersionNotices\Module\TopNotice\Module::SETTINGS_FILTER,
+                        function ($settings) {
+                            $settings['publishpress-authors'] = [
+                                'message' => 'You\'re using PublishPress Authors Free. The Pro version has more features and support. %sUpgrade to Pro%s',
+                                'link'    => 'https://publishpress.com/links/authors-banner',
+                                'screens' => [
+                                    ['base' => 'edit-tags', 'id' => 'edit-author', 'taxonomy' => 'author'],
+                                    ['base' => 'term', 'id' => 'edit-author', 'taxonomy' => 'author'],
+                                    [
+                                        'base' => 'authors_page_ppma-modules-settings',
+                                        'id'   => 'authors_page_ppma-modules-settings'
+                                    ],
+                                ]
+                            ];
 
-                        return $settings;
-                    }
-                );
+                            return $settings;
+                        }
+                    );
 
-                add_filter(
-                    Module::SETTINGS_FILTER,
-                    function ($settings) {
-                        $settings['publishpress-authors'] = [
-                            'parent' => 'ppma-authors',
-                            'label'  => 'Upgrade to Pro',
-                            'link'   => 'https://publishpress.com/links/authors-menu',
-                        ];
+                    add_filter(
+                        Module::SETTINGS_FILTER,
+                        function ($settings) {
+                            $settings['publishpress-authors'] = [
+                                'parent' => 'ppma-authors',
+                                'label'  => 'Upgrade to Pro',
+                                'link'   => 'https://publishpress.com/links/authors-menu',
+                            ];
 
-                        return $settings;
-                    }
-                );
+                            return $settings;
+                        }
+                    );
+                }
             }
-        }, 2);
+        );
     }
 
     require_once PP_AUTHORS_MODULES_PATH . 'multiple-authors/multiple-authors.php';
