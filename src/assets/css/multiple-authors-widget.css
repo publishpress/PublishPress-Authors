@@ -52,9 +52,14 @@
     margin: 10px 0 20px;
 }
 
+.pp-multiple-authors-layout-boxed .multiple-authors-name,
+.pp-multiple-authors-layout-centered .multiple-authors-name {
+    margin-bottom: 10px;
+}
+
 .pp-multiple-authors-layout-boxed .multiple-authors-name a,
 .pp-multiple-authors-layout-centered .multiple-authors-name a {
-    margin-bottom: 0;
+    margin-bottom: 10px;
     font-size: 1.2em;
 }
 
