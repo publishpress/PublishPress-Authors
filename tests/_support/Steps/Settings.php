@@ -32,4 +32,12 @@ trait Settings
     {
         $this->seeElement("#{$postType}-multiple-authors");
     }
+
+    /**
+     * @Then I don't see the post type :postType in the field Add to these post types
+     */
+    public function iDontSeePostTypeInAddToThesePostTypes($postType)
+    {
+        $this->dontSeeElement("#{$postType}-multiple-authors");
+    }
 }

@@ -14,10 +14,20 @@ add_action(
     'init',
     function () {
         register_post_type(
-            'books',
+            'book',
             [
                 'label'    => 'Books',
-                'supports' => ['author'],
+                'supports' => ['title', 'author'],
+                'public'   => true,
+                'show_ui'  => true,
+            ]
+        );
+
+        register_post_type(
+            'motor',
+            [
+                'label'    => 'Motors',
+                'supports' => ['title'],
                 'public'   => true,
                 'show_ui'  => true,
             ]
