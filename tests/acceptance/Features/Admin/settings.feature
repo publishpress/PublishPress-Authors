@@ -13,6 +13,5 @@ Feature: Settings page
         And I see the post type "page" in the field Add to these post types
 
     Scenario: I see a custom post type in the field "Add to these post types"
-        Given I have a custom post type "my_post_type_1" which supports authors with label "My Post Type"
         When I open the plugin Settings page
-
+        Then I see the post type "books" in the field Add to these post types

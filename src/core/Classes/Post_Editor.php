@@ -12,6 +12,8 @@ namespace MultipleAuthors\Classes;
 
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Factory;
+use WP_Post;
+use WP_REST_Response;
 
 
 /**
@@ -398,5 +400,39 @@ class Post_Editor
 
             do_action('publishpress_authors_flush_cache');
         }
+    }
+
+    public static function remove_core_author_field()
+    {
+        $postTypes = Content_Model::get_author_supported_post_types();
+
+        foreach ($postTypes as $postType) {
+            if (Utils::is_post_type_enabled($postType)) {
+                add_filter("rest_prepare_{$postType}", [__CLASS__, 'rest_remove_action_assign_author']);
+            }
+        }
+    }
+
+    /**
+     * Filters the post data for a REST API response removing the
+     * `wp:action-assign-author` rel from the response so the
+     * default post author control doesn't get shown on the block
+     * editor post editing screen.
+     *
+     * Based on code from humanmade/authorship.
+     *
+     * @param WP_REST_Response $response
+     *
+     * @return WP_REST_Response
+     */
+    public static function rest_remove_action_assign_author($response)
+    {
+        $links = $response->get_links();
+
+        if (isset($links['https://api.w.org/action-assign-author'])) {
+            $response->remove_link('https://api.w.org/action-assign-author');
+        }
+
+        return $response;
     }
 }

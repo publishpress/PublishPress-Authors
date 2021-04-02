@@ -71,18 +71,4 @@ trait Posts
     {
         $this->see($posTitle);
     }
-
-    /**
-     * @Given I have a custom post type :postType which supports authors with label :label
-     */
-    public function iHaveCustomPostTypeWichSupportsAuthors($postType, $label)
-    {
-        register_post_type(
-            $postType,
-            [
-                'label'    => $label,
-                'supports' => ['author']
-            ]
-        );
-    }
 }

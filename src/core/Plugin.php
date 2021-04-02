@@ -12,6 +12,7 @@ namespace MultipleAuthors;
 use MA_Multiple_Authors;
 use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Classes\Objects\Author;
+use MultipleAuthors\Classes\Post_Editor;
 use MultipleAuthors\Classes\Query;
 use MultipleAuthors\Classes\Utils;
 use MultipleAuthors\Traits\Author_box;
@@ -146,6 +147,9 @@ class Plugin
             'parse_request',
             ['MultipleAuthors\\Classes\\Content_Model', 'action_parse_request']
         );
+
+        // Hide the core Author field for the selected post types.
+        add_action('init', [Post_Editor::class, 'remove_core_author_field'], 9999);
 
         // Admin customizations.
         if (is_admin()) {

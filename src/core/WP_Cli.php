@@ -12,6 +12,7 @@
 namespace MultipleAuthors;
 
 use WP_CLI_Command;
+use WP_Query;
 
 class WP_Cli extends WP_CLI_Command
 {
