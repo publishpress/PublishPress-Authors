@@ -20,20 +20,22 @@ extensions:
     config:
         tad\WPBrowser\Extension\Copier:
             files:
-                languages: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/languages"
                 src: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/src"
                 vendor: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/vendor"
-                activation.php: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/activation.php"
-                defines.php: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/defines.php"
-                deprecated.php: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/deprecated.php"
-                includes.php: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/includes.php"
+                languages: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/languages"
                 publishpress-authors.php: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/publishpress-authors.php"
-                template-tags.php: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/template-tags.php"
+                bylines-functions.php: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/bylines-functions.php"
+                coauthors-functions.php: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/coauthors-functions.php"
+                includes.php: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/includes.php"
+                deprecated.php: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/deprecated.php"
+                defines.php: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/defines.php"
                 readme.txt: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/readme.txt"
-
+                activation.php: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/activation.php"
+                template-tags.php: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/template-tags.php"
 params:
     - .env.testing
 settings:
     shuffle: true
     lint: true
     report_useless_tests: true
+    colors: true

@@ -20,7 +20,11 @@ class AcceptanceTester extends \Codeception\Actor
 {
     use _generated\AcceptanceTesterActions;
 
-   /**
-    * Define custom actions here
-    */
+   use \Steps\Login;
+   use \Steps\Authors;
+   use \Steps\Users;
+   use \Steps\Posts;
+   use \Steps\AdminPages;
+   use \Steps\Interaction;
+   use \Steps\Settings;
 }
