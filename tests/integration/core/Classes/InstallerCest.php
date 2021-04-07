@@ -12,24 +12,10 @@ class InstallerCest
     {
     }
 
-    public function tryToConvertPostAuthorsIntoTermsForPostsWithAuthorsWithNoTerms(WpunitTester $I)
+    public function tryToCreateAuthorTermsForPostsWithLegacyCoreAuthors(WpunitTester $I)
     {
         $postIds     = $I->havePostsWithDifferentAuthors(10);
         $postAuthors = $I->getCorePostAuthorFromPosts($postIds);
-
-        Installer::createAuthorTermsForLegacyCoreAuthors();
-
-        $I->assertUsersHaveAuthorTerm($postAuthors);
-    }
-
-    public function tryToConvertPostAuthorsIntoTermsForPostsWithAuthorsWithTermsAndWithoutTerms(WpunitTester $I)
-    {
-        $postIds     = $I->havePostsWithDifferentAuthors(10);
-        $postAuthors = $I->getCorePostAuthorFromPosts($postIds);
-
-        Author::create_from_user($postAuthors[0]);
-        Author::create_from_user($postAuthors[1]);
-        Author::create_from_user($postAuthors[5]);
 
         Installer::createAuthorTermsForLegacyCoreAuthors();
 
