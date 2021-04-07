@@ -137,6 +137,12 @@ class Author
         if (is_numeric($user)) {
             $user = get_user_by('id', (int)$user);
         }
+
+        if (is_a($user, 'stdClass')) {
+            $userInstance = new WP_User($user);
+            $user         = $userInstance;
+        }
+
         if (!is_a($user, 'WP_User')) {
             error_log(
                 sprintf(
