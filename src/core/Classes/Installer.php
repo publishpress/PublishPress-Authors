@@ -159,6 +159,10 @@ class Installer
             foreach ($posts_to_update as $post_data) {
                 $author = Author::get_by_user_id($post_data->post_author);
 
+                if (!is_object($author)) {
+                    $author = Author::create_from_user($post_data->post_author);
+                }
+
                 if (is_object($author)) {
                     $authors = [$author];
 
