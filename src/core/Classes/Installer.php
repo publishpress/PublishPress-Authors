@@ -56,7 +56,7 @@ class Installer
      *
      * @param string $previous_version
      */
-    public static function upgrade($previous_version)
+    public static function runUpgradeTasks($previous_version)
     {
         if (version_compare($previous_version, '2.0.2', '<')) {
             // Do not execute the post_author migration to post terms if Co-Authors Plus is activated.
