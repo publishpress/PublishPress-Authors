@@ -60,23 +60,23 @@ class Installer
 
         return $wpdb->get_results(
             "SELECT DISTINCT p.post_author, u.display_name, u.user_nicename, u.user_email, u.user_url
-				 FROM {$wpdb->posts} as p
-				 LEFT JOIN {$wpdb->users} AS u ON (post_author = u.ID)
-				 WHERE
-				     p.post_status NOT IN ('trash') AND
-				 	 p.post_author NOT IN (
-					     SELECT meta.`meta_value`
-						 FROM {$wpdb->terms} AS term
-						 INNER JOIN {$wpdb->term_taxonomy} AS tax ON (term.`term_id` = tax.`term_id`)
-						 INNER JOIN {$wpdb->termmeta} AS meta ON (term.term_id = meta.`term_id`)
-						 WHERE tax.`taxonomy` = 'author'
-						 AND meta.meta_key = 'user_id'
-						 AND meta.meta_value <> 0
-				 	)
-				 	AND p.post_type IN ({$enabledPostTypes})
-				 	AND p.post_author <> 0
-					AND u.display_name != ''
-			    "
+                FROM {$wpdb->posts} as p
+                LEFT JOIN {$wpdb->users} AS u ON (post_author = u.ID)
+                WHERE
+                    p.post_status NOT IN ('trash') AND
+                    p.post_author NOT IN (
+                        SELECT meta.`meta_value`
+                            FROM {$wpdb->terms} AS term
+                            INNER JOIN {$wpdb->term_taxonomy} AS tax ON (term.`term_id` = tax.`term_id`)
+                            INNER JOIN {$wpdb->termmeta} AS meta ON (term.term_id = meta.`term_id`)
+                            WHERE tax.`taxonomy` = 'author'
+                            AND meta.meta_key = 'user_id'
+                            AND meta.meta_value <> 0
+                    )
+                    AND p.post_type IN ({$enabledPostTypes})
+                    AND p.post_author <> 0
+                    AND u.display_name != ''
+            "
         );
     }
 
