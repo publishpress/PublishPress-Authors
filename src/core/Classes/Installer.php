@@ -51,6 +51,34 @@ class Installer
         do_action('pp_authors_install', $current_version);
     }
 
+    /**
+     * Runs methods when the plugin is being upgraded to a most recent version.
+     *
+     * @param string $previous_version
+     */
+    public static function upgrade($previous_version)
+    {
+        if (version_compare($previous_version, '2.0.2', '<')) {
+            // Do not execute the post_author migration to post terms if Co-Authors Plus is activated.
+            if (!isset($GLOBALS['coauthors_plus']) || empty($GLOBALS['coauthors_plus'])) {
+                self::createAuthorTermsForLegacyCoreAuthors();
+                self::createAuthorTermsForPostsWithLegacyCoreAuthors();
+            }
+        }
+
+        if (version_compare($previous_version, '3.6.0', '<')) {
+            self::addEditPostAuthorsCapabilitiesToRoles();
+        }
+
+        /**
+         * @param string $previousVersion
+         */
+        do_action('pp_authors_upgrade', $previous_version);
+
+        self::addDefaultCapabilitiesForAdministrators();
+        self::flushRewriteRules();
+    }
+
     private static function getUsersAuthorsWithNoAuthorTerm()
     {
         global $wpdb;
@@ -210,33 +238,5 @@ class Installer
                 $role->add_cap($cap);
             }
         }
-    }
-
-    /**
-     * Runs methods when the plugin is being upgraded to a most recent version.
-     *
-     * @param string $previous_version
-     */
-    public static function upgrade($previous_version)
-    {
-        if (version_compare($previous_version, '2.0.2', '<')) {
-            // Do not execute the post_author migration to post terms if Co-Authors Plus is activated.
-            if (!isset($GLOBALS['coauthors_plus']) || empty($GLOBALS['coauthors_plus'])) {
-                self::createAuthorTermsForLegacyCoreAuthors();
-                self::createAuthorTermsForPostsWithLegacyCoreAuthors();
-            }
-        }
-
-        if (version_compare($previous_version, '3.6.0', '<')) {
-            self::addEditPostAuthorsCapabilitiesToRoles();
-        }
-
-        /**
-         * @param string $previousVersion
-         */
-        do_action('pp_authors_upgrade', $previous_version);
-
-        self::addDefaultCapabilitiesForAdministrators();
-        self::flushRewriteRules();
     }
 }
