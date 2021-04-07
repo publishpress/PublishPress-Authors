@@ -157,25 +157,25 @@ class Installer
      */
     public static function createAuthorTermsForPostsWithLegacyCoreAuthors()
     {
-        $posts_to_update = self::getPostsWithoutAuthorTerms();
+        $postsToUpdate = self::getPostsWithoutAuthorTerms();
 
-        if (!empty($posts_to_update)) {
-            foreach ($posts_to_update as $post_data) {
-                $author = Author::get_by_user_id($post_data->post_author);
+        if (!empty($postsToUpdate)) {
+            foreach ($postsToUpdate as $postData) {
+                $author = Author::get_by_user_id($postData->post_author);
 
                 if (!is_object($author)) {
-                    $author = Author::create_from_user($post_data->post_author);
+                    $author = Author::create_from_user($postData->post_author);
                 }
 
                 if (is_object($author)) {
                     $authors = [$author];
 
-                    Utils::set_post_authors_name_meta($post_data->ID, $authors);
-                    Utils::sync_post_author_column($post_data->ID, $authors);
+                    Utils::set_post_authors_name_meta($postData->ID, $authors);
+                    Utils::sync_post_author_column($postData->ID, $authors);
 
                     $authors = wp_list_pluck($authors, 'term_id');
 
-                    wp_add_object_terms($post_data->ID, $authors, 'author');
+                    wp_add_object_terms($postData->ID, $authors, 'author');
                 }
             }
         }
