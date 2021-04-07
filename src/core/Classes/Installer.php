@@ -87,7 +87,7 @@ class Installer
         $enabledPostTypes = '"' . implode('","', $enabledPostTypes) . '"';
 
         return $wpdb->get_results(
-            "SELECT DISTINCT p.post_author, u.display_name, u.user_nicename, u.user_email, u.user_url
+            "SELECT DISTINCT p.post_author AS ID, u.display_name, u.user_nicename, u.user_email, u.user_url
                 FROM {$wpdb->posts} as p
                 LEFT JOIN {$wpdb->users} AS u ON (post_author = u.ID)
                 WHERE
@@ -114,21 +114,21 @@ class Installer
     public static function createAuthorTermsForLegacyCoreAuthors()
     {
         // Get a list of authors (users) from the posts which has no terms.
-        $authors = self::getUsersAuthorsWithNoAuthorTerm();
+        $users = self::getUsersAuthorsWithNoAuthorTerm();
 
         // Check if the authors have a term. If not, create one.
-        if (!empty($authors)) {
-            foreach ($authors as $author) {
+        if (!empty($users)) {
+            foreach ($users as $user) {
                 $term = wp_insert_term(
-                    $author->display_name,
+                    $user->display_name,
                     'author',
                     [
-                        'slug' => $author->user_nicename,
+                        'slug' => $user->user_nicename,
                     ]
                 );
 
                 // Get user's description
-                $description = get_user_meta($author->post_author, 'description', true);
+                $description = get_user_meta($user->ID, 'description', true);
                 if (empty($description)) {
                     $description = '';
                 }
@@ -137,16 +137,16 @@ class Installer
                     continue;
                 }
 
-                $first_name = get_user_meta($author->post_author, 'first_name', true);
-                $last_name  = get_user_meta($author->post_author, 'last_name', true);
+                $first_name = get_user_meta($user->ID, 'first_name', true);
+                $last_name  = get_user_meta($user->ID, 'last_name', true);
 
                 $meta = [
                     'first_name'                      => $first_name,
                     'last_name'                       => $last_name,
-                    'user_email'                      => $author->user_email,
-                    'user_id_' . $author->post_author => 'user_id',
-                    'user_id'                         => $author->post_author,
-                    'user_url'                        => $author->user_url,
+                    'user_email'                      => $user->user_email,
+                    'user_id_' . $user->ID => 'user_id',
+                    'user_id'                         => $user->ID,
+                    'user_url'                        => $user->user_url,
                     'description'                     => $description,
                 ];
 

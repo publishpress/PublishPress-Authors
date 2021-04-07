@@ -3,7 +3,6 @@
 namespace core\Classes;
 
 use MultipleAuthors\Classes\Installer;
-use MultipleAuthors\Classes\Objects\Author;
 use WpunitTester;
 
 class InstallerCest
@@ -12,7 +11,7 @@ class InstallerCest
     {
     }
 
-    public function tryToCreateAuthorTermsForPostsWithLegacyCoreAuthors(WpunitTester $I)
+    public function tryToCreateAuthorTermsForLegacyCoreAuthors(WpunitTester $I)
     {
         $postIds     = $I->havePostsWithDifferentAuthors(10);
         $postAuthors = $I->getCorePostAuthorFromPosts($postIds);
@@ -20,5 +19,9 @@ class InstallerCest
         Installer::createAuthorTermsForLegacyCoreAuthors();
 
         $I->assertUsersHaveAuthorTerm($postAuthors);
+    }
+
+    public function tryToCreateAuthorTermsForPostsWithLegacyCoreAuthors(WpunitTester $I)
+    {
     }
 }
