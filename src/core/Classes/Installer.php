@@ -87,7 +87,7 @@ class Installer
         $enabledPostTypes = '"' . implode('","', $enabledPostTypes) . '"';
 
         return $wpdb->get_results(
-            "SELECT DISTINCT p.post_author AS ID, u.display_name, u.user_nicename, u.user_email, u.user_url
+            "SELECT DISTINCT p.post_author AS ID
                 FROM {$wpdb->posts} as p
                 LEFT JOIN {$wpdb->users} AS u ON (post_author = u.ID)
                 WHERE
@@ -118,8 +118,8 @@ class Installer
 
         // Check if the authors have a term. If not, create one.
         if (!empty($users)) {
-            foreach ($users as $userId) {
-                Author::create_from_user($userId);
+            foreach ($users as $userData) {
+                Author::create_from_user($userData->ID);
             }
         }
     }
