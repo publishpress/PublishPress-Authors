@@ -1613,7 +1613,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             // The user need to manually run the Co-Authors migration task before running this again.
             if (!$this->isCoAuthorsPlusActivated()) {
                 Installer::createAuthorTermsForLegacyCoreAuthors();
-                Installer::add_author_term_for_posts();
+                Installer::createAuthorTermsForPostsWithLegacyCoreAuthors();
             }
         }
 
@@ -1685,7 +1685,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             // Co-Authors sometimes don't have a taxonomy term for the author, but uses the post_author value instead.
             Installer::createAuthorTermsForLegacyCoreAuthors();
-            Installer::add_author_term_for_posts();
+            Installer::createAuthorTermsForPostsWithLegacyCoreAuthors();
         }
 
         /**
@@ -2230,7 +2230,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             // Co-Authors sometimes don't have a taxonomy term for the author, but uses the post_author value instead.
             Installer::createAuthorTermsForLegacyCoreAuthors();
-            Installer::add_author_term_for_posts();
+            Installer::createAuthorTermsForPostsWithLegacyCoreAuthors();
 
             do_action('publishpress_authors_flush_cache');
 

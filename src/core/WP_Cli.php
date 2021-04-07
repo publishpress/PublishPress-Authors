@@ -25,7 +25,7 @@ class WP_Cli extends WP_CLI_Command
     public function create_terms_for_posts()
     {
         Installer::createAuthorTermsForLegacyCoreAuthors();
-        Installer::add_author_term_for_posts();
+        Installer::createAuthorTermsForPostsWithLegacyCoreAuthors();
 
 
 

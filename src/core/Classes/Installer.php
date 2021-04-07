@@ -38,7 +38,7 @@ class Installer
         // Do not execute the post_author migration to post terms if Co-Authors Plus is activated.
         if (!isset($GLOBALS['coauthors_plus']) || empty($GLOBALS['coauthors_plus'])) {
             self::createAuthorTermsForLegacyCoreAuthors();
-            self::add_author_term_for_posts();
+            self::createAuthorTermsForPostsWithLegacyCoreAuthors();
         }
 
         self::add_administrator_capabilities();
@@ -132,7 +132,7 @@ class Installer
     /**
      * Add author term for posts which only have the post_author.
      */
-    public static function add_author_term_for_posts()
+    public static function createAuthorTermsForPostsWithLegacyCoreAuthors()
     {
         global $wpdb;
 
@@ -223,7 +223,7 @@ class Installer
             // Do not execute the post_author migration to post terms if Co-Authors Plus is activated.
             if (!isset($GLOBALS['coauthors_plus']) || empty($GLOBALS['coauthors_plus'])) {
                 self::createAuthorTermsForLegacyCoreAuthors();
-                self::add_author_term_for_posts();
+                self::createAuthorTermsForPostsWithLegacyCoreAuthors();
             }
         }
 
