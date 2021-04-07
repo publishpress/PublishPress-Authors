@@ -41,7 +41,7 @@ class Installer
             self::createAuthorTermsForPostsWithLegacyCoreAuthors();
         }
 
-        self::add_administrator_capabilities();
+        self::addDefaultCapabilitiesForAdministrators();
         self::add_new_edit_post_authors_cap();
         self::flush_permalinks();
 
@@ -175,7 +175,7 @@ class Installer
         }
     }
 
-    private static function add_administrator_capabilities()
+    private static function addDefaultCapabilitiesForAdministrators()
     {
         $role = get_role('administrator');
         $role->add_cap('ppma_manage_authors');
@@ -236,7 +236,7 @@ class Installer
          */
         do_action('pp_authors_upgrade', $previous_version);
 
-        self::add_administrator_capabilities();
+        self::addDefaultCapabilitiesForAdministrators();
         self::flush_permalinks();
     }
 }
