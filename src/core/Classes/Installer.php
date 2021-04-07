@@ -118,41 +118,8 @@ class Installer
 
         // Check if the authors have a term. If not, create one.
         if (!empty($users)) {
-            foreach ($users as $user) {
-                $term = wp_insert_term(
-                    $user->display_name,
-                    'author',
-                    [
-                        'slug' => $user->user_nicename,
-                    ]
-                );
-
-                // Get user's description
-                $description = get_user_meta($user->ID, 'description', true);
-                if (empty($description)) {
-                    $description = '';
-                }
-
-                if (is_wp_error($term)) {
-                    continue;
-                }
-
-                $first_name = get_user_meta($user->ID, 'first_name', true);
-                $last_name  = get_user_meta($user->ID, 'last_name', true);
-
-                $meta = [
-                    'first_name'                      => $first_name,
-                    'last_name'                       => $last_name,
-                    'user_email'                      => $user->user_email,
-                    'user_id_' . $user->ID => 'user_id',
-                    'user_id'                         => $user->ID,
-                    'user_url'                        => $user->user_url,
-                    'description'                     => $description,
-                ];
-
-                foreach ($meta as $key => $value) {
-                    add_term_meta($term['term_id'], $key, $value);
-                }
+            foreach ($users as $userId) {
+                Author::create_from_user($userId);
             }
         }
     }
