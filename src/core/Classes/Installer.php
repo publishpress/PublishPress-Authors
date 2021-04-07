@@ -33,7 +33,7 @@ class Installer
      *
      * @param string $current_version
      */
-    public static function install($current_version)
+    public static function runInstallTasks($current_version)
     {
         // Do not execute the post_author migration to post terms if Co-Authors Plus is activated.
         if (!isset($GLOBALS['coauthors_plus']) || empty($GLOBALS['coauthors_plus'])) {
