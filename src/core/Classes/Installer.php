@@ -127,15 +127,11 @@ class Installer
         }
     }
 
-    /**
-     * Add author term for posts which only have the post_author.
-     */
-    public static function createAuthorTermsForPostsWithLegacyCoreAuthors()
+    private static function getPostsWithoutAuthorTerms()
     {
         global $wpdb;
 
-        // Add the relationship into the term and the post
-        $posts_to_update = $wpdb->get_results(
+        return $wpdb->get_results(
             "SELECT p.ID, p.post_author
                 FROM {$wpdb->posts} as p WHERE ID NOT IN (
                     SELECT DISTINCT p.ID
@@ -154,6 +150,14 @@ class Installer
                 AND	p.post_type = 'post'
                 AND p.post_status NOT IN ('trash')"
         );
+    }
+
+    /**
+     * Add author term for posts which only have the post_author.
+     */
+    public static function createAuthorTermsForPostsWithLegacyCoreAuthors()
+    {
+        $posts_to_update = self::getPostsWithoutAuthorTerms();
 
         if (!empty($posts_to_update)) {
             foreach ($posts_to_update as $post_data) {
