@@ -197,15 +197,14 @@ class Installer
 
     private static function add_new_edit_post_authors_cap()
     {
-        $cap = 'ppma_edit_post_authors';
+        $cap   = 'ppma_edit_post_authors';
         $roles = [
             'author',
             'editor',
             'contributor',
         ];
 
-        foreach ($roles as $roleNmae)
-        {
+        foreach ($roles as $roleNmae) {
             $role = get_role($roleNmae);
             if ($role instanceof WP_Role) {
                 $role->add_cap($cap);
