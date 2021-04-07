@@ -31,9 +31,9 @@ class Installer
     /**
      * Runs methods when the plugin is running for the first time.
      *
-     * @param string $current_version
+     * @param string $currentVersion
      */
-    public static function runInstallTasks($current_version)
+    public static function runInstallTasks($currentVersion)
     {
         // Do not execute the post_author migration to post terms if Co-Authors Plus is activated.
         if (!isset($GLOBALS['coauthors_plus']) || empty($GLOBALS['coauthors_plus'])) {
@@ -48,17 +48,17 @@ class Installer
         /**
          * @param string $currentVersion
          */
-        do_action('pp_authors_install', $current_version);
+        do_action('pp_authors_install', $currentVersion);
     }
 
     /**
      * Runs methods when the plugin is being upgraded to a most recent version.
      *
-     * @param string $previous_version
+     * @param string $currentVersions
      */
-    public static function runUpgradeTasks($previous_version)
+    public static function runUpgradeTasks($currentVersions)
     {
-        if (version_compare($previous_version, '2.0.2', '<')) {
+        if (version_compare($currentVersions, '2.0.2', '<')) {
             // Do not execute the post_author migration to post terms if Co-Authors Plus is activated.
             if (!isset($GLOBALS['coauthors_plus']) || empty($GLOBALS['coauthors_plus'])) {
                 self::createAuthorTermsForLegacyCoreAuthors();
@@ -66,14 +66,14 @@ class Installer
             }
         }
 
-        if (version_compare($previous_version, '3.6.0', '<')) {
+        if (version_compare($currentVersions, '3.6.0', '<')) {
             self::addEditPostAuthorsCapabilitiesToRoles();
         }
 
         /**
          * @param string $previousVersion
          */
-        do_action('pp_authors_upgrade', $previous_version);
+        do_action('pp_authors_upgrade', $currentVersions);
 
         self::addDefaultCapabilitiesForAdministrators();
         self::flushRewriteRules();
