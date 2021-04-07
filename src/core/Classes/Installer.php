@@ -86,8 +86,9 @@ class Installer
         $enabledPostTypes = Utils::get_enabled_post_types();
         $enabledPostTypes = '"' . implode('","', $enabledPostTypes) . '"';
 
-        return $wpdb->get_results(
-            "SELECT DISTINCT p.post_author AS ID
+        return wp_list_pluck(
+            $wpdb->get_results(
+                "SELECT DISTINCT p.post_author AS ID
                 FROM {$wpdb->posts} as p
                 LEFT JOIN {$wpdb->users} AS u ON (post_author = u.ID)
                 WHERE
@@ -105,6 +106,8 @@ class Installer
                     AND p.post_author <> 0
                     AND u.display_name != ''
             "
+            ),
+            'ID'
         );
     }
 
@@ -118,8 +121,8 @@ class Installer
 
         // Check if the authors have a term. If not, create one.
         if (!empty($users)) {
-            foreach ($users as $userData) {
-                Author::create_from_user($userData->ID);
+            foreach ($users as $userId) {
+                Author::create_from_user($userId);
             }
         }
     }
