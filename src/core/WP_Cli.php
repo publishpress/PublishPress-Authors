@@ -12,6 +12,7 @@
 
 namespace MultipleAuthors;
 
+use MultipleAuthors\Classes\Installer;
 use WP_CLI_Command;
 
 class WP_Cli extends WP_CLI_Command
@@ -23,6 +24,11 @@ class WP_Cli extends WP_CLI_Command
      */
     public function create_terms_for_posts()
     {
+        Installer::convert_post_author_into_taxonomy();
+        Installer::add_author_term_for_posts();
+
+
+
         global $multiple_authors_addon;
 
         // Cache these to prevent repeated lookups

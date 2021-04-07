@@ -22,4 +22,5 @@ modules:
             plugins: ['publishpress-authors/publishpress-authors.php']
             activatePlugins: ['publishpress-authors/publishpress-authors.php']
             isolatedInstall: true
+
 bootstrap: bootstrap.php

@@ -63,6 +63,29 @@ class Wpunit extends \Codeception\Module
         return $authors;
     }
 
+    public function havePostsWithDifferentAuthors($number)
+    {
+        $wpLoader = $this->getModule('WPLoader');
+
+        $ids = [];
+
+        for ($i = 0; $i < $number; $i++) {
+            $userId = $wpLoader->factory('create a new user')->user->create(
+                [
+                    'role' => 'author',
+                ]
+            );
+
+            $ids[] = $wpLoader->factory('create a new post')->post->create(
+                [
+                    'post_author' => $userId
+                ]
+            );
+        }
+
+        return $ids;
+    }
+
     public function haveAPost()
     {
         $wpLoader = $this->getModule('WPLoader');
@@ -82,5 +105,42 @@ class Wpunit extends \Codeception\Module
         Utils::set_post_authors($postId, $authorsList);
 
         return $postId;
+    }
+
+    public function getCorePostAuthorFromPosts($postIds)
+    {
+        $postAuthors = [];
+
+        foreach ($postIds as $postId) {
+            $post = get_post($postId);
+
+            $postAuthors[] = (int)$post->post_author;
+        }
+
+        return $postAuthors;
+    }
+
+    public function assertUsersHaveAuthorTerm($users)
+    {
+        $failedUsers = [];
+
+        foreach ($users as $userId) {
+            $author = Author::get_by_user_id($userId);
+
+            if (empty($author)) {
+                $failedUsers[] = (int)$userId;
+            }
+        }
+
+        if (!empty($failedUsers)) {
+            $this->fail(
+                sprintf(
+                    'Failed asserting the users [%s] have author term',
+                    implode(', ', $failedUsers)
+                )
+            );
+        }
+
+        return empty($failedUsers);
     }
 }

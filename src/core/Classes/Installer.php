@@ -51,18 +51,14 @@ class Installer
         do_action('pp_authors_install', $current_version);
     }
 
-    /**
-     * Creates terms for users found as authors in the content.
-     */
-    public static function convert_post_author_into_taxonomy()
+    private static function getUsersAuthorsWithNoAuthorTerm()
     {
         global $wpdb;
 
         $enabledPostTypes = Utils::get_enabled_post_types();
         $enabledPostTypes = '"' . implode('","', $enabledPostTypes) . '"';
 
-        // Get a list of authors (users) from the posts which has no terms.
-        $authors = $wpdb->get_results(
+        return $wpdb->get_results(
             "SELECT DISTINCT p.post_author, u.display_name, u.user_nicename, u.user_email, u.user_url
 				 FROM {$wpdb->posts} as p
 				 LEFT JOIN {$wpdb->users} AS u ON (post_author = u.ID)
@@ -82,6 +78,15 @@ class Installer
 					AND u.display_name != ''
 			    "
         );
+    }
+
+    /**
+     * Creates terms for users found as authors in the content.
+     */
+    public static function convert_post_author_into_taxonomy()
+    {
+        // Get a list of authors (users) from the posts which has no terms.
+        $authors = self::getUsersAuthorsWithNoAuthorTerm();
 
         // Check if the authors have a term. If not, create one.
         if (!empty($authors)) {
