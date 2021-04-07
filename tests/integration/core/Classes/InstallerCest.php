@@ -82,4 +82,13 @@ class InstallerCest
             'The user_url should be the same in the user and author'
         );
     }
+
+    public function tryToCreateAuthorTermsForPostsWithLegacyCoreAuthors(WpunitTester $I)
+    {
+        $postIds = $I->havePostsWithDifferentAuthors(10);
+
+        Installer::createAuthorTermsForPostsWithLegacyCoreAuthors();
+
+        $I->assertPostsHaveAuthorTerms($postIds);
+    }
 }

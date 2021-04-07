@@ -143,4 +143,40 @@ class Wpunit extends \Codeception\Module
 
         return empty($failedUsers);
     }
+
+    public function assertPostsHaveAuthorTerms($postIds)
+    {
+        foreach ($postIds as $postId) {
+            $post = get_post($postId);
+            $postAuthors = wp_get_post_terms($postId, 'author');
+
+            if (count($postAuthors) !== 1) {
+                $this->fail(
+                    sprintf(
+                        'The post %d should have one author term',
+                        $postId
+                    )
+                );
+
+                return false;
+            }
+
+            $postAuthorUserId = get_term_meta($postAuthors[0]->term_id, 'user_id', true);
+
+            if ($post->post_author != $postAuthorUserId) {
+                $this->fail(
+                    sprintf(
+                        'The post_author of post %d should be the same as the author term user_id %d, but found %d',
+                        $postId,
+                        $postAuthors[0]->user_id,
+                        $post->post_author
+                    )
+                );
+
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
