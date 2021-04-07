@@ -42,7 +42,7 @@ class Installer
         }
 
         self::addDefaultCapabilitiesForAdministrators();
-        self::add_new_edit_post_authors_cap();
+        self::addEditPostAuthorsCapabilitiesToRoles();
         self::flushRewriteRules();
 
         /**
@@ -195,7 +195,7 @@ class Installer
         }
     }
 
-    private static function add_new_edit_post_authors_cap()
+    private static function addEditPostAuthorsCapabilitiesToRoles()
     {
         $cap   = 'ppma_edit_post_authors';
         $roles = [
@@ -228,7 +228,7 @@ class Installer
         }
 
         if (version_compare($previous_version, '3.6.0', '<')) {
-            self::add_new_edit_post_authors_cap();
+            self::addEditPostAuthorsCapabilitiesToRoles();
         }
 
         /**
