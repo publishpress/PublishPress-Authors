@@ -43,7 +43,7 @@ class Installer
 
         self::addDefaultCapabilitiesForAdministrators();
         self::add_new_edit_post_authors_cap();
-        self::flush_permalinks();
+        self::flushRewriteRules();
 
         /**
          * @param string $currentVersion
@@ -186,7 +186,7 @@ class Installer
     /**
      * Flushes the permalinks rules.
      */
-    protected static function flush_permalinks()
+    protected static function flushRewriteRules()
     {
         global $wp_rewrite;
 
@@ -237,6 +237,6 @@ class Installer
         do_action('pp_authors_upgrade', $previous_version);
 
         self::addDefaultCapabilitiesForAdministrators();
-        self::flush_permalinks();
+        self::flushRewriteRules();
     }
 }
