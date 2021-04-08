@@ -590,9 +590,9 @@ class WP_Cli extends WP_CLI_Command
             'no_found_rows'     => true,
             'update_meta_cache' => false,
         ];
-        $this->args = wp_parse_args($assoc_args, $defaults);
+        $parsedArgs = wp_parse_args($assoc_args, $defaults);
 
-        $posts = Installer::getPostsWithoutAuthorTerms();
+        $posts = Installer::getPostsWithoutAuthorTerms($parsedArgs);
 
         var_dump($posts); die;
         $posts = new WP_Query($this->args);

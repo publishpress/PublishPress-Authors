@@ -128,15 +128,43 @@ class Installer
         }
     }
 
-    public static function getPostsWithoutAuthorTerms()
+    public static function getPostsWithoutAuthorTerms($args = null)
     {
         global $wpdb;
 
-        $enabledPostTypes = Utils::get_enabled_post_types();
-        $enabledPostTypes = '"' . implode('","', $enabledPostTypes) . '"';
+        if (!isset($args['post_type'])) {
+            $enabledPostTypes = Utils::get_enabled_post_types();
+
+            $args['post_type'] = $enabledPostTypes;
+        }
+
+        $defaults   = [
+            'post_type'         => 'post',
+            'order'             => 'ASC',
+            'orderby'           => 'ID',
+            'posts_per_page'    => 300,
+            'paged'             => 1,
+        ];
+        $parsedArgs = wp_parse_args($args, $defaults);
+
+
+        if (!is_array($parsedArgs['post_type'])) {
+            $parsedArgs['post_type'] = [esc_sql($parsedArgs['post_type'])];
+        }
+
+        $parsedArgs['post_type'] = array_map('esc_sql', $parsedArgs['post_type']);
+
+        $parsedArgs['order'] = strtoupper($parsedArgs['order']) === 'DESC' ? 'DESC' : 'ASC';
+
+        $parsedArgs['orderby'] = esc_sql($parsedArgs['orderby']);
+
+        $parsedArgs['posts_per_page'] = (int)$parsedArgs['posts_per_page'];
+
+        $parsedArgs['paged'] = (int)$parsedArgs['paged'];
+        $parsedArgs['paged'] = $parsedArgs['paged'] * $parsedArgs['posts_per_page'] - $parsedArgs['posts_per_page'];
 
         return $wpdb->get_results(
-            "
+        "
             SELECT
                 p.ID, p.post_author
             FROM
@@ -151,9 +179,11 @@ class Installer
                         tt.taxonomy = 'author') AS str ON (str.object_id = p.ID
                 )
             WHERE
-                p.post_type IN ({$enabledPostTypes})
+                p.post_type IN ('" . implode('\',\'', $parsedArgs['post_type']) . "')
                 AND p.post_status NOT IN('trash')
                 AND str.term_taxonomy_id IS NULL
+            ORDER BY {$parsedArgs['orderby']} {$parsedArgs['order']}
+            LIMIT {$parsedArgs['paged']}, {$parsedArgs['posts_per_page']}
             "
         );
     }

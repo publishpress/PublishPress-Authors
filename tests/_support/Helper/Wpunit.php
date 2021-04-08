@@ -63,7 +63,7 @@ class Wpunit extends \Codeception\Module
         return $authors;
     }
 
-    public function havePostsWithDifferentAuthors($number)
+    public function havePostsWithDifferentAuthors($number, $postType = 'post')
     {
         $wpLoader = $this->getModule('WPLoader');
 
@@ -78,7 +78,8 @@ class Wpunit extends \Codeception\Module
 
             $ids[] = $wpLoader->factory('create a new post')->post->create(
                 [
-                    'post_author' => $userId
+                    'post_author' => $userId,
+                    'post_type'   => $postType,
                 ]
             );
         }
@@ -205,5 +206,12 @@ class Wpunit extends \Codeception\Module
         $wpdb->query("DELETE FROM {$wpdb->terms} WHERE term_id > 1");
         $wpdb->query("DELETE FROM {$wpdb->users} WHERE ID > 1");
         $wpdb->query("DELETE FROM {$wpdb->usermeta} WHERE user_id > 1");
+    }
+
+    public function echoLastQuery()
+    {
+        global $wpdb;
+
+        echo $wpdb->last_query;
     }
 }
