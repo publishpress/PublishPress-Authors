@@ -147,7 +147,7 @@ class Wpunit extends \Codeception\Module
     public function assertPostsHaveAuthorTerms($postIds)
     {
         foreach ($postIds as $postId) {
-            $post = get_post($postId);
+            $post        = get_post($postId);
             $postAuthors = wp_get_post_terms($postId, 'author');
 
             if (count($postAuthors) !== 1) {
@@ -178,40 +178,6 @@ class Wpunit extends \Codeception\Module
         }
 
         return true;
-    }
-
-    public function cleanOutputCache()
-    {
-        $this->outputCache = '';
-    }
-
-    public function runCliCommandByFunctionName($function, $args = null, $assocArgs = null)
-    {
-        ob_start();
-
-        $cli = new WP_Cli();
-
-        if (!method_exists($cli, $function)) {
-            $this->fail(
-                sprintf(
-                    'Method %s not found in the CLI class',
-                    $function
-                )
-            );
-        }
-
-        if (!is_null($assocArgs)) {
-            $cli->{$function}($args, $assocArgs);
-        } else {
-            $cli->{$function}();
-        }
-
-        $this->outputCache = ob_get_clean();
-    }
-
-    public function assertOutputContainsString($string)
-    {
-        $this->assertStringContainsString($string, $this->outputCache);
     }
 
     public function haveAuthorTermsForPosts($postIds)
