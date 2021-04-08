@@ -89,7 +89,7 @@ class Installer
         return wp_list_pluck(
             $wpdb->get_results(
                 "
-                SELECT
+                SELECT DISTINCT
                     p.post_author AS ID
                 FROM
                     {$wpdb->posts} AS p
