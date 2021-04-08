@@ -20,6 +20,49 @@ use WP_CLI_Command;
 class WP_Cli extends WP_CLI_Command
 {
     /**
+     * List all of the posts without assigned co-authors terms
+     *
+     * @since      3.0
+     *
+     * @subcommand list-posts-without-terms
+     * @synopsis [--post_type=<ptype>] [--posts_per_page=<num>] [--paged=<page>] [--order=<order>] [--orederby=<orderby>]
+     */
+    public function list_posts_without_terms($args, $assoc_args)
+    {
+        $defaults   = [
+            'post_type'         => 'post',
+            'order'             => 'ASC',
+            'orderby'           => 'ID',
+            'posts_per_page'    => 300,
+            'paged'             => 1,
+        ];
+        $parsedArgs = wp_parse_args($assoc_args, $defaults);
+
+        $posts = Installer::getPostsWithoutAuthorTerms($parsedArgs);
+
+        if (count($posts) === 0) {
+            \WP_CLI::success(__('No posts without author terms were found', 'publishpress-authors'));
+            return;
+        }
+
+        foreach ($posts as $singlePost) {
+            $postData = [
+                $singlePost->ID,
+                addslashes($singlePost->post_title),
+                get_permalink($singlePost->ID),
+                $singlePost->post_date,
+            ];
+            \WP_CLI::line('"' . implode('","', $postData) . '"');
+        }
+        \WP_CLI::success(
+            sprintf(
+                __('%d posts were found without author terms', 'publishpress-authors'),
+                count($posts)
+            )
+        );
+    }
+
+    /**
      * Create author terms for all posts that don't have them
      *
      * @subcommand create-terms-for-posts
@@ -568,49 +611,6 @@ class WP_Cli extends WP_CLI_Command
         }
 
         \WP_CLI::success('All done!');
-    }
-
-    /**
-     * List all of the posts without assigned co-authors terms
-     *
-     * @since      3.0
-     *
-     * @subcommand list-posts-without-terms
-     * @synopsis [--post_type=<ptype>] [--posts_per_page=<num>] [--paged=<page>] [--order=<order>] [--orederby=<orderby>]
-     */
-    public function list_posts_without_terms($args, $assoc_args)
-    {
-        $defaults   = [
-            'post_type'         => 'post',
-            'order'             => 'ASC',
-            'orderby'           => 'ID',
-            'posts_per_page'    => 300,
-            'paged'             => 1,
-        ];
-        $parsedArgs = wp_parse_args($assoc_args, $defaults);
-
-        $posts = Installer::getPostsWithoutAuthorTerms($parsedArgs);
-
-        if (count($posts) === 0) {
-            \WP_CLI::success(__('No posts without author terms were found', 'publishpress-authors'));
-            return;
-        }
-
-        foreach ($posts as $singlePost) {
-            $postData = [
-                $singlePost->ID,
-                addslashes($singlePost->post_title),
-                get_permalink($singlePost->ID),
-                $singlePost->post_date,
-            ];
-            \WP_CLI::line('"' . implode('","', $postData) . '"');
-        }
-        \WP_CLI::success(
-            sprintf(
-                __('%d posts were found without author terms', 'publishpress-authors'),
-                count($posts)
-            )
-        );
     }
 
     /**
