@@ -79,12 +79,29 @@ class Installer
         self::flushRewriteRules();
     }
 
-    public static function getUsersAuthorsWithNoAuthorTerm()
+    public static function getUsersAuthorsWithNoAuthorTerm($args = null)
     {
         global $wpdb;
 
-        $enabledPostTypes = Utils::get_enabled_post_types();
-        $enabledPostTypes = '"' . implode('","', $enabledPostTypes) . '"';
+        if (!isset($args['post_type'])) {
+            $enabledPostTypes = Utils::get_enabled_post_types();
+
+            $args['post_type'] = $enabledPostTypes;
+        }
+
+        $defaults   = [
+            'post_type'         => 'post',
+            'posts_per_page'    => 300,
+            'paged'             => 1,
+        ];
+        $parsedArgs = wp_parse_args($args, $defaults);
+
+
+        if (!is_array($parsedArgs['post_type'])) {
+            $parsedArgs['post_type'] = [esc_sql($parsedArgs['post_type'])];
+        }
+
+        $parsedArgs['post_type'] = array_map('esc_sql', $parsedArgs['post_type']);
 
         return wp_list_pluck(
             $wpdb->get_results(
@@ -103,7 +120,7 @@ class Installer
                             AND tt.taxonomy = 'author'
                     )
                     AND p.post_author <> 0
-                    AND p.post_type IN ({$enabledPostTypes})
+                    AND p.post_type IN ('" . implode('\',\'', $parsedArgs['post_type']) . "')
                     AND p.post_status NOT IN ('trash')
 
                 "

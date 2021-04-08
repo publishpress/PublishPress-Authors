@@ -109,7 +109,48 @@ class InstallerCest
         $I->assertEquals($postIds[9], $postsWithNoTerm[5]->ID);
     }
 
-    public function getUsersAuthorsWithNoAuthorTerm__returnsListOfUsers(WpunitTester $I)
+    public function getUsersAuthorsWithNoAuthorTerm__withMultiplePostTypes_returnsListOfUsers(WpunitTester $I)
+    {
+        $postIds = $I->havePostsWithDifferentAuthors(10);
+        $pagesIds = $I->havePostsWithDifferentAuthors(10, 'page');
+
+        $postIds = array_merge($postIds, $pagesIds);
+
+        $I->haveAuthorTermsForPosts(array_slice($postIds, 0, 3));
+
+        $usersWithNoTerms = Installer::getUsersAuthorsWithNoAuthorTerm();
+
+        $I->assertCount(17, $usersWithNoTerms);
+
+        $post = get_post($postIds[3]);
+        $I->assertEquals($post->post_author, $usersWithNoTerms[0]);
+
+        $post = get_post($postIds[4]);
+        $I->assertEquals($post->post_author, $usersWithNoTerms[1]);
+
+        $post = get_post($postIds[5]);
+        $I->assertEquals($post->post_author, $usersWithNoTerms[2]);
+
+        $post = get_post($postIds[6]);
+        $I->assertEquals($post->post_author, $usersWithNoTerms[3]);
+
+        $post = get_post($postIds[7]);
+        $I->assertEquals($post->post_author, $usersWithNoTerms[4]);
+
+        $post = get_post($postIds[8]);
+        $I->assertEquals($post->post_author, $usersWithNoTerms[5]);
+
+        $post = get_post($postIds[9]);
+        $I->assertEquals($post->post_author, $usersWithNoTerms[6]);
+
+        $post = get_post($postIds[10]);
+        $I->assertEquals($post->post_author, $usersWithNoTerms[7]);
+
+        $post = get_post($postIds[11]);
+        $I->assertEquals($post->post_author, $usersWithNoTerms[8]);
+    }
+
+    public function getUsersAuthorsWithNoAuthorTerm__withDefaultPostType__returnsListOfUsers(WpunitTester $I)
     {
         $postIds = $I->havePostsWithDifferentAuthors(10);
         $I->haveAuthorTermsForPosts(array_slice($postIds, 0, 3));
@@ -138,6 +179,40 @@ class InstallerCest
 
         $post = get_post($postIds[9]);
         $I->assertEquals($post->post_author, $usersWithNoTerms[6]);
+    }
+
+    public function getUsersAuthorsWithNoAuthorTerm__withPostTypeArgument__returnsListOfUsersFromSelectedPostType(
+        WpunitTester $I
+    ) {
+        $I->havePostsWithDifferentAuthors(5);
+        $postIds = $I->havePostsWithDifferentAuthors(10, 'page');
+        $I->haveAuthorTermsForPosts(array_slice($postIds, 0, 3));
+
+        $usersWithNoTerms = Installer::getUsersAuthorsWithNoAuthorTerm(
+            [
+                'post_type' => 'page'
+            ]
+        );
+
+        $I->assertCount(7, $usersWithNoTerms);
+
+        $post = get_post($postIds[3]);
+        $I->assertEquals($post->post_author, $usersWithNoTerms[0]);
+
+        $post = get_post($postIds[4]);
+        $I->assertEquals($post->post_author, $usersWithNoTerms[1]);
+
+        $post = get_post($postIds[5]);
+        $I->assertEquals($post->post_author, $usersWithNoTerms[2]);
+
+        $post = get_post($postIds[6]);
+        $I->assertEquals($post->post_author, $usersWithNoTerms[3]);
+
+        $post = get_post($postIds[7]);
+        $I->assertEquals($post->post_author, $usersWithNoTerms[4]);
+
+        $post = get_post($postIds[8]);
+        $I->assertEquals($post->post_author, $usersWithNoTerms[5]);
     }
 
     public function getPostsWithoutAuthorTerms__withPagePostType__returnsOnlyPages(WpunitTester $I)
@@ -242,7 +317,7 @@ class InstallerCest
         $postsWithNoTerm = Installer::getPostsWithoutAuthorTerms(
             [
                 'posts_per_page' => 2,
-                'paged' => 2,
+                'paged'          => 2,
             ]
         );
 
