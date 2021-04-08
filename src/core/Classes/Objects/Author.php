@@ -155,14 +155,7 @@ class Author
         }
         $existing = self::get_by_user_id($user->ID);
         if ($existing) {
-            error_log(
-                sprintf(
-                    '[PublishPress Authors] The method %s tried to create an author that already exists for the user: %s',
-                    __METHOD__,
-                    maybe_serialize($user)
-                )
-            );
-            return false;
+            return $existing;
         }
         $author = self::create(
             [
