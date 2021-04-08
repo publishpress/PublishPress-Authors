@@ -148,11 +148,12 @@ class Installer
                         {$wpdb->term_relationships} AS tr
                         INNER JOIN {$wpdb->term_taxonomy} AS tt ON (tr.term_taxonomy_id = tt.term_taxonomy_id)
                     WHERE
-                        tt.taxonomy = 'author') AS str ON (str.object_id = p.ID)
-                WHERE
-                    p.post_type IN ({$enabledPostTypes})
-                    AND p.post_status NOT IN('trash')
-                    AND str.term_taxonomy_id IS NULL
+                        tt.taxonomy = 'author') AS str ON (str.object_id = p.ID
+                )
+            WHERE
+                p.post_type IN ({$enabledPostTypes})
+                AND p.post_status NOT IN('trash')
+                AND str.term_taxonomy_id IS NULL
             "
         );
     }
