@@ -179,4 +179,65 @@ class Wpunit extends \Codeception\Module
 
         return true;
     }
+
+    public function cleanOutputCache()
+    {
+        $this->outputCache = '';
+    }
+
+    public function runCliCommandByFunctionName($function, $args = null, $assocArgs = null)
+    {
+        ob_start();
+
+        $cli = new WP_Cli();
+
+        if (!method_exists($cli, $function)) {
+            $this->fail(
+                sprintf(
+                    'Method %s not found in the CLI class',
+                    $function
+                )
+            );
+        }
+
+        if (!is_null($assocArgs)) {
+            $cli->{$function}($args, $assocArgs);
+        } else {
+            $cli->{$function}();
+        }
+
+        $this->outputCache = ob_get_clean();
+    }
+
+    public function assertOutputContainsString($string)
+    {
+        $this->assertStringContainsString($string, $this->outputCache);
+    }
+
+    public function haveAuthorTermsForPosts($postIds)
+    {
+        foreach ($postIds as $postId) {
+            $post = get_post($postId);
+
+            $author = Author::create_from_user($post->post_author);
+
+            Utils::set_post_authors($postId, [$author]);
+        }
+    }
+
+    public function resetTheDatabase()
+    {
+        global $wpdb;
+
+        $wpdb->query("TRUNCATE TABLE {$wpdb->commentmeta}");
+        $wpdb->query("TRUNCATE TABLE {$wpdb->comments}");
+        $wpdb->query("TRUNCATE TABLE {$wpdb->postmeta}");
+        $wpdb->query("TRUNCATE TABLE {$wpdb->term_relationships}");
+        $wpdb->query("TRUNCATE TABLE {$wpdb->posts}");
+        $wpdb->query("TRUNCATE TABLE {$wpdb->links}");
+        $wpdb->query("DELETE FROM {$wpdb->termmeta} WHERE term_id > 1");
+        $wpdb->query("DELETE FROM {$wpdb->terms} WHERE term_id > 1");
+        $wpdb->query("DELETE FROM {$wpdb->users} WHERE ID > 1");
+        $wpdb->query("DELETE FROM {$wpdb->usermeta} WHERE user_id > 1");
+    }
 }

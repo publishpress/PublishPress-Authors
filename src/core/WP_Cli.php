@@ -13,6 +13,8 @@
 namespace MultipleAuthors;
 
 use MultipleAuthors\Classes\Installer;
+use Robo\Task\Npm\Install;
+use WP_Query;
 use WP_CLI_Command;
 
 class WP_Cli extends WP_CLI_Command
@@ -26,8 +28,6 @@ class WP_Cli extends WP_CLI_Command
     {
         Installer::createAuthorTermsForLegacyCoreAuthors();
         Installer::createAuthorTermsForPostsWithLegacyCoreAuthors();
-
-
 
         global $multiple_authors_addon;
 
@@ -580,8 +580,6 @@ class WP_Cli extends WP_CLI_Command
      */
     public function list_posts_without_terms($args, $assoc_args)
     {
-        global $multiple_authors_addon;
-
         $defaults   = [
             'post_type'         => 'post',
             'order'             => 'ASC',
@@ -594,6 +592,9 @@ class WP_Cli extends WP_CLI_Command
         ];
         $this->args = wp_parse_args($assoc_args, $defaults);
 
+        $posts = Installer::getPostsWithoutAuthorTerms();
+
+        var_dump($posts); die;
         $posts = new WP_Query($this->args);
         while ($posts->post_count) {
             foreach ($posts->posts as $single_post) {

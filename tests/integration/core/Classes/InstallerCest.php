@@ -10,6 +10,7 @@ class InstallerCest
 {
     public function _before(WpunitTester $I)
     {
+        $I->resetTheDatabase();
     }
 
     public function tryToCreateAuthorTermsForLegacyCoreAuthors(WpunitTester $I)
