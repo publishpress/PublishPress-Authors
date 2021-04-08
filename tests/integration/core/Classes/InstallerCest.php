@@ -92,4 +92,20 @@ class InstallerCest
 
         $I->assertPostsHaveAuthorTerms($postIds);
     }
+
+    public function tryToGetPostsWithoutAuthorTerms(WpunitTester $I)
+    {
+        $postIds = $I->havePostsWithDifferentAuthors(10);
+        $I->haveAuthorTermsForPosts(array_slice($postIds, 0, 4));
+
+        $postsWithNoTerm = Installer::getPostsWithoutAuthorTerms();
+
+        $I->assertCount(6, $postsWithNoTerm);
+        $I->assertEquals($postIds[4], $postsWithNoTerm[0]->ID);
+        $I->assertEquals($postIds[5], $postsWithNoTerm[1]->ID);
+        $I->assertEquals($postIds[6], $postsWithNoTerm[2]->ID);
+        $I->assertEquals($postIds[7], $postsWithNoTerm[3]->ID);
+        $I->assertEquals($postIds[8], $postsWithNoTerm[4]->ID);
+        $I->assertEquals($postIds[9], $postsWithNoTerm[5]->ID);
+    }
 }
