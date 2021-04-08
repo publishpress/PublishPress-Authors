@@ -91,7 +91,7 @@ class WP_Cli extends WP_CLI_Command
             }
 
             if ($count && 0 === $count % 500) {
-                $this->stop_the_insanity();
+                $this->clearAllCaches();
                 sleep(1);
             }
 
@@ -109,7 +109,7 @@ class WP_Cli extends WP_CLI_Command
     /**
      * Clear all of the caches for memory management
      */
-    private function stop_the_insanity()
+    private function clearAllCaches()
     {
         global $wpdb, $wp_object_cache;
 
@@ -212,7 +212,7 @@ class WP_Cli extends WP_CLI_Command
             }
 
             $this->args['paged']++;
-            $this->stop_the_insanity();
+            $this->clearAllCaches();
             $posts = new WP_Query($this->args);
         }
 
@@ -562,7 +562,7 @@ class WP_Cli extends WP_CLI_Command
                 $query_args['paged']++;
             }
 
-            $this->stop_the_insanity();
+            $this->clearAllCaches();
 
             $posts = new WP_Query($query_args);
         }
@@ -609,7 +609,7 @@ class WP_Cli extends WP_CLI_Command
                 }
             }
 
-            $this->stop_the_insanity();
+            $this->clearAllCaches();
 
             $this->args['paged']++;
             $posts = new WP_Query($this->args);
