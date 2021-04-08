@@ -13,7 +13,7 @@ class InstallerCest
         $I->resetTheDatabase();
     }
 
-    public function tryToCreateAuthorTermsForLegacyCoreAuthors(WpunitTester $I)
+    public function createAuthorTermsForLegacyCoreAuthors__forAllAuthors(WpunitTester $I)
     {
         $postIds     = $I->havePostsWithDifferentAuthors(10);
         $postAuthors = $I->getCorePostAuthorFromPosts($postIds);
@@ -23,7 +23,7 @@ class InstallerCest
         $I->assertUsersHaveAuthorTerm($postAuthors);
     }
 
-    public function tryToCreateAuthorTermsForLegacyCoreAuthorComparingUserData(WpunitTester $I)
+    public function createAuthorTermsForLegacyCoreAuthors__withOnlySomeAuthorsNeeded(WpunitTester $I)
     {
         $postIds     = $I->havePostsWithDifferentAuthors(1);
         $postAuthors = $I->getCorePostAuthorFromPosts($postIds);
@@ -84,7 +84,7 @@ class InstallerCest
         );
     }
 
-    public function tryToCreateAuthorTermsForPostsWithLegacyCoreAuthors(WpunitTester $I)
+    public function createAuthorTermsForPostsWithLegacyCoreAuthors__addAuthorTermsForAllPosts(WpunitTester $I)
     {
         $postIds = $I->havePostsWithDifferentAuthors(10);
 
@@ -93,7 +93,7 @@ class InstallerCest
         $I->assertPostsHaveAuthorTerms($postIds);
     }
 
-    public function tryToGetPostsWithoutAuthorTerms(WpunitTester $I)
+    public function getPostsWithoutAuthorTerms__returnsPostsWithNoAuthorTerms(WpunitTester $I)
     {
         $postIds = $I->havePostsWithDifferentAuthors(10);
         $I->haveAuthorTermsForPosts(array_slice($postIds, 0, 4));
@@ -109,7 +109,7 @@ class InstallerCest
         $I->assertEquals($postIds[9], $postsWithNoTerm[5]->ID);
     }
 
-    public function tryToGetUsersAuthorsWithNoAuthorTerm(WpunitTester $I)
+    public function getUsersAuthorsWithNoAuthorTerm__returnsListOfUsers(WpunitTester $I)
     {
         $postIds = $I->havePostsWithDifferentAuthors(10);
         $I->haveAuthorTermsForPosts(array_slice($postIds, 0, 3));
