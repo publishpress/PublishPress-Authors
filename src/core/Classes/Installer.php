@@ -79,7 +79,7 @@ class Installer
         self::flushRewriteRules();
     }
 
-    private static function getUsersAuthorsWithNoAuthorTerm()
+    public static function getUsersAuthorsWithNoAuthorTerm()
     {
         global $wpdb;
 
