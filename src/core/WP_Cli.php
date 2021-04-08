@@ -576,7 +576,7 @@ class WP_Cli extends WP_CLI_Command
      * @since      3.0
      *
      * @subcommand list-posts-without-terms
-     * @synopsis [--post_type=<ptype>]
+     * @synopsis [--post_type=<ptype>] [--posts_per_page=<num>] [--paged=<page>] [--order=<order>] [--orederby=<orderby>]
      */
     public function list_posts_without_terms($args, $assoc_args)
     {
@@ -584,37 +584,33 @@ class WP_Cli extends WP_CLI_Command
             'post_type'         => 'post',
             'order'             => 'ASC',
             'orderby'           => 'ID',
-            'year'              => '',
             'posts_per_page'    => 300,
             'paged'             => 1,
-            'no_found_rows'     => true,
-            'update_meta_cache' => false,
         ];
         $parsedArgs = wp_parse_args($assoc_args, $defaults);
 
         $posts = Installer::getPostsWithoutAuthorTerms($parsedArgs);
 
-        var_dump($posts); die;
-        $posts = new WP_Query($this->args);
-        while ($posts->post_count) {
-            foreach ($posts->posts as $single_post) {
-                $terms = cap_get_coauthor_terms_for_post($single_post->ID);
-                if (empty($terms)) {
-                    $saved = [
-                        $single_post->ID,
-                        addslashes($single_post->post_title),
-                        get_permalink($single_post->ID),
-                        $single_post->post_date,
-                    ];
-                    \WP_CLI::line('"' . implode('","', $saved) . '"');
-                }
-            }
-
-            $this->clearAllCaches();
-
-            $this->args['paged']++;
-            $posts = new WP_Query($this->args);
+        if (count($posts) === 0) {
+            \WP_CLI::success(__('No posts without author terms were found', 'publishpress-authors'));
+            return;
         }
+
+        foreach ($posts as $singlePost) {
+            $postData = [
+                $singlePost->ID,
+                addslashes($singlePost->post_title),
+                get_permalink($singlePost->ID),
+                $singlePost->post_date,
+            ];
+            \WP_CLI::line('"' . implode('","', $postData) . '"');
+        }
+        \WP_CLI::success(
+            sprintf(
+                __('%d posts were found without author terms', 'publishpress-authors'),
+                count($posts)
+            )
+        );
     }
 
     /**

@@ -166,7 +166,7 @@ class Installer
         return $wpdb->get_results(
         "
             SELECT
-                p.ID, p.post_author
+                p.*
             FROM
                 {$wpdb->posts} AS p
                 LEFT JOIN (
