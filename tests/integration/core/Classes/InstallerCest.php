@@ -241,6 +241,30 @@ class InstallerCest
         $I->assertEquals($post->post_author, $usersWithNoTerms[3]);
     }
 
+    public function getUsersAuthorsWithNoAuthorTerm__withPaged__returnsListOfUsersLimitedToTheSpecifiedNumber(WpunitTester $I)
+    {
+        $postIds = $I->havePostsWithDifferentAuthors(10);
+        $I->haveAuthorTermsForPosts(array_slice($postIds, 0, 3));
+
+        $usersWithNoTerms = Installer::getUsersAuthorsWithNoAuthorTerm(
+            [
+                'posts_per_page' => 4,
+                'paged' => 2
+            ]
+        );
+
+        $I->assertCount(3, $usersWithNoTerms);
+
+        $post = get_post($postIds[7]);
+        $I->assertEquals($post->post_author, $usersWithNoTerms[0]);
+
+        $post = get_post($postIds[8]);
+        $I->assertEquals($post->post_author, $usersWithNoTerms[1]);
+
+        $post = get_post($postIds[9]);
+        $I->assertEquals($post->post_author, $usersWithNoTerms[2]);
+    }
+
     public function getPostsWithoutAuthorTerms__withPagePostType__returnsOnlyPages(WpunitTester $I)
     {
         $I->havePostsWithDifferentAuthors(5, 'post');

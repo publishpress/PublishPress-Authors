@@ -105,6 +105,9 @@ class Installer
 
         $parsedArgs['posts_per_page'] = (int)$parsedArgs['posts_per_page'];
 
+        $parsedArgs['paged'] = (int)$parsedArgs['paged'];
+        $parsedArgs['paged'] = $parsedArgs['paged'] * $parsedArgs['posts_per_page'] - $parsedArgs['posts_per_page'];
+
         return wp_list_pluck(
             $wpdb->get_results(
                 "
@@ -124,7 +127,7 @@ class Installer
                     AND p.post_author <> 0
                     AND p.post_type IN ('" . implode('\',\'', $parsedArgs['post_type']) . "')
                     AND p.post_status NOT IN ('trash')
-                LIMIT {$parsedArgs['posts_per_page']}
+                LIMIT {$parsedArgs['paged']}, {$parsedArgs['posts_per_page']}
                 "
             ),
             'ID'
