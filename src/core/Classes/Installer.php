@@ -103,6 +103,8 @@ class Installer
 
         $parsedArgs['post_type'] = array_map('esc_sql', $parsedArgs['post_type']);
 
+        $parsedArgs['posts_per_page'] = (int)$parsedArgs['posts_per_page'];
+
         return wp_list_pluck(
             $wpdb->get_results(
                 "
@@ -122,7 +124,7 @@ class Installer
                     AND p.post_author <> 0
                     AND p.post_type IN ('" . implode('\',\'', $parsedArgs['post_type']) . "')
                     AND p.post_status NOT IN ('trash')
-
+                LIMIT {$parsedArgs['posts_per_page']}
                 "
             ),
             'ID'
