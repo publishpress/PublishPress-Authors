@@ -88,24 +88,25 @@ class Installer
 
         return wp_list_pluck(
             $wpdb->get_results(
-                "SELECT DISTINCT p.post_author AS ID
-                FROM {$wpdb->posts} as p
-                LEFT JOIN {$wpdb->users} AS u ON (post_author = u.ID)
+                "
+                SELECT
+                    p.post_author AS ID
+                FROM
+                    {$wpdb->posts} AS p
                 WHERE
-                    p.post_status NOT IN ('trash') AND
-                    p.post_author NOT IN (
-                        SELECT meta.`meta_value`
-                            FROM {$wpdb->terms} AS term
-                            INNER JOIN {$wpdb->term_taxonomy} AS tax ON (term.`term_id` = tax.`term_id`)
-                            INNER JOIN {$wpdb->termmeta} AS meta ON (term.term_id = meta.`term_id`)
-                            WHERE tax.`taxonomy` = 'author'
-                            AND meta.meta_key = 'user_id'
-                            AND meta.meta_value <> 0
+                    p.post_author NOT IN(
+                        SELECT DISTINCT
+                            meta_value FROM {$wpdb->termmeta} AS tm
+                            LEFT JOIN {$wpdb->term_taxonomy} AS tt ON (tm.term_id = tt.term_id)
+                        WHERE
+                            meta_key = 'user_id'
+                            AND tt.taxonomy = 'author'
                     )
-                    AND p.post_type IN ({$enabledPostTypes})
                     AND p.post_author <> 0
-                    AND u.display_name != ''
-            "
+                    AND p.post_type IN ({$enabledPostTypes})
+                    AND p.post_status NOT IN ('trash')
+
+                "
             ),
             'ID'
         );
@@ -127,28 +128,32 @@ class Installer
         }
     }
 
-    private static function getPostsWithoutAuthorTerms()
+    public static function getPostsWithoutAuthorTerms()
     {
         global $wpdb;
 
+        $enabledPostTypes = Utils::get_enabled_post_types();
+        $enabledPostTypes = '"' . implode('","', $enabledPostTypes) . '"';
+
         return $wpdb->get_results(
-            "SELECT p.ID, p.post_author
-                FROM {$wpdb->posts} as p WHERE ID NOT IN (
-                    SELECT DISTINCT p.ID
-                    FROM {$wpdb->posts} AS p
-                    INNER JOIN {$wpdb->termmeta} AS meta ON (p.post_author = meta.meta_value)
-                    INNER JOIN {$wpdb->term_taxonomy} AS tax ON (meta.term_id = tax.term_id)
-                    INNER JOIN {$wpdb->term_relationships} AS rel ON (tax.term_taxonomy_id = rel.term_taxonomy_id)
+            "
+            SELECT
+                p.ID, p.post_author
+            FROM
+                {$wpdb->posts} AS p
+                LEFT JOIN (
+                    SELECT
+                        tr.object_id, tr.term_taxonomy_id
+                    FROM
+                        {$wpdb->term_relationships} AS tr
+                        INNER JOIN {$wpdb->term_taxonomy} AS tt ON (tr.term_taxonomy_id = tt.term_taxonomy_id)
                     WHERE
-                        p.post_status NOT IN ('trash')
-                        AND p.post_author <> 0
-                        AND p.post_type = 'post'
-                        AND meta.meta_key = 'user_id'
-                        AND tax.taxonomy = 'author'
-                        AND rel.object_id = p.id
-                )
-                AND	p.post_type = 'post'
-                AND p.post_status NOT IN ('trash')"
+                        tt.taxonomy = 'author') AS str ON (str.object_id = p.ID)
+                WHERE
+                    p.post_type IN ({$enabledPostTypes})
+                    AND p.post_status NOT IN('trash')
+                    AND str.term_taxonomy_id IS NULL
+            "
         );
     }
 
