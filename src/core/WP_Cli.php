@@ -13,12 +13,22 @@
 namespace MultipleAuthors;
 
 use MultipleAuthors\Classes\Installer;
-use Robo\Task\Npm\Install;
-use WP_Query;
 use WP_CLI_Command;
+use WP_Query;
 
 class WP_Cli extends WP_CLI_Command
 {
+    public function logCallback($message, $messageType = 'log')
+    {
+        if ('log' === $messageType) {
+            \WP_CLI::line($message);
+        } elseif ('error' === $messageType) {
+            \WP_CLI::error($message);
+        } elseif ('success' === $messageType) {
+            \WP_CLI::success($message);
+        }
+    }
+
     /**
      * List all of the posts without assigned co-authors terms
      *
@@ -30,11 +40,11 @@ class WP_Cli extends WP_CLI_Command
     public function list_posts_without_terms($args, $assocArgs)
     {
         $defaults   = [
-            'post_type'         => 'post',
-            'order'             => 'ASC',
-            'orderby'           => 'ID',
-            'posts_per_page'    => 300,
-            'paged'             => 1,
+            'post_type'      => 'post',
+            'order'          => 'ASC',
+            'orderby'        => 'ID',
+            'posts_per_page' => 300,
+            'paged'          => 1,
         ];
         $parsedArgs = wp_parse_args($assocArgs, $defaults);
 
@@ -66,87 +76,13 @@ class WP_Cli extends WP_CLI_Command
      * Create author terms for all posts that don't have them
      *
      * @subcommand create-terms-for-posts
+     * @synopsis [--post_type=<ptype>] [--posts_per_page=<num>] [--paged=<page>]
      */
-    public function create_terms_for_posts()
+    public function create_terms_for_posts($args, $assocArgs)
     {
-        Installer::createAuthorTermsForLegacyCoreAuthors();
-        Installer::createAuthorTermsForPostsWithLegacyCoreAuthors();
+        Installer::createAuthorTermsForPostsWithLegacyCoreAuthors($assocArgs, [$this, 'logCallback']);
 
-        global $multiple_authors_addon;
-
-        // Cache these to prevent repeated lookups
-        $authors      = [];
-        $author_terms = [];
-
-        $args = [
-            'order'             => 'ASC',
-            'orderby'           => 'ID',
-            'post_type'         => $multiple_authors_addon->supported_post_types,
-            'posts_per_page'    => 100,
-            'paged'             => 1,
-            'update_meta_cache' => false,
-        ];
-
-        $posts       = new WP_Query($args);
-        $affected    = 0;
-        $count       = 0;
-        $total_posts = $posts->found_posts;
-        \WP_CLI::line("Now inspecting or updating {$posts->found_posts} total posts.");
-        while ($posts->post_count) {
-            foreach ($posts->posts as $single_post) {
-                $count++;
-
-                $terms = cap_get_coauthor_terms_for_post($single_post->ID);
-                if (empty($terms)) {
-                    \WP_CLI::error(sprintf('No co-authors found for post #%d.', $single_post->ID));
-                }
-
-                if (!empty($terms)) {
-                    \WP_CLI::line(
-                        "{$count}/{$posts->found_posts}) Skipping - Post #{$single_post->ID} '{$single_post->post_title}' already has these terms: " . implode(
-                            ', ',
-                            wp_list_pluck($terms, 'name')
-                        )
-                    );
-                    continue;
-                }
-
-                $author                             = (!empty($authors[$single_post->post_author])) ? $authors[$single_post->post_author] : get_user_by(
-                    'id',
-                    $single_post->post_author
-                );
-                $authors[$single_post->post_author] = $author;
-
-                $author_term                             = (!empty($author_terms[$single_post->post_author])) ? $author_terms[$single_post->post_author] : $multiple_authors_addon->update_author_term(
-                    $author
-                );
-                $author_terms[$single_post->post_author] = $author_term;
-
-                wp_set_post_terms(
-                    $single_post->ID,
-                    [$author_term->slug],
-                    $multiple_authors_addon->coauthor_taxonomy
-                );
-                \WP_CLI::line(
-                    "{$count}/{$total_posts}) Added - Post #{$single_post->ID} '{$single_post->post_title}' now has an author term for: " . $author->user_nicename
-                );
-                $affected++;
-            }
-
-            if ($count && 0 === $count % 500) {
-                $this->clearAllCaches();
-                sleep(1);
-            }
-
-            $args['paged']++;
-            $posts = new WP_Query($args);
-        }
-        \WP_CLI::line('Updating author terms with new counts');
-        foreach ($authors as $author) {
-            $multiple_authors_addon->update_author_term($author);
-        }
-
-        \WP_CLI::success("Done! Of {$total_posts} posts, {$affected} now have author terms.");
+        \WP_CLI::success('Finished');
     }
 
     /**

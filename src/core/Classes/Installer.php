@@ -90,9 +90,9 @@ class Installer
         }
 
         $defaults   = [
-            'post_type'         => 'post',
-            'posts_per_page'    => 300,
-            'paged'             => 1,
+            'post_type'      => 'post',
+            'posts_per_page' => 300,
+            'paged'          => 1,
         ];
         $parsedArgs = wp_parse_args($args, $defaults);
 
@@ -161,11 +161,11 @@ class Installer
         }
 
         $defaults   = [
-            'post_type'         => 'post',
-            'order'             => 'ASC',
-            'orderby'           => 'ID',
-            'posts_per_page'    => 300,
-            'paged'             => 1,
+            'post_type'      => 'post',
+            'order'          => 'ASC',
+            'orderby'        => 'ID',
+            'posts_per_page' => 300,
+            'paged'          => 1,
         ];
         $parsedArgs = wp_parse_args($args, $defaults);
 
@@ -186,7 +186,7 @@ class Installer
         $parsedArgs['paged'] = $parsedArgs['paged'] * $parsedArgs['posts_per_page'] - $parsedArgs['posts_per_page'];
 
         return $wpdb->get_results(
-        "
+            "
             SELECT
                 p.*
             FROM
@@ -212,20 +212,66 @@ class Installer
 
     /**
      * Add author term for posts which only have the post_author.
+     *
+     * @param array $args
+     * @param callable $logCallback
      */
-    public static function createAuthorTermsForPostsWithLegacyCoreAuthors($args = null)
+    public static function createAuthorTermsForPostsWithLegacyCoreAuthors($args = null, $logCallback = null)
     {
         $postsToUpdate = self::getPostsWithoutAuthorTerms($args);
 
+        $total = count($postsToUpdate);
+
         if (!empty($postsToUpdate)) {
-            foreach ($postsToUpdate as $postData) {
+            if (is_callable($logCallback)) {
+                $logCallback(
+                    sprintf(
+                        __('Now inspecting or updating %d total posts', 'publishpress-authors'),
+                        $total
+                    )
+                );
+            }
+
+            for ($i = 0; $i < $total; $i++) {
+                $postData = $postsToUpdate[$i];
+
+                if (is_callable($logCallback)) {
+                    $logCallback(
+                        sprintf(
+                            __('%d/%d: Inspecting the post %d', 'publishpress-authors'),
+                            $i+1,
+                            $total,
+                            $postData->ID
+                        )
+                    );
+                }
+
                 $author = Author::get_by_user_id($postData->post_author);
 
                 if (!is_object($author)) {
+                    if (is_callable($logCallback)) {
+                        $logCallback(
+                            sprintf(
+                                '   ' . __('Creating author term for the user %d', 'publishpress-authors'),
+                                $postData->post_author
+                            )
+                        );
+                    }
+
                     $author = Author::create_from_user($postData->post_author);
                 }
 
                 if (is_object($author)) {
+                    if (is_callable($logCallback)) {
+                        $logCallback(
+                            sprintf(
+                                '   ' . __('Adding the author term %d to the post %d', 'publishpress-authors'),
+                                $author->term_id,
+                                $postData->ID
+                            )
+                        );
+                    }
+
                     $authors = [$author];
 
                     Utils::set_post_authors_name_meta($postData->ID, $authors);
@@ -236,6 +282,10 @@ class Installer
                     wp_add_object_terms($postData->ID, $authors, 'author');
                 }
             }
+        } elseif (is_callable($logCallback)) {
+            $logCallback(
+                __('All is set. No posts need to be updated', 'publishpress-authors')
+            );
         }
     }
 
