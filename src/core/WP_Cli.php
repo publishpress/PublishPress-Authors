@@ -27,7 +27,7 @@ class WP_Cli extends WP_CLI_Command
      * @subcommand list-posts-without-terms
      * @synopsis [--post_type=<ptype>] [--posts_per_page=<num>] [--paged=<page>] [--order=<order>] [--orederby=<orderby>]
      */
-    public function list_posts_without_terms($args, $assoc_args)
+    public function list_posts_without_terms($args, $assocArgs)
     {
         $defaults   = [
             'post_type'         => 'post',
@@ -36,7 +36,7 @@ class WP_Cli extends WP_CLI_Command
             'posts_per_page'    => 300,
             'paged'             => 1,
         ];
-        $parsedArgs = wp_parse_args($assoc_args, $defaults);
+        $parsedArgs = wp_parse_args($assocArgs, $defaults);
 
         $posts = Installer::getPostsWithoutAuthorTerms($parsedArgs);
 
