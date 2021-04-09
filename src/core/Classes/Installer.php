@@ -136,17 +136,48 @@ class Installer
 
     /**
      * Creates terms for users found as authors in the content.
+     *
+     * @param array $args
+     * @param callable $logCallback
      */
-    public static function createAuthorTermsForLegacyCoreAuthors($args = null)
+    public static function createAuthorTermsForLegacyCoreAuthors($args = null, $logCallback = null)
     {
         // Get a list of authors (users) from the posts which has no terms.
         $users = self::getUsersAuthorsWithNoAuthorTerm($args);
 
+        $total = count($users);
+
+        if (is_callable($logCallback)) {
+            $logCallback(
+                sprintf(
+                    __('Now inspecting or updating %d total authors', 'publishpress-authors'),
+                    $total
+                )
+            );
+        }
+
         // Check if the authors have a term. If not, create one.
         if (!empty($users)) {
-            foreach ($users as $userId) {
+            for ($i = 0; $i < $total; $i++) {
+                $userId = $users[$i];
+
+                if (is_callable($logCallback)) {
+                    $logCallback(
+                        sprintf(
+                            __('%d/%d: Inspecting the user %d', 'publishpress-authors'),
+                            $i+1,
+                            $total,
+                            $userId
+                        )
+                    );
+                }
+
                 Author::create_from_user($userId);
             }
+        } elseif (is_callable($logCallback)) {
+            $logCallback(
+                __('All is set. No author need to be updated', 'publishpress-authors')
+            );
         }
     }
 

@@ -14,11 +14,10 @@ namespace MultipleAuthors;
 
 use MultipleAuthors\Classes\Installer;
 use WP_CLI_Command;
-use WP_Query;
 
 class WP_Cli extends WP_CLI_Command
 {
-    public function logCallback($message, $messageType = 'log')
+    public function _logCallback($message, $messageType = 'log')
     {
         if ('log' === $messageType) {
             \WP_CLI::line($message);
@@ -80,10 +79,26 @@ class WP_Cli extends WP_CLI_Command
      */
     public function create_terms_for_posts($args, $assocArgs)
     {
-        Installer::createAuthorTermsForPostsWithLegacyCoreAuthors($assocArgs, [$this, 'logCallback']);
+        Installer::createAuthorTermsForPostsWithLegacyCoreAuthors($assocArgs, [$this, '_logCallback']);
 
         \WP_CLI::success('Finished');
     }
+
+    /**
+     * Update the post count and description for each author
+     *
+     * @since      3.0
+     *
+     * @subcommand update-author-terms
+     * @synopsis [--post_type=<ptype>] [--posts_per_page=<num>] [--paged=<page>]
+     */
+    public function update_author_terms($args, $assocArgs)
+    {
+        Installer::createAuthorTermsForLegacyCoreAuthors($assocArgs, [$this, '_logCallback']);
+
+        \WP_CLI::success('Finished');
+    }
+
 
     /**
      * Clear all of the caches for memory management

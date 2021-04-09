@@ -117,7 +117,7 @@ There are two ways to install the PublishPress Authors plugin:
 = UNRELEASED =
 
 * Fixed: Fix the color scheme for the Pro plugin, #411;
-* Changed: Temporarily disabled the WP CLI commands: assign-coauthors, assign-user-to-coauthor, reassign-terms, rename-coauthor, swap-coauthors, update-author-terms, remove-terms-from-revisions
+* Changed: Temporarily disabled the WP CLI commands: assign-coauthors, assign-user-to-coauthor, reassign-terms, rename-coauthor, swap-coauthors, remove-terms-from-revisions
 
 = [3.13.0] - 2021-03-18 =
 
