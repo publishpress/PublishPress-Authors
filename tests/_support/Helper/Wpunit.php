@@ -173,8 +173,25 @@ class Wpunit extends \Codeception\Module
                         $post->post_author
                     )
                 );
+            }
+        }
 
-                return false;
+        return true;
+    }
+
+    public function assertPostsDontHaveAuthorTerms($postIds)
+    {
+        foreach ($postIds as $postId) {
+            $post        = get_post($postId);
+            $postAuthors = wp_get_post_terms($postId, 'author');
+
+            if (count($postAuthors) > 0) {
+                $this->fail(
+                    sprintf(
+                        'The post %d should not have one author term',
+                        $postId
+                    )
+                );
             }
         }
 

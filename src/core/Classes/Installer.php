@@ -137,10 +137,10 @@ class Installer
     /**
      * Creates terms for users found as authors in the content.
      */
-    public static function createAuthorTermsForLegacyCoreAuthors()
+    public static function createAuthorTermsForLegacyCoreAuthors($args = null)
     {
         // Get a list of authors (users) from the posts which has no terms.
-        $users = self::getUsersAuthorsWithNoAuthorTerm();
+        $users = self::getUsersAuthorsWithNoAuthorTerm($args);
 
         // Check if the authors have a term. If not, create one.
         if (!empty($users)) {
@@ -213,9 +213,9 @@ class Installer
     /**
      * Add author term for posts which only have the post_author.
      */
-    public static function createAuthorTermsForPostsWithLegacyCoreAuthors()
+    public static function createAuthorTermsForPostsWithLegacyCoreAuthors($args = null)
     {
-        $postsToUpdate = self::getPostsWithoutAuthorTerms();
+        $postsToUpdate = self::getPostsWithoutAuthorTerms($args);
 
         if (!empty($postsToUpdate)) {
             foreach ($postsToUpdate as $postData) {

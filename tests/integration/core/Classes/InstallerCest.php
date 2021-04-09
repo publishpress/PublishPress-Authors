@@ -93,6 +93,54 @@ class InstallerCest
         $I->assertPostsHaveAuthorTerms($postIds);
     }
 
+    public function createAuthorTermsForPostsWithLegacyCoreAuthors__withPostTypeArgument__updateOnlyTheSelectedPostType(
+        WpunitTester $I
+    ) {
+        $postIds = $I->havePostsWithDifferentAuthors(10);
+        $pageIds = $I->havePostsWithDifferentAuthors(10, 'page');
+
+        Installer::createAuthorTermsForPostsWithLegacyCoreAuthors(
+            [
+                'post_type' => 'page',
+            ]
+        );
+
+        $I->assertPostsDontHaveAuthorTerms($postIds);
+        $I->assertPostsHaveAuthorTerms($pageIds);
+    }
+
+    public function createAuthorTermsForPostsWithLegacyCoreAuthors__withPostsPerPageArgument__updateOnlyTheSelectedPostType(
+        WpunitTester $I
+    ) {
+        $postIds = $I->havePostsWithDifferentAuthors(10);
+
+        Installer::createAuthorTermsForPostsWithLegacyCoreAuthors(
+            [
+                'posts_per_page' => 2,
+            ]
+        );
+
+        $I->assertPostsHaveAuthorTerms(array_slice($postIds, 0, 2));
+        $I->assertPostsDontHaveAuthorTerms(array_slice($postIds, 2, 8));
+    }
+
+    public function createAuthorTermsForPostsWithLegacyCoreAuthors__withPagedArgument__updateOnlyTheSelectedPostType(
+        WpunitTester $I
+    ) {
+        $postIds = $I->havePostsWithDifferentAuthors(10);
+
+        Installer::createAuthorTermsForPostsWithLegacyCoreAuthors(
+            [
+                'posts_per_page' => 2,
+                'paged' => 2,
+            ]
+        );
+
+        $I->assertPostsDontHaveAuthorTerms(array_slice($postIds, 0, 2));
+        $I->assertPostsHaveAuthorTerms(array_slice($postIds, 2, 2));
+        $I->assertPostsDontHaveAuthorTerms(array_slice($postIds, 4, 6));
+    }
+
     public function getPostsWithoutAuthorTerms__returnsPostsWithNoAuthorTerms(WpunitTester $I)
     {
         $postIds = $I->havePostsWithDifferentAuthors(10);
@@ -111,7 +159,7 @@ class InstallerCest
 
     public function getUsersAuthorsWithNoAuthorTerm__withMultiplePostTypes_returnsListOfUsers(WpunitTester $I)
     {
-        $postIds = $I->havePostsWithDifferentAuthors(10);
+        $postIds  = $I->havePostsWithDifferentAuthors(10);
         $pagesIds = $I->havePostsWithDifferentAuthors(10, 'page');
 
         $postIds = array_merge($postIds, $pagesIds);
@@ -215,8 +263,9 @@ class InstallerCest
         $I->assertEquals($post->post_author, $usersWithNoTerms[5]);
     }
 
-    public function getUsersAuthorsWithNoAuthorTerm__withPostsPerPageArgument__returnsListOfUsersLimitedToTheSpecifiedNumber(WpunitTester $I)
-    {
+    public function getUsersAuthorsWithNoAuthorTerm__withPostsPerPageArgument__returnsListOfUsersLimitedToTheSpecifiedNumber(
+        WpunitTester $I
+    ) {
         $postIds = $I->havePostsWithDifferentAuthors(10);
         $I->haveAuthorTermsForPosts(array_slice($postIds, 0, 3));
 
@@ -241,15 +290,16 @@ class InstallerCest
         $I->assertEquals($post->post_author, $usersWithNoTerms[3]);
     }
 
-    public function getUsersAuthorsWithNoAuthorTerm__withPaged__returnsListOfUsersLimitedToTheSpecifiedNumber(WpunitTester $I)
-    {
+    public function getUsersAuthorsWithNoAuthorTerm__withPaged__returnsListOfUsersLimitedToTheSpecifiedNumber(
+        WpunitTester $I
+    ) {
         $postIds = $I->havePostsWithDifferentAuthors(10);
         $I->haveAuthorTermsForPosts(array_slice($postIds, 0, 3));
 
         $usersWithNoTerms = Installer::getUsersAuthorsWithNoAuthorTerm(
             [
                 'posts_per_page' => 4,
-                'paged' => 2
+                'paged'          => 2
             ]
         );
 
