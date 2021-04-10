@@ -750,4 +750,21 @@ class Author
 
         return isset(self::$authorsByEmailCache[$emailAddress]) ? self::$authorsByEmailCache[$emailAddress] : false;
     }
+
+    /**
+     * Get an author by the provided ID.
+     *
+     * This ID can either be the WP_User ID (positive integer) or guest author ID (negative integer).
+     *
+     * @param $id
+     *
+     * @return Author|false
+     */
+	public static function get_by_id( $id ) {
+		if ( intval( $id ) > -1 ) {
+			return self::get_by_user_id( $id );
+		}
+		return self::get_by_term_id( $id );
+	}
+
 }
