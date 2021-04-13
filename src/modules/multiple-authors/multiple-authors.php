@@ -708,7 +708,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '<p class="ppma_settings_field_description">' . __(
                     'Author profiles can be mapped to WordPress user accounts. This option allows you to automatically create author profiles when users are created in these roles. You can also do this for existing users by clicking the "Create missed authors from role" button in the Maintenance tab.',
                     'publishpress-authors'
-                );
+                ) . '</p>';
 
             echo '</label>';
         }
@@ -877,8 +877,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '<p class="ppma_warning">' . __(
                     'Please be careful clicking these buttons. Before clicking, we recommend taking a site backup in case anything goes wrong.',
                     'publishpress-authors'
-                );
-            echo '</p>';
+                ) . '</p>';
 
             foreach ($actions as $actionName => $actionInfo) {
                 if (isset($actionInfo['button_link'])) {
