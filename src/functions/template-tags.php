@@ -184,10 +184,10 @@ if (!function_exists('multiple_authors_get_all_authors')) {
                 "SELECT
                     t.term_id as `term_id`
                 FROM
-                    wp_terms AS t
-                    INNER JOIN wp_term_taxonomy AS tt ON (tt.term_id = t.term_id)
-                    INNER JOIN wp_term_relationships AS tr ON (tt.term_taxonomy_id = tr.term_taxonomy_id)
-                    INNER JOIN wp_posts AS p ON (tr.object_id = p.ID)
+                    {$wpdb->terms} AS t
+                    INNER JOIN {$wpdb->term_taxonomy} AS tt ON (tt.term_id = t.term_id)
+                    INNER JOIN {$wpdb->term_relationships} AS tr ON (tt.term_taxonomy_id = tr.term_taxonomy_id)
+                    INNER JOIN {$wpdb->posts} AS p ON (tr.object_id = p.ID)
                 WHERE
                     tt.taxonomy = 'author'
                     AND p.post_status IN ('publish')
