@@ -109,12 +109,12 @@ if (!class_exists('MA_Pro_Placeholders')) {
 
         public function placeholderPageFields()
         {
-            echo 'The ad goes here...';
+            include_once __DIR__ . '/views/fields-placeholder.php';
         }
 
         public function placeholderPageLayouts()
         {
-            echo 'The ad goes here...';
+            include_once __DIR__ . '/views/layouts-placeholder.php';
         }
     }
 }
