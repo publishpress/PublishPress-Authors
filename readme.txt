@@ -114,7 +114,7 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= UNRELEASED =
+= [3.13.1] - 2021-04-22 =
 
 * Fixed: Fix the color scheme for the Pro plugin, #411;
 * Fixed: Fix the links style for the boxed and centered layouts, #414;
