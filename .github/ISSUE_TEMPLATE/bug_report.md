@@ -2,12 +2,19 @@
 name: Bug report
 about: Create a report to help us improve
 title: ''
-labels: 'bug'
+labels: bug
 assignees: ''
 
 ---
+
 <!--- Your issue may already be reported! -->
 <!--- Please search on the [issue track](../) before creating one. -->
+
+If you have found a bug in the code of our plugins and want to report it, this is the best place! 
+
+However, please note that this option is for genuine bugs that can be reproduced on other sites. This is not for support questions about your site. We will close questions if they are about issues with your site.
+
+We have "PublishPress members" support available for commercial users and "Non-members" support for non-commercial users: https://publishpress.com/publishpress-support/
 
 ## Expected Behavior
 

@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
 Tested up to: 5.7
-Stable tag: 3.13.0
+Stable tag: 3.13.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -113,6 +113,16 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [3.13.1] - 2021-04-22 =
+
+* Fixed: Fix the color scheme for the Pro plugin, #411;
+* Fixed: Fix the links style for the boxed and centered layouts, #414;
+* Fixed: Hide the core author field in the post edit pages and add field to set a user as author if a post has only guest authors, #344;
+* Fixed: Fix relationship between post and author if not existent when running the function "get_multiple_authors". It fallbacks to the current post author, creating the Author term and relationship with the post, #396;
+* Fixed: Fix the CLI subcommand list-posts-without-terms adding support for the following arguments: [--post_type=<ptype>] [--posts_per_page=<num>] [--paged=<page>] [--order=<order>] [--orederby=<orderby>], #415;
+* Fixed: Fix the CLI subcommand create-terms-for-posts adding support for the following arguments: [--post_type=<ptype>] [--posts_per_page=<num>] [--paged=<page>], #415;
+* Changed: Temporarily disabled the CLI subcommands: update-author-terms, assign-coauthors, assign-user-to-coauthor, reassign-terms, rename-coauthor, swap-coauthors, remove-terms-from-revisions, #415;
 
 = [3.13.0] - 2021-03-18 =
 

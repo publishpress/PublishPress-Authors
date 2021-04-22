@@ -18,6 +18,7 @@ use WP_CLI;
  * Based on Bylines.
  *
  * @package MultipleAuthors\Classes
+ * @deprecated Since 3.13.1, to be removed on 3.15.0
  */
 class CLI
 {

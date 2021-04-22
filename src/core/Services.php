@@ -98,7 +98,7 @@ class Services implements ServiceProviderInterface
 
             $function = new Twig_SimpleFunction(
                 'do_shortcode', function ($string) {
-                do_shortcode($string);
+                return do_shortcode($string);
             }
             );
             $twig->addFunction($function);

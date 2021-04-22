@@ -137,6 +137,12 @@ class Author
         if (is_numeric($user)) {
             $user = get_user_by('id', (int)$user);
         }
+
+        if (is_a($user, 'stdClass')) {
+            $userInstance = new WP_User($user);
+            $user         = $userInstance;
+        }
+
         if (!is_a($user, 'WP_User')) {
             error_log(
                 sprintf(
@@ -149,14 +155,7 @@ class Author
         }
         $existing = self::get_by_user_id($user->ID);
         if ($existing) {
-            error_log(
-                sprintf(
-                    '[PublishPress Authors] The method %s tried to create an author that already exists for the user: %s',
-                    __METHOD__,
-                    maybe_serialize($user)
-                )
-            );
-            return false;
+            return $existing;
         }
         $author = self::create(
             [

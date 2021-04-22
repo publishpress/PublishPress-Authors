@@ -353,6 +353,20 @@ if (!class_exists('MA_Multiple_Authors')) {
                     unset($currentSubmenu[$itemsToSort['edit.php?post_type=ppmacf_layout']]);
                 }
 
+                // Fields - Pro Placeholders
+                if (isset($itemsToSort['admin.php?page=ppma-pro-placeholders-fields'])) {
+                    $newSubmenu[] = $currentSubmenu[$itemsToSort['admin.php?page=ppma-pro-placeholders-fields']];
+
+                    unset($currentSubmenu[$itemsToSort['admin.php?page=ppma-pro-placeholders-fields']]);
+                }
+
+                // Layouts - Pro Placeholders
+                if (isset($itemsToSort['admin.php?page=ppma-pro-placeholders-layouts'])) {
+                    $newSubmenu[] = $currentSubmenu[$itemsToSort['admin.php?page=ppma-pro-placeholders-layouts']];
+
+                    unset($currentSubmenu[$itemsToSort['admin.php?page=ppma-pro-placeholders-layouts']]);
+                }
+
                 // Check if we have other menu items, except settings. They will be added to the end.
                 if (count($currentSubmenu) >= 1) {
                     $itemsToIgnore = [
@@ -708,7 +722,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '<p class="ppma_settings_field_description">' . __(
                     'Author profiles can be mapped to WordPress user accounts. This option allows you to automatically create author profiles when users are created in these roles. You can also do this for existing users by clicking the "Create missed authors from role" button in the Maintenance tab.',
                     'publishpress-authors'
-                );
+                ) . '</p>';
 
             echo '</label>';
         }
@@ -877,8 +891,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '<p class="ppma_warning">' . __(
                     'Please be careful clicking these buttons. Before clicking, we recommend taking a site backup in case anything goes wrong.',
                     'publishpress-authors'
-                );
-            echo '</p>';
+                ) . '</p>';
 
             foreach ($actions as $actionName => $actionInfo) {
                 if (isset($actionInfo['button_link'])) {
@@ -1612,8 +1625,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             // Do not execute the post_author migration to post terms if Co-Authors Plus is activated.
             // The user need to manually run the Co-Authors migration task before running this again.
             if (!$this->isCoAuthorsPlusActivated()) {
-                Installer::convert_post_author_into_taxonomy();
-                Installer::add_author_term_for_posts();
+                Installer::createAuthorTermsForLegacyCoreAuthors();
+                Installer::createAuthorTermsForPostsWithLegacyCoreAuthors();
             }
         }
 
@@ -1684,8 +1697,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             } while ($i->iterate());
 
             // Co-Authors sometimes don't have a taxonomy term for the author, but uses the post_author value instead.
-            Installer::convert_post_author_into_taxonomy();
-            Installer::add_author_term_for_posts();
+            Installer::createAuthorTermsForLegacyCoreAuthors();
+            Installer::createAuthorTermsForPostsWithLegacyCoreAuthors();
         }
 
         /**
@@ -2229,8 +2242,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             // Co-Authors sometimes don't have a taxonomy term for the author, but uses the post_author value instead.
-            Installer::convert_post_author_into_taxonomy();
-            Installer::add_author_term_for_posts();
+            Installer::createAuthorTermsForLegacyCoreAuthors();
+            Installer::createAuthorTermsForPostsWithLegacyCoreAuthors();
 
             do_action('publishpress_authors_flush_cache');
 

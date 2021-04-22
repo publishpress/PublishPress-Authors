@@ -161,13 +161,15 @@ class Utils
      *
      * @param int $postId ID for the post to modify.
      * @param array $authors Bylines to set on the post.
+     * @param bool $syncPostAuthor
+     * @param int $fallbackUserId User ID for using as the author in case no author or if only guests are selected
      */
-    public static function set_post_authors($postId, $authors, $syncPostAuthor = true)
+    public static function set_post_authors($postId, $authors, $syncPostAuthor = true, $fallbackUserId = null)
     {
         static::set_post_authors_name_meta($postId, $authors);
 
         if ($syncPostAuthor) {
-            static::sync_post_author_column($postId, $authors);
+            static::sync_post_author_column($postId, $authors, $fallbackUserId);
         }
 
         $authors = wp_list_pluck($authors, 'term_id');
@@ -207,8 +209,9 @@ class Utils
     /**
      * @param int $postId ID for the post to modify.
      * @param array $authors Bylines to set on the post.
+     * @param int|null $fallbackUserId User ID for using as the author in case no author or if only guests are selected
      */
-    public static function sync_post_author_column($postId, $authors)
+    public static function sync_post_author_column($postId, $authors, $fallbackUserId = null)
     {
         $functionSetPostAuthor = function($postId, $authorId) {
             global $wpdb;
@@ -259,6 +262,24 @@ class Utils
         }
 
         if (!$postAuthorHasChanged) {
+            $fallbackUserId = (int)$fallbackUserId;
+
+            if (!empty($fallbackUserId)) {
+                global $wpdb;
+
+                $wpdb->update(
+                    $wpdb->posts,
+                    [
+                        'post_author' => $fallbackUserId,
+                    ],
+                    [
+                        'ID' => $postId,
+                    ]
+                );
+
+                clean_post_cache($postId);
+            }
+
             // Check if the post has any author set. If not an existent author, create one and set the author term.
             $post = get_post($postId);
 
@@ -272,7 +293,7 @@ class Utils
                 if (is_object($author) && !is_wp_error($author)) {
                     Utils::set_post_authors($postId, [$author], false);
                 }
-            } else {
+            } elseif ($fallbackUserId !== (int)$post->post_author) {
                 $functionSetPostAuthor($postId, get_current_user_id());
             }
         }
@@ -717,7 +738,7 @@ class Utils
 
         return self::$defaultLayout;
     }
-  
+
     public static function isWPEngineInstalled()
     {
         return class_exists('WpeCommon');
