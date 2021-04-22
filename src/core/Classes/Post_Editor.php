@@ -266,7 +266,7 @@ class Post_Editor
             ?>
             <div id="publishpress-authors-user-author-wrapper">
                 <hr>
-                <label for="publishpress-authors-user-author-select"><?php echo __('There is no user selected as author for this post. Feel free to select one here, or we will use the default author or you as author for the WordPress author field.', 'publishpress-authors'); ?></label>
+                <label for="publishpress-authors-user-author-select"><?php echo __('This option is showing because you do not have a WordPress user selected as an author. For some tasks, it can be helpful to have a user selected here. This user will not be visible on the front of your site.', 'publishpress-authors'); ?></label>
                 <select id="publishpress-authors-user-author-select" data-nonce="<?php echo esc_attr(wp_create_nonce('authors-user-search')); ?>"
                         class="authors-select2 authors-user-search"
                         data-placeholder="<?php esc_attr_e('Search for an user', 'publishpress-authors'); ?>" style="width: 100%"
