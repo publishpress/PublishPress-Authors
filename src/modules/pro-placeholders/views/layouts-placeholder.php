@@ -8,7 +8,7 @@
                 <img src="<?php echo esc_url(plugins_url('../assets/layouts-mobile.jpg', __FILE__)) ?>" class="pp-authors-mobile">
                 <div class="pp-authors-menus-promo-content">
                     <p>
-                        <?php _e('You can create and manage Author Layouts. This feature is available in PublishPress Authors Pro', 'publishpress-authors') ?>
+                        <?php _e('With PublishPress Authors Pro you can build new layouts for authors. You can use author information, custom fields, and much more.', 'publishpress-authors') ?>
                     </p>
                     <p>
                         <a href="https://publishpress.com/links/authors-banner" target="_blank">

@@ -8,7 +8,7 @@
                 <img src="<?php echo esc_url(plugins_url('../assets/fields-mobile.jpg', __FILE__)) ?>" class="pp-authors-mobile">
                 <div class="pp-authors-menus-promo-content">
                     <p>
-                        <?php _e('You can create and manage Author Fields. This feature is available in PublishPress Authors Pro', 'publishpress-authors') ?>
+                        <?php _e('With PublishPress Authors Pro you can create custom fields for your author profiles. You can add Text, WYSIWYG, Link, email fields and more.', 'publishpress-authors') ?>
                     </p>
                     <p>
                         <a href="https://publishpress.com/links/authors-banner" target="_blank">
