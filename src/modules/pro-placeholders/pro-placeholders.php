@@ -81,6 +81,10 @@ if (!class_exists('MA_Pro_Placeholders')) {
          */
         public function init()
         {
+            if (defined('PP_AUTHORS_PRO_LOADED')) {
+                return;
+            }
+
             add_action('multiple_authors_admin_submenu', [$this, 'addProPlaceholdersMenus']);
         }
 
