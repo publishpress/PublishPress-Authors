@@ -36,6 +36,7 @@ class Admin_Ajax
 
         $search   = !empty($_GET['q']) ? sanitize_text_field($_GET['q']) : '';
         $ignored  = !empty($_GET['ignored']) ? array_map('sanitize_text_field', $_GET['ignored']) : [];
+        $onlyUsers = isset($_GET['only_users']) ? 1 === (int)$_GET['only_users'] : 0;
         $authors  = self::get_possible_authors_for_search($search, $ignored);
         $response = [
             'results' => $authors,
@@ -49,10 +50,11 @@ class Admin_Ajax
      *
      * @param string $search Search query.
      * @param array $ignored Any authors that should be ignored.
+     * @param array $onlyUsers True if should return only users
      *
      * @return array
      */
-    public static function get_possible_authors_for_search($search, $ignored = [])
+    public static function get_possible_authors_for_search($search, $ignored = [], $onlyUsers = false)
     {
         $legacyPlugin = Factory::getLegacyPlugin();
 
@@ -95,12 +97,17 @@ class Admin_Ajax
                     }
                 }
 
+                if ($onlyUsers && $author->is_guest()) {
+                    continue;
+                }
+
                 $authors[] = [
                     'id'           => (int)$term->term_id,
                     'text'         => $text,
                     'term'         => (int)$term->term_id,
                     'display_name' => $text,
                     'user_id'      => $author->user_id,
+                    'is_guest'     => $author->is_guest() ? 1 : 0,
                 ];
             }
         }
