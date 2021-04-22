@@ -117,6 +117,8 @@ There are two ways to install the PublishPress Authors plugin:
 = UNRELEASED =
 
 * Fixed: Fix the color scheme for the Pro plugin, #411;
+* Fixed: Fix the links style for the boxed and centered layouts, #414;
+* Fixed: Hide the core author field in the post edit pages and add field to set a user as author if a post has only guest authors, #344;
 
 = [3.13.0] - 2021-03-18 =
 
