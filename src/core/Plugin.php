@@ -59,11 +59,11 @@ class Plugin
         // Installation hooks
         add_action(
             'multiple_authors_install',
-            ['MultipleAuthors\\Classes\\Installer', 'install']
+            ['MultipleAuthors\\Classes\\Installer', 'runInstallTasks']
         );
         add_action(
             'multiple_authors_upgrade',
-            ['MultipleAuthors\\Classes\\Installer', 'upgrade']
+            ['MultipleAuthors\\Classes\\Installer', 'runUpgradeTasks']
         );
 
         if (!defined('PUBLISHPRESS_AUTHORS_BYPASS_INSTALLER') || !PUBLISHPRESS_AUTHORS_BYPASS_INSTALLER) {
