@@ -85,44 +85,43 @@ class WP_Cli extends WP_CLI_Command
         \WP_CLI::success('Finished');
     }
 
-    /**
-     * Update the post count and description for each author
-     *
-     * @since      3.0
-     *
-     * @subcommand update-author-terms
-     * @synopsis [--post_type=<ptype>] [--posts_per_page=<num>] [--paged=<page>]
-     */
-    public function update_author_terms($args, $assocArgs)
-    {
-        Installer::createAuthorTermsForLegacyCoreAuthors($assocArgs, [$this, '_logCallback']);
+//    /**
+//     * Update the post count and description for each author
+//     *
+//     * @since      3.0
+//     *
+//     * @subcommand update-author-terms
+//     * @synopsis [--post_type=<ptype>] [--posts_per_page=<num>] [--paged=<page>]
+//     */
+//    public function update_author_terms($args, $assocArgs)
+//    {
+//        Installer::createAuthorTermsForLegacyCoreAuthors($assocArgs, [$this, '_logCallback']);
+//
+//        \WP_CLI::success('Finished');
+//    }
 
-        \WP_CLI::success('Finished');
-    }
-
-
-    /**
-     * Clear all of the caches for memory management
-     */
-    private function clearAllCaches()
-    {
-        global $wpdb, $wp_object_cache;
-
-        $wpdb->queries = []; // or define( 'WP_IMPORTING', true );
-
-        if (!is_object($wp_object_cache)) {
-            return;
-        }
-
-        $wp_object_cache->group_ops      = [];
-        $wp_object_cache->stats          = [];
-        $wp_object_cache->memcache_debug = [];
-        $wp_object_cache->cache          = [];
-
-        if (is_callable($wp_object_cache, '__remoteset')) {
-            $wp_object_cache->__remoteset(); // important
-        }
-    }
+//    /**
+//     * Clear all of the caches for memory management
+//     */
+//    private function clearAllCaches()
+//    {
+//        global $wpdb, $wp_object_cache;
+//
+//        $wpdb->queries = []; // or define( 'WP_IMPORTING', true );
+//
+//        if (!is_object($wp_object_cache)) {
+//            return;
+//        }
+//
+//        $wp_object_cache->group_ops      = [];
+//        $wp_object_cache->stats          = [];
+//        $wp_object_cache->memcache_debug = [];
+//        $wp_object_cache->cache          = [];
+//
+//        if (is_callable($wp_object_cache, '__remoteset')) {
+//            $wp_object_cache->__remoteset(); // important
+//        }
+//    }
 
 //    /**
 //     * Subcommand to assign coauthors to a post based on a given meta key
