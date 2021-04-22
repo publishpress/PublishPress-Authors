@@ -211,3 +211,127 @@ body.wp-admin.post-php.post-type-ppmacf_layout #wpwrap {
 .chosen-choices {
     padding: 3px 5px !important;
 }
+
+/* Placeholder screens */
+.ppa-elemnt-blur {
+  filter: blur(2px);
+}
+
+#pp-authors-menu-wrapper div.pp-authors-menus-promo .pp-authors-menus-promo-inner img,
+div.pp-authors-menus-wrapper-promo input.ppc-admin-menu-submit,
+div.pp-authors-menus-wrapper-promo select.ppc-admin-menu-role,
+div.pp-authors-menus-wrapper-promo input.ppc-nav-menu-submit,
+div.pp-authors-menus-wrapper-promo select.ppc-nav-menu-role {
+  filter: blur(2px);
+}
+
+#pp-authors-menu-wrapper {
+  border: none;
+  box-shadow: none;
+  background: none;
+}
+
+#pp-authors-menu-wrapper div.pp-authors-menus-promo {
+  height: 600px;
+}
+
+#pp-authors-menu-wrapper div.pp-authors-menus-promo .pp-authors-menus-promo-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#pp-authors-menu-wrapper div.pp-authors-menus-promo .pp-authors-menus-promo-inner img {
+  position: absolute;
+  width: 100%;
+}
+
+#pp-authors-menu-wrapper div.pp-authors-menus-promo .pp-authors-menus-promo-inner img.pp-authors-mobile {
+  display: none !important;
+}
+
+#pp-authors-menu-wrapper div.pp-authors-menus-promo .pp-authors-menus-promo-inner img.pp-authors-desktop {
+  display: block !important;
+}
+
+#pp-authors-menu-wrapper div.pp-authors-menus-promo .pp-authors-menus-promo-inner .pp-authors-menus-promo-content {
+  position: absolute;
+  top: calc(50% - 100px);
+  left: calc(50% - 225px);
+  text-align: center;
+  background: #655897;
+  padding: 20px 20px 35px;
+  border-radius: 6px;
+  width: 450px;
+  box-sizing: border-box;
+  box-shadow: 0 0 25px #ccc;
+}
+
+#pp-authors-menu-wrapper div.pp-authors-menus-promo .pp-authors-menus-promo-inner .pp-authors-menus-promo-content p {
+  line-height: 1.4em;
+  font-size: 16px;
+  margin-bottom: 20px;
+  margin-top: 0;
+  color: #fff;
+  padding: 0;
+}
+
+#pp-authors-menu-wrapper div.pp-authors-menus-promo .pp-authors-menus-promo-inner .pp-authors-menus-promo-content p:last-of-type {
+    margin-bottom: 0;
+}
+
+#pp-authors-menu-wrapper div.pp-authors-menus-promo .pp-authors-menus-promo-inner .pp-authors-menus-promo-content a {
+  font-size: 17px;
+  background: #FCB223;
+  color: #000;
+  font-weight: normal;
+  text-decoration: none;
+  padding: 9px 12px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  border: 1px solid #fca871;
+  break-inside: avoid;
+  white-space: nowrap;
+}
+
+#pp-authors-menu-wrapper div.pp-authors-menus-promo .pp-authors-menus-promo-inner .pp-authors-menus-promo-content a:hover,
+#pp-authors-menu-wrapper div.pp-authors-menus-promo .pp-authors-menus-promo-inner .pp-authors-menus-promo-content a:focus,
+#pp-authors-menu-wrapper div.pp-authors-menus-promo .pp-authors-menus-promo-inner .pp-authors-menus-promo-content a:active {
+  background: #fcca46;
+    color: #000;
+}
+
+#pp-authors-menu-wrapper div.pp-authors-menus-promo-nav {
+  height: 370px;
+}
+
+@media (max-width: 979px) {
+
+  #pp-authors-menu-wrapper div.pp-authors-menus-promo .pp-authors-menus-promo-inner img.pp-authors-mobile {
+    display: block !important;
+  }
+
+  #pp-authors-menu-wrapper div.pp-authors-menus-promo .pp-authors-menus-promo-inner img.pp-authors-desktop {
+    display: none !important;
+  }
+
+  #pp-authors-menu-wrapper div.pp-authors-menus-promo {
+    height: 750px;
+  }
+}
+
+@media (max-width: 768px) {
+
+  #pp-authors-menu-wrapper div.pp-authors-menus-promo .pp-authors-menus-promo-inner .pp-authors-menus-promo-content {
+    top: calc(50% - 100px);
+    left: calc(50% - 150px);
+    padding: 20px 20px 35px;
+    width: 300px;
+  }
+
+  #pp-authors-menu-wrapper div.pp-authors-menus-promo {
+    height: 450px;
+  }
+}
