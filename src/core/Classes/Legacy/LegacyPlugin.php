@@ -152,6 +152,7 @@ class LegacyPlugin
             'multiple-authors' => PP_AUTHORS_MODULES_PATH,
             'default-layouts'  => PP_AUTHORS_MODULES_PATH,
             'rest-api'         => PP_AUTHORS_MODULES_PATH,
+            'pro-placeholders' => PP_AUTHORS_MODULES_PATH,
         ];
 
         if (Utils::isBylineInstalled()) {
@@ -192,6 +193,14 @@ class LegacyPlugin
 
         if (Utils::isCompatibleYoastSeoInstalled()) {
             $defaultDirs['yoast-seo-integration'] = PP_AUTHORS_MODULES_PATH;
+        }
+
+        if (Utils::isWPEngineInstalled()) {
+            $defaultDirs['wpengine-integration'] = PP_AUTHORS_MODULES_PATH;
+        }
+
+        if (Utils::isTheSEOFrameworkInstalled()) {
+            $defaultDirs['seoframework-integration'] = PP_AUTHORS_MODULES_PATH;
         }
 
         return apply_filters('ppma_module_dirs', $defaultDirs);

@@ -271,6 +271,43 @@ class get_multiple_authorsCest
         $I->assertInstanceOf('MultipleAuthors\\Classes\\Objects\\Author', $authors[0]);
     }
 
+    public function testGetMultipleAuthors_WithNoAuthorRelationshipForPostAndNoAuthorTerm_shouldCreateTheAuthorBasedOnUser(WpunitTester $I)
+    {
+        $userId = $I->factory('create user0')->user->create();
+
+        $postId = $I->factory('create post0')->post->create(
+            ['post_type' => 'post', 'post_author' => $userId]
+        );
+
+        $authors = get_multiple_authors($postId);
+
+        $firstAuthor = $authors[0];
+
+        $I->assertInstanceOf('MultipleAuthors\\Classes\\Objects\\Author', $firstAuthor);
+        $I->assertFalse($firstAuthor->is_guest());
+        $I->assertNotEmpty($firstAuthor->term_id);
+        $I->assertNotEmpty($firstAuthor->display_name);
+    }
+
+    public function testGetMultipleAuthors_WithNoAuthorRelationshipForPostAndNoAuthorTerm_shouldCreateTheAuthorRelationshipForThePost(WpunitTester $I)
+    {
+        $userId = $I->factory('create user0')->user->create();
+
+        $postId = $I->factory('create post0')->post->create(
+            ['post_type' => 'post', 'post_author' => $userId]
+        );
+
+        $authors = get_multiple_authors($postId);
+
+        $firstAuthor = $authors[0];
+
+        $postTerms = wp_get_post_terms($postId, 'author');
+
+        $I->assertNotEmpty(count($postTerms), 'There is no author terms for the post');
+    }
+
+
+
     protected function serializeArrayOfAuthors($authorsArray)
     {
         $data = [];

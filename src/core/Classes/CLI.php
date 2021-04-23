@@ -18,6 +18,7 @@ use WP_CLI;
  * Based on Bylines.
  *
  * @package MultipleAuthors\Classes
+ * @deprecated Since 3.13.1, to be removed on 3.15.0
  */
 class CLI
 {
@@ -133,8 +134,11 @@ class CLI
                 Utils::set_post_authors($post_id, [$author]);
                 WP_CLI::log("Created author and assigned to post {$post_id}.");
             }
+
             $successes++;
         } // End foreach().
+
+        do_action('publishpress_authors_flush_cache');
 
         WP_CLI\Utils\report_batch_operation_results('post author', 'convert', $total, $successes, $failures);
     }

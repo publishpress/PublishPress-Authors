@@ -92,7 +92,18 @@ class Post
         $properties['comment_count']         = true;
         $properties['filter']                = true;
 
-        return array_key_exists($name, $properties);
+        $isset = array_key_exists($name, $properties);
+
+        if (!$isset) {
+            $isset = apply_filters(
+                'publishpress_authors_layout_post_property_isset',
+                $isset,
+                $this->postObject,
+                $name
+            );
+        }
+
+        return $isset;
     }
 
     /**
@@ -112,6 +123,13 @@ class Post
         if (isset($this->postObject->{$attribute})) {
             return $this->postObject->{$attribute};
         }
+
+        return apply_filters(
+            'publishpress_authors_layout_post_property_value',
+            null,
+            $this->postObject,
+            $attribute
+        );
     }
 
     public function get_meta($metaKey, $single = true)

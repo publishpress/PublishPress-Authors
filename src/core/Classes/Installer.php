@@ -31,146 +31,296 @@ class Installer
     /**
      * Runs methods when the plugin is running for the first time.
      *
-     * @param string $current_version
+     * @param string $currentVersion
      */
-    public static function install($current_version)
+    public static function runInstallTasks($currentVersion)
     {
         // Do not execute the post_author migration to post terms if Co-Authors Plus is activated.
         if (!isset($GLOBALS['coauthors_plus']) || empty($GLOBALS['coauthors_plus'])) {
-            self::convert_post_author_into_taxonomy();
-            self::add_author_term_for_posts();
+            self::createAuthorTermsForLegacyCoreAuthors();
+            self::createAuthorTermsForPostsWithLegacyCoreAuthors();
         }
 
-        self::add_administrator_capabilities();
-        self::add_new_edit_post_authors_cap();
-        self::flush_permalinks();
+        self::addDefaultCapabilitiesForAdministrators();
+        self::addEditPostAuthorsCapabilitiesToRoles();
+        self::flushRewriteRules();
 
         /**
          * @param string $currentVersion
          */
-        do_action('pp_authors_install', $current_version);
+        do_action('pp_authors_install', $currentVersion);
+    }
+
+    /**
+     * Runs methods when the plugin is being upgraded to a most recent version.
+     *
+     * @param string $currentVersions
+     */
+    public static function runUpgradeTasks($currentVersions)
+    {
+        if (version_compare($currentVersions, '2.0.2', '<')) {
+            // Do not execute the post_author migration to post terms if Co-Authors Plus is activated.
+            if (!isset($GLOBALS['coauthors_plus']) || empty($GLOBALS['coauthors_plus'])) {
+                self::createAuthorTermsForLegacyCoreAuthors();
+                self::createAuthorTermsForPostsWithLegacyCoreAuthors();
+            }
+        }
+
+        if (version_compare($currentVersions, '3.6.0', '<')) {
+            self::addEditPostAuthorsCapabilitiesToRoles();
+        }
+
+        /**
+         * @param string $previousVersion
+         */
+        do_action('pp_authors_upgrade', $currentVersions);
+
+        self::addDefaultCapabilitiesForAdministrators();
+        self::flushRewriteRules();
+    }
+
+    public static function getUsersAuthorsWithNoAuthorTerm($args = null)
+    {
+        global $wpdb;
+
+        if (!isset($args['post_type'])) {
+            $enabledPostTypes = Utils::get_enabled_post_types();
+
+            $args['post_type'] = $enabledPostTypes;
+        }
+
+        $defaults   = [
+            'post_type'      => 'post',
+            'posts_per_page' => 300,
+            'paged'          => 1,
+        ];
+        $parsedArgs = wp_parse_args($args, $defaults);
+
+
+        if (!is_array($parsedArgs['post_type'])) {
+            $parsedArgs['post_type'] = [esc_sql($parsedArgs['post_type'])];
+        }
+
+        $parsedArgs['post_type'] = array_map('esc_sql', $parsedArgs['post_type']);
+
+        $parsedArgs['posts_per_page'] = (int)$parsedArgs['posts_per_page'];
+
+        $parsedArgs['paged'] = (int)$parsedArgs['paged'];
+        $parsedArgs['paged'] = $parsedArgs['paged'] * $parsedArgs['posts_per_page'] - $parsedArgs['posts_per_page'];
+
+        return wp_list_pluck(
+            $wpdb->get_results(
+                "
+                SELECT DISTINCT
+                    p.post_author AS ID
+                FROM
+                    {$wpdb->posts} AS p
+                WHERE
+                    p.post_author NOT IN(
+                        SELECT DISTINCT
+                            meta_value FROM {$wpdb->termmeta} AS tm
+                            LEFT JOIN {$wpdb->term_taxonomy} AS tt ON (tm.term_id = tt.term_id)
+                        WHERE
+                            meta_key = 'user_id'
+                            AND tt.taxonomy = 'author'
+                    )
+                    AND p.post_author <> 0
+                    AND p.post_type IN ('" . implode('\',\'', $parsedArgs['post_type']) . "')
+                    AND p.post_status NOT IN ('trash')
+                LIMIT {$parsedArgs['paged']}, {$parsedArgs['posts_per_page']}
+                "
+            ),
+            'ID'
+        );
     }
 
     /**
      * Creates terms for users found as authors in the content.
+     *
+     * @param array $args
+     * @param callable $logCallback
      */
-    public static function convert_post_author_into_taxonomy()
+    public static function createAuthorTermsForLegacyCoreAuthors($args = null, $logCallback = null)
+    {
+        // Get a list of authors (users) from the posts which has no terms.
+        $users = self::getUsersAuthorsWithNoAuthorTerm($args);
+
+        $total = count($users);
+
+        if (is_callable($logCallback)) {
+            $logCallback(
+                sprintf(
+                    __('Now inspecting or updating %d total authors', 'publishpress-authors'),
+                    $total
+                )
+            );
+        }
+
+        // Check if the authors have a term. If not, create one.
+        if (!empty($users)) {
+            for ($i = 0; $i < $total; $i++) {
+                $userId = $users[$i];
+
+                if (is_callable($logCallback)) {
+                    $logCallback(
+                        sprintf(
+                            __('%d/%d: Inspecting the user %d', 'publishpress-authors'),
+                            $i+1,
+                            $total,
+                            $userId
+                        )
+                    );
+                }
+
+                Author::create_from_user($userId);
+            }
+        } elseif (is_callable($logCallback)) {
+            $logCallback(
+                __('All is set. No author need to be updated', 'publishpress-authors')
+            );
+        }
+    }
+
+    public static function getPostsWithoutAuthorTerms($args = null)
     {
         global $wpdb;
 
-        $enabledPostTypes = Utils::get_enabled_post_types();
-        $enabledPostTypes = '"' . implode('","', $enabledPostTypes) . '"';
+        if (!isset($args['post_type'])) {
+            $enabledPostTypes = Utils::get_enabled_post_types();
 
-        // Get a list of authors (users) from the posts which has no terms.
-        $authors = $wpdb->get_results(
-            "SELECT DISTINCT p.post_author, u.display_name, u.user_nicename, u.user_email, u.user_url
-				 FROM {$wpdb->posts} as p
-				 LEFT JOIN {$wpdb->users} AS u ON (post_author = u.ID)
-				 WHERE
-				     p.post_status NOT IN ('trash') AND
-				 	 p.post_author NOT IN (
-					     SELECT meta.`meta_value`
-						 FROM {$wpdb->terms} AS term
-						 INNER JOIN {$wpdb->term_taxonomy} AS tax ON (term.`term_id` = tax.`term_id`)
-						 INNER JOIN {$wpdb->termmeta} AS meta ON (term.term_id = meta.`term_id`)
-						 WHERE tax.`taxonomy` = 'author'
-						 AND meta.meta_key = 'user_id'
-						 AND meta.meta_value <> 0
-				 	)
-				 	AND p.post_type IN ({$enabledPostTypes})
-				 	AND p.post_author <> 0
-					AND u.display_name != ''
-			    "
-        );
-
-        // Check if the authors have a term. If not, create one.
-        if (!empty($authors)) {
-            foreach ($authors as $author) {
-                $term = wp_insert_term(
-                    $author->display_name,
-                    'author',
-                    [
-                        'slug' => $author->user_nicename,
-                    ]
-                );
-
-                // Get user's description
-                $description = get_user_meta($author->post_author, 'description', true);
-                if (empty($description)) {
-                    $description = '';
-                }
-
-                if (is_wp_error($term)) {
-                    continue;
-                }
-
-                $first_name = get_user_meta($author->post_author, 'first_name', true);
-                $last_name  = get_user_meta($author->post_author, 'last_name', true);
-
-                $meta = [
-                    'first_name'                      => $first_name,
-                    'last_name'                       => $last_name,
-                    'user_email'                      => $author->user_email,
-                    'user_id_' . $author->post_author => 'user_id',
-                    'user_id'                         => $author->post_author,
-                    'user_url'                        => $author->user_url,
-                    'description'                     => $description,
-                ];
-
-                foreach ($meta as $key => $value) {
-                    add_term_meta($term['term_id'], $key, $value);
-                }
-            }
+            $args['post_type'] = $enabledPostTypes;
         }
+
+        $defaults   = [
+            'post_type'      => 'post',
+            'order'          => 'ASC',
+            'orderby'        => 'ID',
+            'posts_per_page' => 300,
+            'paged'          => 1,
+        ];
+        $parsedArgs = wp_parse_args($args, $defaults);
+
+
+        if (!is_array($parsedArgs['post_type'])) {
+            $parsedArgs['post_type'] = [esc_sql($parsedArgs['post_type'])];
+        }
+
+        $parsedArgs['post_type'] = array_map('esc_sql', $parsedArgs['post_type']);
+
+        $parsedArgs['order'] = strtoupper($parsedArgs['order']) === 'DESC' ? 'DESC' : 'ASC';
+
+        $parsedArgs['orderby'] = esc_sql($parsedArgs['orderby']);
+
+        $parsedArgs['posts_per_page'] = (int)$parsedArgs['posts_per_page'];
+
+        $parsedArgs['paged'] = (int)$parsedArgs['paged'];
+        $parsedArgs['paged'] = $parsedArgs['paged'] * $parsedArgs['posts_per_page'] - $parsedArgs['posts_per_page'];
+
+        return $wpdb->get_results(
+            "
+            SELECT
+                p.*
+            FROM
+                {$wpdb->posts} AS p
+                LEFT JOIN (
+                    SELECT
+                        tr.object_id, tr.term_taxonomy_id
+                    FROM
+                        {$wpdb->term_relationships} AS tr
+                        INNER JOIN {$wpdb->term_taxonomy} AS tt ON (tr.term_taxonomy_id = tt.term_taxonomy_id)
+                    WHERE
+                        tt.taxonomy = 'author') AS str ON (str.object_id = p.ID
+                )
+            WHERE
+                p.post_type IN ('" . implode('\',\'', $parsedArgs['post_type']) . "')
+                AND p.post_status NOT IN('trash')
+                AND str.term_taxonomy_id IS NULL
+            ORDER BY {$parsedArgs['orderby']} {$parsedArgs['order']}
+            LIMIT {$parsedArgs['paged']}, {$parsedArgs['posts_per_page']}
+            "
+        );
     }
 
     /**
      * Add author term for posts which only have the post_author.
+     *
+     * @param array $args
+     * @param callable $logCallback
      */
-    public static function add_author_term_for_posts()
+    public static function createAuthorTermsForPostsWithLegacyCoreAuthors($args = null, $logCallback = null)
     {
-        global $wpdb;
+        $postsToUpdate = self::getPostsWithoutAuthorTerms($args);
 
-        // Add the relationship into the term and the post
-        $posts_to_update = $wpdb->get_results(
-            "SELECT p.ID, p.post_author
-				FROM {$wpdb->posts} as p WHERE ID NOT IN (
-					SELECT DISTINCT p.ID
-					FROM {$wpdb->posts} AS p
-					INNER JOIN {$wpdb->termmeta} AS meta ON (p.post_author = meta.meta_value)
-					INNER JOIN {$wpdb->term_taxonomy} AS tax ON (meta.term_id = tax.term_id)
-					INNER JOIN {$wpdb->term_relationships} AS rel ON (tax.term_taxonomy_id = rel.term_taxonomy_id)
-					WHERE
-						p.post_status NOT IN ('trash')
-						AND p.post_author <> 0
-						AND p.post_type = 'post'
-						AND meta.meta_key = 'user_id'
-						AND tax.taxonomy = 'author'
-						AND rel.object_id = p.id
-				)
-				AND	p.post_type = 'post'
-				AND p.post_status NOT IN ('trash')"
-        );
+        $total = count($postsToUpdate);
 
-        if (!empty($posts_to_update)) {
-            foreach ($posts_to_update as $post_data) {
-                $author = Author::get_by_user_id($post_data->post_author);
+        if (!empty($postsToUpdate)) {
+            if (is_callable($logCallback)) {
+                $logCallback(
+                    sprintf(
+                        __('Now inspecting or updating %d total posts', 'publishpress-authors'),
+                        $total
+                    )
+                );
+            }
+
+            for ($i = 0; $i < $total; $i++) {
+                $postData = $postsToUpdate[$i];
+
+                if (is_callable($logCallback)) {
+                    $logCallback(
+                        sprintf(
+                            __('%d/%d: Inspecting the post %d', 'publishpress-authors'),
+                            $i+1,
+                            $total,
+                            $postData->ID
+                        )
+                    );
+                }
+
+                $author = Author::get_by_user_id($postData->post_author);
+
+                if (!is_object($author)) {
+                    if (is_callable($logCallback)) {
+                        $logCallback(
+                            sprintf(
+                                '   ' . __('Creating author term for the user %d', 'publishpress-authors'),
+                                $postData->post_author
+                            )
+                        );
+                    }
+
+                    $author = Author::create_from_user($postData->post_author);
+                }
 
                 if (is_object($author)) {
+                    if (is_callable($logCallback)) {
+                        $logCallback(
+                            sprintf(
+                                '   ' . __('Adding the author term %d to the post %d', 'publishpress-authors'),
+                                $author->term_id,
+                                $postData->ID
+                            )
+                        );
+                    }
+
                     $authors = [$author];
 
-                    Utils::set_post_authors_name_meta($post_data->ID, $authors);
-                    Utils::sync_post_author_column($post_data->ID, $authors);
+                    Utils::set_post_authors_name_meta($postData->ID, $authors);
+                    Utils::sync_post_author_column($postData->ID, $authors);
 
                     $authors = wp_list_pluck($authors, 'term_id');
 
-                    wp_add_object_terms($post_data->ID, $authors, 'author');
+                    wp_add_object_terms($postData->ID, $authors, 'author');
                 }
             }
+        } elseif (is_callable($logCallback)) {
+            $logCallback(
+                __('All is set. No posts need to be updated', 'publishpress-authors')
+            );
         }
     }
 
-    private static function add_administrator_capabilities()
+    private static function addDefaultCapabilitiesForAdministrators()
     {
         $role = get_role('administrator');
         $role->add_cap('ppma_manage_authors');
@@ -181,7 +331,7 @@ class Installer
     /**
      * Flushes the permalinks rules.
      */
-    protected static function flush_permalinks()
+    protected static function flushRewriteRules()
     {
         global $wp_rewrite;
 
@@ -190,49 +340,20 @@ class Installer
         }
     }
 
-    private static function add_new_edit_post_authors_cap()
+    private static function addEditPostAuthorsCapabilitiesToRoles()
     {
-        $cap = 'ppma_edit_post_authors';
+        $cap   = 'ppma_edit_post_authors';
         $roles = [
             'author',
             'editor',
             'contributor',
         ];
 
-        foreach ($roles as $roleNmae)
-        {
+        foreach ($roles as $roleNmae) {
             $role = get_role($roleNmae);
             if ($role instanceof WP_Role) {
                 $role->add_cap($cap);
             }
         }
-    }
-
-    /**
-     * Runs methods when the plugin is being upgraded to a most recent version.
-     *
-     * @param string $previous_version
-     */
-    public static function upgrade($previous_version)
-    {
-        if (version_compare($previous_version, '2.0.2', '<')) {
-            // Do not execute the post_author migration to post terms if Co-Authors Plus is activated.
-            if (!isset($GLOBALS['coauthors_plus']) || empty($GLOBALS['coauthors_plus'])) {
-                self::convert_post_author_into_taxonomy();
-                self::add_author_term_for_posts();
-            }
-        }
-
-        if (version_compare($previous_version, '3.6.0', '<')) {
-            self::add_new_edit_post_authors_cap();
-        }
-
-        /**
-         * @param string $previousVersion
-         */
-        do_action('pp_authors_upgrade', $previous_version);
-
-        self::add_administrator_capabilities();
-        self::flush_permalinks();
     }
 }

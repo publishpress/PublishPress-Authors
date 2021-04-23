@@ -108,13 +108,67 @@ jQuery(document).ready(function ($) {
                     window.htmlEnDeCode.htmlDecode(template(e.params.data))
                 );
                 authorsSearch.val(null).trigger("change");
+                handleUsersAuthorField();
+            });
+        });
+    }
+
+    function hasSelectedOnlyGuests(parent)
+    {
+        if (typeof parent === 'undefined') {
+            parent = $('.authors-list');
+        }
+
+        let selectedAuthors = $(parent).find('li');
+        let guestAuthorsCount = 0;
+
+        for (let i = 0; i < selectedAuthors.length; i++) {
+            if ($(selectedAuthors.get(i)).data('is-guest') == 1) {
+                guestAuthorsCount++;
+            }
+        }
+
+        return guestAuthorsCount === selectedAuthors.length;
+    }
+
+    function handleUsersAuthorField(parent)
+    {
+        let $authorsUserField = $('#publishpress-authors-user-author-wrapper');
+        if (hasSelectedOnlyGuests(parent)) {
+            $authorsUserField.show();
+        } else {
+            $authorsUserField.hide();
+        }
+    }
+
+    function authorsUserSelect2(selector)
+    {
+        selector.each(function () {
+            var authorsSearch = $(this).ppma_select2({
+                placeholder: $(this).data("placeholder"),
+                allowClear: true,
+                ajax: {
+                    url:
+                        window.ajaxurl +
+                        "?action=authors_users_search&nonce=" +
+                        $(this).data("nonce"),
+                    dataType: "json",
+                    data: function (params) {
+                        return {
+                            q: params.term,
+                            ignored: []
+                        };
+                    }
+                }
             });
         });
     }
 
     if ($("body").hasClass("post-php") || $("body").hasClass("post-new-php")) {
         authorsSelect2($(".authors-select2.authors-search"));
+        authorsUserSelect2($('.authors-user-search'));
         sortedAuthorsList($(".authors-current-user-can-assign"));
+        handleUsersAuthorField();
     }
 
     /****************
@@ -131,8 +185,10 @@ jQuery(document).ready(function ($) {
             var $quickEditTr = $('#edit-' + postId);
             var $select = $quickEditTr.find('.authors-select2.authors-search');
             var $authorsList = $quickEditTr.find('.authors-current-user-can-assign');
+            var $usersList = $quickEditTr.find('.authors-user-search');
 
             authorsSelect2($select);
+            authorsUserSelect2($usersList);
             $authorsList.empty();
 
             $('#post-' + postId)
@@ -144,7 +200,8 @@ jQuery(document).ready(function ($) {
                         window.htmlEnDeCode.htmlDecode(
                             listItemTmpl({
                                 'display_name': $(this).data('author-display-name'),
-                                'id': $(this).data('author-term-id')
+                                'id': $(this).data('author-term-id'),
+                                'is_guest': $(this).data('author-is-guest')
                             })
                         )
                     );
@@ -152,6 +209,7 @@ jQuery(document).ready(function ($) {
 
             sortedAuthorsList($authorsList);
             $select.val(null).trigger('change');
+            handleUsersAuthorField();
 
             clearTimeout(timeoutFn);
         }, 50);
@@ -167,6 +225,8 @@ jQuery(document).ready(function ($) {
         if (action === "edit") {
             authorsSelect2($("#bulk-edit .authors-select2.authors-search"));
             sortedAuthorsList($("#bulk-edit .authors-current-user-can-assign"));
+            authorsUserSelect2($("#bulk-edit .authors-user-search"));
+            handleUsersAuthorField();
             $("#bulk-edit .authors-current-user-can-assign")
                 .find("li")
                 .each(function () {
@@ -218,6 +278,7 @@ jQuery(document).ready(function ($) {
         selector.sortable().on("click", ".author-remove", function () {
             var el = $(this);
             el.closest("li").remove();
+            handleUsersAuthorField($(this).parent('.authors-list'));
         });
     }
 

@@ -158,7 +158,7 @@ class Widget extends WP_Widget {
 		$instance = array();
 
         $instance['title']        = sanitize_text_field($new_instance['title']);
-        $instance['title_plural'] = sanitize_text_field($new_instance['title_plural']);
+        $instance['title_plural'] = isset($new_instance['title_plural']) ? sanitize_text_field($new_instance['title_plural']) : '';
         $instance['layout']       = sanitize_text_field($new_instance['layout']);
 
 		$layouts = apply_filters( 'pp_multiple_authors_author_layouts', array() );

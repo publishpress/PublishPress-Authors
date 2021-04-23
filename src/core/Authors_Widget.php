@@ -9,18 +9,18 @@
 
 namespace MultipleAuthors;
 
+use MultipleAuthors\Classes\Utils;
 use WP_Widget;
 
 class Authors_Widget extends WP_Widget
 {
-
     /**
      * Sets up the widgets name etc
      */
     public function __construct()
     {
         $this->title = esc_html__('Authors List', 'publishpress-authors');
-        Parent::__construct(
+        parent::__construct(
             'multiple_authors_list_widget',
             $this->title,
             array(
@@ -52,11 +52,19 @@ class Authors_Widget extends WP_Widget
         $title  = apply_filters('widget_title', $instance['title'], $instance, $this->id_base);
         $output = '';
 
-
         $output .= $this->get_author_box_markup($args, $instance);
         if (!empty($output)) {
             echo $args['before_widget'];
-            echo $args['before_title'] . apply_filters('widget_title', $title) . $args['after_title'];
+
+            if (!isset($instance['show_title']) || true === $instance['show_title']) {
+                echo sprintf(
+                    '%s<h2 class="widget-title">%s</h2>%s',
+                    $args['before_title'],
+                    apply_filters('widget_title', $title),
+                    $args['after_title']
+                );
+            }
+
             echo $output;
             echo $args['after_widget'];
         }
@@ -131,7 +139,7 @@ class Authors_Widget extends WP_Widget
         $layouts                = apply_filters('pp_multiple_authors_author_layouts', array());
 
         if (!array_key_exists($instance['layout'], $layouts)) {
-            $instance['layout'] = 'simple_list';
+            $instance['layout'] = Utils::getDefaultLayout();
         }
 
         return $instance;
@@ -181,7 +189,12 @@ class Authors_Widget extends WP_Widget
         $layout = $instance['layout'];
         if (empty($layout)) {
             $layout = isset($legacyPlugin->modules->multiple_authors->options->layout)
-                ? $legacyPlugin->modules->multiple_authors->options->layout : 'simple_list';
+                ? $legacyPlugin->modules->multiple_authors->options->layout : Utils::getDefaultLayout();
+        }
+
+        if (empty($color_scheme)) {
+            $color_scheme = isset($legacyPlugin->modules->multiple_authors->options->color_scheme)
+                ? $legacyPlugin->modules->multiple_authors->options->color_scheme : '#655997';
         }
 
         $show_email = isset($legacyPlugin->modules->multiple_authors->options->show_email_link)
@@ -193,15 +206,16 @@ class Authors_Widget extends WP_Widget
         $showEmpty = isset($instance['show_empty']) ? $instance['show_empty'] : false;
 
         $args = [
-            'show_title' => false,
-            'css_class'  => $css_class,
-            'title'      => $title,
-            'authors'    => multiple_authors_get_all_authors(array('hide_empty' => !$showEmpty)),
-            'target'     => $target,
-            'item_class' => 'author url fn',
-            'layout'     => $layout,
-            'show_email' => $show_email,
-            'show_site'  => $show_site
+            'show_title'    => false,
+            'css_class'     => $css_class,
+            'title'         => $title,
+            'authors'       => multiple_authors_get_all_authors(array('hide_empty' => !$showEmpty)),
+            'target'        => $target,
+            'item_class'    => 'author url fn',
+            'layout'        => $layout,
+            'color_scheme'  => $color_scheme,
+            'show_email'    => $show_email,
+            'show_site'     => $show_site
         ];
 
         /**

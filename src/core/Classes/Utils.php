@@ -26,6 +26,7 @@ use WP_Error;
  */
 class Utils
 {
+    const USER_BY_SLUG_CACHE_GROUP = 'publishpress-authors-user-by-slug';
 
     /**
      * @var array
@@ -48,6 +49,11 @@ class Utils
      * @var array
      */
     private static $enabledPostTypes = null;
+
+    /**
+     * @var string
+     */
+    protected static $defaultLayout = null;
 
     /**
      * Convert co-authors to authors on a post.
@@ -142,7 +148,10 @@ class Utils
                 "Failed to convert some authors for post {$post_id}."
             );
         }
+
         Utils::set_post_authors($post_id, $authors);
+
+        do_action('publishpress_authors_flush_cache');
 
         return $result;
     }
@@ -152,13 +161,15 @@ class Utils
      *
      * @param int $postId ID for the post to modify.
      * @param array $authors Bylines to set on the post.
+     * @param bool $syncPostAuthor
+     * @param int $fallbackUserId User ID for using as the author in case no author or if only guests are selected
      */
-    public static function set_post_authors($postId, $authors, $syncPostAuthor = true)
+    public static function set_post_authors($postId, $authors, $syncPostAuthor = true, $fallbackUserId = null)
     {
         static::set_post_authors_name_meta($postId, $authors);
 
         if ($syncPostAuthor) {
-            static::sync_post_author_column($postId, $authors);
+            static::sync_post_author_column($postId, $authors, $fallbackUserId);
         }
 
         $authors = wp_list_pluck($authors, 'term_id');
@@ -198,8 +209,9 @@ class Utils
     /**
      * @param int $postId ID for the post to modify.
      * @param array $authors Bylines to set on the post.
+     * @param int|null $fallbackUserId User ID for using as the author in case no author or if only guests are selected
      */
-    public static function sync_post_author_column($postId, $authors)
+    public static function sync_post_author_column($postId, $authors, $fallbackUserId = null)
     {
         $functionSetPostAuthor = function($postId, $authorId) {
             global $wpdb;
@@ -250,6 +262,24 @@ class Utils
         }
 
         if (!$postAuthorHasChanged) {
+            $fallbackUserId = (int)$fallbackUserId;
+
+            if (!empty($fallbackUserId)) {
+                global $wpdb;
+
+                $wpdb->update(
+                    $wpdb->posts,
+                    [
+                        'post_author' => $fallbackUserId,
+                    ],
+                    [
+                        'ID' => $postId,
+                    ]
+                );
+
+                clean_post_cache($postId);
+            }
+
             // Check if the post has any author set. If not an existent author, create one and set the author term.
             $post = get_post($postId);
 
@@ -263,7 +293,7 @@ class Utils
                 if (is_object($author) && !is_wp_error($author)) {
                     Utils::set_post_authors($postId, [$author], false);
                 }
-            } else {
+            } elseif ($fallbackUserId !== (int)$post->post_author) {
                 $functionSetPostAuthor($postId, get_current_user_id());
             }
         }
@@ -701,5 +731,43 @@ class Utils
         }
 
         return true;
+    }
+
+    public static function getDefaultLayout()
+    {
+        if (!is_null(self::$defaultLayout)) {
+            return self::$defaultLayout;
+        }
+
+        self::$defaultLayout = apply_filters('pp_multiple_authors_default_layout', 'boxed');
+
+        return self::$defaultLayout;
+    }
+
+    public static function isWPEngineInstalled()
+    {
+        return class_exists('WpeCommon');
+    }
+
+    public static function getUserBySlug($slug)
+    {
+        $found = null;
+        $user = wp_cache_get($slug, static::USER_BY_SLUG_CACHE_GROUP, false, $found);
+        if (false === $user && false !== $found) {
+            $user = get_user_by('slug', $slug);
+
+            wp_cache_add($slug, $user, static::USER_BY_SLUG_CACHE_GROUP);
+        }
+
+        if (is_wp_error($user)) {
+            $user = false;
+        }
+
+        return $user;
+    }
+
+    public static function isTheSEOFrameworkInstalled()
+    {
+        return defined('THE_SEO_FRAMEWORK_VERSION');
     }
 }
