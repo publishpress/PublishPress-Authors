@@ -23,12 +23,7 @@
 
 use MultipleAuthors\Classes\Legacy\Module;
 use MultipleAuthors\Factory;
-use PublishPressAuthors\ElementorIntegration\Modules\Posts\Skins\PostsSkinCards;
-use PublishPressAuthors\ElementorIntegration\Modules\Posts\Skins\PostsSkinClassic;
-use PublishPressAuthors\ElementorIntegration\Modules\Posts\Skins\PostsSkinFullContent;
-use PublishPressAuthors\ElementorIntegration\Modules\ThemeBuilder\Skins\ArchivePostsSkinCards;
-use PublishPressAuthors\ElementorIntegration\Modules\ThemeBuilder\Skins\ArchivePostsSkinClassic;
-use PublishPressAuthors\ElementorIntegration\Modules\ThemeBuilder\Skins\ArchivePostsSkinFullContent;
+
 
 if (!class_exists('MA_Polylang_Integration')) {
     /**
@@ -36,6 +31,8 @@ if (!class_exists('MA_Polylang_Integration')) {
      */
     class MA_Polylang_Integration extends Module
     {
+        const SETTINGS_SLUG = 'ppma-settings';
+
         public $module_name = 'polylang_integration';
 
         /**
@@ -44,6 +41,7 @@ if (!class_exists('MA_Polylang_Integration')) {
          * @var stdClass
          */
         public $module;
+
 
         /**
          * Construct the MA_Polylang_Integration class
@@ -54,19 +52,17 @@ if (!class_exists('MA_Polylang_Integration')) {
 
             // Register the module with PublishPress
             $args = [
-                'title'             => __('Polylang Integration', 'publishpress-authors'),
-                'short_description' => __(
-                    'Add compatibility with the Polylang plugin',
-                    'publishpress-authors'
-                ),
-                'module_url'        => $this->module_url,
-                'icon_class'        => 'dashicons dashicons-feedback',
-                'slug'              => 'polylang-integration',
-                'default_options'   => [
-                    'enabled' => 'on',
+                'title'                => __('Polylang Integration', 'publishpress-authors'),
+                'short_description'    => __('Polylang Integration', 'publishpress-authors'),
+                'extended_description' => __('Polylang Integration', 'publishpress-authors'),
+                'module_url'           => $this->module_url,
+                'icon_class'           => 'dashicons dashicons-feedback',
+                'slug'                 => 'polylang-integration',
+                'default_options'      => [
+                    'enabled' => 'on'
                 ],
-                'options_page'      => false,
-                'autoload'          => true,
+                'options_page'         => false,
+                'autoload'             => true,
             ];
 
             // Apply a filter to the default options
@@ -75,7 +71,9 @@ if (!class_exists('MA_Polylang_Integration')) {
                 $args['default_options']
             );
 
-            $this->module = Factory::getLegacyPlugin()->register_module($this->module_name, $args);
+            $legacyPlugin = Factory::getLegacyPlugin();
+
+            $this->module = $legacyPlugin->register_module($this->module_name, $args);
 
             parent::__construct();
         }
@@ -85,6 +83,14 @@ if (!class_exists('MA_Polylang_Integration')) {
          */
         public function init()
         {
+            add_filter('pll_get_taxonomies', [$this, 'filterTaxonomies']);
+        }
+
+        public function filterTaxonomies($taxonomies)
+        {
+            $taxonomies['author'] = 'author';
+
+            return $taxonomies;
         }
     }
 }
