@@ -96,8 +96,14 @@ class Plugin
         // Author box to the content
         add_filter('the_content', [$this, 'filter_the_content']);
 
-        // Shortcodes
-        add_shortcode('author_box', [$this, 'shortcode_author_box']);
+        /**
+         * @deprecated Since 3.13.2. Use publishpress_authors_box instead.
+         */
+        if (PUBLISHPRESS_AUTHORS_LOAD_LEGACY_SHORTCODES) {
+            add_shortcode('author_box', [$this, 'shortcodeAuthorsBox']);
+        }
+
+        add_shortcode('publishpress_authors_box', [$this, 'shortcodeAuthorsBox']);
 
         // Action to display the author box
         add_action('pp_multiple_authors_show_author_box', [$this, 'action_echo_author_box'], 10, 5);
@@ -372,10 +378,10 @@ class Plugin
 
     private function addTestShortcode()
     {
-        add_shortcode('ppma_test', [$this, 'ppma_test']);
+        add_shortcode('publishpress_authors_test', [$this, 'shortcodeTest']);
     }
 
-    public function ppma_test()
+    public function shortcodeTest()
     {
         echo '<b>PublishPress Authors:</b> shortcode rendered successfully!';
     }
@@ -1633,7 +1639,7 @@ class Plugin
      *
      * @return string
      */
-    public function shortcode_author_box($attributes)
+    public function shortcodeAuthorsBox($attributes)
     {
         $show_title = true;
         $layout     = null;
