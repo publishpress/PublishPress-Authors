@@ -97,15 +97,19 @@ class Content_Model
 
         // Check if the author slug is empty in the link.
         if ($link_path === str_replace('%author%', '', $permastruct)) {
-            error_log(
-                sprintf(
-                    '[PublishPress Authors] Warning - The link for the author_id="%s" was changed to the post page because the author is not specified in the given url: %s. permastruct=%s and home_url=%s',
-                    $author_id,
-                    $link,
-                    $permastruct,
-                    home_url()
-                )
-            );
+            if (defined('PUBLISHPRESS_AUTHORS_DEBUG') && PUBLISHPRESS_AUTHORS_DEBUG) {
+                $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+                error_log(
+                    sprintf(
+                        "[PublishPress Authors] Warning - The link for the author_id=\"%s\" was changed to the post page because the author is not specified in the given url: %s. permastruct=%s and home_url=%s. Backtrace:\n%s",
+                        $author_id,
+                        $link,
+                        $permastruct,
+                        home_url(),
+                        print_r($backtrace, true)
+                    )
+                );
+            }
 
             // Redirects to the post page, or home page on some situations.
             $link = get_the_permalink();
