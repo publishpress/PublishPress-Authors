@@ -114,6 +114,10 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= UNRELEASED =
+
+* Fixed: Fix the Author::get_avatar_url method returning the avatar URL, #443;
+
 = [3.13.1] - 2021-04-22 =
 
 * Fixed: Fix the color scheme for the Pro plugin, #411;
