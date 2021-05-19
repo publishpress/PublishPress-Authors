@@ -144,7 +144,7 @@ class Query
             -1
         );
 
-        return $where;
+        return apply_filters('publishpress_authors_filter_posts_list_where', $where, $query, $term);
     }
 
     /**
@@ -251,7 +251,7 @@ class Query
             -1
         );
 
-        return $where;
+        return apply_filters('publishpress_authors_filter_posts_list_where', $where, $query, $author);
     }
 
     /**
