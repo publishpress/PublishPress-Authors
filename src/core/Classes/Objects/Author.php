@@ -483,7 +483,7 @@ class Author
             $return = false;
         }
 
-        $return = apply_filters('publishpress_authors_author_attribute', $return, $this->term_id, $attribute);
+        $return = apply_filters('publishpress_authors_author_attribute', $return, $this->term_id, $attribute, $this);
 
         return $return;
     }
