@@ -277,7 +277,7 @@ class Query
             }
         }
 
-        return false;
+        return [];
     }
 
     private static function add_custom_post_types_to_query($where)
