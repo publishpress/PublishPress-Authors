@@ -10,6 +10,7 @@
 namespace MultipleAuthors\Classes;
 
 use MultipleAuthors\Classes\Objects\Author;
+use MultipleAuthors\Factory;
 
 /**
  * Modifications to the main query, and helper query methods
@@ -86,7 +87,7 @@ class Query
      *
      * @return string
      */
-    public static function filter_posts_where($where, $query)
+    public static function filter_author_posts_where($where, $query)
     {
         global $wpdb;
 
@@ -143,6 +144,8 @@ class Query
             $where,
             -1
         );
+
+        $where = static::add_custom_post_types_to_query($where);
 
         return apply_filters('publishpress_authors_filter_posts_list_where', $where, $query, $term);
     }
@@ -211,7 +214,7 @@ class Query
      *
      * @return string
      */
-    public static function filter_posts_list_where($where, $query)
+    public static function filter_admin_posts_list_where($where, $query)
     {
         global $wpdb;
 
@@ -252,6 +255,36 @@ class Query
         );
 
         return apply_filters('publishpress_authors_filter_posts_list_where', $where, $query, $author);
+    }
+
+    private static function add_custom_post_types_to_query($where)
+    {
+        $legacyPlugin  = Factory::getLegacyPlugin();
+        $moduleOptions = $legacyPlugin->multiple_authors->module->options;
+
+        if (!isset($moduleOptions->author_page_post_types)) {
+            return $where;
+        }
+
+        $enabledPostTypes                = Utils::get_enabled_post_types();
+        $selectedPostTypesForAuthorsPage = [];
+        foreach ($moduleOptions->author_page_post_types as $postType => $status) {
+            if ($status !== 'on') {
+                continue;
+            }
+
+            if (in_array($postType, $enabledPostTypes)) {
+                $selectedPostTypesForAuthorsPage[] = esc_sql($postType);
+            }
+        }
+
+        if (!empty($selectedPostTypesForAuthorsPage)) {
+            $postTypesString = implode('\', \'', $selectedPostTypesForAuthorsPage);
+
+            return str_replace(".post_type = 'post'", ".post_type IN ('" . $postTypesString . "')", $where);
+        }
+
+        return $where;
     }
 
     /**
