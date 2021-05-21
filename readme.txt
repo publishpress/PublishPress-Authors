@@ -117,6 +117,7 @@ There are two ways to install the PublishPress Authors plugin:
 = [3.14.0] - UNRELEASED =
 
 * Added: Added new setting for selecting multiple post types to display in the author page, #436;
+* Added: Added new function "get_by_id" to the Author class, accepting positive integer for User ID, and negative integer for term ID, #423;
 
 = [3.13.1] - 2021-04-22 =
 
