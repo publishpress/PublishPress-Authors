@@ -275,6 +275,8 @@ class Query
                     $selectedPostTypesForAuthorsPage[] = esc_sql($postType);
                 }
             }
+
+            return $selectedPostTypesForAuthorsPage;
         }
 
         return [];
