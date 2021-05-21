@@ -114,6 +114,10 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= UNRELEASED =
+
+* Added: Added new function "get_by_id" to the Author class, accepting positive integer for User ID, and negative integer for term ID, #423;
+
 = [3.13.1] - 2021-04-22 =
 
 * Fixed: Fix the color scheme for the Pro plugin, #411;
