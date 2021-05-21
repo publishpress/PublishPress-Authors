@@ -257,14 +257,10 @@ class Query
         return apply_filters('publishpress_authors_filter_posts_list_where', $where, $query, $author);
     }
 
-    private static function add_custom_post_types_to_query($where)
+    public static function getSelectedPostTypesForAuthorsPage()
     {
         $legacyPlugin  = Factory::getLegacyPlugin();
         $moduleOptions = $legacyPlugin->multiple_authors->module->options;
-
-        if (!isset($moduleOptions->author_page_post_types)) {
-            return $where;
-        }
 
         $enabledPostTypes                = Utils::get_enabled_post_types();
         $selectedPostTypesForAuthorsPage = apply_filters('publishpress_authors_posts_query_post_types', []);
@@ -280,6 +276,20 @@ class Query
                 }
             }
         }
+
+        return false;
+    }
+
+    private static function add_custom_post_types_to_query($where)
+    {
+        $legacyPlugin  = Factory::getLegacyPlugin();
+        $moduleOptions = $legacyPlugin->multiple_authors->module->options;
+
+        if (!isset($moduleOptions->author_page_post_types)) {
+            return $where;
+        }
+
+        $selectedPostTypesForAuthorsPage = static::getSelectedPostTypesForAuthorsPage();
 
         if (!empty($selectedPostTypesForAuthorsPage)) {
             $postTypesString = implode('\', \'', $selectedPostTypesForAuthorsPage);
