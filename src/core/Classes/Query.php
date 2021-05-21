@@ -267,14 +267,17 @@ class Query
         }
 
         $enabledPostTypes                = Utils::get_enabled_post_types();
-        $selectedPostTypesForAuthorsPage = [];
-        foreach ($moduleOptions->author_page_post_types as $postType => $status) {
-            if ($status !== 'on') {
-                continue;
-            }
+        $selectedPostTypesForAuthorsPage = apply_filters('publishpress_authors_posts_query_post_types', []);
 
-            if (in_array($postType, $enabledPostTypes)) {
-                $selectedPostTypesForAuthorsPage[] = esc_sql($postType);
+        if (empty($selectedPostTypesForAuthorsPage)) {
+            foreach ($moduleOptions->author_page_post_types as $postType => $status) {
+                if ($status !== 'on') {
+                    continue;
+                }
+
+                if (in_array($postType, $enabledPostTypes)) {
+                    $selectedPostTypesForAuthorsPage[] = esc_sql($postType);
+                }
             }
         }
 
