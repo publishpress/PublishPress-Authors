@@ -495,7 +495,7 @@ class Author
      */
     public function get_avatar_url($size = 96)
     {
-        if (!is_null($this->avatarUrl)) {
+        if (is_null($this->avatarUrl)) {
             if ($this->has_custom_avatar()) {
                 $url = $this->get_custom_avatar_url($size);
             } else {

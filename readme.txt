@@ -121,6 +121,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Changed: Shortcode [author_box] was renamed to [publishpress_authors_box], #426;
 * Changed: Shortcode [ppma_test] was renamed to [publishpress_authors_test], #426;
 * Changed: Legacy shortcodes are loaded by default, but defining the constant PUBLISHPRESS_AUTHORS_LOAD_LEGACY_SHORTCODES = false will prevent to load them, #426;
+* Fixed: Fix the Author::get_avatar_url method returning the avatar URL, #443;
 
 = [3.13.1] - 2021-04-22 =
 

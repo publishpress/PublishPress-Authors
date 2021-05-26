@@ -37,7 +37,7 @@ class Query
             global $wp_query;
         }
 
-        if (isset($wp_query->query['post_type'])  && $wp_query->query['post_type'] === 'ppmacf_field') {
+        if (isset($wp_query->query['post_type']) && $wp_query->query['post_type'] === 'ppmacf_field') {
             return;
         }
 
