@@ -114,6 +114,12 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= UNRELEASED =
+
+* Changed: Shortcode [author_box] was renamed to [publishpress_authors_box], #426;
+* Changed: Shortcode [ppma_test] was renamed to [publishpress_authors_test], #426;
+* Changed: Legacy shortcodes are loaded by default, but defining the constant PUBLISHPRESS_AUTHORS_LOAD_LEGACY_SHORTCODES = false will prevent to load them, #426;
+
 = [3.13.1] - 2021-04-22 =
 
 * Fixed: Fix the color scheme for the Pro plugin, #411;
