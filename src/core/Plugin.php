@@ -259,7 +259,7 @@ class Plugin
         );
         add_filter(
             'posts_where',
-            ['MultipleAuthors\\Classes\\Query', 'filter_posts_where'],
+            ['MultipleAuthors\\Classes\\Query', 'filter_author_posts_where'],
             10,
             2
         );
@@ -290,7 +290,7 @@ class Plugin
         // Query modifications for the admin posts lists
         add_filter(
             'posts_where',
-            ['MultipleAuthors\\Classes\\Query', 'filter_posts_list_where'],
+            ['MultipleAuthors\\Classes\\Query', 'filter_admin_posts_list_where'],
             10,
             2
         );

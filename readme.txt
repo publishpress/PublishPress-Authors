@@ -114,8 +114,10 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= UNRELEASED =
+= [3.14.0] - UNRELEASED =
 
+* Added: Added new setting for selecting multiple post types to display in the author page, #436;
+* Added: Added new function "get_by_id" to the Author class, accepting positive integer for User ID, and negative integer for term ID, #423;
 * Changed: Shortcode [author_box] was renamed to [publishpress_authors_box], #426;
 * Changed: Shortcode [ppma_test] was renamed to [publishpress_authors_test], #426;
 * Changed: Legacy shortcodes are loaded by default, but defining the constant PUBLISHPRESS_AUTHORS_LOAD_LEGACY_SHORTCODES = false will prevent to load them, #426;
