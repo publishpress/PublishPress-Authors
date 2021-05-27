@@ -483,9 +483,7 @@ class Author
             $return = false;
         }
 
-        $return = apply_filters('publishpress_authors_author_attribute', $return, $this->term_id, $attribute);
-
-        return $return;
+        return apply_filters('publishpress_authors_author_attribute', $return, $this->term_id, $attribute, $this);
     }
 
     /**
@@ -497,7 +495,7 @@ class Author
      */
     public function get_avatar_url($size = 96)
     {
-        if (!is_null($this->avatarUrl)) {
+        if (is_null($this->avatarUrl)) {
             if ($this->has_custom_avatar()) {
                 $url = $this->get_custom_avatar_url($size);
             } else {
@@ -749,4 +747,21 @@ class Author
 
         return isset(self::$authorsByEmailCache[$emailAddress]) ? self::$authorsByEmailCache[$emailAddress] : false;
     }
+
+    /**
+     * Get an author by the provided ID.
+     *
+     * This ID can either be the WP_User ID (positive integer) or guest author ID (negative integer).
+     *
+     * @param $id
+     *
+     * @return Author|false
+     */
+    public static function get_by_id( $id ) {
+		if ( intval( $id ) > -1 ) {
+            return self::get_by_user_id( $id );
+        }
+        return self::get_by_term_id( $id );
+    }
+
 }

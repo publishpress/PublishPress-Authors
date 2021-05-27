@@ -394,4 +394,23 @@ class AuthorCest
             $author->slug
         );
     }
+
+    public function tryToGetAvatarURLWithoutCustomAvatar(WpunitTester $I)
+    {
+        $authorSlug = sprintf('guest_author_%d', rand(1, PHP_INT_MAX));
+        $author     = Author::create(
+            [
+                'slug'         => $authorSlug,
+                'display_name' => strtoupper($authorSlug),
+            ]
+        );
+
+        $avatarUrl = $author->get_avatar_url();
+
+        $I->assertFalse(is_null($avatarUrl), 'The avatar URL should not be null');
+        $I->assertRegExp(
+            '#http[s]?://[0-9]{1,2}\.gravatar\.com/avatar/\?s=96&d=mm&r=g#',
+            $avatarUrl
+        );
+    }
 }

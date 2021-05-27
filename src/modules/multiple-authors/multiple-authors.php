@@ -96,6 +96,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'force_empty_author'           => 'no',
                     'username_in_search_field'     => 'no',
                     'default_author_for_new_posts' => null,
+                    'author_page_post_types'       => [],
                 ],
                 'options_page'         => false,
                 'autoload'             => true,
@@ -461,6 +462,14 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
 
             add_settings_field(
+                'author_page_post_types',
+                __('Post types to display on the author\'s profile page:', 'publishpress-authors'),
+                [$this, 'settings_author_page_post_types_option'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_general'
+            );
+
+            add_settings_field(
                 'author_for_new_users',
                 __(
                     'Automatically create author profiles:',
@@ -600,6 +609,51 @@ if (!class_exists('MA_Multiple_Authors')) {
             $legacyPlugin = Factory::getLegacyPlugin();
 
             $legacyPlugin->settings->helper_option_custom_post_type($this->module);
+        }
+
+        public function settings_author_page_post_types_option()
+        {
+            $post_types = [
+                'post' => __('Posts'),
+                'page' => __('Pages'),
+            ];
+            $custom_post_types = $this->get_supported_post_types_for_module();
+            if (count($custom_post_types)) {
+                foreach ($custom_post_types as $custom_post_type => $args) {
+                    $post_types[$custom_post_type] = $args->label;
+                }
+            }
+
+            $checkedOption = is_array($this->module->options->author_page_post_types) ?
+                array_filter(
+                    $this->module->options->author_page_post_types,
+                    function ($value, $key) {
+                        return $value === 'on';
+                    },
+                    ARRAY_FILTER_USE_BOTH
+                )
+                : false;
+
+            $checkPostByDefault = empty($checkedOption);
+
+            foreach ($post_types as $post_type => $title) {
+                echo '<label for="author_page_post_type_' . esc_attr($post_type) . '-' . $this->module->slug . '">';
+                echo '<input id="author_page_post_type_' . esc_attr($post_type) . '-' . $this->module->slug . '" name="'
+                    . $this->module->options_group_name . '[author_page_post_types][' . esc_attr($post_type) . ']"';
+
+                if (isset($this->module->options->author_page_post_types[$post_type]) || ($checkPostByDefault && $post_type === 'post')) {
+                    checked($this->module->options->author_page_post_types[$post_type], 'on');
+                }
+
+                // Defining post_type_supports in the functions.php file or similar should disable the checkbox
+                disabled(post_type_supports($post_type, $this->module->post_type_support), true);
+                echo ' type="checkbox" value="on" />&nbsp;&nbsp;&nbsp;' . esc_html($title) . '</label>';
+                // Leave a note to the admin as a reminder that add_post_type_support has been used somewhere in their code
+                if (post_type_supports($post_type, $this->module->post_type_support)) {
+                    echo '&nbsp&nbsp;&nbsp;<span class="description">' . sprintf(__('Disabled because add_post_type_support(\'%1$s\', \'%2$s\') is included in a loaded file.', 'publishpress-authors'), $post_type, $this->module->post_type_support) . '</span>';
+                }
+                echo '<br />';
+            }
         }
 
         /**
@@ -976,6 +1030,10 @@ if (!class_exists('MA_Multiple_Authors')) {
                 if (!array_key_exists($new_options['layout'], $layouts)) {
                     $new_options['layout'] = Utils::getDefaultLayout();
                 }
+            }
+
+            if (!isset($new_options['author_page_post_types']) || empty($new_options['author_page_post_types'])) {
+                $new_options['author_page_post_types'] = ['post' => 'on'];
             }
 
             /**
