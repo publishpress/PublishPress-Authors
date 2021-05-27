@@ -463,7 +463,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             add_settings_field(
                 'author_page_post_types',
-                __('Post types to display in the author\'s page:', 'publishpress-authors'),
+                __('Post types to display on the author\'s profile page:', 'publishpress-authors'),
                 [$this, 'settings_author_page_post_types_option'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_general'
