@@ -96,6 +96,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'force_empty_author'           => 'no',
                     'username_in_search_field'     => 'no',
                     'default_author_for_new_posts' => null,
+                    'author_page_post_types'       => [],
                 ],
                 'options_page'         => false,
                 'autoload'             => true,
@@ -623,9 +624,15 @@ if (!class_exists('MA_Multiple_Authors')) {
                 }
             }
 
-            $checkedOption = array_filter($this->module->options->author_page_post_types, function ($value, $key) {
-                return $value === 'on';
-            }, ARRAY_FILTER_USE_BOTH);
+            $checkedOption = is_array($this->module->options->author_page_post_types) ?
+                array_filter(
+                    $this->module->options->author_page_post_types,
+                    function ($value, $key) {
+                        return $value === 'on';
+                    },
+                    ARRAY_FILTER_USE_BOTH
+                )
+                : false;
 
             $checkPostByDefault = empty($checkedOption);
 
