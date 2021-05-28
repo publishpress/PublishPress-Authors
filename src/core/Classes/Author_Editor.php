@@ -198,17 +198,25 @@ class Author_Editor
 
         $author = Author::get_by_term_id($author_term->term_id);
 
-        $new_actions = [];
-
         if (!empty($author->user_id)) {
-            $link                     = get_edit_user_link($author->user_id);
-            $new_actions['edit-user'] = '<a href="' . esc_url($link) . '">' . esc_html__(
-                    'Edit User',
-                    'publishpress-authors'
-                ) . '</a>';
+            $new_actions = [];
+
+            foreach ($actions as $key => $action) {
+                $new_actions[$key] = $action;
+
+                if ($key === 'edit') {
+                    $link                     = get_edit_user_link($author->user_id);
+                    $new_actions['edit-user'] = '<a href="' . esc_url($link) . '">' . esc_html__(
+                            'Edit User',
+                            'publishpress-authors'
+                        ) . '</a>';
+                }
+            }
+
+            $actions = $new_actions;
         }
 
-        return $new_actions + $actions;
+        return $actions;
     }
 
     /**

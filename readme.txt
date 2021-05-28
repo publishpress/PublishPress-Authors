@@ -114,6 +114,10 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= UNRELEASED =
+
+* Changed: Invert position of Edit User and Edit Author Profile links in the term actions, #453;
+
 = [3.14.0] - 2021-05-26 =
 
 * Added: Added new setting for selecting multiple post types to display in the author page, #436;
