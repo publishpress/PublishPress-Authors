@@ -143,29 +143,36 @@ class Author_Editor
 
         $new_actions = [];
         $author      = Author::get_by_user_id($user->ID);
-        if ($author) {
-            $link                       = get_edit_term_link($author->term_id, 'author');
-            $new_actions['edit-author'] = '<a href="' . esc_url($link) . '">' . esc_html__(
-                    'Edit Author',
-                    'publishpress-authors'
-                ) . '</a>';
-        } else {
-            $args                         = [
-                'action'  => 'author_create_from_user',
-                'user_id' => $user->ID,
-                'nonce'   => wp_create_nonce('author_create_from_user' . $user->ID),
-            ];
-            $link                         = add_query_arg(
-                array_map('rawurlencode', $args),
-                admin_url('admin-ajax.php')
-            );
-            $new_actions['create-author'] = '<a href="' . esc_url($link) . '">' . esc_html__(
-                    'Create Author',
-                    'publishpress-authors'
-                ) . '</a>';
+
+        foreach ($actions as $key => $action) {
+            $new_actions[$key] = $action;
+
+            if ($key === 'edit') {
+                if ($author) {
+                    $link                       = get_edit_term_link($author->term_id, 'author');
+                    $new_actions['edit-author'] = '<a href="' . esc_url($link) . '">' . esc_html__(
+                            'Edit Author Profile',
+                            'publishpress-authors'
+                        ) . '</a>';
+                } else {
+                    $args                         = [
+                        'action'  => 'author_create_from_user',
+                        'user_id' => $user->ID,
+                        'nonce'   => wp_create_nonce('author_create_from_user' . $user->ID),
+                    ];
+                    $link                         = add_query_arg(
+                        array_map('rawurlencode', $args),
+                        admin_url('admin-ajax.php')
+                    );
+                    $new_actions['create-author'] = '<a href="' . esc_url($link) . '">' . esc_html__(
+                            'Create Author Profile',
+                            'publishpress-authors'
+                        ) . '</a>';
+                }
+            }
         }
 
-        return $new_actions + $actions;
+        return $new_actions;
     }
 
     /**
