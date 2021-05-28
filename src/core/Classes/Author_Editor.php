@@ -187,7 +187,7 @@ class Author_Editor
             unset($actions['inline hide-if-no-js']);
         }
 
-        // Over hide the string Edit
+        // Override the string Edit
         if (isset($actions['edit'])) {
             $actions['edit'] = str_replace(
                 '>Edit<',
