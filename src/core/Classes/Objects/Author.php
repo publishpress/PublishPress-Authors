@@ -189,6 +189,8 @@ class Author
     {
         global $wpdb;
 
+        $user_id = (int)$user_id;
+
         if (!isset(self::$authorsByIdCache[$user_id]) || empty(self::$authorsByIdCache[$user_id])) {
             $term_id = $wpdb->get_var(
                 $wpdb->prepare(
