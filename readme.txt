@@ -117,6 +117,8 @@ There are two ways to install the PublishPress Authors plugin:
 = UNRELEASED =
 
 * Changed: Invert position of Edit User and Edit Author Profile links in the term actions, #453;
+* Fixed: Fix sanitization of the user_id before adding it to a query;
+* Fixed: Fix compatibility with the search results on the plugin "Knowledge Base for Documents and FAQs" when an article is not found;
 
 = [3.14.0] - 2021-05-26 =
 
