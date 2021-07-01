@@ -120,6 +120,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: Fix sanitization of the user_id before adding it to a query;
 * Fixed: Fix compatibility with the search results on the plugin "Knowledge Base for Documents and FAQs" when an article is not found;
 * Fixed: Fix compatibility with PublishPress' calendar create item form for the author field, to select guest or mapped to user authors;
+* Fixed: Add compatibility with PublishPress' calendar to support multiple authors in the calendar form;
 
 = [3.14.0] - 2021-05-26 =
 

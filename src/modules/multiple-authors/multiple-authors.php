@@ -205,6 +205,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             // PublishPress compatibility hooks.
             add_filter('publishpress_search_authors_results_pre_search', [$this, 'publishpressSearchAuthors'], 10, 2);
             add_filter('publishpress_author_can_edit_posts', [$this, 'publishpressAuthorCanEditPosts'], 10, 2);
+            add_filter('publishpress_calendar_allow_multiple_authors', '__return_true');
             add_filter(
                 'publishpress_calendar_after_create_post',
                 [$this, 'publishpressCalendarAfterCreatePost'],
@@ -2532,17 +2533,24 @@ if (!class_exists('MA_Multiple_Authors')) {
             return $canEdit;
         }
 
-        public function publishpressCalendarAfterCreatePost($postId, $postAuthorId)
+        public function publishpressCalendarAfterCreatePost($postId, $postAuthorIds)
         {
-            $author = null;
-            if ($postAuthorId > 0) {
-                $author = Author::get_by_user_id($postAuthorId);
-            } else {
-                $author = Author::get_by_term_id(abs($postAuthorId));
+            $validPostAuthors = [];
+
+            foreach  ($postAuthorIds as $authorId) {
+                if ($authorId > 0) {
+                    $author = Author::get_by_user_id($authorId);
+                } else {
+                    $author = Author::get_by_term_id(abs($authorId));
+                }
+
+                if (!empty($author)) {
+                    $validPostAuthors[] = $author;
+                }
             }
 
-            if (!empty($author)) {
-                Utils::set_post_authors($postId, [$author]);
+            if (!empty($validPostAuthors)) {
+                Utils::set_post_authors($postId, $validPostAuthors);
 
                 do_action('publishpress_authors_flush_cache');
             }
