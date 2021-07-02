@@ -121,6 +121,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: Fix compatibility with the search results on the plugin "Knowledge Base for Documents and FAQs" when an article is not found;
 * Fixed: Fix compatibility with PublishPress' calendar create item form for the author field, to select guest or mapped to user authors;
 * Fixed: Add compatibility with PublishPress' calendar to support multiple authors in the calendar form;
+* Fixed: Fix the warning: Undefined array key "post" in multiple-authors.php file, when opening the General settings page, #459;
 
 = [3.14.0] - 2021-05-26 =
 

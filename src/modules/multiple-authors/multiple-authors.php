@@ -642,9 +642,11 @@ if (!class_exists('MA_Multiple_Authors')) {
                 echo '<input id="author_page_post_type_' . esc_attr($post_type) . '-' . $this->module->slug . '" name="'
                     . $this->module->options_group_name . '[author_page_post_types][' . esc_attr($post_type) . ']"';
 
-                if (isset($this->module->options->author_page_post_types[$post_type]) || ($checkPostByDefault && $post_type === 'post')) {
-                    checked($this->module->options->author_page_post_types[$post_type], 'on');
-                }
+                    if (isset($this->module->options->author_page_post_types[$post_type])) {
+                        checked($this->module->options->author_page_post_types[$post_type], 'on');
+                    } elseif ($checkPostByDefault && $post_type === 'post') {
+                        checked('on', 'on');
+                    }
 
                 // Defining post_type_supports in the functions.php file or similar should disable the checkbox
                 disabled(post_type_supports($post_type, $this->module->post_type_support), true);
