@@ -239,6 +239,10 @@ class Query
             $author = Author::get_by_user_id($query->queried_object_id);
         } else {
             $author = $query->queried_object;
+
+            if (!is_a($author, Author::class)) {
+                return $where;
+            }
         }
 
         if (!is_object($author) || is_wp_error($author)) {

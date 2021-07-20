@@ -205,6 +205,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             // PublishPress compatibility hooks.
             add_filter('publishpress_search_authors_results_pre_search', [$this, 'publishpressSearchAuthors'], 10, 2);
             add_filter('publishpress_author_can_edit_posts', [$this, 'publishpressAuthorCanEditPosts'], 10, 2);
+            add_filter('publishpress_calendar_allow_multiple_authors', '__return_true');
             add_filter(
                 'publishpress_calendar_after_create_post',
                 [$this, 'publishpressCalendarAfterCreatePost'],
@@ -641,9 +642,11 @@ if (!class_exists('MA_Multiple_Authors')) {
                 echo '<input id="author_page_post_type_' . esc_attr($post_type) . '-' . $this->module->slug . '" name="'
                     . $this->module->options_group_name . '[author_page_post_types][' . esc_attr($post_type) . ']"';
 
-                if (isset($this->module->options->author_page_post_types[$post_type]) || ($checkPostByDefault && $post_type === 'post')) {
-                    checked($this->module->options->author_page_post_types[$post_type], 'on');
-                }
+                    if (isset($this->module->options->author_page_post_types[$post_type])) {
+                        checked($this->module->options->author_page_post_types[$post_type], 'on');
+                    } elseif ($checkPostByDefault && $post_type === 'post') {
+                        checked('on', 'on');
+                    }
 
                 // Defining post_type_supports in the functions.php file or similar should disable the checkbox
                 disabled(post_type_supports($post_type, $this->module->post_type_support), true);
@@ -2513,18 +2516,18 @@ if (!class_exists('MA_Multiple_Authors')) {
             try {
                 if ($authorId > 0) {
                     $author = Author::get_by_user_id($authorId);
-                    $user   = $author->get_user_object();
-
-                    if (is_object($user)) {
-                        $canEdit = $user->has_cap('edit_posts');
-                    }
                 } else {
                     $author = Author::get_by_term_id($authorId * -1);
-                    $user   = $author->get_user_object();
 
-                    if (is_object($user)) {
-                        $canEdit = $author->is_guest() ? true : $user->has_cap('edit_posts');
+                    if ($author->is_guest()) {
+                        return true;
                     }
+                }
+
+                $user = $author->get_user_object();
+
+                if (is_object($user)) {
+                    return $user->has_cap('edit_posts');
                 }
             } catch (Exception $e) {
             }
@@ -2532,17 +2535,24 @@ if (!class_exists('MA_Multiple_Authors')) {
             return $canEdit;
         }
 
-        public function publishpressCalendarAfterCreatePost($postId, $postAuthorId)
+        public function publishpressCalendarAfterCreatePost($postId, $postAuthorIds)
         {
-            $author = null;
-            if ($postAuthorId > 0) {
-                $author = Author::get_by_user_id($postAuthorId);
-            } else {
-                $author = Author::get_by_term_id(abs($postAuthorId));
+            $validPostAuthors = [];
+
+            foreach  ($postAuthorIds as $authorId) {
+                if ($authorId > 0) {
+                    $author = Author::get_by_user_id($authorId);
+                } else {
+                    $author = Author::get_by_term_id(abs($authorId));
+                }
+
+                if (!empty($author)) {
+                    $validPostAuthors[] = $author;
+                }
             }
 
-            if (!empty($author)) {
-                Utils::set_post_authors($postId, [$author]);
+            if (!empty($validPostAuthors)) {
+                Utils::set_post_authors($postId, $validPostAuthors);
 
                 do_action('publishpress_authors_flush_cache');
             }
