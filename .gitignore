@@ -16,11 +16,6 @@ Thumbs.db
 /vendor
 /packages
 
-codeception.yml
-tests/acceptance.suite.yml
-tests/functional.suite.yml
-tests/unit.suite.yml
-tests/wpunit.suite.yml
 
 .svn
 .git
