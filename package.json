@@ -1,31 +1,42 @@
 {
-  "name": "publishpress-authors",
-  "version": "2.0.0",
-  "description": "PublishPress Authors",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/publishpress/PublishPress-Authors.git"
-  },
-  "author": "PublishPress",
-  "license": "GPL-2.0-or-later",
-  "bugs": {
-    "url": "https://github.com/publishpress/PublishPress-Authors/issues"
-  },
-  "homepage": "https://github.com/publishpress/PublishPress-Authors#readme",
-  "devDependencies": {
-    "@babel/core": "^7.3.3",
-    "@wordpress/babel-preset-default": "^3.0.2",
-    "babel-loader": "8.0.5",
-    "babel-minify-webpack-plugin": "^0.3.1",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-preset-minify": "^0.5.0",
-    "cross-env": "^5.2.1",
-    "webpack": "4.29.5",
-    "webpack-cli": "3.2.3"
-  },
-  "browser": {},
-  "scripts": {
-    "watch": "webpack --watch",
-    "build": "cross-env NODE_ENV=production webpack"
-  }
+    "name": "publishpress-authors",
+    "version": "2.0.0",
+    "description": "PublishPress Authors",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/publishpress/PublishPress-Authors.git"
+    },
+    "author": "PublishPress",
+    "license": "GPL-2.0-or-later",
+    "bugs": {
+        "url": "https://github.com/publishpress/PublishPress-Authors/issues"
+    },
+    "homepage": "https://github.com/publishpress/PublishPress-Authors#readme",
+    "devDependencies": {
+        "@babel/core": "^7.3.3",
+        "@codeceptjs/configure": "^0.6.2",
+        "@codeceptjs/examples": "^1.2.1",
+        "@codeceptjs/ui": "^0.4.6",
+        "@wordpress/babel-preset-default": "^3.0.2",
+        "babel-loader": "8.0.5",
+        "babel-minify-webpack-plugin": "^0.3.1",
+        "babel-plugin-transform-react-jsx": "^6.24.1",
+        "babel-preset-minify": "^0.5.0",
+        "codeceptjs": "^3.0.7",
+        "cross-env": "^5.2.1",
+        "playwright": "^1.13.0",
+        "webpack": "4.29.5",
+        "webpack-cli": "3.2.3"
+    },
+    "browser": {},
+    "scripts": {
+        "watch": "webpack --watch",
+        "build": "cross-env NODE_ENV=production webpack",
+        "codeceptjs": "codeceptjs run --steps",
+        "codeceptjs:headless": "HEADLESS=true codeceptjs run --steps",
+        "codeceptjs:ui": "codecept-ui --app",
+        "codeceptjs:demo": "codeceptjs run --steps -c node_modules/@codeceptjs/examples",
+        "codeceptjs:demo:headless": "HEADLESS=true codeceptjs run --steps -c node_modules/@codeceptjs/examples",
+        "codeceptjs:demo:ui": "codecept-ui --app  -c node_modules/@codeceptjs/examples"
+    }
 }

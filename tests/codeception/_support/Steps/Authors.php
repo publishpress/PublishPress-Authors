@@ -23,7 +23,6 @@ trait Authors
      */
     public function iDontSeeCoreAuthorField()
     {
-        $this->wait(3);
         $this->dontSeeElement('div.post-author-selector');
     }
 
@@ -32,7 +31,6 @@ trait Authors
      */
     public function iSeeCoreAuthorField()
     {
-        $this->waitForElement('div.post-author-selector', 5);
         $this->seeElement('div.post-author-selector');
     }
 }
