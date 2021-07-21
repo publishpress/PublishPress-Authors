@@ -19,8 +19,8 @@ modules:
             domain: "%TEST_SITE_WP_DOMAIN%"
             adminEmail: "%TEST_SITE_ADMIN_EMAIL%"
             title: "Test"
-            plugins: [ 'publishpress-authors/publishpress-authors.php' ]
-            activatePlugins: [ 'publishpress-authors/publishpress-authors.php' ]
+            plugins: ["publishpress-authors/publishpress-authors.php"]
+            activatePlugins: ["publishpress-authors/publishpress-authors.php"]
             isolatedInstall: true
 
 bootstrap: bootstrap.php
