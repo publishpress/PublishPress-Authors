@@ -114,6 +114,10 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [3.14.2] - 21 July 2021 =
+
+* Fixed: Fix error on block editor for posts with guest authors, #463;
+
 = [3.14.1] - 20 July 2021 =
 
 * Changed: Invert position of Edit User and Edit Author Profile links in the term actions, #453;
