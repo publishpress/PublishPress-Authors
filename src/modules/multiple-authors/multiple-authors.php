@@ -183,6 +183,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             if (!is_admin()) {
                 add_filter('body_class', [$this, 'filter_body_class']);
+                add_filter('comment_class', [$this, 'filterCommentClass'], 10, 5);
             }
 
             // Fix upload permissions for multiple authors.
@@ -1192,6 +1193,40 @@ if (!class_exists('MA_Multiple_Authors')) {
                     $author = $authors[0];
 
                     $classes[] = (is_object($author) && $author->is_guest()) ? 'guest-author' : 'not-guest-author';
+                }
+            }
+
+            return $classes;
+        }
+
+        /**
+         * @param string[] $classes
+         * @param string $class
+         * @param int $commentID
+         * @param WP_Comment $comment
+         * @param int|WP_Post $postID
+         *
+         * @return mixed
+         */
+        public function filterCommentClass($classes, $class, $commentID, $comment, $postID) {
+            if (!function_exists('get_multiple_authors')) {
+                return $classes;
+            }
+
+            $postAuthors = get_multiple_authors($postID);
+
+            if (empty($postAuthors)) {
+                return $classes;
+            }
+
+            if (in_array('bypostauthor', $classes, true)) {
+                return $classes;
+            }
+
+            foreach ($postAuthors as $author) {
+                if ($comment->user_id === $author->user_id) {
+                    $classes[] = 'bypostauthor';
+                    break;
                 }
             }
 
