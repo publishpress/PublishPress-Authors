@@ -1,9 +1,9 @@
 paths:
-    tests: tests
-    output: tests/_output
-    data: tests/_data
-    support: tests/_support
-    envs: tests/_envs
+    tests: tests/codeception
+    output: tests/codeception/_output
+    data: tests/codeception/_data
+    support: tests/codeception/_support
+    envs: tests/codeception/_envs
 actor_suffix: Tester
 extensions:
     enabled:
@@ -32,7 +32,7 @@ extensions:
                 readme.txt: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/readme.txt"
                 activation.php: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/activation.php"
                 template-tags.php: "%WP_ROOT_FOLDER%/wp-content/plugins/publishpress-authors/template-tags.php"
-                tests/_data/plugins/custom-post-type: "%WP_ROOT_FOLDER%/wp-content/plugins/custom-post-type"
+                tests/codeception/_data/plugins/custom-post-type: "%WP_ROOT_FOLDER%/wp-content/plugins/custom-post-type"
 params:
     - .env.testing
 settings:

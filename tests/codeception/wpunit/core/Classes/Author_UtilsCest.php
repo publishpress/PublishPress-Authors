@@ -145,6 +145,8 @@ class Author_UtilsCest
         $email = 'imaguest3@example.com';
         update_term_meta($author->term_id, 'user_email', $email);
 
+        var_dump(TESTS_ROOT_PATH . '/_data/avatar1.png');
+
         $attachmentId = $I->factory('a new attachment for the avatar image')->attachment->create_upload_object(
             realpath(TESTS_ROOT_PATH . '/_data/avatar1.png')
         );
