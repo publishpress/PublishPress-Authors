@@ -19,7 +19,6 @@ trait Posts
             [
                 'post_title'  => $postName,
                 'post_name'   => $postName,
-                'post_author' => $author->user_id,
             ]
         );
 
@@ -38,7 +37,6 @@ trait Posts
             [
                 'post_title'  => $postName,
                 'post_name'   => $postName,
-                'post_author' => $author1->user_id,
             ]
         );
 
@@ -70,5 +68,23 @@ trait Posts
     public function iSeeAPostWithTitle($posTitle)
     {
         $this->see($posTitle);
+    }
+
+    /**
+     * @When I view the post :postSlug
+     */
+    public function iViewThePost($postSlug)
+    {
+        $this->amOnPage('/' . $postSlug);
+    }
+
+    /**
+     * @Then I see the block editor working
+     */
+    public function iSeeBlockEditorWorking()
+    {
+        $canReadPost = $this->executeJS('return wp.data.select("core/editor").isEditedPostEmpty();');
+
+        $this->assertTrue($canReadPost);
     }
 }

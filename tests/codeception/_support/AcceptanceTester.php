@@ -27,4 +27,5 @@ class AcceptanceTester extends \Codeception\Actor
    use \Steps\AdminPages;
    use \Steps\Interaction;
    use \Steps\Settings;
+   use \Steps\Theme;
 }

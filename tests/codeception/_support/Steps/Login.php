@@ -11,5 +11,10 @@ trait Login
     public function iAmLoggedInAsUser($userLogin)
     {
         $this->loginAs($userLogin, $userLogin);
+
+        $user = get_user_by('login', $userLogin);
+
+        global $current_user;
+        $current_user = $user;
     }
 }

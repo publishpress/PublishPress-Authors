@@ -16,3 +16,7 @@ Feature: Post edit author in the admin
         Given I deactivated Authors for the "post" post type
         When I open the Add New Post page
         Then I see the core author field
+
+    Scenario: I see the block editor
+        When I open the Add New Post page
+        Then I see the block editor working

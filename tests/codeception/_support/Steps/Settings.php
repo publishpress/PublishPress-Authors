@@ -40,4 +40,15 @@ trait Settings
     {
         $this->dontSeeElement("#{$postType}-multiple-authors");
     }
+
+    /**
+     * @Given I set permalink structure to :structure
+     */
+    public function iSetPermalinkStructure($structure)
+    {
+        global $wp_rewrite;
+
+        $wp_rewrite->permalink_structure = $structure;
+        $wp_rewrite->flush_rules(true);
+    }
 }
