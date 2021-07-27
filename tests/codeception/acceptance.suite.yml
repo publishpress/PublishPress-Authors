@@ -9,7 +9,7 @@ actor: AcceptanceTester
 modules:
     enabled:
         - WPDb
-        - WPBrowser
+        - WPWebDriver
         - \Helper\Acceptance
         - WPLoader
     config:
@@ -26,14 +26,6 @@ modules:
             url: '%TEST_SITE_WP_URL%'
             urlReplacement: true #replace the hardcoded dump URL with the one above
             tablePrefix: '%TEST_SITE_TABLE_PREFIX%'
-        WPBrowser:
-            url: '%TEST_SITE_WP_URL%'
-            adminUsername: '%TEST_SITE_ADMIN_USERNAME%'
-            adminPassword: '%TEST_SITE_ADMIN_PASSWORD%'
-            adminPath: '%TEST_SITE_WP_ADMIN_PATH%'
-            headers:
-                X_TEST_REQUEST: 1
-                X_WPBROWSER_REQUEST: 1
         WPLoader:
             wpRootFolder: "%WP_ROOT_FOLDER%"
             dbName: "%TEST_DB_NAME%"
