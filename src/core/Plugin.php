@@ -115,7 +115,7 @@ class Plugin
         // Fix the author page.
         // Use posts_selection since it's after WP_Query has built the request and before it's queried any posts
         add_filter('posts_selection', [$this, 'fix_query_for_author_page']);
-        add_action('the_post', [$this, 'fix_post'], 10);
+        add_action('the_post', [$this, 'fix_post_in_frontend'], 10);
 
         add_action(
             'init',
@@ -1148,11 +1148,15 @@ class Plugin
         return $shortCircuit;
     }
 
-    public function fix_post(WP_Post $post)
+    public function fix_post_in_frontend(WP_Post $post)
     {
         $legacyPlugin = Factory::getLegacyPlugin();
 
         if (empty($legacyPlugin) || !isset($legacyPlugin->multiple_authors) || !Utils::is_post_type_enabled()) {
+            return $post;
+        }
+
+        if (is_admin()) {
             return $post;
         }
 
