@@ -115,6 +115,7 @@ class Plugin
         // Fix the author page.
         // Use posts_selection since it's after WP_Query has built the request and before it's queried any posts
         add_filter('posts_selection', [$this, 'fix_query_for_author_page']);
+        add_action('the_post', [$this, 'fix_post'], 10);
 
         add_action(
             'init',
@@ -1145,6 +1146,33 @@ class Plugin
         }
 
         return $shortCircuit;
+    }
+
+    public function fix_post(WP_Post $post)
+    {
+        $legacyPlugin = Factory::getLegacyPlugin();
+
+        if (empty($legacyPlugin) || !isset($legacyPlugin->multiple_authors) || !Utils::is_post_type_enabled()) {
+            return $post;
+        }
+
+        global $authordata;
+
+        $authors = get_multiple_authors($post);
+
+        if (empty($authors)) {
+            return $post;
+        }
+
+        $firstAuthor = $authors[0];
+
+        if (!empty($authordata)) {
+            $authordata->display_name  = $firstAuthor->display_name;
+            $authordata->ID            = $firstAuthor->ID;
+            $authordata->user_nicename = $firstAuthor->user_nicename;
+        }
+
+        return $post;
     }
 
     /**
