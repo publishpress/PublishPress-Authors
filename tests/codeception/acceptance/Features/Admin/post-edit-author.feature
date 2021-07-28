@@ -6,9 +6,9 @@ Feature: Post edit author in the admin
     Background:
         Given the user "pea_admin_user" exists with role "administrator"
         And I am logged in as "pea_admin_user"
-        And I activated Authors for the "post" post type
 
     Scenario: Core post author field is not visible in the post edit page if the post type is activated
+        Given I activated Authors for the "post" post type
         When I open the Add New Post page
         Then I don't see the core author field
 
@@ -16,6 +16,7 @@ Feature: Post edit author in the admin
         Given I deactivated Authors for the "post" post type
         When I open the Add New Post page
         Then I see the core author field
+        And I activated Authors for the "post" post type
 
     Scenario: Block editor works when creating a new post
         When I open the Add New Post page
