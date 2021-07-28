@@ -71,6 +71,23 @@ trait Posts
     }
 
     /**
+     * @When I edit the post name :postSlug
+     */
+    public function iEditPostNamed($postSlug)
+    {
+        $posts = get_posts(
+            [
+                'name'           => $postSlug,
+                'posts_per_page' => 1,
+                'post_type'      => 'post'
+            ]
+        );
+
+        $this->amEditingPostWithId($posts[0]->ID);
+        $this->makeScreenshot('Editing post');
+    }
+
+    /**
      * @When I view the post :postSlug
      */
     public function iViewThePost($postSlug)
@@ -79,12 +96,42 @@ trait Posts
     }
 
     /**
-     * @Then I see the block editor working
+     * @Then I don't see the post locked modal
      */
-    public function iSeeBlockEditorWorking()
+    public function iDontSeePostLockedModal()
     {
-        $canReadPost = $this->executeJS('return wp.data.select("core/editor").isEditedPostEmpty();');
+        $this->dontSeeElementInDOM('.editor-post-locked-modal');
+        $this->dontSee('This post is already being edited');
+    }
 
-        $this->assertTrue($canReadPost);
+    /**
+     * @Then I see the post visual editor
+     */
+    public function iSeePostVisualEditor()
+    {
+        $this->dontSeeElement('.edit-post-text-editor');
+        $this->seeElement('.edit-post-visual-editor');
+    }
+
+    /**
+     * @Then I can add blocks in the editor
+     */
+    public function iCanAddBlocksInTheEditor()
+    {
+        $paragraphText = 'hello awesome world!';
+
+        $this->executeJS('const block = wp.blocks.createBlock("core/paragraph", {content: "' . $paragraphText . '"} ); wp.data.dispatch("core/editor").insertBlocks(block);');
+        $blocks = $this->executeJS('return wp.data.select("core/editor").getBlocks()');
+
+        $this->assertNotEmpty($blocks) ;
+
+        $foundTheBlock = false;
+        foreach ($blocks as $block) {
+            if ('hello awesome world!' === $block['attributes']['content']) {
+                $foundTheBlock = true;
+            }
+        }
+
+        $this->assertTrue($foundTheBlock, 'We need to see the added block in the editor');
     }
 }
