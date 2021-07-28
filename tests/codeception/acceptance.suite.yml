@@ -37,8 +37,8 @@ modules:
             domain: "%TEST_SITE_WP_DOMAIN%"
             adminEmail: "%TEST_SITE_ADMIN_EMAIL%"
             title: "Test"
-            plugins: [ "publishpress-authors/publishpress-authors.php" ]
-            activatePlugins: [ "publishpress-authors/publishpress-authors.php" ]
+            plugins: [ "publishpress-authors/publishpress-authors.php", "custom-post-type/custom-post-type.php" ]
+            activatePlugins: [ "publishpress-authors/publishpress-authors.php", "custom-post-type/custom-post-type.php" ]
             isolatedInstall: true
         WPWebDriver:
             url: "%TEST_SITE_WP_URL%"
@@ -47,11 +47,12 @@ modules:
             adminPath: "%TEST_SITE_WP_ADMIN_PATH%"
             browser: chrome
             restart: true
-            window_size: false
+            window_size: "1280x1200"
             port: 9515
+            binary: "%CHROME_BIN_PATH%"
             capabilities:
                 browserName: chrome
                 chromeOptions:
-                    args: [ "--headless", "--disable-gpu" ]
+                    args: [ "--headless", "--disable-gpu", "disable-infobars" ]
                     prefs:
                         download.default_directory: "..."
