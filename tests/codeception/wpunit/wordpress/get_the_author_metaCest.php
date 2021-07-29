@@ -1,7 +1,10 @@
-<?php namespace wordpress;
+<?php
+
+namespace wordpress;
 
 use Codeception\Example;
 use MultipleAuthors\Classes\Objects\Author;
+use MultipleAuthors\Classes\Utils;
 use WpunitTester;
 
 class get_the_author_metaCest
@@ -221,15 +224,9 @@ class get_the_author_metaCest
             'if get_the_author_meta returns the author meta of the correct author (mapped to user) when we do not provide the author ID'
         );
 
-        global $post, $authordata;
-
-        $postId = $I->factory('a new post')->post->create(
-            [
-                'title' => 'A Fake Post'
-            ]
-        );
-
-        $post = get_post($postId);
+        $postId          = $I->factory('a new post')->post->create();
+        $post            = get_post($postId);
+        $GLOBALS['post'] = $post;
 
         $user1Id           = $I->factory('a new user')->user->create(['role' => 'author']);
         $user              = get_user_by('ID', $user1Id);
@@ -246,13 +243,11 @@ class get_the_author_metaCest
             ]
         );
 
-        $authordata = $author1;
+        Utils::set_post_authors($postId, [$author1, $author2]);
 
-        wp_set_post_terms(
-            $postId,
-            [$author1->term_id, $author2->term_id],
-            'author'
-        );
+        // We need to initialize authordata otherwise the link is always empty.
+        global $authordata;
+        $authordata = get_user_by('ID', $user1Id);
 
         $authorId          = get_the_author_meta('ID');
         $authorDescription = get_the_author_meta('description');
@@ -267,18 +262,19 @@ class get_the_author_metaCest
             'if get_the_author_meta returns the author meta of the correct guest author when we do not provide the author ID'
         );
 
-        global $post, $authordata;
-
         $postId = $I->factory('a new post')->post->create(
             [
                 'title' => 'A Fake Post'
             ]
         );
 
-        $post = get_post($postId);
+        $post            = get_post($postId);
+        $GLOBALS['post'] = $post;
 
-        $authorSlug = sprintf('guest_author_%d_%s', 1, rand(1, PHP_INT_MAX));
-        $author1    = Author::create(
+        $user1Id = $I->factory('a new user')->user->create(['role' => 'author']);
+
+        $authorSlug         = sprintf('guest_author_%d_%s', 1, rand(1, PHP_INT_MAX));
+        $author1            = Author::create(
             [
                 'slug'         => $authorSlug,
                 'display_name' => strtoupper($authorSlug),
@@ -295,13 +291,11 @@ class get_the_author_metaCest
             ]
         );
 
-        $authordata = $author1;
+        Utils::set_post_authors($postId, [$author1, $author2]);
 
-        wp_set_post_terms(
-            $postId,
-            [$author1->term_id, $author2->term_id],
-            'author'
-        );
+        // We need to initialize authordata otherwise the link is always empty.
+        global $authordata;
+        $authordata = get_user_by('ID', $user1Id);
 
         $authorId          = get_the_author_meta('ID');
         $authorDescription = get_the_author_meta('description');

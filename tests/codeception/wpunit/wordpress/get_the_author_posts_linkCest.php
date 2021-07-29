@@ -1,22 +1,18 @@
 <?php namespace wordpress;
 
 use MultipleAuthors\Classes\Objects\Author;
+use MultipleAuthors\Classes\Utils;
 
 class get_the_author_posts_linkCest
 {
     public function tryToGetMultipleAuthorPostsLinksForPostWithMultipleAuthors(\WpunitTester $I)
     {
-        global $post, $authordata;
-
         $I->setPermalinkStructure('/%postname%/');
 
-        $postId = $I->factory('a new post')->post->create(
-            [
-                'title' => 'A Fake Post'
-            ]
-        );
+        $postId = $I->factory('a new post')->post->create();
 
         $post = get_post($postId);
+        $GLOBALS['post'] = $post;
 
         $user1Id = $I->factory('a new user')->user->create(['role' => 'author']);
         $user2Id = $I->factory('a new user')->user->create(['role' => 'author']);
@@ -26,13 +22,11 @@ class get_the_author_posts_linkCest
         $author2 = Author::create_from_user($user2Id);
         $author3 = Author::create_from_user($user3Id);
 
-        $authordata = $author1;
+        Utils::set_post_authors($postId, [$author1, $author2, $author3]);
 
-        wp_set_post_terms(
-            $postId,
-            [$author1->term_id, $author2->term_id, $author3->term_id],
-            'author'
-        );
+        // We need to initialize authordata otherwise the link is always empty.
+        global $authordata;
+        $authordata = get_user_by('ID', $user1Id);
 
         $postsLink = get_the_author_posts_link();
 
@@ -55,8 +49,6 @@ class get_the_author_posts_linkCest
 
     public function tryToGetMultipleAuthorPostsLinksForPostWithMultipleAuthorsIncludingGuestAuthors(\WpunitTester $I)
     {
-        global $post, $authordata;
-
         $I->setPermalinkStructure('/%postname%/');
 
         $postId = $I->factory('a new post')->post->create(
@@ -66,6 +58,7 @@ class get_the_author_posts_linkCest
         );
 
         $post = get_post($postId);
+        $GLOBALS['post'] = $post;
 
         $user1Id = $I->factory('a new user')->user->create(['role' => 'author']);
 
@@ -87,13 +80,11 @@ class get_the_author_posts_linkCest
             ]
         );
 
-        $authordata = $author1;
+        Utils::set_post_authors($postId, [$author1, $author2, $author3]);
 
-        wp_set_post_terms(
-            $postId,
-            [$author1->term_id, $author2->term_id, $author3->term_id],
-            'author'
-        );
+        // We need to initialize authordata otherwise the link is always empty.
+        global $authordata;
+        $authordata = get_user_by('ID', $user1Id);
 
         $postsLink = get_the_author_posts_link();
 

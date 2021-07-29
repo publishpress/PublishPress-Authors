@@ -409,7 +409,7 @@ class Author
                 if ($this->is_guest()) {
                     $return = abs($this->term_id) * -1;
                 } else {
-                    $return = $this->user_id;
+                    $return = (int)$this->user_id;
                 }
                 break;
 

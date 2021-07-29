@@ -228,10 +228,10 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_filter('get_the_author_display_name', [$this, 'filter_author_metadata_display_name'], 10, 2);
             add_filter('get_the_author_first_name', [$this, 'filter_author_metadata_first_name'], 10, 2);
             add_filter('get_the_author_last_name', [$this, 'filter_author_metadata_last_name'], 10, 2);
-            add_filter('get_the_author_ID', [$this, 'filter_author_metadata_ID'], 10, 2);
+            add_filter('get_the_author_ID', [$this, 'filter_author_metadata_ID'], 10, 3);
             add_filter('get_the_author_headline', [$this, 'filter_author_metadata_headline'], 10, 2);
             add_filter('get_the_author_aim', [$this, 'filter_author_metadata_aim'], 10, 2);
-            add_filter('get_the_author_description', [$this, 'filter_author_metadata_description'], 10, 2);
+            add_filter('get_the_author_description', [$this, 'filter_author_metadata_description'], 10, 3);
             add_filter('get_the_author_jabber', [$this, 'filter_author_metadata_jabber'], 10, 2);
             add_filter('get_the_author_nickname', [$this, 'filter_author_metadata_nickname'], 10, 2);
             add_filter('get_the_author_user_description', [$this, 'filter_author_metadata_user_description'], 10, 2);
@@ -1072,8 +1072,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         {
             $newLink   = '';
             $postID    = get_the_id();
-            $isArchive = empty($postID) && Util::isAuthor();
-            $authors   = get_multiple_authors($postID, true, $isArchive);
+            $authors   = get_multiple_authors($postID, false);
 
             foreach ($authors as $author) {
                 if (!empty($newLink)) {
@@ -1235,7 +1234,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         /**
          * @param int $id
-         * @return false|Author
+         * @return false|Author|WP_User
          */
         private function get_author_by_id($id)
         {
@@ -1251,6 +1250,10 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $author = Author::get_by_user_id($id);
             } else {
                 $author = Author::get_by_term_id($id);
+            }
+
+            if (empty($author)) {
+                $author = get_user_by('ID', $id);
             }
 
             return $author;
@@ -1316,11 +1319,18 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          * @param string $value The value of the metadata.
          * @param int $user_id The user ID for the value.
+         * @param bool $original_user_id
          *
          * @return mixed
          */
-        public function filter_author_metadata_description($value, $user_id)
+        public function filter_author_metadata_description($value, $user_id, $original_user_id = false)
         {
+            if (false === $original_user_id) {
+                $author = $this->getFirstAuthorOfCurrentPost();
+
+                $user_id = $author->ID;
+            }
+
             $author_meta = $this->get_author_meta('description', $value, $user_id);
 
             if (!is_null($author_meta)) {
@@ -1382,14 +1392,32 @@ if (!class_exists('MA_Multiple_Authors')) {
             return $value;
         }
 
+        private function getFirstAuthorOfCurrentPost()
+        {
+            $authors = get_multiple_authors();
+
+            if (!empty($authors)) {
+                return $authors[0];
+            }
+
+            return false;
+        }
+
         /**
          * @param string $value The value of the metadata.
          * @param int $user_id The user ID for the value.
+         * @param bool|int $original_user_id
          *
          * @return mixed
          */
-        public function filter_author_metadata_ID($value, $user_id)
+        public function filter_author_metadata_ID($value, $user_id, $original_user_id)
         {
+            if (false === $original_user_id) {
+                $author = $this->getFirstAuthorOfCurrentPost();
+
+                $user_id = $author->ID;
+            }
+
             $author = $this->get_author_by_id($user_id);
 
             if (is_object($author)) {

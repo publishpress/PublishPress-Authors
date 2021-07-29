@@ -1,20 +1,22 @@
 <?php namespace wordpress;
 
 use MultipleAuthors\Classes\Objects\Author;
+use MultipleAuthors\Classes\Utils;
 
 class get_the_authorCest
 {
     public function tryToGetTheAuthorForAuthorMappedToUser(\WpunitTester $I)
     {
-        global $authordata;
-
         $userID = $I->factory('a new user')->user->create(['role' => 'author']);
         $author = Author::create_from_user($userID);
 
-        $authordata = $author->get_user_object();
+        $postId = $I->factory('a new post')->post->create();
+        Utils::set_post_authors($postId, [$author]);
+
+        $GLOBALS['post'] = get_post($postId);
 
         $I->assertEquals(
-            $authordata->display_name,
+            $author->display_name,
             get_the_author(),
             'The author name is the same as the user\' display_name'
         );
@@ -22,8 +24,6 @@ class get_the_authorCest
 
     public function tryToGetTheAuthorPostsLinkForGuestAuthor(\WpunitTester $I)
     {
-        global $authordata;
-
         $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
         $authorName = strtoupper($authorSlug);
 
@@ -34,7 +34,10 @@ class get_the_authorCest
             ]
         );
 
-        $authordata = $author;
+        $postId = $I->factory('a new post')->post->create();
+        Utils::set_post_authors($postId, [$author]);
+
+        $GLOBALS['post'] = get_post($postId);
 
         $I->assertEquals(
             $authorName,

@@ -21,11 +21,13 @@ trait Theme
      */
     public function iSeeTheLinkForAuthorInTheByline($authorSlug)
     {
-        $this->setPermalinkStructure('/%postname%/');
+        $this->setPermalinkStructure('');
 
         $author = Author::get_by_term_slug($authorSlug);
 
-        $expectedAuthorLink = $_ENV['TEST_SITE_WP_URL'] . '/author/' . $author->slug . '/';
-        $this->seeElement('.posted-by .byline a', ['href' => $expectedAuthorLink]);
+        $expectedAuthorLink = $_ENV['TEST_SITE_WP_URL'] . '/?author=' . $author->ID;
+        $authorLink = $this->grabAttributeFrom('.posted-by .byline a', 'href');
+
+        $this->assertEquals($expectedAuthorLink, $authorLink);
     }
 }
