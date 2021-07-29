@@ -44,6 +44,25 @@ trait Posts
     }
 
     /**
+     * @Given a post named :postName exists for guest author :authorSlug and fallback user :fallbackUserSlug
+     */
+    public function aPostNamedExistsForGuestAuthorAndFallbackUser($postName, $authorSlug, $fallbackUserSlug)
+    {
+        $author = Author::get_by_term_slug($authorSlug);
+
+        $postId = $this->factory()->post->create(
+            [
+                'post_title'  => $postName,
+                'post_name'   => $postName
+            ]
+        );
+
+        $user = get_user_by('slug', $fallbackUserSlug);
+
+        Utils::set_post_authors($postId, [$author], true, $user->ID);
+    }
+
+    /**
      * @Then I see :userSlug as the author of the post :postSlug
      */
     public function iSeeUserIsTheAuthorForThePost($userSlug, $postSlug)
@@ -75,15 +94,9 @@ trait Posts
      */
     public function iEditPostNamed($postSlug)
     {
-        $posts = get_posts(
-            [
-                'name'           => $postSlug,
-                'posts_per_page' => 1,
-                'post_type'      => 'post'
-            ]
-        );
+        $post = $this->grabPostBySlug($postSlug);
 
-        $this->amEditingPostWithId($posts[0]->ID);
+        $this->amEditingPostWithId($post->ID);
         $this->makeScreenshot('Editing post');
     }
 
@@ -93,6 +106,31 @@ trait Posts
     public function iViewThePost($postSlug)
     {
         $this->amOnPage('/' . $postSlug);
+    }
+
+    /**
+     * @Given I open the All Posts page
+     */
+    public function iOpenAllPostsPage()
+    {
+        $this->amOnAdminPage('edit.php?post_type=post');
+        $this->makeScreenshot();
+    }
+
+    /**
+     * @Then I don't see the column :columnId
+     */
+    public function iDontSeeColumn($columnId)
+    {
+        $this->dontSeeElementInDOM('table.posts th#' . $columnId);
+    }
+
+    /**
+     * @Then I see the column :columnId
+     */
+    public function iSeeColumn($columnId)
+    {
+        $this->seeElementInDOM('table.posts th#' . $columnId);
     }
 
     /**
@@ -133,5 +171,28 @@ trait Posts
         }
 
         $this->assertTrue($foundTheBlock, 'We need to see the added block in the editor');
+    }
+
+    public function grabPostBySlug($postSlug, $postType = 'post')
+    {
+        $posts = get_posts(
+            [
+                'name'           => $postSlug,
+                'posts_per_page' => 1,
+                'post_type'      => $postType
+            ]
+        );
+
+        return $posts[0];
+    }
+
+    /**
+     * @Then I see the text :text in the column :columnId for the post :postSlug
+     */
+    public function iSeeTextInColumnForPost($text, $columnId, $postSlug)
+    {
+        $post = $this->grabPostBySlug($postSlug);
+
+        $this->see($text, "tr#post-{$post->ID} td.column-{$columnId}");
     }
 }

@@ -274,9 +274,7 @@ class AuthorCest
 
     public function tryToGetLinkForGuestAuthors(WpunitTester $I)
     {
-        global $wp_rewrite;
-
-        $wp_rewrite->author_structure = null;
+        $I->setPermalinkStructure('/%postname%/');
 
         $authorSlug = sprintf('guest_author_%d', rand(1, PHP_INT_MAX));
         $author     = Author::create(
@@ -287,7 +285,7 @@ class AuthorCest
         );
 
         $I->assertEquals(
-            sprintf('%s/?author_name=%s', set_url_scheme($_ENV['TEST_SITE_WP_URL'], 'http'), $authorSlug),
+            sprintf('%s/author/%s/', set_url_scheme($_ENV['TEST_SITE_WP_URL'], 'http'), $authorSlug),
             $author->link
         );
     }

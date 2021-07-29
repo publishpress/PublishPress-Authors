@@ -51,7 +51,7 @@ class postsCest
             ]
         );
 
-        Utils::set_post_authors($postId, [$author]);
+        Utils::set_post_authors($postId, [$author], true, $userId);
 
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');

@@ -1,12 +1,15 @@
 <?php namespace wordpress;
 
 use MultipleAuthors\Classes\Objects\Author;
+use WpunitTester;
 
 class feed_links_extraCest
 {
-    public function tryToCallFeed_links_extraFromWp_headActionHookAndCheckIfItWorksForGuestAuthors(\WpunitTester $I)
+    public function tryToCallFeed_links_extraFromWp_headActionHookAndCheckIfItWorksForGuestAuthors(WpunitTester $I)
     {
-        global $wp_query, $wp_rewrite, $wp_filter;
+        global $wp_query, $wp_filter;
+
+        $I->setPermalinkStructure('/%postname%/');
 
         $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
         $authorName = strtoupper($authorSlug);
@@ -50,10 +53,10 @@ class feed_links_extraCest
         $I->assertNotEmpty($output, 'The output can\'t be empty because the feed link should be printed on it');
         $I->assertStringContainsString(
             sprintf(
-                '<link rel="alternate" type="application/rss+xml" title="Test &raquo; Posts by %s Feed" href="http://%s/?feed=rss2&#038;author=%s" />',
+                '<link rel="alternate" type="application/rss+xml" title="Test &raquo; Posts by %s Feed" href="http://%s/author/%s/feed/" />',
                 $authorName,
                 $_ENV['TEST_SITE_WP_DOMAIN'],
-                $author->ID
+                $author->slug
             ),
             $output,
             'The output should contains the feed link for the author'

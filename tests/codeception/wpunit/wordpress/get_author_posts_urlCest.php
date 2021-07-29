@@ -1,14 +1,13 @@
 <?php namespace wordpress;
 
 use MultipleAuthors\Classes\Objects\Author;
+use WpunitTester;
 
 class get_author_posts_urlCest
 {
-    public function tryToGetAuthorPostsUrlForAuthorMappedToUserAndNoPermalinkStruct(\WpunitTester $I)
+    public function tryToGetAuthorPostsUrlForAuthorMappedToUserAndNoPermalinkStruct(WpunitTester $I)
     {
-        global $wp_rewrite;
-
-        $wp_rewrite->author_structure = null;
+        $I->setPermalinkStructure('');
 
         $userID = $I->factory('a new user')->user->create(['role' => 'author']);
         $author = Author::create_from_user($userID);
@@ -21,11 +20,9 @@ class get_author_posts_urlCest
         );
     }
 
-    public function tryToGetAuthorPostsUrlForAuthorMappedToUserAndCustomPermalinkStruct(\WpunitTester $I)
+    public function tryToGetAuthorPostsUrlForAuthorMappedToUserAndCustomPermalinkStruct(WpunitTester $I)
     {
-        global $wp_rewrite;
-
-        $wp_rewrite->author_structure = 'author/%author%';
+        $I->setPermalinkStructure('/%postname%/');
 
         $userID = $I->factory('a new user')->user->create(['role' => 'author']);
         $author = Author::create_from_user($userID);
@@ -33,18 +30,14 @@ class get_author_posts_urlCest
         $authorLink = get_author_posts_url($author->ID);
 
         $I->assertEquals(
-            sprintf('http://%s/author/%s', $_ENV['TEST_SITE_WP_DOMAIN'], $author->user_nicename),
+            sprintf('http://%s/author/%s/', $_ENV['TEST_SITE_WP_DOMAIN'], $author->user_nicename),
             $authorLink
         );
-
-        $wp_rewrite->author_structure = null;
     }
 
-    public function tryToGetAuthorPostsUrlForGuestAuthorAndNoPermalinkStruct(\WpunitTester $I)
+    public function tryToGetAuthorPostsUrlForGuestAuthorAndNoPermalinkStruct(WpunitTester $I)
     {
-        global $wp_rewrite;
-
-        $wp_rewrite->author_structure = null;
+        $I->setPermalinkStructure('');
 
         $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
 
@@ -63,11 +56,9 @@ class get_author_posts_urlCest
         );
     }
 
-    public function tryToGetAuthorPostsUrlForGuestAuthorAndCustomPermalinkStruct(\WpunitTester $I)
+    public function tryToGetAuthorPostsUrlForGuestAuthorAndCustomPermalinkStruct(WpunitTester $I)
     {
-        global $wp_rewrite;
-
-        $wp_rewrite->author_structure = 'author/%author%';
+        $I->setPermalinkStructure('/%postname%/');
 
         $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
 
@@ -81,10 +72,8 @@ class get_author_posts_urlCest
         $authorLink = get_author_posts_url($author->ID);
 
         $I->assertEquals(
-            sprintf('http://%s/author/%s', $_ENV['TEST_SITE_WP_DOMAIN'], $author->user_nicename),
+            sprintf('http://%s/author/%s/', $_ENV['TEST_SITE_WP_DOMAIN'], $author->user_nicename),
             $authorLink
         );
-
-        $wp_rewrite->author_structure = null;
     }
 }
