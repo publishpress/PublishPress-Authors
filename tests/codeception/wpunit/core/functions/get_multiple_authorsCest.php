@@ -155,46 +155,6 @@ class get_multiple_authorsCest
         $I->assertEquals($author2->term_id, $authorsList[2]->term_id);
     }
 
-    public function testGetMultipleAuthors_WithFilterAuthor_ShouldFilterTheAuthorsDisplayName(WpunitTester $I)
-    {
-        $userId0 = $I->factory('create user0')->user->create();
-        $userId1 = $I->factory('create user1')->user->create();
-        $userId2 = $I->factory('create user2')->user->create();
-
-        $author0 = Author::create_from_user($userId0);
-        $author1 = Author::create_from_user($userId1);
-        $author2 = Author::create_from_user($userId2);
-
-        $postId = $I->factory('create a new post')->post->create();
-        $post   = get_post($postId);
-
-        wp_set_post_terms($postId, [$author0->term_id, $author1->term_id, $author2->term_id], 'author');
-
-        if (empty($testFilterAdded)) {
-            add_filter(
-                'the_author',
-                function ($displayName) {
-                    return $displayName . '--filtered';
-                }
-            );
-
-            $testFilterAdded = true;
-        }
-
-        $authorsList = get_multiple_authors($post, true, false);
-
-        $I->assertIsArray($authorsList);
-        $I->assertCount(3, $authorsList);
-        $I->assertInstanceOf(Author::class, $authorsList[0]);
-        $I->assertInstanceOf(Author::class, $authorsList[1]);
-        $I->assertInstanceOf(Author::class, $authorsList[2]);
-        $I->assertEquals($author0->display_name . '--filtered', $authorsList[0]->display_name);
-        $I->assertEquals($author1->display_name . '--filtered', $authorsList[1]->display_name);
-        $I->assertEquals($author2->display_name . '--filtered', $authorsList[2]->display_name);
-
-        remove_all_filters('the_author');
-    }
-
     public function testGetMultipleAuthors_WithArchiveParam_ShouldReturnCurrentAuthor(WpunitTester $I)
     {
         $userId0 = $I->factory('create user0')->user->create();
