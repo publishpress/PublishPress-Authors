@@ -6,5 +6,5 @@ namespace Helper;
 
 class Restapi extends \Codeception\Module
 {
-
+    use PermalinkTrait;
 }

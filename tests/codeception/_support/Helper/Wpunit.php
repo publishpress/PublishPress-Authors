@@ -10,6 +10,8 @@ use MultipleAuthors\Classes\Utils;
 
 class Wpunit extends \Codeception\Module
 {
+    use PermalinkTrait;
+
     public function createGuestAuthor()
     {
         $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
