@@ -349,6 +349,7 @@ class Author
 
         $properties['link']          = true;
         $properties['user_nicename'] = true;
+        $properties['display_name']  = true;
         $properties['name']          = true;
         $properties['slug']          = true;
         $properties['user_email']    = true;
