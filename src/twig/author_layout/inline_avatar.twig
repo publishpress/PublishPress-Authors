@@ -3,7 +3,7 @@
 {% endif %}
 
 {% for author in authors %}
-    <span class="pp-multiple-authors-layout-inline author_index_{{ loop.index }}">
+    <span class="pp-multiple-authors-layout-inline author_index_{{ loop.index }} author_{{ author.slug }}">
         <a href="{{ author.link }}" class="{{ item_class }}"
            rel="author">{{ author.get_avatar(30)|raw }} {{ author.display_name }}</a>{% if loop.index < authors|length %},{% endif %}
     </span>

@@ -3,7 +3,6 @@
 namespace Steps;
 
 
-use Codeception\Util\Locator;
 use MultipleAuthors\Classes\Objects\Author;
 
 trait Theme
@@ -21,15 +20,30 @@ trait Theme
      */
     public function iSeeTheLinkForAuthorInTheByline($authorSlug)
     {
+        $this->setPermalinkStructure('');
+
         $author = Author::get_by_term_slug($authorSlug);
 
-        if ($author->is_guest()) {
-            $authorId = $author->term_id * -1;
-        } else {
-            $authorId = $author->user_id;
-        }
+        $expectedAuthorLink = $_ENV['TEST_SITE_WP_URL'] . '/?author=' . $author->ID;
+        $authorLink         = $this->grabAttributeFrom('.posted-by .byline a', 'href');
 
-        $expectedAuthorLink = $_ENV['TEST_SITE_WP_URL'] . '/?author=' . $authorId;
-        $this->seeElement('.posted-by .byline a', ['href' => $expectedAuthorLink]);
+        $this->assertEquals($expectedAuthorLink, $authorLink);
+    }
+
+    /**
+     * @Then I see the author box for author :authorSlug after the content
+     */
+    public function iSeeAuthorBoxForAuthorAfterContent($authorSlug)
+    {
+        $this->seeElement('.multiple-authors-target-the-content li.author_' . $authorSlug);
+    }
+
+    /**
+     * @Then I see the author name for author :authorName in the box after the content
+     */
+    public function iSeeAuthorNameInTheBoxAfterContent($authorName)
+    {
+        $this->see($authorName, '.multiple-authors-target-the-content li .multiple-authors-name a.author');
     }
 }
+

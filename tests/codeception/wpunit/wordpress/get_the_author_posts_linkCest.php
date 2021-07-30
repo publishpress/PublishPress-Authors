@@ -1,22 +1,18 @@
 <?php namespace wordpress;
 
 use MultipleAuthors\Classes\Objects\Author;
+use MultipleAuthors\Classes\Utils;
 
 class get_the_author_posts_linkCest
 {
     public function tryToGetMultipleAuthorPostsLinksForPostWithMultipleAuthors(\WpunitTester $I)
     {
-        global $post, $authordata, $wp_rewrite;
+        $I->setPermalinkStructure('/%postname%/');
 
-        $wp_rewrite->author_structure = null;
-
-        $postId = $I->factory('a new post')->post->create(
-            [
-                'title' => 'A Fake Post'
-            ]
-        );
+        $postId = $I->factory('a new post')->post->create();
 
         $post = get_post($postId);
+        $GLOBALS['post'] = $post;
 
         $user1Id = $I->factory('a new user')->user->create(['role' => 'author']);
         $user2Id = $I->factory('a new user')->user->create(['role' => 'author']);
@@ -26,26 +22,24 @@ class get_the_author_posts_linkCest
         $author2 = Author::create_from_user($user2Id);
         $author3 = Author::create_from_user($user3Id);
 
-        $authordata = $author1;
+        Utils::set_post_authors($postId, [$author1, $author2, $author3]);
 
-        wp_set_post_terms(
-            $postId,
-            [$author1->term_id, $author2->term_id, $author3->term_id],
-            'author'
-        );
+        // We need to initialize authordata otherwise the link is always empty.
+        global $authordata;
+        $authordata = get_user_by('ID', $user1Id);
 
         $postsLink = get_the_author_posts_link();
 
         $I->assertEquals(
             sprintf(
-                '<a href="http://%7$s/?author=%1$d" title="%2$s" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">%2$s</a>, ' .
-                '<a href="http://%7$s/?author=%3$d" title="%4$s" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">%4$s</a>, ' .
-                '<a href="http://%7$s/?author=%5$d" title="%6$s" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">%6$s</a>',
-                $author1->ID,
+                '<a href="http://%7$s/author/%1$s/" title="%2$s" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">%2$s</a>, ' .
+                '<a href="http://%7$s/author/%3$s/" title="%4$s" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">%4$s</a>, ' .
+                '<a href="http://%7$s/author/%5$s/" title="%6$s" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">%6$s</a>',
+                $author1->slug,
                 $author1->display_name,
-                $author2->ID,
+                $author2->slug,
                 $author2->display_name,
-                $author3->ID,
+                $author3->slug,
                 $author3->display_name,
                 $_ENV['TEST_SITE_WP_DOMAIN']
             ),
@@ -55,9 +49,7 @@ class get_the_author_posts_linkCest
 
     public function tryToGetMultipleAuthorPostsLinksForPostWithMultipleAuthorsIncludingGuestAuthors(\WpunitTester $I)
     {
-        global $post, $authordata, $wp_rewrite;
-
-        $wp_rewrite->author_structure = null;
+        $I->setPermalinkStructure('/%postname%/');
 
         $postId = $I->factory('a new post')->post->create(
             [
@@ -66,6 +58,7 @@ class get_the_author_posts_linkCest
         );
 
         $post = get_post($postId);
+        $GLOBALS['post'] = $post;
 
         $user1Id = $I->factory('a new user')->user->create(['role' => 'author']);
 
@@ -87,22 +80,20 @@ class get_the_author_posts_linkCest
             ]
         );
 
-        $authordata = $author1;
+        Utils::set_post_authors($postId, [$author1, $author2, $author3]);
 
-        wp_set_post_terms(
-            $postId,
-            [$author1->term_id, $author2->term_id, $author3->term_id],
-            'author'
-        );
+        // We need to initialize authordata otherwise the link is always empty.
+        global $authordata;
+        $authordata = get_user_by('ID', $user1Id);
 
         $postsLink = get_the_author_posts_link();
 
         $I->assertEquals(
             sprintf(
-                '<a href="http://%7$s/?author=%1$d" title="%2$s" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">%2$s</a>, ' .
-                '<a href="http://%7$s/?author_name=%3$s" title="%4$s" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">%4$s</a>, ' .
-                '<a href="http://%7$s/?author_name=%5$s" title="%6$s" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">%6$s</a>',
-                $author1->ID,
+                '<a href="http://%7$s/author/%1$s/" title="%2$s" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">%2$s</a>, ' .
+                '<a href="http://%7$s/author/%3$s/" title="%4$s" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">%4$s</a>, ' .
+                '<a href="http://%7$s/author/%5$s/" title="%6$s" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">%6$s</a>',
+                $author1->slug,
                 $author1->display_name,
                 $author2->slug,
                 $author2->display_name,

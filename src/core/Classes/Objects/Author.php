@@ -349,6 +349,7 @@ class Author
 
         $properties['link']          = true;
         $properties['user_nicename'] = true;
+        $properties['display_name']  = true;
         $properties['name']          = true;
         $properties['slug']          = true;
         $properties['user_email']    = true;
@@ -409,7 +410,7 @@ class Author
                 if ($this->is_guest()) {
                     $return = abs($this->term_id) * -1;
                 } else {
-                    $return = $this->user_id;
+                    $return = (int)$this->user_id;
                 }
                 break;
 

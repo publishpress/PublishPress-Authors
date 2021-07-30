@@ -48,6 +48,7 @@ trait Settings
     {
         global $wp_rewrite;
 
+        $wp_rewrite->init();
         $wp_rewrite->permalink_structure = $structure;
         $wp_rewrite->flush_rules(true);
     }

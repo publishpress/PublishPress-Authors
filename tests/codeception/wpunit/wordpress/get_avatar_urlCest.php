@@ -1,10 +1,11 @@
 <?php namespace wordpress;
 
 use MultipleAuthors\Classes\Objects\Author;
+use WpunitTester;
 
 class get_avatar_urlCest
 {
-    public function tryToGetTheDefaultAvatarURLForAnAuthorMappedToUserWithoutCustomAvatar(\WpunitTester $I)
+    public function tryToGetTheDefaultAvatarURLForAnAuthorMappedToUserWithoutCustomAvatar(WpunitTester $I)
     {
         $userEmail = sprintf('user_%s@example.com', time());
         $emailHash = md5(strtolower(trim($userEmail)));
@@ -20,7 +21,7 @@ class get_avatar_urlCest
         );
     }
 
-    public function tryToGetTheAvatarURLForAnAuthorMappedToUserWithCustomAvatar(\WpunitTester $I)
+    public function tryToGetTheAvatarURLForAnAuthorMappedToUserWithCustomAvatar(WpunitTester $I)
     {
         $userID = $I->factory('a user')->user->create(['role' => 'author']);
 
@@ -40,7 +41,7 @@ class get_avatar_urlCest
         );
     }
 
-    public function tryToGetTheAvatarURLForAGuestAuthor(\WpunitTester $I)
+    public function tryToGetTheAvatarURLForAGuestAuthor(WpunitTester $I)
     {
         $author = $I->createGuestAuthor();
 

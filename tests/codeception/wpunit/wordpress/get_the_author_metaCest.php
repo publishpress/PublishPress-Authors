@@ -1,12 +1,16 @@
-<?php namespace wordpress;
+<?php
+
+namespace wordpress;
 
 use Codeception\Example;
 use MultipleAuthors\Classes\Objects\Author;
+use MultipleAuthors\Classes\Utils;
+use WpunitTester;
 
 class get_the_author_metaCest
 {
     public function tryToGetTheAuthorTermMetaWhenAuthorIsMappedToUserAndHasTheMetaForTheAuthorTerm(
-        \WpunitTester $I
+        WpunitTester $I
     ) {
         $expected = 'my-aim';
 
@@ -41,7 +45,7 @@ class get_the_author_metaCest
      * @example {"metaKey": "user_description"}
      */
     public function tryToGetTheUserMetaWhenAuthorIsMappedToUserAndDoesntHaveTheMetaForTheAuthorTerm(
-        \WpunitTester $I,
+        WpunitTester $I,
         Example $example
     ) {
         $expectedMetaValue = sprintf('meta_%s', $example['metaKey']);
@@ -71,7 +75,7 @@ class get_the_author_metaCest
      * @example {"metaKey": "instagram"}
      * @example {"metaKey": "user_description"}
      */
-    public function tryToGetAuthorTermMetaWhenAuthorIsGuest(\WpunitTester $I, Example $example)
+    public function tryToGetAuthorTermMetaWhenAuthorIsGuest(WpunitTester $I, Example $example)
     {
         $authorSlug        = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
         $expectedMetaValue = sprintf('meta_%s', $example['metaKey']);
@@ -106,7 +110,7 @@ class get_the_author_metaCest
      * @example {"metaKey": "last_name", "expectedValue": "MyLastName"}
      * @example {"metaKey": "display_name", "expectedValue": "MyDisplayName"}
      */
-    public function tryToGeMetaWhenAuthorIsMappedToUser(\WpunitTester $I, Example $example)
+    public function tryToGeMetaWhenAuthorIsMappedToUser(WpunitTester $I, Example $example)
     {
         $authorSlug               = sprintf('author_%s', rand(1, PHP_INT_MAX));
         $example['expectedValue'] = str_replace('##slug##', $authorSlug, $example['expectedValue']);
@@ -144,7 +148,7 @@ class get_the_author_metaCest
      * @example {"metaKey": "last_name", "expectedValue": "MyLastName"}
      * @example {"metaKey": "display_name", "expectedValue": "##display_name##"}
      */
-    public function tryToGetMetaWhenAuthorIsGuest(\WpunitTester $I, Example $example)
+    public function tryToGetMetaWhenAuthorIsGuest(WpunitTester $I, Example $example)
     {
         $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
         $authorName = strtoupper($authorSlug);
@@ -180,7 +184,7 @@ class get_the_author_metaCest
         );
     }
 
-    public function tryToGetIdForWhenAuthorIsMappedToUser(\WpunitTester $I)
+    public function tryToGetIdForWhenAuthorIsMappedToUser(WpunitTester $I)
     {
         $userID = $I->factory('a new user')->user->create(['role' => 'author']);
         $author = Author::create_from_user($userID);
@@ -194,7 +198,7 @@ class get_the_author_metaCest
         );
     }
 
-    public function tryToGetIdForWhenAuthorIsGuest(\WpunitTester $I)
+    public function tryToGetIdForWhenAuthorIsGuest(WpunitTester $I)
     {
         $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
 
@@ -214,21 +218,15 @@ class get_the_author_metaCest
         );
     }
 
-    public function tryToGetMetaWithoutSpecifyingTheAuthorIDForAuthorMappedToUser(\WpunitTester $I)
+    public function tryToGetMetaWithoutSpecifyingTheAuthorIDForAuthorMappedToUser(WpunitTester $I)
     {
         $I->wantToTest(
             'if get_the_author_meta returns the author meta of the correct author (mapped to user) when we do not provide the author ID'
         );
 
-        global $post, $authordata;
-
-        $postId = $I->factory('a new post')->post->create(
-            [
-                'title' => 'A Fake Post'
-            ]
-        );
-
-        $post = get_post($postId);
+        $postId          = $I->factory('a new post')->post->create();
+        $post            = get_post($postId);
+        $GLOBALS['post'] = $post;
 
         $user1Id           = $I->factory('a new user')->user->create(['role' => 'author']);
         $user              = get_user_by('ID', $user1Id);
@@ -245,13 +243,11 @@ class get_the_author_metaCest
             ]
         );
 
-        $authordata = $author1;
+        Utils::set_post_authors($postId, [$author1, $author2]);
 
-        wp_set_post_terms(
-            $postId,
-            [$author1->term_id, $author2->term_id],
-            'author'
-        );
+        // We need to initialize authordata otherwise the link is always empty.
+        global $authordata;
+        $authordata = get_user_by('ID', $user1Id);
 
         $authorId          = get_the_author_meta('ID');
         $authorDescription = get_the_author_meta('description');
@@ -260,13 +256,11 @@ class get_the_author_metaCest
         $I->assertEquals($user->description, $authorDescription);
     }
 
-    public function tryToGetMetaWithoutSpecifyingTheAuthorIDForGuestAuthor(\WpunitTester $I)
+    public function tryToGetMetaWithoutSpecifyingTheAuthorIDForGuestAuthor(WpunitTester $I)
     {
         $I->wantToTest(
             'if get_the_author_meta returns the author meta of the correct guest author when we do not provide the author ID'
         );
-
-        global $post, $authordata;
 
         $postId = $I->factory('a new post')->post->create(
             [
@@ -274,10 +268,13 @@ class get_the_author_metaCest
             ]
         );
 
-        $post = get_post($postId);
+        $post            = get_post($postId);
+        $GLOBALS['post'] = $post;
 
-        $authorSlug = sprintf('guest_author_%d_%s', 1, rand(1, PHP_INT_MAX));
-        $author1    = Author::create(
+        $user1Id = $I->factory('a new user')->user->create(['role' => 'author']);
+
+        $authorSlug         = sprintf('guest_author_%d_%s', 1, rand(1, PHP_INT_MAX));
+        $author1            = Author::create(
             [
                 'slug'         => $authorSlug,
                 'display_name' => strtoupper($authorSlug),
@@ -294,13 +291,11 @@ class get_the_author_metaCest
             ]
         );
 
-        $authordata = $author1;
+        Utils::set_post_authors($postId, [$author1, $author2]);
 
-        wp_set_post_terms(
-            $postId,
-            [$author1->term_id, $author2->term_id],
-            'author'
-        );
+        // We need to initialize authordata otherwise the link is always empty.
+        global $authordata;
+        $authordata = get_user_by('ID', $user1Id);
 
         $authorId          = get_the_author_meta('ID');
         $authorDescription = get_the_author_meta('description');
