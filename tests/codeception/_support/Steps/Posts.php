@@ -15,7 +15,7 @@ trait Posts
     {
         $author = Author::get_by_term_slug($authorSlug);
 
-        $postId = $this->factory()->post->create(
+        $postId = $this->factory('Creating a new post')->post->create(
             [
                 'post_title'  => $postName,
                 'post_name'   => $postName,
@@ -33,7 +33,7 @@ trait Posts
         $author1 = Author::get_by_term_slug($author1Slug);
         $author2 = Author::get_by_term_slug($author2Slug);
 
-        $postId = $this->factory()->post->create(
+        $postId = $this->factory('Creating a new post')->post->create(
             [
                 'post_title'  => $postName,
                 'post_name'   => $postName,
@@ -50,7 +50,7 @@ trait Posts
     {
         $author = Author::get_by_term_slug($authorSlug);
 
-        $postId = $this->factory()->post->create(
+        $postId = $this->factory('Creating a new post')->post->create(
             [
                 'post_title'  => $postName,
                 'post_name'   => $postName

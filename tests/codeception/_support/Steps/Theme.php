@@ -3,7 +3,6 @@
 namespace Steps;
 
 
-use Codeception\Util\Locator;
 use MultipleAuthors\Classes\Objects\Author;
 
 trait Theme
@@ -26,8 +25,25 @@ trait Theme
         $author = Author::get_by_term_slug($authorSlug);
 
         $expectedAuthorLink = $_ENV['TEST_SITE_WP_URL'] . '/?author=' . $author->ID;
-        $authorLink = $this->grabAttributeFrom('.posted-by .byline a', 'href');
+        $authorLink         = $this->grabAttributeFrom('.posted-by .byline a', 'href');
 
         $this->assertEquals($expectedAuthorLink, $authorLink);
     }
+
+    /**
+     * @Then I see the author box for author :authorSlug after the content
+     */
+    public function iSeeAuthorBoxForAuthorAfterContent($authorSlug)
+    {
+        $this->seeElement('.multiple-authors-target-the-content li.author_' . $authorSlug);
+    }
+
+    /**
+     * @Then I see the author name for author :authorName in the box after the content
+     */
+    public function iSeeAuthorNameInTheBoxAfterContent($authorName)
+    {
+        $this->see($authorName, '.multiple-authors-target-the-content li .multiple-authors-name a.author');
+    }
 }
+
