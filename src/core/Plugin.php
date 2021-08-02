@@ -115,6 +115,9 @@ class Plugin
         // Fix the author page.
         // Use posts_selection since it's after WP_Query has built the request and before it's queried any posts
         add_filter('posts_selection', [$this, 'fix_query_for_author_page']);
+        add_action('the_post', [$this, 'fix_post'], 10);
+
+        add_filter('the_author', [$this, 'filter_the_author']);
 
         add_action(
             'init',
@@ -1145,6 +1148,62 @@ class Plugin
         }
 
         return $shortCircuit;
+    }
+
+    /**
+     * This method is an attempt to set the "correct" author for the current post.
+     * Third party themes that are not customized to support our plugins will use
+     * "get_the_author" and other methods that we can't hook to insert guest author
+     * data. So we try to do it here.
+     *
+     * @param WP_Post $post
+     *
+     * @return WP_Post
+     */
+    public function fix_post(WP_Post $post)
+    {
+        return $post;
+        $legacyPlugin = Factory::getLegacyPlugin();
+
+        if (empty($legacyPlugin) || !isset($legacyPlugin->multiple_authors) || !Utils::is_post_type_enabled()) {
+            return $post;
+        }
+
+        if (defined('REST_REQUEST') && REST_REQUEST) {
+            return $post;
+        }
+
+        $authors = get_multiple_authors($post);
+
+        if (empty($authors)) {
+            return $post;
+        }
+
+        $firstAuthor = $authors[0];
+
+        global $authordata;
+
+        if ($firstAuthor->is_guest()) {
+            // WP 5.8 forced us to stopping overriding the $authordata->ID with the guest author term ID, issue #463.
+//            $authordata->display_name  = $firstAuthor->display_name;
+//            $authordata->user_nicename = $firstAuthor->user_nicename;
+        } elseif ($authordata->ID !== (int)$firstAuthor->user_id) {
+            $authordata = $firstAuthor->get_user_object();
+        }
+
+        return $post;
+    }
+
+    public function filter_the_author($authorDisplayName)
+    {
+        $post = get_post();
+
+        $authors = get_multiple_authors($post, false);
+        if (empty($authors)) {
+            return $authorDisplayName;
+        }
+
+        return $authors[0]->display_name;
     }
 
     /**

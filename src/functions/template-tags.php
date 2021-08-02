@@ -18,8 +18,7 @@ if (!function_exists('get_multiple_authors')) {
      * Get all authors for a post.
      *
      * @param WP_Post|int|null $post Post to fetch authors for. Defaults to global post.
-     * @param bool $filter_the_author If false, will not trigger the filter for the author, to avoid infinite
-     *                                            loop.
+     * @param bool $filter_the_author_deprecated Deprecated. Removed for fixing infinity loop issues.
      * @param bool $archive If true, will ignore the $post param and return the current author
      *                                            specified by the "author_name" URL param - for author pages.
      * @param bool $ignoreCache This cache cause sometimes errors in data received especially
@@ -29,7 +28,7 @@ if (!function_exists('get_multiple_authors')) {
      *
      * @return array Array of Author objects, a single WP_User object, or empty.
      */
-    function get_multiple_authors($post = 0, $filter_the_author = true, $archive = false, $ignoreCache = false)
+    function get_multiple_authors($post = 0, $filter_the_author_deprecated = false, $archive = false, $ignoreCache = false)
     {
         global $wpdb;
 
@@ -45,7 +44,7 @@ if (!function_exists('get_multiple_authors')) {
 
         $postId = (int)$post;
 
-        $cacheKey = $postId . ':' . ($filter_the_author ? 1 : 0) . ':' . ($archive ? 1 : 0);
+        $cacheKey = $postId . ':' . ($filter_the_author_deprecated ? 1 : 0) . ':' . ($archive ? 1 : 0);
 
         $authorName = '';
         if ($archive) {
@@ -117,10 +116,6 @@ if (!function_exists('get_multiple_authors')) {
 
                     $author = Author::get_by_term_id($termId);
 
-                    if ($filter_the_author && !is_wp_error($author)) {
-                        $author->display_name = apply_filters('the_author', $author->display_name);
-                    }
-
                     $authors[] = $author;
                 }
             } else {
@@ -137,10 +132,6 @@ if (!function_exists('get_multiple_authors')) {
 
                         if (empty($author)) {
                             $author = Author::create_from_user($user);
-
-                            if ($filter_the_author && !is_wp_error($author)) {
-                                $author->display_name = apply_filters('the_author', $author->display_name);
-                            }
                         }
 
                         Utils::set_post_authors($postId, [$author]);
@@ -208,9 +199,7 @@ if (!function_exists('multiple_authors_get_all_authors')) {
 
         $authors = [];
         foreach ($terms as $term) {
-            $author               = Author::get_by_term_id($term->term_id);
-            $author->display_name = apply_filters('the_author', $author->display_name);
-            $authors[]            = $author;
+            $authors[] = Author::get_by_term_id($term->term_id);
         }
 
         return $authors;
@@ -444,11 +433,10 @@ if (!function_exists('multiple_authors_posts_links_single')) {
             'href'        => get_author_posts_url($author->ID, $author->user_nicename),
             'rel'         => 'author',
             'title'       => sprintf(
-                __('Posts by %s', 'publishpress-authors'),
-                apply_filters('the_author', $author->display_name)
+                __('Posts by %s', 'publishpress-authors'), $author->display_name
             ),
             'class'       => 'author url fn',
-            'text'        => apply_filters('the_author', $author->display_name),
+            'text'        => $author->display_name,
             'after_html'  => '',
         ];
         $args        = apply_filters('coauthors_posts_link', $args, $author);
@@ -833,10 +821,10 @@ if (!function_exists('get_the_authors_posts_links')) {
                     // translators: Posts by a given author.
                     'title'       => sprintf(
                         __('Posts by %1$s', 'publishpress-authors'),
-                        apply_filters('the_author', $author->display_name)
+                        $author->display_name
                     ),
                     'class'       => 'author url fn',
-                    'text'        => apply_filters('the_author', $author->display_name),
+                    'text'        => $author->display_name,
                     'after_html'  => '',
                 ];
                 /**
