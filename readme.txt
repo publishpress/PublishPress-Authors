@@ -114,11 +114,17 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= [3.14.2] - 21 July 2021 =
+= [3.14.3] - 01 Aug 2021 =
+
+* Fixed: Add class "bypostauthor" for secondary authors on comments, #154;
+* Fixed: Fixed the author byline on 3rd party themes in the front-end, #473;
+* Added: Added CSS class with the author slug to each author in the default layouts;
+
+= [3.14.2] - 21 Jul 2021 =
 
 * Fixed: Fix error on block editor for posts with guest authors, #463;
 
-= [3.14.1] - 20 July 2021 =
+= [3.14.1] - 20 Jul 2021 =
 
 * Changed: Invert position of Edit User and Edit Author Profile links in the term actions, #453;
 * Fixed: Fix sanitization of the user_id before adding it to a query;
