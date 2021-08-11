@@ -119,25 +119,23 @@ if (!function_exists('get_multiple_authors')) {
                     $authors[] = $author;
                 }
             } else {
-                // Fallback to the post author, creating an author term
+                // Fallback to the post author, fixing the post and author relationship
                 $post = get_post($postId);
 
                 $author = Author::get_by_user_id($post->post_author);
 
                 if (empty($author) || is_wp_error($author)) {
-                    $user = get_user_by('id', $post->post_author);
-
-                    if ($user) {
-                        $author = Author::get_by_user_id($user->ID);
-
-                        if (empty($author)) {
-                            $author = Author::create_from_user($user);
-                        }
-
-                        Utils::set_post_authors($postId, [$author]);
-                    } else {
-                        return [];
+                    if (defined('WP_DEBUG') && WP_DEBUG) {
+                        error_log(
+                            sprintf(
+                                '[PublishPress Authors] Post %d has user %d as author, but the user has not an Author term. Can\'t fix the term relationship.',
+                                $postId,
+                                $post->post_author
+                            )
+                        );
                     }
+                } else {
+                    Utils::set_post_authors($postId, [$author]);
                 }
 
                 $authors = [$author];
