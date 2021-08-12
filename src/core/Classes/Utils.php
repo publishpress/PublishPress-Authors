@@ -216,7 +216,7 @@ class Utils
         $functionSetPostAuthor = function($postId, $authorId) {
             global $wpdb;
 
-            // Avoid to corrupt the post_author with an empty value.
+            // Avoid corrupting the post_author with an empty value.
             if (empty((int)$authorId)) {
                 return false;
             }
@@ -519,7 +519,6 @@ class Utils
 
         $post_type = $post->post_type;
 
-        // TODO: need to fix this; shouldn't just say no if don't have post_type
         if (empty($post_type)) {
             return false;
         }

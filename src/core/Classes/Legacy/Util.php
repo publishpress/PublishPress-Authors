@@ -9,6 +9,8 @@
 
 namespace MultipleAuthors\Classes\Legacy;
 
+use MultipleAuthors\Factory;
+
 class Util
 {
     /**
@@ -115,6 +117,13 @@ class Util
         }
 
         return $post_types;
+    }
+
+    public static function get_selected_post_types()
+    {
+        $legacyPlugin = Factory::getLegacyPlugin();
+
+        return self::get_post_types_for_module($legacyPlugin->modules->multiple_authors);
     }
 
     /**

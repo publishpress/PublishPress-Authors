@@ -1,13 +1,29 @@
-<?php namespace core\Classes\Objects;
+<?php
+
+namespace core\Classes\Objects;
 
 use Codeception\Example;
 use MultipleAuthors\Classes\Objects\Author;
 use WpunitTester;
 
-use function add_filter;
-
 class get_multiple_authorsCest
 {
+    private function serializeArrayOfAuthors($authorsArray)
+    {
+        $data = [];
+
+        foreach ($authorsArray as $author) {
+            $data[] = [
+                'term_id'      => $author->term_id,
+                'user_id'      => $author->user_id,
+                'display_name' => $author->display_name,
+                'slug'         => $author->slug,
+            ];
+        }
+
+        return maybe_serialize($data);
+    }
+
     public function testGetMultipleAuthors_WithPostAsObject_ReturnListOfAuthors(WpunitTester $I)
     {
         $userId0 = $I->factory('create user0')->user->create();
@@ -231,15 +247,50 @@ class get_multiple_authorsCest
         $I->assertInstanceOf('MultipleAuthors\\Classes\\Objects\\Author', $authors[0]);
     }
 
-    public function testGetMultipleAuthors_WithNoAuthorRelationshipForPostAndNoAuthorTerm_shouldCreateTheAuthorBasedOnUser(WpunitTester $I)
-    {
-        $userId = $I->factory('create user0')->user->create();
+    public function testGetMultipleAuthors_WithNoAuthorRelationshipForPostAndNoAuthorTermForNotSelectedPostType_shouldNotCreateTheAuthorBasedOnUser(
+        WpunitTester $I
+    ) {
+        $I->setPluginSettingsPostTypes(['post']);
+        $I->setPluginSettingsAuthorForNewUsers([]);
 
-        $postId = $I->factory('create post0')->post->create(
-            ['post_type' => 'post', 'post_author' => $userId]
-        );
+        $userId = $I->haveAUser();
+        $postId = $I->haveAPageForUser($userId);
 
-        $authors = get_multiple_authors($postId);
+        $I->makeSurePostDoesntHaveAuthorPosts($postId);
+
+        $I->getMultipleAuthorsForPost($postId);
+
+        $author = $I->getAuthorByUserId($userId);
+
+        $I->assertFalse($author);
+    }
+
+    public function testGetMultipleAuthors_WithNoAuthorRelationshipForPostAndNoAuthorTermForNotSelectedPostType_shouldReturnEmptyArray(
+        WpunitTester $I
+    ) {
+        $I->setPluginSettingsPostTypes(['post']);
+        $I->setPluginSettingsAuthorForNewUsers([]);
+
+        $userId = $I->haveAUser();
+        $postId = $I->haveAPageForUser($userId);
+
+        $I->makeSurePostDoesntHaveAuthorPosts($postId);
+
+        $authors = $I->getMultipleAuthorsForPost($postId);
+
+        $I->assertEmpty($authors);
+    }
+
+    public function testGetMultipleAuthors_WithNoAuthorRelationshipForPostAndNoAuthorTermForSelectedPostType_shouldCreateTheAuthorBasedOnUser(
+        WpunitTester $I
+    ) {
+        $userId = $I->haveAUser();
+        $postId = $I->haveAPostForUser($userId);
+        $I->setPluginSettingsPostTypes(['post']);
+
+        $authors = $I->getMultipleAuthorsForPost($postId);
+
+        $I->assertNotEmpty($authors);
 
         $firstAuthor = $authors[0];
 
@@ -249,38 +300,20 @@ class get_multiple_authorsCest
         $I->assertNotEmpty($firstAuthor->display_name);
     }
 
-    public function testGetMultipleAuthors_WithNoAuthorRelationshipForPostAndNoAuthorTerm_shouldCreateTheAuthorRelationshipForThePost(WpunitTester $I)
-    {
-        $userId = $I->factory('create user0')->user->create();
+    public function testGetMultipleAuthors_WithNoAuthorRelationshipForPostAndNoAuthorTerm_shouldCreateTheAuthorRelationshipForThePost(
+        WpunitTester $I
+    ) {
+        $userId = $I->haveAUser();
+        $postId = $I->haveAPostForUser($userId);
+        $I->setPluginSettingsPostTypes(['post']);
 
-        $postId = $I->factory('create post0')->post->create(
-            ['post_type' => 'post', 'post_author' => $userId]
-        );
+        $authors = $I->getMultipleAuthorsForPost($postId);
 
-        $authors = get_multiple_authors($postId);
-
+        $postTerms   = wp_get_post_terms($postId, 'author');
         $firstAuthor = $authors[0];
 
-        $postTerms = wp_get_post_terms($postId, 'author');
-
         $I->assertNotEmpty(count($postTerms), 'There is no author terms for the post');
-    }
-
-
-
-    protected function serializeArrayOfAuthors($authorsArray)
-    {
-        $data = [];
-
-        foreach ($authorsArray as $author) {
-            $data[] = [
-                'term_id'      => $author->term_id,
-                'user_id'      => $author->user_id,
-                'display_name' => $author->display_name,
-                'slug'         => $author->slug,
-            ];
-        }
-
-        return maybe_serialize($data);
+        $I->assertNotEmpty($authors);
+        $I->assertInstanceOf('MultipleAuthors\\Classes\\Objects\\Author', $firstAuthor);
     }
 }
