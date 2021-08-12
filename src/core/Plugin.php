@@ -1505,6 +1505,7 @@ class Plugin
         if (!$obj || 'revision' == $obj->name) {
             return $allcaps;
         }
+        //@todo: check if the post type is activated to the plugin. If not, just return $allcaps.
 
         $caps_to_modify = [
             $obj->cap->edit_post,

@@ -9,6 +9,7 @@
  */
 
 use MultipleAuthors\Classes\Authors_Iterator;
+use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Classes\Utils;
 use MultipleAuthors\Factory;
@@ -44,6 +45,8 @@ if (!function_exists('get_multiple_authors')) {
 
         $postId = (int)$post;
 
+        //@todo: Filter the post type and only return the list if the post type is enabled.
+
         $cacheKey = $postId . ':' . ($filter_the_author_deprecated ? 1 : 0) . ':' . ($archive ? 1 : 0);
 
         $authorName = '';
@@ -59,6 +62,8 @@ if (!function_exists('get_multiple_authors')) {
             $authors = [];
 
             if (!$archive) {
+
+                //@todo: move this for before the cache check
                 if (empty($postId)) {
                     $post = get_post();
 
@@ -119,28 +124,27 @@ if (!function_exists('get_multiple_authors')) {
                     $authors[] = $author;
                 }
             } else {
-                // Fallback to the post author, creating an author term
+                // Fallback to the post author, fixing the post and author relationship
                 $post = get_post($postId);
 
                 $author = Author::get_by_user_id($post->post_author);
 
                 if (empty($author) || is_wp_error($author)) {
-                    $user = get_user_by('id', $post->post_author);
+                    $postTypes = Util::get_selected_post_types();
 
-                    if ($user) {
-                        $author = Author::get_by_user_id($user->ID);
-
-                        if (empty($author)) {
-                            $author = Author::create_from_user($user);
-                        }
-
-                        Utils::set_post_authors($postId, [$author]);
+                    if (in_array($post->post_type, $postTypes)) {
+                        $author = Author::create_from_user($post->post_author);
+                        $authors = [$author];
                     } else {
                         return [];
                     }
+                } else {
+                    $authors = [$author];
                 }
 
-                $authors = [$author];
+                if (!empty($authors)) {
+                    Utils::set_post_authors($postId, $authors);
+                }
             }
 
             wp_cache_set($cacheKey, $authors, 'get_multiple_authors:authors');
