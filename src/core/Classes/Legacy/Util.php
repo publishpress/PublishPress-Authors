@@ -108,7 +108,7 @@ class Util
 
         if (isset($module->options->post_types) && is_array($module->options->post_types)) {
             foreach ($module->options->post_types as $post_type => $value) {
-                if ('on' == $value) {
+                if ('on' === $value) {
                     $post_types[] = $post_type;
                 }
             }
