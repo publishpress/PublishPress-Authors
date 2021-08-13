@@ -63,4 +63,34 @@ trait Users
 
         $this->checkOption('#user_' . $user->ID);
     }
+
+    /**
+     * @When I create a new user :userName with role :userRole
+     */
+    public function iCreateNewUserWithRole($userName, $userRole)
+    {
+        $this->amOnAdminPage('/user-new.php');
+        $this->fillField('#user_login', $userName);
+        $this->fillField('#email', "{$userName}@example.com");
+        $this->selectOption('#role', $userRole);
+        $this->click('#createusersub');
+    }
+
+    /**
+     * @Given I submit the user form as :userName and :userEmail
+     */
+    public function iSubmitUserForm($userName, $userEmail)
+    {
+        $this->fillField('#user_login', $userName);
+        $this->fillField('#user_email', $userEmail);
+        $this->click('#wp-submit');
+    }
+
+    /**
+     * @Given I log out
+     */
+    public function iLogOut()
+    {
+        $this->logOut();
+    }
 }
