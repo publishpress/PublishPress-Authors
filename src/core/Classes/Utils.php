@@ -324,12 +324,16 @@ class Utils
                     $author = Author::get_by_term_id($author);
                 }
 
-                $names[] = $author->name;
+                if (is_object($author)) {
+                    $names[] = $author->name;
+                }
             }
 
-            $names = implode(', ', $names);
+            if (!empty($names)) {
+                $names = implode(', ', $names);
 
-            update_post_meta($post_id, $metadata, $names);
+                update_post_meta($post_id, $metadata, $names);
+            }
         }
     }
 
