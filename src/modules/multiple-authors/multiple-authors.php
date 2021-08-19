@@ -1871,11 +1871,13 @@ if (!class_exists('MA_Multiple_Authors')) {
                     $post_id = (int)$args[0];
 
                     // Check if the user is an author for the current post
-                    if (is_multiple_author_for_post($user_id, $post_id)) {
-                        foreach ($caps as &$item) {
-                            // If he is an author for this post we should only check edit_posts.
-                            if ($item === 'edit_others_posts') {
-                                $item = 'edit_posts';
+                    if ($post_id > 0) {
+                        if (is_multiple_author_for_post($user_id, $post_id)) {
+                            foreach ($caps as &$item) {
+                                // If he is an author for this post we should only check edit_posts.
+                                if ($item === 'edit_others_posts') {
+                                    $item = 'edit_posts';
+                                }
                             }
                         }
                     }

@@ -7,6 +7,7 @@ namespace Helper;
 
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Classes\Utils;
+use MultipleAuthors\Factory;
 
 class Wpunit extends \Codeception\Module
 {
@@ -30,12 +31,46 @@ class Wpunit extends \Codeception\Module
 
         $authors = [];
         for ($currentNumber = 0; $currentNumber < $number; $currentNumber++) {
-            $userId = $wpLoader->factory('create user' . $currentNumber)->user->create();
+            $userId = $wpLoader->factory('a new user' . $currentNumber)->user->create();
 
             $authors[$currentNumber] = Author::create_from_user($userId);
         }
 
         return $authors;
+    }
+
+    public function haveAUser()
+    {
+        $wpLoader = $this->getModule('WPLoader');
+
+        return $wpLoader->factory('a new user')->user->create();
+    }
+
+    public function setPluginSettingsPostTypes($postTypes)
+    {
+        $legacyPlugin = Factory::getLegacyPlugin();
+
+        $legacyPlugin->modules->multiple_authors->options->post_types = [];
+        foreach ($postTypes as $postType) {
+            $legacyPlugin->modules->multiple_authors->options->post_types[$postType] = 'on';
+        }
+    }
+
+    public function setPluginSettingsAuthorForNewUsers($roles)
+    {
+        $legacyPlugin = Factory::getLegacyPlugin();
+
+        $legacyPlugin->modules->multiple_authors->options->author_for_new_users = $roles;
+    }
+
+    public function getMultipleAuthorsForPost($postId)
+    {
+        return get_multiple_authors($postId);
+    }
+
+    public function getAuthorByUserId($userId)
+    {
+        return Author::get_by_user_id($userId);
     }
 
     public function haveGuestAuthors($number, $metaData = null)
@@ -72,13 +107,13 @@ class Wpunit extends \Codeception\Module
         $ids = [];
 
         for ($i = 0; $i < $number; $i++) {
-            $userId = $wpLoader->factory('create a new user')->user->create(
+            $userId = $wpLoader->factory('a new user')->user->create(
                 [
                     'role' => 'author',
                 ]
             );
 
-            $ids[] = $wpLoader->factory('create a new post')->post->create(
+            $ids[] = $wpLoader->factory('a new post')->post->create(
                 [
                     'post_author' => $userId,
                     'post_type'   => $postType,
@@ -93,7 +128,25 @@ class Wpunit extends \Codeception\Module
     {
         $wpLoader = $this->getModule('WPLoader');
 
-        return $wpLoader->factory('create a new post')->post->create();
+        return $wpLoader->factory('a new post')->post->create();
+    }
+
+    public function haveAPageForUser($userId)
+    {
+        $wpLoader = $this->getModule('WPLoader');
+
+        return $wpLoader->factory('a new page')->post->create(
+            ['post_type' => 'page', 'post_author' => $userId]
+        );
+    }
+
+    public function haveAPostForUser($userId)
+    {
+        $wpLoader = $this->getModule('WPLoader');
+
+        return $wpLoader->factory('a new post')->post->create(
+            ['post_type' => 'post', 'post_author' => $userId]
+        );
     }
 
     public function getPostAuthors($postId)
@@ -198,6 +251,18 @@ class Wpunit extends \Codeception\Module
         }
 
         return true;
+    }
+
+    public function makeSurePostDoesntHaveAuthorPosts($postId)
+    {
+        $authors = wp_get_post_terms($postId, 'author');
+        $authorTermIDs = [];
+
+        foreach ($authors as $author) {
+            $authorTermIDs[] = $author->term_id;
+        }
+
+        wp_remove_object_terms($postId, $authorTermIDs, 'author');
     }
 
     public function haveAuthorTermsForPosts($postIds)

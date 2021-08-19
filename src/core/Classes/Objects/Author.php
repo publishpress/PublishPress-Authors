@@ -760,11 +760,12 @@ class Author
      *
      * @return Author|false
      */
-    public static function get_by_id( $id ) {
-		if ( intval( $id ) > -1 ) {
-            return self::get_by_user_id( $id );
+    public static function get_by_id($id)
+    {
+        if (intval($id) > -1) {
+            return self::get_by_user_id($id);
         }
-        return self::get_by_term_id( $id );
+        return self::get_by_term_id($id);
     }
 
 }

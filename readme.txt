@@ -6,8 +6,8 @@ Author URI: https://publishpress.com
 Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
-Tested up to: 5.7
-Stable tag: 3.14.3
+Tested up to: 5.8
+Stable tag: 3.14.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -113,6 +113,14 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [3.14.4] - 19 Aug 2021 =
+
+* Fixed: Fix author profiles that are automatically created for users that are not on the selected user roles, #464;
+* Fixed: Fix authors not created when registered from the frontend for the selected user roles, #420;
+* Fixed: Fix guest authors compatibility with YoastSEO archive pages and the "robots" tag, #471;
+* Fixed: Fix PHP notice: Trying to get property 'name' of non-object in Utils.php, #485;
+* Fixed: Fix PHP notice: Trying to access array offset on value of type bool in class-wp-list-util.php, #486;
 
 = [3.14.3] - 01 Aug 2021 =
 

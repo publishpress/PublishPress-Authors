@@ -156,6 +156,12 @@ class Plugin
             ['MultipleAuthors\\Classes\\Content_Model', 'action_parse_request']
         );
 
+        add_action(
+            'user_register',
+            ['MultipleAuthors\\Classes\\Author_Editor', 'action_user_register'],
+            20
+        );
+
         // Hide the core Author field for the selected post types.
         add_action('init', [Post_Editor::class, 'remove_core_author_field'], 9999);
 
@@ -209,11 +215,6 @@ class Plugin
             add_action(
                 'author_edit_form_fields',
                 ['MultipleAuthors\\Classes\\Author_Editor', 'action_author_edit_form_fields']
-            );
-            add_action(
-                'user_register',
-                ['MultipleAuthors\\Classes\\Author_Editor', 'action_user_register'],
-                20
             );
             add_action(
                 'author_term_new_form_tag',
@@ -1505,6 +1506,7 @@ class Plugin
         if (!$obj || 'revision' == $obj->name) {
             return $allcaps;
         }
+        //@todo: check if the post type is activated to the plugin. If not, just return $allcaps.
 
         $caps_to_modify = [
             $obj->cap->edit_post,

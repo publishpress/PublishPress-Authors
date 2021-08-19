@@ -51,13 +51,18 @@ class Query
         }
 
         $author = Utils::getUserBySlug($author_name);
+        $is_guest = false;
 
         if (empty($author)) {
             $authorTerm = get_term_by('slug', $author_name, 'author');
 
             if (is_object($authorTerm)) {
                 $author = Author::get_by_term_id($authorTerm->term_id);
+
+                $is_guest = $author->is_guest();
             }
+        } else {
+            $is_guest = true;
         }
 
         global $authordata;
@@ -77,6 +82,8 @@ class Query
 
             $authordata = null;
         }
+
+        $wp_query->set('is_guest', $is_guest);
     }
 
     /**

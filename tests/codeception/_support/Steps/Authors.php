@@ -47,4 +47,20 @@ trait Authors
         $this->waitForElement('div.post-author-selector');
         $this->seeElementInDOM('div.post-author-selector');
     }
+
+    /**
+     * @Then I don't see user :userName as author in the list
+     */
+    public function iDontSeeUserAsAuthor($userName)
+    {
+        $this->dontSeeElement('a.row-title[aria-label="' . $userName . '"]');
+    }
+
+    /**
+     * @Then I see user :userName as author in the list
+     */
+    public function iSeeUserAsAuthor($userName)
+    {
+        $this->seeElement('a.row-title[aria-label="' . $userName . '"]');
+    }
 }
