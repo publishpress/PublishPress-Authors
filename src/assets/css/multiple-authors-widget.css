@@ -120,11 +120,6 @@
     vertical-align: middle;
 }
 
-.pp-multiple-authors-layout-boxed p,
-.pp-multiple-authors-layout-centered p {
-    font-size: 0.85em;
-}
-
 .pp-multiple-authors-layout-boxed .ppma-links {
     position: absolute;
     top: 10px;
