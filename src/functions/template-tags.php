@@ -127,6 +127,11 @@ if (!function_exists('get_multiple_authors')) {
                 // Fallback to the post author, fixing the post and author relationship
                 $post = get_post($postId);
 
+                // TODO: Should we really just fail silently? Check WP_DEBUG and add a log error message.
+                if (empty($post) || is_wp_error($post)) {
+                    return [];
+                }
+
                 $author = Author::get_by_user_id($post->post_author);
 
                 if (empty($author) || is_wp_error($author)) {
