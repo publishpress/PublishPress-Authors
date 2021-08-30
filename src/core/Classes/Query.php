@@ -10,6 +10,7 @@
 namespace MultipleAuthors\Classes;
 
 use MultipleAuthors\Classes\Objects\Author;
+use MultipleAuthors\Factory;
 
 /**
  * Modifications to the main query, and helper query methods
@@ -21,7 +22,7 @@ use MultipleAuthors\Classes\Objects\Author;
 class Query
 {
     /**
-     * Fix for author pages 404ing or not properly displaying on author pages
+     * Fix for author pages 404ing or not properly displaying on author pages, or queries filtering posts by author.
      *
      * If an author has no posts, we only want to force the queried object to be
      * the author if they're a member of the blog.
@@ -36,7 +37,7 @@ class Query
             global $wp_query;
         }
 
-        if (isset($wp_query->query['post_type'])  && $wp_query->query['post_type'] === 'ppmacf_field') {
+        if (isset($wp_query->query['post_type']) && $wp_query->query['post_type'] === 'ppmacf_field') {
             return;
         }
 
@@ -50,13 +51,16 @@ class Query
         }
 
         $author = Utils::getUserBySlug($author_name);
+        $is_guest = false;
 
         if (empty($author)) {
-            $authorTerm = get_term_by('slug', $author_name, 'author');
+            $author = Author::get_by_term_slug($author_name);
 
-            if (is_object($authorTerm)) {
-                $author = Author::get_by_term_id($authorTerm->term_id);
+            if (is_object($author)) {
+                $is_guest = $author->is_guest();
             }
+        } else {
+            $is_guest = true;
         }
 
         global $authordata;
@@ -76,6 +80,8 @@ class Query
 
             $authordata = null;
         }
+
+        $wp_query->set('is_guest', $is_guest);
     }
 
     /**
@@ -86,7 +92,7 @@ class Query
      *
      * @return string
      */
-    public static function filter_posts_where($where, $query)
+    public static function filter_author_posts_where($where, $query)
     {
         global $wpdb;
 
@@ -106,9 +112,9 @@ class Query
         if (empty($author_name)) {
             $author_id = (int)$query->get('author');
 
-            $author = Utils::getUserBySlug($author_name);
+            $author = Author::get_by_id($author_id);
 
-            if (!$author_id || !$author) {
+            if (!$author) {
                 return $where;
             }
 
@@ -144,7 +150,9 @@ class Query
             -1
         );
 
-        return $where;
+        $where = static::add_custom_post_types_to_query($where);
+
+        return apply_filters('publishpress_authors_filter_posts_list_where', $where, $query, $term);
     }
 
     /**
@@ -211,7 +219,7 @@ class Query
      *
      * @return string
      */
-    public static function filter_posts_list_where($where, $query)
+    public static function filter_admin_posts_list_where($where, $query)
     {
         global $wpdb;
 
@@ -232,10 +240,15 @@ class Query
             return $where;
         }
 
+
         if (is_a($query->queried_object, 'WP_User')) {
             $author = Author::get_by_user_id($query->queried_object_id);
         } else {
             $author = $query->queried_object;
+
+            if (!is_a($author, Author::class)) {
+                return $where;
+            }
         }
 
         if (!is_object($author) || is_wp_error($author)) {
@@ -245,11 +258,56 @@ class Query
         $terms_implode = '(' . $wpdb->term_taxonomy . '.taxonomy = "author" AND ' . $wpdb->term_taxonomy . '.term_id = \'' . $author->getTerm()->term_id . '\') ';
 
         $where = preg_replace(
-            '/\(?\b(?:' . $wpdb->posts . '\.)?post_author\s*(?:=|IN)\s*\(?(\d+)\)?/',
+            '/\(?\b(?:' . $wpdb->posts . '\.)?post_author\s*(?:=|IN|NOT IN)\s*\(?(\d+)\)?/',
             '(' . ' ' . $terms_implode . ')',
             $where,
             -1
         );
+
+        return apply_filters('publishpress_authors_filter_posts_list_where', $where, $query, $author);
+    }
+
+    public static function getSelectedPostTypesForAuthorsPage()
+    {
+        $legacyPlugin  = Factory::getLegacyPlugin();
+        $moduleOptions = $legacyPlugin->multiple_authors->module->options;
+
+        $enabledPostTypes                = Utils::get_enabled_post_types();
+        $selectedPostTypesForAuthorsPage = apply_filters('publishpress_authors_posts_query_post_types', []);
+
+        if (empty($selectedPostTypesForAuthorsPage)) {
+            foreach ($moduleOptions->author_page_post_types as $postType => $status) {
+                if ($status !== 'on') {
+                    continue;
+                }
+
+                if (in_array($postType, $enabledPostTypes)) {
+                    $selectedPostTypesForAuthorsPage[] = esc_sql($postType);
+                }
+            }
+
+            return $selectedPostTypesForAuthorsPage;
+        }
+
+        return [];
+    }
+
+    private static function add_custom_post_types_to_query($where)
+    {
+        $legacyPlugin  = Factory::getLegacyPlugin();
+        $moduleOptions = $legacyPlugin->multiple_authors->module->options;
+
+        if (!isset($moduleOptions->author_page_post_types)) {
+            return $where;
+        }
+
+        $selectedPostTypesForAuthorsPage = static::getSelectedPostTypesForAuthorsPage();
+
+        if (!empty($selectedPostTypesForAuthorsPage)) {
+            $postTypesString = implode('\', \'', $selectedPostTypesForAuthorsPage);
+
+            return str_replace(".post_type = 'post'", ".post_type IN ('" . $postTypesString . "')", $where);
+        }
 
         return $where;
     }

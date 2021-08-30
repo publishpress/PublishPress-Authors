@@ -96,6 +96,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'force_empty_author'           => 'no',
                     'username_in_search_field'     => 'no',
                     'default_author_for_new_posts' => null,
+                    'author_page_post_types'       => [],
                 ],
                 'options_page'         => false,
                 'autoload'             => true,
@@ -182,6 +183,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             if (!is_admin()) {
                 add_filter('body_class', [$this, 'filter_body_class']);
+                add_filter('comment_class', [$this, 'filterCommentClass'], 10, 5);
             }
 
             // Fix upload permissions for multiple authors.
@@ -204,6 +206,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             // PublishPress compatibility hooks.
             add_filter('publishpress_search_authors_results_pre_search', [$this, 'publishpressSearchAuthors'], 10, 2);
             add_filter('publishpress_author_can_edit_posts', [$this, 'publishpressAuthorCanEditPosts'], 10, 2);
+            add_filter('publishpress_calendar_allow_multiple_authors', '__return_true');
             add_filter(
                 'publishpress_calendar_after_create_post',
                 [$this, 'publishpressCalendarAfterCreatePost'],
@@ -225,10 +228,10 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_filter('get_the_author_display_name', [$this, 'filter_author_metadata_display_name'], 10, 2);
             add_filter('get_the_author_first_name', [$this, 'filter_author_metadata_first_name'], 10, 2);
             add_filter('get_the_author_last_name', [$this, 'filter_author_metadata_last_name'], 10, 2);
-            add_filter('get_the_author_ID', [$this, 'filter_author_metadata_ID'], 10, 2);
+            add_filter('get_the_author_ID', [$this, 'filter_author_metadata_ID'], 10, 3);
             add_filter('get_the_author_headline', [$this, 'filter_author_metadata_headline'], 10, 2);
             add_filter('get_the_author_aim', [$this, 'filter_author_metadata_aim'], 10, 2);
-            add_filter('get_the_author_description', [$this, 'filter_author_metadata_description'], 10, 2);
+            add_filter('get_the_author_description', [$this, 'filter_author_metadata_description'], 10, 3);
             add_filter('get_the_author_jabber', [$this, 'filter_author_metadata_jabber'], 10, 2);
             add_filter('get_the_author_nickname', [$this, 'filter_author_metadata_nickname'], 10, 2);
             add_filter('get_the_author_user_description', [$this, 'filter_author_metadata_user_description'], 10, 2);
@@ -461,6 +464,14 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
 
             add_settings_field(
+                'author_page_post_types',
+                __('Post types to display on the author\'s profile page:', 'publishpress-authors'),
+                [$this, 'settings_author_page_post_types_option'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_general'
+            );
+
+            add_settings_field(
                 'author_for_new_users',
                 __(
                     'Automatically create author profiles:',
@@ -600,6 +611,53 @@ if (!class_exists('MA_Multiple_Authors')) {
             $legacyPlugin = Factory::getLegacyPlugin();
 
             $legacyPlugin->settings->helper_option_custom_post_type($this->module);
+        }
+
+        public function settings_author_page_post_types_option()
+        {
+            $post_types = [
+                'post' => __('Posts'),
+                'page' => __('Pages'),
+            ];
+            $custom_post_types = $this->get_supported_post_types_for_module();
+            if (count($custom_post_types)) {
+                foreach ($custom_post_types as $custom_post_type => $args) {
+                    $post_types[$custom_post_type] = $args->label;
+                }
+            }
+
+            $checkedOption = is_array($this->module->options->author_page_post_types) ?
+                array_filter(
+                    $this->module->options->author_page_post_types,
+                    function ($value, $key) {
+                        return $value === 'on';
+                    },
+                    ARRAY_FILTER_USE_BOTH
+                )
+                : false;
+
+            $checkPostByDefault = empty($checkedOption);
+
+            foreach ($post_types as $post_type => $title) {
+                echo '<label for="author_page_post_type_' . esc_attr($post_type) . '-' . $this->module->slug . '">';
+                echo '<input id="author_page_post_type_' . esc_attr($post_type) . '-' . $this->module->slug . '" name="'
+                    . $this->module->options_group_name . '[author_page_post_types][' . esc_attr($post_type) . ']"';
+
+                    if (isset($this->module->options->author_page_post_types[$post_type])) {
+                        checked($this->module->options->author_page_post_types[$post_type], 'on');
+                    } elseif ($checkPostByDefault && $post_type === 'post') {
+                        checked('on', 'on');
+                    }
+
+                // Defining post_type_supports in the functions.php file or similar should disable the checkbox
+                disabled(post_type_supports($post_type, $this->module->post_type_support), true);
+                echo ' type="checkbox" value="on" />&nbsp;&nbsp;&nbsp;' . esc_html($title) . '</label>';
+                // Leave a note to the admin as a reminder that add_post_type_support has been used somewhere in their code
+                if (post_type_supports($post_type, $this->module->post_type_support)) {
+                    echo '&nbsp&nbsp;&nbsp;<span class="description">' . sprintf(__('Disabled because add_post_type_support(\'%1$s\', \'%2$s\') is included in a loaded file.', 'publishpress-authors'), $post_type, $this->module->post_type_support) . '</span>';
+                }
+                echo '<br />';
+            }
         }
 
         /**
@@ -978,6 +1036,10 @@ if (!class_exists('MA_Multiple_Authors')) {
                 }
             }
 
+            if (!isset($new_options['author_page_post_types']) || empty($new_options['author_page_post_types'])) {
+                $new_options['author_page_post_types'] = ['post' => 'on'];
+            }
+
             /**
              * @param array $newOptions
              * @param string $moduleName
@@ -1010,8 +1072,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         {
             $newLink   = '';
             $postID    = get_the_id();
-            $isArchive = empty($postID) && Util::isAuthor();
-            $authors   = get_multiple_authors($postID, true, $isArchive);
+            $authors   = get_multiple_authors($postID, false);
 
             foreach ($authors as $author) {
                 if (!empty($newLink)) {
@@ -1138,8 +1199,42 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
+         * @param string[] $classes
+         * @param string $class
+         * @param int $commentID
+         * @param WP_Comment $comment
+         * @param int|WP_Post $postID
+         *
+         * @return mixed
+         */
+        public function filterCommentClass($classes, $class, $commentID, $comment, $postID) {
+            if (!function_exists('get_multiple_authors')) {
+                return $classes;
+            }
+
+            $postAuthors = get_multiple_authors($postID);
+
+            if (empty($postAuthors)) {
+                return $classes;
+            }
+
+            if (in_array('bypostauthor', $classes, true)) {
+                return $classes;
+            }
+
+            foreach ($postAuthors as $author) {
+                if ($comment->user_id === $author->user_id) {
+                    $classes[] = 'bypostauthor';
+                    break;
+                }
+            }
+
+            return $classes;
+        }
+
+        /**
          * @param int $id
-         * @return false|Author
+         * @return false|Author|WP_User
          */
         private function get_author_by_id($id)
         {
@@ -1155,6 +1250,10 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $author = Author::get_by_user_id($id);
             } else {
                 $author = Author::get_by_term_id($id);
+            }
+
+            if (empty($author)) {
+                $author = get_user_by('ID', $id);
             }
 
             return $author;
@@ -1220,11 +1319,18 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          * @param string $value The value of the metadata.
          * @param int $user_id The user ID for the value.
+         * @param bool $original_user_id
          *
          * @return mixed
          */
-        public function filter_author_metadata_description($value, $user_id)
+        public function filter_author_metadata_description($value, $user_id, $original_user_id = false)
         {
+            if (false === $original_user_id) {
+                $author = $this->getFirstAuthorOfCurrentPost();
+
+                $user_id = $author->ID;
+            }
+
             $author_meta = $this->get_author_meta('description', $value, $user_id);
 
             if (!is_null($author_meta)) {
@@ -1286,14 +1392,32 @@ if (!class_exists('MA_Multiple_Authors')) {
             return $value;
         }
 
+        private function getFirstAuthorOfCurrentPost()
+        {
+            $authors = get_multiple_authors();
+
+            if (!empty($authors)) {
+                return $authors[0];
+            }
+
+            return false;
+        }
+
         /**
          * @param string $value The value of the metadata.
          * @param int $user_id The user ID for the value.
+         * @param bool|int $original_user_id
          *
          * @return mixed
          */
-        public function filter_author_metadata_ID($value, $user_id)
+        public function filter_author_metadata_ID($value, $user_id, $original_user_id)
         {
+            if (false === $original_user_id) {
+                $author = $this->getFirstAuthorOfCurrentPost();
+
+                $user_id = $author->ID;
+            }
+
             $author = $this->get_author_by_id($user_id);
 
             if (is_object($author)) {
@@ -1747,11 +1871,13 @@ if (!class_exists('MA_Multiple_Authors')) {
                     $post_id = (int)$args[0];
 
                     // Check if the user is an author for the current post
-                    if (is_multiple_author_for_post($user_id, $post_id)) {
-                        foreach ($caps as &$item) {
-                            // If he is an author for this post we should only check edit_posts.
-                            if ($item === 'edit_others_posts') {
-                                $item = 'edit_posts';
+                    if ($post_id > 0) {
+                        if (is_multiple_author_for_post($user_id, $post_id)) {
+                            foreach ($caps as &$item) {
+                                // If he is an author for this post we should only check edit_posts.
+                                if ($item === 'edit_others_posts') {
+                                    $item = 'edit_posts';
+                                }
                             }
                         }
                     }
@@ -2455,18 +2581,18 @@ if (!class_exists('MA_Multiple_Authors')) {
             try {
                 if ($authorId > 0) {
                     $author = Author::get_by_user_id($authorId);
-                    $user   = $author->get_user_object();
-
-                    if (is_object($user)) {
-                        $canEdit = $user->has_cap('edit_posts');
-                    }
                 } else {
                     $author = Author::get_by_term_id($authorId * -1);
-                    $user   = $author->get_user_object();
 
-                    if (is_object($user)) {
-                        $canEdit = $author->is_guest() ? true : $user->has_cap('edit_posts');
+                    if ($author->is_guest()) {
+                        return true;
                     }
+                }
+
+                $user = $author->get_user_object();
+
+                if (is_object($user)) {
+                    return $user->has_cap('edit_posts');
                 }
             } catch (Exception $e) {
             }
@@ -2474,17 +2600,24 @@ if (!class_exists('MA_Multiple_Authors')) {
             return $canEdit;
         }
 
-        public function publishpressCalendarAfterCreatePost($postId, $postAuthorId)
+        public function publishpressCalendarAfterCreatePost($postId, $postAuthorIds)
         {
-            $author = null;
-            if ($postAuthorId > 0) {
-                $author = Author::get_by_user_id($postAuthorId);
-            } else {
-                $author = Author::get_by_term_id(abs($postAuthorId));
+            $validPostAuthors = [];
+
+            foreach  ($postAuthorIds as $authorId) {
+                if ($authorId > 0) {
+                    $author = Author::get_by_user_id($authorId);
+                } else {
+                    $author = Author::get_by_term_id(abs($authorId));
+                }
+
+                if (!empty($author)) {
+                    $validPostAuthors[] = $author;
+                }
             }
 
-            if (!empty($author)) {
-                Utils::set_post_authors($postId, [$author]);
+            if (!empty($validPostAuthors)) {
+                Utils::set_post_authors($postId, $validPostAuthors);
 
                 do_action('publishpress_authors_flush_cache');
             }

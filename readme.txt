@@ -6,8 +6,8 @@ Author URI: https://publishpress.com
 Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
-Tested up to: 5.7
-Stable tag: 3.13.1
+Tested up to: 5.8
+Stable tag: 3.14.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -114,7 +114,43 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= [3.13.1] - 2021-04-22 =
+= [3.14.4] - 19 Aug 2021 =
+
+* Fixed: Fix author profiles that are automatically created for users that are not on the selected user roles, #464;
+* Fixed: Fix authors not created when registered from the frontend for the selected user roles, #420;
+* Fixed: Fix guest authors compatibility with YoastSEO archive pages and the "robots" tag, #471;
+* Fixed: Fix PHP notice: Trying to get property 'name' of non-object in Utils.php, #485;
+* Fixed: Fix PHP notice: Trying to access array offset on value of type bool in class-wp-list-util.php, #486;
+
+= [3.14.3] - 01 Aug 2021 =
+
+* Fixed: Add class "bypostauthor" for secondary authors on comments, #154;
+* Fixed: Fixed the author byline on 3rd party themes in the front-end, #473;
+* Added: Added CSS class with the author slug to each author in the default layouts;
+
+= [3.14.2] - 21 Jul 2021 =
+
+* Fixed: Fix error on block editor for posts with guest authors, #463;
+
+= [3.14.1] - 20 Jul 2021 =
+
+* Changed: Invert position of Edit User and Edit Author Profile links in the term actions, #453;
+* Fixed: Fix sanitization of the user_id before adding it to a query;
+* Fixed: Fix compatibility with the search results on the plugin "Knowledge Base for Documents and FAQs" when an article is not found;
+* Fixed: Fix compatibility with PublishPress' calendar create item form for the author field, to select guest or mapped to user authors;
+* Fixed: Add compatibility with PublishPress' calendar to support multiple authors in the calendar form;
+* Fixed: Fix the warning: Undefined array key "post" in multiple-authors.php file, when opening the General settings page, #459;
+
+= [3.14.0] - 26 May 2021 =
+
+* Added: Added new setting for selecting multiple post types to display in the author page, #436;
+* Added: Added new function "get_by_id" to the Author class, accepting positive integer for User ID, and negative integer for term ID, #423;
+* Changed: Shortcode [author_box] was renamed to [publishpress_authors_box], #426;
+* Changed: Shortcode [ppma_test] was renamed to [publishpress_authors_test], #426;
+* Changed: Legacy shortcodes are loaded by default, but defining the constant PUBLISHPRESS_AUTHORS_LOAD_LEGACY_SHORTCODES = false will prevent to load them, #426;
+* Fixed: Fix the Author::get_avatar_url method returning the avatar URL, #443;
+
+= [3.13.1] - 22 Apr 2021 =
 
 * Fixed: Fix the color scheme for the Pro plugin, #411;
 * Fixed: Fix the links style for the boxed and centered layouts, #414;
@@ -124,7 +160,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: Fix the CLI subcommand create-terms-for-posts adding support for the following arguments: [--post_type=<ptype>] [--posts_per_page=<num>] [--paged=<page>], #415;
 * Changed: Temporarily disabled the CLI subcommands: update-author-terms, assign-coauthors, assign-user-to-coauthor, reassign-terms, rename-coauthor, swap-coauthors, remove-terms-from-revisions, #415;
 
-= [3.13.0] - 2021-03-18 =
+= [3.13.0] - 18 Mar 2021 =
 
 * Added: Improve layout for Centered box and add a color picker to choose a base color, #376, #377;
 * Added: Added new filter to extend the "post" variable exposed to the layouts. The new filter: "publishpress_authors_layout_post_properties", #384;
@@ -137,7 +173,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: PHP Fatal error: Uncaught Error: [] operator not supported for strings in MA_Multiple_Authors->filter_workflow_receiver_post_authors #403;
 * Changed: Change the default layout to "boxed", #370;
 
-= [3.12.0] - 2021-02-23 =
+= [3.12.0] - 23 Feb 2021 =
 
 * Added: Added filters for customizing the byline on Elementor skins: publishpress_authors_elementor_posts_skin_cards_byline, publishpress_authors_elementor_posts_skin_classic_byline, #335;
 * Changed: Improved the style for the Boxed layout, #332;
@@ -158,7 +194,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: Improved performance on author pages reducing the number of database queries only looking for an author taxonomy if a user was not found;
 * Fixed: Fix the Authors List widget title alignment wrapping it on a H2 tag;
 
-= [3.11.0] - 2021-01-25 =
+= [3.11.0] - 25 Jan 2021 =
 
 * Added: Added fields for setting the plural and single title to the author box and widget, #75;
 * Added: Added Rest API support to list the post's authors, #311;
@@ -179,7 +215,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: Fixed multiple footers displayed when both Free and Pro are activated, #312;
 * Fixed: Fix PHP error when an older version of YoastSEO is installed and the warning "not compatible YoastSEO" is showed;
 
-= [3.10.0] - 2020-12-15 =
+= [3.10.0] - 15 Dec 2020 =
 
 * Fixed: Changed the way we sync post_author column: Current user will only be set as author if no terms where found for the post, or there are only guest authors. If post_author is empty, we set it for the current user, creating an author term for it, #286.
 * Fixed: Duplicated queries for the same given email in the method MultipleAuthors\Classes\Author_Utils::get_author_term_id_by_email(). Added a cache for the query results and an option to ignore the cache, #293;
@@ -196,20 +232,20 @@ There are two ways to install the PublishPress Authors plugin:
 * Added: Added new constant "PUBLISHPRESS_AUTHORS_SYNC_POST_AUTHOR_CHUNK_SIZE" for defining the size of the chunck of posts to convert authors in the maintenance task: Update author field on posts. Default to 10;
 * Removed: Removed the support to the filter "coauthors_auto_apply_template_tags", #297;
 
-= [3.9.0] - 2020-11-24 =
+= [3.9.0] - 24 Nov 2020 =
 
 * Added: Added support to Bulk Edit for authors in the post list, #263 and #280;
 * Fixed: Fixed maintenance tasks to consider all the selected post types and not "post" only, #276;
 * Fixed: Fixed compatibility issue with the WP RSS Aggregator plugin, #278;
 * Fixed: Restored the posts count in the Authors and Users list, #275;
 
-= [3.8.1] - 2020-11-05 =
+= [3.8.1] - 05 Nov 2020 =
 
 * Fixed: Fixed the consistency of avatar dimensions between the img tag attributes and the CSS, #258;
 * Fixed: Fixed edit_posts permission check for the PublishPress calendar, #264;
 * Fixed: Restored the post count column in the Authors list, #95;
 
-= [3.8.0] - 2020-10-08 =
+= [3.8.0] - 08 Aug 2020 =
 
 * Fixed: Fixed PHP warning about undefined "default_author_for_new_posts" attribute for the module options;
 * Fixed: Fixed the empty setting field "Default author for new posts", #242;
@@ -219,36 +255,36 @@ There are two ways to install the PublishPress Authors plugin:
 * Added: Added new maintenance task to sync post_author with author terms for all posts, #171;
 * Added: Added basic support for multiple authors in the Ultimate Members plugin's posts, #251;
 
-= [3.7.3] - 2020-09-21 =
+= [3.7.3] - 21 Sep 2020 =
 
 * Fixed: Fixed unresponsive author select box for new posts, #244;
 
-= [3.7.2] - 2020-09-14 =
+= [3.7.2] - 14 Sep 2020 =
 
 * Fixed: Fixed the reordering issue on authors in the post edit page;
 
-= [3.7.1] - 2020-09-11 =
+= [3.7.1] - 11 Sep 2020 =
 
 * Fixed: Fixed the authors field in the quick edit panel. It was displaying all authors instead of only the post authors, #236;
 
-= [3.7.0] - 2020-09-10 =
+= [3.7.0] - 10 Sep 2020 =
 
 * Fixed: Fixed performance issue in the post list and edit page removing avatars from the authors fields, #227;
 * Added: Added option to change the default author for new posts in the site, #50;
 
-= [3.6.3] - 2020-09-04 =
+= [3.6.3] - 04 Sep 2020 =
 
 * Fixed: Fix error "Uncaught Error: Call to a member function add_cap() on null", #223;
 
-= [3.6.2] - 2020-09-03 =
+= [3.6.2] - 03 Sep 2020 =
 
 * Fixed: Fix error "Call to a member function get_error_message() on boolean", a regression bug result of the recent updates, #221;
 
-= [3.6.1] - 2020-09-03 =
+= [3.6.1] - 03 Sep 2020 =
 
 * Fixed: Fix admin notice for Co-Authors Plus displaying even when the plugin is not installed;
 
-= [3.6.0] - 2020-09-02 =
+= [3.6.0] - 02 Sep 2020 =
 
 * Added: Added support to update authors for posts using the quick edit form, #180;
 * Added: Added argument "$ignoreCache" to the get_multiple_authors;
@@ -262,7 +298,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: Fixed fatal error that happens when get_term returns an error;
 * Fixed: Upgrade link and banner were displayed for all users with access to the admin, #208;
 
-= [3.5.1] - 2020-08-20 =
+= [3.5.1] - 20 Aug 2020 =
 
 * Fixed: Avoid warnings regarding constants already defined;
 * Fixed: Fixed the cache for the get_multiple_authors function for archive pages, #190;
@@ -272,7 +308,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: Fixed Plugin::filter_user_has_cap() to use the correct user, not the current one, #186;
 * Fixed: Removed leftovers from the deprecated capability: ppma_edit_orphan_post, #193;
 
-= [3.5.0] - 2020-08-06 =
+= [3.5.0] - 06 Aug 2020 =
 
 * Added: Added a new widget to display all the authors, #76;
 * Added: Added option to display the username in the authors search field, #162;
@@ -281,12 +317,12 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: Fix PHP notice on author page when user is not an author, #156;
 * Fixed: Fixed notice when a post doesn't exist after deleting the post, #167;
 
-= [3.4.0] - 2020-07-23 =
+= [3.4.0] - 23 Jul 2020 =
 
 * Added: Add new filter "publishpress_authors_author_attribute" for customizing author attributes in the layouts;
 * Fixed: Fix syntax on the file Author_Editor.php removing an invalid char;
 
-= [3.3.2] - 2020-07-13 =
+= [3.3.2] - 13 Jul 2020 =
 
 * Fixed: Fix the text domain loading, fixing the translations;
 * Fixed: Fix "orphan" authors when the mapped user is deleted, converting them in guest authors, #142;
@@ -296,7 +332,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Changed: Updated the min PHP version to 5.6;
 * Changed: Updated the WordPress tested up to version, to 5.4;
 
-= [3.3.1] - 2020-05-27 =
+= [3.3.1] - 27 May 2020 =
 
 * Added: Added the static function "get_by_email" to the Author class for getting an author by his e-mail address;
 * Changed: Improved error messages;
@@ -307,7 +343,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: Improved integration with PublishPress adding support for multiple authors in the calendar. #129, #131;
 * Fixed: Updated the POT file;
 
-= [3.3.0] - 2020-05-05 =
+= [3.3.0] - 05 May 2020 =
 
 * Added: Some error messages are now added to the error log;
 * Added: Added links to the slug column in the authors list to open the authors page in the frontend;
@@ -342,7 +378,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: The author object is now compatible with the main properties of WP_User objects, so guest authors can be treated as users on most cases;
 * Fixed: The custom user_url is not returned for authors mapped to user;
 
-= [3.2.4] - 2020-04-13 =
+= [3.2.4] - 13 Apr 2020 =
 
 * Added: Button to migrate data from the Bylines (Daniel Bachhuber) plugin;
 * Added: Button to migrate data from the Byline (Matt Dulin) plugin;
@@ -358,19 +394,19 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: Fix the result of the function get_the_author_posts_link for supporting multiple authors;
 * Changed: Renamed the name of the Widget, from Multiple Authors to Authors;
 
-= [3.2.3] - 2020-03-16 =
+= [3.2.3] - 16 Mar 2020 =
 
 * Fixed: Wrong URL for the file multiple-authors-widget.css;
 * Fixed: Fixed the author page for compatibility to the Genesis framework;
 * Added: Added new filter to bypass the installation and data migration on special cases;
 * Added: Add top banner for the Pro version;
 
-= [3.2.2] - 2020-02-25 =
+= [3.2.2] - 25 Feb 2020 =
 
 * Fixed: Undefined class Authors_Iterator, #26;
 * Fixed: Error message related to Phing class file not found. Removed Phing from the package;
 
-= [3.2.1] - 2020-02-13 =
+= [3.2.1] - 13 Feb 2020 =
 
 * Fixed: Fixed the query for migrating posts' authors when installed for the first time;
 * Fixed: Fixed the assets URL for the plugin when it is installed in a folder different from wp-content/plugins
@@ -383,6 +419,6 @@ There are two ways to install the PublishPress Authors plugin:
 * Changed: Refactored the code to support the Pro version;
 * Removed: Removed the CMB2 library dependency;
 
-= [3.2.0] - 2020-01-03 =
+= [3.2.0] - 03 Jan 2020 =
 
 * First free public release. Based on PublishPress Multiple Authors v3.1.0.

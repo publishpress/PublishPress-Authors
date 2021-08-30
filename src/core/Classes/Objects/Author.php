@@ -189,6 +189,8 @@ class Author
     {
         global $wpdb;
 
+        $user_id = (int)$user_id;
+
         if (!isset(self::$authorsByIdCache[$user_id]) || empty(self::$authorsByIdCache[$user_id])) {
             $term_id = $wpdb->get_var(
                 $wpdb->prepare(
@@ -347,6 +349,7 @@ class Author
 
         $properties['link']          = true;
         $properties['user_nicename'] = true;
+        $properties['display_name']  = true;
         $properties['name']          = true;
         $properties['slug']          = true;
         $properties['user_email']    = true;
@@ -407,7 +410,7 @@ class Author
                 if ($this->is_guest()) {
                     $return = abs($this->term_id) * -1;
                 } else {
-                    $return = $this->user_id;
+                    $return = (int)$this->user_id;
                 }
                 break;
 
@@ -483,9 +486,7 @@ class Author
             $return = false;
         }
 
-        $return = apply_filters('publishpress_authors_author_attribute', $return, $this->term_id, $attribute);
-
-        return $return;
+        return apply_filters('publishpress_authors_author_attribute', $return, $this->term_id, $attribute, $this);
     }
 
     /**
@@ -497,7 +498,7 @@ class Author
      */
     public function get_avatar_url($size = 96)
     {
-        if (!is_null($this->avatarUrl)) {
+        if (is_null($this->avatarUrl)) {
             if ($this->has_custom_avatar()) {
                 $url = $this->get_custom_avatar_url($size);
             } else {
@@ -749,4 +750,22 @@ class Author
 
         return isset(self::$authorsByEmailCache[$emailAddress]) ? self::$authorsByEmailCache[$emailAddress] : false;
     }
+
+    /**
+     * Get an author by the provided ID.
+     *
+     * This ID can either be the WP_User ID (positive integer) or guest author ID (negative integer).
+     *
+     * @param $id
+     *
+     * @return Author|false
+     */
+    public static function get_by_id($id)
+    {
+        if (intval($id) > -1) {
+            return self::get_by_user_id($id);
+        }
+        return self::get_by_term_id($id);
+    }
+
 }

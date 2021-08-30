@@ -96,8 +96,14 @@ class Plugin
         // Author box to the content
         add_filter('the_content', [$this, 'filter_the_content']);
 
-        // Shortcodes
-        add_shortcode('author_box', [$this, 'shortcode_author_box']);
+        /**
+         * @deprecated Since 3.13.2. Use publishpress_authors_box instead.
+         */
+        if (PUBLISHPRESS_AUTHORS_LOAD_LEGACY_SHORTCODES) {
+            add_shortcode('author_box', [$this, 'shortcodeAuthorsBox']);
+        }
+
+        add_shortcode('publishpress_authors_box', [$this, 'shortcodeAuthorsBox']);
 
         // Action to display the author box
         add_action('pp_multiple_authors_show_author_box', [$this, 'action_echo_author_box'], 10, 5);
@@ -110,6 +116,8 @@ class Plugin
         // Use posts_selection since it's after WP_Query has built the request and before it's queried any posts
         add_filter('posts_selection', [$this, 'fix_query_for_author_page']);
         add_action('the_post', [$this, 'fix_post'], 10);
+
+        add_filter('the_author', [$this, 'filter_the_author']);
 
         add_action(
             'init',
@@ -146,6 +154,12 @@ class Plugin
         add_action(
             'parse_request',
             ['MultipleAuthors\\Classes\\Content_Model', 'action_parse_request']
+        );
+
+        add_action(
+            'user_register',
+            ['MultipleAuthors\\Classes\\Author_Editor', 'action_user_register'],
+            20
         );
 
         // Hide the core Author field for the selected post types.
@@ -203,11 +217,6 @@ class Plugin
                 ['MultipleAuthors\\Classes\\Author_Editor', 'action_author_edit_form_fields']
             );
             add_action(
-                'user_register',
-                ['MultipleAuthors\\Classes\\Author_Editor', 'action_user_register'],
-                20
-            );
-            add_action(
                 'author_term_new_form_tag',
                 ['MultipleAuthors\\Classes\\Author_Editor', 'action_new_form_tag'],
                 10
@@ -253,7 +262,7 @@ class Plugin
         );
         add_filter(
             'posts_where',
-            ['MultipleAuthors\\Classes\\Query', 'filter_posts_where'],
+            ['MultipleAuthors\\Classes\\Query', 'filter_author_posts_where'],
             10,
             2
         );
@@ -284,7 +293,7 @@ class Plugin
         // Query modifications for the admin posts lists
         add_filter(
             'posts_where',
-            ['MultipleAuthors\\Classes\\Query', 'filter_posts_list_where'],
+            ['MultipleAuthors\\Classes\\Query', 'filter_admin_posts_list_where'],
             10,
             2
         );
@@ -372,10 +381,10 @@ class Plugin
 
     private function addTestShortcode()
     {
-        add_shortcode('ppma_test', [$this, 'ppma_test']);
+        add_shortcode('publishpress_authors_test', [$this, 'shortcodeTest']);
     }
 
-    public function ppma_test()
+    public function shortcodeTest()
     {
         echo '<b>PublishPress Authors:</b> shortcode rendered successfully!';
     }
@@ -1142,15 +1151,28 @@ class Plugin
         return $shortCircuit;
     }
 
+    /**
+     * This method is an attempt to set the "correct" author for the current post.
+     * Third party themes that are not customized to support our plugins will use
+     * "get_the_author" and other methods that we can't hook to insert guest author
+     * data. So we try to do it here.
+     *
+     * @param WP_Post $post
+     *
+     * @return WP_Post
+     */
     public function fix_post(WP_Post $post)
     {
+        return $post;
         $legacyPlugin = Factory::getLegacyPlugin();
 
         if (empty($legacyPlugin) || !isset($legacyPlugin->multiple_authors) || !Utils::is_post_type_enabled()) {
             return $post;
         }
 
-        global $authordata;
+        if (defined('REST_REQUEST') && REST_REQUEST) {
+            return $post;
+        }
 
         $authors = get_multiple_authors($post);
 
@@ -1160,13 +1182,29 @@ class Plugin
 
         $firstAuthor = $authors[0];
 
-        if (!empty($authordata)) {
-            $authordata->display_name  = $firstAuthor->display_name;
-            $authordata->ID            = $firstAuthor->ID;
-            $authordata->user_nicename = $firstAuthor->user_nicename;
+        global $authordata;
+
+        if ($firstAuthor->is_guest()) {
+            // WP 5.8 forced us to stopping overriding the $authordata->ID with the guest author term ID, issue #463.
+//            $authordata->display_name  = $firstAuthor->display_name;
+//            $authordata->user_nicename = $firstAuthor->user_nicename;
+        } elseif ($authordata->ID !== (int)$firstAuthor->user_id) {
+            $authordata = $firstAuthor->get_user_object();
         }
 
         return $post;
+    }
+
+    public function filter_the_author($authorDisplayName)
+    {
+        $post = get_post();
+
+        $authors = get_multiple_authors($post, false);
+        if (empty($authors)) {
+            return $authorDisplayName;
+        }
+
+        return $authors[0]->display_name;
     }
 
     /**
@@ -1468,6 +1506,7 @@ class Plugin
         if (!$obj || 'revision' == $obj->name) {
             return $allcaps;
         }
+        //@todo: check if the post type is activated to the plugin. If not, just return $allcaps.
 
         $caps_to_modify = [
             $obj->cap->edit_post,
@@ -1633,7 +1672,7 @@ class Plugin
      *
      * @return string
      */
-    public function shortcode_author_box($attributes)
+    public function shortcodeAuthorsBox($attributes)
     {
         $show_title = true;
         $layout     = null;

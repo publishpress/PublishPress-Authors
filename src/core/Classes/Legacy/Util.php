@@ -9,6 +9,8 @@
 
 namespace MultipleAuthors\Classes\Legacy;
 
+use MultipleAuthors\Factory;
+
 class Util
 {
     /**
@@ -108,13 +110,20 @@ class Util
 
         if (isset($module->options->post_types) && is_array($module->options->post_types)) {
             foreach ($module->options->post_types as $post_type => $value) {
-                if ('on' == $value) {
+                if ('on' === $value) {
                     $post_types[] = $post_type;
                 }
             }
         }
 
         return $post_types;
+    }
+
+    public static function get_selected_post_types()
+    {
+        $legacyPlugin = Factory::getLegacyPlugin();
+
+        return self::get_post_types_for_module($legacyPlugin->modules->multiple_authors);
     }
 
     /**

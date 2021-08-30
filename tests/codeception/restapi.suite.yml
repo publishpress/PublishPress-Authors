@@ -1,0 +1,40 @@
+actor: RestapiTester
+
+modules:
+    enabled:
+        - WPDb
+        - REST
+        - \Helper\Restapi
+        - Asserts
+        - WPLoader
+    config:
+        REST:
+            url: "%TEST_SITE_WP_URL%"
+            depends: PhpBrowser
+            part: Json
+        WPDb:
+            dsn: '%TEST_SITE_DB_DSN%'
+            user: '%TEST_SITE_DB_USER%'
+            password: '%TEST_SITE_DB_PASSWORD%'
+            dump: 'tests/codeception/_data/dump.sql'
+            #import the dump before the tests; this means the test site database will be repopulated before the tests.
+            populate: true
+            # re-import the dump between tests; this means the test site database will be repopulated between the tests.
+            cleanup: false
+            waitlock: 10
+            url: '%TEST_SITE_WP_URL%'
+            urlReplacement: true #replace the hardcoded dump URL with the one above
+            tablePrefix: '%TEST_SITE_TABLE_PREFIX%'
+        WPLoader:
+            wpRootFolder: "%WP_ROOT_FOLDER%"
+            dbName: "%TEST_DB_NAME%"
+            dbHost: "%TEST_DB_HOST%"
+            dbUser: "%TEST_DB_USER%"
+            dbPassword: "%TEST_DB_PASSWORD%"
+            tablePrefix: "%TEST_TABLE_PREFIX%"
+            domain: "%TEST_SITE_WP_DOMAIN%"
+            adminEmail: "%TEST_SITE_ADMIN_EMAIL%"
+            title: "Test"
+            plugins: [ "publishpress-authors/publishpress-authors.php", "custom-post-type/custom-post-type.php" ]
+            activatePlugins: [ "publishpress-authors/publishpress-authors.php", "custom-post-type/custom-post-type.php" ]
+            isolatedInstall: true
