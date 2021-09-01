@@ -42,7 +42,7 @@
     }
   ],
   "dist": {
-    "url": "https://github.com/publishpress/PublishPress-Authors/releases/download/v3.14.5-beta.2/publishpress-authors-3.14.5-beta.2.zip",
+    "url": "https://github.com/publishpress/PublishPress-Authors/releases/download/v3.14.5-beta.6/publishpress-authors-3.14.5-beta.6.zip",
     "type": "zip"
   },
   "require": {
