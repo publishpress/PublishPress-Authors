@@ -41,6 +41,10 @@ class SchemaFacade
     {
         $author = $this->getAuthorFromContext($context);
 
+        if (!is_object($author)) {
+            return $graphPiece;
+        }
+
         $graphPiece['@id']              = $this->getAuthorSchemaId($author, $context);
         $graphPiece['name']             = $author->display_name;
         $graphPiece['image']['url']     = $author->get_avatar_url(256);
@@ -53,6 +57,10 @@ class SchemaFacade
     {
         if (isset($graphPiece['author'])) {
             $author = $this->getAuthorFromContext($context);
+
+            if (!is_object($author)) {
+                return $graphPiece;
+            }
 
             $graphPiece['author']['@id'] = $this->getAuthorSchemaId($author, $context);
         }
