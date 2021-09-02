@@ -711,11 +711,11 @@ class Utils
             return false;
         }
 
-        if (!class_exists('WPSEO_Schema_Context')) {
+        if (!class_exists('Yoast\\WP\\SEO\\Config\\Schema_IDs')) {
             return false;
         }
 
-        if (version_compare(WPSEO_VERSION, '13.4.1', '<')) {
+        if (version_compare(WPSEO_VERSION, '14.1', '<')) {
             if (!get_transient('publishpress_authors_not_compatible_yoast_warning')) {
                 error_log(
                     sprintf(
