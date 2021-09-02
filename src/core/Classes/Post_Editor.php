@@ -248,6 +248,7 @@ class Post_Editor
             ?>
             <select data-nonce="<?php
             echo esc_attr(wp_create_nonce('authors-search')); ?>"
+                    id="publishpress-authors-author-select"
                     class="authors-select2 authors-search"
                     data-placeholder="<?php
                     esc_attr_e('Search for an author', 'publishpress-authors'); ?>" style="width: 100%">

@@ -49,24 +49,35 @@ class Authors_Widget extends WP_Widget
         );
 
         /** This filter is documented in core/src/wp-includes/default-widgets.php */
-        $title  = apply_filters('widget_title', $instance['title'], $instance, $this->id_base);
+        $title = apply_filters(
+            'widget_title',
+            isset($instance['title']) ? $instance['title'] : '',
+            $instance,
+            $this->id_base
+        );
+
         $output = '';
 
         $output .= $this->get_author_box_markup($args, $instance);
         if (!empty($output)) {
-            echo $args['before_widget'];
+            if (isset($args['before_widget'])) {
+                echo $args['before_widget'];
+            }
 
             if (!isset($instance['show_title']) || true === $instance['show_title']) {
                 echo sprintf(
                     '%s<h2 class="widget-title">%s</h2>%s',
-                    $args['before_title'],
+                    isset($args['before_title']) ? $args['before_title'] : '',
                     apply_filters('widget_title', $title),
-                    $args['after_title']
+                    isset($args['after_title']) ? $args['after_title'] : ''
                 );
             }
 
             echo $output;
-            echo $args['after_widget'];
+
+            if (isset($args['after_widget'])) {
+                echo $args['after_widget'];
+            }
         }
     }
 
@@ -183,10 +194,9 @@ class Authors_Widget extends WP_Widget
             $css_class = 'multiple-authors-target-' . str_replace('_', '-', $target);
         }
 
-        $title = $instance['title'];
-        $title = esc_html($title);
+        $title = isset($instance['title']) ? esc_html($instance['title']) : '';
 
-        $layout = $instance['layout'];
+        $layout = isset($instance['layout']) ? $instance['layout'] : null;
         if (empty($layout)) {
             $layout = isset($legacyPlugin->modules->multiple_authors->options->layout)
                 ? $legacyPlugin->modules->multiple_authors->options->layout : Utils::getDefaultLayout();
@@ -206,16 +216,16 @@ class Authors_Widget extends WP_Widget
         $showEmpty = isset($instance['show_empty']) ? $instance['show_empty'] : false;
 
         $args = [
-            'show_title'    => false,
-            'css_class'     => $css_class,
-            'title'         => $title,
-            'authors'       => multiple_authors_get_all_authors(array('hide_empty' => !$showEmpty)),
-            'target'        => $target,
-            'item_class'    => 'author url fn',
-            'layout'        => $layout,
-            'color_scheme'  => $color_scheme,
-            'show_email'    => $show_email,
-            'show_site'     => $show_site
+            'show_title'   => false,
+            'css_class'    => esc_attr($css_class),
+            'title'        => $title,
+            'authors'      => multiple_authors_get_all_authors(array('hide_empty' => !$showEmpty)),
+            'target'       => $target,
+            'item_class'   => 'author url fn',
+            'layout'       => $layout,
+            'color_scheme' => $color_scheme,
+            'show_email'   => $show_email,
+            'show_site'    => $show_site
         ];
 
         /**

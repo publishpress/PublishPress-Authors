@@ -259,6 +259,8 @@ jQuery(document).ready(function ($) {
             selectedAuthors.push(parseInt($(this).val()));
         });
 
+        var selectedFallbackUser= $('#publishpress-authors-user-author-select').val();
+
         // save the data
         $.ajax({
             url: ajaxurl,
@@ -269,6 +271,7 @@ jQuery(document).ready(function ($) {
                 action: "save_bulk_edit_authors",
                 post_ids: $post_ids, // and these are the 2 parameters we're passing to our function
                 authors_ids: selectedAuthors,
+                fallback_author_user: selectedFallbackUser,
                 bulkEditNonce: bulkEditNonce.nonce
             }
         });

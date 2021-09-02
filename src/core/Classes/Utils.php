@@ -686,6 +686,11 @@ class Utils
         return true;
     }
 
+    public static function isPolylangInstalled()
+    {
+        return defined('POLYLANG_BASENAME');
+    }
+
     public static function isGenesisInstalled()
     {
         return function_exists('genesis_autoload_register');

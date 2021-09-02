@@ -22,7 +22,7 @@ use MultipleAuthors\Factory;
 class Query
 {
     /**
-     * Fix for author pages 404ing or not properly displaying on author pages
+     * Fix for author pages 404ing or not properly displaying on author pages, or queries filtering posts by author.
      *
      * If an author has no posts, we only want to force the queried object to be
      * the author if they're a member of the blog.
@@ -54,11 +54,9 @@ class Query
         $is_guest = false;
 
         if (empty($author)) {
-            $authorTerm = get_term_by('slug', $author_name, 'author');
+            $author = Author::get_by_term_slug($author_name);
 
-            if (is_object($authorTerm)) {
-                $author = Author::get_by_term_id($authorTerm->term_id);
-
+            if (is_object($author)) {
                 $is_guest = $author->is_guest();
             }
         } else {
@@ -114,9 +112,9 @@ class Query
         if (empty($author_name)) {
             $author_id = (int)$query->get('author');
 
-            $author = Utils::getUserBySlug($author_name);
+            $author = Author::get_by_id($author_id);
 
-            if (!$author_id || !$author) {
+            if (!$author) {
                 return $where;
             }
 
@@ -242,6 +240,7 @@ class Query
             return $where;
         }
 
+
         if (is_a($query->queried_object, 'WP_User')) {
             $author = Author::get_by_user_id($query->queried_object_id);
         } else {
@@ -259,7 +258,7 @@ class Query
         $terms_implode = '(' . $wpdb->term_taxonomy . '.taxonomy = "author" AND ' . $wpdb->term_taxonomy . '.term_id = \'' . $author->getTerm()->term_id . '\') ';
 
         $where = preg_replace(
-            '/\(?\b(?:' . $wpdb->posts . '\.)?post_author\s*(?:=|IN)\s*\(?(\d+)\)?/',
+            '/\(?\b(?:' . $wpdb->posts . '\.)?post_author\s*(?:=|IN|NOT IN)\s*\(?(\d+)\)?/',
             '(' . ' ' . $terms_implode . ')',
             $where,
             -1
