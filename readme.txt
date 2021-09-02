@@ -114,12 +114,15 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [3.14.6] - UNRELEASED =
+
+* Fixed: Fix Yoast SEO structured data schema. Bumped min Yoast SEO version to 14.0, #472;
+
 = [3.14.5] - 01 Sep 2021 =
 
 * Fixed: Fix query for author posts doesn't work if instead of the author name we have the author ID or term ID, #487;
 * Fixed: Fix reduced font size for the author description, #435;
 * Fixed: Fix error message when post is not found, showing warning about "post_author" and "post_type" on null, #495;
-* Fixed: Fix Yoast SEO structured data schema, #472;
 * Fixed: Fix the selection of fallback user for guest authors in the posts bulk edit form, #497;
 * Fixed: Fix PHP warnings for the shortcode "authors_list", used in the Pro plugin, #498;
 * Fixed: Add "author" taxonomy to Polylang, #18;
