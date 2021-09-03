@@ -70,6 +70,10 @@ class SchemaFacade
 
     private function getAuthorFromContext($context)
     {
+        if (!isset($context->post) || !is_object($context->post) || is_wp_error($context->post)) {
+            return null;
+        }
+
         $authorsIterator = new Authors_Iterator($context->post->ID);
         $authorsIterator->iterate();
 
