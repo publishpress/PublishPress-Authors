@@ -316,4 +316,25 @@ class get_multiple_authorsCest
         $I->assertNotEmpty($authors);
         $I->assertInstanceOf('MultipleAuthors\\Classes\\Objects\\Author', $firstAuthor);
     }
+
+    public function testGetMultipleAuthors_WhenThereIsNoNoAuthorRelationshipForPostAndPostAuthorIsZero_shouldReturnAnEmptyArray(
+        WpunitTester $I
+    ) {
+        $I->setPluginSettingsPostTypes(['post']);
+
+        $postId = $I->factory('Post with post_author = 0')->post->create(
+            [
+                'post_author' => 0,
+            ]
+        );
+
+        $post = get_post($postId);
+
+        $I->assertEquals(0, $post->post_author);
+
+        $authors = get_multiple_authors($postId);
+
+        $I->assertIsArray($authors);
+        $I->assertEmpty($authors);
+    }
 }
