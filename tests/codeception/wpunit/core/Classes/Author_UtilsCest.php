@@ -231,6 +231,49 @@ class Author_UtilsCest
         $I->assertEquals(get_current_user_id(), $postAuthor);
     }
 
+    public function sync_post_author_columnShouldSetPost_authorAsCurrentUserIfPostAuthorIsEmptyWithArrayOfGuestAuthorsOnly(WpunitTester $I
+    ) {
+        $postId = $I->factory('the post')->post->create(
+            [
+                'post_type' => 'post',
+                'post_author' => 0
+            ]
+        );
+
+        $selectedGuestAuthor1 = Author::create(
+            [
+                'slug'         => 'guest1',
+                'display_name' => 'Guest 1',
+            ]
+        );
+
+        $selectedGuestAuthor2 = Author::create(
+            [
+                'slug'         => 'guest2',
+                'display_name' => 'Guest 3',
+            ]
+        );
+
+        $selectedGuestAuthor3 = Author::create(
+            [
+                'slug'         => 'guest3',
+                'display_name' => 'Guest 3',
+            ]
+        );
+
+        $currentUserId = $I->factory('a new user for the current user')->user->create(['role' => 'author']);
+        wp_set_current_user($currentUserId);
+
+        $post = get_post($postId);
+        $I->assertEquals(0, $post->post_author);
+
+        Utils::sync_post_author_column($postId, [$selectedGuestAuthor1, $selectedGuestAuthor2, $selectedGuestAuthor3]);
+
+        $postAuthor = $this->get_post_author($postId);
+
+        $I->assertEquals(get_current_user_id(), $postAuthor);
+    }
+
     protected function get_post_author($post_id)
     {
         global $wpdb;
