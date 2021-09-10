@@ -242,8 +242,15 @@ class Author
         );
 
         if (is_wp_error($termData)) {
+            $backtraceSeparator = "\n  - ";
+
             error_log(
-                sprintf('[PublishPress Authors] %s %s', $termData->get_error_message(), __METHOD__)
+                sprintf(
+                    "[PublishPress Authors] %s %s\n%s",
+                    $termData->get_error_message(),
+                    __METHOD__,
+                    $backtraceSeparator . implode($backtraceSeparator, wp_debug_backtrace_summary(null, 0, false))
+                )
             );
 
             return false;
