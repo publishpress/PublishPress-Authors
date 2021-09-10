@@ -9,30 +9,6 @@ use WpunitTester;
 
 class get_the_author_metaCest
 {
-    public function tryToGetTheAuthorTermMetaWhenAuthorIsMappedToUserAndHasTheMetaForTheAuthorTerm(
-        WpunitTester $I
-    ) {
-        $expected = 'my-aim';
-
-        $userID = $I->factory('a new user')->user->create(['role' => 'author']);
-        $author = Author::create_from_user($userID);
-        update_term_meta($author->term_id, 'aim', $expected);
-
-        $meta = get_the_author_meta('aim', $author->ID);
-
-        $I->assertEquals(
-            $expected,
-            $meta,
-            'The returned meta value should match the term meta'
-        );
-    }
-
-    // ===============================================
-
-    // ===============================================
-    // Meta: description
-    // ===============================================
-
     /**
      * @example {"metaKey": "aim"}
      * @example {"metaKey": "description"}
@@ -42,9 +18,8 @@ class get_the_author_metaCest
      * @example {"metaKey": "facebook"}
      * @example {"metaKey": "twitter"}
      * @example {"metaKey": "instagram"}
-     * @example {"metaKey": "user_description"}
      */
-    public function tryToGetTheUserMetaWhenAuthorIsMappedToUserAndDoesntHaveTheMetaForTheAuthorTerm(
+    public function getMetadataWhenAuthorIsMappedToUserUsingPassedAuthorID(
         WpunitTester $I,
         Example $example
     ) {
@@ -73,9 +48,49 @@ class get_the_author_metaCest
      * @example {"metaKey": "facebook"}
      * @example {"metaKey": "twitter"}
      * @example {"metaKey": "instagram"}
-     * @example {"metaKey": "user_description"}
      */
-    public function tryToGetAuthorTermMetaWhenAuthorIsGuest(WpunitTester $I, Example $example)
+    public function getMetadataWhenAuthorIsMappedToUserUsingGlobalAuthordata(
+        WpunitTester $I,
+        Example $example
+    ) {
+        $postId          = $I->factory('a new post')->post->create();
+        $post            = get_post($postId);
+        $GLOBALS['post'] = $post;
+
+        $userId1 = $I->factory('author 1 user')->user->create(['role' => 'author']);
+        $author1 = Author::create_from_user($userId1);
+
+        $userId2 = $I->factory('author 2 user')->user->create(['role' => 'author']);
+        $author2 = Author::create_from_user($userId2);
+
+        Utils::set_post_authors($postId, [$author1, $author2]);
+
+        $GLOBALS['authordata'] = get_user_by('ID', $userId1);
+
+        $expectedMetaValue = sprintf('meta_%s', $example['metaKey']);
+
+        update_user_meta($userId1, $example['metaKey'], $expectedMetaValue);
+
+        $metaValue = get_the_author_meta($example['metaKey']);
+
+        $I->assertEquals(
+            $expectedMetaValue,
+            $metaValue,
+            'The returned meta value should match the user meta'
+        );
+    }
+
+    /**
+     * @example {"metaKey": "aim"}
+     * @example {"metaKey": "description"}
+     * @example {"metaKey": "jabber"}
+     * @example {"metaKey": "nickname"}
+     * @example {"metaKey": "yim"}
+     * @example {"metaKey": "facebook"}
+     * @example {"metaKey": "twitter"}
+     * @example {"metaKey": "instagram"}
+     */
+    public function getMetadataWhenAuthorIsGuestUsingPassedAuthorId(WpunitTester $I, Example $example)
     {
         $authorSlug        = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
         $expectedMetaValue = sprintf('meta_%s', $example['metaKey']);
@@ -98,6 +113,46 @@ class get_the_author_metaCest
         );
     }
 
+    /**
+     * @example {"metaKey": "aim"}
+     * @example {"metaKey": "description"}
+     * @example {"metaKey": "jabber"}
+     * @example {"metaKey": "nickname"}
+     * @example {"metaKey": "yim"}
+     * @example {"metaKey": "facebook"}
+     * @example {"metaKey": "twitter"}
+     * @example {"metaKey": "instagram"}
+     */
+    public function tryWhenAuthorIsGuestUsingGlobalAuthordata(WpunitTester $I, Example $example)
+    {
+        $postId          = $I->factory('a new post')->post->create();
+        $post            = get_post($postId);
+        $GLOBALS['post'] = $post;
+
+        $authorSlug        = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
+        $expectedMetaValue = sprintf('meta_%s', $example['metaKey']);
+
+        $author = Author::create(
+            [
+                'slug'         => $authorSlug,
+                'display_name' => strtoupper($authorSlug),
+            ]
+        );
+
+        Utils::set_post_authors($postId, [$author]);
+
+        $GLOBALS['authordata'] = $author;
+
+        update_term_meta($author->term_id, $example['metaKey'], $expectedMetaValue);
+
+        $metaValue = get_the_author_meta($example['metaKey']);
+
+        $I->assertEquals(
+            $expectedMetaValue,
+            $metaValue,
+            'The returned meta value should match the user meta'
+        );
+    }
 
     /**
      * @example {"metaKey": "url", "expectedValue": "http://test.example.com"}
@@ -110,7 +165,7 @@ class get_the_author_metaCest
      * @example {"metaKey": "last_name", "expectedValue": "MyLastName"}
      * @example {"metaKey": "display_name", "expectedValue": "MyDisplayName"}
      */
-    public function tryToGeMetaWhenAuthorIsMappedToUser(WpunitTester $I, Example $example)
+    public function tryToGetUserDataWhenAuthorIsMappedToUserUsingPassedAuthorId(WpunitTester $I, Example $example)
     {
         $authorSlug               = sprintf('author_%s', rand(1, PHP_INT_MAX));
         $example['expectedValue'] = str_replace('##slug##', $authorSlug, $example['expectedValue']);
@@ -146,9 +201,56 @@ class get_the_author_metaCest
      * @example {"metaKey": "user_nicename", "expectedValue": "##slug##"}
      * @example {"metaKey": "first_name", "expectedValue": "MyFirstName"}
      * @example {"metaKey": "last_name", "expectedValue": "MyLastName"}
+     * @example {"metaKey": "display_name", "expectedValue": "MyDisplayName"}
+     */
+    public function tryToGetUserDataWhenAuthorIsMappedToUserUsingGlobalAuthordata(WpunitTester $I, Example $example)
+    {
+        $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
+
+        $example['expectedValue'] = str_replace('##slug##', $authorSlug, $example['expectedValue']);
+
+        $userProperty = $example['metaKey'];
+        if (in_array($userProperty, ['url', 'email', 'nicename'])) {
+            $userProperty = sprintf('user_%s', $userProperty);
+        }
+
+        $userID = $I->factory('a new user')->user->create(
+            [
+                'user_nicename' => $authorSlug,
+                'role'          => 'author',
+                $userProperty   => $example['expectedValue']
+            ]
+        );
+        $author = Author::create_from_user($userID);
+
+        $GLOBALS['authordata'] = get_user_by('ID', $userID);
+
+        $postId          = $I->factory('a new post')->post->create();
+        $post            = get_post($postId);
+        $GLOBALS['post'] = $post;
+
+        Utils::set_post_authors($postId, [$author]);
+
+        $metaValue = get_the_author_meta($example['metaKey']);
+
+        $I->assertEquals(
+            $example['expectedValue'],
+            $metaValue
+        );
+    }
+
+    /**
+     * @example {"metaKey": "url", "expectedValue": "http://test.example.com"}
+     * @example {"metaKey": "user_url", "expectedValue": "http://test.example.com"}
+     * @example {"metaKey": "email", "expectedValue": "##slug##@example.com"}
+     * @example {"metaKey": "user_email", "expectedValue": "##slug##@example.com"}
+     * @example {"metaKey": "nicename", "expectedValue": "##slug##"}
+     * @example {"metaKey": "user_nicename", "expectedValue": "##slug##"}
+     * @example {"metaKey": "first_name", "expectedValue": "MyFirstName"}
+     * @example {"metaKey": "last_name", "expectedValue": "MyLastName"}
      * @example {"metaKey": "display_name", "expectedValue": "##display_name##"}
      */
-    public function tryToGetMetaWhenAuthorIsGuest(WpunitTester $I, Example $example)
+    public function tryToGetMetaWhenAuthorIsGuestUsingPassedAuthorId(WpunitTester $I, Example $example)
     {
         $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
         $authorName = strtoupper($authorSlug);
@@ -184,7 +286,63 @@ class get_the_author_metaCest
         );
     }
 
-    public function tryToGetIdForWhenAuthorIsMappedToUser(WpunitTester $I)
+    /**
+     * @example {"metaKey": "url", "expectedValue": "http://test.example.com"}
+     * @example {"metaKey": "user_url", "expectedValue": "http://test.example.com"}
+     * @example {"metaKey": "email", "expectedValue": "##slug##@example.com"}
+     * @example {"metaKey": "user_email", "expectedValue": "##slug##@example.com"}
+     * @example {"metaKey": "nicename", "expectedValue": "##slug##"}
+     * @example {"metaKey": "user_nicename", "expectedValue": "##slug##"}
+     * @example {"metaKey": "first_name", "expectedValue": "MyFirstName"}
+     * @example {"metaKey": "last_name", "expectedValue": "MyLastName"}
+     * @example {"metaKey": "display_name", "expectedValue": "##display_name##"}
+     */
+    public function tryToGetMetaWhenAuthorIsGuestUsingGlobalAuthordata(WpunitTester $I, Example $example)
+    {
+        $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
+        $authorName = strtoupper($authorSlug);
+
+        $example['expectedValue'] = str_replace('##slug##', $authorSlug, $example['expectedValue']);
+        $example['expectedValue'] = str_replace('##display_name##', $authorName, $example['expectedValue']);
+
+        $author = Author::create(
+            [
+                'slug'         => $authorSlug,
+                'display_name' => $authorName,
+            ]
+        );
+
+        if ('nicename' !== $example['metaKey']) {
+            $metaKey = $example['metaKey'];
+            if (in_array($metaKey, ['url', 'email'])) {
+                $metaKey = sprintf('user_%s', $metaKey);
+            }
+
+            update_term_meta(
+                $author->term_id,
+                $metaKey,
+                $example['expectedValue']
+            );
+        }
+
+        $GLOBALS['authordata'] = $author;
+
+        $postId          = $I->factory('a new post')->post->create();
+        $post            = get_post($postId);
+        $GLOBALS['post'] = $post;
+
+        Utils::set_post_authors($postId, [$author]);
+
+        $metaValue = get_the_author_meta($example['metaKey']);
+
+        $I->assertEquals(
+            $example['expectedValue'],
+            $metaValue
+        );
+    }
+
+
+    public function tryToGetIdWhenAuthorIsMappedToUserUsingPassedAuthorId(WpunitTester $I)
     {
         $userID = $I->factory('a new user')->user->create(['role' => 'author']);
         $author = Author::create_from_user($userID);
@@ -198,7 +356,29 @@ class get_the_author_metaCest
         );
     }
 
-    public function tryToGetIdForWhenAuthorIsGuest(WpunitTester $I)
+    public function tryToGetIdWhenAuthorIsMappedToUserUsingGlobalAuthordata(WpunitTester $I)
+    {
+        $userID = $I->factory('a new user')->user->create(['role' => 'author']);
+        $author = Author::create_from_user($userID);
+
+        $GLOBALS['authordata'] = get_user_by('ID', $userID);
+
+        $postId          = $I->factory('a new post')->post->create();
+        $post            = get_post($postId);
+        $GLOBALS['post'] = $post;
+
+        Utils::set_post_authors($postId, [$author]);
+
+        $metaValue = get_the_author_meta('ID');
+
+        $I->assertEquals(
+            $userID,
+            $metaValue,
+            'The ID should match the user ID'
+        );
+    }
+
+    public function tryToGetIdForWhenAuthorIsGuestUsingPassedAuthorId(WpunitTester $I)
     {
         $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
 
@@ -212,95 +392,37 @@ class get_the_author_metaCest
         $metaValue = get_the_author_meta('ID', $author->ID);
 
         $I->assertEquals(
-            $author->term_id * -1,
+            $author->ID,
             $metaValue,
             'The ID should match the term_id as negative integer'
         );
     }
 
-    public function tryToGetMetaWithoutSpecifyingTheAuthorIDForAuthorMappedToUser(WpunitTester $I)
+    public function tryToGetIdForWhenAuthorIsGuestUsingGlobalAuthordata(WpunitTester $I)
     {
-        $I->wantToTest(
-            'if get_the_author_meta returns the author meta of the correct author (mapped to user) when we do not provide the author ID'
+        $authorSlug = sprintf('guest_author_%s', rand(1, PHP_INT_MAX));
+
+        $author = Author::create(
+            [
+                'slug'         => $authorSlug,
+                'display_name' => strtoupper($authorSlug),
+            ]
         );
+
+        $GLOBALS['authordata'] = $author;
 
         $postId          = $I->factory('a new post')->post->create();
         $post            = get_post($postId);
         $GLOBALS['post'] = $post;
 
-        $user1Id           = $I->factory('a new user')->user->create(['role' => 'author']);
-        $user              = get_user_by('ID', $user1Id);
-        $user->description = 'A Nice User';
-        wp_update_user($user);
+        Utils::set_post_authors($postId, [$author]);
 
-        $author1 = Author::create_from_user($user1Id);
+        $metaValue = get_the_author_meta('ID');
 
-        $authorSlug = sprintf('guest_author_%d_%s', 2, rand(1, PHP_INT_MAX));
-        $author2    = Author::create(
-            [
-                'slug'         => $authorSlug,
-                'display_name' => strtoupper($authorSlug),
-            ]
+        $I->assertEquals(
+            $author->ID,
+            $metaValue,
+            'The ID should match the term_id as negative integer'
         );
-
-        Utils::set_post_authors($postId, [$author1, $author2]);
-
-        // We need to initialize authordata otherwise the link is always empty.
-        global $authordata;
-        $authordata = get_user_by('ID', $user1Id);
-
-        $authorId          = get_the_author_meta('ID');
-        $authorDescription = get_the_author_meta('description');
-
-        $I->assertEquals($author1->ID, $authorId);
-        $I->assertEquals($user->description, $authorDescription);
-    }
-
-    public function tryToGetMetaWithoutSpecifyingTheAuthorIDForGuestAuthor(WpunitTester $I)
-    {
-        $I->wantToTest(
-            'if get_the_author_meta returns the author meta of the correct guest author when we do not provide the author ID'
-        );
-
-        $postId = $I->factory('a new post')->post->create(
-            [
-                'title' => 'A Fake Post'
-            ]
-        );
-
-        $post            = get_post($postId);
-        $GLOBALS['post'] = $post;
-
-        $user1Id = $I->factory('a new user')->user->create(['role' => 'author']);
-
-        $authorSlug         = sprintf('guest_author_%d_%s', 1, rand(1, PHP_INT_MAX));
-        $author1            = Author::create(
-            [
-                'slug'         => $authorSlug,
-                'display_name' => strtoupper($authorSlug),
-            ]
-        );
-        $author1Description = 'A nice Author';
-        update_term_meta($author1->term_id, 'description', $author1Description);
-
-        $authorSlug = sprintf('guest_author_%d_%s', 2, rand(1, PHP_INT_MAX));
-        $author2    = Author::create(
-            [
-                'slug'         => $authorSlug,
-                'display_name' => strtoupper($authorSlug),
-            ]
-        );
-
-        Utils::set_post_authors($postId, [$author1, $author2]);
-
-        // We need to initialize authordata otherwise the link is always empty.
-        global $authordata;
-        $authordata = get_user_by('ID', $user1Id);
-
-        $authorId          = get_the_author_meta('ID');
-        $authorDescription = get_the_author_meta('description');
-
-        $I->assertEquals($author1->ID, $authorId);
-        $I->assertEquals($author1Description, $authorDescription);
     }
 }
