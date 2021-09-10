@@ -106,13 +106,13 @@ class Post_Editor
         if ('authors' === $column) {
             // We need to ignore the cache for following call when this method were called after saved the post in a
             // quick edit operation, otherwise the authors column will show old values.
-            $authors = get_multiple_authors($post_id, true, false, true);
+            $authors = get_multiple_authors($post_id, false, false, true);
 
             $post_type = get_post_type($post_id);
             $post      = get_post($post_id);
 
             $authors_str         = [];
-            $showedCurrentAuthor = false;
+            $showedPostAuthorUser = false;
 
             foreach ($authors as $author) {
                 if (is_a($author, 'WP_User')) {
@@ -134,7 +134,7 @@ class Post_Editor
 
                     if ($author->user_id == $post->post_author) {
                         $classes[]           = 'author_in_post';
-                        $showedCurrentAuthor = true;
+                        $showedPostAuthorUser = true;
                     }
 
                     $authors_str[] = sprintf(
@@ -151,18 +151,24 @@ class Post_Editor
             }
 
             if (empty($authors_str)) {
-                $authors_str[] = '<span aria-hidden="true">—</span><span class="screen-reader-text">' . __(
-                        'No author',
-                        'publishpress-authors'
-                    ) . '</span>';
+                $authors_str[] = sprintf(
+                    '<span class="current-post-author-warning">%s</span>',
+                    __('No author term', 'publishpress-authors')
+                );
             }
 
             echo implode(', ', $authors_str);
 
-            if (!$showedCurrentAuthor) {
-                $user = get_user_by('ID', $post->post_author);
+            if (!$showedPostAuthorUser) {
+                if (empty($post->post_author)) {
+                    echo sprintf('<span class="current-post-author-warning">[%s]</span>', __('"post_author" is empty', 'publishpress-authors'));
+                } else {
+                    $user = get_user_by('ID', $post->post_author);
 
-                echo sprintf('<span class="current-post-author-off">[%s]</span>', $user->display_name);
+                    if (is_a($user, 'WP_User')) {
+                        echo sprintf('<span class="current-post-author-off">[%s]</span>', $user->display_name);
+                    }
+                }
             }
         }
     }
