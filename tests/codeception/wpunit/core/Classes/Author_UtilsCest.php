@@ -242,21 +242,21 @@ class Author_UtilsCest
 
         $selectedGuestAuthor1 = Author::create(
             [
-                'slug'         => 'guest1',
+                'slug'         => 'guest4',
                 'display_name' => 'Guest 1',
             ]
         );
 
         $selectedGuestAuthor2 = Author::create(
             [
-                'slug'         => 'guest2',
+                'slug'         => 'guest5',
                 'display_name' => 'Guest 3',
             ]
         );
 
         $selectedGuestAuthor3 = Author::create(
             [
-                'slug'         => 'guest3',
+                'slug'         => 'guest6',
                 'display_name' => 'Guest 3',
             ]
         );
