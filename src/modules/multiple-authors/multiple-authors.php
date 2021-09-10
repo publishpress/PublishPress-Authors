@@ -1306,7 +1306,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         private function is_author_instance($instance)
         {
-            return get_class($instance) === Author::class;
+            return is_object($instance) && get_class($instance) === Author::class;
         }
 
 
