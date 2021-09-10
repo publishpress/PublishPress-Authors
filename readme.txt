@@ -116,6 +116,10 @@ There are two ways to install the PublishPress Authors plugin:
 
 = [3.14.6] - UNRELEASED =
 
+* Fixed: Fix the output of guest authors data on the frontend, #500;
+* Fixed: Fix "get_multiple_authors" resulting on error 500 when post author is zero, #511;
+* Fixed: Fix PublishPress Calendar integration with guest authors to avoid empty value on "post_author", #512;
+* Fixed: Fix PHP Notice: Trying to get property 'display_name' of non-object on authors column for post_author = 0, #514;
 * Fixed: Fix Yoast SEO structured data schema. Bumped min Yoast SEO version to 14.0, #472;
 
 = [3.14.5] - 01 Sep 2021 =
