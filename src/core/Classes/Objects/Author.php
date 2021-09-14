@@ -242,8 +242,15 @@ class Author
         );
 
         if (is_wp_error($termData)) {
+            $backtraceSeparator = "\n  - ";
+
             error_log(
-                sprintf('[PublishPress Authors] %s %s', $termData->get_error_message(), __METHOD__)
+                sprintf(
+                    "[PublishPress Authors] %s %s\n%s",
+                    $termData->get_error_message(),
+                    __METHOD__,
+                    $backtraceSeparator . implode($backtraceSeparator, wp_debug_backtrace_summary(null, 0, false))
+                )
             );
 
             return false;
@@ -360,6 +367,7 @@ class Author
         $properties['ID']            = true;
         $properties['first_name']    = true;
         $properties['last_name']     = true;
+        $properties['nickname']      = true;
 
         // Short circuit to only trigger the filter for additional fields if the property is not already defined.
         // Save resources and avoid infinity loops on some queries that check is $query->is_author.
@@ -534,6 +542,11 @@ class Author
         }
 
         return $this->metaCache[$key];
+    }
+
+    public function update_meta($key, $value)
+    {
+        Author_Utils::update_author_meta($this->term_id, $key, $value);
     }
 
     /**

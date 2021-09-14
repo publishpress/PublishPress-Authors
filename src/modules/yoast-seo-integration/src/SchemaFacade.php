@@ -23,41 +23,67 @@
 
 namespace PPAuthors\YoastSEO;
 
-use WPSEO_Schema_Context;
+use MultipleAuthors\Classes\Authors_Iterator;
+use Yoast\WP\SEO\Config\Schema_IDs;
+
+use function wp_hash;
 
 class SchemaFacade
 {
     public function addSupportForMultipleAuthors()
     {
-        add_filter('wpseo_schema_graph_pieces', [$this, 'handleSchemaGraphPieces'], 10, 2);
+        add_filter('wpseo_schema_webpage', [$this, 'handleSchemaArticle'], 10, 2);
+        add_filter('wpseo_schema_author', [$this, 'handleSchemaAuthor'], 10, 2);
+        add_filter('wpseo_schema_article', [$this, 'handleSchemaArticle'], 10, 2);
     }
 
-    /**
-     * @param array $pieces
-     * @param WPSEO_Schema_Context $context An object with context variables.
-     *
-     * @return array
-     */
-    public function handleSchemaGraphPieces($pieces, WPSEO_Schema_Context $context)
+    public function handleSchemaAuthor($graphPiece, $context)
     {
-        $schemaMap = [
-            'WPSEO_Schema_Article' => Schema\Article::class,
-            'WPSEO_Schema_Author'  => Schema\Author::class,
-            'WPSEO_Schema_Person'  => Schema\Person::class,
-            'WPSEO_Schema_WebPage' => Schema\Webpage::class,
-        ];
+        $author = $this->getAuthorFromContext($context);
 
-        foreach ($pieces as &$piece) {
-            $pieceClass = get_class($piece);
-
-            if (array_key_exists($pieceClass, $schemaMap)) {
-                // Replace the schema with our own instance adapted for multiple authors
-                $piece = new $schemaMap[$pieceClass](
-                    $context
-                );
-            }
+        if (!is_object($author)) {
+            return $graphPiece;
         }
 
-        return $pieces;
+        $graphPiece['@id']              = $this->getAuthorSchemaId($author, $context);
+        $graphPiece['name']             = $author->display_name;
+        $graphPiece['image']['url']     = $author->get_avatar_url(256);
+        $graphPiece['image']['caption'] = $graphPiece['name'];
+
+        return $graphPiece;
+    }
+
+    public function handleSchemaArticle($graphPiece, $context)
+    {
+        if (isset($graphPiece['author'])) {
+            $author = $this->getAuthorFromContext($context);
+
+            if (!is_object($author)) {
+                return $graphPiece;
+            }
+
+            $graphPiece['author']['@id'] = $this->getAuthorSchemaId($author, $context);
+        }
+
+        return $graphPiece;
+    }
+
+    private function getAuthorFromContext($context)
+    {
+        if (!isset($context->post) || !is_object($context->post) || is_wp_error($context->post)) {
+            return null;
+        }
+
+        $authorsIterator = new Authors_Iterator($context->post->ID);
+        $authorsIterator->iterate();
+
+        return $authorsIterator->current_author;
+    }
+
+    private function getAuthorSchemaId($author, $context)
+    {
+        return $context->site_url . Schema_IDs::PERSON_HASH . wp_hash(
+                $author->slug . $author->ID
+            );
     }
 }

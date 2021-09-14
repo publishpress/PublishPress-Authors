@@ -70,6 +70,11 @@ abstract class Author_Utils
         return get_term_meta($termId, $metaKey, $single);
     }
 
+    public static function update_author_meta($termId, $metaKey, $value, $single = true)
+    {
+        return update_term_meta($termId, $metaKey, $value);
+    }
+
     public static function author_is_guest($termId)
     {
         $userId = (int)self::get_author_meta($termId, 'user_id');

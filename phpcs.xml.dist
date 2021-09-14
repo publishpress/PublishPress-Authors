@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="PHP_CodeSniffer"
+         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
+    <description>The coding standard for PublishPress Authors.</description>
+
+    <file>src</file>
+    <file>tests</file>
+    <file>activation.php</file>
+    <file>bylines_functions.php</file>
+    <file>coauthors_functions.php</file>
+    <file>defines.php</file>
+    <file>deprecated.php</file>
+    <file>includes.php</file>
+    <file>publishpress-authors.php</file>
+    <file>template-tags.php</file>
+
+    <exclude-pattern>*/.github$</exclude-pattern>
+    <exclude-pattern>*/assets_wp$</exclude-pattern>
+    <exclude-pattern>*/dist$</exclude-pattern>
+    <exclude-pattern>*/languages$</exclude-pattern>
+    <exclude-pattern>*/legacy-tests$</exclude-pattern>
+    <exclude-pattern>*/node_modules$</exclude-pattern>
+    <exclude-pattern>*/tests/*/*\.(inc|css|js|sql|yml|feature)$</exclude-pattern>
+    <exclude-pattern>*/tests/_output$</exclude-pattern>
+    <exclude-pattern>*/tests/_support/_generated$</exclude-pattern>
+    <exclude-pattern>*/vendor$</exclude-pattern>
+
+    <arg name="basepath" value="."/>
+    <arg name="colors"/>
+    <arg name="parallel" value="75"/>
+    <arg value="np"/>
+
+    <!-- Include the whole PEAR standard -->
+    <rule ref="PSR12"/>
+</ruleset>

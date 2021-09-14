@@ -447,9 +447,10 @@ class Author_Editor
         if (!isset($legacyPlugin->modules->multiple_authors)) {
             error_log(
                 sprintf(
-                    '[PublishPress Authors] Warning: Module multiple_authors not loaded. %s [user_id="%s"]',
+                    "[PublishPress Authors] Warning: Module multiple_authors not loaded. %s [user_id=\"%s\"]\n  - %s",
                     __METHOD__,
-                    $user_id
+                    $user_id,
+                    implode("\n  - ", wp_debug_backtrace_summary(null, 0, false))
                 )
             );
             return;

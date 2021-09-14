@@ -173,7 +173,7 @@ if (!class_exists('MA_Settings')) {
             } else {
                 $error = false;
             }
-            
+
             $error = sanitize_text_field($error);
 
             if ($error && isset($current_module->messages[$error])) {

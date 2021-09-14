@@ -312,3 +312,9 @@ body.block-editor-page select[id^="post-author-selector-"] {
     display: block;
     font-style: italic;
 }
+
+.current-post-author-warning {
+    color: #d2ba83;
+    display: block;
+    font-style: italic;
+}

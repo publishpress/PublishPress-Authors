@@ -265,19 +265,7 @@ class Utils
             $fallbackUserId = (int)$fallbackUserId;
 
             if (!empty($fallbackUserId)) {
-                global $wpdb;
-
-                $wpdb->update(
-                    $wpdb->posts,
-                    [
-                        'post_author' => $fallbackUserId,
-                    ],
-                    [
-                        'ID' => $postId,
-                    ]
-                );
-
-                clean_post_cache($postId);
+                $functionSetPostAuthor($postId, $fallbackUserId);
             }
 
             // Check if the post has any author set. If not an existent author, create one and set the author term.
@@ -293,7 +281,7 @@ class Utils
                 if (is_object($author) && !is_wp_error($author)) {
                     Utils::set_post_authors($postId, [$author], false);
                 }
-            } elseif ($fallbackUserId !== (int)$post->post_author) {
+            } elseif ($fallbackUserId !== (int)$post->post_author || empty($fallbackUserId)) {
                 $functionSetPostAuthor($postId, get_current_user_id());
             }
         }
@@ -711,11 +699,11 @@ class Utils
             return false;
         }
 
-        if (!class_exists('WPSEO_Schema_Context')) {
+        if (!class_exists('Yoast\\WP\\SEO\\Config\\Schema_IDs')) {
             return false;
         }
 
-        if (version_compare(WPSEO_VERSION, '13.4.1', '<')) {
+        if (version_compare(WPSEO_VERSION, '14.1', '<')) {
             if (!get_transient('publishpress_authors_not_compatible_yoast_warning')) {
                 error_log(
                     sprintf(
