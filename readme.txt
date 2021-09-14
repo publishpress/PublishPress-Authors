@@ -1,4 +1,4 @@
-=== PublishPress Authors: Show Multiple Authors and Guest Authors in an Author Box ===
+=== WordPress Co-Authors Multiple Authors and Guest Authors in an Author Box ===
 
 Contributors: publishpress, kevinB, stevejburge, andergmartins
 Author: PublishPress
@@ -11,7 +11,7 @@ Stable tag: 3.14.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-PublishPress Authors is the best plugin for adding multiple authors and guest authors to WordPress posts. You can show authors with a box, widget, shortcode or Gutenberg block.
+PublishPress Authors is the best plugin for adding co-authors, multiple authors and guest authors to WordPress posts. 
 
 == Description ==
 
@@ -23,7 +23,10 @@ Here are the three most important features of PublishPress Authors:
 * **Multiple Authors**. By default, WordPress only allows one author per post. PublishPress Authors allows you to add an unlimited number of authors to each post. This is very useful if you have a busy site and need to manage and give credit to all your writers.
 * **Guest Authors**. You can create Guest Authors who don’t have an account on your site. This is important because not all writers need a username and password.
 
-= Multiple Authors and Co-Authors =
+> <strong>Authors Pro</strong><br />
+> This plugin is the free version of the Authors Pro plugin that comes with all the features you need to create beautiful and useful author profiles. <a href="https://publishpress.com/authors"  title="Authors Pro">Click here to purchase the best premium WordPress author box plugin now!</a>
+
+= Add Multiple Authors and Co-Authors to Your Posts =
 
 With PublishPress Authors, you can set multiple authors for each post. When you write a post, you’ll see a box in the right sidebar. Here you can choose from all the users on your site, and assign them as authors.
 
@@ -37,7 +40,7 @@ On the frontend of your site. PublishPress Authors gives you several different o
 
 [Click here to read about displaying authors](https://publishpress.com/knowledge-base/display-multiple-authors/).
 
-= Guest Authors =
+= Add Guest Authors With No WordPress Account =
 
 Using PublishPress Authors, you can create Guest Authors who don’t need an account on your site. PublishPress will treat Guest Authors identically to Authors who are linked users.
 
@@ -45,7 +48,8 @@ You will be able to select and display Guest Authors in exactly the same way as 
 
 [Click here to see how to create Guest Authors](https://publishpress.com/knowledge-base/add-guest-authors-wordpress/).
 
-= Multiple Layout Options for Author Profiles =
+= Multiple Layout Options for Author Bio Profiles =
+
 PublishPress Authors provides five default ways to display the author profiles on your site. In the PublishPress Authors settings you can choose from these layouts:
 
 * Simple list
@@ -54,34 +58,37 @@ PublishPress Authors provides five default ways to display the author profiles o
 * Inline
 * Inline with Avatars
 
-[Click here to see details on all the layout options](https://publishpress.com/knowledge-base/layout/)
+[Click here to see details on all the layout options](https://publishpress.com/knowledge-base/layout/).
 
 = Custom Fields for Author Profiles (Pro version) =
 
-PublishPress Authors Pro enables you to create custom fields and enhance your author profiles. You can add Text, WYSIWYG, Link and email address fields. Then you can place those fields in author profiles using custom layouts.
+PublishPress Authors Pro enables you to create author fields and enhance your author profiles. You can add Text, WYSIWYG, Link and email address fields. Then you can place those author fields in author bio profiles using custom layouts.
 
-[Click here to see how to use Custom Fields](https://publishpress.com/knowledge-base/custom-fields/)
+[Click here to see how to use Custom Fields](https://publishpress.com/knowledge-base/custom-fields/).
 
 = Custom Layouts for Author Profiles (Pro version) =
 
-PublishPress Authors enables you to build custom layouts for your author profiles. Using all your author information and custom fields, you can design beautiful layouts for your authors. Each layout is editable using HTML and PHP. You can add many different types of author information to these layouts including custom fields.
+PublishPress Authors enables you to build custom layouts for your author bio profiles. Using all your author information and custom fields, you can design beautiful layouts for your authors. Each layout is editable using HTML and PHP. You can add many different types of author information to these layouts including custom fields.
 
 [Click here to see how to customize author layouts](https://publishpress.com/knowledge-base/custom-layouts/).
 
 = Join PublishPress and get the Pro plugins =
+
 The Pro versions of the PublishPress plugins are well worth your investment. The Pro versions have extra features and faster support. [Click here to join PublishPress](https://publishpress.com/pricing/).
 
-Join PublishPress and you’ll get access to these plugins:
+Join PublishPress and you'll get access to these Pro plugins:
 
-* [Advanced Gutenberg](https://publishpress.com/blocks) add over 20 layout options, sliders, buttons, icons, image galleries, maps, tabs, testimonials, accordions, and much more.
-* [PublishPress Authors Pro](https://publishpress.com/authors) allows you to add multiple authors and guest authors to WordPress posts
+* [PublishPress Authors Pro](https://publishpress.com/authors) allows you to add multiple authors and guest authors to WordPress posts.
+* [PublishPress Blocks Pro](https://publishpress.com/blocks) has everything you need to build professional websites with the WordPress block editor.
 * [PublishPress Capabilities Pro](https://publishpress.com/capabilities) is the plugin to manage your WordPress user roles, permissions, and capabilities.
 * [PublishPress Checklists Pro](https://publishpress.com/checklists) enables you to define tasks that must be completed before content is published.
 * [PublishPress Permissions Pro](https://publishpress.com/permissions)  is the plugin for advanced WordPress permissions.
 * [PublishPress Pro](https://publishpress.com/publishpress) is the plugin for managing and scheduling WordPress content.
 * [PublishPress Revisions Pro](https://publishpress.com/revisions) allows you to update your published pages with teamwork and precision.
+* [PublishPress Series Pro](https://publishpress.com/series) enables you to group content together into a series 
 
-Together, these plugins are a suite of powerful publishing tools for WordPress. If you need to create a professional workflow in WordPress, with moderation, revisions, permissions and more … then you should try PublishPress.
+Together, these plugins are a suite of powerful publishing tools for WordPress. If you need to create a professional workflow in WordPress, with moderation, revisions, permissions and more... then you should try PublishPress.
+
 
 =  Bug Reports =
 Bug reports for PublishPress Authors are welcomed in our [repository on GitHub](https://github.com/publishpress/publishpress-authors). Please note that GitHub is not a support forum, and that issues that aren’t properly qualified as bugs will be closed.
@@ -91,6 +98,113 @@ Follow PublishPress on [Facebook](https://www.facebook.com/publishpress), [Twitt
 = Thank You =
 This plugin is partly based on Co-Authors Plus, which includes the work of batmoo, danielbachhuber and automattic. This plugin also uses work from the Bylines plugin by danielbachhuber.
 
+== Screenshots ==
+
+1. Add multiple authors: With PublishPress Authors, you can choose multiple authors for each post.
+2. Show your author profiles: PublishPress Authors gives you multiple ways to show author profiles. You can display authors under your content, in a widget, using shortcodes and more.
+3. Add guest authors: Using PublishPress Authors, you can create Guest Authors who don’t need an account on your site. 
+4. Custom fields for author profiles: PublishPress Authors Pro enables you to create custom fields for your author profiles. 
+5.  Custom layouts for author profiles: PublishPress Authors Pro enables you to build custom layouts for authors.
+
+
+== Frequently Asked Questions ==
+
+= How do I display author boxes and author bios? =
+
+You have several different options for displaying authors using the PublishPress Authors plugin:<br />
+
+1. *Below the content*. Go to Authors > Settings and click the “Display” tab. Check the box saying, “This will display the authors box at the end of the content”. In the “Layout” box, you can choose from several layouts.
+2. *The Post Authors widget*. When you install the add-on, PublishPress Authors automatically creates a widget that you can use to show the authors. Go to Appearance > Widgets, and you can position your PublishPress Authors widget in any sidebar or widget area. 
+3. *The Authors shortcode*. With PublishPress Authors shortcodes, you can display the author box in any part of the content. The default shortcode is [author_box]
+4. *Editing your theme*. PublishPress Authors allows you to show author details in your plugin or theme. You can use the action “pp_multiple_authors_show_author_box” to display the author box programmatically.
+
+= How do I import WordPress users to PublishPress Authors? =
+
+PublishPress Authors does use a different system than the WordPress core, so there may be some work involved with moving author data.
+
+When you first install PublishPress Authors, our plugin will try to import all your authors. However, there may be some more work needed if you have a large site or have been using a different plugin. After installing PublishPress Authors, go to the “Posts” screen to see if your authors have imported correctly.
+
+If you have a very large site with 1,000s or authors or posts, we recommend you use the WP CLI command line system.
+
+[Click here to see how to import WordPress users](https://publishpress.com/knowledge-base/move-user-guest-authors/).
+
+= How do I import from Co-Authors Plus and Byline plugins? =
+
+PublishPress Authors has a Co-Authors Plus import feature. Co-Authors Plus is a popular but older alternative to PublishPress Authors. This import will bring across all your author profiles. It will also keep track of which posts the authors are associated with. If you want to migrate your site from the CoAuthors Plus plugin, please try this on a test site before attempting it on a live site.
+
+[Click here to see how to import Co-Authors Plus authors](https://publishpress.com/knowledge-base/co-authors-plus/).
+
+You can import from the the Byline plugin to PublishPress Authors. Start with the old Byline plugin installed on your site. Go to “Authors”, then “Maintenance”. Look for the import option.
+
+[Click here to see how to import Byline authors](https://publishpress.com/knowledge-base/how-to-import-from-byline-to-multiple-authors/).
+
+= How do I show an author widget? =
+
+The PublishPress Authors plugin provides two widgets. 
+
+The “Post Author” widget will display a list of authors for the current post. It is one of several ways that you can show the authors of a post.     In your WordPress site, go to Appearance > Widgets. Look for the “Post Author” widget.
+
+[Click here to see how to use the Post Author widget](https://publishpress.com/knowledge-base/post-author-widget/).
+
+The “Authors List” widget will display a list of all the authors on your site. If you want to show the authors of the post being viewed, try the Post Author widget. In your WordPress site, go to Appearance > Widgets. Look for the “Authors List” widget.
+
+[Click here to see how to use the Authors List widget](https://publishpress.com/knowledge-base/authors-list-widget/).
+
+= How can I create layouts for Author bio profiles? =
+
+PublishPress Authors provides five default ways to display the author profiles on your site. The Free version allows you to choose any of these layout options. The Pro version allows to modify these defaults and also create new layouts.
+
+In the PublishPress Authors Pro admin area, ggo to Authors > Layouts and you will see all five default layouts: Simple List, Inline with Avatars, Inline, Centered, Boxed. Click “Edit” for any layout and you'll see an editing screen. Each layout is editable using Twig. You can add many different types of author information to these layouts including custom fields.
+
+[Click here to see how to create author layouts](https://publishpress.com/knowledge-base/custom-layouts/).
+
+= Can I use PublishPress Authors with Elementor? =
+
+PublishPress Authors works well with the Elementor plugin. There are 5 options for showing Author profiles on your site. All of these will work with Elementor. 
+However, we have made sure to make sure PublishPress Authors works with inside the main Elementor layout builder.
+
+
+Perhaps the easiest option for the Elementor layout builder is to use the Post Author widget.
+
+[Click here to see how to create Elementor Authors](https://publishpress.com/knowledge-base/authors-elementor/).
+
+= Can I use PublishPress Authors with Divi? =
+
+PublishPress Authors works well with the Divi theme.
+
+There are 5 options for showing Author profiles on your site. All of these will work with Divi. We have made sure that PublishPress Authors works with inside the main Divi layout builder.
+
+Perhaps the easiest option for the Divi layout builder is to use the Post Author widget. Go to Appearance > Widgets. Create a new widget region using this Divi box. I called my widget region “Authors Area”.
+
+[Click here to see how to create Divi Authors](https://publishpress.com/knowledge-base/authors-divi/).
+
+= How do I integrate PublishPress Authors with my theme? =
+
+The PublishPress Authors plugin allows you to show author profiles using this a snippet of PHP code. This code can be modified in many way to suit your needs. Don't worry if you're not technical. There are also other ways to show your authors that require no code. We recommend that you add these code snippets to a child theme, as that is best practice for WordPress theme development. We do have child themes available for some popular themes.
+
+[Click here to see how to modify the authors output](https://publishpress.com/knowledge-base/modify-theme-output-authors/).
+
+= Does PublishPress Authors work with my theme? =
+
+Author profiles can be a tricky area in WordPress because many themes try to add their own author details. We try to help customers using PublishPress Authors and make sure that the plugin works with your theme. So far, we have child themes available to help compatibility with some common themes including:
+
+* TwentyTwenty
+* TwentyNineteen
+* Newspaper
+* Magplus
+* Gridlove
+* Hestia
+* Kleo
+* Salient
+* Colormag
+* Extra
+* JNews
+* MyListing
+* Uncode
+* GeneratePress
+* Trellis
+* Rehub
+* Astra
 
 == Installation ==
 There are two ways to install the PublishPress Authors plugin:
