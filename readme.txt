@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
 Tested up to: 5.8
-Stable tag: 3.14.5
+Stable tag: 3.14.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -114,7 +114,7 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= [3.14.6] - UNRELEASED =
+= [3.14.6] - 14 Sep 2021 =
 
 * Fixed: Fix the output of guest authors data on the frontend, #500;
 * Fixed: Fix "get_multiple_authors" resulting on error 500 when post author is zero, #511;
