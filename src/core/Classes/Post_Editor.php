@@ -229,6 +229,10 @@ class Post_Editor
             <?php
             if (!empty($authors)) {
                 foreach ($authors as $author) {
+                    if (!is_object($author) || is_wp_error($author)) {
+                        continue;
+                    }
+
                     $display_name = $author->display_name;
                     $term         = is_a($author, 'WP_User') ? 'u' . $author->ID : $author->term_id;
 
@@ -288,9 +292,9 @@ class Post_Editor
                         data-placeholder="<?php
                         esc_attr_e('Search for an user', 'publishpress-authors'); ?>" style="width: 100%"
                         name="fallback_author_user">
-                    <option value="<?php
-                    echo (int)$post->post_author; ?>"><?php
-                        echo $userAuthor->display_name; ?></option>
+                    <option value="<?php echo (int)$post->post_author; ?>">
+                        <?php echo is_object($userAuthor) ? $userAuthor->display_name : ''; ?>
+                    </option>
                 </select>
             </div>
             <?php

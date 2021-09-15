@@ -62,7 +62,6 @@ if (!function_exists('get_multiple_authors')) {
             $authors = [];
 
             if (!$archive) {
-
                 //@todo: move this for before the cache check
                 if (empty($postId)) {
                     $post = get_post();
@@ -128,7 +127,7 @@ if (!function_exists('get_multiple_authors')) {
                 $post = get_post($postId);
 
                 // TODO: Should we really just fail silently? Check WP_DEBUG and add a log error message.
-                if (empty($post) || is_wp_error($post) || !is_object($post) || empty($post->post_author) ) {
+                if (empty($post) || is_wp_error($post) || !is_object($post) || empty($post->post_author)) {
                     return [];
                 }
 
