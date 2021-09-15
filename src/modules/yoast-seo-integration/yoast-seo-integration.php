@@ -95,9 +95,15 @@ if (!class_exists('MA_Yoast_Seo_Integration')) {
         public function overrideSEOReplacementsForAuthorsPage($replacements, $args)
         {
             try {
+                $post = get_post();
+
+                if (!is_object($post) || is_wp_error($post)) {
+                    return $replacements;
+                }
+
                 foreach ($replacements as $key => &$value) {
                     if ($key === '%%name%%') {
-                        $authors = get_multiple_authors(0, true, true);
+                        $authors = get_multiple_authors($post->ID);
 
                         if (is_array($authors) && !empty($authors)) {
                             $author = $authors[0];
