@@ -148,6 +148,7 @@ if (!function_exists('get_multiple_authors')) {
                 }
 
                 if (!empty($authors)) {
+                    // TODO: should we really automatically force fixing the author relationship here? If we call this method with "$archive=true" on a non-archive page, we can overwrite the current post authors.
                     Utils::set_post_authors($postId, $authors);
                 }
             }
