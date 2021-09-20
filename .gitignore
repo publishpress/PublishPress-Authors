@@ -15,6 +15,7 @@ Thumbs.db
 # Ignores the "dev" composer file
 /vendor
 /packages
+/downloads_cache
 
 
 .svn
