@@ -127,19 +127,32 @@ class Admin_Ajax
             exit;
         }
 
+        // We load 100, but only display 20. We load more, because we are filtering users with "edit_posts" capability.
+        // TODO: Add settings field for selecting what user role could be used to map users to authors, so we can filter the user role instead.
         $user_args = [
-            'number' => 20,
+            'number' => 100,
         ];
         if (!empty($_GET['q'])) {
             $user_args['search'] = sanitize_text_field('*' . $_GET['q'] . '*');
         }
+
         $users   = get_users($user_args);
         $results = [];
+        $count   = 0;
         foreach ($users as $user) {
+            if ($count >= 20) {
+                break;
+            }
+
+            if (!user_can($user, 'edit_posts')) {
+                continue;
+            }
+
             $results[] = [
                 'id'   => $user->ID,
                 'text' => $user->display_name,
             ];
+            $count++;
         }
         $response = [
             'results' => $results,
