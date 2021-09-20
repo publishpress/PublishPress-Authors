@@ -132,6 +132,8 @@ if (!class_exists('MA_Yoast_Seo_Integration')) {
                     return 'index, follow';
                 }
             }
+
+            return $robotsString;
         }
     }
 }
