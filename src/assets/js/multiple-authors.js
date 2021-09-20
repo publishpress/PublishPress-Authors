@@ -115,7 +115,7 @@ jQuery(document).ready(function ($) {
 
     function hasSelectedOnlyGuests(parent)
     {
-        if (typeof parent === 'undefined') {
+        if (typeof parent === 'undefined' || parent.length == 0) {
             parent = $('.authors-list');
         }
 
