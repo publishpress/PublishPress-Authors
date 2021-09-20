@@ -314,18 +314,14 @@ class Post_Editor
             'term'         => '',
             'is_guest'     => 0,
         ];
+
         $args     = array_merge($defaults, $args);
         ob_start();
-
-        $classes = [
-            'publishpress-authors-author',
-            $args['is_guest'] == 0 ? 'is-guest' : 'mapped-to-user',
-        ];
         ?>
         <li id="publishpress-authors-author-<?php
         echo esc_attr($args['term']); ?>" data-term-id="<?php
         echo esc_attr($args['term']); ?>" data-is-guest="<?php
-        echo esc_attr($args['is_guest']); ?>" class="ui-sortable-handle">
+        echo esc_attr($args['is_guest']); ?>" class="ui-sortable-handle publishpress-authors-author">
             <span class="author-remove">
                 <span class="dashicons dashicons-no-alt"></span>
             </span>
