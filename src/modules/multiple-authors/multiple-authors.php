@@ -2423,7 +2423,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function handle_deleted_user($id)
         {
             // Check if we have an author for the user
-            $author = $this->get_author_by_id($id);
+            $author = Author::get_by_user_id($id);
 
             if (false !== $author) {
                 Author::convert_into_guest_author($author->term_id);

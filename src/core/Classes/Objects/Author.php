@@ -303,8 +303,9 @@ class Author
      */
     public static function convert_into_guest_author($term_id)
     {
+        $userId = get_term_meta($term_id, 'user_id', true);
         delete_term_meta($term_id, 'user_id');
-        delete_term_meta($term_id, 'user_id');
+        delete_term_meta($term_id, 'user_id_' . $userId);
     }
 
     /**
