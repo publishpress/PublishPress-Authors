@@ -856,6 +856,8 @@ class Plugin
      * @param int
      * @param array
      * @param bool
+     *
+     * @deprecated Since 3.14.7
      */
     public function add_coauthors($post_id, $coauthors, $append = false)
     {

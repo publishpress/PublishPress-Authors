@@ -13,6 +13,8 @@
 namespace MultipleAuthors;
 
 use MultipleAuthors\Classes\Installer;
+use MultipleAuthors\Classes\Objects\Author;
+use MultipleAuthors\Classes\Utils;
 use WP_CLI_Command;
 use WP_Query;
 
@@ -100,128 +102,126 @@ class WP_Cli extends WP_CLI_Command
 //        \WP_CLI::success('Finished');
 //    }
 
-//    /**
-//     * Clear all of the caches for memory management
-//     */
-//    private function clearAllCaches()
-//    {
-//        global $wpdb, $wp_object_cache;
-//
-//        $wpdb->queries = []; // or define( 'WP_IMPORTING', true );
-//
-//        if (!is_object($wp_object_cache)) {
-//            return;
-//        }
-//
-//        $wp_object_cache->group_ops      = [];
-//        $wp_object_cache->stats          = [];
-//        $wp_object_cache->memcache_debug = [];
-//        $wp_object_cache->cache          = [];
-//
-//        if (is_callable($wp_object_cache, '__remoteset')) {
-//            $wp_object_cache->__remoteset(); // important
-//        }
-//    }
+    /**
+     * Clear all of the caches for memory management
+     */
+    private function clearAllCaches()
+    {
+        global $wpdb, $wp_object_cache;
 
-//    /**
-//     * Subcommand to assign coauthors to a post based on a given meta key
-//     *
-//     * @since      3.0
-//     *
-//     * @subcommand assign-coauthors
-//     * @synopsis [--meta_key=<key>] [--post_type=<ptype>]
-//     */
-//    public function assign_coauthors($args, $assoc_args)
-//    {
-//        global $multiple_authors_addon;
-//
-//        $defaults   = [
-//            'meta_key'         => '_original_import_author',
-//            'post_type'        => 'post',
-//            'order'            => 'ASC',
-//            'orderby'          => 'ID',
-//            'posts_per_page'   => 100,
-//            'paged'            => 1,
-//            'append_coauthors' => false,
-//        ];
-//        $this->args = wp_parse_args($assoc_args, $defaults);
-//
-//        // For global use and not a part of WP_Query
-//        $append_coauthors = $this->args['append_coauthors'];
-//        unset($this->args['append_coauthors']);
-//
-//        $posts_total              = 0;
-//        $posts_already_associated = 0;
-//        $posts_missing_coauthor   = 0;
-//        $posts_associated         = 0;
-//        $missing_coauthors        = [];
-//
-//        $posts = new WP_Query($this->args);
-//        while ($posts->post_count) {
-//            foreach ($posts->posts as $single_post) {
-//                $posts_total++;
-//
-//                // See if the value in the post meta field is the same as any of the existing coauthors
-//                $original_author    = get_post_meta($single_post->ID, $this->args['meta_key'], true);
-//                $existing_coauthors = get_multiple_authors($single_post->ID);
-//                $already_associated = false;
-//                foreach ($existing_coauthors as $existing_coauthor) {
-//                    if ($original_author == $existing_coauthor->user_nicename) {
-//                        $already_associated = true;
-//                    }
-//                }
-//                if ($already_associated) {
-//                    $posts_already_associated++;
-//                    \WP_CLI::line(
-//                        $posts_total . ': Post #' . $single_post->ID . ' already has "' . $original_author . '" associated as a coauthor'
-//                    );
-//                    continue;
-//                }
-//
-//                // Make sure this original author exists as a co-author
-//                if ((!$coauthor = $multiple_authors_addon->get_coauthor_by('user_nicename', $original_author)) &&
-//                    (!$coauthor = $multiple_authors_addon->get_coauthor_by(
-//                        'user_nicename',
-//                        sanitize_title($original_author)
-//                    ))) {
-//                    $posts_missing_coauthor++;
-//                    $missing_coauthors[] = $original_author;
-//                    \WP_CLI::line(
-//                        $posts_total . ': Post #' . $single_post->ID . ' does not have "' . $original_author . '" associated as a coauthor but there is not a coauthor profile'
-//                    );
-//                    continue;
-//                }
-//
-//                // Assign the coauthor to the post
-//                $multiple_authors_addon->add_coauthors(
-//                    $single_post->ID,
-//                    [$coauthor->user_nicename],
-//                    $append_coauthors
-//                );
-//                \WP_CLI::line(
-//                    $posts_total . ': Post #' . $single_post->ID . ' has been assigned "' . $original_author . '" as the author'
-//                );
-//                $posts_associated++;
-//                clean_post_cache($single_post->ID);
-//            }
-//
-//            $this->args['paged']++;
-//            $this->clearAllCaches();
-//            $posts = new WP_Query($this->args);
-//        }
-//
-//        \WP_CLI::line('All done! Here are your results:');
-//        if ($posts_already_associated) {
-//            \WP_CLI::line("- {$posts_already_associated} posts already had the coauthor assigned");
-//        }
-//        if ($posts_missing_coauthor) {
-//            \WP_CLI::line("- {$posts_missing_coauthor} posts reference coauthors that don't exist. These are:");
-//            \WP_CLI::line('  ' . implode(', ', array_unique($missing_coauthors)));
-//        }
-//        if ($posts_associated) {
-//            \WP_CLI::line("- {$posts_associated} posts now have the proper coauthor");
-//        }
-//    }
+        $wpdb->queries = []; // or define( 'WP_IMPORTING', true );
+
+        if (!is_object($wp_object_cache)) {
+            return;
+        }
+
+        $wp_object_cache->group_ops      = [];
+        $wp_object_cache->stats          = [];
+        $wp_object_cache->memcache_debug = [];
+        $wp_object_cache->cache          = [];
+
+        if (is_callable($wp_object_cache, '__remoteset')) {
+            $wp_object_cache->__remoteset(); // important
+        }
+    }
+
+    /**
+     * Subcommand to assign coauthors to a post based on a given meta key
+     *
+     * @since      3.0
+     *
+     * @subcommand assign-author-by-meta-key
+     * @synopsis [--meta_key=<key>] [--post_type=<ptype>] [--append_author=<bool>] [--posts_per_page=<num>] [--paged=<page>] [--post_status=<string>]
+     */
+    public function assign_author_by_meta_key($args, $assocArgs)
+    {
+        $defaults   = [
+            'meta_key'         => '_original_import_author',
+            'post_type'        => 'post',
+            'order'            => 'ASC',
+            'orderby'          => 'ID',
+            'posts_per_page'   => 100,
+            'paged'            => 1,
+            'append_author' => false,
+        ];
+        $this->args = wp_parse_args($assocArgs, $defaults);
+
+        // For global use and not a part of WP_Query
+        $appendAuthor = $this->args['append_author'];
+        unset($this->args['append_author']);
+
+        $postsTotal             = 0;
+        $postsAlreadyAssociated = 0;
+        $postsMissingCoauthor   = 0;
+        $postsAssociated        = 0;
+        $missionCoauthors       = [];
+
+        $posts = new WP_Query($this->args);
+        while ($posts->post_count) {
+            foreach ($posts->posts as $singlePost) {
+                $postsTotal++;
+
+                // See if the value in the post meta field is the same as any of the existing coauthors
+                $originalAuthor    = get_post_meta($singlePost->ID, $this->args['meta_key'], true);
+                $existingCoauthors = get_multiple_authors($singlePost->ID);
+                $isAlreadyAssociated = false;
+                foreach ($existingCoauthors as $existingCoauthor) {
+                    if ($originalAuthor == $existingCoauthor->user_nicename) {
+                        $isAlreadyAssociated = true;
+                    }
+                }
+                if ($isAlreadyAssociated && $appendAuthor) {
+                    $postsAlreadyAssociated++;
+                    \WP_CLI::line(
+                        $postsTotal . ': Post #' . $singlePost->ID . ' already has "' . $originalAuthor . '" associated as a coauthor'
+                    );
+                    continue;
+                }
+
+                $coauthor = Author::get_by_term_slug(sanitize_title($originalAuthor));
+                if (false === $coauthor || is_wp_error($coauthor)) {
+                    $postsMissingCoauthor++;
+                    $missionCoauthors[] = $originalAuthor;
+                    \WP_CLI::line(
+                        $postsTotal . ': Post #' . $singlePost->ID . ' does not have "' . $originalAuthor . '" associated as a coauthor but there is not a coauthor profile'
+                    );
+                    continue;
+                }
+
+
+                if ($appendAuthor) {
+                    $coauthors = $existingCoauthors;
+                    $coauthors[] = $coauthor;
+                } else {
+                    $coauthors = [$coauthor];
+                }
+
+                Utils::set_post_authors($singlePost->ID, $coauthors);
+
+                \WP_CLI::line(
+                    $postsTotal . ': Post #' . $singlePost->ID . ' has been assigned "' . $originalAuthor . '" as the author'
+                );
+                $postsAssociated++;
+                clean_post_cache($singlePost->ID);
+            }
+
+            $this->args['paged']++;
+            $this->clearAllCaches();
+            $posts = new WP_Query($this->args);
+        }
+
+        \WP_CLI::line('All done! Here are your results:');
+        if ($postsAlreadyAssociated) {
+            \WP_CLI::line("- {$postsAlreadyAssociated} posts already had the coauthor assigned");
+        }
+        if ($postsMissingCoauthor) {
+            \WP_CLI::line("- {$postsMissingCoauthor} posts reference coauthors that don't exist. These are:");
+            \WP_CLI::line('  ' . implode(', ', array_unique($missionCoauthors)));
+        }
+        if ($postsAssociated) {
+            \WP_CLI::line("- {$postsAssociated} posts now have the proper coauthor");
+        }
+    }
 //
 //    /**
 //     * Assign posts associated with a WordPress user to a co-author
