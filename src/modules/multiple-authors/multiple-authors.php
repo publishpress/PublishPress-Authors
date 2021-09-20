@@ -251,6 +251,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_action('publishpress_authors_set_post_authors', [$this, 'actionSetPostAuthors'], 10, 2);
 
             add_action('profile_update', [$this, 'userProfileUpdate'], 10, 2);
+
+            add_filter('pre_comment_approved', [$this, 'preCommentApproved'], 10, 2);
         }
 
         /**
@@ -2710,6 +2712,27 @@ if (!class_exists('MA_Multiple_Authors')) {
                     $wp_rewrite->flush_rules();
                 }
             }
+        }
+
+        public function preCommentApproved($approved, $commentData)
+        {
+            $currentUser = wp_get_current_user();
+
+            if (empty($currentUser)) {
+                return $approved;
+            }
+
+            $currentUserAuthor = Author::get_by_user_id($currentUser->ID);
+
+            if (empty($currentUserAuthor) || !is_object($currentUserAuthor) || is_wp_error($currentUserAuthor)) {
+                return $approved;
+            }
+
+            if (Utils::isAuthorOfPost($commentData['comment_post_ID'], $currentUserAuthor)) {
+                return true;
+            }
+
+            return $approved;
         }
     }
 }

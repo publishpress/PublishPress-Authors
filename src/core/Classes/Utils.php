@@ -761,4 +761,30 @@ class Utils
     {
         return defined('THE_SEO_FRAMEWORK_VERSION');
     }
+
+    public static function isAuthorOfPost($postId, $author)
+    {
+        $postAuthors = get_multiple_authors($postId);
+        if (empty($postAuthors)) {
+            return false;
+        }
+
+        if (is_numeric($author)) {
+            $author = Author::get_by_id($author);
+        } elseif (is_string($author)) {
+            $author = Author::get_by_term_slug($author);
+        }
+
+        if (!is_object($author)) {
+            return false;
+        }
+
+        foreach ($postAuthors as $postAuthor) {
+            if ($postAuthor->ID === $author->ID) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
