@@ -493,3 +493,37 @@ if (typeof console === "undefined") {
     console.log = console.error = function () {
     };
 }
+
+(function (wp) {
+    if (PublishPressAuthorsParams.show_cache_notice) {
+        if (wp.data.select && wp.data.select('core/editor') !== null) {
+            var displayedNotice = false;
+            var subscribed = false;
+
+            if (!subscribed) {
+                wp.data.subscribe(function () {
+                    subscribed = true;
+                    let isSavingPost = wp.data.select('core/editor').isSavingPost();
+                    let isAutosavingPost = wp.data.select('core/editor').isAutosavingPost();
+
+                    if (isSavingPost && !isAutosavingPost && !displayedNotice) {
+                        displayedNotice = true;
+                        wp.data.dispatch('core/notices').createNotice(
+                            'warning',
+                            MultipleAuthorsStrings.notice_clean_cache,
+                            {
+                                isDismissible: true,
+                                actions: [
+                                    {
+                                        url: 'post.php?action=publishpress-dismiss-cache-notice',
+                                        label: MultipleAuthorsStrings.dismiss_forever
+                                    }
+                                ]
+                            }
+                        );
+                    }
+                })
+            }
+        }
+    }
+})(window.wp);

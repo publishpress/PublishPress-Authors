@@ -1379,6 +1379,14 @@ class Plugin
                 'Sorry, the request returned an error.',
                 'publishpress-authors'
             ),
+            'notice_clean_cache' => __(
+                'Please, remember to clean up the object cache in case you use it, whenever you change authors of a post.',
+                'publishpress-authors'
+            ),
+            'dismiss_forever' => __(
+                    'Dismiss forever',
+                'publishpress-authors'
+            )
         ];
 
         wp_localize_script(
@@ -1386,6 +1394,27 @@ class Plugin
             'MultipleAuthorsStrings',
             $js_strings
         );
+
+        $currentUser = wp_get_current_user();
+
+        $showCacheNotice = false;
+        if (is_object($currentUser)) {
+            $postTypes = Util::get_post_types_for_module($legacyPlugin->multiple_authors->module);
+            $post = get_post();
+
+            if (is_object($post) && in_array($post->post_type, $postTypes)) {
+                $showCacheNotice = true;
+            }
+        }
+
+        wp_localize_script(
+            'multiple-authors-js',
+            'PublishPressAuthorsParams',
+            [
+                    'show_cache_notice' => $showCacheNotice
+            ]
+        );
+
         wp_localize_script(
             'multiple-authors-js',
             'bulkEditNonce', array(
