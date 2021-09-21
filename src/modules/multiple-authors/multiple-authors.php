@@ -62,6 +62,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         private $eddAPIUrl = 'https://publishpress.com';
 
+
         /**
          * Construct the MA_Multiple_Authors class
          */
@@ -252,10 +253,6 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_action('profile_update', [$this, 'userProfileUpdate'], 10, 2);
 
             add_filter('pre_comment_approved', [$this, 'preCommentApproved'], 10, 2);
-
-            add_action('publishpress_authors_post_authors_set', [$this, 'postAuthorsSetCleanCacheNotice']);
-            add_action('admin_notices', [$this, 'postAuthorsSetCleanCacheNoticeContent']);
-            add_action('admin_init', [$this, 'dismissCleanCacheNotice']);
         }
 
         /**
@@ -2736,77 +2733,6 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             return $approved;
-        }
-
-        /**
-         * Needed for the classic editor.
-         */
-        public function postAuthorsSetCleanCacheNotice()
-        {
-            $currentUser = wp_get_current_user();
-
-            if (!is_object($currentUser)) {
-                return;
-            }
-
-            $postTypes = array_values(Util::get_post_types_for_module($this->module));
-            $post = get_post();
-
-            if (!is_object($post) || !in_array($post->post_type, $postTypes)) {
-                return;
-            }
-
-            $dismissNotice = (int)get_option('publishpress_authors_dismiss_cache_notice_' . $currentUser->ID, 0);
-
-            if ($dismissNotice === 1) {
-                return;
-            }
-
-            set_transient('publishpress_authors_show_cache_notice_' . $currentUser->ID, 1, 10);
-        }
-
-        /**
-         * Needed for the classic editor.
-         */
-        public function postAuthorsSetCleanCacheNoticeContent()
-        {
-            $currentUser = wp_get_current_user();
-
-            if (!is_object($currentUser)) {
-                return;
-            }
-
-            $showNotice = (bool)get_transient('publishpress_authors_show_cache_notice_' . $currentUser->ID);
-            if (true !== $showNotice) {
-                return;
-            }
-
-            // Render the notice's HTML.
-            // Each notice should be wrapped in a <div>
-            // with a 'notice' class.
-            echo '<div class="notice notice-success is-dismissible"><p>';
-            echo sprintf(
-                '%s <a href="%s">%s</a>',
-                esc_html(__('Please, remember to clean up the object cache in case you use it, whenever you change authors of a post.', 'publishpress-authors')),
-                esc_url(admin_url('post.php?action=publishpress-dismiss-cache-notice')),
-                esc_html(__('Dismiss forever', 'publishpress-authors'))
-            );
-            echo '</p></div>';
-
-            delete_transient('publishpress_authors_show_cache_notice_' . $currentUser->ID);
-        }
-
-        public function dismissCleanCacheNotice()
-        {
-            if (isset($_GET['action']) && $_GET['action'] === 'publishpress-dismiss-cache-notice') {
-                $currentUser = wp_get_current_user();
-
-                if (!is_object($currentUser)) {
-                    return;
-                }
-
-                update_option('publishpress_authors_dismiss_cache_notice_' . $currentUser->ID, 1, false);
-            }
         }
     }
 }

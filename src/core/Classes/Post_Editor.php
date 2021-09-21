@@ -407,8 +407,6 @@ class Post_Editor
 
         Utils::set_post_authors($post_id, $authors, true, $fallbackUserId);
 
-        do_action('publishpress_authors_post_authors_set', $post_id, $authors);
-
         do_action('publishpress_authors_flush_cache');
     }
 
