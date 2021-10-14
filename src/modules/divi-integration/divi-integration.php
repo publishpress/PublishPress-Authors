@@ -105,12 +105,11 @@ if (!class_exists('MA_Divi_Integration')) {
         {
             global $shortname, $wp_query;
 
-            $_       = ET_Core_Data_Utils::instance();
-            $def     = 'et_builder_get_dynamic_attribute_field_default';
-            $post    = get_post($post_id);
-            $author  = null;
-            $wrapped = false;
-            $is_woo  = false;
+            $_                 = ET_Core_Data_Utils::instance();
+            $def               = 'et_builder_get_dynamic_attribute_field_default';
+            $post              = get_post($post_id);
+            $author            = null;
+            $contentOverridden = false;
 
             if (is_author()) {
                 $author = get_queried_object();
@@ -185,6 +184,7 @@ if (!class_exists('MA_Divi_Integration')) {
                             et_core_esc_previously($content)
                         );
                     }
+                    $contentOverridden = true;
                     break;
 
                 case 'post_author_bio':
@@ -193,6 +193,7 @@ if (!class_exists('MA_Divi_Integration')) {
                     }
 
                     $content = et_core_intentionally_unescaped($author->description, 'cap_based_sanitized');
+                    $contentOverridden = true;
                     break;
 
                 case 'post_author_url':
@@ -201,6 +202,7 @@ if (!class_exists('MA_Divi_Integration')) {
                     }
 
                     $content = esc_url($author->link);
+                    $contentOverridden = true;
                     break;
 
                 case 'post_author_profile_picture':
@@ -212,38 +214,19 @@ if (!class_exists('MA_Divi_Integration')) {
                     if (is_array($content)) {
                         $content = $content['url'];
                     }
+                    $contentOverridden = true;
+                    break;
+
+                default:
+                    return $content;
+                    break;
             }
 
-            // Handle in post type URL options.
-            $post_types = et_builder_get_public_post_types();
-            foreach ($post_types as $public_post_type) {
-                $key = 'post_link_url_' . $public_post_type->name;
-
-                if ($key !== $name) {
-                    continue;
-                }
-
-                $selected_post_id = $_->array_get($settings, 'post_id', $def($post_id, $name, 'post_id'));
-                $content          = esc_url(get_permalink($selected_post_id));
-                break;
+            if (!$contentOverridden) {
+                return $content;
             }
 
-            // Wrap non plain text woo data to add custom selector for styling inheritance.
-            // It works by checking is the content has HTML tag.
-            if ($is_woo && $content && preg_match('/<\s?[^\>]*\/?\s?>/i', $content)) {
-                $content = sprintf(
-                    '<div class="woocommerce et-dynamic-content-woo et-dynamic-content-woo--%2$s">%1$s</div>',
-                    $content,
-                    $name
-                );
-            }
-
-            if (!$wrapped) {
-                $content = et_builder_wrap_dynamic_content($post_id, $name, $content, $settings);
-                $wrapped = true;
-            }
-
-            return $content;
+            return et_builder_wrap_dynamic_content($post_id, $name, $content, $settings);
         }
     }
 }
