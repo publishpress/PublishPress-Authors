@@ -79,6 +79,10 @@
     color: inherit;
 }
 
+.pressshack-admin-wrapper .nav-tab-wrapper .nav-tab {
+  margin-bottom: -1px;
+}
+
 .pressshack-admin-wrapper .nav-tab-wrapper .nav-tab-active,
 .pressshack-admin-wrapper .nav-tab-wrapper .nav-tab:hover,
 .pressshack-admin-wrapper .nav-tab-wrapper .nav-tab:active,
