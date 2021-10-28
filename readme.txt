@@ -228,6 +228,12 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [3.14.8] - UNRELEASED =
+
+* Fixed: Remove gap in the settings tabs, #532;
+* Fixed: HTML special chars in the author name are not displayed correctly, #531;
+* Fixed: Access denied while creating posts with contributor and another user as default author, #534;
+
 = [3.14.7] - 21 Sep 2021 =
 
 * Fixed: Fix robots meta tag when Yoast SEO is installed and it is not the authors page, #508;
