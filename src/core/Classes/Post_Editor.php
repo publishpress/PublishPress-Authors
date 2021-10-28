@@ -459,30 +459,41 @@ class Post_Editor
             return;
         }
 
-        $default_author = false;
+        $defaultAuthor = false;
 
         $legacyPlugin           = Factory::getLegacyPlugin();
-        $default_author_setting = isset($legacyPlugin->modules->multiple_authors->options->default_author_for_new_posts) ?
+        $defaultAuthorSetting = isset($legacyPlugin->modules->multiple_authors->options->default_author_for_new_posts) ?
             $legacyPlugin->modules->multiple_authors->options->default_author_for_new_posts : '';
 
-        if (!empty($default_author_setting)) {
-            $default_author = Author::get_by_term_id($default_author_setting);
+        if (!empty($defaultAuthorSetting)) {
+            $defaultAuthor = Author::get_by_term_id($defaultAuthorSetting);
         } elseif ($post->post_author) {
-            $default_author = Author::get_by_user_id($post->post_author);
+            $defaultAuthor = Author::get_by_user_id($post->post_author);
         }
 
         /**
          * Filter the default author assigned to the post.
          *
-         * @param mixed $default_author Default author, as calculated by plugin.
+         * @param mixed $defaultAuthor Default author, as calculated by plugin.
          * @param WP_Post $post Post object.
          */
-        $default_author = apply_filters('authors_default_author', $default_author, $post);
-        if ($default_author) {
-            Utils::set_post_authors($post_id, [$default_author]);
+        $defaultAuthor = apply_filters('authors_default_author', $defaultAuthor, $post);
 
-            do_action('publishpress_authors_flush_cache');
+        if (empty($defaultAuthor) || ! is_object($defaultAuthor)) {
+            return;
         }
+
+        /*
+         * If the user can't edit others posts, we shouldn't set another user as author for the post.
+         * That could bring back a bug that blocks them to create new posts.
+         */
+        if (! current_user_can('edit_others_posts') && ! $defaultAuthor->is_guest()) {
+            return;
+        }
+
+        Utils::set_post_authors($post_id, [$defaultAuthor]);
+
+        do_action('publishpress_authors_flush_cache');
     }
 
     public static function remove_core_author_field()
