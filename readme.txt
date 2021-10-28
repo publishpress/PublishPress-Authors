@@ -234,6 +234,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: HTML special chars in the author name are not displayed correctly, #531;
 * Fixed: Access denied while creating posts with contributor and another user as default author, #534;
 * Fixed: Fix duplicated prefix for text elements with dynamic content on Divi builder, #528;
+* Added: Add notice asking for a review;
 
 = [3.14.7] - 21 Sep 2021 =
 
