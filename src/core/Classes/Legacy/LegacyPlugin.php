@@ -154,6 +154,7 @@ class LegacyPlugin
             'rest-api'             => PP_AUTHORS_MODULES_PATH,
             'pro-placeholders'     => PP_AUTHORS_MODULES_PATH,
             'polylang-integration' => PP_AUTHORS_MODULES_PATH,
+            'reviews'              => PP_AUTHORS_MODULES_PATH,
         ];
 
         if (Utils::isBylineInstalled()) {

@@ -76,8 +76,8 @@ class Services implements ServiceProviderInterface
             $twig->addFunction($function);
 
             $function = new Twig_SimpleFunction(
-                '__', function ($id) {
-                return __($id, 'publishpress-authors');
+                '__', function ($id, $domain = 'publishpress-authors') {
+                return __($id, $domain);
             }
             );
             $twig->addFunction($function);
