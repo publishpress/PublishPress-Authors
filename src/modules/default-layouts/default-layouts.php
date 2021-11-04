@@ -125,6 +125,10 @@ if (!class_exists('MA_Default_Layouts')) {
                 );
             }
 
+            $args['strings'] = [
+                'view_all' => __('View all posts', 'publishpress-authors'),
+            ];
+
             $container = Factory::get_container();
             $twig      = $container['twig'];
 
