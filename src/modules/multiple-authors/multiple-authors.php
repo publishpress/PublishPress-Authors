@@ -839,6 +839,12 @@ if (!class_exists('MA_Multiple_Authors')) {
                 </select>
 
             </label>
+            <p class="ppma_settings_field_description">
+                <?php echo __('This setting may be disabled for users who can not edit others posts.', 'publishpress-authors'); ?>
+                <a href="https://publishpress.com/knowledge-base/troubleshooting/#default-author-is-not-applied-to-new-posts" target="_blank">
+                    <?php echo __('Click here for more details.', 'publishpress-authors'); ?>
+                </a>
+            </p>
             <?php
         }
 

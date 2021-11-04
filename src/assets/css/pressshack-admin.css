@@ -79,6 +79,10 @@
     color: inherit;
 }
 
+.pressshack-admin-wrapper .nav-tab-wrapper .nav-tab {
+  margin-bottom: -1px;
+}
+
 .pressshack-admin-wrapper .nav-tab-wrapper .nav-tab-active,
 .pressshack-admin-wrapper .nav-tab-wrapper .nav-tab:hover,
 .pressshack-admin-wrapper .nav-tab-wrapper .nav-tab:active,
@@ -143,7 +147,7 @@
     min-height: 28px;
     text-decoration: none;
     padding: 15px 10px;
-    border-width: 2px;
+    border-width: 1px;
     border-style: solid;
 }
 

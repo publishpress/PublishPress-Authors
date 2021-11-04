@@ -14,7 +14,7 @@
                     {% endif %}
                 </div>
                 <div class="multiple-authors-name">
-                    <a href="{{ author.link }}" class="{{ item_class }}" rel="author">{{ author.display_name }}</a>
+                    <a href="{{ author.link }}" class="{{ item_class }}" rel="author">{{ author.display_name|raw }}</a>
                 </div>
                 {% if author.description %}
                     <p class="multiple-authors-description">{{ author.description|raw }}</p>
@@ -22,7 +22,7 @@
 
                 <p class="multiple-authors-links">
                     <a href="{{ author.link }}">
-                        <span>{{ __('View all posts', 'publishpress-authors') }}</span>
+                        <span>{{ strings.view_all }}</span>
                     </a>
 
                     {% if show_email and author.user_email %}

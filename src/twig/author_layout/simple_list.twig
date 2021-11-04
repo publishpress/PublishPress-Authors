@@ -6,7 +6,7 @@
     <ul>
         {% for author in authors %}
             <li class="author_index_{{ loop.index }} author_{{ author.slug }}">
-                <a href="{{ author.link }}" class="{{ item_class }}" rel="author">{{ author.display_name }}</a>
+                <a href="{{ author.link }}" class="{{ item_class }}" rel="author">{{ author.display_name|raw }}</a>
                 {% if author.get_avatar %}
                     {{ author.get_avatar(35)|raw }}
                 {% else %}
