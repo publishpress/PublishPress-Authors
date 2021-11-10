@@ -228,6 +228,11 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [3.14.9] - UNRELEASED =
+
+* Fixed: Fix fatal error in Yoast SEO Schema when $authordata is stdClass, #544;
+* Fixed: Fix the guest author URL in the Yoast SEO Schema, #545;
+
 = [3.14.8] - 04 Nov 2021 =
 
 * Fixed: HTML special chars in the author name are not displayed correctly, #531;
