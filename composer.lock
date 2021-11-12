@@ -115,16 +115,16 @@
         },
         {
             "name": "publishpress/wordpress-reviews",
-            "version": "v1.1.11",
+            "version": "v1.1.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/publishpress/wordpress-reviews.git",
-                "reference": "eb913d04f5cc18769b9b415324305a2f9695d30e"
+                "reference": "a257ebca0a72a7a3f59e6ed831752ab17f016983"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/publishpress/wordpress-reviews/zipball/eb913d04f5cc18769b9b415324305a2f9695d30e",
-                "reference": "eb913d04f5cc18769b9b415324305a2f9695d30e",
+                "url": "https://api.github.com/repos/publishpress/wordpress-reviews/zipball/a257ebca0a72a7a3f59e6ed831752ab17f016983",
+                "reference": "a257ebca0a72a7a3f59e6ed831752ab17f016983",
                 "shasum": ""
             },
             "require": {
@@ -162,9 +162,9 @@
             ],
             "support": {
                 "issues": "https://github.com/publishpress/wordpress-reviews/issues",
-                "source": "https://github.com/publishpress/wordpress-reviews/tree/v1.1.11"
+                "source": "https://github.com/publishpress/wordpress-reviews/tree/v1.1.12"
             },
-            "time": "2021-10-26T15:47:36+00:00"
+            "time": "2021-11-12T18:57:53+00:00"
         },
         {
             "name": "publishpress/wordpress-version-notices",
@@ -2109,16 +2109,16 @@
         },
         {
             "name": "gettext/languages",
-            "version": "2.8.1",
+            "version": "2.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-gettext/Languages.git",
-                "reference": "4ad818b6341e177b7c508ec4c37e18932a7b788a"
+                "reference": "ed56dd2c7f4024cc953ed180d25f02f2640e3ffa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-gettext/Languages/zipball/4ad818b6341e177b7c508ec4c37e18932a7b788a",
-                "reference": "4ad818b6341e177b7c508ec4c37e18932a7b788a",
+                "url": "https://api.github.com/repos/php-gettext/Languages/zipball/ed56dd2c7f4024cc953ed180d25f02f2640e3ffa",
+                "reference": "ed56dd2c7f4024cc953ed180d25f02f2640e3ffa",
                 "shasum": ""
             },
             "require": {
@@ -2167,7 +2167,7 @@
             ],
             "support": {
                 "issues": "https://github.com/php-gettext/Languages/issues",
-                "source": "https://github.com/php-gettext/Languages/tree/2.8.1"
+                "source": "https://github.com/php-gettext/Languages/tree/2.9.0"
             },
             "funding": [
                 {
@@ -2179,7 +2179,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-07-14T15:03:58+00:00"
+            "time": "2021-11-11T17:30:39+00:00"
         },
         {
             "name": "grasmash/expander",
@@ -2557,7 +2557,7 @@
         },
         {
             "name": "illuminate/collections",
-            "version": "v8.69.0",
+            "version": "v8.70.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/collections.git",
@@ -2611,7 +2611,7 @@
         },
         {
             "name": "illuminate/contracts",
-            "version": "v8.69.0",
+            "version": "v8.70.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
@@ -2659,7 +2659,7 @@
         },
         {
             "name": "illuminate/macroable",
-            "version": "v8.69.0",
+            "version": "v8.70.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/macroable.git",
@@ -2705,16 +2705,16 @@
         },
         {
             "name": "illuminate/support",
-            "version": "v8.69.0",
+            "version": "v8.70.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "a8851b7001530d3c11626a81449ed9b63dd10db7"
+                "reference": "1ed88eed1d179e5a27171324e57692366449eca0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/a8851b7001530d3c11626a81449ed9b63dd10db7",
-                "reference": "a8851b7001530d3c11626a81449ed9b63dd10db7",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/1ed88eed1d179e5a27171324e57692366449eca0",
+                "reference": "1ed88eed1d179e5a27171324e57692366449eca0",
                 "shasum": ""
             },
             "require": {
@@ -2769,7 +2769,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2021-10-29T13:34:03+00:00"
+            "time": "2021-11-09T17:40:38+00:00"
         },
         {
             "name": "justinrainbow/json-schema",
@@ -2922,16 +2922,16 @@
         },
         {
             "name": "lucatume/wp-browser",
-            "version": "3.0.12",
+            "version": "3.0.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lucatume/wp-browser.git",
-                "reference": "f6e8d3b38e2b457057262d414a1a69270521dcbd"
+                "reference": "098ba7b6efc880624a504423ad9ce4fdec69f923"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lucatume/wp-browser/zipball/f6e8d3b38e2b457057262d414a1a69270521dcbd",
-                "reference": "f6e8d3b38e2b457057262d414a1a69270521dcbd",
+                "url": "https://api.github.com/repos/lucatume/wp-browser/zipball/098ba7b6efc880624a504423ad9ce4fdec69f923",
+                "reference": "098ba7b6efc880624a504423ad9ce4fdec69f923",
                 "shasum": ""
             },
             "require": {
@@ -2940,7 +2940,6 @@
                 "codeception/codeception": "^2.5 || ^3.0 || ^4.0",
                 "dg/mysql-dump": "^1.3",
                 "ext-fileinfo": "*",
-                "ext-iconv": "*",
                 "ext-json": "*",
                 "ext-pdo": "*",
                 "mikehaertl/php-shellcommand": "^1.6",
@@ -3004,7 +3003,7 @@
             ],
             "support": {
                 "issues": "https://github.com/lucatume/wp-browser/issues",
-                "source": "https://github.com/lucatume/wp-browser/tree/3.0.12"
+                "source": "https://github.com/lucatume/wp-browser/tree/3.0.13"
             },
             "funding": [
                 {
@@ -3012,20 +3011,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-10-30T16:28:12+00:00"
+            "time": "2021-11-08T09:01:44+00:00"
         },
         {
             "name": "mck89/peast",
-            "version": "v1.13.8",
+            "version": "v1.13.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mck89/peast.git",
-                "reference": "4f0423441ec557f3935b056d10987f2e1c7a3e76"
+                "reference": "5329e997fb50e0b82ca8f6e4164f92941f689b47"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mck89/peast/zipball/4f0423441ec557f3935b056d10987f2e1c7a3e76",
-                "reference": "4f0423441ec557f3935b056d10987f2e1c7a3e76",
+                "url": "https://api.github.com/repos/mck89/peast/zipball/5329e997fb50e0b82ca8f6e4164f92941f689b47",
+                "reference": "5329e997fb50e0b82ca8f6e4164f92941f689b47",
                 "shasum": ""
             },
             "require": {
@@ -3037,7 +3036,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.13.8-dev"
+                    "dev-master": "1.13.9-dev"
                 }
             },
             "autoload": {
@@ -3059,9 +3058,9 @@
             "description": "Peast is PHP library that generates AST for JavaScript code",
             "support": {
                 "issues": "https://github.com/mck89/peast/issues",
-                "source": "https://github.com/mck89/peast/tree/v1.13.8"
+                "source": "https://github.com/mck89/peast/tree/v1.13.9"
             },
-            "time": "2021-09-11T10:28:18+00:00"
+            "time": "2021-11-12T13:44:49+00:00"
         },
         {
             "name": "mikehaertl/php-shellcommand",
@@ -5399,16 +5398,16 @@
         },
         {
             "name": "sebastian/exporter",
-            "version": "4.0.3",
+            "version": "4.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/exporter.git",
-                "reference": "d89cc98761b8cb5a1a235a6b703ae50d34080e65"
+                "reference": "65e8b7db476c5dd267e65eea9cab77584d3cfff9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/d89cc98761b8cb5a1a235a6b703ae50d34080e65",
-                "reference": "d89cc98761b8cb5a1a235a6b703ae50d34080e65",
+                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/65e8b7db476c5dd267e65eea9cab77584d3cfff9",
+                "reference": "65e8b7db476c5dd267e65eea9cab77584d3cfff9",
                 "shasum": ""
             },
             "require": {
@@ -5457,14 +5456,14 @@
                 }
             ],
             "description": "Provides the functionality to export PHP variables for visualization",
-            "homepage": "http://www.github.com/sebastianbergmann/exporter",
+            "homepage": "https://www.github.com/sebastianbergmann/exporter",
             "keywords": [
                 "export",
                 "exporter"
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/exporter/issues",
-                "source": "https://github.com/sebastianbergmann/exporter/tree/4.0.3"
+                "source": "https://github.com/sebastianbergmann/exporter/tree/4.0.4"
             },
             "funding": [
                 {
@@ -5472,7 +5471,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-09-28T05:24:23+00:00"
+            "time": "2021-11-11T14:18:36+00:00"
         },
         {
             "name": "sebastian/finder-facade",
