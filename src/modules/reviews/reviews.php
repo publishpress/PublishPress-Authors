@@ -108,39 +108,6 @@ class MA_Reviews extends Module
      */
     public function init()
     {
-        add_filter('publishpress-authors_wp_reviews_allow_display_notice', [$this, 'shouldDisplayBanner']);
-
         $this->reviewController->init();
-    }
-
-    public function shouldDisplayBanner($shouldDisplay)
-    {
-        global $pagenow;
-
-        if (! is_admin() || ! current_user_can('edit_posts')) {
-            return false;
-        }
-
-        if ($pagenow === 'admin.php' && isset($_GET['page'])) {
-            if ($_GET['page'] === 'ppma-pro-placeholders-fields') {
-                return true;
-            }
-
-            if ($_GET['page'] === 'ppma-pro-placeholders-layouts') {
-                return true;
-            }
-
-            if ($_GET['page'] === 'ppma-modules-settings') {
-                return true;
-            }
-        }
-
-        if ($pagenow === 'edit-tags.php' && isset($_GET['taxonomy'])) {
-            if ($_GET['taxonomy'] === 'author') {
-                return true;
-            }
-        }
-
-        return false;
     }
 }
