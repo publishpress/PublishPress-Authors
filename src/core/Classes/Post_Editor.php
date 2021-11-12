@@ -236,10 +236,15 @@ class Post_Editor
                     $display_name = $author->display_name;
                     $term         = is_a($author, 'WP_User') ? 'u' . $author->ID : $author->term_id;
 
+                    $isGuest = 0;
+                    if (is_a($author, Author::class)) {
+                        $isGuest = $author->is_guest() ? 1 : 0;
+                    }
+
                     $args = [
                         'display_name' => $display_name,
                         'term'         => $term,
-                        'is_guest'     => $author->is_guest() ? 1 : 0,
+                        'is_guest'     => $isGuest,
                     ];
 
                     if ($showAvatars) {

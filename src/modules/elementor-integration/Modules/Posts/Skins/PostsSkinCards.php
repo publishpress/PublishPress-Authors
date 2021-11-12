@@ -24,6 +24,8 @@
 namespace PublishPressAuthors\ElementorIntegration\Modules\Posts\Skins;
 
 use ElementorPro\Modules\Posts\Skins\Skin_Cards;
+use MultipleAuthors\Classes\Objects\Author;
+use WP_User;
 
 
 class PostsSkinCards extends Skin_Cards
@@ -67,9 +69,14 @@ class PostsSkinCards extends Skin_Cards
         <div class="elementor-post__avatar">
             <?php
             $authors = get_multiple_authors();
+            $avatarSize = 128;
 
             foreach ($authors as $author) {
-                echo $author->get_avatar(128);
+                if (is_a($author, Author::class)) {
+                    echo $author->get_avatar($avatarSize);
+                } elseif (isset($author->ID)) {
+                    echo get_avatar($author->ID, $avatarSize);
+                }
             }
             ?>
         </div>
