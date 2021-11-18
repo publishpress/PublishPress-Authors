@@ -224,7 +224,7 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= [3.14.9] - UNRELEASED =
+= [3.14.9] - 18 Nov 2021 =
 
 * Fixed: The author profile URL for guest authors was not added to the schema for Google rich results with Yoast SEO, #545;
 * Fixed: PHP Fatal error: Call to undefined method stdClass::get_avatar_url(), #544;
