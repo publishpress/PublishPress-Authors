@@ -23,6 +23,7 @@
 
 use MultipleAuthors\Classes\Legacy\Module;
 use MultipleAuthors\Classes\Legacy\Util;
+use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Factory;
 
 
@@ -89,13 +90,13 @@ if (!class_exists('MA_REST_API')) {
             register_rest_field(
                 'post',
                 'authors',
-                array(
+                [
                     'get_callback'    => [$this, 'getPostAuthorsCallback'],
-                    'schema'          => array(
+                    'schema'          => [
                         'description' => __('Authors.'),
                         'type'        => 'array'
-                    ),
-                )
+                    ],
+                ]
             );
         }
 
@@ -116,10 +117,15 @@ if (!class_exists('MA_REST_API')) {
             $authorsData = [];
 
             foreach ($authors as $author) {
+                $isGuest = 0;
+                if (is_a($author, Author::class)) {
+                    $isGuest = $author->is_guest() ? 1 : 0;
+                }
+
                 $authorsData[] = [
                     'term_id'      => (int)$author->term_id,
                     'user_id'      => (int)$author->user_id,
-                    'is_guest'     => $author->is_guest() ? 1 : 0,
+                    'is_guest'     => $isGuest,
                     'slug'         => $author->slug,
                     'display_name' => $author->display_name,
                 ];

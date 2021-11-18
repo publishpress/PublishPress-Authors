@@ -47,8 +47,15 @@ class SchemaFacade
 
         $graphPiece['@id']              = $this->getAuthorSchemaId($author, $context);
         $graphPiece['name']             = $author->display_name;
-        $graphPiece['image']['url']     = $author->get_avatar_url(256);
         $graphPiece['image']['caption'] = $graphPiece['name'];
+
+        if (method_exists($author, 'get_avatar_url')) {
+            $graphPiece['image']['url'] = $author->get_avatar_url(256);
+        }
+
+        if (isset($author->link)) {
+            $graphPiece['url'] = $author->link;
+        }
 
         return $graphPiece;
     }

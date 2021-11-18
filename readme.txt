@@ -1,4 +1,4 @@
-=== WordPress Co-Authors Multiple Authors and Guest Authors in an Author Box ===
+=== Co-Authors, Multiple Authors and Guest Authors in an Author Box with PublishPress Authors ===
 
 Contributors: publishpress, kevinB, stevejburge, andergmartins
 Author: PublishPress
@@ -7,28 +7,31 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
 Tested up to: 5.8
-Stable tag: 3.14.8
+Stable tag: 3.14.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 PublishPress Authors is the best plugin for adding co-authors, multiple authors and guest authors to WordPress posts.
 
+
 == Description ==
 
-[PublishPress Authors](https://publishpress.com/authors/) allows you to show an author box at the end of your posts. This author box can display one author, multiple authors or even guest authors. This box has the author’s name, avatar, description and more. You can also place the author box in widgets, shortcodes and Gutenberg blocks.
+[PublishPress Authors](https://publishpress.com/authors/) allows you to show an author box at the end of your posts. This author box can display one author, coauthors, multiple authors or even guest authors. This box has the author’s name, avatar, description and more. You can also place the author box in widgets, shortcodes and Gutenberg blocks.
 
 Here are the three most important features of PublishPress Authors:
 
 * **Author Box**. As soon as you install PublishPress Authors, you’ll see an author box under every post. You can add all the profile details you need for each author.
-* **Multiple Authors**. By default, WordPress only allows one author per post. PublishPress Authors allows you to add an unlimited number of authors to each post. This is very useful if you have a busy site and need to manage and give credit to all your writers.
+* **Multiple Authors**. By default, WordPress only allows one author per post. PublishPress Authors allows you to add an unlimited number of authors to each post. This is very useful if you have a busy site and need to manage and give credit to coauthors.
 * **Guest Authors**. You can create Guest Authors who don’t have an account on your site. This is important because not all writers need a username and password.
 
-> <strong>Authors Pro</strong><br />
-> This plugin is the free version of the Authors Pro plugin that comes with all the features you need to create beautiful and useful author profiles. <a href="https://publishpress.com/authors"  title="Authors Pro">Click here to purchase the best premium WordPress author box plugin now!</a>
+## PublishPress Authors Pro ##
 
-= Add Multiple Authors and Co-Authors to Your Posts =
+> <strong>Upgrade to Authors Pro</strong><br />
+> This plugin is the free version of the PublishPress Authors plugin. The Pro version comes with all the features you need to create beautiful and useful author profiles. <a href="https://publishpress.com/authors"  title="Authors Pro">Click here to purchase the best premium WordPress author box plugin now!</a>
 
-With PublishPress Authors, you can set multiple authors for each post. When you write a post, you’ll see a box in the right sidebar. Here you can choose from all the users on your site, and assign them as authors.
+## Add Multiple Authors and Co-Authors to Your Posts ##
+
+With PublishPress Authors, you can set multiple authors for each post. When you write a post, you’ll see a box in the right sidebar. Here you can choose from all the users on your site, and assign them as coauthors.
 
 On the frontend of your site. PublishPress Authors gives you several different options to display the authors’ box:
 
@@ -40,7 +43,7 @@ On the frontend of your site. PublishPress Authors gives you several different o
 
 [Click here to read about displaying authors](https://publishpress.com/knowledge-base/display-multiple-authors/).
 
-= Add Guest Authors With No WordPress Account =
+## Add Guest Authors With No WordPress Account ##
 
 Using PublishPress Authors, you can create Guest Authors who don’t need an account on your site. PublishPress will treat Guest Authors identically to Authors who are linked users.
 
@@ -48,7 +51,7 @@ You will be able to select and display Guest Authors in exactly the same way as 
 
 [Click here to see how to create Guest Authors](https://publishpress.com/knowledge-base/add-guest-authors-wordpress/).
 
-= Multiple Layout Options for Author Bio Profiles =
+## Multiple Layout Options for Author Bio Profiles ##
 
 PublishPress Authors provides five default ways to display the author profiles on your site. In the PublishPress Authors settings you can choose from these layouts:
 
@@ -60,19 +63,19 @@ PublishPress Authors provides five default ways to display the author profiles o
 
 [Click here to see details on all the layout options](https://publishpress.com/knowledge-base/layout/).
 
-= Custom Fields for Author Profiles (Pro version) =
+## Custom Fields for Author Profiles (Pro version) ##
 
 PublishPress Authors Pro enables you to create author fields and enhance your author profiles. You can add Text, WYSIWYG, Link and email address fields. Then you can place those author fields in author bio profiles using custom layouts.
 
 [Click here to see how to use Custom Fields](https://publishpress.com/knowledge-base/custom-fields/).
 
-= Custom Layouts for Author Profiles (Pro version) =
+## Custom Layouts for Author Profiles (Pro version) ##
 
 PublishPress Authors enables you to build custom layouts for your author bio profiles. Using all your author information and custom fields, you can design beautiful layouts for your authors. Each layout is editable using HTML and PHP. You can add many different types of author information to these layouts including custom fields.
 
 [Click here to see how to customize author layouts](https://publishpress.com/knowledge-base/custom-layouts/).
 
-= Join PublishPress and get the Pro plugins =
+## Join PublishPress and get the Pro plugins ##
 
 The Pro versions of the PublishPress plugins are well worth your investment. The Pro versions have extra features and faster support. [Click here to join PublishPress](https://publishpress.com/pricing/).
 
@@ -142,7 +145,7 @@ You can import from the the Byline plugin to PublishPress Authors. Start with th
 
 The PublishPress Authors plugin provides two widgets.
 
-The “Post Author” widget will display a list of authors for the current post. It is one of several ways that you can show the authors of a post.     In your WordPress site, go to Appearance > Widgets. Look for the “Post Author” widget.
+The “Post Author” widget will display a list of authors for the current post. It is one of several ways that you can show the authors of a post. In your WordPress site, go to Appearance > Widgets. Look for the “Post Author” widget.
 
 [Click here to see how to use the Post Author widget](https://publishpress.com/knowledge-base/post-author-widget/).
 
@@ -160,21 +163,13 @@ In the PublishPress Authors Pro admin area, ggo to Authors > Layouts and you wil
 
 = Can I use PublishPress Authors with Elementor? =
 
-PublishPress Authors works well with the Elementor plugin. There are 5 options for showing Author profiles on your site. All of these will work with Elementor.
-However, we have made sure to make sure PublishPress Authors works with inside the main Elementor layout builder.
-
-
-Perhaps the easiest option for the Elementor layout builder is to use the Post Author widget.
+PublishPress Authors works well with the Elementor plugin. There are 5 options for showing Author profiles on your site. All of these will work with Elementor. However, we have made sure to make sure PublishPress Authors works with inside the main Elementor layout builder. Perhaps the easiest option for the Elementor layout builder is to use the Post Author widget.
 
 [Click here to see how to create Elementor Authors](https://publishpress.com/knowledge-base/authors-elementor/).
 
 = Can I use PublishPress Authors with Divi? =
 
-PublishPress Authors works well with the Divi theme.
-
-There are 5 options for showing Author profiles on your site. All of these will work with Divi. We have made sure that PublishPress Authors works with inside the main Divi layout builder.
-
-Perhaps the easiest option for the Divi layout builder is to use the Post Author widget. Go to Appearance > Widgets. Create a new widget region using this Divi box. I called my widget region “Authors Area”.
+PublishPress Authors works well with the Divi theme. There are 5 options for showing Author profiles on your site. All of these will work with Divi. We have made sure that PublishPress Authors works with inside the main Divi layout builder. Perhaps the easiest option for the Divi layout builder is to use the Post Author widget. Go to Appearance > Widgets. Create a new widget region using this Divi box. I called my widget region “Authors Area”.
 
 [Click here to see how to create Divi Authors](https://publishpress.com/knowledge-base/authors-divi/).
 
@@ -207,6 +202,7 @@ Author profiles can be a tricky area in WordPress because many themes try to add
 * Astra
 
 == Installation ==
+
 There are two ways to install the PublishPress Authors plugin:
 
 **Through your WordPress site's admin**
@@ -228,14 +224,20 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [3.14.9] - 18 Nov 2021 =
+
+* Fixed: The author profile URL for guest authors was not added to the schema for Google rich results with Yoast SEO, #545;
+* Fixed: PHP Fatal error: Call to undefined method stdClass::get_avatar_url(), #544;
+* Fixed: Call to undefined method stdClass::is_guest() in rest-api.php, #546;
+* Changed: Show the reviews banner on any admin page;
+
 = [3.14.8] - 04 Nov 2021 =
 
 * Fixed: HTML special chars in the author name are not displayed correctly, #531;
 * Fixed: Access denied while creating posts with contributor and another user as default author, #534;
 * Fixed: Fix duplicated prefix for text elements with dynamic content on Divi builder, #528;
 * Fixed: Remove gap in the settings tabs, #532;
-* Fixed: Fix style for buttons in the settings page, #537, #536;
-* Fixed: Make "View All Posts" translatable, #530;
+* Fixed: Fix style for buttons in the settings page, #537;
 * Added: Add notice asking for a review;
 
 = [3.14.7] - 21 Sep 2021 =

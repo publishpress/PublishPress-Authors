@@ -9,12 +9,35 @@
 
 namespace MultipleAuthors\Classes;
 
+use MultipleAuthors\Classes\Objects\Author;
+use stdClass;
+use WP_User;
+
 class Authors_Iterator
 {
+    /**
+     * @var int
+     */
     public $position = -1;
+
+    /**
+     * @var WP_User|stdClass|Author
+     */
     public $original_authordata;
+
+    /**
+     * @var WP_User|stdClass|Author
+     */
     public $current_author;
+
+    /**
+     * @var array
+     */
     public $authordata_array;
+
+    /**
+     * @var int|void
+     */
     public $count;
 
     public function __construct($postID = 0, $archive = false)
