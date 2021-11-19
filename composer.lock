@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9ad733ab5e28d62979e8bd3449141b74",
+    "content-hash": "f69bf5e5201bb2276a1d108b8da833fe",
     "packages": [
         {
             "name": "pimple/pimple",
@@ -112,6 +112,42 @@
                 "source": "https://github.com/php-fig/container/tree/master"
             },
             "time": "2017-02-14T16:28:37+00:00"
+        },
+        {
+            "name": "publishpress/wordpress-banners",
+            "version": "v1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/publishpress/wordpress-banners.git",
+                "reference": "2dd9f5b37c83289d440e105bd64474ca44305550"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/publishpress/wordpress-banners/zipball/2dd9f5b37c83289d440e105bd64474ca44305550",
+                "reference": "2dd9f5b37c83289d440e105bd64474ca44305550",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.20"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "PublishPress",
+                    "email": "help@publishpress.com"
+                }
+            ],
+            "description": "Display banners in admin pages of PublishPress Plugins.",
+            "homepage": "http://publishpress.com/",
+            "support": {
+                "issues": "https://github.com/publishpress/wordpress-banners/issues",
+                "source": "https://github.com/publishpress/wordpress-banners/tree/v1.1.2"
+            },
+            "time": "2021-11-18T16:17:25+00:00"
         },
         {
             "name": "publishpress/wordpress-reviews",
