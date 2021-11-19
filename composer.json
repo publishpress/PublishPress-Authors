@@ -49,7 +49,7 @@
     "psr/container": "1.0.0",
     "publishpress/wordpress-version-notices": "^1",
     "publishpress/wordpress-reviews":  "^1.1",
-    "publishpress/wordpress-banners": "^1.1"
+    "publishpress/wordpress-banners": "^1.2"
   },
   "require-dev": {
     "lucatume/wp-browser": "^3",
