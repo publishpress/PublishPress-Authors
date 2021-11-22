@@ -164,7 +164,7 @@ if (!class_exists('MA_Modules_Settings')) {
             $legacyPlugin = Factory::getLegacyPlugin();
             ?>
 
-            <div class="pp-columns-wrapper<?php echo !PP_AUTHOR_BLOCKS_INSTALLED ? ' pp-enable-sidebar' : '' ?>">
+            <div class="pp-columns-wrapper<?php echo !PP_AUTHORS_BLOCKS_INSTALLED ? ' pp-enable-sidebar' : '' ?>">
                 <div class="pp-column-left">
                     <form class="basic-settings"
                           action="<?php echo esc_url(menu_page_url($this->module->settings_slug, false)); ?>" method="post">
@@ -273,7 +273,7 @@ if (!class_exists('MA_Modules_Settings')) {
                         submit_button(null, 'primary', 'submit', false); ?>
                     </form>
                 </div><!-- .pp-column-left -->
-                <?php if( !PP_AUTHOR_BLOCKS_INSTALLED ) { ?>
+                <?php if( !PP_AUTHORS_BLOCKS_INSTALLED ) { ?>
                     <div class="pp-column-right">
                         <?php
                         $banners = new PublishPress\WordPressBanners\BannersMain;
