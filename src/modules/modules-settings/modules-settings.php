@@ -279,17 +279,15 @@ if (!class_exists('MA_Modules_Settings')) {
                         $banners = new PublishPress\WordPressBanners\BannersMain;
                         $banners->pp_display_banner(
                             __( 'Recommendations for you', 'publishpress-authors' ),
-                            __( 'The Best Way to Showcase Your WordPress Posts', 'publishpress-authors' ),
+                            __( 'Showcase your Authors with PublishPress Blocks', 'publishpress-authors' ),
                             array(
-                                __( 'PublishPress Blocks comes with Content Display, a block that supports PublishPress Authors.', 'publishpress-authors' ),
-                                __( 'Display multiple authors in Content Display block.', 'publishpress-authors' ),
-                                __( 'Filter posts by authors managed through PublishPress Authors in Content Display block.', 'publishpress-authors' ),
-                                __( 'Display posts through several layout designs and settings.', 'publishpress-authors' ),
-                                __( 'Other Gutenberg editor features to control block permissions, editor width, custom styles, and more.', 'publishpress-authors' ),
-                                __( '24 new blocks including sliders, buttons, icons, maps, tabs, testimonials, accordions, and much more...', 'publishpress-authors' ),
+                                __( 'PublishPress Blocks is a free plugin with full support for PublishPress Authors.', 'publishpress-authors' ),
+                                __( 'Install this plugin to showcase content by your Authors.', 'publishpress-authors' ),
+                                __( 'Use the Content Display block to show your posts in many beautiful layouts.', 'publishpress-authors' ),
+                                __( 'PublishPress Blocks has over 20 extra Gutenberg blocks including accordions, galleries, tables, and more.', 'publishpress-authors' ),
                             ),
                             admin_url( 'plugin-install.php?s=publishpress-advg-install&tab=search&type=term' ),
-                            __( 'Click here to install PublishPress Blocks for free', 'publishpress-authors' ),
+                            __( 'Click here to install PublishPress Blocks', 'publishpress-authors' ),
                             'install-blocks.jpg'
                         );
                         ?>
