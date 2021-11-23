@@ -286,7 +286,7 @@ if (!class_exists('MA_Modules_Settings')) {
                                 __( 'Other Gutenberg editor features to control block permissions, editor width, custom styles, and more.', 'publishpress-authors' ),
                                 __( '24 new blocks including sliders, buttons, icons, maps, tabs, testimonials, accordions, and much more...', 'publishpress-authors' ),
                             ),
-                            admin_url( 'plugin-install.php?s=publishpress-ppcore-install&tab=search&type=term' ),
+                            admin_url( 'plugin-install.php?s=publishpress-advg-install&tab=search&type=term' ),
                             __( 'Click here to install PublishPress Blocks for free', 'publishpress-authors' ),
                             'install-blocks.jpg'
                         );
