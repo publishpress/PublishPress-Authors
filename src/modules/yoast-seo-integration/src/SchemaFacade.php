@@ -50,7 +50,12 @@ class SchemaFacade
         $graphPiece['image']['caption'] = $graphPiece['name'];
 
         if (method_exists($author, 'get_avatar_url')) {
-            $graphPiece['image']['url'] = $author->get_avatar_url(256);
+            $avatarUrl = $author->get_avatar_url(256);
+
+            if (isset($avatarUrl['url'])) {
+                $graphPiece['image']['url'] = $avatarUrl['url'];
+                $graphPiece['image']['contentUrl'] = $avatarUrl['url'];
+            }
         }
 
         if (isset($author->link)) {
