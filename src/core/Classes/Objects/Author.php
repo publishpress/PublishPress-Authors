@@ -140,10 +140,10 @@ class Author
 
         if (is_a($user, 'stdClass')) {
             $userInstance = new WP_User($user);
-            $user         = $userInstance;
+            $user = $userInstance;
         }
 
-        if (!is_a($user, 'WP_User')) {
+        if (! is_a($user, 'WP_User')) {
             error_log(
                 sprintf(
                     '[PublishPress Authors] The method %s found that the expected user doesn\'t exist: %s',
@@ -153,14 +153,16 @@ class Author
             );
             return false;
         }
+
         $existing = self::get_by_user_id($user->ID);
         if ($existing) {
             return $existing;
         }
+
         $author = self::create(
             [
                 'display_name' => $user->display_name,
-                'slug'         => $user->user_nicename,
+                'slug' => $user->user_nicename,
             ]
         );
 
