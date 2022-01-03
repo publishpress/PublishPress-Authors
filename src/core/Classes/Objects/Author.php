@@ -134,6 +134,9 @@ class Author
      */
     public static function create_from_user($user)
     {
+        if (empty($user)) {
+            return false;
+        }
         if (is_numeric($user)) {
             $user = get_user_by('id', (int)$user);
         }
