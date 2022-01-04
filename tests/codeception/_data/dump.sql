@@ -313,14 +313,6 @@ CREATE TABLE `wp_termmeta` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 INSERT INTO `wp_termmeta` (`meta_id`, `term_id`, `meta_key`, `meta_value`) VALUES
-(1,	2,	'user_id_3',	'user_id'),
-(2,	2,	'user_id',	'3'),
-(3,	2,	'first_name',	''),
-(4,	2,	'last_name',	''),
-(5,	2,	'user_email',	'abos_user_2@example.com'),
-(6,	2,	'user_login',	'abos_user_2'),
-(7,	2,	'user_url',	''),
-(8,	2,	'description',	''),
 (9,	3,	'user_id_1',	'user_id'),
 (10,	3,	'user_id',	'1'),
 (11,	3,	'first_name',	''),
@@ -343,7 +335,6 @@ CREATE TABLE `wp_terms` (
 
 INSERT INTO `wp_terms` (`term_id`, `name`, `slug`, `term_group`) VALUES
 (1,	'Uncategorized',	'uncategorized',	0),
-(2,	'abos_user_2',	'abos_user_2',	0),
 (3,	'admin',	'admin',	0);
 
 DROP TABLE IF EXISTS `wp_term_relationships`;
@@ -360,8 +351,7 @@ INSERT INTO `wp_term_relationships` (`object_id`, `term_taxonomy_id`, `term_orde
 (1,	3,	0),
 (2,	3,	0),
 (3,	3,	0),
-(4,	3,	0),
-(5,	2,	1);
+(4,	3,	0);
 
 DROP TABLE IF EXISTS `wp_term_taxonomy`;
 CREATE TABLE `wp_term_taxonomy` (
