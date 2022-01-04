@@ -206,6 +206,15 @@ trait Posts
      */
     public function iSeeTextInColumnForPost($text, $columnId, $postSlug)
     {
+        // Do we have any sq block?
+        $text = preg_replace_callback(
+            '/{{([^{]+)}}/',
+            function ($matches) {
+                return sq($matches[1]);
+            },
+            $text
+        );
+
         $post = $this->grabPostBySlug(sq($postSlug));
 
         $this->see($text, "tr#post-{$post->ID} td.column-{$columnId}");
