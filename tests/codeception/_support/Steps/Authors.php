@@ -5,6 +5,8 @@ namespace Steps;
 
 use MultipleAuthors\Classes\Objects\Author;
 
+use function sq;
+
 trait Authors
 {
     /**
@@ -12,7 +14,7 @@ trait Authors
      */
     public function authorExistsForUser($userLogin)
     {
-        $user = get_user_by('login', $userLogin);
+        $user = get_user_by('login', sq($userLogin));
 
         Author::create_from_user($user);
     }
@@ -24,8 +26,8 @@ trait Authors
     {
         Author::create(
             [
-                'slug'         => $authorSlug,
-                'display_name' => $authorName,
+                'slug'         => sq($authorSlug),
+                'display_name' => sq($authorName),
             ]
         );
     }
@@ -53,7 +55,7 @@ trait Authors
      */
     public function iDontSeeUserAsAuthor($userName)
     {
-        $this->dontSeeElement('a.row-title[aria-label="' . $userName . '"]');
+        $this->dontSeeElement('a.row-title[aria-label="' . sq($userName) . '"]');
     }
 
     /**
@@ -61,6 +63,6 @@ trait Authors
      */
     public function iSeeUserAsAuthor($userName)
     {
-        $this->seeElement('a.row-title[aria-label="' . $userName . '"]');
+        $this->seeElement('a.row-title[aria-label="' . sq($userName) . '"]');
     }
 }

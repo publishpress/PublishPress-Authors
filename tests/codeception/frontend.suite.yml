@@ -48,3 +48,8 @@ modules:
                     args: [ "--headless", "--disable-gpu", "disable-infobars" ]
                     prefs:
                         download.default_directory: "..."
+extensions:
+    enabled:
+        - Codeception\Extension\RunProcess:
+              0: chromedriver --url-base=/wd/hub
+              sleep: 3

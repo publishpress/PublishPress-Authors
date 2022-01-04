@@ -13,6 +13,7 @@ modules:
         - \Helper\Acceptance
         - Asserts
         - WPLoader
+        - Sequence
     config:
         WPDb:
             dsn: '%TEST_SITE_DB_DSN%'
@@ -59,4 +60,4 @@ extensions:
     enabled:
         - Codeception\Extension\RunProcess:
               0: chromedriver --url-base=/wd/hub
-              sleep: 5
+              sleep: 3
