@@ -786,3 +786,8 @@ function twentytwenty_get_elements_array() {
 	 */
 	return apply_filters( 'twentytwenty_get_elements_array', $elements );
 }
+
+// ************* PUBLISHPRESS CUSTOMIZATIONS ***************
+
+// Disable the admin email verification screen.
+add_filter('admin_email_check_interval', '__return_false');
