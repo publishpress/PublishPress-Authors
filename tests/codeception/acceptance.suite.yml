@@ -56,6 +56,8 @@ modules:
                     args: [ "--headless", "--disable-gpu", "disable-infobars" ]
                     prefs:
                         download.default_directory: "..."
+        Sequence:
+            prefix: "uid_"
 extensions:
     enabled:
         - Codeception\Extension\RunProcess:
