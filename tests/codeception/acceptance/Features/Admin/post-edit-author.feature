@@ -25,7 +25,7 @@ Feature: Post edit author in the admin
         And I can add blocks in the editor
 
     Scenario: Block editor works when editing a post of guest author
-        Given guest author exists with name "PEA Guest Author 1" and slug "guest_author_1"
+        Given guest author exists with name "Guest Author 1" and slug "guest_author_1"
         And a post named "post_guest_author_1" exists for "guest_author_1"
         When I edit the post name "post_guest_author_1"
         Then I don't see the post locked modal
@@ -35,8 +35,8 @@ Feature: Post edit author in the admin
     Scenario: Block editor works when editing a post of author mapped to user
         Given the user "user_1" exists with role "administrator"
         And author exists for user "user_1"
-        And a post named "post_guest_author_2" exists for "user_1"
-        When I edit the post name "post_guest_author_2"
+        And a post named "post_user_1" exists for "user_1"
+        When I edit the post name "post_user_1"
         Then I don't see the post locked modal
         And I see the post visual editor
         And I can add blocks in the editor

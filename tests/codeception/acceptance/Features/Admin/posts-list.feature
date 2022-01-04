@@ -29,11 +29,11 @@ Feature: Posts list
         And author exists for user "user_3"
         And a post named "post_2" exists for "user_2" and "user_3"
         When I open the All Posts page
-        Then I see the text "user_2, user_3" in the column "authors" for the post "post_2"
+        Then I see the text "{{user_2}}, {{user_3}}" in the column "authors" for the post "post_2"
 
     Scenario: Authors column has the name of the guest author and fallback user for single guest author
         Given the user "user_4" exists with role "author"
-        And guest author exists with name "PL Guest Author 1" and slug "guest_author_1"
+        And guest author exists with name "Guest Author 1" and slug "guest_author_1"
         And a post named "post_3" exists for guest author "guest_author_1" and fallback user "user_4"
         When I open the All Posts page
-        Then I see the text "PL Guest Author 1 [user_4]" in the column "authors" for the post "post_3"
+        Then I see the text "{{Guest Author 1}} [{{user_4}}]" in the column "authors" for the post "post_3"
