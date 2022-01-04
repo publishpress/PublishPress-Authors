@@ -14,7 +14,7 @@ trait AdminPages
     }
 
     /**
-     * @When I open the authors admin page
+     * @When I open the Authors admin page
      */
     public function iOpenTheAuthorsAdminPage()
     {

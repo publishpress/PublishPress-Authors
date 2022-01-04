@@ -12,7 +12,7 @@ Feature: Add new user in the frontend
         And I am on the user register page
         And I submit the user form as "user_1" and "user_1@example.com"
         And I am logged in as "admin_user"
-        When I open the authors admin page
+        When I open the Authors admin page
         Then I see user "user_1" as author in the list
 
     Scenario: User registers to the site when subscriber is not selected, an author is not created
@@ -24,5 +24,5 @@ Feature: Add new user in the frontend
         And I am on the user register page
         And I submit the user form as "user_2" and "user_2@example.com"
         And I am logged in as "admin_user"
-        When I open the authors admin page
+        When I open the Authors admin page
         Then I don't see user "user_2" as author in the list
