@@ -42,7 +42,6 @@ modules:
             restart: true
             window_size: "1280x1200"
             port: 9515
-            binary: "%CHROME_BIN_PATH%"
             capabilities:
                 browserName: chrome
                 chromeOptions:
