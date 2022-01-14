@@ -137,6 +137,7 @@ class Author
         if (empty($user)) {
             return false;
         }
+
         if (is_numeric($user)) {
             $user = get_user_by('id', (int)$user);
         }
@@ -157,9 +158,8 @@ class Author
             return false;
         }
 
-        $existing = self::get_by_user_id($user->ID);
-        if ($existing) {
-            return $existing;
+        if (empty($user)) {
+            return false;
         }
 
         $author = self::create(
