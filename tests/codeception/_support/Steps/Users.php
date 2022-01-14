@@ -81,7 +81,7 @@ trait Users
         $this->fillField('#user_login', $userName);
         $this->fillField('#email', "{$userName}@example.com");
         $this->selectOption('#role', $userRole);
-        $this->click('#createusersub');
+        $this->click('Add New User');
     }
 
     /**

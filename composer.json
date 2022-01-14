@@ -67,7 +67,8 @@
     "sebastian/phpcpd": "^5.0",
     "overtrue/phplint": "^2.1",
     "wp-cli/wp-cli": "^2.5",
-    "wp-cli/i18n-command": "^2.2"
+    "wp-cli/i18n-command": "^2.2",
+    "hoa/console": "^3.17"
   },
   "scripts": {
     "cs-check": "vendor/bin/phpcs --standard=PSR12 ./src/ publishpress-authors.php --colors",
