@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package     MultipleAuthors
  * @author      PublishPress <help@publishpress.com>
@@ -455,7 +456,7 @@ class Plugin
         if (is_admin() && !empty($_REQUEST['page']) && ('nestedpages' == $_REQUEST['page'])) {
             add_action(
                 'admin_print_scripts',
-                function() {
+                function () {
                     ?>
                     <style type="text/css">
                         div.np-inline-modal div.np_author {display:none;}
@@ -752,9 +753,11 @@ class Plugin
      */
     public function _action_quick_edit_custom_box($column_name, $post_type)
     {
-        if ('authors' != $column_name || !Utils::is_post_type_enabled(
+        if (
+            'authors' != $column_name || !Utils::is_post_type_enabled(
                 $post_type
-            ) || !Utils::current_user_can_set_authors()) {
+            ) || !Utils::current_user_can_set_authors()
+        ) {
             return;
         }
         ?>
@@ -762,12 +765,12 @@ class Plugin
             <span class="title"><?php esc_html_e('Authors', 'publishpress-authors') ?></span>
             <div id="coauthors-edit" class="hide-if-no-js">
                 <p><?php echo wp_kses(
-                        __(
-                            'Click on an author to change them. Drag to change their order.',
-                            'publishpress-authors'
-                        ),
-                        ['strong' => []]
-                    ); ?></p>
+                    __(
+                        'Click on an author to change them. Drag to change their order.',
+                        'publishpress-authors'
+                    ),
+                    ['strong' => []]
+                   ); ?></p>
             </div>
             <?php wp_nonce_field('coauthors-edit', 'coauthors-nonce'); ?>
         </label>
@@ -892,8 +895,10 @@ class Plugin
         // If the original post_author is no longer assigned,
         // update to the first WP_User $coauthor
         $post_author_user = get_user_by('id', get_post($post_id)->post_author);
-        if (empty($post_author_user)
-            || !in_array($post_author_user->user_login, $coauthors)) {
+        if (
+            empty($post_author_user)
+            || !in_array($post_author_user->user_login, $coauthors)
+        ) {
             foreach ($coauthor_objects as $coauthor_object) {
                 if ('wpuser' == $coauthor_object->type) {
                     $new_author = $coauthor_object;
@@ -1010,14 +1015,14 @@ class Plugin
         foreach ($raw_coauthors as $author) {
             if (true === is_array($args) && true === isset($args['fields'])) {
                 switch ($args['fields']) {
-                    case 'names' :
+                    case 'names':
                         $terms[] = $author->name;
                         break;
-                    case 'tt_ids' :
+                    case 'tt_ids':
                         $terms[] = $author->term_taxonomy_id;
                         break;
-                    case 'all' :
-                    default :
+                    case 'all':
+                    default:
                         $terms[] = get_term($author->term_id, $this->coauthor_taxonomy);
                         break;
                 }
@@ -1232,12 +1237,14 @@ class Plugin
             if (in_array($found_user->user_login, $ignored_authors)) {
                 unset($found_users[$key]);
             } else {
-                if ('wpuser' === $found_user->type && false === $found_user->has_cap(
+                if (
+                    'wpuser' === $found_user->type && false === $found_user->has_cap(
                         apply_filters(
                             'coauthors_edit_author_cap',
                             'edit_posts'
                         )
-                    )) {
+                    )
+                ) {
                     unset($found_users[$key]);
                 }
             }
@@ -1393,7 +1400,8 @@ class Plugin
         );
         wp_localize_script(
             'multiple-authors-js',
-            'bulkEditNonce', array(
+            'bulkEditNonce',
+            array(
                 'nonce' => wp_create_nonce('bulk-edit-nonce')
             )
         );
@@ -1437,17 +1445,17 @@ class Plugin
             $class = '';
         }
         $views['mine'] = $view_mine = '<a' . $class . ' href="' . esc_url(
-                add_query_arg(
-                    array_map(
-                        'rawurlencode',
-                        $mine_args
-                    ),
-                    admin_url('edit.php')
-                )
-            ) . '">' . __(
-                'Mine',
-                'publishpress-authors'
-            ) . '</a>';
+            add_query_arg(
+                array_map(
+                    'rawurlencode',
+                    $mine_args
+                ),
+                admin_url('edit.php')
+            )
+        ) . '">' . __(
+            'Mine',
+            'publishpress-authors'
+        ) . '</a>';
 
         $views['all'] = str_replace($class, '', $all_view);
         $views        = array_reverse($views);
@@ -1489,11 +1497,15 @@ class Plugin
         if ($allowEdit) {
             $post_status = get_post_status($post_id);
 
-            if ('publish' == $post_status &&
-                (isset($obj->cap->edit_published_posts) && !empty($user->allcaps[$obj->cap->edit_published_posts]))) {
+            if (
+                'publish' == $post_status &&
+                (isset($obj->cap->edit_published_posts) && !empty($user->allcaps[$obj->cap->edit_published_posts]))
+            ) {
                 $allcaps[$obj->cap->edit_published_posts] = true;
-            } elseif ('private' == $post_status &&
-                (isset($obj->cap->edit_private_posts) && !empty($user->allcaps[$obj->cap->edit_private_posts]))) {
+            } elseif (
+                'private' == $post_status &&
+                (isset($obj->cap->edit_private_posts) && !empty($user->allcaps[$obj->cap->edit_private_posts]))
+            ) {
                 $allcaps[$obj->cap->edit_private_posts] = true;
             }
 
