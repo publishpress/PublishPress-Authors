@@ -1157,9 +1157,14 @@ class Plugin
             return $authorDisplayName;
         }
 
-        $authors = get_multiple_authors(get_post());
-        if (!empty($authors) && isset($authors[0]) && isset($authors[0]->display_name)) {
-            return $authors[0]->display_name;
+        if (
+            ! defined('PUBLISHPRESS_AUTHORS_DISABLE_FILTER_THE_AUTHOR')
+            || PUBLISHPRESS_AUTHORS_DISABLE_FILTER_THE_AUTHOR !== true
+        ) {
+            $authors = get_multiple_authors(get_post());
+            if (! empty($authors) && isset($authors[0]) && isset($authors[0]->display_name)) {
+                return $authors[0]->display_name;
+            }
         }
 
         return $authorDisplayName;
