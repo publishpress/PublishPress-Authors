@@ -224,6 +224,10 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= UNRELEASED =
+
+* Fixed: Fix the character "&" in the Bibliographical Info field, which was converted to "&amp;", #566;
+
 = [3.14.9] - 18 Nov 2021 =
 
 * Fixed: The author profile URL for guest authors was not added to the schema for Google rich results with Yoast SEO, #545;
