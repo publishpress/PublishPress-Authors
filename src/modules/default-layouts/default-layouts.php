@@ -171,7 +171,7 @@ if (!class_exists('MA_Default_Layouts')) {
             $new_color = '#';
 
             if (strlen($color) < 6) {
-            	$color = $color[0] + $color[0] + $color[1] + $color[1] + $color[2] + $color[2];
+            	$color = (int)$color[0] + (int)$color[0] + (int)$color[1] + (int)$color[1] + (int)$color[2] + (int)$color[2];
             }
 
             // convert to decimal and change luminosity
