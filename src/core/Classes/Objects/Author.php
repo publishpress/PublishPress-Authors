@@ -169,7 +169,7 @@ class Author
             ]
         );
 
-        if (is_wp_error($author)) {
+        if (is_wp_error($author) || !is_object($author)) {
             error_log(
                 sprintf('[PublishPress Authors] The method %s found an error trying to create an author', __METHOD__)
             );
