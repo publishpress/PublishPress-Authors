@@ -275,7 +275,13 @@ if (!function_exists('is_multiple_author_for_post')) {
         }
 
         foreach ($coauthors as $coauthor) {
-            if ($user_term->term_id == $coauthor->term_id) {
+            if (
+                is_object($user_term) && 
+                is_object($coauthor) && 
+                isset($user_term->term_id) && 
+                isset($coauthor->term_id) && 
+                $user_term->term_id == $coauthor->term_id
+                ) {
                 return true;
             }
         }
