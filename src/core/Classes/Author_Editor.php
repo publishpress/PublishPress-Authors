@@ -298,7 +298,7 @@ class Author_Editor
             'description' => [
                 'label'    => __('Biographical Info', 'publishpress-authors'),
                 'type'     => 'textarea',
-                'sanitize' => 'wp_filter_post_kses',
+                'sanitize' => 'sanitize_textarea_field',
             ],
         ];
 

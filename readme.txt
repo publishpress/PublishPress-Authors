@@ -6,7 +6,7 @@ Author URI: https://publishpress.com
 Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
-Tested up to: 5.8
+Tested up to: 5.9
 Stable tag: 3.14.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -223,6 +223,10 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= UNRELEASED =
+
+* Fixed: Fix the character "&" in the Bibliographical Info field, which was converted to "&amp;", #566;
 
 = [3.14.9] - 18 Nov 2021 =
 

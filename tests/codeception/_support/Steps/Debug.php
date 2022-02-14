@@ -20,4 +20,12 @@ trait Debug
     {
         $this->wait((int)$time);
     }
+
+    /**
+     * @Then I pause
+     */
+    public function pause()
+    {
+        $this->pause();
+    }
 }

@@ -5,6 +5,8 @@ namespace Steps;
 
 use Behat\Gherkin\Node\TableNode;
 
+use function sq;
+
 trait Users
 {
     /**
@@ -12,7 +14,7 @@ trait Users
      */
     public function ISeeTheUserIDForUserInTheDeletionList($userLogin)
     {
-        $user = get_user_by('login', $userLogin);
+        $user = get_user_by('login', sq($userLogin));
 
         $this->see("ID #{$user->ID}");
     }
@@ -22,6 +24,8 @@ trait Users
      */
     public function theUserExistsWithRole($userLogin, $userRole)
     {
+        $userLogin = sq($userLogin);
+
         $this->factory()->user->create(
             [
                 'user_login' => $userLogin,
@@ -42,11 +46,13 @@ trait Users
                 continue;
             }
 
+            $userLogin = sq($row[0]);
+
             $this->factory()->user->create(
                 [
-                    'user_login' => $row[0],
-                    'user_pass'  => $row[0],
-                    'user_email' => $row[0] . '@example.com',
+                    'user_login' => $userLogin,
+                    'user_pass'  => $userLogin,
+                    'user_email' => $userLogin . '@example.com',
                     'role'       => $row[1]
                 ]
             );
@@ -59,7 +65,7 @@ trait Users
      */
     public function theUserIsSelected($userLogin)
     {
-        $user = get_user_by('login', $userLogin);
+        $user = get_user_by('login', sq($userLogin));
 
         $this->checkOption('#user_' . $user->ID);
     }
@@ -69,11 +75,13 @@ trait Users
      */
     public function iCreateNewUserWithRole($userName, $userRole)
     {
+        $userName = sq($userName);
+
         $this->amOnAdminPage('/user-new.php');
         $this->fillField('#user_login', $userName);
         $this->fillField('#email', "{$userName}@example.com");
         $this->selectOption('#role', $userRole);
-        $this->click('#createusersub');
+        $this->click('Add New User');
     }
 
     /**
@@ -81,6 +89,9 @@ trait Users
      */
     public function iSubmitUserForm($userName, $userEmail)
     {
+        $userEmail = str_replace($userName, sq($userName), $userEmail);
+        $userName = sq($userName);
+
         $this->fillField('#user_login', $userName);
         $this->fillField('#user_email', $userEmail);
         $this->click('#wp-submit');

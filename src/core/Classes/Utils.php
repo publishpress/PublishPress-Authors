@@ -67,26 +67,26 @@ class Utils
      */
     public static function convert_post_coauthors($post_id)
     {
-        if (!function_exists('get_coauthors')) {
+        if (! function_exists('get_coauthors')) {
             return new WP_Error(
                 'authors_missing_cap',
                 __('Co-Authors Plus must be installed and active.', 'publishpress-authors')
             );
         }
         $post = get_post($post_id);
-        if (!$post) {
+        if (! $post) {
             return new WP_Error('authors_missing_post', "Invalid post: {$post_id}");
         }
         $authors = get_the_terms($post_id, 'author');
-        if ($authors && !is_wp_error($authors)) {
+        if ($authors && ! is_wp_error($authors)) {
             return new WP_Error('authors_post_has_authors', "Post {$post_id} already has authors.");
         }
-        $authors          = [];
-        $result           = new stdClass();
-        $result->created  = 0;
+        $authors = [];
+        $result = new stdClass();
+        $result->created = 0;
         $result->existing = 0;
-        $result->post_id  = 0;
-        $coauthors        = get_coauthors($post_id);
+        $result->post_id = 0;
+        $coauthors = get_coauthors($post_id);
         foreach ($coauthors as $coauthor) {
             switch ($coauthor->type) {
                 case 'wpuser':
@@ -109,9 +109,9 @@ class Utils
                         $authors[] = $author;
                         $result->existing++;
                     } else {
-                        $args   = [
+                        $args = [
                             'display_name' => $coauthor->display_name,
-                            'slug'         => $coauthor->user_nicename,
+                            'slug' => $coauthor->user_nicename,
                         ];
                         $author = Author::create($args);
                         if (is_wp_error($author)) {
@@ -128,8 +128,8 @@ class Utils
                                 continue;
                             }
                             if ('linked_account' === $key) {
-                                $key   = 'user_id';
-                                $user  = get_user_by('login', $value);
+                                $key = 'user_id';
+                                $user = get_user_by('login', $value);
                                 $value = $user ? $user->ID : '';
                             }
                             if ('' !== $value) {
@@ -176,7 +176,8 @@ class Utils
         wp_set_object_terms($postId, $authors, 'author');
     }
 
-    public static function detect_author_slug_mismatch() {
+    public static function detect_author_slug_mismatch()
+    {
         global $wpdb;
 
         $results = $wpdb->get_results(
@@ -194,14 +195,15 @@ class Utils
         return $results;
     }
 
-    public static function sync_author_slug_to_user_nicename($authors = false) {
+    public static function sync_author_slug_to_user_nicename($authors = false)
+    {
         global $wpdb;
 
         if (false === $authors) {
             $authors = static::detect_author_slug_mismatch();
         }
 
-        foreach($authors as $row) {
+        foreach ($authors as $row) {
             $wpdb->update($wpdb->terms, ['slug' => $row->user_nicename], ['term_id' => $row->term_id]);
         }
     }
@@ -213,7 +215,7 @@ class Utils
      */
     public static function sync_post_author_column($postId, $authors, $fallbackUserId = null)
     {
-        $functionSetPostAuthor = function($postId, $authorId) {
+        $functionSetPostAuthor = function ($postId, $authorId) {
             global $wpdb;
 
             // Avoid corrupting the post_author with an empty value.
@@ -236,17 +238,17 @@ class Utils
         };
 
         $postAuthorHasChanged = false;
-        if (!empty($authors)) {
+        if (! empty($authors)) {
             foreach ($authors as $index => $author) {
                 $isGuest = (method_exists($author, 'is_guest') && $author->is_guest());
 
                 if (
-                    !is_object($author)
+                    ! is_object($author)
                     || is_wp_error($author)
                     || $isGuest
                     || empty($author)
                 ) {
-                    if (!$isGuest) {
+                    if (! $isGuest) {
                         unset($authors[$index]);
                     }
 
@@ -261,24 +263,24 @@ class Utils
             }
         }
 
-        if (!$postAuthorHasChanged) {
+        if (! $postAuthorHasChanged) {
             $fallbackUserId = (int)$fallbackUserId;
 
-            if (!empty($fallbackUserId)) {
+            if (! empty($fallbackUserId)) {
                 $functionSetPostAuthor($postId, $fallbackUserId);
             }
 
             // Check if the post has any author set. If not an existent author, create one and set the author term.
             $post = get_post($postId);
 
-            if (empty($authors) && !empty($post->post_author)) {
+            if (empty($authors) && ! empty($post->post_author)) {
                 $author = Author::get_by_user_id($post->post_author);
 
                 if (empty($author)) {
                     $author = Author::create_from_user($post->post_author);
                 }
 
-                if (is_object($author) && !is_wp_error($author)) {
+                if (is_object($author) && ! is_wp_error($author)) {
                     Utils::set_post_authors($postId, [$author], false);
                 }
             } elseif ($fallbackUserId !== (int)$post->post_author || empty($fallbackUserId)) {
@@ -296,7 +298,7 @@ class Utils
      */
     public static function set_post_authors_name_meta($post_id, $authors)
     {
-        if (!is_array($authors)) {
+        if (! is_array($authors)) {
             $authors = [];
         }
 
@@ -308,7 +310,7 @@ class Utils
             $names = [];
 
             foreach ($authors as $author) {
-                if (!is_object($author) && is_numeric($author)) {
+                if (! is_object($author) && is_numeric($author)) {
                     $author = Author::get_by_term_id($author);
                 }
 
@@ -317,7 +319,7 @@ class Utils
                 }
             }
 
-            if (!empty($names)) {
+            if (! empty($names)) {
                 $names = implode(', ', $names);
 
                 update_post_meta($post_id, $metadata, $names);
@@ -337,7 +339,7 @@ class Utils
 
         $valid = (bool)in_array($pagenow, self::$pages_whitelist);
 
-        if (!$valid) {
+        if (! $valid) {
             return false;
         }
 
@@ -382,7 +384,7 @@ class Utils
 
         $isSupported = (bool)in_array($postType, self::$supported_post_types);
 
-        if (!$isSupported) {
+        if (! $isSupported) {
             return false;
         }
 
@@ -439,7 +441,7 @@ class Utils
                     continue;
                 }
 
-                if (!post_type_supports($name, 'author') || in_array($name, ['revision', 'attachment'])) {
+                if (! post_type_supports($name, 'author') || in_array($name, ['revision', 'attachment'])) {
                     unset($post_types_with_authors[$key]);
                 }
             }
@@ -544,7 +546,7 @@ class Utils
      */
     public static function isPluginActive($check_plugin_file)
     {
-        if (!is_multisite()) {
+        if (! is_multisite()) {
             $plugins = (array)get_option('active_plugins');
             foreach ($plugins as $plugin_file) {
                 if (false !== strpos($plugin_file, $check_plugin_file)) {
@@ -567,10 +569,10 @@ class Utils
 
     public static function getAuthorTaxonomyPostTypes()
     {
-        $taxonomy  = get_taxonomy('author');
+        $taxonomy = get_taxonomy('author');
         $postTypes = $taxonomy->object_type;
 
-        if (($keyToUnset = array_search('customize_changeset', $postTypes)) !== false ) {
+        if (($keyToUnset = array_search('customize_changeset', $postTypes)) !== false) {
             unset($postTypes[$keyToUnset]);
         }
 
@@ -594,11 +596,11 @@ class Utils
 
     public static function isDiviInstalled()
     {
-        if (!function_exists('et_get_theme_version')) {
+        if (! function_exists('et_get_theme_version')) {
             return false;
         }
 
-        if (!defined('ET_CORE')) {
+        if (! defined('ET_CORE')) {
             return false;
         }
 
@@ -618,7 +620,7 @@ class Utils
     {
         // For now we only integrate with the Pro version because the Free one doesn't have the posts modules.
 
-        if (!defined('ELEMENTOR_PRO_VERSION')) {
+        if (! defined('ELEMENTOR_PRO_VERSION')) {
             return false;
         }
 
@@ -639,7 +641,7 @@ class Utils
         ];
 
         foreach ($requiredClasses as $className) {
-            if (!class_exists($className)) {
+            if (! class_exists($className)) {
                 error_log(
                     sprintf(
                         '[PublishPress Authors] Elementor module did not find the class %s',
@@ -656,7 +658,7 @@ class Utils
         ];
 
         foreach ($requiredTraits as $traitName) {
-            if (!trait_exists($traitName)) {
+            if (! trait_exists($traitName)) {
                 error_log(
                     sprintf(
                         '[PublishPress Authors] Elementor module did not find the trait %s',
@@ -691,20 +693,20 @@ class Utils
 
     public static function isCompatibleYoastSeoInstalled()
     {
-        if (!defined('WPSEO_VERSION')) {
+        if (! defined('WPSEO_VERSION')) {
             return false;
         }
 
-        if (!defined('WPSEO_FILE')) {
+        if (! defined('WPSEO_FILE')) {
             return false;
         }
 
-        if (!class_exists('Yoast\\WP\\SEO\\Config\\Schema_IDs')) {
+        if (! class_exists('Yoast\\WP\\SEO\\Config\\Schema_IDs')) {
             return false;
         }
 
         if (version_compare(WPSEO_VERSION, '14.1', '<')) {
-            if (!get_transient('publishpress_authors_not_compatible_yoast_warning')) {
+            if (! get_transient('publishpress_authors_not_compatible_yoast_warning')) {
                 error_log(
                     sprintf(
                         '[PublishPress Authors] %s %s - %s. %s',
@@ -726,7 +728,7 @@ class Utils
 
     public static function getDefaultLayout()
     {
-        if (!is_null(self::$defaultLayout)) {
+        if (! is_null(self::$defaultLayout)) {
             return self::$defaultLayout;
         }
 
@@ -775,7 +777,7 @@ class Utils
             $author = Author::get_by_term_slug($author);
         }
 
-        if (!is_object($author)) {
+        if (! is_object($author)) {
             return false;
         }
 

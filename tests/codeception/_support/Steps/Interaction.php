@@ -2,6 +2,7 @@
 
 namespace Steps;
 
+use function sq;
 
 trait Interaction
 {
@@ -10,7 +11,7 @@ trait Interaction
      */
     public function iClickOnTheDeleteRowActionForUser($userLogin)
     {
-        $user = get_user_by('login', $userLogin);
+        $user = get_user_by('login', sq($userLogin));
 
         $this->moveMouseOver("tr#user-{$user->ID}");
         $this->click("tr#user-{$user->ID} span.delete a.submitdelete");

@@ -42,10 +42,14 @@ modules:
             restart: true
             window_size: "1280x1200"
             port: 9515
-            binary: "%CHROME_BIN_PATH%"
             capabilities:
                 browserName: chrome
                 chromeOptions:
                     args: [ "--headless", "--disable-gpu", "disable-infobars" ]
                     prefs:
                         download.default_directory: "..."
+extensions:
+    enabled:
+        - Codeception\Extension\RunProcess:
+              0: chromedriver --url-base=/wd/hub
+              sleep: 3
