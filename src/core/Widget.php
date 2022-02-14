@@ -126,18 +126,21 @@ class Widget extends WP_Widget {
 				'title'  => $this->get_field_id( 'title' ),
 				'title_plural'  => $this->get_field_id( 'title_plural' ),
 				'layout' => $this->get_field_id( 'layout' ),
+				'nonce' => $this->get_field_id( 'nonce' ),
 			),
 			'names'   => array(
 				'title'  => $this->get_field_name( 'title' ),
 				'title_plural'  => $this->get_field_name( 'title_plural' ),
 				'layout' => $this->get_field_name( 'layout' ),
+				'nonce' => $this->get_field_name( 'nonce' ),
 			),
 			'values'  => array(
 				'title'  => $titleSingle,
 				'title_plural'  => $titlePlural,
 				'layout' => $layout,
-			),
-			'layouts' => apply_filters( 'pp_multiple_authors_author_layouts', array() ),
+                'nonce' => wp_create_nonce('pp_multiple_authors_widget_form'),
+            ),
+            'layouts' => apply_filters( 'pp_multiple_authors_author_layouts', array() ),
 		);
 
 		$container = Factory::get_container();
@@ -151,19 +154,23 @@ class Widget extends WP_Widget {
 	 * @param array $new_instance The new options
 	 * @param array $old_instance The previous options
 	 */
-	public function update( $new_instance, $old_instance )
+	public function update($new_instance, $old_instance)
 	{
+        if (! isset($new_instance['nonce']) || ! wp_verify_nonce($new_instance['nonce'], 'pp_multiple_authors_widget_form')) {
+            return $old_instance;
+        }
+
 		$legacyPlugin = Factory::getLegacyPlugin();
 
-		$instance = array();
+		$instance = [];
 
         $instance['title']        = sanitize_text_field($new_instance['title']);
         $instance['title_plural'] = isset($new_instance['title_plural']) ? sanitize_text_field($new_instance['title_plural']) : '';
         $instance['layout']       = sanitize_text_field($new_instance['layout']);
 
-		$layouts = apply_filters( 'pp_multiple_authors_author_layouts', array() );
+		$layouts = apply_filters('pp_multiple_authors_author_layouts', []);
 
-		if ( ! array_key_exists( $instance['layout'], $layouts ) ) {
+		if (! array_key_exists($instance['layout'], $layouts)) {
 			$instance['layout'] = $legacyPlugin->modules->multiple_authors->options->layout;
 		}
 
