@@ -87,21 +87,6 @@ class WP_Cli extends WP_CLI_Command
         \WP_CLI::success('Finished');
     }
 
-//    /**
-//     * Update the post count and description for each author
-//     *
-//     * @since      3.0
-//     *
-//     * @subcommand update-author-terms
-//     * @synopsis [--post_type=<ptype>] [--posts_per_page=<num>] [--paged=<page>]
-//     */
-//    public function update_author_terms($args, $assocArgs)
-//    {
-//        Installer::createAuthorTermsForLegacyCoreAuthors($assocArgs, [$this, '_logCallback']);
-//
-//        \WP_CLI::success('Finished');
-//    }
-
     /**
      * Clear all of the caches for memory management
      */
