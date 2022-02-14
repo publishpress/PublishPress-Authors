@@ -255,26 +255,6 @@ if (!class_exists('MA_Settings')) {
         }
 
         /**
-         * Given a form field and a description, prints either the error associated with the field or the description.
-         *
-         * @param string $field The form field for which to check for an error
-         * @param string $description Unlocalized string to display if there was no error with the given field
-         *
-         *@since 0.7
-         *
-         */
-        public function helper_print_error_or_description($field, $description)
-        {
-            if (isset($_REQUEST['form-errors'][$field])): ?>
-				<div class="form-error">
-					<p><?php echo esc_html($_REQUEST['form-errors'][$field]); ?></p>
-				</div>
-			<?php else: ?>
-				<p class="description"><?php echo esc_html($description); ?></p>
-			<?php endif;
-        }
-
-        /**
          * Generate an option field to turn post type support on/off for a given module
          *
          * @param object $module      PublishPress module we're generating the option field for
@@ -405,6 +385,7 @@ if (!class_exists('MA_Settings')) {
             } else {
                 $error = false;
             }
+
             if ($error && isset($requested_module->messages[$error])) {
                 $display_text .= '<div class="is-dismissible notice notice-error"><p>' . esc_html($requested_module->messages[$error]) . '</p></div>';
             }
