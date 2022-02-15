@@ -285,7 +285,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 isset($current_author->term_id)
                 ) {
                 add_menu_page(
-                    esc_html__('Your Author Profile', 'publishpress-authors'),
+                    esc_html__('Author Profile', 'publishpress-authors'),
                     esc_html__('Author Profile', 'publishpress-authors'),
                     apply_filters('pp_multiple_authors_edit_own_profile_cap', 'ppma_edit_own_profile'),
                     'term.php?taxonomy=author&tag_ID='.$current_author->term_id,
