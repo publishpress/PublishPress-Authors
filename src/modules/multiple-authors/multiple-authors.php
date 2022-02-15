@@ -442,6 +442,10 @@ if (!class_exists('MA_Multiple_Authors')) {
          */
         public function pp_blocks_is_active()
         {
+            if (defined('PP_AUTHORS_BLOCKS_INSTALLED')) {
+                return;
+            }
+
             if (
                 !MultipleAuthors\Classes\Utils::isPluginActive('advanced-gutenberg.php')
                 && !MultipleAuthors\Classes\Utils::isPluginActive('advanced-gutenberg-pro.php')) {
