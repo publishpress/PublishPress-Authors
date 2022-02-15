@@ -148,6 +148,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 add_action('admin_init', [$this, 'migrate_legacy_settings']);
                 add_action('admin_init', [$this, 'dismissCoAuthorsMigrationNotice']);
                 add_action('admin_init', [$this, 'dismissPermissionsSyncNotice']);
+                add_action('admin_init', [$this, 'pp_blocks_is_active']);
                 add_action('admin_notices', [$this, 'coauthorsMigrationNotice']);
                 add_action('admin_notices', [$this, 'permissionsSyncNotice']);
                 add_action('admin_notices', [$this, 'handle_maintenance_task_notice']);
@@ -434,6 +435,20 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'module_name'        => $this->module->slug,
                 ]
             );
+        }
+
+        /**
+         * Check if Blocks Free or Pro are active
+         */
+        public function pp_blocks_is_active()
+        {
+            if (
+                !MultipleAuthors\Classes\Utils::isPluginActive('advanced-gutenberg.php')
+                && !MultipleAuthors\Classes\Utils::isPluginActive('advanced-gutenberg-pro.php')) {
+            	define('PP_AUTHORS_BLOCKS_INSTALLED', false);
+            } else {
+            	define('PP_AUTHORS_BLOCKS_INSTALLED', true);
+            }
         }
 
         /**
