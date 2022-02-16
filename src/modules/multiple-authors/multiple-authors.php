@@ -277,7 +277,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 26
             );
 
-            $current_author = $this->get_author_by_id(get_current_user_id());
+            $current_author = Author::get_by_user_id(get_current_user_id());
             if (
                 !current_user_can(apply_filters('pp_multiple_authors_manage_authors_cap', 'ppma_manage_authors')) && 
                 $current_author && 
@@ -2817,7 +2817,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     //this is needed for when saving the profile as it run through edit-tags.php which user doesn't have permission
                     $term_id = (int)$_POST['tag_ID'];
                 }
-                $current_author = $this->get_author_by_id(get_current_user_id());
+                $current_author = Author::get_by_user_id(get_current_user_id());
             
                 //allow user to edit own profile.
                 if (
