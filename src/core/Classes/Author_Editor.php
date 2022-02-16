@@ -12,6 +12,7 @@ namespace MultipleAuthors\Classes;
 use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Factory;
+use WP_Error;
 
 /**
  * Class Author_Editor
@@ -624,5 +625,29 @@ class Author_Editor
 
             echo '</div>';
         }
+    }
+
+    /**
+     * Author term mapped limit validation
+	 *
+	 * @param string|WP_Error $term     The term name to add, or a WP_Error object if there's an error.
+	 * @param string          $taxonomy Taxonomy slug.
+     * 
+     * @return array|WP_Error
+     */
+    public static function filter_pre_insert_term($term, $taxonomy)
+    {
+        if ($taxonomy === 'author' && isset($_POST['authors-new']) && $author_id = (int)$_POST['authors-new'] > 0) {
+            /**
+             * Check if term with this user exist
+             */
+            $author = Author::get_by_user_id($author_id);
+
+            if ($author && is_object($author) && isset($author->term_id) && (int)$author->term_id > 0){
+                return new WP_Error('duplicate_mapped_user', __('This user is already mapped to another author.', 'publishpress-authors'));
+            }
+        }
+
+        return $term;
     }
 }

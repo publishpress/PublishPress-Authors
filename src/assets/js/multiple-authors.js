@@ -486,6 +486,46 @@ jQuery(document).ready(function ($) {
             return false;
         });
     });
+  
+    //process a request to validate author mapped user.
+    $('body.taxonomy-author form#edittag').submit(function (event) {
+  
+      var $mappedUser = $('select[name="authors-user_id"]').val();
+      var $termId = $('input[name="tag_ID"]').val();
+      var $form = $(this);
+  
+      $('.author-response-notice').remove();
+  
+      if (!$mappedUser || $mappedUser == "") {
+        return;
+      }
+  
+      event.preventDefault();
+  
+      //prepare ajax data
+      var data = {
+        action: "mapped_author_validation",
+        author_id: $mappedUser,
+        term_id: $termId,
+        nonce: MultipleAuthorsStrings.mapped_author_nonce,
+      };
+  
+      if ($('.author-loading-spinner').length === 0) {
+        $('.edit-tag-actions input[type="submit"]').after('<div class="author-loading-spinner spinner is-active" style="float: none;"></div>');
+      }
+  
+      $('.author-loading-spinner').addClass('is-active');
+  
+      $.post(ajaxurl, data, function (response) {
+        if (response.status === 'error') {
+          $('.edit-tag-actions').after('<div class="author-response-notice notice notice-error" style="margin-top: 10px;"><p> ' + response.content + ' </p></div>');
+          $('.author-loading-spinner').removeClass('is-active');
+        } else {
+          $form.unbind('submit').submit();
+        }
+      });
+  
+    });
 });
 
 if (typeof console === "undefined") {
