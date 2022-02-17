@@ -486,6 +486,40 @@ jQuery(document).ready(function ($) {
             return false;
         });
     });
+  
+    /**
+     * Add tab class to author editor's tr without tab
+     * 
+     * This will add general tab class to 'Name' and Author URL
+     * or any tab that's rendered by default or third party 
+     *  without tab attribute
+     */
+    if ($('body').hasClass('taxonomy-author')) {
+      $('form#edittag tr.form-field:not(.ppma-tab-content)')
+        .addClass('ppma-tab-content ppma-general-tab')
+        .attr('data-tab', 'general');
+    }
+  
+    /**
+     * Author editor tab switch
+     */
+    $(document).on('click', '.ppma-editor-tabs a', function (event) {
+      
+      event.preventDefault();
+       
+      var clicked_tab = $(this).attr('data-tab');
+      
+      //remove active class from all tabs
+      $('.ppma-editor-tabs a').removeClass('nav-tab-active');
+      //add active class to current tab
+      $(this).addClass('nav-tab-active');
+  
+      //hide all tabs contents
+      $('.ppma-tab-content').hide();
+      //show this current tab contents
+      $('.ppma-' + clicked_tab + '-tab').show();
+  
+    });
 });
 
 if (typeof console === "undefined") {

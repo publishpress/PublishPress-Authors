@@ -22,6 +22,9 @@ use MultipleAuthors\Factory;
  */
 class Author_Editor
 {
+
+    const AUTHOR_EDITOR_DEFAULT_TAB = 'general';
+
     /**
      * Customize the term table to look more like the users table.
      *
@@ -227,6 +230,41 @@ class Author_Editor
     }
 
     /**
+     * Render fields tabs for the author profile editor
+     *
+     * @param WP_Term $term Author term being edited.
+     */
+    public static function action_author_edit_form_fields_tab($term)
+    {
+        $author = Author::get_by_term_id($term->term_id);
+
+        /**
+         * Filter the fields tabs on the Author's profile.
+         *
+         * @param array $tabs
+         * @param Author $author
+         *
+         * @return array
+         */
+        $fields_tabs  = apply_filters('multiple_authors_author_fields_tabs', self::get_fields_tabs($author), $author);
+
+        echo '<h2 class="ppma-editor-tabs nav-tab-wrapper">';
+
+        foreach ($fields_tabs as $key => $args) {
+            $active_tab = ($key === self::AUTHOR_EDITOR_DEFAULT_TAB) ? ' nav-tab-active' : '';
+        ?>
+        <a data-tab="<?php esc_attr_e($key); ?>" 
+            class="<?php esc_attr_e('tab-link nav-tab' . $active_tab ); ?>" 
+            href="#"
+            >
+            <?php esc_html_e($args['label']); ?>
+        </a>
+        <?php
+        }
+        echo '</h2>';
+    }
+
+    /**
      * Render fields for the author profile editor
      *
      * @param WP_Term $term Author term being edited.
@@ -255,6 +293,35 @@ class Author_Editor
     }
 
     /**
+     * Get the fields tabs to be rendered in the author editor
+     *
+     * @param Author $author Author to be rendered.
+     *
+     * @return array
+     */
+    public static function get_fields_tabs($author)
+    {
+        $fields_tabs = [
+            'general'     => [
+                'label'    => __('General', 'publishpress-authors'),
+            ],
+            'image'  => [
+                'label' => __('Image', 'publishpress-authors'),
+            ],
+        ];
+
+        /**
+         * Customize fields tabs presented in the author editor.
+         *
+         * @param array $fields_tabs Existing fields tabs to display.
+         * @param Author $author Author to be rendered.
+         */
+        $fields_tabs = apply_filters('authors_editor_fields', $fields_tabs, $author);
+
+        return $fields_tabs;
+    }
+
+    /**
      * Get the fields to be rendered in the author editor
      *
      * @param Author $author Author to be rendered.
@@ -268,37 +335,47 @@ class Author_Editor
                 'label'    => __('Mapped User', 'publishpress-authors'),
                 'type'     => 'ajax_user_select',
                 'sanitize' => 'intval',
+                'tab'      => 'general',
             ],
             'first_name'  => [
                 'label' => __('First Name', 'publishpress-authors'),
                 'type'  => 'text',
+                'tab'   => 'general',
             ],
             'last_name'   => [
                 'label' => __('Last Name', 'publishpress-authors'),
                 'type'  => 'text',
+                'tab'   => 'general',
             ],
             'user_email'  => [
                 'label'       => __('Email', 'publishpress-authors'),
                 'type'        => 'email',
+                'tab'         => 'image',
                 'description' => __(
                     'To show the avatar from the Mapped User, enter the same email address as the Mapped User. <br> To show the avatar for a Guest Author, enter the email for their Gravatar account.',
                     'publishpress-authors'
                 ),
             ],
             'avatar'      => [
-                'label'    => __('Custom Avatar', 'publishpress-authors'),
-                'type'     => 'image',
-                'sanitize' => 'intval',
+                'label'       => __('Custom Avatar', 'publishpress-authors'),
+                'type'        => 'image',
+                'sanitize'    => 'intval',
+                'tab'         => 'image',
+                'description' => __(
+                    'Upload custom avatar if no email entered for author avatar'
+                ),
             ],
             'user_url'    => [
                 'label'    => __('Website', 'publishpress-authors'),
                 'type'     => 'url',
                 'sanitize' => 'esc_url_raw',
+                'tab'      => 'general',
             ],
             'description' => [
                 'label'    => __('Biographical Info', 'publishpress-authors'),
                 'type'     => 'textarea',
                 'sanitize' => 'sanitize_textarea_field',
+                'tab'      => 'general',
             ],
         ];
 
@@ -322,15 +399,22 @@ class Author_Editor
     {
         $defaults = [
             'type'        => 'text',
+            'tab'         => self::AUTHOR_EDITOR_DEFAULT_TAB,
             'value'       => '',
             'label'       => '',
             'description' => '',
         ];
         $args     = array_merge($defaults, $args);
         $key      = 'authors-' . $args['key'];
+        $tab_class= 'ppma-tab-content ppma-' . $args['tab'] . '-tab';
+        $tab_style= ($args['tab'] === self::AUTHOR_EDITOR_DEFAULT_TAB) ? '' : 'display:none;';
         ob_start();
         ?>
-        <tr class="<?php echo esc_attr('form-field term-' . $key . '-wrap'); ?>">
+        <tr 
+            class="<?php echo esc_attr('form-field term-' . $key . '-wrap '. $tab_class); ?>"
+            data-tab="<?php echo esc_attr($args['tab']); ?>"
+            style="<?php echo esc_attr($tab_style); ?>"
+            >
             <th scope="row">
                 <?php if (!empty($args['label'])) : ?>
                     <label for="<?php echo esc_attr($key); ?>"><?php echo esc_html($args['label']); ?></label>
