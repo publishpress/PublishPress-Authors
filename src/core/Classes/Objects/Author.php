@@ -148,13 +148,16 @@ class Author
         }
 
         if (! is_a($user, 'WP_User')) {
-            error_log(
-                sprintf(
-                    '[PublishPress Authors] The method %s found that the expected user doesn\'t exist: %s',
-                    __METHOD__,
-                    maybe_serialize($user)
-                )
-            );
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log(
+                    sprintf(
+                        '[PublishPress Authors] The method %s found that the expected user doesn\'t exist: %s',
+                        __METHOD__,
+                        maybe_serialize($user)
+                    )
+                );
+            }
+
             return false;
         }
 
