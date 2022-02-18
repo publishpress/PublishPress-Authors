@@ -163,112 +163,137 @@ if (!class_exists('MA_Modules_Settings')) {
         {
             $legacyPlugin = Factory::getLegacyPlugin();
             ?>
-            <form class="basic-settings"
-                  action="<?php echo esc_url(menu_page_url($this->module->settings_slug, false)); ?>" method="post">
 
-                <?php
-                /**
-                 * @param array $tabs
-                 *
-                 * @return array
-                 */
-                $tabs = apply_filters('publishpress_multiple_authors_settings_tabs', []);
-                if (!empty($tabs)) {
-                    echo '<ul id="publishpress-authors-settings-tabs" class="nav-tab-wrapper">';
-                    foreach ($tabs as $tabLink => $tabLabel) {
-                        echo '<li class="nav-tab ' . ($tabLink === '#ppma-tab-general' ? 'nav-tab-active' : '') . '">';
-                        echo '<a href="' . $tabLink . '">' . $tabLabel . '</a>';
-                        echo '</li>';
-                    }
-                    echo '</ul>';
-                }
-                ?>
+            <div class="pp-columns-wrapper<?php echo !PP_AUTHORS_BLOCKS_INSTALLED ? ' pp-enable-sidebar' : '' ?>">
+                <div class="pp-column-left">
+                    <form class="basic-settings"
+                          action="<?php echo esc_url(menu_page_url($this->module->settings_slug, false)); ?>" method="post">
 
-                <?php settings_fields($this->module->options_group_name); ?>
-                <?php do_settings_sections($this->module->options_group_name); ?>
+                        <?php
+                        /**
+                         * @param array $tabs
+                         *
+                         * @return array
+                         */
+                        $tabs = apply_filters('publishpress_multiple_authors_settings_tabs', []);
+                        if (!empty($tabs)) {
+                            echo '<ul id="publishpress-authors-settings-tabs" class="nav-tab-wrapper">';
+                            foreach ($tabs as $tabLink => $tabLabel) {
+                                echo '<li class="nav-tab ' . ($tabLink === '#ppma-tab-general' ? 'nav-tab-active' : '') . '">';
+                                echo '<a href="' . $tabLink . '">' . $tabLabel . '</a>';
+                                echo '</li>';
+                            }
+                            echo '</ul>';
+                        }
+                        ?>
 
-                <?php
-                foreach ($legacyPlugin->class_names as $slug => $class_name) {
-                    $mod_data = $legacyPlugin->$slug->module;
+                        <?php settings_fields($this->module->options_group_name); ?>
+                        <?php do_settings_sections($this->module->options_group_name); ?>
 
-                    if ($mod_data->autoload
-                        || $mod_data->slug === $this->module->slug
-                        || !isset($mod_data->general_options)
-                        || $mod_data->options->enabled != 'on') {
-                        continue;
-                    }
+                        <?php
+                        foreach ($legacyPlugin->class_names as $slug => $class_name) {
+                            $mod_data = $legacyPlugin->$slug->module;
 
-                    echo sprintf('<h3>%s</h3>', $mod_data->title);
-                    echo sprintf('<p>%s</p>', $mod_data->short_description);
+                            if ($mod_data->autoload
+                                || $mod_data->slug === $this->module->slug
+                                || !isset($mod_data->general_options)
+                                || $mod_data->options->enabled != 'on') {
+                                continue;
+                            }
 
-                    echo '<input name="multiple_authors_module_name[]" type="hidden" value="' . esc_attr(
-                            $mod_data->name
-                        ) . '" />';
+                            echo sprintf('<h3>%s</h3>', $mod_data->title);
+                            echo sprintf('<p>%s</p>', $mod_data->short_description);
 
-                    $legacyPlugin->$slug->print_configure_view();
-                }
+                            echo '<input name="multiple_authors_module_name[]" type="hidden" value="' . esc_attr(
+                                    $mod_data->name
+                                ) . '" />';
 
-                // Print the main module's settings page
-                $legacyPlugin->multiple_authors->print_configure_view();
+                            $legacyPlugin->$slug->print_configure_view();
+                        }
 
-                // Check if we have any feature user can toggle.
-                $featuresCount = 0;
+                        // Print the main module's settings page
+                        $legacyPlugin->multiple_authors->print_configure_view();
 
-                foreach ($legacyPlugin->modules as $mod_name => $mod_data) {
-                    if (!$mod_data->autoload && $mod_data->slug !== $this->module->slug) {
-                        $featuresCount++;
-                    }
-                }
-                ?>
+                        // Check if we have any feature user can toggle.
+                        $featuresCount = 0;
 
-                <?php if ($featuresCount > 0) : ?>
-                    <div id="modules-wrapper">
-                        <h3><?php echo __('Features', 'publishpress-authors'); ?></h3>
-                        <p><?php echo __(
-                                'Feel free to select only the features you need.',
-                                'publishpress-authors'
-                            ); ?></p>
+                        foreach ($legacyPlugin->modules as $mod_name => $mod_data) {
+                            if (!$mod_data->autoload && $mod_data->slug !== $this->module->slug) {
+                                $featuresCount++;
+                            }
+                        }
+                        ?>
 
-                        <table class="form-table">
-                            <tbody>
-                            <tr>
-                                <th scope="row"><?php echo __(
-                                        'Enabled features',
+                        <?php if ($featuresCount > 0) : ?>
+                            <div id="modules-wrapper">
+                                <h3><?php echo __('Features', 'publishpress-authors'); ?></h3>
+                                <p><?php echo __(
+                                        'Feel free to select only the features you need.',
                                         'publishpress-authors'
-                                    ); ?></th>
-                                <td>
-                                    <?php foreach ($legacyPlugin->modules as $mod_name => $mod_data) : ?>
+                                    ); ?></p>
 
-                                        <?php if ($mod_data->autoload || $mod_data->slug === $this->module->slug) {
-                                            continue;
-                                        } ?>
+                                <table class="form-table">
+                                    <tbody>
+                                    <tr>
+                                        <th scope="row"><?php echo __(
+                                                'Enabled features',
+                                                'publishpress-authors'
+                                            ); ?></th>
+                                        <td>
+                                            <?php foreach ($legacyPlugin->modules as $mod_name => $mod_data) : ?>
 
-                                        <label for="feature-<?php echo esc_attr($mod_data->slug); ?>">
-                                            <input id="feature-<?php echo esc_attr($mod_data->slug); ?>"
-                                                   name="multiple_authors_options[features][<?php echo esc_attr(
-                                                       $mod_data->slug
-                                                   ); ?>]" <?php echo ($mod_data->options->enabled == 'on') ? "checked=\"checked\"" : ""; ?>
-                                                   type="checkbox">
-                                            &nbsp;&nbsp;&nbsp;<?php echo $mod_data->title; ?>
-                                        </label>
-                                        <br>
-                                    <?php endforeach; ?>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                                                <?php if ($mod_data->autoload || $mod_data->slug === $this->module->slug) {
+                                                    continue;
+                                                } ?>
 
-                        <?php echo '<input name="multiple_authors_module_name[]" type="hidden" value="' . esc_attr(
-                                $this->module->name
-                            ) . '" />'; ?>
-                    </div>
-                <?php endif; ?>
+                                                <label for="feature-<?php echo esc_attr($mod_data->slug); ?>">
+                                                    <input id="feature-<?php echo esc_attr($mod_data->slug); ?>"
+                                                           name="multiple_authors_options[features][<?php echo esc_attr(
+                                                               $mod_data->slug
+                                                           ); ?>]" <?php echo ($mod_data->options->enabled == 'on') ? "checked=\"checked\"" : ""; ?>
+                                                           type="checkbox">
+                                                    &nbsp;&nbsp;&nbsp;<?php echo $mod_data->title; ?>
+                                                </label>
+                                                <br>
+                                            <?php endforeach; ?>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
 
-                <?php
-                wp_nonce_field('edit-publishpress-settings');
+                                <?php echo '<input name="multiple_authors_module_name[]" type="hidden" value="' . esc_attr(
+                                        $this->module->name
+                                    ) . '" />'; ?>
+                            </div>
+                        <?php endif; ?>
 
-                submit_button(null, 'primary', 'submit', false); ?>
-            </form>
+                        <?php
+                        wp_nonce_field('edit-publishpress-settings');
+
+                        submit_button(null, 'primary', 'submit', false); ?>
+                    </form>
+                </div><!-- .pp-column-left -->
+                <?php if( !PP_AUTHORS_BLOCKS_INSTALLED ) { ?>
+                    <div class="pp-column-right">
+                        <?php
+                        $banners = new PublishPress\WordPressBanners\BannersMain;
+                        $banners->pp_display_banner(
+                            __( 'Recommendations for you', 'publishpress-authors' ),
+                            __( 'Showcase your Authors with PublishPress Blocks', 'publishpress-authors' ),
+                            array(
+                                __( 'PublishPress Blocks is a free plugin with full support for PublishPress Authors.', 'publishpress-authors' ),
+                                __( 'Install this plugin to showcase content by your Authors.', 'publishpress-authors' ),
+                                __( 'Use the Content Display block to show your posts in many beautiful layouts.', 'publishpress-authors' ),
+                                __( 'PublishPress Blocks has over 20 extra Gutenberg blocks including accordions, galleries, tables, and more.', 'publishpress-authors' ),
+                            ),
+                            admin_url( 'plugin-install.php?s=publishpress-advg-install&tab=search&type=term' ),
+                            __( 'Click here to install PublishPress Blocks', 'publishpress-authors' ),
+                            'install-blocks.jpg'
+                        );
+                        ?>
+                        </div><!-- .pp-column-right -->
+                        <?php } ?>
+                    </div><!-- .pp-columns-wrapper -->
             <?php
         }
     }
