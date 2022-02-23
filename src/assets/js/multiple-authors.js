@@ -520,6 +520,29 @@ jQuery(document).ready(function ($) {
       $('.ppma-' + clicked_tab + '-tab').show();
   
     });
+  
+    /**
+     * Author image avatar source option toggle
+     */
+    $(document).on('click', 'input[name="authors-avatar-options"]', function () {
+        var clicked_element = $(this);
+        if(clicked_element.val() === 'custom_image'){
+            clicked_element.closest('tr').find('.author-image-field-wrapper').show();
+       }else{
+            clicked_element.closest('tr').find('.author-image-field-wrapper').hide();
+       }
+    });
+  
+    /**
+     * Switch focus to general email from image tab handler
+     */
+    $(document).on('click', '.ppma-image-general-author-focus', function (event) {
+        event.preventDefault();
+        //triger click on general tab
+        $('.ppma-editor-tabs a[data-tab="general"]').trigger('click');
+        //set focus on email field
+        $('input[name="authors-user_email"]').focus();
+    });
 });
 
 if (typeof console === "undefined") {

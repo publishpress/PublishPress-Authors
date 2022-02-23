@@ -350,20 +350,28 @@ class Author_Editor
             'user_email'  => [
                 'label'       => __('Email', 'publishpress-authors'),
                 'type'        => 'email',
-                'tab'         => 'image',
-                'description' => __(
-                    'To show the avatar from the Mapped User, enter the same email address as the Mapped User. <br> To show the avatar for a Guest Author, enter the email for their Gravatar account.',
-                    'publishpress-authors'
-                ),
+                'tab'         => 'general',
             ],
             'avatar'      => [
-                'label'       => __('Custom Avatar', 'publishpress-authors'),
-                'type'        => 'image',
+                'label'       => __('Avatar Source', 'publishpress-authors'),
+                'type'        => 'avatar',
                 'sanitize'    => 'intval',
                 'tab'         => 'image',
-                'description' => __(
-                    'Upload custom avatar if no email entered for author avatar'
-                ),
+                'options'     => [
+                    'gravatar'     => [
+                        'label'         => __('Gravatar', 'publishpress-authors'),
+                        'description'   => sprintf(
+                                            esc_html__(
+                                                '(Uses the %1s author e-mail %2s as Gravatar account)', 
+                                                'publishpress-authors'
+                                            ), 
+                                            '<a href="#" class="ppma-image-general-author-focus">', '</a>'
+                                        )
+                    ],
+                    'custom_image'  => [
+                        'label'         => __('Custom image', 'publishpress-authors'),
+                    ],
+                ],
             ],
             'user_url'    => [
                 'label'    => __('Website', 'publishpress-authors'),
@@ -400,6 +408,7 @@ class Author_Editor
         $defaults = [
             'type'        => 'text',
             'tab'         => self::AUTHOR_EDITOR_DEFAULT_TAB,
+            'options'     => [],
             'value'       => '',
             'label'       => '',
             'description' => '',
@@ -426,6 +435,55 @@ class Author_Editor
                     $author_image = wp_get_attachment_image_url($args['value'], 'thumbnail');
                     ?>
                     <div class="author-image-field-wrapper">
+                        <div class="author-image-field-container">
+                            <?php if ($author_image) : ?>
+                                <img src="<?php echo esc_url($author_image); ?>" alt=""/>
+                            <?php endif; ?>
+                        </div>
+                        <p class="hide-if-no-js">
+                            <a class="select-author-image-field <?php echo $author_image ? 'hidden' : ''; ?>" href="#">
+                                <?php _e('Select image', 'publishpress-authors'); ?>
+                            </a>
+                            <a class="delete-author-image-field <?php echo !$author_image ? 'hidden' : ''; ?>"
+                               href="#">
+                                <?php _e('Remove this image', 'publishpress-authors'); ?>
+                            </a>
+                        </p>
+                        <input name="<?php echo esc_attr($key); ?>" class="author-image-field-id" type="hidden"
+                               value="<?php echo esc_attr($args['value']); ?>"/>
+                    </div>
+                <?php 
+                elseif ('avatar' === $args['type']) :
+
+                    $author_image = wp_get_attachment_image_url($args['value'], 'thumbnail');
+                    $avatar_options = $args['options'];
+
+                    if($author_image){
+                        $checked_option    = 'custom_image';
+                        $image_field_style = '';
+                    }else{
+                        $checked_option    = 'gravatar';
+                        $image_field_style = 'display:none;';
+                    }
+                    ?>
+
+                    <?php foreach ($avatar_options as $avatar_option_key => $avatar_option_data){ ?>
+                        <p>
+                            <input name="<?php echo esc_attr($key.'-options'); ?>" type="radio"
+                                value="<?php echo esc_attr($avatar_option_key); ?>"
+                                id="<?php echo esc_attr($avatar_option_key.'-'.$key.'-options'); ?>"
+                                <?php checked($avatar_option_key, $checked_option); ?> />
+                            
+                            <label for="<?php echo esc_attr($avatar_option_key.'-'.$key.'-options'); ?>">
+                                <?php echo esc_html($avatar_option_data['label']); ?>
+                                <?php if (isset($avatar_option_data['description'])) : ?>
+                                    <span class="description"><?php echo $avatar_option_data['description']; ?></span>
+                                <?php endif; ?>
+                            </label>
+                        </p>
+                    <?php } ?>
+
+                    <div class="author-image-field-wrapper" style="<?php echo esc_attr($image_field_style); ?>">
                         <div class="author-image-field-container">
                             <?php if ($author_image) : ?>
                                 <img src="<?php echo esc_url($author_image); ?>" alt=""/>
