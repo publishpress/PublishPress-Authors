@@ -491,14 +491,11 @@ jQuery(document).ready(function ($) {
     $('body.taxonomy-author form#edittag').submit(function (event) {
   
       var $mappedUser = $('select[name="authors-user_id"]').val();
+      var $authorSlug = $('input[name="slug"]').val();
       var $termId = $('input[name="tag_ID"]').val();
       var $form = $(this);
   
       $('.author-response-notice').remove();
-  
-      if (!$mappedUser || $mappedUser == "") {
-        return;
-      }
   
       event.preventDefault();
   
@@ -506,6 +503,7 @@ jQuery(document).ready(function ($) {
       var data = {
         action: "mapped_author_validation",
         author_id: $mappedUser,
+        author_slug: $authorSlug,
         term_id: $termId,
         nonce: MultipleAuthorsStrings.mapped_author_nonce,
       };
