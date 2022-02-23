@@ -2103,11 +2103,11 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
             
             if (!get_option('publishpress_multiple_authors_settings_migrated_3_15_0')) {
-               if(function_exists('get_role')){
+               if (function_exists('get_role')) {
                    $capability_roles = ['administrator', 'editor', 'author'];
-                   foreach($capability_roles as $capability_role){
+                   foreach ($capability_roles as $capability_role) {
                         $role = get_role($capability_role);
-                        if(is_object($role) && !is_wp_error($role)){
+                        if (is_object($role) && !is_wp_error($role)) {
                             $role->add_cap('ppma_edit_own_profile');
                         }
                     }
@@ -2848,13 +2848,13 @@ if (!class_exists('MA_Multiple_Authors')) {
          */
         public function filter_admin_body_class($classes) {
             
-            if(!function_exists('get_current_screen')){
+            if (!function_exists('get_current_screen')) {
                 return $classes;
             }
 
             $screen = get_current_screen();
 
-            if($screen && is_object($screen) && isset($screen->id) && $screen->id === 'edit-author'){
+            if ($screen && is_object($screen) && isset($screen->id) && $screen->id === 'edit-author') {
                 $classes .= (current_user_can(apply_filters('pp_multiple_authors_manage_authors_cap', 'ppma_manage_authors'))) ? ' authorised-profile-edit ' : ' own-profile-edit ';
             }
 
