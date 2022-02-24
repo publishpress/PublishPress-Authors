@@ -227,6 +227,7 @@ There are two ways to install the PublishPress Authors plugin:
 = UNRELEASED =
 
 * Fixed: Fix the character "&" in the Bibliographical Info field, which was converted to "&amp;", #566;
+* Fixed: Fix PHP 8 compatibility addressing the error: PHP Fatal error: Uncaught TypeError: array_key_exists, #585;
 
 = [3.14.9] - 18 Nov 2021 =
 
