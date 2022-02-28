@@ -137,34 +137,30 @@ if (!class_exists('MA_Settings')) {
             $display_text = '';
 
             // If there's been a message, let's display it
+            $message = false;
+
             if (isset($_GET['message'])) {
                 $message = $_GET['message'];
             } elseif (isset($_REQUEST['message'])) {
                 $message = $_REQUEST['message'];
             } elseif (isset($_POST['message'])) {
                 $message = $_POST['message'];
-            } else {
-                $message = false;
             }
-
-            $message = sanitize_text_field($message);
 
             if ($message && isset($current_module->messages[$message])) {
                 $display_text .= '<div class="is-dismissible notice notice-info"><p>' . esc_html($current_module->messages[$message]) . '</p></div>';
             }
 
             // If there's been an error, let's display it
+            $error = false;
+
             if (isset($_GET['error'])) {
                 $error = $_GET['error'];
             } elseif (isset($_REQUEST['error'])) {
                 $error = $_REQUEST['error'];
             } elseif (isset($_POST['error'])) {
                 $error = $_POST['error'];
-            } else {
-                $error = false;
             }
-
-            $error = sanitize_text_field($error);
 
             if ($error && isset($current_module->messages[$error])) {
                 $display_text .= '<div class="is-dismissible notice notice-error"><p>' . esc_html($current_module->messages[$error]) . '</p></div>';
@@ -178,7 +174,6 @@ if (!class_exists('MA_Settings')) {
 					<?php echo !empty($display_text) ? $display_text : ''; ?>
 					<?php // We keep the H2 tag to keep notices tied to the header?>
 					<h2>
-
 						<?php if ($current_module->short_description && empty($custom_text)): ?>
 							<?php echo $current_module->short_description; ?>
 						<?php endif; ?>
