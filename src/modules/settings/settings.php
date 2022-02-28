@@ -347,28 +347,29 @@ if (!class_exists('MA_Settings')) {
             $display_text         = '';
 
             // If there's been a message, let's display it
+            $message = false;
+
             if (isset($_GET['message'])) {
                 $message = $_GET['message'];
             } elseif (isset($_REQUEST['message'])) {
                 $message = $_REQUEST['message'];
             } elseif (isset($_POST['message'])) {
                 $message = $_POST['message'];
-            } else {
-                $message = false;
             }
+
             if ($message && isset($requested_module->messages[$message])) {
                 $display_text .= '<div class="is-dismissible notice notice-info"><p>' . esc_html($requested_module->messages[$message]) . '</p></div>';
             }
 
             // If there's been an error, let's display it
+            $error = false;
+
             if (isset($_GET['error'])) {
                 $error = $_GET['error'];
             } elseif (isset($_REQUEST['error'])) {
                 $error = $_REQUEST['error'];
             } elseif (isset($_POST['error'])) {
                 $error = $_POST['error'];
-            } else {
-                $error = false;
             }
 
             if ($error && isset($requested_module->messages[$error])) {
