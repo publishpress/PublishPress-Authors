@@ -93,8 +93,6 @@ if (!class_exists('MA_Settings')) {
          */
         public function action_admin_submenu()
         {
-            $legacyPlugin = Factory::getLegacyPlugin();
-
             // Main Menu
             add_submenu_page(
                 MA_Multiple_Authors::MENU_SLUG,
