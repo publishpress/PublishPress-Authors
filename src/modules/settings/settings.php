@@ -86,7 +86,6 @@ if (!class_exists('MA_Settings')) {
 
             add_action('admin_print_styles', [$this, 'action_admin_print_styles']);
             add_action('admin_print_scripts', [$this, 'action_admin_print_scripts']);
-            add_action('admin_enqueue_scripts', [$this, 'action_admin_enqueue_scripts']);
         }
 
         /**
@@ -106,13 +105,6 @@ if (!class_exists('MA_Settings')) {
                 [$this, 'options_page_controller'],
                 20
             );
-        }
-
-        public function action_admin_enqueue_scripts()
-        {
-            if ($this->is_whitelisted_settings_view()) {
-                // Enqueue scripts
-            }
         }
 
         /**
