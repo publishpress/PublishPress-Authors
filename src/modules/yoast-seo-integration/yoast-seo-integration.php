@@ -94,30 +94,24 @@ if (!class_exists('MA_Yoast_Seo_Integration')) {
 
         public function overrideSEOReplacementsForAuthorsPage($replacements, $args)
         {
-            try {
-                $post = get_post();
+            $post = get_post();
 
-                if (!is_object($post) || is_wp_error($post)) {
-                    return $replacements;
-                }
+            if (!is_object($post) || is_wp_error($post)) {
+                return $replacements;
+            }
 
-                foreach ($replacements as $key => &$value) {
-                    if ($key === '%%name%%') {
-                        $authors = get_multiple_authors($post->ID);
+            foreach ($replacements as $key => &$value) {
+                if ($key === '%%name%%') {
+                    $authors = get_multiple_authors($post->ID);
 
-                        if (is_array($authors) && !empty($authors)) {
-                            $author = $authors[0];
+                    if (is_array($authors) && !empty($authors)) {
+                        $author = $authors[0];
 
-                            if (isset($author->display_name)) {
-                                $value = $author->display_name;
-                            }
+                        if (isset($author->display_name)) {
+                            $value = $author->display_name;
                         }
                     }
                 }
-            } catch (Exception $e) {
-                error_log(
-                    sprintf('[PublishPress Authors] Method %s caught the exception: %s', __METHOD__, $e->getMessage())
-                );
             }
 
             return $replacements;
