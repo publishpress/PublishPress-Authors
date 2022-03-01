@@ -35,7 +35,7 @@ class Admin_Ajax
             wp_send_json_error(null, 403);
         }
 
-        if (! Capability::currentUserCanManageSettings()) {
+        if (! Capability::currentUserCanEditPostAuthors()) {
             wp_send_json_error(null, 403);
         }
 
@@ -131,7 +131,7 @@ class Admin_Ajax
             wp_send_json_error(null, 403);
         }
 
-        if (! Capability::currentUserCanManageSettings()) {
+        if (! Capability::currentUserCanEditPostAuthors()) {
             wp_send_json_error(null, 403);
         }
 
