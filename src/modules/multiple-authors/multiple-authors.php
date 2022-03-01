@@ -21,6 +21,7 @@
  * along with PublishPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use MultipleAuthors\Capability;
 use MultipleAuthors\Classes\Admin_Ajax;
 use MultipleAuthors\Classes\Author_Utils;
 use MultipleAuthors\Classes\Installer;
@@ -1695,8 +1696,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 wp_die(esc_html__('Invalid nonce', 'publishpress-authors'));
             }
 
-            $capability = apply_filters('pp_multiple_authors_manage_settings_cap', 'manage_options');
-            if (! current_user_can($capability)) {
+            if (! Capability::currentUserCanManageSettings()) {
                 wp_die(esc_html__('Access denied', 'publishpress-authors'));
             }
 
@@ -2124,6 +2124,10 @@ if (!class_exists('MA_Multiple_Authors')) {
                 wp_send_json_error(null, 403);
             }
 
+            if (! Capability::currentUserCanManageSettings()) {
+                wp_send_json_error(null, 403);
+            }
+
             // nonce: migrate_coauthors
             wp_send_json(
                 [
@@ -2470,7 +2474,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 return;
             }
 
-            if (!current_user_can('manage_options')) {
+            if (! Capability::currentUserCanManageSettings()) {
                 return;
             }
 

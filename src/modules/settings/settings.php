@@ -28,6 +28,7 @@
  * along with PublishPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use MultipleAuthors\Capability;
 use MultipleAuthors\Classes\Legacy\Module;
 use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Factory;
@@ -98,7 +99,7 @@ if (!class_exists('MA_Settings')) {
                 MA_Multiple_Authors::MENU_SLUG,
                 esc_html__('Multiple Authors Settings', 'publishpress-authors'),
                 esc_html__('Settings', 'publishpress-authors'),
-                apply_filters('pp_multiple_authors_manage_settings_cap', 'manage_options'),
+                Capability::getManageOptionsCapability(),
                 self::MENU_SLUG,
                 [$this, 'options_page_controller'],
                 20
@@ -297,7 +298,7 @@ if (!class_exists('MA_Settings')) {
                 return false;
             }
 
-            if (!current_user_can('manage_options') || !wp_verify_nonce($_POST['_wpnonce'], 'edit-publishpress-settings')) {
+            if (!Capability::currentUserCanManageSettings() || !wp_verify_nonce($_POST['_wpnonce'], 'edit-publishpress-settings')) {
                 wp_die(__('Cheatin&#8217; uh?'));
             }
 

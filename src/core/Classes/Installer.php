@@ -23,6 +23,7 @@
 
 namespace MultipleAuthors\Classes;
 
+use MultipleAuthors\Capability;
 use MultipleAuthors\Classes\Objects\Author;
 use WP_Role;
 
@@ -323,9 +324,9 @@ class Installer
     private static function addDefaultCapabilitiesForAdministrators()
     {
         $role = get_role('administrator');
-        $role->add_cap('ppma_manage_authors');
-        $role->add_cap('manage_options');
-        $role->add_cap('ppma_edit_post_authors');
+        $role->add_cap(Capability::getManageAuthorsCapability());
+        $role->add_cap(Capability::getManageAuthorsCapability());
+        $role->add_cap(Capability::getEditPostAuthorsCapability());
     }
 
     /**
