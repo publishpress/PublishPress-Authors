@@ -1072,9 +1072,7 @@ class Plugin
             return 0;
         }
 
-        $count = apply_filters('get_authornumposts', $count, $author);
-
-        return $count;
+        return apply_filters('get_authornumposts', $count, $author);
     }
 
     /**
