@@ -1693,15 +1693,14 @@ if (!class_exists('MA_Multiple_Authors')) {
                 return;
             }
 
-
-            $nonce = isset($_GET['nonce']) ? $_GET['nonce'] : '';
+            $nonce = isset($_GET['nonce']) ? sanitize_key($_GET['nonce']) : '';
             if (!wp_verify_nonce($nonce, 'multiple_authors_maintenance')) {
-                wp_redirect(
-                    admin_url('/admin.php?page=ppma-modules-settings&author_term_reset_notice=fail'),
-                    301
-                );
+                wp_die(esc_html__('Invalid nonce', 'publishpress-authors'));
+            }
 
-                return;
+            $capability = apply_filters('pp_multiple_authors_manage_settings_cap', 'manage_options');
+            if (! current_user_can($capability)) {
+                wp_die(esc_html__('Access denied', 'publishpress-authors'));
             }
 
             try {
