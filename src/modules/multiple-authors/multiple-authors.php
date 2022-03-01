@@ -2082,6 +2082,8 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          * Customize/fix the author byline output for the GeneratePress theme.
          *
+         * @todo: Move this method to a new module: generatepress-integration
+         *
          * @param $output
          *
          * @return false|string
