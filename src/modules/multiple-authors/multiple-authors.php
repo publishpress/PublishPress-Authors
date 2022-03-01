@@ -2161,6 +2161,10 @@ if (!class_exists('MA_Multiple_Authors')) {
                 wp_send_json_error(null, 403);
             }
 
+            if (! Capability::currentUserCanManageSettings()) {
+                wp_send_json_error(null, 403);
+            }
+
             $postTypes = array_values(Util::get_post_types_for_module($this->module));
             $postTypes = '"' . implode('","', $postTypes) . '"';
 
@@ -2191,6 +2195,10 @@ if (!class_exists('MA_Multiple_Authors')) {
             global $wpdb;
 
             if (!wp_verify_nonce($_GET['nonce'], 'sync_author_slug')) {
+                wp_send_json_error(null, 403);
+            }
+
+            if (! Capability::currentUserCanManageSettings()) {
                 wp_send_json_error(null, 403);
             }
 
@@ -2354,6 +2362,10 @@ if (!class_exists('MA_Multiple_Authors')) {
                 wp_send_json_error(null, 403);
             }
 
+            if (! Capability::currentUserCanManageSettings()) {
+                wp_send_json_error(null, 403);
+            }
+
             $termToSync = get_transient('publishpress_authors_sync_author_slug_ids');
 
             $totalMigrated = 0;
@@ -2389,6 +2401,10 @@ if (!class_exists('MA_Multiple_Authors')) {
                 wp_send_json_error(null, 403);
             }
 
+            if (! Capability::currentUserCanManageSettings()) {
+                wp_send_json_error(null, 403);
+            }
+
             deactivate_plugins('co-authors-plus/co-authors-plus.php');
 
             // nonce: migrate_coauthors
@@ -2402,6 +2418,10 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function finishCoAuthorsMigration()
         {
             if (!wp_verify_nonce($_GET['nonce'], 'migrate_coauthors')) {
+                wp_send_json_error(null, 403);
+            }
+
+            if (! Capability::currentUserCanManageSettings()) {
                 wp_send_json_error(null, 403);
             }
 
@@ -2425,6 +2445,10 @@ if (!class_exists('MA_Multiple_Authors')) {
                 wp_send_json_error(null, 403);
             }
 
+            if (! Capability::currentUserCanManageSettings()) {
+                wp_send_json_error(null, 403);
+            }
+
             delete_transient('publishpress_authors_sync_post_author_ids');
 
             do_action('publishpress_authors_flush_cache');
@@ -2439,6 +2463,10 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function finishSyncAuthorSlug()
         {
             if (!wp_verify_nonce($_GET['nonce'], 'sync_author_slug')) {
+                wp_send_json_error(null, 403);
+            }
+
+            if (! Capability::currentUserCanManageSettings()) {
                 wp_send_json_error(null, 403);
             }
 
