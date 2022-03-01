@@ -2314,6 +2314,10 @@ if (!class_exists('MA_Multiple_Authors')) {
                 wp_send_json_error(null, 403);
             }
 
+            if (! Capability::currentUserCanManageSettings()) {
+                wp_send_json_error(null, 403);
+            }
+
             $postIdsToSync = get_transient('publishpress_authors_sync_post_author_ids');
 
             $totalMigrated = 0;
