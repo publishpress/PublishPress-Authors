@@ -36,7 +36,6 @@ class Admin_Ajax
 
         $search   = !empty($_GET['q']) ? sanitize_text_field($_GET['q']) : '';
         $ignored  = !empty($_GET['ignored']) ? array_map('sanitize_text_field', $_GET['ignored']) : [];
-        $onlyUsers = isset($_GET['only_users']) ? 1 === (int)$_GET['only_users'] : 0;
         $authors  = self::get_possible_authors_for_search($search, $ignored);
         $response = [
             'results' => $authors,
