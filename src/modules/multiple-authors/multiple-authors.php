@@ -2217,6 +2217,10 @@ if (!class_exists('MA_Multiple_Authors')) {
                 wp_send_json_error(null, 403);
             }
 
+            if (! Capability::currentUserCanManageSettings()) {
+                wp_send_json_error(null, 403);
+            }
+
             $keyForNotMigrated = 'ppma-migrated';
 
             $termsToMigrate = get_terms(
