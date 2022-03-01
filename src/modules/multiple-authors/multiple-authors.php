@@ -1687,14 +1687,14 @@ if (!class_exists('MA_Multiple_Authors')) {
                 'sync_author_slug',
             ];
 
-            if (!isset($_GET['ppma_action']) || isset($_GET['author_term_reset_notice'])
-                || !in_array($_GET['ppma_action'], $actions, true)
+            if (! isset($_GET['ppma_action']) || isset($_GET['author_term_reset_notice'])
+                || ! in_array($_GET['ppma_action'], $actions, true)
             ) {
                 return;
             }
 
             $nonce = isset($_GET['nonce']) ? sanitize_key($_GET['nonce']) : '';
-            if (!wp_verify_nonce($nonce, 'multiple_authors_maintenance')) {
+            if (! wp_verify_nonce($nonce, 'multiple_authors_maintenance')) {
                 wp_die(esc_html__('Invalid nonce', 'publishpress-authors'));
             }
 
