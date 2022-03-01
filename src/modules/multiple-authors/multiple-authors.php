@@ -60,9 +60,6 @@ if (!class_exists('MA_Multiple_Authors')) {
          */
         public $module;
 
-        private $eddAPIUrl = 'https://publishpress.com';
-
-
         /**
          * Construct the MA_Multiple_Authors class
          */
