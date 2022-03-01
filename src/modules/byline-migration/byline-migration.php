@@ -21,6 +21,7 @@
  * along with PublishPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use MultipleAuthors\Capability;
 use MultipleAuthors\Classes\Legacy\Module;
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Factory;
@@ -188,6 +189,10 @@ if (!class_exists('MA_Byline_Migration')) {
                 wp_send_json_error(null, 403);
             }
 
+            if (! Capability::currentUserCanManageSettings()) {
+                wp_send_json_error(null, 403);
+            }
+
             // nonce: migrate_coauthors
             wp_send_json(
                 [
@@ -199,6 +204,10 @@ if (!class_exists('MA_Byline_Migration')) {
         public function migrateBylineData()
         {
             if (!wp_verify_nonce($_GET['nonce'], self::NONCE_ACTION)) {
+                wp_send_json_error(null, 403);
+            }
+
+            if (! Capability::currentUserCanManageSettings()) {
                 wp_send_json_error(null, 403);
             }
 
@@ -263,6 +272,10 @@ if (!class_exists('MA_Byline_Migration')) {
         public function deactivateByline()
         {
             if (!wp_verify_nonce($_GET['nonce'], self::NONCE_ACTION)) {
+                wp_send_json_error(null, 403);
+            }
+
+            if (! Capability::currentUserCanManageSettings()) {
                 wp_send_json_error(null, 403);
             }
 
