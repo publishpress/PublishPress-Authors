@@ -9,6 +9,7 @@
 
 namespace MultipleAuthors\Classes;
 
+use MultipleAuthors\Capability;
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Factory;
 
@@ -31,7 +32,11 @@ class Admin_Ajax
 
         if (empty($_GET['nonce'])
             || !wp_verify_nonce($_GET['nonce'], 'authors-search')) {
-            exit;
+            wp_send_json_error(null, 403);
+        }
+
+        if (! Capability::currentUserCanManageSettings()) {
+            wp_send_json_error(null, 403);
         }
 
         $search   = !empty($_GET['q']) ? sanitize_text_field($_GET['q']) : '';
@@ -123,7 +128,11 @@ class Admin_Ajax
 
         if (empty($_GET['nonce'])
             || !wp_verify_nonce($_GET['nonce'], 'authors-user-search')) {
-            exit;
+            wp_send_json_error(null, 403);
+        }
+
+        if (! Capability::currentUserCanManageSettings()) {
+            wp_send_json_error(null, 403);
         }
 
         // We load 100, but only display 20. We load more, because we are filtering users with "edit_posts" capability.
@@ -168,7 +177,11 @@ class Admin_Ajax
         if (empty($_GET['nonce'])
             || empty($_GET['user_id'])
             || !wp_verify_nonce($_GET['nonce'], 'author_create_from_user' . $_GET['user_id'])) {
-            exit;
+            wp_send_json_error(null, 403);
+        }
+
+        if (! Capability::currentUserCanManageSettings()) {
+            wp_send_json_error(null, 403);
         }
 
         $user_id = (int)$_GET['user_id'];
@@ -189,7 +202,11 @@ class Admin_Ajax
         if (empty($_GET['nonce'])
             || empty($_GET['user_id'])
             || !wp_verify_nonce($_GET['nonce'], 'author_get_user_data_nonce')) {
-            exit;
+            wp_send_json_error(null, 403);
+        }
+
+        if (! Capability::currentUserCanManageSettings()) {
+            wp_send_json_error(null, 403);
         }
 
         $user_id = (int)$_GET['user_id'];
