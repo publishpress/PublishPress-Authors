@@ -304,9 +304,11 @@ class LegacyPlugin
             }
         }
 
-        update_option($versionOption, PP_AUTHORS_VERSION);
+        if ($previous_version !== PP_AUTHORS_VERSION) {
+            update_option($versionOption, PP_AUTHORS_VERSION);
+        }
 
-        // For each module that's been loaded, auto-load data if it's never been run before
+        // For each module that's been loaded, autoload data if it's never been run before
         foreach ($this->modules as $mod_name => $mod_data) {
             // If the module has never been loaded before, run the install method if there is one
             if (!isset($mod_data->options->loaded_once) || !$mod_data->options->loaded_once) {
