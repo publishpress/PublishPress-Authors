@@ -141,11 +141,11 @@ class Query
 
         $maybe_both_query = $maybe_both ? '$0 OR ' : '';
 
-        $query->authors_having_terms = ' ' . $wpdb->term_taxonomy . '.term_id = \'' . $term->term_id . '\' ';
+        $query->authors_having_terms = ' ' . $wpdb->term_taxonomy . '.term_id = \'' . (int)$term->term_id . '\' ';
 
         $where = preg_replace(
             '/\(?\b(?:' . $wpdb->posts . '\.)?post_author\s*(?:=|IN)\s*\(?(\d+)\)?/',
-            '(' . $maybe_both_query . ' ' . '(' . $wpdb->term_taxonomy . '.taxonomy = "author" AND ' . $wpdb->term_taxonomy . '.term_id = \'' . $term->term_id . '\') ' . ')',
+            '(' . $maybe_both_query . ' ' . '(' . $wpdb->term_taxonomy . '.taxonomy = "author" AND ' . $wpdb->term_taxonomy . '.term_id = \'' . (int)$term->term_id . '\') ' . ')',
             $where,
             -1
         );
@@ -255,7 +255,7 @@ class Query
             return $where;
         }
 
-        $terms_implode = '(' . $wpdb->term_taxonomy . '.taxonomy = "author" AND ' . $wpdb->term_taxonomy . '.term_id = \'' . $author->getTerm()->term_id . '\') ';
+        $terms_implode = '(' . $wpdb->term_taxonomy . '.taxonomy = "author" AND ' . $wpdb->term_taxonomy . '.term_id = \'' . (int)$author->getTerm()->term_id . '\') ';
 
         $where = preg_replace(
             '/\(?\b(?:' . $wpdb->posts . '\.)?post_author\s*(?:=|IN|NOT IN)\s*\(?(\d+)\)?/',
