@@ -238,20 +238,19 @@ class Utils
         };
 
         $postAuthorHasChanged = false;
-        if (! empty($authors)) {
-            foreach ($authors as $index => $author) {
-                $isGuest = (method_exists($author, 'is_guest') && $author->is_guest());
-
+        if (!empty($authors)) {
+            foreach ($authors as $author) {
                 if (
                     ! is_object($author)
                     || is_wp_error($author)
-                    || $isGuest
                     || empty($author)
                 ) {
-                    if (! $isGuest) {
-                        unset($authors[$index]);
-                    }
+                    continue;
+                }
 
+                $isGuest = (method_exists($author, 'is_guest') && $author->is_guest());
+
+                if ($isGuest) {
                     continue;
                 }
 
