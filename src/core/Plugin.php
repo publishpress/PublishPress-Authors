@@ -616,7 +616,11 @@ class Plugin
             return $html;
         }
 
+
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         echo $html;
+
+        return '';
     }
 
     public function filterDisplayFooter($shouldDisplay = true)
@@ -722,7 +726,7 @@ class Plugin
             global $wpdb;
 
             $query->query_fields .= ', tt.count as posts_count';
-            $query->query_from .= " LEFT JOIN $wpdb->termmeta as tm ON ($wpdb->users.ID = tm.meta_value AND tm.meta_key = \"user_id\")";
+            $query->query_from .= " LEFT JOIN $wpdb->termmeta as tm ON ($wpdb->users.ID = tm.meta_value AND tm.meta_key = \"user_id\")"; // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.user_meta__wpdb__users
             $query->query_from .= " LEFT JOIN $wpdb->term_taxonomy as tt ON (tm.`term_id` = tt.term_id AND tt.taxonomy = \"author\")";
             $query->query_orderby = 'ORDER BY posts_count ' . $query->get('order');
         }
@@ -771,6 +775,7 @@ class Plugin
             return;
         }
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
         $term_id = $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT term_id FROM $wpdb->term_taxonomy WHERE term_taxonomy_id = %d ",
