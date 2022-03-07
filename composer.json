@@ -69,7 +69,9 @@
     "overtrue/phplint": "^2.1",
     "wp-cli/wp-cli": "^2.5",
     "wp-cli/i18n-command": "^2.2",
-    "hoa/console": "^3.17"
+    "hoa/console": "^3.17",
+    "automattic/vipwpcs": "^2.3",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2"
   },
   "scripts": {
     "cs-check": "vendor/bin/phpcs --standard=PSR12 ./src/ publishpress-authors.php --colors",
