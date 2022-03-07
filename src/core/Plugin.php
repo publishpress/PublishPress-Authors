@@ -938,7 +938,7 @@ class Plugin
                 'description' => $term_description,
             ];
 
-            $new_term = wp_insert_term($coauthor->user_login, $this->coauthor_taxonomy, $args);
+            wp_insert_term($coauthor->user_login, $this->coauthor_taxonomy, $args);
         }
         wp_cache_delete('author-term-' . $coauthor->user_nicename, 'publishpress-authors');
 
