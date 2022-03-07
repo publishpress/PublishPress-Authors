@@ -685,7 +685,6 @@ class Plugin
         }
 
         $numPosts = $author->getTerm()->count;
-        $taxonomy = get_taxonomy('author');
 
         $value = sprintf(
             '<a href="%s" class="edit"><span aria-hidden="true">%s</span><span class="screen-reader-text">%s</span></a>',
