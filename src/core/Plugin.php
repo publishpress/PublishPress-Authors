@@ -1672,6 +1672,7 @@ class Plugin
         $post_id = null
     ) {
         if ($this->should_display_author_box() || $force) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             echo $this->get_author_box_markup('action', $show_title, $layout, $archive, $post_id);
         }
     }
