@@ -848,7 +848,6 @@ class Plugin
         global $current_user, $wpdb;
 
         $post_id = (int)$post_id;
-        $insert  = false;
 
         // Best way to persist order
         if ($append) {
