@@ -352,9 +352,9 @@ class Post_Editor
     {
         global $wpdb;
 
-        $post_ids = $_POST['post_ids'];
+        $post_ids = array_map('sanitize_key', $_POST['post_ids']);
         if (!isset($_POST['bulkEditNonce'])
-            || !wp_verify_nonce($_POST['bulkEditNonce'], 'bulk-edit-nonce')
+            || !wp_verify_nonce(sanitize_key($_POST['bulkEditNonce']), 'bulk-edit-nonce')
             || !current_user_can(get_taxonomy('author')->cap->assign_terms)
         ) {
             return;
@@ -365,7 +365,7 @@ class Post_Editor
             return;
         }
 
-        $authors = isset($_POST['authors_ids']) ? $_POST['authors_ids'] : [];
+        $authors = isset($_POST['authors_ids']) ? array_map('sanitize_text_field', $_POST['authors_ids']) : [];
         $authors = self::remove_dirty_authors_from_authors_arr($authors);
 
         $fallbackUserId = isset($_POST['fallback_author_user']) ? (int)$_POST['fallback_author_user'] : null;
@@ -399,13 +399,13 @@ class Post_Editor
 
         if (
             !isset($_POST['authors-save'])
-            || !wp_verify_nonce($_POST['authors-save'], 'authors-save')
+            || !wp_verify_nonce(sanitize_key($_POST['authors-save']), 'authors-save')
             || !current_user_can(get_taxonomy('author')->cap->assign_terms)
         ) {
             return;
         }
 
-        $authors = isset($_POST['authors']) ? $_POST['authors'] : [];
+        $authors = isset($_POST['authors']) ? Utils::sanitizeArray($_POST['authors']) : []; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
         $authors = self::remove_dirty_authors_from_authors_arr($authors);
 
         $fallbackUserId = isset($_POST['fallback_author_user']) ? (int)$_POST['fallback_author_user'] : null;

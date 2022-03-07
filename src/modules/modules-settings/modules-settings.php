@@ -29,6 +29,7 @@
  */
 
 use MultipleAuthors\Classes\Legacy\Module;
+use MultipleAuthors\Classes\Utils;
 use MultipleAuthors\Factory;
 
 if (!class_exists('MA_Modules_Settings')) {
@@ -138,7 +139,8 @@ if (!class_exists('MA_Modules_Settings')) {
 
             $legacyPlugin = Factory::getLegacyPlugin();
 
-            $enabledFeatures = $_POST['multiple_authors_options']['features'];
+            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+            $enabledFeatures = Utils::sanitizeArray($_POST['multiple_authors_options']['features']);
 
             // Run through all the modules updating their statuses
             foreach ($legacyPlugin->modules as $mod_data) {

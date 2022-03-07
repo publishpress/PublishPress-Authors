@@ -981,6 +981,7 @@ class Plugin
      */
     public function filter_wp_get_object_terms($terms, $object_ids, $taxonomies, $args)
     {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if (!isset($_REQUEST['bulk_edit']) || "'author'" !== $taxonomies) {
             return $terms;
         }

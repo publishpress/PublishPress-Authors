@@ -31,6 +31,7 @@
 use MultipleAuthors\Capability;
 use MultipleAuthors\Classes\Legacy\Module;
 use MultipleAuthors\Classes\Legacy\Util;
+use MultipleAuthors\Classes\Utils;
 use MultipleAuthors\Factory;
 
 if (!class_exists('MA_Settings')) {
@@ -140,12 +141,8 @@ if (!class_exists('MA_Settings')) {
             // If there's been a message, let's display it
             $message = false;
 
-            if (isset($_GET['message'])) {
-                $message = $_GET['message'];
-            } elseif (isset($_REQUEST['message'])) {
-                $message = $_REQUEST['message'];
-            } elseif (isset($_POST['message'])) {
-                $message = $_POST['message'];
+            if (isset($_REQUEST['message'])) {
+                $message = sanitize_text_field($_REQUEST['message']);
             }
 
             if ($message && isset($current_module->messages[$message])) {
@@ -155,12 +152,8 @@ if (!class_exists('MA_Settings')) {
             // If there's been an error, let's display it
             $error = false;
 
-            if (isset($_GET['error'])) {
-                $error = $_GET['error'];
-            } elseif (isset($_REQUEST['error'])) {
-                $error = $_REQUEST['error'];
-            } elseif (isset($_POST['error'])) {
-                $error = $_POST['error'];
+            if (isset($_REQUEST['error'])) {
+                $error = sanitize_text_field($_REQUEST['error']);
             }
 
             if ($error && isset($current_module->messages[$error])) {
@@ -298,16 +291,18 @@ if (!class_exists('MA_Settings')) {
                 return false;
             }
 
-            if (!Capability::currentUserCanManageSettings() || !wp_verify_nonce($_POST['_wpnonce'], 'edit-publishpress-settings')) {
+            if (!Capability::currentUserCanManageSettings() || !wp_verify_nonce(sanitize_key($_POST['_wpnonce']), 'edit-publishpress-settings')) {
                 wp_die(__('Cheatin&#8217; uh?'));
             }
 
             $legacyPlugin = Factory::getLegacyPlugin();
 
+            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
             foreach ($_POST['multiple_authors_module_name'] as $moduleSlug) {
                 $module_name = sanitize_key(Util::sanitize_module_name($moduleSlug));
 
-                $new_options = (isset($_POST[$legacyPlugin->$module_name->module->options_group_name])) ? $_POST[$legacyPlugin->$module_name->module->options_group_name] : [];
+                // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+                $new_options = (isset($_POST[$legacyPlugin->$module_name->module->options_group_name])) ? Utils::sanitizeArray($_POST[$legacyPlugin->$module_name->module->options_group_name]) : [];
 
                 /**
                  * Legacy way to validate the settings. Hook to the filter
@@ -343,19 +338,15 @@ if (!class_exists('MA_Settings')) {
         {
             $legacyPlugin = Factory::getLegacyPlugin();
 
-            $module_settings_slug = isset($_GET['module']) && !empty($_GET['module']) ? $_GET['module'] : MA_Modules_Settings::SETTINGS_SLUG . '-settings';
+            $module_settings_slug = isset($_GET['module']) && !empty($_GET['module']) ? sanitize_key($_GET['module']) : MA_Modules_Settings::SETTINGS_SLUG . '-settings';
             $requested_module     = $legacyPlugin->get_module_by('settings_slug', $module_settings_slug);
             $display_text         = '';
 
             // If there's been a message, let's display it
             $message = false;
 
-            if (isset($_GET['message'])) {
-                $message = $_GET['message'];
-            } elseif (isset($_REQUEST['message'])) {
-                $message = $_REQUEST['message'];
-            } elseif (isset($_POST['message'])) {
-                $message = $_POST['message'];
+            if (isset($_REQUEST['message'])) {
+                $message = sanitize_text_field($_REQUEST['message']);
             }
 
             if ($message && isset($requested_module->messages[$message])) {
@@ -365,12 +356,8 @@ if (!class_exists('MA_Settings')) {
             // If there's been an error, let's display it
             $error = false;
 
-            if (isset($_GET['error'])) {
-                $error = $_GET['error'];
-            } elseif (isset($_REQUEST['error'])) {
-                $error = $_REQUEST['error'];
-            } elseif (isset($_POST['error'])) {
-                $error = $_POST['error'];
+            if (isset($_REQUEST['error'])) {
+                $error = sanitize_text_field($_REQUEST['error']);
             }
 
             if ($error && isset($requested_module->messages[$error])) {

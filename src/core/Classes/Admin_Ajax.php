@@ -31,7 +31,7 @@ class Admin_Ajax
         header('Content-Type: application/javascript');
 
         if (empty($_GET['nonce'])
-            || !wp_verify_nonce($_GET['nonce'], 'authors-search')) {
+            || !wp_verify_nonce(sanitize_key($_GET['nonce']), 'authors-search')) {
             wp_send_json_error(null, 403);
         }
 
@@ -127,7 +127,7 @@ class Admin_Ajax
         header('Content-Type: application/javascript');
 
         if (empty($_GET['nonce'])
-            || !wp_verify_nonce($_GET['nonce'], 'authors-user-search')) {
+            || !wp_verify_nonce(sanitize_key($_GET['nonce']), 'authors-user-search')) {
             wp_send_json_error(null, 403);
         }
 
@@ -176,7 +176,7 @@ class Admin_Ajax
     {
         if (empty($_GET['nonce'])
             || empty($_GET['user_id'])
-            || !wp_verify_nonce($_GET['nonce'], 'author_create_from_user' . $_GET['user_id'])) {
+            || !wp_verify_nonce(sanitize_key($_GET['nonce']), 'author_create_from_user' . (int)$_GET['user_id'])) {
             wp_send_json_error(null, 403);
         }
 
@@ -201,7 +201,7 @@ class Admin_Ajax
     {
         if (empty($_GET['nonce'])
             || empty($_GET['user_id'])
-            || !wp_verify_nonce($_GET['nonce'], 'author_get_user_data_nonce')) {
+            || !wp_verify_nonce(sanitize_key($_GET['nonce']), 'author_get_user_data_nonce')) {
             wp_send_json_error(null, 403);
         }
 

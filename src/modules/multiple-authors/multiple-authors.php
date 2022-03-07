@@ -1168,7 +1168,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 return $translation;
             }
 
-            $taxonomy = isset($_GET['taxonomy']) ? $_GET['taxonomy'] : null;
+            $taxonomy = isset($_GET['taxonomy']) ? sanitize_key($_GET['taxonomy']) : null;
 
             if ('author' !== $taxonomy) {
                 return $translation;
@@ -2120,7 +2120,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         public function getCoauthorsMigrationData()
         {
-            if (!wp_verify_nonce($_GET['nonce'], 'migrate_coauthors')) {
+            if (!wp_verify_nonce(sanitize_key($_GET['nonce']), 'migrate_coauthors')) {
                 wp_send_json_error(null, 403);
             }
 
@@ -2157,7 +2157,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         {
             global $wpdb;
 
-            if (!wp_verify_nonce($_GET['nonce'], 'sync_post_author')) {
+            if (!wp_verify_nonce(sanitize_key($_GET['nonce']), 'sync_post_author')) {
                 wp_send_json_error(null, 403);
             }
 
@@ -2194,7 +2194,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         {
             global $wpdb;
 
-            if (!wp_verify_nonce($_GET['nonce'], 'sync_author_slug')) {
+            if (!wp_verify_nonce(sanitize_key($_GET['nonce']), 'sync_author_slug')) {
                 wp_send_json_error(null, 403);
             }
 
@@ -2221,7 +2221,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         public function migrateCoAuthorsData()
         {
-            if (!wp_verify_nonce($_GET['nonce'], 'migrate_coauthors')) {
+            if (!wp_verify_nonce(sanitize_key($_GET['nonce']), 'migrate_coauthors')) {
                 wp_send_json_error(null, 403);
             }
 
@@ -2318,7 +2318,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         public function syncPostAuthor()
         {
-            if (!wp_verify_nonce($_GET['nonce'], 'sync_post_author')) {
+            if (!wp_verify_nonce(sanitize_key($_GET['nonce']), 'sync_post_author')) {
                 wp_send_json_error(null, 403);
             }
 
@@ -2358,7 +2358,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         public function syncAuthorSlug()
         {
-            if (!wp_verify_nonce($_GET['nonce'], 'sync_author_slug')) {
+            if (!wp_verify_nonce(sanitize_key($_GET['nonce']), 'sync_author_slug')) {
                 wp_send_json_error(null, 403);
             }
 
@@ -2397,7 +2397,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         public function deactivateCoAuthorsPlus()
         {
-            if (!wp_verify_nonce($_GET['nonce'], 'migrate_coauthors')) {
+            if (!wp_verify_nonce(sanitize_key($_GET['nonce']), 'migrate_coauthors')) {
                 wp_send_json_error(null, 403);
             }
 
@@ -2417,7 +2417,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         public function finishCoAuthorsMigration()
         {
-            if (!wp_verify_nonce($_GET['nonce'], 'migrate_coauthors')) {
+            if (!wp_verify_nonce(sanitize_key($_GET['nonce']), 'migrate_coauthors')) {
                 wp_send_json_error(null, 403);
             }
 
@@ -2441,7 +2441,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         public function finishSyncPostAuthor()
         {
-            if (!wp_verify_nonce($_GET['nonce'], 'sync_post_author')) {
+            if (!wp_verify_nonce(sanitize_key($_GET['nonce']), 'sync_post_author')) {
                 wp_send_json_error(null, 403);
             }
 
@@ -2462,7 +2462,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         public function finishSyncAuthorSlug()
         {
-            if (!wp_verify_nonce($_GET['nonce'], 'sync_author_slug')) {
+            if (!wp_verify_nonce(sanitize_key($_GET['nonce']), 'sync_author_slug')) {
                 wp_send_json_error(null, 403);
             }
 

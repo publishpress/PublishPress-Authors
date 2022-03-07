@@ -206,7 +206,7 @@ if (!class_exists('MA_Bylines_Migration')) {
 
         public function getBylinesMigrationData()
         {
-            if (!wp_verify_nonce($_GET['nonce'], self::NONCE_ACTION)) {
+            if (!wp_verify_nonce(sanitize_key($_GET['nonce']), self::NONCE_ACTION)) {
                 wp_send_json_error(null, 403);
             }
 
@@ -235,7 +235,7 @@ if (!class_exists('MA_Bylines_Migration')) {
 
         public function migrateBylinesData()
         {
-            if (!wp_verify_nonce($_GET['nonce'], self::NONCE_ACTION)) {
+            if (!wp_verify_nonce(sanitize_key($_GET['nonce']), self::NONCE_ACTION)) {
                 wp_send_json_error(null, 403);
             }
 
@@ -323,7 +323,7 @@ if (!class_exists('MA_Bylines_Migration')) {
 
         public function deactivateBylines()
         {
-            if (!wp_verify_nonce($_GET['nonce'], self::NONCE_ACTION)) {
+            if (!wp_verify_nonce(sanitize_key($_GET['nonce']), self::NONCE_ACTION)) {
                 wp_send_json_error(null, 403);
             }
 

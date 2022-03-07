@@ -344,7 +344,7 @@ class Utils
         }
 
         if (in_array($pagenow, ['edit-tags.php', 'term.php'])) {
-            $taxonomy = isset($_GET['taxonomy']) ? $_GET['taxonomy'] : null;
+            $taxonomy = isset($_GET['taxonomy']) ? sanitize_text_field($_GET['taxonomy']) : null;
 
             if ('author' !== $taxonomy) {
                 return false;
@@ -500,7 +500,7 @@ class Utils
             $post = get_post();
             if (empty($post)) {
                 if (isset($_GET['post'])) {
-                    $post = get_post($_GET['post']);
+                    $post = get_post((int)$_GET['post']);
                 } else {
                     return false;
                 }
@@ -788,5 +788,23 @@ class Utils
         }
 
         return false;
+    }
+
+    public static function sanitizeArray($array)
+    {
+        $sanitizedArray = [];
+
+        foreach ($array as $key => $value) {
+            $key = sanitize_key($key);
+
+            if (is_array($value)) {
+                $sanitizedArray[$key] = self::sanitizeArray($value);
+                continue;
+            }
+
+            $sanitizedArray[$key] = sanitize_text_field($value);
+        }
+
+        return $sanitizedArray;
     }
 }

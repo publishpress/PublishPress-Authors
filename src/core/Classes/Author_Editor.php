@@ -399,7 +399,7 @@ class Author_Editor
     public static function action_edited_author($term_id)
     {
         if (empty($_POST['author-edit-nonce'])
-            || !wp_verify_nonce($_POST['author-edit-nonce'], 'author-edit')) {
+            || !wp_verify_nonce(sanitize_key($_POST['author-edit-nonce']), 'author-edit')) {
             return;
         }
         $author = Author::get_by_term_id($term_id);
@@ -409,7 +409,7 @@ class Author_Editor
                 continue;
             }
             $sanitize = isset($args['sanitize']) ? $args['sanitize'] : 'sanitize_text_field';
-            update_term_meta($term_id, $key, $sanitize($_POST['authors-' . $key]));
+            update_term_meta($term_id, $key, $sanitize($_POST['authors-' . $key])); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
         }
 
         // If there is a mapper user, make sure the author url (slug) is the same of the user.
@@ -532,7 +532,7 @@ class Author_Editor
             return;
         }
 
-        Author::update_author_from_user($term_id, $_POST['authors-new']);
+        Author::update_author_from_user($term_id, (int)$_POST['authors-new']);
     }
 
     /**
