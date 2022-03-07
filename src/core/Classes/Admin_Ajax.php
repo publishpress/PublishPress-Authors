@@ -187,7 +187,7 @@ class Admin_Ajax
         $user_id = (int)$_GET['user_id'];
         $author  = Author::create_from_user($user_id);
         if (is_wp_error($author)) {
-            wp_die($author->get_error_message());
+            wp_die(esc_html($author->get_error_message()));
         }
         $link = get_edit_term_link($author->term_id, 'author');
         wp_safe_redirect($link);

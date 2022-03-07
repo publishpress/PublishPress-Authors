@@ -60,7 +60,7 @@ class Post_Editor
                         <span class="title">Authors</span>
                     </label>
                     <?php
-                    echo self::get_rendered_authors_selection([], false);
+                    echo self::get_rendered_authors_selection([], false); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     ?>
                 </div>
             </fieldset>
@@ -144,7 +144,7 @@ class Post_Editor
                         esc_attr($author->slug),
                         esc_attr($author->display_name),
                         esc_attr($author->is_guest() ? 1 : 0),
-                        implode(' ', $classes),
+                        esc_attr(implode(' ', $classes)),
                         esc_html($author->display_name)
                     );
                 }
@@ -153,20 +153,20 @@ class Post_Editor
             if (empty($authors_str)) {
                 $authors_str[] = sprintf(
                     '<span class="current-post-author-warning">%s</span>',
-                    __('No author term', 'publishpress-authors')
+                    esc_html__('No author term', 'publishpress-authors')
                 );
             }
 
-            echo implode(', ', $authors_str);
+            echo implode(', ', $authors_str); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
             if (!$showedPostAuthorUser) {
                 if (empty($post->post_author)) {
-                    echo sprintf('<span class="current-post-author-warning">[%s]</span>', __('"post_author" is empty', 'publishpress-authors'));
+                    echo sprintf('<span class="current-post-author-warning">[%s]</span>', esc_html__('"post_author" is empty', 'publishpress-authors'));
                 } else {
                     $user = get_user_by('ID', $post->post_author);
 
                     if (is_a($user, 'WP_User')) {
-                        echo sprintf('<span class="current-post-author-off">[%s]</span>', $user->display_name);
+                        echo sprintf('<span class="current-post-author-off">[%s]</span>', esc_html($user->display_name));
                     }
                 }
             }

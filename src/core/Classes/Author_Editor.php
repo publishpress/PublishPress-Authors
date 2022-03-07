@@ -248,7 +248,7 @@ class Author_Editor
         foreach ($fields as $key => $args) {
             $args['key']   = $key;
             $args['value'] = $author->$key;
-            echo self::get_rendered_author_partial($args);
+            echo self::get_rendered_author_partial($args); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         }
 
         wp_nonce_field('author-edit', 'author-edit-nonce');
@@ -349,11 +349,11 @@ class Author_Editor
                         </div>
                         <p class="hide-if-no-js">
                             <a class="select-author-image-field <?php echo $author_image ? 'hidden' : ''; ?>" href="#">
-                                <?php _e('Select image', 'publishpress-authors'); ?>
+                                <?php esc_html_e('Select image', 'publishpress-authors'); ?>
                             </a>
                             <a class="delete-author-image-field <?php echo !$author_image ? 'hidden' : ''; ?>"
                                href="#">
-                                <?php _e('Remove this image', 'publishpress-authors'); ?>
+                                <?php esc_html_e('Remove this image', 'publishpress-authors'); ?>
                             </a>
                         </p>
                         <input name="<?php echo esc_attr($key); ?>" class="author-image-field-id" type="hidden"
@@ -383,7 +383,7 @@ class Author_Editor
                 <?php endif; ?>
 
                 <?php if (isset($args['description'])) : ?>
-                    <p class="description"><?php echo $args['description']; ?></p>
+                    <p class="description"><?php echo esc_html($args['description']); ?></p>
                 <?php endif; ?>
             </td>
         </tr>
@@ -478,14 +478,14 @@ class Author_Editor
 
         ?>
         <div class="form-field term-user_id-wrap">
-        <label for="tag-user-id"><?php echo __('Mapped User (optional)', 'publishpress-authors'); ?></label>
+        <label for="tag-user-id"><?php echo esc_html__('Mapped User (optional)', 'publishpress-authors'); ?></label>
         <?php
-        echo static::get_rendered_author_partial(
+        echo static::get_rendered_author_partial( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             [
                 'type'        => 'ajax_user_select',
                 'value'       => '',
                 'key'         => 'new',
-                'description' => __(
+                'description' => esc_html__(
                     'You don’t have to choose a Mapped User. Leave this choice blank and you can create a Guest Author with no WordPress account.',
                     'publishpress-authors'
                 ),
@@ -617,9 +617,9 @@ class Author_Editor
             echo '<div id="message" class="updated fade">';
 
             if (empty($count)) {
-                __('No authors were updated', 'publishpress-authors');
+                esc_html__('No authors were updated', 'publishpress-authors');
             } else {
-                printf(__('Updated %d authors', 'publishpress-authors'), $count);
+                esc_html(printf(__('Updated %d authors', 'publishpress-authors'), $count));  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             }
 
             echo '</div>';
