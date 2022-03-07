@@ -39,7 +39,7 @@ class RSS
     }
 
     /**
-     * Whether or not the global post is a supported post type
+     * Whether the global post is a supported post type
      *
      * @return bool
      */
