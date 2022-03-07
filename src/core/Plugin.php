@@ -734,7 +734,7 @@ class Plugin
     public function _action_quick_edit_custom_box($column_name, $post_type)
     {
         if (
-            'authors' != $column_name || !Utils::is_post_type_enabled(
+            'authors' !== $column_name || !Utils::is_post_type_enabled(
                 $post_type
             ) || !Utils::current_user_can_set_authors()
         ) {
@@ -767,7 +767,7 @@ class Plugin
     {
         global $wpdb;
 
-        if ($this->coauthor_taxonomy != $taxonomy) {
+        if ($this->coauthor_taxonomy !== $taxonomy) {
             return;
         }
 
