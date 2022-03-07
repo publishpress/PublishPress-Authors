@@ -799,7 +799,7 @@ class Plugin
      *
      * @return object|false $coauthor The co-author on success, false on failure
      */
-    public function get_coauthor_by($key, $value, $force = false)
+    public function get_coauthor_by($key, $value)
     {
         switch ($key) {
             case 'id':
@@ -808,17 +808,17 @@ class Plugin
             case 'email':
             case 'user_nicename':
             case 'user_email':
-                if ('user_login' == $key) {
+                if ('user_login' === $key) {
                     $key = 'login';
                 }
-                if ('user_email' == $key) {
+                if ('user_email' === $key) {
                     $key = 'email';
                 }
-                if ('user_nicename' == $key) {
+                if ('user_nicename' === $key) {
                     $key = 'slug';
                 }
                 // Ensure we aren't doing the lookup by the prefixed value
-                if ('login' == $key || 'slug' == $key) {
+                if ('login' === $key || 'slug' === $key) {
                     $value = preg_replace('#^cap\-#', '', $value);
                 }
                 $user = get_user_by($key, $value);
