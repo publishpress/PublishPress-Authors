@@ -43,8 +43,15 @@ class LegacyPlugin
         add_action('init', [$this, 'action_init'], 1000);
         add_action('init', [$this, 'action_init_after'], 1100);
 
-        add_action('init', [$this, 'action_ini_for_admin'], 1010);
-        add_action('admin_menu', [$this, 'action_admin_menu'], 9);
+        if (
+            is_admin()
+            && (!defined('DOING_AJAX') || !DOING_AJAX)
+            && (!defined('DOING_CRON') || !DOING_CRON)
+            && (!defined('PUBLISHPRESS_AUTHORS_BYPASS_INSTALLER') || !PUBLISHPRESS_AUTHORS_BYPASS_INSTALLER)
+        ) {
+            add_action('admin_init', [$this, 'action_ini_for_admin']);
+            add_action('admin_menu', [$this, 'action_admin_menu'], 9);
+        }
 
         do_action_ref_array('multiple_authors_after_setup_actions', [$this]);
 

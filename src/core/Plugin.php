@@ -66,8 +66,13 @@ class Plugin
             ['MultipleAuthors\\Classes\\Installer', 'runUpgradeTasks']
         );
 
-        if (!defined('PUBLISHPRESS_AUTHORS_BYPASS_INSTALLER') || !PUBLISHPRESS_AUTHORS_BYPASS_INSTALLER) {
-            add_action('init', [$this, 'manage_installation'], 2000);
+        if (
+            is_admin()
+            && (!defined('DOING_AJAX') || !DOING_AJAX)
+            && (!defined('DOING_CRON') || !DOING_CRON)
+            && (!defined('PUBLISHPRESS_AUTHORS_BYPASS_INSTALLER') || !PUBLISHPRESS_AUTHORS_BYPASS_INSTALLER)
+        ) {
+            add_action('admin_init', [$this, 'manage_installation'], 2000);
         }
 
         add_filter('get_usernumposts', [$this, 'filter_count_user_posts'], 10, 2);
