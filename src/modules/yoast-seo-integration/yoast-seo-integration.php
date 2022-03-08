@@ -86,9 +86,11 @@ if (!class_exists('MA_Yoast_Seo_Integration')) {
                 add_filter('wpseo_replacements', [$this, 'overrideSEOReplacementsForAuthorsPage'], 10, 2);
                 add_filter('wpseo_robots', [$this, 'wpseoRobots']);
             } catch (Exception $e) {
-                error_log(
-                    sprintf('[PublishPress Authors] Method [%s] caught the exception %s', __METHOD__, $e->getMessage())
-                );
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+                        sprintf('[PublishPress Authors] Method [%s] caught the exception %s', __METHOD__, $e->getMessage())
+                    );
+                }
             }
         }
 

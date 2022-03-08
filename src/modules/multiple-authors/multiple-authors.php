@@ -1723,16 +1723,16 @@ if (!class_exists('MA_Multiple_Authors')) {
             global $wpdb;
 
             $query = "
-                SELECT tt . term_id
+                SELECT tt.term_id
                 FROM {$wpdb->term_taxonomy} AS tt
                 WHERE
-                tt . taxonomy = 'author'
+                tt.taxonomy = 'author'
                 AND (SELECT COUNT(*)
                     FROM {$wpdb->termmeta} AS tm
-                    WHERE tm . term_id = tt . term_id AND tm . meta_key = 'user_id'
+                    WHERE tm.term_id = tt.term_id AND tm.meta_key = 'user_id'
                     ) > 0";
 
-            $terms = $wpdb->get_results($query);
+            $terms = $wpdb->get_results($query); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
             if (!empty($terms)) {
                 foreach ($terms as $term) {
@@ -1746,21 +1746,21 @@ if (!class_exists('MA_Multiple_Authors')) {
             global $wpdb;
 
             $query = "
-                SELECT tt . term_id
+                SELECT tt.term_id
                 FROM {$wpdb->term_taxonomy} AS tt
                 WHERE
-                    tt . taxonomy = 'author'
+                    tt.taxonomy = 'author'
                     AND (
-                        (SELECT tm . meta_value
+                        (SELECT tm.meta_value
                         FROM {$wpdb->termmeta} AS tm
-                        WHERE tt . term_id = tm . term_id AND tm . meta_key = 'user_id'
+                        WHERE tt.term_id = tm.term_id AND tm.meta_key = 'user_id'
                         ) = 0
-                        OR (SELECT tm . meta_value
+                        OR (SELECT tm.meta_value
                             FROM {$wpdb->termmeta} AS tm
-                            WHERE tt . term_id = tm . term_id AND tm . meta_key = 'user_id') IS null
+                            WHERE tt.term_id = tm.term_id AND tm.meta_key = 'user_id') IS null
                     )";
 
-            $terms = $wpdb->get_results($query);
+            $terms = $wpdb->get_results($query); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
             if (!empty($terms)) {
                 foreach ($terms as $term) {
@@ -2107,7 +2107,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'taxonomy'   => 'author',
                     'hide_empty' => false,
                     'number'     => 0,
-                    'meta_query' => [
+                    'meta_query' => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
                         [
                             'key'     => 'ppma-migrated',
                             'compare' => 'NOT EXISTS',
@@ -2237,7 +2237,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'taxonomy'   => 'author',
                     'hide_empty' => false,
                     'number'     => 5,
-                    'meta_query' => [
+                    'meta_query' => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
                         [
                             'key'     => $keyForNotMigrated,
                             'compare' => 'NOT EXISTS',

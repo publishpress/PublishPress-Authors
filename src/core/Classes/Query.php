@@ -34,7 +34,7 @@ class Query
     public static function fix_query_pre_get_posts($wp_query)
     {
         if (is_string($wp_query) || empty($wp_query)) {
-            global $wp_query;
+            global $wp_query; // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.VariableRedeclaration
         }
 
         if (isset($wp_query->query['post_type']) && $wp_query->query['post_type'] === 'ppmacf_field') {

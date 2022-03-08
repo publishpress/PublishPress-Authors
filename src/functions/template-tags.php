@@ -671,8 +671,6 @@ if (!function_exists('multiple_authors_ids')) {
 if (!function_exists('get_the_multiple_author_meta')) {
     function get_the_multiple_author_meta($field)
     {
-        global $wp_query, $post;
-
         $authors = get_multiple_authors();
         $meta    = [];
 

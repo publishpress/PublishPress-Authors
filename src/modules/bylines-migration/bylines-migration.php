@@ -178,7 +178,7 @@ if (!class_exists('MA_Bylines_Migration')) {
                     'taxonomy'   => 'byline',
                     'hide_empty' => false,
                     'number'     => $number,
-                    'meta_query' => [
+                    'meta_query' => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
                         [
                             'key'     => self::META_MIGRATED,
                             'compare' => 'NOT EXISTS',

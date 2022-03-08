@@ -75,7 +75,7 @@ class Authors_Iterator
 
         //At the end of the loop
         if ($this->position > $this->count - 1) {
-            $authordata     = $this->current_author = $this->original_authordata;
+            $authordata     = $this->current_author = $this->original_authordata; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
             $this->position = -1;
 
             return false;
@@ -86,7 +86,7 @@ class Authors_Iterator
             $this->original_authordata = $authordata;
         }
 
-        $authordata = $this->current_author = $this->authordata_array[$this->position];
+        $authordata = $this->current_author = $this->authordata_array[$this->position]; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 
         return true;
     }

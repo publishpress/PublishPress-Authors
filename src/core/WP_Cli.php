@@ -121,7 +121,7 @@ class WP_Cli extends WP_CLI_Command
     public function assign_author_by_meta_key($args, $assocArgs)
     {
         $defaults   = [
-            'meta_key'         => '_original_import_author',
+            'meta_key'         => '_original_import_author', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
             'post_type'        => 'post',
             'order'            => 'ASC',
             'orderby'          => 'ID',

@@ -171,7 +171,7 @@ if (!class_exists('MA_Byline_Migration')) {
                     'taxonomy'   => 'byline',
                     'hide_empty' => false,
                     'number'     => 0,
-                    'meta_query' => [
+                    'meta_query' => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
                         [
                             'key'     => 'ppma-migrated',
                             'compare' => 'NOT EXISTS',
@@ -218,7 +218,7 @@ if (!class_exists('MA_Byline_Migration')) {
                     'taxonomy'   => 'byline',
                     'hide_empty' => false,
                     'number'     => 5,
-                    'meta_query' => [
+                    'meta_query' => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
                         [
                             'key'     => $keyForNotMigrated,
                             'compare' => 'NOT EXISTS',
@@ -242,7 +242,7 @@ if (!class_exists('MA_Byline_Migration')) {
                     $posts = get_posts(
                         [
                             'numberposts' => -1,
-                            'tax_query'   => [
+                            'tax_query'   => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
                                 [
                                     'taxonomy' => 'byline',
                                     'terms'    => $term->term_id,
