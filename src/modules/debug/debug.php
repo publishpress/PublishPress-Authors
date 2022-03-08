@@ -129,7 +129,7 @@ if (!class_exists('MA_Debug')) {
 
             echo '<pre><ul>';
             foreach ($dataList as $key => $data) {
-                echo '<li style="border-bottom: 1px solid silver; padding: 5px;">' . $key . ' = ' . print_r($data, true) . '</li>';
+                echo '<li style="border-bottom: 1px solid silver; padding: 5px;">' . esc_html($key) . ' = ' . esc_html(print_r($data, true)) . '</li>';
             }
             echo '</ul></pre>';
         }

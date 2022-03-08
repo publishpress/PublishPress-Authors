@@ -209,7 +209,7 @@ class Post_Editor
 
         $authors = get_multiple_authors();
 
-        echo self::get_rendered_authors_selection($authors, false);
+        echo self::get_rendered_authors_selection($authors, false);  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
 
     /**
@@ -224,8 +224,7 @@ class Post_Editor
             $classes[] = 'authors-current-user-can-assign';
         }
         ?>
-        <ul class="<?php
-        echo(implode(' ', $classes)); ?>">
+        <ul class="<?php echo esc_attr(implode(' ', $classes)); ?>">
             <?php
             if (!empty($authors)) {
                 foreach ($authors as $author) {
@@ -251,7 +250,7 @@ class Post_Editor
                         $args['avatar'] = $author->get_avatar(20);
                     }
 
-                    echo self::get_rendered_author_partial($args);
+                    echo self::get_rendered_author_partial($args);  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 }
             }
             ?>
@@ -271,7 +270,7 @@ class Post_Editor
             </select>
             <script type="text/html" id="tmpl-authors-author-partial">
                 <?php
-                echo self::get_rendered_author_partial(
+                echo self::get_rendered_author_partial(  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     [
                         'display_name' => '{{ data.display_name }}',
                         'term'         => '{{ data.id }}',
@@ -287,7 +286,7 @@ class Post_Editor
             <div id="publishpress-authors-user-author-wrapper">
                 <hr>
                 <label for="publishpress-authors-user-author-select"><?php
-                    echo __(
+                    echo esc_html__(
                         'This option is showing because you do not have a WordPress user selected as an author. For some tasks, it can be helpful to have a user selected here. This user will not be visible on the front of your site.',
                         'publishpress-authors'
                     ); ?></label>
@@ -298,7 +297,7 @@ class Post_Editor
                         esc_attr_e('Search for an user', 'publishpress-authors'); ?>" style="width: 100%"
                         name="fallback_author_user">
                     <option value="<?php echo (int)$post->post_author; ?>">
-                        <?php echo is_object($userAuthor) ? $userAuthor->display_name : ''; ?>
+                        <?php echo is_object($userAuthor) ? esc_html($userAuthor->display_name) : ''; ?>
                     </option>
                 </select>
             </div>
@@ -333,13 +332,11 @@ class Post_Editor
             <?php
             if (!empty($args['avatar'])) : ?>
                 <?php
-                echo $args['avatar']; ?>
+                echo $args['avatar'];  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
             <?php
             endif; ?>
-            <span class="display-name"><?php
-                echo wp_kses_post($args['display_name']); ?></span>
-            <input type="hidden" name="authors[]" value="<?php
-            echo esc_attr($args['term']); ?>">
+            <span class="display-name"><?php echo esc_html($args['display_name']); ?></span>
+            <input type="hidden" name="authors[]" value="<?php echo esc_attr($args['term']); ?>">
         </li>
         <?php
         return ob_get_clean();

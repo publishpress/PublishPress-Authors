@@ -126,7 +126,7 @@ if (!class_exists('MA_Settings')) {
         {
             ?>
 			<script type="text/javascript">
-				var ma_admin_url = '<?php echo get_admin_url(); ?>';
+				var ma_admin_url = '<?php echo esc_url(get_admin_url()); ?>';
 			</script>
 			<?php
         }
@@ -163,17 +163,17 @@ if (!class_exists('MA_Settings')) {
 
 			<div class="publishpress-admin pressshack-admin-wrapper wrap">
 				<header>
-                    <h1 class="wp-heading-inline"><?php echo $current_module->title; ?></h1>
+                    <h1 class="wp-heading-inline"><?php echo esc_html($current_module->title); ?></h1>
 
-					<?php echo !empty($display_text) ? $display_text : ''; ?>
+					<?php echo !empty($display_text) ? $display_text : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					<?php // We keep the H2 tag to keep notices tied to the header?>
 					<h2>
 						<?php if ($current_module->short_description && empty($custom_text)): ?>
-							<?php echo $current_module->short_description; ?>
+							<?php echo esc_html($current_module->short_description); ?>
 						<?php endif; ?>
 
 						<?php if (!empty($custom_text)) : ?>
-							<?php echo $custom_text; ?>
+							<?php echo esc_html($custom_text); ?>
 						<?php endif; ?>
 					</h2>
 
@@ -198,7 +198,7 @@ if (!class_exists('MA_Settings')) {
             $legacyPlugin = Factory::getLegacyPlugin();
 
             if (!count($legacyPlugin->modules)) {
-                echo '<div class="message error">' . __('There are no PublishPress modules registered', 'publishpress-authors') . '</div>';
+                echo '<div class="message error">' . esc_html__('There are no PublishPress modules registered', 'publishpress-authors') . '</div>';
             } else {
                 foreach ($legacyPlugin->modules as $mod_name => $mod_data) {
                     $add_menu = isset($mod_data->add_menu) && $mod_data->add_menu === true;
@@ -216,16 +216,16 @@ if (!class_exists('MA_Settings')) {
                             $url = $mod_data->page_link;
                         }
 
-                        echo $this->twig->render(
+                        echo $this->twig->render( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                             'module.twig',
                             [
                                 'has_config_link' => isset($mod_data->configure_page_cb) && !empty($mod_data->configure_page_cb),
-                                'slug'            => $mod_data->slug,
+                                'slug'            => esc_html($mod_data->slug),
                                 'icon_class'      => isset($mod_data->icon_class) ? $mod_data->icon_class : false,
-                                'form_action'     => get_admin_url(null, 'options.php'),
-                                'title'           => $mod_data->title,
+                                'form_action'     => esc_url(get_admin_url(null, 'options.php')),
+                                'title'           => esc_html($mod_data->title),
                                 'description'     => wp_kses($mod_data->short_description, 'a'),
-                                'url'             => $url,
+                                'url'             => esc_url($url),
                             ]
                         );
                     }
@@ -245,8 +245,8 @@ if (!class_exists('MA_Settings')) {
         {
             if (empty($post_types)) {
                 $post_types = [
-                    'post' => __('Posts'),
-                    'page' => __('Pages'),
+                    'post' => esc_html__('Posts'),
+                    'page' => esc_html__('Pages'),
                 ];
                 $custom_post_types = $this->get_supported_post_types_for_module();
                 if (count($custom_post_types)) {
@@ -257,9 +257,9 @@ if (!class_exists('MA_Settings')) {
             }
 
             foreach ($post_types as $post_type => $title) {
-                echo '<label for="' . esc_attr($post_type) . '-' . $module->slug . '">';
-                echo '<input id="' . esc_attr($post_type) . '-' . $module->slug . '" name="'
-                    . $module->options_group_name . '[post_types][' . esc_attr($post_type) . ']"';
+                echo '<label for="' . esc_attr($post_type) . '-' . esc_attr($module->slug) . '">';
+                echo '<input id="' . esc_attr($post_type) . '-' . esc_attr($module->slug) . '" name="'
+                    . esc_attr($module->options_group_name) . '[post_types][' . esc_attr($post_type) . ']"';
                 if (isset($module->options->post_types[$post_type])) {
                     checked($module->options->post_types[$post_type], 'on');
                 }
@@ -268,7 +268,7 @@ if (!class_exists('MA_Settings')) {
                 echo ' type="checkbox" value="on" />&nbsp;&nbsp;&nbsp;' . esc_html($title) . '</label>';
                 // Leave a note to the admin as a reminder that add_post_type_support has been used somewhere in their code
                 if (post_type_supports($post_type, $module->post_type_support)) {
-                    echo '&nbsp&nbsp;&nbsp;<span class="description">' . sprintf(__('Disabled because add_post_type_support(\'%1$s\', \'%2$s\') is included in a loaded file.', 'publishpress-authors'), $post_type, $module->post_type_support) . '</span>';
+                    echo '&nbsp&nbsp;&nbsp;<span class="description">' . sprintf(esc_html__('Disabled because add_post_type_support(\'%1$s\', \'%2$s\') is included in a loaded file.', 'publishpress-authors'), esc_html($post_type), esc_html($module->post_type_support)) . '</span>';
                 }
                 echo '<br />';
             }
@@ -292,7 +292,7 @@ if (!class_exists('MA_Settings')) {
             }
 
             if (!Capability::currentUserCanManageSettings() || !wp_verify_nonce(sanitize_key($_POST['_wpnonce']), 'edit-publishpress-settings')) {
-                wp_die(__('Cheatin&#8217; uh?'));
+                wp_die(esc_html__('Cheatin&#8217; uh?'));
             }
 
             $legacyPlugin = Factory::getLegacyPlugin();
@@ -387,17 +387,17 @@ if (!class_exists('MA_Settings')) {
                 }
             }
 
-            echo $this->twig->render(
+            echo $this->twig->render( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 'settings.twig',
                 [
-                    'modules'        => (array)$legacyPlugin->modules,
-                    'settings_slug'  => $module_settings_slug,
-                    'slug'           => MA_Modules_Settings::SETTINGS_SLUG,
-                    'module_output'  => $module_output,
+                    'modules'        => (array)$legacyPlugin->modules, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                    'settings_slug'  => esc_html($module_settings_slug),
+                    'slug'           => esc_html(MA_Modules_Settings::SETTINGS_SLUG),
+                    'module_output'  => $module_output, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     'sidebar_output' => '',
-                    'text'           => $display_text,
+                    'text'           => esc_html($display_text),
                     'show_sidebar'   => false,
-                    'show_tabs'      => $show_tabs,
+                    'show_tabs'      => $show_tabs, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 ]
             );
         }

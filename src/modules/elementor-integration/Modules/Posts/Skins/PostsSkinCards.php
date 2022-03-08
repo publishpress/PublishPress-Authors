@@ -52,7 +52,7 @@ class PostsSkinCards extends Skin_Cards
                 $authorNames[] = $author->display_name;
             }
 
-            echo apply_filters(
+            echo apply_filters( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 'publishpress_authors_elementor_posts_skin_cards_byline',
                 implode(', ', $authorNames),
                 $authorNames,
@@ -73,9 +73,9 @@ class PostsSkinCards extends Skin_Cards
 
             foreach ($authors as $author) {
                 if (is_a($author, Author::class)) {
-                    echo $author->get_avatar($avatarSize);
+                    echo $author->get_avatar($avatarSize); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 } elseif (isset($author->ID)) {
-                    echo get_avatar($author->ID, $avatarSize);
+                    echo get_avatar($author->ID, $avatarSize); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 }
             }
             ?>

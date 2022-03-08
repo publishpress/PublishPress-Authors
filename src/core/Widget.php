@@ -86,10 +86,10 @@ class Widget extends WP_Widget {
             }
 
 			if ( ! empty( $output ) ) {
-				echo $args['before_widget'];
-				echo $args['before_title'] . apply_filters( 'widget_title', $title ) . $args['after_title'];
-				echo $output;
-				echo $args['after_widget'];
+				echo $args['before_widget']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo $args['before_title'] . apply_filters('widget_title', esc_html($title)) . $args['after_title'];  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo $output;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo $args['after_widget'];  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 		}
 	}
@@ -123,21 +123,21 @@ class Widget extends WP_Widget {
 				'layout' => esc_html__( 'Layout', 'publishpress-authors' ),
 			),
 			'ids'     => array(
-				'title'  => $this->get_field_id( 'title' ),
-				'title_plural'  => $this->get_field_id( 'title_plural' ),
-				'layout' => $this->get_field_id( 'layout' ),
-				'nonce' => $this->get_field_id( 'nonce' ),
+				'title'  => esc_html($this->get_field_id( 'title' )),
+				'title_plural'  => esc_html($this->get_field_id( 'title_plural' )),
+				'layout' => esc_html($this->get_field_id( 'layout' )),
+				'nonce' => esc_html($this->get_field_id( 'nonce' )),
 			),
 			'names'   => array(
-				'title'  => $this->get_field_name( 'title' ),
-				'title_plural'  => $this->get_field_name( 'title_plural' ),
-				'layout' => $this->get_field_name( 'layout' ),
-				'nonce' => $this->get_field_name( 'nonce' ),
+				'title'  => esc_html($this->get_field_name( 'title' )),
+				'title_plural'  => esc_html($this->get_field_name( 'title_plural' )),
+				'layout' => esc_html($this->get_field_name( 'layout' )),
+				'nonce' => esc_html($this->get_field_name( 'nonce' )),
 			),
 			'values'  => array(
-				'title'  => $titleSingle,
-				'title_plural'  => $titlePlural,
-				'layout' => $layout,
+				'title'  => esc_html($titleSingle),
+				'title_plural'  => esc_html($titlePlural),
+				'layout' => esc_html($layout),
                 'nonce' => wp_create_nonce('pp_multiple_authors_widget_form'),
             ),
             'layouts' => apply_filters( 'pp_multiple_authors_author_layouts', array() ),
@@ -145,7 +145,7 @@ class Widget extends WP_Widget {
 
 		$container = Factory::get_container();
 
-		echo $container['twig']->render( 'widget-form.twig', $context );
+		echo $container['twig']->render( 'widget-form.twig', $context );  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**

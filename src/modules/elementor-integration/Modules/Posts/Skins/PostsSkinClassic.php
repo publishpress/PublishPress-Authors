@@ -50,7 +50,7 @@ class PostsSkinClassic extends Skin_Classic
                 $authorNames[] = $author->display_name;
             }
 
-            echo apply_filters(
+            echo apply_filters( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 'publishpress_authors_elementor_posts_skin_classic_byline',
                 implode(', ', $authorNames),
                 $authorNames,

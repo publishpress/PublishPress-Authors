@@ -619,7 +619,10 @@ class Author_Editor
             if (empty($count)) {
                 esc_html__('No authors were updated', 'publishpress-authors');
             } else {
-                esc_html(printf(__('Updated %d authors', 'publishpress-authors'), $count));  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                printf(
+                        esc_html__('Updated %d authors', 'publishpress-authors'),
+                        esc_html($count)
+                );
             }
 
             echo '</div>';

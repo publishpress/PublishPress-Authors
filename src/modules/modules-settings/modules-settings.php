@@ -182,7 +182,7 @@ if (!class_exists('MA_Modules_Settings')) {
                             echo '<ul id="publishpress-authors-settings-tabs" class="nav-tab-wrapper">';
                             foreach ($tabs as $tabLink => $tabLabel) {
                                 echo '<li class="nav-tab ' . ($tabLink === '#ppma-tab-general' ? 'nav-tab-active' : '') . '">';
-                                echo '<a href="' . $tabLink . '">' . $tabLabel . '</a>';
+                                echo '<a href="' . esc_url($tabLink) . '">' . esc_html($tabLabel) . '</a>';
                                 echo '</li>';
                             }
                             echo '</ul>';
@@ -203,12 +203,11 @@ if (!class_exists('MA_Modules_Settings')) {
                                 continue;
                             }
 
-                            echo sprintf('<h3>%s</h3>', $mod_data->title);
-                            echo sprintf('<p>%s</p>', $mod_data->short_description);
+                            echo sprintf('<h3>%s</h3>', esc_html($mod_data->title));
+                            echo sprintf('<p>%s</p>', esc_html($mod_data->short_description));
 
-                            echo '<input name="multiple_authors_module_name[]" type="hidden" value="' . esc_attr(
-                                    $mod_data->name
-                                ) . '" />';
+                            echo '<input name="multiple_authors_module_name[]" type="hidden" value="'
+                                . esc_attr($mod_data->name) . '" />';
 
                             $legacyPlugin->$slug->print_configure_view();
                         }
@@ -228,8 +227,8 @@ if (!class_exists('MA_Modules_Settings')) {
 
                         <?php if ($featuresCount > 0) : ?>
                             <div id="modules-wrapper">
-                                <h3><?php echo __('Features', 'publishpress-authors'); ?></h3>
-                                <p><?php echo __(
+                                <h3><?php echo esc_html__('Features', 'publishpress-authors'); ?></h3>
+                                <p><?php echo esc_html__(
                                         'Feel free to select only the features you need.',
                                         'publishpress-authors'
                                     ); ?></p>
@@ -237,7 +236,7 @@ if (!class_exists('MA_Modules_Settings')) {
                                 <table class="form-table">
                                     <tbody>
                                     <tr>
-                                        <th scope="row"><?php echo __(
+                                        <th scope="row"><?php echo esc_html__(
                                                 'Enabled features',
                                                 'publishpress-authors'
                                             ); ?></th>
@@ -254,7 +253,7 @@ if (!class_exists('MA_Modules_Settings')) {
                                                                $mod_data->slug
                                                            ); ?>]" <?php echo ($mod_data->options->enabled == 'on') ? "checked=\"checked\"" : ""; ?>
                                                            type="checkbox">
-                                                    &nbsp;&nbsp;&nbsp;<?php echo $mod_data->title; ?>
+                                                    &nbsp;&nbsp;&nbsp;<?php echo esc_html($mod_data->title); ?>
                                                 </label>
                                                 <br>
                                             <?php endforeach; ?>
@@ -263,9 +262,8 @@ if (!class_exists('MA_Modules_Settings')) {
                                     </tbody>
                                 </table>
 
-                                <?php echo '<input name="multiple_authors_module_name[]" type="hidden" value="' . esc_attr(
-                                        $this->module->name
-                                    ) . '" />'; ?>
+                                <?php echo '<input name="multiple_authors_module_name[]" type="hidden" value="'
+                                    . esc_attr($this->module->name) . '" />'; ?>
                             </div>
                         <?php endif; ?>
 
@@ -280,16 +278,16 @@ if (!class_exists('MA_Modules_Settings')) {
                         <?php
                         $banners = new PublishPress\WordPressBanners\BannersMain;
                         $banners->pp_display_banner(
-                            __( 'Recommendations for you', 'publishpress-authors' ),
-                            __( 'Showcase your Authors with PublishPress Blocks', 'publishpress-authors' ),
+                            esc_html__( 'Recommendations for you', 'publishpress-authors' ),
+                            esc_html__( 'Showcase your Authors with PublishPress Blocks', 'publishpress-authors' ),
                             array(
-                                __( 'PublishPress Blocks is a free plugin with full support for PublishPress Authors.', 'publishpress-authors' ),
-                                __( 'Install this plugin to showcase content by your Authors.', 'publishpress-authors' ),
-                                __( 'Use the Content Display block to show your posts in many beautiful layouts.', 'publishpress-authors' ),
-                                __( 'PublishPress Blocks has over 20 extra Gutenberg blocks including accordions, galleries, tables, and more.', 'publishpress-authors' ),
+                                esc_html__( 'PublishPress Blocks is a free plugin with full support for PublishPress Authors.', 'publishpress-authors' ),
+                                esc_html__( 'Install this plugin to showcase content by your Authors.', 'publishpress-authors' ),
+                                esc_html__( 'Use the Content Display block to show your posts in many beautiful layouts.', 'publishpress-authors' ),
+                                esc_html__( 'PublishPress Blocks has over 20 extra Gutenberg blocks including accordions, galleries, tables, and more.', 'publishpress-authors' ),
                             ),
-                            admin_url( 'plugin-install.php?s=publishpress-advg-install&tab=search&type=term' ),
-                            __( 'Click here to install PublishPress Blocks', 'publishpress-authors' ),
+                            esc_url(admin_url( 'plugin-install.php?s=publishpress-advg-install&tab=search&type=term' )),
+                            esc_html__( 'Click here to install PublishPress Blocks', 'publishpress-authors' ),
                             'install-blocks.jpg'
                         );
                         ?>

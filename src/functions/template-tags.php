@@ -355,7 +355,7 @@ if (!function_exists('multiple_authors__echo')) {
         $output .= $separators['after'];
 
         if ($echo) {
-            echo $output;
+            echo $output;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         }
 
         return $output;
@@ -688,7 +688,7 @@ if (!function_exists('the_multiple_author_meta')) {
     function the_multiple_author_meta($field, $user_id = 0)
     {
         // TODO: need before after options
-        echo get_the_multiple_author_meta($field, $user_id);
+        echo get_the_multiple_author_meta($field, $user_id);  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
 }
 
@@ -728,7 +728,7 @@ if (!function_exists('multiple_authors_wp_list_authors')) {
             return $return;
         }
 
-        echo $return;
+        echo $return;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
 }
 
@@ -786,7 +786,7 @@ if (!function_exists('the_authors')) {
      */
     function the_authors()
     {
-        echo get_the_authors();
+        echo get_the_authors();  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
 }
 
@@ -815,7 +815,7 @@ if (!function_exists('the_authors_posts_links')) {
      */
     function the_authors_posts_links()
     {
-        echo get_the_authors_posts_links();
+        echo get_the_authors_posts_links();  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
 }
 
@@ -872,7 +872,7 @@ if (!function_exists('the_authors_links')) {
      */
     function the_authors_links()
     {
-        echo get_the_authors_links();
+        echo get_the_authors_links();  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
 }
 
