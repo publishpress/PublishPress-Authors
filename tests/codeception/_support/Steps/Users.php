@@ -76,12 +76,15 @@ trait Users
     public function iCreateNewUserWithRole($userName, $userRole)
     {
         $userName = sq($userName);
+        $password = md5($userName);
 
         $this->amOnAdminPage('/user-new.php');
         $this->fillField('#user_login', $userName);
         $this->fillField('#email', "{$userName}@example.com");
+        $this->fillField('#pass1', $password);
         $this->selectOption('#role', $userRole);
-        $this->click('Add New User');
+        $this->executeJS('jQuery("#pass1").prop("disabled", false);jQuery("#pass2").prop("disabled", false);jQuery("#pass2").val(jQuery("#pass1").val());');
+        $this->click('#createusersub');
     }
 
     /**
