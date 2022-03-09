@@ -165,6 +165,11 @@ class Author
             return false;
         }
 
+        $existentAuthor = self::get_by_user_id($user->ID);
+        if (!empty($existentAuthor)) {
+            return $existentAuthor;
+        }
+
         $author = self::create(
             [
                 'display_name' => $user->display_name,
@@ -254,6 +259,7 @@ class Author
             return false;
         }
 
+        error_log($args['display_name']);
         $termData = wp_insert_term(
             $args['display_name'],
             'author',
