@@ -1107,7 +1107,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     $newLink .= ', ';
                 }
 
-                $newLink .= '<a href="' . esc_url($author->link) . '" title="' . esc_url($author->display_name)
+                $newLink .= '<a href="' . esc_url($author->link) . '" title="' . esc_attr(sprintf(esc_html__( 'Posts by %s' ), $author->display_name))
                     . '" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">'
                     . esc_html($author->display_name) . '</a>';
             }
