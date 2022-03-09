@@ -287,7 +287,8 @@ if (!class_exists('MA_Settings')) {
             }
 
             if ($_POST['action'] != 'update'
-                || $_GET['page'] != 'ppma-modules-settings') {
+                || (!isset($_GET['page']) || $_GET['page'] != 'ppma-modules-settings')
+            ) {
                 return false;
             }
 

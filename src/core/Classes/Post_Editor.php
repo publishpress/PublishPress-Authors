@@ -347,7 +347,9 @@ class Post_Editor
      */
     public static function save_bulk_edit_authors()
     {
-        global $wpdb;
+        if (!isset($_POST['post_ids'])) {
+            return;
+        }
 
         $post_ids = array_map('sanitize_key', $_POST['post_ids']);
         if (!isset($_POST['bulkEditNonce'])

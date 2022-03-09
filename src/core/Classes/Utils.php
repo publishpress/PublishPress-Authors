@@ -642,12 +642,15 @@ class Utils
 
         foreach ($requiredClasses as $className) {
             if (! class_exists($className)) {
-                error_log(
-                    sprintf(
-                        '[PublishPress Authors] Elementor module did not find the class %s',
-                        $className
-                    )
-                );
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+                        sprintf(
+                            '[PublishPress Authors] Elementor module did not find the class %s',
+                            $className
+                        )
+                    );
+                }
+
                 $abort = true;
             }
         }
@@ -659,12 +662,15 @@ class Utils
 
         foreach ($requiredTraits as $traitName) {
             if (! trait_exists($traitName)) {
-                error_log(
-                    sprintf(
-                        '[PublishPress Authors] Elementor module did not find the trait %s',
-                        $traitName
-                    )
-                );
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+                        sprintf(
+                            '[PublishPress Authors] Elementor module did not find the trait %s',
+                            $traitName
+                        )
+                    );
+                }
+
                 $abort = true;
             }
         }
@@ -707,15 +713,17 @@ class Utils
 
         if (version_compare(WPSEO_VERSION, '14.1', '<')) {
             if (! get_transient('publishpress_authors_not_compatible_yoast_warning')) {
-                error_log(
-                    sprintf(
-                        '[PublishPress Authors] %s %s - %s. %s',
-                        __METHOD__,
-                        'detected a not supported version of the Yoast SEO plugin',
-                        WPSEO_VERSION,
-                        'It requires 13.4.1 or later. Please, update it'
-                    )
-                );
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+                        sprintf(
+                            '[PublishPress Authors] %s %s - %s. %s',
+                            __METHOD__,
+                            'detected a not supported version of the Yoast SEO plugin',
+                            WPSEO_VERSION,
+                            'It requires 13.4.1 or later. Please, update it'
+                        )
+                    );
+                }
 
                 set_transient('publishpress_authors_not_compatible_yoast_warning', true, 24 * 60 * 60 * 2);
             }

@@ -528,11 +528,11 @@ class Author_Editor
      */
     public static function action_created_author($term_id)
     {
-        if (!isset($_POST['authors-new']) || empty($_POST['authors-new'])) {
+        if (!isset($_POST['authors-new']) || empty($_POST['authors-new'])) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
             return;
         }
 
-        Author::update_author_from_user($term_id, (int)$_POST['authors-new']);
+        Author::update_author_from_user($term_id, (int)$_POST['authors-new']); // phpcs:ignore WordPress.Security.NonceVerification.Missing
     }
 
     /**

@@ -133,14 +133,14 @@ if (!class_exists('MA_Modules_Settings')) {
          */
         public function settings_save($new_options)
         {
-            if (!isset($_POST['multiple_authors_options'])) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing
+            if (!isset($_POST['multiple_authors_options']) || !isset($_POST['multiple_authors_options']['features'])) {
                 return true;
             }
 
             $legacyPlugin = Factory::getLegacyPlugin();
 
-            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-            $enabledFeatures = Utils::sanitizeArray($_POST['multiple_authors_options']['features']);
+            $enabledFeatures = Utils::sanitizeArray($_POST['multiple_authors_options']['features']); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Missing
 
             // Run through all the modules updating their statuses
             foreach ($legacyPlugin->modules as $mod_data) {

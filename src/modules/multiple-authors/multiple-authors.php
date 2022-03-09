@@ -411,7 +411,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     }
                 }
 
-                $submenu[self::MENU_SLUG] = $newSubmenu;
+                $submenu[self::MENU_SLUG] = $newSubmenu; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
             }
 
             return $menu_ord;
@@ -1707,14 +1707,16 @@ if (!class_exists('MA_Multiple_Authors')) {
                 do_action('multiple_authors_' . $action);
 
                 wp_redirect(
-                    admin_url('/admin.php?page=ppma-modules-settings&author_term_reset_notice=success'),
+                    admin_ur1l('/admin.php?page=ppma-modules-settings&author_term_reset_notice=success'),
                     301
                 );
+                exit;
             } catch (Exception $e) {
                 wp_redirect(
                     admin_url('/admin.php?page=ppma-modules-settings&author_term_reset_notice=fail'),
                     301
                 );
+                exit;
             }
         }
 
@@ -2121,7 +2123,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         public function getCoauthorsMigrationData()
         {
-            if (!wp_verify_nonce(sanitize_key($_GET['nonce']), 'migrate_coauthors')) {
+            if (!isset($_GET['nonce']) || !wp_verify_nonce(sanitize_key($_GET['nonce']), 'migrate_coauthors')) {
                 wp_send_json_error(null, 403);
             }
 
@@ -2158,7 +2160,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         {
             global $wpdb;
 
-            if (!wp_verify_nonce(sanitize_key($_GET['nonce']), 'sync_post_author')) {
+            if (!isset($_GET['nonce']) || !wp_verify_nonce(sanitize_key($_GET['nonce']), 'sync_post_author')) {
                 wp_send_json_error(null, 403);
             }
 
@@ -2193,9 +2195,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         public function getSyncAuthorSlugData()
         {
-            global $wpdb;
-
-            if (!wp_verify_nonce(sanitize_key($_GET['nonce']), 'sync_author_slug')) {
+            if (!isset($_GET['nonce']) || !wp_verify_nonce(sanitize_key($_GET['nonce']), 'sync_author_slug')) {
                 wp_send_json_error(null, 403);
             }
 
@@ -2222,7 +2222,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         public function migrateCoAuthorsData()
         {
-            if (!wp_verify_nonce(sanitize_key($_GET['nonce']), 'migrate_coauthors')) {
+            if (!isset($_GET['nonce']) || !wp_verify_nonce(sanitize_key($_GET['nonce']), 'migrate_coauthors')) {
                 wp_send_json_error(null, 403);
             }
 
@@ -2319,7 +2319,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         public function syncPostAuthor()
         {
-            if (!wp_verify_nonce(sanitize_key($_GET['nonce']), 'sync_post_author')) {
+            if (!isset($_GET['nonce']) || !wp_verify_nonce(sanitize_key($_GET['nonce']), 'sync_post_author')) {
                 wp_send_json_error(null, 403);
             }
 
@@ -2359,7 +2359,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         public function syncAuthorSlug()
         {
-            if (!wp_verify_nonce(sanitize_key($_GET['nonce']), 'sync_author_slug')) {
+            if (!isset($_GET['nonce']) || !wp_verify_nonce(sanitize_key($_GET['nonce']), 'sync_author_slug')) {
                 wp_send_json_error(null, 403);
             }
 
@@ -2398,7 +2398,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         public function deactivateCoAuthorsPlus()
         {
-            if (!wp_verify_nonce(sanitize_key($_GET['nonce']), 'migrate_coauthors')) {
+            if (!isset($_GET['nonce']) || !wp_verify_nonce(sanitize_key($_GET['nonce']), 'migrate_coauthors')) {
                 wp_send_json_error(null, 403);
             }
 
@@ -2418,7 +2418,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         public function finishCoAuthorsMigration()
         {
-            if (!wp_verify_nonce(sanitize_key($_GET['nonce']), 'migrate_coauthors')) {
+            if (!isset($_GET['nonce']) || !wp_verify_nonce(sanitize_key($_GET['nonce']), 'migrate_coauthors')) {
                 wp_send_json_error(null, 403);
             }
 
@@ -2442,7 +2442,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         public function finishSyncPostAuthor()
         {
-            if (!wp_verify_nonce(sanitize_key($_GET['nonce']), 'sync_post_author')) {
+            if (!isset($_GET['nonce']) || !wp_verify_nonce(sanitize_key($_GET['nonce']), 'sync_post_author')) {
                 wp_send_json_error(null, 403);
             }
 
@@ -2463,7 +2463,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         public function finishSyncAuthorSlug()
         {
-            if (!wp_verify_nonce(sanitize_key($_GET['nonce']), 'sync_author_slug')) {
+            if (!isset($_GET['nonce']) || !wp_verify_nonce(sanitize_key($_GET['nonce']), 'sync_author_slug')) {
                 wp_send_json_error(null, 403);
             }
 
@@ -2688,6 +2688,8 @@ if (!class_exists('MA_Multiple_Authors')) {
 
                 do_action('publishpress_authors_flush_cache');
             }
+
+            return $postId;
         }
 
         public function publishpressCalendarDefaultAuthor($defaultAuthor)
@@ -2773,7 +2775,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $wpdb->update($wpdb->terms, ['slug' => $user->user_nicename], ['term_id' => $author->term_id]);
 
                 if (is_object($wp_rewrite)) {
-                    $wp_rewrite->flush_rules();
+                    $wp_rewrite->flush_rules(); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.flush_rules_flush_rules
                 }
             }
         }

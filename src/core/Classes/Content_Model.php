@@ -101,6 +101,7 @@ class Content_Model
             $link = get_the_permalink();
 
             if (defined('WP_DEBUG') && WP_DEBUG) {
+                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
                 error_log('[PublishPress Authors] Warning - The author_id is empty so the link for the author page was changed to the home URL.');
             }
         }

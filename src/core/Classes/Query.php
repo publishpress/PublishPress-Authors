@@ -71,14 +71,14 @@ class Query
             $wp_query->set('author_name', $author->user_nicename);
             $wp_query->set('author', $author->ID);
 
-            $authordata = $author;
+            $authordata = $author; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
         } else {
             $wp_query->queried_object    = null;
             $wp_query->queried_object_id = null;
             $wp_query->is_author         = false;
             $wp_query->is_archive        = false;
 
-            $authordata = null;
+            $authordata = null; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
         }
 
         $wp_query->set('is_guest', $is_guest);

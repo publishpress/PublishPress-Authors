@@ -996,7 +996,7 @@ class Plugin
         $order         = 'ASC';
         $object_ids    = (int)$object_ids;
         $raw_coauthors = $wpdb->get_results(
-            $wpdb->prepare(
+            $wpdb->prepare( // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                 "SELECT t.name, t.term_id, tt.term_taxonomy_id FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_id = t.term_id INNER JOIN $wpdb->term_relationships AS tr ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy IN (%s) AND tr.object_id IN (%s) $orderby $order",
                 $this->coauthor_taxonomy,
                 $object_ids
@@ -1085,27 +1085,29 @@ class Plugin
         $legacyPlugin = Factory::getLegacyPlugin();
 
         if (empty($legacyPlugin) || !isset($legacyPlugin->multiple_authors) || !Utils::is_post_type_enabled()) {
-            return;
+            return $query_str;
         }
 
         global $wp_query;
 
         if (!is_object($wp_query)) {
-            return;
+            return $query_str;
         }
 
         if (!Util::isAuthor() && (empty($wp_query->query) || !array_key_exists('author', $wp_query->query))) {
-            return;
+            return $query_str;
         }
 
         $author_name = $wp_query->get('author_name');
         if (!$author_name) {
-            return;
+            return $query_str;
         }
 
         Query::fix_query_pre_get_posts($wp_query);
 
         $wp_query->is_404 = false;
+
+        return $query_str;
     }
 
     /**
@@ -1689,7 +1691,7 @@ class Plugin
      */
     public function activation_hook()
     {
-        flush_rewrite_rules();
+        flush_rewrite_rules(); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.flush_rewrite_rules_flush_rewrite_rules
     }
 
     public function filterCMECapabilities($capabilities)

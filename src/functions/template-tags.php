@@ -186,7 +186,7 @@ if (!function_exists('multiple_authors_get_all_authors')) {
             }, $postTypes);
             $postTypes = implode(', ', $postTypes);
 
-            $terms = $wpdb->get_results(
+            $terms = $wpdb->get_results( // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                 "SELECT
                     t.term_id as `term_id`
                 FROM

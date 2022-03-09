@@ -96,7 +96,7 @@ class LegacyPlugin
 
         foreach ($module_dirs as $module_slug => $base_path) {
             if (file_exists("{$base_path}/{$module_slug}/{$module_slug}.php")) {
-                include_once "{$base_path}/{$module_slug}/{$module_slug}.php";
+                include_once "{$base_path}/{$module_slug}/{$module_slug}.php"; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.NotAbsolutePath
 
                 // Prepare the class name because it should be standardized
                 $tmp        = explode('-', $module_slug);
