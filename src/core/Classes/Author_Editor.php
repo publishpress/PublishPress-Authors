@@ -445,14 +445,17 @@ class Author_Editor
         $legacyPlugin = Factory::getLegacyPlugin();
 
         if (!isset($legacyPlugin->modules->multiple_authors)) {
-            error_log(
-                sprintf(
-                    "[PublishPress Authors] Warning: Module multiple_authors not loaded. %s [user_id=\"%s\"]\n  - %s",
-                    __METHOD__,
-                    $user_id,
-                    implode("\n  - ", wp_debug_backtrace_summary(null, 0, false))
-                )
-            );
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log(
+                    sprintf(
+                        "[PublishPress Authors] Warning: Module multiple_authors not loaded. %s [user_id=\"%s\"]\n  - %s",
+                        __METHOD__,
+                        $user_id,
+                        implode("\n  - ", wp_debug_backtrace_summary(null, 0, false))
+                    )
+                );
+            }
+
             return;
         }
 
