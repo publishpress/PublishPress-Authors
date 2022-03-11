@@ -9,6 +9,8 @@ require_once 'publishpress-authors.php';
 
 global $multiple_authors_addon;
 
+$_SERVER['HTTPS'] = 'on';
+
 $multiple_authors_addon->action_init();
 $multiple_authors_addon->action_init_late();
 MultipleAuthors\Classes\Content_Model::action_init_late_register_taxonomy_for_object_type();

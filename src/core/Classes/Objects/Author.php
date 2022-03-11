@@ -259,7 +259,6 @@ class Author
             return false;
         }
 
-        error_log($args['display_name']);
         $termData = wp_insert_term(
             $args['display_name'],
             'author',

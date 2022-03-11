@@ -4,6 +4,7 @@ use MultipleAuthors\Classes\Author_Utils;
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Classes\Utils;
 use WpunitTester;
+use function sq;
 
 class Author_UtilsCest
 {
@@ -242,22 +243,22 @@ class Author_UtilsCest
 
         $selectedGuestAuthor1 = Author::create(
             [
-                'slug'         => 'guest4',
-                'display_name' => 'Guest 1',
+                'slug'         => sq('guest0'),
+                'display_name' => sq('Guest0'),
             ]
         );
 
         $selectedGuestAuthor2 = Author::create(
             [
-                'slug'         => 'guest5',
-                'display_name' => 'Guest 3',
+                'slug'         => sq('guest1'),
+                'display_name' => sq('Guest1'),
             ]
         );
 
         $selectedGuestAuthor3 = Author::create(
             [
-                'slug'         => 'guest6',
-                'display_name' => 'Guest 3',
+                'slug'         => sq('guest2'),
+                'display_name' => sq('Guest2'),
             ]
         );
 
@@ -294,15 +295,15 @@ class Author_UtilsCest
 
         $firstAuthorWhichIsGuest = Author::create(
             [
-                'slug'         => 'guest4',
-                'display_name' => 'Guest 4',
+                'slug'         => sq('guest0'),
+                'display_name' => sq('Guest0'),
             ]
         );
 
         $secondAuthorWhichIsGuest = Author::create(
             [
-                'slug'         => 'guest2',
-                'display_name' => 'Guest 2',
+                'slug'         => sq('guest1'),
+                'display_name' => sq('Guest1'),
             ]
         );
 

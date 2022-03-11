@@ -8,6 +8,7 @@ modules:
         - WPLoader
         - \Helper\Wpunit
         - Asserts
+        - Sequence
     config:
         WPLoader:
             wpRootFolder: "%WP_ROOT_FOLDER%"
@@ -22,5 +23,7 @@ modules:
             plugins: ["publishpress-authors/publishpress-authors.php"]
             activatePlugins: ["publishpress-authors/publishpress-authors.php"]
             isolatedInstall: true
+        Sequence:
+            prefix: "_"
 
 bootstrap: bootstrap.php
