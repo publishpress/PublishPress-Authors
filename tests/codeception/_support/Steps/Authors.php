@@ -65,4 +65,16 @@ trait Authors
     {
         $this->seeElement('a.row-title[aria-label="' . sq($userName) . '"]');
     }
+
+    /**
+     * @Given I view the author page for :authorSlug
+     */
+    public function iViewAuthorPageForAuthor($authorSlug)
+    {
+        $authorSlug = sq($authorSlug);
+
+        $author = Author::get_by_term_slug($authorSlug);
+
+        $this->amOnPage($author->link);
+    }
 }

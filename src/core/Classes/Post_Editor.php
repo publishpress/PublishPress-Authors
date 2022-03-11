@@ -106,7 +106,7 @@ class Post_Editor
         if ('authors' === $column) {
             // We need to ignore the cache for following call when this method were called after saved the post in a
             // quick edit operation, otherwise the authors column will show old values.
-            $authors = get_multiple_authors($post_id, false, false, true);
+            $authors = get_post_authors($post_id, true);
 
             $post_type = get_post_type($post_id);
             $post      = get_post($post_id);
@@ -207,7 +207,7 @@ class Post_Editor
             return;
         }
 
-        $authors = get_multiple_authors();
+        $authors = get_post_authors();
 
         echo self::get_rendered_authors_selection($authors, false);  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }

@@ -119,9 +119,9 @@ if (!class_exists('MA_Debug')) {
             );
             $dataList['$post->post_author'] = $postAuthor;
 
-            // get_multiple_authors function.
-            $resultGetMultipleAuthors = get_multiple_authors();
-            $dataList['get_multiple_authors()'] = $resultGetMultipleAuthors;
+            // get_post_authors function.
+            $resultGetMultipleAuthors = get_post_authors();
+            $dataList['get_post_authors()'] = $resultGetMultipleAuthors;
 
             // Get the post terms for "author".
             $authorTerms = wp_get_post_terms($post->ID, 'author');

@@ -774,7 +774,7 @@ class Utils
 
     public static function isAuthorOfPost($postId, $author)
     {
-        $postAuthors = get_multiple_authors($postId);
+        $postAuthors = get_post_authors($postId);
         if (empty($postAuthors)) {
             return false;
         }

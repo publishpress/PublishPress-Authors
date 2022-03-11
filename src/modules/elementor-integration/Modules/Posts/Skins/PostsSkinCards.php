@@ -45,7 +45,7 @@ class PostsSkinCards extends Skin_Cards
         ?>
         <span class="elementor-post-author">
 			<?php
-            $authors     = get_multiple_authors();
+            $authors     = get_post_authors();
             $authorNames = [];
 
             foreach ($authors as $author) {
@@ -68,7 +68,7 @@ class PostsSkinCards extends Skin_Cards
         ?>
         <div class="elementor-post__avatar">
             <?php
-            $authors = get_multiple_authors();
+            $authors = get_post_authors();
             $avatarSize = 128;
 
             foreach ($authors as $author) {

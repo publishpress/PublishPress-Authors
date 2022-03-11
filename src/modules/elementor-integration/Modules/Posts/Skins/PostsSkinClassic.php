@@ -43,7 +43,7 @@ class PostsSkinClassic extends Skin_Classic
         ?>
         <span class="elementor-post-author">
 			<?php
-            $authors     = get_multiple_authors();
+            $authors     = get_post_authors();
             $authorNames = [];
 
             foreach ($authors as $author) {

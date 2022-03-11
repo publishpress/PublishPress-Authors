@@ -79,7 +79,7 @@ if (!defined('PP_AUTHORS_LOADED')) {
         {
             $comment   = get_comment($comment_id);
             $post      = get_post($comment->comment_post_ID);
-            $coauthors = get_multiple_authors($post->ID);
+            $coauthors = get_post_authors($post->ID);
             foreach ($coauthors as $author) {
                 // The comment was left by the co-author
                 if ($comment->user_id == $author->ID) {

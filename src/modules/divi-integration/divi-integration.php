@@ -117,7 +117,7 @@ if (!class_exists('MA_Divi_Integration')) {
                     $author = Author::get_by_user_id($author->ID);
                 }
             } elseif ($post) {
-                $author = get_multiple_authors($post_id);
+                $author = get_post_authors($post_id);
                 $author = $author[0];
             }
 

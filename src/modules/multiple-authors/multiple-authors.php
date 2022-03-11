@@ -1100,7 +1100,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         {
             $newLink   = '';
             $postID    = get_the_id();
-            $authors   = get_multiple_authors($postID, false);
+            $authors   = get_post_authors($postID);
 
             foreach ($authors as $author) {
                 if (!empty($newLink)) {
@@ -1131,7 +1131,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 include_once PP_AUTHORS_SRC_PATH . 'functions/template-tags.php';
             }
 
-            $authors = get_multiple_authors($args['params']['post_id']);
+            $authors = get_post_authors($args['params']['post_id']);
 
             if (!empty($authors)) {
                 if (!is_array($receivers)) {
@@ -1214,12 +1214,10 @@ if (!class_exists('MA_Multiple_Authors')) {
                     unset($classes[$brokenItem]);
                 }
 
-                $authors = get_multiple_authors(0, true, true);
+                $author = get_archive_author();
 
-                if (!empty($authors)) {
-                    $author = $authors[0];
-
-                    $classes[] = (is_object($author) && $author->is_guest()) ? 'guest-author' : 'not-guest-author';
+                if (!empty($author) && is_object($author)) {
+                    $classes[] = $author->is_guest() ? 'guest-author' : 'not-guest-author';
                 }
             }
 
@@ -1240,7 +1238,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 return $classes;
             }
 
-            $postAuthors = get_multiple_authors($postID);
+            $postAuthors = get_post_authors($postID);
 
             if (empty($postAuthors)) {
                 return $classes;
@@ -1267,9 +1265,9 @@ if (!class_exists('MA_Multiple_Authors')) {
             // TODO: check if this works on the author archive. Do we need to check is_author to pass the is_archive param?
 
             if (is_archive() && Util::isAuthor()) {
-                $authors = get_multiple_authors(0, false, true);
+                $authors = [get_archive_author()];
             } else {
-                $authors = get_multiple_authors($post);
+                $authors = get_post_authors($post);
             }
 
             if (count($authors) > 0 && !is_wp_error($authors[0]) && is_object($authors[0])) {
@@ -1925,7 +1923,7 @@ if (!class_exists('MA_Multiple_Authors')) {
          */
         public function filter_is_author_of_post($isAuthor, $userId, $postId)
         {
-            $postAuthors = get_multiple_authors($postId, false);
+            $postAuthors = get_post_authors($postId);
             $userId      = (int)$userId;
 
             if (empty($userId)) {
@@ -1945,7 +1943,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         {
             $names = [];
 
-            $authors = get_multiple_authors($postID, false, false);
+            $authors = get_post_authors($postID);
 
             foreach ($authors as $author) {
                 $names[] = $author->display_name;
@@ -2339,7 +2337,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     $postId = (int)current($postIdsToSync);
 
                     if (!empty($postId)) {
-                        $authors = get_multiple_authors($postId);
+                        $authors = get_post_authors($postId);
                         Utils::sync_post_author_column($postId, $authors);
                         $totalMigrated++;
                     }
@@ -2742,7 +2740,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             $selectedPostTypes = array_values(Util::get_post_types_for_module($this->module));
 
             if (in_array($post->post_type, $selectedPostTypes)) {
-                $authors = get_multiple_authors($post->ID);
+                $authors = get_post_authors($post->ID);
 
                 $authorNamesArray = [];
                 foreach ($authors as $author)

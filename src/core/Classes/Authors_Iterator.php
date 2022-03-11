@@ -63,7 +63,11 @@ class Authors_Iterator
         }
 
         $this->original_authordata = $this->current_author = $authordata;
-        $this->authordata_array    = get_multiple_authors($postID, true, $archive);
+        if ($archive) {
+            $this->authordata_array    = [get_archive_author()];
+        } else {
+            $this->authordata_array    = get_post_authors($postID, $archive);
+        }
 
         $this->count = count($this->authordata_array);
     }

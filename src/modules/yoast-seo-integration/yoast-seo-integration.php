@@ -104,7 +104,7 @@ if (!class_exists('MA_Yoast_Seo_Integration')) {
 
             foreach ($replacements as $key => &$value) {
                 if ($key === '%%name%%') {
-                    $authors = get_multiple_authors($post->ID);
+                    $authors = get_post_authors($post->ID);
 
                     if (is_array($authors) && !empty($authors)) {
                         $author = $authors[0];

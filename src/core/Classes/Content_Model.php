@@ -120,7 +120,7 @@ class Content_Model
     public static function filter_author_display_name($author_meta, $user_id)
     {
         if (empty($author_meta) && empty($user_id)) {
-            $authors = get_multiple_authors();
+            $authors = get_post_authors();
 
             if (!empty($authors)) {
                 // Even for multiple authors, if not specified one, we will always get the first author.
@@ -199,7 +199,7 @@ class Content_Model
 
     public static function filter_ma_get_author_data($data, $field, $post)
     {
-        $authors = get_multiple_authors($post);
+        $authors = get_post_authors($post);
 
         if (empty($authors)) {
             return $data;

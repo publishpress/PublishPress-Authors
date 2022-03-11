@@ -148,7 +148,7 @@ class WP_Cli extends WP_CLI_Command
 
                 // See if the value in the post meta field is the same as any of the existing coauthors
                 $originalAuthor    = get_post_meta($singlePost->ID, $this->args['meta_key'], true);
-                $existingCoauthors = get_multiple_authors($singlePost->ID);
+                $existingCoauthors = get_post_authors($singlePost->ID);
                 $isAlreadyAssociated = false;
                 foreach ($existingCoauthors as $existingCoauthor) {
                     if ($originalAuthor == $existingCoauthor->user_nicename) {
