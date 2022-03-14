@@ -231,11 +231,13 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: Fix avatar URL on the structured data schema, #552;
 * Fixed: Fix PHP error generated when method create_from_user was called for a post with post_author = 0;
 * Fixed: Fix compatibility with Elementor Pro and the archive page title adding new constant to disable the filter "the_author", #563;
-- * Fixed: Fix fatal error on method_exists, argument should be object|bool, #590;
+* Fixed: Fix fatal error on method_exists, argument should be object|bool, #590;
 * Fixed: Sanitize some nonce tokens for a second layout of protection;
-- * Fixed: Fix PHP 8 fatal error about unsupported types: string + string, #568;
+* Fixed: Fix PHP 8 fatal error about unsupported types: string + string, #559;
+* Fixed: Fix PHP 7 warning about non-numeric value encountered, #560;
 * Fixed: Fix PHP warning about trying to get property term_id of non-object, #562;
 * Fixed: Fix PHP 8 fatal error Attempt to assign property "userObject" on bool, #561;
+* Fixed: Fix the banner about PublishPress Blocks that was displayed even if Blocks is already activated, #549;
 * Changed: Error log messages are only added if WP_DEBUG is enabled;
 
 = [3.14.9] - 18 Nov 2021 =
