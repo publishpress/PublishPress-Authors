@@ -459,6 +459,24 @@ class Plugin
         );
     }
 
+    private function get_author_taxonomy_title()
+    {
+        if (
+            is_admin()
+            && isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'author'
+            && isset($_GET['tag_ID'])
+            && isset($_GET['post_type'])
+        ) {
+            $author = Author::get_by_term_id((int)$_GET['tag_ID']);
+
+            if (is_object($author) && !is_wp_error($author) && (int)$author->user_id === get_current_user_id()) {
+                return __('Edit My Author Profile', 'publishpress-authors');
+            }
+        }
+
+        return __('Edit Author', 'publishpress-authors');
+    }
+
     /**
      * Register the 'author' taxonomy and add post type support
      */
@@ -477,23 +495,23 @@ class Plugin
                     'taxonomy singular name',
                     'publishpress-authors'
                 ),
-                'search_items'               => __('Search authors', 'publishpress-authors'),
-                'popular_items'              => __('Popular authors', 'publishpress-authors'),
-                'all_items'                  => __('All authors', 'publishpress-authors'),
-                'parent_item'                => __('Parent author', 'publishpress-authors'),
-                'parent_item_colon'          => __('Parent author:', 'publishpress-authors'),
-                'edit_item'                  => __('Edit author', 'publishpress-authors'),
-                'view_item'                  => __('View author', 'publishpress-authors'),
-                'update_item'                => __('Update author', 'publishpress-authors'),
-                'add_new_item'               => __('New author', 'publishpress-authors'),
-                'new_item_name'              => __('New author', 'publishpress-authors'),
+                'search_items'               => __('Search Authors', 'publishpress-authors'),
+                'popular_items'              => __('Popular Authors', 'publishpress-authors'),
+                'all_items'                  => __('All Authors', 'publishpress-authors'),
+                'parent_item'                => __('Parent Author', 'publishpress-authors'),
+                'parent_item_colon'          => __('Parent Author:', 'publishpress-authors'),
+                'edit_item'                  => $this->get_author_taxonomy_title(),
+                'view_item'                  => __('View Author', 'publishpress-authors'),
+                'update_item'                => __('Update Author', 'publishpress-authors'),
+                'add_new_item'               => __('New Author', 'publishpress-authors'),
+                'new_item_name'              => __('New Author', 'publishpress-authors'),
                 'separate_items_with_commas' => __(
                     'Separate authors with commas',
                     'publishpress-authors'
                 ),
                 'add_or_remove_items'        => __('Add or remove authors', 'publishpress-authors'),
                 'choose_from_most_used'      => __(
-                    'Choose from the most used authors',
+                    'Choose from the most used Authors',
                     'publishpress-authors'
                 ),
                 'not_found'                  => __('No authors found.', 'publishpress-authors'),
