@@ -266,38 +266,38 @@ class Author_Editor
     {
         $fields = [
             'user_id'     => [
-                'label'    => __('Mapped User', 'publishpress-authors'),
+                'label'    => esc_html__('Mapped User', 'publishpress-authors'),
                 'type'     => 'ajax_user_select',
                 'sanitize' => 'intval',
             ],
             'first_name'  => [
-                'label' => __('First Name', 'publishpress-authors'),
+                'label' => esc_html__('First Name', 'publishpress-authors'),
                 'type'  => 'text',
             ],
             'last_name'   => [
-                'label' => __('Last Name', 'publishpress-authors'),
+                'label' => esc_html__('Last Name', 'publishpress-authors'),
                 'type'  => 'text',
             ],
             'user_email'  => [
-                'label'       => __('Email', 'publishpress-authors'),
+                'label'       => esc_html__('Email', 'publishpress-authors'),
                 'type'        => 'email',
-                'description' => __(
+                'description' => esc_html__(
                     'To show the avatar from the Mapped User, enter the same email address as the Mapped User. To show the avatar for a Guest Author, enter the email for their Gravatar account.',
                     'publishpress-authors'
                 ),
             ],
             'avatar'      => [
-                'label'    => __('Custom Avatar', 'publishpress-authors'),
+                'label'    => esc_html__('Custom Avatar', 'publishpress-authors'),
                 'type'     => 'image',
                 'sanitize' => 'intval',
             ],
             'user_url'    => [
-                'label'    => __('Website', 'publishpress-authors'),
+                'label'    => esc_html__('Website', 'publishpress-authors'),
                 'type'     => 'url',
                 'sanitize' => 'esc_url_raw',
             ],
             'description' => [
-                'label'    => __('Biographical Info', 'publishpress-authors'),
+                'label'    => esc_html__('Biographical Info', 'publishpress-authors'),
                 'type'     => 'textarea',
                 'sanitize' => 'sanitize_textarea_field',
             ],
