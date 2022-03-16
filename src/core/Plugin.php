@@ -457,24 +457,38 @@ class Plugin
             null,
             plugin_basename(PP_AUTHORS_BASE_PATH) . '/languages/'
         );
+
+        add_filter('taxonomy_labels_author', [$this, 'filter_author_taxonomy_labels']);
     }
 
-    private function get_author_taxonomy_title()
+    public function filter_author_taxonomy_labels($labels)
     {
+        global $pagenow;
+
         if (
             is_admin()
+            && $pagenow === 'term.php'
             && isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'author'
             && isset($_GET['tag_ID'])
-            && isset($_GET['post_type'])
         ) {
             $author = Author::get_by_term_id((int)$_GET['tag_ID']);
 
             if (is_object($author) && !is_wp_error($author) && (int)$author->user_id === get_current_user_id()) {
-                return __('Edit My Author Profile', 'publishpress-authors');
+                $labels->edit_item = __('Edit My Author Profile', 'publishpress-authors');
             }
         }
 
-        return __('Edit Author', 'publishpress-authors');
+        $labels->name_field_description = esc_html__(
+            'This is the name that will show on the site.',
+            'publishpress-authors'
+        );
+
+        $labels->slug_field_description = esc_html__(
+            'This forms part of the URL for the author’s profile page. If you choose a Mapped User, this URL is taken from the user’s account and can not be changed.',
+            'publishpress-authors'
+        );
+
+        return $labels;
     }
 
     /**
@@ -500,7 +514,7 @@ class Plugin
                 'all_items'                  => __('All Authors', 'publishpress-authors'),
                 'parent_item'                => __('Parent Author', 'publishpress-authors'),
                 'parent_item_colon'          => __('Parent Author:', 'publishpress-authors'),
-                'edit_item'                  => $this->get_author_taxonomy_title(),
+                'edit_item'                  => __('Edit Author', 'publishpress-authors'),
                 'view_item'                  => __('View Author', 'publishpress-authors'),
                 'update_item'                => __('Update Author', 'publishpress-authors'),
                 'add_new_item'               => __('New Author', 'publishpress-authors'),

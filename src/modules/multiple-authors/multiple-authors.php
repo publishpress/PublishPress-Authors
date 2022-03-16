@@ -1195,32 +1195,14 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             $taxonomy = isset($_GET['taxonomy']) ? sanitize_key($_GET['taxonomy']) : null;
-
             if ('author' !== $taxonomy) {
                 return $translation;
             }
 
-            // The description of the field Name
-            if ('default' === $domain && 'The name is how it appears on your site.' === $translation) {
-                $translation = esc_html__(
-                    'This is how the author’s name will appears on your site.',
-                    'publishpress-authors'
-                );
-            }
-
             // The name of field Slug, convert to Author URL
-            if (isset($_GET['taxonomy']) && 'author' === $_GET['taxonomy']) {
-                if ('default' === $domain) {
-                    if ('Slug' === $translation) {
-                        $translation = esc_html__('Author URL', 'publishpress-authors');
-                    }
-
-                    if ('The &#8220;slug&#8221; is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens.' === $translation) {
-                        $translation = esc_html__(
-                            'This forms part of the URL for the author’s profile page. If you choose a Mapped User, this URL is taken from the user’s account and can not be changed.',
-                            'publishpress-authors'
-                        );
-                    }
+            if ('default' === $domain) {
+                if ('Slug' === $translation) {
+                    $translation = esc_html__('Author URL', 'publishpress-authors');
                 }
             }
 
