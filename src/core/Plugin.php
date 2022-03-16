@@ -1418,6 +1418,10 @@ class Plugin
      */
     public function filter_views($views)
     {
+        if (! is_array($views)) {
+            $views = [];
+        }
+
         if (array_key_exists('mine', $views)) {
             return $views;
         }

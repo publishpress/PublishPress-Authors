@@ -447,9 +447,9 @@ if (!class_exists('MA_Multiple_Authors')) {
             if (
                 !MultipleAuthors\Classes\Utils::isPluginActive('advanced-gutenberg.php')
                 && !MultipleAuthors\Classes\Utils::isPluginActive('advanced-gutenberg-pro.php')) {
-            	define('PP_AUTHORS_BLOCKS_INSTALLED', false);
+                define('PP_AUTHORS_BLOCKS_INSTALLED', false);
             } else {
-            	define('PP_AUTHORS_BLOCKS_INSTALLED', true);
+                define('PP_AUTHORS_BLOCKS_INSTALLED', true);
             }
         }
 
