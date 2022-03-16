@@ -21,6 +21,7 @@
  * along with PublishPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use MultipleAuthors\Capability;
 use MultipleAuthors\Classes\Legacy\Module;
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Factory;
@@ -177,7 +178,7 @@ if (!class_exists('MA_Bylines_Migration')) {
                     'taxonomy'   => 'byline',
                     'hide_empty' => false,
                     'number'     => $number,
-                    'meta_query' => [
+                    'meta_query' => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
                         [
                             'key'     => self::META_MIGRATED,
                             'compare' => 'NOT EXISTS',
@@ -205,7 +206,11 @@ if (!class_exists('MA_Bylines_Migration')) {
 
         public function getBylinesMigrationData()
         {
-            if (!wp_verify_nonce($_GET['nonce'], self::NONCE_ACTION)) {
+            if (!isset($_GET['nonce']) || !wp_verify_nonce(sanitize_key($_GET['nonce']), self::NONCE_ACTION)) {
+                wp_send_json_error(null, 403);
+            }
+
+            if (! Capability::currentUserCanManageSettings()) {
                 wp_send_json_error(null, 403);
             }
 
@@ -230,7 +235,11 @@ if (!class_exists('MA_Bylines_Migration')) {
 
         public function migrateBylinesData()
         {
-            if (!wp_verify_nonce($_GET['nonce'], self::NONCE_ACTION)) {
+            if (!isset($_GET['nonce']) || !wp_verify_nonce(sanitize_key($_GET['nonce']), self::NONCE_ACTION)) {
+                wp_send_json_error(null, 403);
+            }
+
+            if (! Capability::currentUserCanManageSettings()) {
                 wp_send_json_error(null, 403);
             }
 
@@ -287,18 +296,19 @@ if (!class_exists('MA_Bylines_Migration')) {
                     }
 
                     // Migrate the posts' terms relationship.
-                    $sql     = $wpdb->prepare(
-                        "
-                        INSERT INTO {$wpdb->term_relationships}
-                            SELECT object_id, %s, term_order
-                            FROM {$wpdb->term_relationships}
-                            WHERE term_taxonomy_id = %s
-                        
-                        ",
-                        $author->term_id,
-                        $bylinesTerm->term_id
+                    $wpdb->get_results(
+                        $wpdb->prepare(
+                            "
+                            INSERT INTO {$wpdb->term_relationships}
+                                SELECT object_id, %s, term_order
+                                FROM {$wpdb->term_relationships}
+                                WHERE term_taxonomy_id = %s
+                            
+                            ",
+                            $author->term_id,
+                            $bylinesTerm->term_id
+                        )
                     );
-                    $results = $wpdb->get_results($sql);
 
                     update_term_meta($bylinesTerm->term_id, self::META_MIGRATED, 1);
                 }
@@ -314,7 +324,11 @@ if (!class_exists('MA_Bylines_Migration')) {
 
         public function deactivateBylines()
         {
-            if (!wp_verify_nonce($_GET['nonce'], self::NONCE_ACTION)) {
+            if (!isset($_GET['nonce']) || !wp_verify_nonce(sanitize_key($_GET['nonce']), self::NONCE_ACTION)) {
+                wp_send_json_error(null, 403);
+            }
+
+            if (! Capability::currentUserCanManageSettings()) {
                 wp_send_json_error(null, 403);
             }
 

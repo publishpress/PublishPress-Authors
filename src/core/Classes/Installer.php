@@ -23,6 +23,7 @@
 
 namespace MultipleAuthors\Classes;
 
+use MultipleAuthors\Capability;
 use MultipleAuthors\Classes\Objects\Author;
 use WP_Role;
 
@@ -109,7 +110,7 @@ class Installer
         $parsedArgs['paged'] = $parsedArgs['paged'] * $parsedArgs['posts_per_page'] - $parsedArgs['posts_per_page'];
 
         return wp_list_pluck(
-            $wpdb->get_results(
+            $wpdb->get_results( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
                 "
                 SELECT DISTINCT
                     p.post_author AS ID
@@ -216,7 +217,7 @@ class Installer
         $parsedArgs['paged'] = (int)$parsedArgs['paged'];
         $parsedArgs['paged'] = $parsedArgs['paged'] * $parsedArgs['posts_per_page'] - $parsedArgs['posts_per_page'];
 
-        return $wpdb->get_results(
+        return $wpdb->get_results( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
             "
             SELECT
                 p.*
@@ -323,9 +324,9 @@ class Installer
     private static function addDefaultCapabilitiesForAdministrators()
     {
         $role = get_role('administrator');
-        $role->add_cap('ppma_manage_authors');
-        $role->add_cap('manage_options');
-        $role->add_cap('ppma_edit_post_authors');
+        $role->add_cap(Capability::getManageAuthorsCapability());
+        $role->add_cap(Capability::getManageAuthorsCapability());
+        $role->add_cap(Capability::getEditPostAuthorsCapability());
     }
 
     /**
@@ -336,7 +337,7 @@ class Installer
         global $wp_rewrite;
 
         if (is_object($wp_rewrite)) {
-            $wp_rewrite->flush_rules();
+            $wp_rewrite->flush_rules(); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.flush_rules_flush_rules
         }
     }
 

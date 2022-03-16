@@ -86,38 +86,34 @@ if (!class_exists('MA_Yoast_Seo_Integration')) {
                 add_filter('wpseo_replacements', [$this, 'overrideSEOReplacementsForAuthorsPage'], 10, 2);
                 add_filter('wpseo_robots', [$this, 'wpseoRobots']);
             } catch (Exception $e) {
-                error_log(
-                    sprintf('[PublishPress Authors] Method [%s] caught the exception %s', __METHOD__, $e->getMessage())
-                );
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+                        sprintf('[PublishPress Authors] Method [%s] caught the exception %s', __METHOD__, $e->getMessage())
+                    );
+                }
             }
         }
 
         public function overrideSEOReplacementsForAuthorsPage($replacements, $args)
         {
-            try {
-                $post = get_post();
+            $post = get_post();
 
-                if (!is_object($post) || is_wp_error($post)) {
-                    return $replacements;
-                }
+            if (!is_object($post) || is_wp_error($post)) {
+                return $replacements;
+            }
 
-                foreach ($replacements as $key => &$value) {
-                    if ($key === '%%name%%') {
-                        $authors = get_multiple_authors($post->ID);
+            foreach ($replacements as $key => &$value) {
+                if ($key === '%%name%%') {
+                    $authors = get_post_authors($post->ID);
 
-                        if (is_array($authors) && !empty($authors)) {
-                            $author = $authors[0];
+                    if (is_array($authors) && !empty($authors)) {
+                        $author = $authors[0];
 
-                            if (isset($author->display_name)) {
-                                $value = $author->display_name;
-                            }
+                        if (isset($author->display_name)) {
+                            $value = $author->display_name;
                         }
                     }
                 }
-            } catch (Exception $e) {
-                error_log(
-                    sprintf('[PublishPress Authors] Method %s caught the exception: %s', __METHOD__, $e->getMessage())
-                );
             }
 
             return $replacements;

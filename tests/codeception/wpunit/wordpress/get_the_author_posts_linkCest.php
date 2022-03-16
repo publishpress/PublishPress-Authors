@@ -32,9 +32,9 @@ class get_the_author_posts_linkCest
 
         $I->assertEquals(
             sprintf(
-                '<a href="http://%7$s/author/%1$s/" title="%2$s" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">%2$s</a>, ' .
-                '<a href="http://%7$s/author/%3$s/" title="%4$s" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">%4$s</a>, ' .
-                '<a href="http://%7$s/author/%5$s/" title="%6$s" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">%6$s</a>',
+                '<a href="http://%7$s/author/%1$s/" title="Posts by %2$s" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">%2$s</a>, ' .
+                '<a href="http://%7$s/author/%3$s/" title="Posts by %4$s" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">%4$s</a>, ' .
+                '<a href="http://%7$s/author/%5$s/" title="Posts by %6$s" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">%6$s</a>',
                 $author1->slug,
                 $author1->display_name,
                 $author2->slug,
@@ -90,9 +90,9 @@ class get_the_author_posts_linkCest
 
         $I->assertEquals(
             sprintf(
-                '<a href="http://%7$s/author/%1$s/" title="%2$s" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">%2$s</a>, ' .
-                '<a href="http://%7$s/author/%3$s/" title="%4$s" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">%4$s</a>, ' .
-                '<a href="http://%7$s/author/%5$s/" title="%6$s" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">%6$s</a>',
+                '<a href="http://%7$s/author/%1$s/" title="Posts by %2$s" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">%2$s</a>, ' .
+                '<a href="http://%7$s/author/%3$s/" title="Posts by %4$s" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">%4$s</a>, ' .
+                '<a href="http://%7$s/author/%5$s/" title="Posts by %6$s" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">%6$s</a>',
                 $author1->slug,
                 $author1->display_name,
                 $author2->slug,

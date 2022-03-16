@@ -14,7 +14,7 @@ trait Theme
      */
     public function iSeeAuthorNameInTheByline($authorName)
     {
-        $this->see(sq($authorName), '.posted-by .byline a');
+        $this->see(sq($authorName), '.post-meta .post-author a');
     }
 
     /**
@@ -22,14 +22,11 @@ trait Theme
      */
     public function iSeeTheLinkForAuthorInTheByline($authorSlug)
     {
-        $this->setPermalinkStructure('');
-
         $author = Author::get_by_term_slug(sq($authorSlug));
 
-        $expectedAuthorLink = $_ENV['TEST_SITE_WP_URL'] . '/?author=' . $author->ID;
-        $authorLink         = $this->grabAttributeFrom('.posted-by .byline a', 'href');
+        $authorLink = $this->grabAttributeFrom('.post-meta .post-author a', 'href');
 
-        $this->assertEquals($expectedAuthorLink, $authorLink);
+        $this->assertEquals($author->link, $authorLink);
     }
 
     /**
@@ -48,4 +45,3 @@ trait Theme
         $this->see(sq($authorName), '.multiple-authors-target-the-content li .multiple-authors-name a.author');
     }
 }
-

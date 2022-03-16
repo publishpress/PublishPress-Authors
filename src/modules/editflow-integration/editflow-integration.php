@@ -108,7 +108,7 @@ if (!class_exists('MA_Editflow_Integration')) {
                 return $information_fields;
             }
 
-            $co_authors = get_multiple_authors($post_id);
+            $co_authors = get_post_authors($post_id);
             if (count($co_authors) > 1) {
                 $information_fields['author']['label'] = __('Authors', 'publishpress-authors');
             }
@@ -137,7 +137,7 @@ if (!class_exists('MA_Editflow_Integration')) {
                 return $column_name;
             }
 
-            $co_authors       = get_multiple_authors($post->ID);
+            $co_authors       = get_post_authors($post->ID);
             $co_authors_names = '';
             foreach ($co_authors as $co_author) {
                 $co_authors_names .= $co_author->display_name . ', ';

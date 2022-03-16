@@ -44,14 +44,14 @@ class Authors_Widget extends WP_Widget
         $instance = wp_parse_args(
             (array)$instance,
             array(
-                'title' => $this->title,
+                'title' => esc_html($this->title),
             )
         );
 
         /** This filter is documented in core/src/wp-includes/default-widgets.php */
         $title = apply_filters(
             'widget_title',
-            isset($instance['title']) ? $instance['title'] : '',
+            isset($instance['title']) ? esc_html($instance['title']) : '',
             $instance,
             $this->id_base
         );
@@ -61,22 +61,22 @@ class Authors_Widget extends WP_Widget
         $output .= $this->get_author_box_markup($args, $instance);
         if (!empty($output)) {
             if (isset($args['before_widget'])) {
-                echo $args['before_widget'];
+                echo $args['before_widget']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             }
 
             if (!isset($instance['show_title']) || true === $instance['show_title']) {
                 echo sprintf(
                     '%s<h2 class="widget-title">%s</h2>%s',
-                    isset($args['before_title']) ? $args['before_title'] : '',
-                    apply_filters('widget_title', $title),
-                    isset($args['after_title']) ? $args['after_title'] : ''
+                    isset($args['before_title']) ? $args['before_title'] : '', // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                    esc_html(apply_filters('widget_title', $title)), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                    isset($args['after_title']) ? $args['after_title'] : '' // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 );
             }
 
-            echo $output;
+            echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
             if (isset($args['after_widget'])) {
-                echo $args['after_widget'];
+                echo $args['after_widget']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             }
         }
     }
@@ -93,15 +93,15 @@ class Authors_Widget extends WP_Widget
         $instance = wp_parse_args(
             (array)$instance,
             array(
-                'title'      => $this->title,
-                'layout'     => $legacyPlugin->modules->multiple_authors->options->layout,
+                'title'      => esc_html($this->title),
+                'layout'     => esc_html($legacyPlugin->modules->multiple_authors->options->layout),
                 'show_empty' => true
             )
         );
 
-        $title     = strip_tags($instance['title']);
-        $layout    = strip_tags($instance['layout']);
-        $showEmpty = isset($instance['show_empty']) ? (bool)$instance['show_empty'] : false;
+        $title     = esc_html($instance['title']);
+        $layout    = esc_html($instance['layout']);
+        $showEmpty = isset($instance['show_empty']) && (bool)$instance['show_empty'];
         $context   = array(
             'labels'  => array(
                 'title'      => esc_html__('Title', 'publishpress-authors'),
@@ -112,18 +112,18 @@ class Authors_Widget extends WP_Widget
                 )
             ),
             'ids'     => array(
-                'title'      => $this->get_field_id('title'),
-                'layout'     => $this->get_field_id('layout'),
-                'show_empty' => $this->get_field_id('show_empty')
+                'title'      => esc_html($this->get_field_id('title')),
+                'layout'     => esc_html($this->get_field_id('layout')),
+                'show_empty' => esc_html($this->get_field_id('show_empty'))
             ),
             'names'   => array(
-                'title'      => $this->get_field_name('title'),
-                'layout'     => $this->get_field_name('layout'),
-                'show_empty' => $this->get_field_name('show_empty')
+                'title'      => esc_html($this->get_field_name('title')),
+                'layout'     => esc_html($this->get_field_name('layout')),
+                'show_empty' => esc_html($this->get_field_name('show_empty'))
             ),
             'values'  => array(
-                'title'      => $title,
-                'layout'     => $layout,
+                'title'      => esc_html($title),
+                'layout'     => esc_html($layout),
                 'show_empty' => $showEmpty
             ),
             'layouts' => apply_filters('pp_multiple_authors_author_layouts', array()),
@@ -131,7 +131,7 @@ class Authors_Widget extends WP_Widget
 
         $container = Factory::get_container();
 
-        echo $container['twig']->render('authors-list-widget-form.twig', $context);
+        echo $container['twig']->render('authors-list-widget-form.twig', $context); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
 
     /**

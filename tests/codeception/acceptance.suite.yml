@@ -57,7 +57,7 @@ modules:
                     prefs:
                         download.default_directory: "..."
         Sequence:
-            prefix: "uid_"
+            prefix: "_"
 extensions:
     enabled:
         - Codeception\Extension\RunProcess:

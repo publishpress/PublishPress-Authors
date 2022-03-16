@@ -57,5 +57,4 @@ class Theme
 
         return get_queried_object()->description;
     }
-
 }

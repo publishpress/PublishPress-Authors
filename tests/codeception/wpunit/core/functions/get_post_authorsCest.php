@@ -7,7 +7,7 @@ use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Classes\Utils;
 use WpunitTester;
 
-class get_multiple_authorsCest
+class get_post_authorsCest
 {
     private function serializeArrayOfAuthors($authorsArray)
     {
@@ -25,7 +25,7 @@ class get_multiple_authorsCest
         return maybe_serialize($data);
     }
 
-    public function testGetMultipleAuthors_WithPostAsObject_ReturnListOfAuthors(WpunitTester $I)
+    public function testGetPostAuthors_WithPostAsObject_ReturnListOfAuthors(WpunitTester $I)
     {
         $userId0 = $I->factory('create user0')->user->create();
         $userId1 = $I->factory('create user1')->user->create();
@@ -40,7 +40,7 @@ class get_multiple_authorsCest
 
         wp_set_post_terms($postId, [$author0->term_id, $author1->term_id, $author2->term_id], 'author');
 
-        $authorsList = get_multiple_authors($post, false, false);
+        $authorsList = get_post_authors($post);
 
         $I->assertIsArray($authorsList);
         $I->assertCount(3, $authorsList);
@@ -52,7 +52,7 @@ class get_multiple_authorsCest
         $I->assertEquals($author2->term_id, $authorsList[2]->term_id);
     }
 
-    public function testGetMultipleAuthors_CalledMultipleTimes_ReturnSameListOfCachedAuthors(WpunitTester $I)
+    public function testGetPostAuthors_CalledMultipleTimes_ReturnSameListOfCachedAuthors(WpunitTester $I)
     {
         $userId0 = $I->factory('create user0')->user->create();
         $userId1 = $I->factory('create user1')->user->create();
@@ -66,9 +66,9 @@ class get_multiple_authorsCest
 
         wp_set_post_terms($postId, [$author0->term_id, $author1->term_id, $author2->term_id], 'author');
 
-        $authorsList = get_multiple_authors($postId, false, false);
-        get_multiple_authors($postId, false, false);
-        get_multiple_authors($postId, false, false);
+        $authorsList = get_post_authors($postId);
+        get_post_authors($postId);
+        get_post_authors($postId);
 
         $cacheKey   = $postId;
         $cachedList = wp_cache_get($cacheKey, 'get_post_authors:authors');
@@ -85,7 +85,7 @@ class get_multiple_authorsCest
         $I->assertEquals(maybe_serialize($authorsList), maybe_serialize($cachedList));
     }
 
-    public function testGetMultipleAuthors_WithPostAsInt_ReturnListOfAuthors(WpunitTester $I)
+    public function testGetPostAuthors_WithPostAsInt_ReturnListOfAuthors(WpunitTester $I)
     {
         $userId0 = $I->factory('create user0')->user->create();
         $userId1 = $I->factory('create user1')->user->create();
@@ -99,7 +99,7 @@ class get_multiple_authorsCest
 
         wp_set_post_terms($postId, [$author0->term_id, $author1->term_id, $author2->term_id], 'author');
 
-        $authorsList = get_multiple_authors($postId, false, false);
+        $authorsList = get_post_authors($postId);
 
         $I->assertIsArray($authorsList);
         $I->assertCount(3, $authorsList);
@@ -111,7 +111,7 @@ class get_multiple_authorsCest
         $I->assertEquals($author2->term_id, $authorsList[2]->term_id);
     }
 
-    public function testGetMultipleAuthors_WithPostAsString_ReturnListOfAuthors(WpunitTester $I)
+    public function testGetPostAuthors_WithPostAsString_ReturnListOfAuthors(WpunitTester $I)
     {
         $userId0 = $I->factory('create user0')->user->create();
         $userId1 = $I->factory('create user1')->user->create();
@@ -125,7 +125,7 @@ class get_multiple_authorsCest
 
         wp_set_post_terms($postId, [$author0->term_id, $author1->term_id, $author2->term_id], 'author');
 
-        $authorsList = get_multiple_authors("$postId", false, false);
+        $authorsList = get_post_authors("$postId");
 
         $I->assertIsArray($authorsList);
         $I->assertCount(3, $authorsList);
@@ -143,7 +143,7 @@ class get_multiple_authorsCest
      * @example [null]
      * @example [""]
      */
-    public function testGetMultipleAuthors_WithGlobalPost_ReturnListOfAuthors(WpunitTester $I, Example $example)
+    public function testGetPostAuthors_WithGlobalPost_ReturnListOfAuthors(WpunitTester $I, Example $example)
     {
         $userId0 = $I->factory('create user0')->user->create();
         $userId1 = $I->factory('create user1')->user->create();
@@ -160,7 +160,7 @@ class get_multiple_authorsCest
 
         $GLOBALS['post'] = $post;
 
-        $authorsList = get_multiple_authors($example[0], false, false);
+        $authorsList = get_post_authors($example[0]);
 
         $I->assertIsArray($authorsList);
         $I->assertCount(3, $authorsList);
@@ -172,25 +172,7 @@ class get_multiple_authorsCest
         $I->assertEquals($author2->term_id, $authorsList[2]->term_id);
     }
 
-    public function testGetMultipleAuthors_WithArchiveParam_ShouldReturnCurrentAuthor(WpunitTester $I)
-    {
-        $userId0 = $I->factory('create user0')->user->create();
-
-        $author0 = Author::create_from_user($userId0);
-
-        global $wp_query;
-        $wp_query->is_author = true;
-        set_query_var('author_name', $author0->slug);
-
-        $authorsList = get_multiple_authors(0, false, true);
-
-        $I->assertIsArray($authorsList);
-        $I->assertCount(1, $authorsList);
-        $I->assertInstanceOf(Author::class, $authorsList[0]);
-        $I->assertEquals($author0->term_id, $authorsList[0]->term_id);
-    }
-
-    public function testGetMultipleAuthors_WithNoArgumentsForMultiplePosts_isDetectingTheCorrectGlobalPost(
+    public function testGetPostAuthors_WithNoArgumentsForMultiplePosts_isDetectingTheCorrectGlobalPost(
         WpunitTester $I
     ) {
         $userId0 = $I->factory('create user0')->user->create();
@@ -214,22 +196,22 @@ class get_multiple_authorsCest
         wp_set_post_terms($postId2, [$author0->term_id, $author1->term_id], 'author');
 
         $GLOBALS['post'] = $post0;
-        $authors         = get_multiple_authors();
+        $authors         = get_post_authors();
 
         $I->assertCount(3, $authors);
 
         $GLOBALS['post'] = $post1;
-        $authors         = get_multiple_authors();
+        $authors         = get_post_authors();
 
         $I->assertCount(1, $authors);
 
         $GLOBALS['post'] = $post2;
-        $authors         = get_multiple_authors();
+        $authors         = get_post_authors();
 
         $I->assertCount(2, $authors);
     }
 
-    public function testGetMultipleAuthors_WithNoAuthorTermsForThePostButAnAuthorWithTaxonomy_shouldReturnAnAuthorInstance(
+    public function testGetPostAuthors_WithNoAuthorTermsForThePostButAnAuthorWithTaxonomy_shouldReturnAnAuthorInstance(
         WpunitTester $I
     ) {
         global $wpdb;
@@ -245,12 +227,12 @@ class get_multiple_authorsCest
         // Force to remove the author term relationship to the post.
         wp_remove_object_terms($postId, [$author->term_id], 'author');
 
-        $authors = get_multiple_authors($postId);
+        $authors = get_post_authors($postId);
 
         $I->assertInstanceOf('MultipleAuthors\\Classes\\Objects\\Author', $authors[0]);
     }
 
-    public function testGetMultipleAuthors_WithNoAuthorRelationshipForPostAndNoAuthorTermForNotSelectedPostType_shouldNotCreateTheAuthorBasedOnUser(
+    public function testGetPostAuthors_WithNoAuthorRelationshipForPostAndNoAuthorTermForNotSelectedPostType_shouldNotCreateTheAuthorBasedOnUser(
         WpunitTester $I
     ) {
         $I->setPluginSettingsPostTypes(['post']);
@@ -261,14 +243,14 @@ class get_multiple_authorsCest
 
         $I->makeSurePostDoesntHaveAuthorPosts($postId);
 
-        $I->getMultipleAuthorsForPost($postId);
+        get_post_authors($postId);
 
         $author = $I->getAuthorByUserId($userId);
 
         $I->assertFalse($author);
     }
 
-    public function testGetMultipleAuthors_WithNoAuthorRelationshipForPostAndNoAuthorTermForNotSelectedPostType_shouldReturnEmptyArray(
+    public function testGetPostAuthors_WithNoAuthorRelationshipForPostAndNoAuthorTermForNotSelectedPostType_shouldReturnEmptyArray(
         WpunitTester $I
     ) {
         $I->setPluginSettingsPostTypes(['post']);
@@ -279,19 +261,19 @@ class get_multiple_authorsCest
 
         $I->makeSurePostDoesntHaveAuthorPosts($postId);
 
-        $authors = $I->getMultipleAuthorsForPost($postId);
+        $authors = get_post_authors($postId);
 
         $I->assertEmpty($authors);
     }
 
-    public function testGetMultipleAuthors_WithNoAuthorRelationshipForPostAndNoAuthorTermForSelectedPostType_shouldCreateTheAuthorBasedOnUser(
+    public function testGetPostAuthors_WithNoAuthorRelationshipForPostAndNoAuthorTermForSelectedPostType_shouldCreateTheAuthorBasedOnUser(
         WpunitTester $I
     ) {
         $userId = $I->haveAUser();
         $postId = $I->haveAPostForUser($userId);
         $I->setPluginSettingsPostTypes(['post']);
 
-        $authors = $I->getMultipleAuthorsForPost($postId);
+        $authors = get_post_authors($postId);
 
         $I->assertNotEmpty($authors);
 
@@ -303,14 +285,14 @@ class get_multiple_authorsCest
         $I->assertNotEmpty($firstAuthor->display_name);
     }
 
-    public function testGetMultipleAuthors_WithNoAuthorRelationshipForPostAndNoAuthorTerm_shouldCreateTheAuthorRelationshipForThePost(
+    public function testGetPostAuthors_WithNoAuthorRelationshipForPostAndNoAuthorTerm_shouldCreateTheAuthorRelationshipForThePost(
         WpunitTester $I
     ) {
         $userId = $I->haveAUser();
         $postId = $I->haveAPostForUser($userId);
         $I->setPluginSettingsPostTypes(['post']);
 
-        $authors = $I->getMultipleAuthorsForPost($postId);
+        $authors = get_post_authors($postId);
 
         $postTerms   = wp_get_post_terms($postId, 'author');
         $firstAuthor = $authors[0];
@@ -320,7 +302,7 @@ class get_multiple_authorsCest
         $I->assertInstanceOf('MultipleAuthors\\Classes\\Objects\\Author', $firstAuthor);
     }
 
-    public function testGetMultipleAuthors_WhenThereIsNoNoAuthorRelationshipForPostAndPostAuthorIsZero_shouldReturnAnEmptyArray(
+    public function testGetPostAuthors_WhenThereIsNoNoAuthorRelationshipForPostAndPostAuthorIsZero_shouldReturnAnEmptyArray(
         WpunitTester $I
     ) {
         $I->setPluginSettingsPostTypes(['post']);
@@ -335,53 +317,9 @@ class get_multiple_authorsCest
 
         $I->assertEquals(0, $post->post_author);
 
-        $authors = get_multiple_authors($postId);
+        $authors = get_post_authors($postId);
 
         $I->assertIsArray($authors);
         $I->assertEmpty($authors);
-    }
-
-    /**
-     * Test for checking regression on the fixed issue #593, that happened
-     * when calling the get_multiple_authors function with the $archive param
-     * as true to retrieve the current author in the author archive page. The
-     * first post, if having more than one author, had the secondary authors
-     * removed, remaining only the first author.
-     *
-     * @return void
-     */
-    public function testGetMultipleAuthors_WithArchiveAsTrue_shouldNotRemoveSecondaryAuthorsOfCurrentPost(
-        WpunitTester $I
-    ) {
-        $userId0 = $I->factory('create user0')->user->create();
-        $userId1 = $I->factory('create user1')->user->create();
-        $userId2 = $I->factory('create user2')->user->create();
-
-        $author0 = Author::create_from_user($userId0);
-        $author1 = Author::create_from_user($userId1);
-        $author2 = Author::create_from_user($userId2);
-
-        $postId0 = $I->factory('create post0')->post->create();
-
-        Utils::set_post_authors($postId0, [$author0, $author1, $author2]);
-
-        // The issue was wrongly updating the current post, so we force it here.
-        $post0 = get_post($postId0);
-        $GLOBALS['post'] = $post0;
-
-        // Simulate the author archive page.
-        global $wp_query;
-        $wp_query->is_author = true;
-        set_query_var('author_name', $author0->slug);
-
-        // We call the get_multiple_authors function with the archive argument to force the reported bug.
-        $archiveAuthor = get_multiple_authors(0, false, true);
-
-        $I->assertCount(1, $archiveAuthor);
-
-        // We check the post, has it's authors set changed?
-        $postAuthors = get_multiple_authors($postId0);
-
-        $I->assertCount(3, $postAuthors);
     }
 }

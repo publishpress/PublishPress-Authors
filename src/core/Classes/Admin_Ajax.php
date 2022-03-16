@@ -9,6 +9,7 @@
 
 namespace MultipleAuthors\Classes;
 
+use MultipleAuthors\Capability;
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Factory;
 
@@ -30,13 +31,16 @@ class Admin_Ajax
         header('Content-Type: application/javascript');
 
         if (empty($_GET['nonce'])
-            || !wp_verify_nonce($_GET['nonce'], 'authors-search')) {
-            exit;
+            || !wp_verify_nonce(sanitize_key($_GET['nonce']), 'authors-search')) {
+            wp_send_json_error(null, 403);
+        }
+
+        if (! Capability::currentUserCanEditPostAuthors()) {
+            wp_send_json_error(null, 403);
         }
 
         $search   = !empty($_GET['q']) ? sanitize_text_field($_GET['q']) : '';
         $ignored  = !empty($_GET['ignored']) ? array_map('sanitize_text_field', $_GET['ignored']) : [];
-        $onlyUsers = isset($_GET['only_users']) ? 1 === (int)$_GET['only_users'] : 0;
         $authors  = self::get_possible_authors_for_search($search, $ignored);
         $response = [
             'results' => $authors,
@@ -123,8 +127,12 @@ class Admin_Ajax
         header('Content-Type: application/javascript');
 
         if (empty($_GET['nonce'])
-            || !wp_verify_nonce($_GET['nonce'], 'authors-user-search')) {
-            exit;
+            || !wp_verify_nonce(sanitize_key($_GET['nonce']), 'authors-user-search')) {
+            wp_send_json_error(null, 403);
+        }
+
+        if (! Capability::currentUserCanEditPostAuthors()) {
+            wp_send_json_error(null, 403);
         }
 
         // We load 100, but only display 20. We load more, because we are filtering users with "edit_posts" capability.
@@ -168,14 +176,18 @@ class Admin_Ajax
     {
         if (empty($_GET['nonce'])
             || empty($_GET['user_id'])
-            || !wp_verify_nonce($_GET['nonce'], 'author_create_from_user' . $_GET['user_id'])) {
-            exit;
+            || !wp_verify_nonce(sanitize_key($_GET['nonce']), 'author_create_from_user' . (int)$_GET['user_id'])) {
+            wp_send_json_error(null, 403);
+        }
+
+        if (! Capability::currentUserCanManageSettings()) {
+            wp_send_json_error(null, 403);
         }
 
         $user_id = (int)$_GET['user_id'];
         $author  = Author::create_from_user($user_id);
         if (is_wp_error($author)) {
-            wp_die($author->get_error_message());
+            wp_die(esc_html($author->get_error_message()));
         }
         $link = get_edit_term_link($author->term_id, 'author');
         wp_safe_redirect($link);
@@ -189,8 +201,12 @@ class Admin_Ajax
     {
         if (empty($_GET['nonce'])
             || empty($_GET['user_id'])
-            || !wp_verify_nonce($_GET['nonce'], 'author_get_user_data_nonce')) {
-            exit;
+            || !wp_verify_nonce(sanitize_key($_GET['nonce']), 'author_get_user_data_nonce')) {
+            wp_send_json_error(null, 403);
+        }
+
+        if (! Capability::currentUserCanManageSettings()) {
+            wp_send_json_error(null, 403);
         }
 
         $user_id = (int)$_GET['user_id'];

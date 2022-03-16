@@ -6,6 +6,8 @@ use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Classes\Utils;
 use RestapiTester;
 
+use function sq;
+
 class postsCest
 {
     public function _before(RestapiTester $I)
@@ -38,10 +40,10 @@ class postsCest
     public function tryToGrabUserIdFromAuthorOnPostWithGuestAuthor(RestapiTester $I)
     {
         $userId = $I->factory('Create user for being the fallback author')->user->create();
-        $author = Author::create(
+        $guestAuthor = Author::create(
             [
-                'display_name' => 'HYS Guest author 1',
-                'slug'         => 'hys-guest-author-1',
+                'display_name' => sq('Guest author 0'),
+                'slug'         => sq('guest-author-0'),
             ]
         );
 
@@ -51,7 +53,7 @@ class postsCest
             ]
         );
 
-        Utils::set_post_authors($postId, [$author], true, $userId);
+        Utils::set_post_authors($postId, [$guestAuthor], true, $userId);
 
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
@@ -108,14 +110,14 @@ class postsCest
         $userId = $I->factory('Create user for being the fallback author')->user->create();
         $author1 = Author::create(
             [
-                'display_name' => 'HYS Guest author 2',
-                'slug'         => 'hys-guest-author-2',
+                'display_name' => sq('Guest author 0'),
+                'slug'         => sq('guest-author-0'),
             ]
         );
         $author2 = Author::create(
             [
-                'display_name' => 'HYS Guest author 3',
-                'slug'         => 'hys-guest-author-3',
+                'display_name' => sq('Guest author 1'),
+                'slug'         => sq('guest-author-1'),
             ]
         );
 

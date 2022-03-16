@@ -101,6 +101,7 @@ class Content_Model
             $link = get_the_permalink();
 
             if (defined('WP_DEBUG') && WP_DEBUG) {
+                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
                 error_log('[PublishPress Authors] Warning - The author_id is empty so the link for the author page was changed to the home URL.');
             }
         }
@@ -119,7 +120,7 @@ class Content_Model
     public static function filter_author_display_name($author_meta, $user_id)
     {
         if (empty($author_meta) && empty($user_id)) {
-            $authors = get_multiple_authors();
+            $authors = get_post_authors();
 
             if (!empty($authors)) {
                 // Even for multiple authors, if not specified one, we will always get the first author.
@@ -198,7 +199,7 @@ class Content_Model
 
     public static function filter_ma_get_author_data($data, $field, $post)
     {
-        $authors = get_multiple_authors($post);
+        $authors = get_post_authors($post);
 
         if (empty($authors)) {
             return $data;

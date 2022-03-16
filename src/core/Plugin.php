@@ -66,8 +66,13 @@ class Plugin
             ['MultipleAuthors\\Classes\\Installer', 'runUpgradeTasks']
         );
 
-        if (!defined('PUBLISHPRESS_AUTHORS_BYPASS_INSTALLER') || !PUBLISHPRESS_AUTHORS_BYPASS_INSTALLER) {
-            add_action('init', [$this, 'manage_installation'], 2000);
+        if (
+            is_admin()
+            && (!defined('DOING_AJAX') || !DOING_AJAX)
+            && (!defined('DOING_CRON') || !DOING_CRON)
+            && (!defined('PUBLISHPRESS_AUTHORS_BYPASS_INSTALLER') || !PUBLISHPRESS_AUTHORS_BYPASS_INSTALLER)
+        ) {
+            add_action('admin_init', [$this, 'manage_installation'], 2000);
         }
 
         add_filter('get_usernumposts', [$this, 'filter_count_user_posts'], 10, 2);
@@ -459,26 +464,7 @@ class Plugin
      */
     public function action_init_late()
     {
-        // Avoid PHP Warnings with Nested Pages plugin due to unexpected object variable type in $post->post_author array
-        // Also hide the Author selector in the NP modal until we develop an integration
-        //
-        // see NestedPages\Entities\Post\PostRepository\getTaxonomyCSS()
-        if (is_admin() && !empty($_REQUEST['page']) && ('nestedpages' == $_REQUEST['page'])) {
-            add_action(
-                'admin_print_scripts',
-                function () {
-                    ?>
-                    <style type="text/css">
-                        div.np-inline-modal div.np_author {display:none;}
-                    </style>
-                    <?php
-                }
-            );
-
-            return;
-        }
-
-        // Register new taxonomy so that we can store all of the relationships
+        // Register new taxonomy so that we can store all the relationships
         $args = [
             'labels'             => [
                 'name'                       => _x(
@@ -645,7 +631,11 @@ class Plugin
             return $html;
         }
 
+
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         echo $html;
+
+        return '';
     }
 
     public function filterDisplayFooter($shouldDisplay = true)
@@ -714,7 +704,6 @@ class Plugin
         }
 
         $numPosts = $author->getTerm()->count;
-        $taxonomy = get_taxonomy('author');
 
         $value = sprintf(
             '<a href="%s" class="edit"><span aria-hidden="true">%s</span><span class="screen-reader-text">%s</span></a>',
@@ -752,7 +741,7 @@ class Plugin
             global $wpdb;
 
             $query->query_fields .= ', tt.count as posts_count';
-            $query->query_from .= " LEFT JOIN $wpdb->termmeta as tm ON ($wpdb->users.ID = tm.meta_value AND tm.meta_key = \"user_id\")";
+            $query->query_from .= " LEFT JOIN $wpdb->termmeta as tm ON ($wpdb->users.ID = tm.meta_value AND tm.meta_key = \"user_id\")"; // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.user_meta__wpdb__users
             $query->query_from .= " LEFT JOIN $wpdb->term_taxonomy as tt ON (tm.`term_id` = tt.term_id AND tt.taxonomy = \"author\")";
             $query->query_orderby = 'ORDER BY posts_count ' . $query->get('order');
         }
@@ -764,7 +753,7 @@ class Plugin
     public function _action_quick_edit_custom_box($column_name, $post_type)
     {
         if (
-            'authors' != $column_name || !Utils::is_post_type_enabled(
+            'authors' !== $column_name || !Utils::is_post_type_enabled(
                 $post_type
             ) || !Utils::current_user_can_set_authors()
         ) {
@@ -797,10 +786,11 @@ class Plugin
     {
         global $wpdb;
 
-        if ($this->coauthor_taxonomy != $taxonomy) {
+        if ($this->coauthor_taxonomy !== $taxonomy) {
             return;
         }
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
         $term_id = $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT term_id FROM $wpdb->term_taxonomy WHERE term_taxonomy_id = %d ",
@@ -828,7 +818,7 @@ class Plugin
      *
      * @return object|false $coauthor The co-author on success, false on failure
      */
-    public function get_coauthor_by($key, $value, $force = false)
+    public function get_coauthor_by($key, $value)
     {
         switch ($key) {
             case 'id':
@@ -837,17 +827,17 @@ class Plugin
             case 'email':
             case 'user_nicename':
             case 'user_email':
-                if ('user_login' == $key) {
+                if ('user_login' === $key) {
                     $key = 'login';
                 }
-                if ('user_email' == $key) {
+                if ('user_email' === $key) {
                     $key = 'email';
                 }
-                if ('user_nicename' == $key) {
+                if ('user_nicename' === $key) {
                     $key = 'slug';
                 }
                 // Ensure we aren't doing the lookup by the prefixed value
-                if ('login' == $key || 'slug' == $key) {
+                if ('login' === $key || 'slug' === $key) {
                     $value = preg_replace('#^cap\-#', '', $value);
                 }
                 $user = get_user_by($key, $value);
@@ -877,11 +867,10 @@ class Plugin
         global $current_user, $wpdb;
 
         $post_id = (int)$post_id;
-        $insert  = false;
 
         // Best way to persist order
         if ($append) {
-            $existing_coauthors = wp_list_pluck(get_multiple_authors($post_id), 'user_login');
+            $existing_coauthors = wp_list_pluck(get_post_authors($post_id), 'user_login');
         } else {
             $existing_coauthors = [];
         }
@@ -964,7 +953,7 @@ class Plugin
                 'description' => $term_description,
             ];
 
-            $new_term = wp_insert_term($coauthor->user_login, $this->coauthor_taxonomy, $args);
+            wp_insert_term($coauthor->user_login, $this->coauthor_taxonomy, $args);
         }
         wp_cache_delete('author-term-' . $coauthor->user_nicename, 'publishpress-authors');
 
@@ -1007,6 +996,7 @@ class Plugin
      */
     public function filter_wp_get_object_terms($terms, $object_ids, $taxonomies, $args)
     {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if (!isset($_REQUEST['bulk_edit']) || "'author'" !== $taxonomies) {
             return $terms;
         }
@@ -1015,12 +1005,13 @@ class Plugin
         $orderby       = 'ORDER BY tr.term_order';
         $order         = 'ASC';
         $object_ids    = (int)$object_ids;
-        $query         = $wpdb->prepare(
-            "SELECT t.name, t.term_id, tt.term_taxonomy_id FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_id = t.term_id INNER JOIN $wpdb->term_relationships AS tr ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy IN (%s) AND tr.object_id IN (%s) $orderby $order",
-            $this->coauthor_taxonomy,
-            $object_ids
+        $raw_coauthors = $wpdb->get_results(
+            $wpdb->prepare( // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                "SELECT t.name, t.term_id, tt.term_taxonomy_id FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_id = t.term_id INNER JOIN $wpdb->term_relationships AS tr ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy IN (%s) AND tr.object_id IN (%s) $orderby $order",
+                $this->coauthor_taxonomy,
+                $object_ids
+            )
         );
-        $raw_coauthors = $wpdb->get_results($query);
         $terms         = [];
         foreach ($raw_coauthors as $author) {
             if (true === is_array($args) && true === isset($args['fields'])) {
@@ -1082,9 +1073,7 @@ class Plugin
             return 0;
         }
 
-        $count = apply_filters('get_authornumposts', $count, $author);
-
-        return $count;
+        return apply_filters('get_authornumposts', $count, $author);
     }
 
     /**
@@ -1101,32 +1090,34 @@ class Plugin
      *
      * @param string $query_str
      */
-    public function fix_query_for_author_page($query_str)
+    public function fix_query_for_author_page($query_str) // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
     {
         $legacyPlugin = Factory::getLegacyPlugin();
 
         if (empty($legacyPlugin) || !isset($legacyPlugin->multiple_authors) || !Utils::is_post_type_enabled()) {
-            return;
+            return $query_str;
         }
 
         global $wp_query;
 
         if (!is_object($wp_query)) {
-            return;
+            return $query_str;
         }
 
         if (!Util::isAuthor() && (empty($wp_query->query) || !array_key_exists('author', $wp_query->query))) {
-            return;
+            return $query_str;
         }
 
         $author_name = $wp_query->get('author_name');
         if (!$author_name) {
-            return;
+            return $query_str;
         }
 
         Query::fix_query_pre_get_posts($wp_query);
 
         $wp_query->is_404 = false;
+
+        return $query_str;
     }
 
     /**
@@ -1176,7 +1167,7 @@ class Plugin
             ! defined('PUBLISHPRESS_AUTHORS_DISABLE_FILTER_THE_AUTHOR')
             || PUBLISHPRESS_AUTHORS_DISABLE_FILTER_THE_AUTHOR !== true
         ) {
-            $authors = get_multiple_authors(get_post());
+            $authors = get_post_authors(get_post());
             if (! empty($authors) && isset($authors[0]) && isset($authors[0]->display_name)) {
                 return $authors[0]->display_name;
             }
@@ -1554,7 +1545,7 @@ class Plugin
             }
         } else {
             if (is_singular() && Utils::is_post_type_enabled()) {
-                $authors = get_multiple_authors();
+                $authors = get_post_authors();
                 if (!empty($authors)) {
                     $author = array_shift($authors);
                     if (isset($og_tags['article:author'])) {
@@ -1705,6 +1696,7 @@ class Plugin
         $post_id = null
     ) {
         if ($this->should_display_author_box() || $force) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             echo $this->get_author_box_markup('action', $show_title, $layout, $archive, $post_id);
         }
     }
@@ -1714,7 +1706,7 @@ class Plugin
      */
     public function activation_hook()
     {
-        flush_rewrite_rules();
+        flush_rewrite_rules(); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.flush_rewrite_rules_flush_rewrite_rules
     }
 
     public function filterCMECapabilities($capabilities)

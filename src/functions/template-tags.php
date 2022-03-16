@@ -14,14 +14,40 @@ use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Classes\Utils;
 use MultipleAuthors\Factory;
 
-if (!function_exists('get_multiple_authors')) {
+if (!function_exists('get_archive_author')) {
     /**
-     * Get all authors for a post.
+     * Get the author on the archive page.
+     *
+     * @return Author|false
+     */
+    function get_archive_author()
+    {
+        if (!is_author()) {
+            return false;
+        }
+
+        $authorName = get_query_var('author_name');
+        if (empty($authorName)) {
+            $authorId = get_query_var('author');
+            $user = get_user_by('ID', $authorId);
+            $authorName = $user->user_nicename;
+        }
+
+        $term = get_term_by('slug', $authorName, 'author');
+
+        if (empty($term) || !is_object($term)) {
+            return false;
+        }
+
+        return Author::get_by_term_id($term->term_id);
+    }
+}
+
+if (!function_exists('get_post_authors')) {
+    /**
+     * Get all authors of a post.
      *
      * @param WP_Post|int|null $post Post to fetch authors for. Defaults to global post.
-     * @param bool $filter_the_author_deprecated Deprecated. Removed for fixing infinity loop issues.
-     * @param bool $archive If true, will ignore the $post param and return the current author
-     *                                            specified by the "author_name" URL param - for author pages.
      * @param bool $ignoreCache This cache cause sometimes errors in data received especially
      *                                            in quick edit after saving.
      *                                            That's why in Post_Editor we called this function with overriding
@@ -29,10 +55,8 @@ if (!function_exists('get_multiple_authors')) {
      *
      * @return array Array of Author objects, a single WP_User object, or empty.
      */
-    function get_multiple_authors($post = 0, $filter_the_author_deprecated = false, $archive = false, $ignoreCache = false)
+    function get_post_authors($post = 0, $ignoreCache = false)
     {
-        global $wpdb;
-
         if (is_object($post)) {
             $post = $post->ID;
         } elseif (empty($post)) {
@@ -45,117 +69,112 @@ if (!function_exists('get_multiple_authors')) {
 
         $postId = (int)$post;
 
-        //@todo: Filter the post type and only return the list if the post type is enabled.
-
-        $cacheKey = $postId . ':' . ($filter_the_author_deprecated ? 1 : 0) . ':' . ($archive ? 1 : 0);
-
-        $authorName = '';
-        if ($archive) {
-            $authorName = get_query_var('author_name');
-
-            $cacheKey .= ':' . $authorName;
+        if (empty($postId)) {
+            return [];
         }
 
-        $authors = wp_cache_get($cacheKey, 'get_multiple_authors:authors');
+        $authorsInstances = false;
+        if (!$ignoreCache) {
+            $authorsInstances = wp_cache_get($postId, 'get_post_authors:authors');
+        }
 
-        if (false === $authors || $ignoreCache) {
-            $authors = [];
+        if (false !== $authorsInstances) {
+            return $authorsInstances;
+        }
 
-            if (!$archive) {
-                //@todo: move this for before the cache check
-                if (empty($postId)) {
-                    $post = get_post();
+        $authorsInstances = [];
 
-                    if (!empty($post)) {
-                        $postId = $post->ID;
-                    }
+        global $wpdb;
+
+        $authorTerms = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT tt.term_id
+                        FROM {$wpdb->term_relationships} AS tr
+                        INNER JOIN {$wpdb->term_taxonomy} AS tt ON (tr.`term_taxonomy_id` = tt.`term_taxonomy_id`)
+                        WHERE tr.object_id = %d AND tt.taxonomy = 'author'
+                        ORDER BY tr.term_order",
+                $postId
+            )
+        );
+
+        if (is_wp_error($authorTerms)) {
+            return [];
+        }
+
+        if (!empty($authorTerms)) {
+            // We found authors
+            foreach ($authorTerms as $term) {
+                if (is_wp_error($term) || empty($term)) {
+                    continue;
                 }
 
-                if (empty($postId)) {
-                    return [];
+                if (is_object($term)) {
+                    $term = $term->term_id;
                 }
 
-                $terms = wp_cache_get($postId, 'get_multiple_authors:terms');
+                $termId = (int)$term;
 
-                if (false === $terms || $ignoreCache) {
-                    $terms = $wpdb->get_results(
-                        $wpdb->prepare(
-                            "SELECT tt.term_id
-                                FROM {$wpdb->term_relationships} AS tr
-                                INNER JOIN {$wpdb->term_taxonomy} AS tt ON (tr.`term_taxonomy_id` = tt.`term_taxonomy_id`)
-                                WHERE tr.object_id = %d AND tt.taxonomy = 'author'
-                                ORDER BY tr.term_order",
-                            $postId
-                        )
-                    );
-
-                    wp_cache_set($postId, $terms, 'get_multiple_authors:terms');
-                }
-
-            } else {
-                // Get the term related to the current author from the archive page.
-                $terms = [];
-
-                if (!empty($authorName)) {
-                    $terms[] = get_term_by('slug', $authorName, 'author');
-                }
+                $authorsInstances[] = Author::get_by_term_id($termId);
             }
+        } else {
+            // Fallback to the post author, fixing the post and author relationship
+            $post = get_post($postId);
 
-            if (is_wp_error($terms)) {
+            // TODO: Should we really just fail silently? Check WP_DEBUG and add a log error message.
+            if (empty($post) || is_wp_error($post) || !is_object($post) || empty($post->post_author)) {
                 return [];
             }
 
-            if (!empty($terms)) {
-                // We found authors
-                foreach ($terms as $term) {
-                    if (is_wp_error($term) || empty($term)) {
-                        continue;
-                    }
+            $author = Author::get_by_user_id($post->post_author);
 
-                    if (is_object($term)) {
-                        $term = $term->term_id;
-                    }
+            if (empty($author) || is_wp_error($author)) {
+                $postTypes = Util::get_selected_post_types();
 
-                    $termId = (int)$term;
-
-                    $author = Author::get_by_term_id($termId);
-
-                    $authors[] = $author;
-                }
-            } else {
-                // Fallback to the post author, fixing the post and author relationship
-                $post = get_post($postId);
-
-                // TODO: Should we really just fail silently? Check WP_DEBUG and add a log error message.
-                if (empty($post) || is_wp_error($post) || !is_object($post) || empty($post->post_author)) {
+                if (in_array($post->post_type, $postTypes)) {
+                    $author = Author::create_from_user($post->post_author);
+                    $authorsInstances = [$author];
+                } else {
                     return [];
                 }
-
-                $author = Author::get_by_user_id($post->post_author);
-
-                if (empty($author) || is_wp_error($author)) {
-                    $postTypes = Util::get_selected_post_types();
-
-                    if (in_array($post->post_type, $postTypes)) {
-                        $author = Author::create_from_user($post->post_author);
-                        $authors = [$author];
-                    } else {
-                        return [];
-                    }
-                } else {
-                    $authors = [$author];
-                }
-
-                if (!empty($authors)) {
-                    // TODO: should we really automatically force fixing the author relationship here? If we call this method with "$archive=true" on a non-archive page, we can overwrite the current post authors.
-                    Utils::set_post_authors($postId, $authors);
-                }
+            } else {
+                $authorsInstances = [$author];
             }
 
-            wp_cache_set($cacheKey, $authors, 'get_multiple_authors:authors');
+            if (!empty($authorsInstances)) {
+                Utils::set_post_authors($postId, $authorsInstances);
+            }
         }
 
-        return empty($authors) ? [] : $authors;
+        wp_cache_set($postId, $authorsInstances, 'get_post_authors:authors');
+
+        return (array)$authorsInstances;
+    }
+}
+
+if (!function_exists('get_multiple_authors')) {
+    /**
+     * Get all authors for a post.
+     *
+     * @param WP_Post|int|null $post Post to fetch authors for. Defaults to global post.
+     * @param bool $filter_the_author_deprecated Deprecated. Removed for fixing infinity loop issues.
+     * @param bool $archive_deprecated If true, will ignore the $post param and return the current author. Deprecated, use function get_archive_author instead.
+     *                                            specified by the "author_name" URL param - for author pages.
+     * @param bool $ignoreCache This cache cause sometimes errors in data received especially
+     *                                            in quick edit after saving.
+     *                                            That's why in Post_Editor we called this function with overriding
+     *                                            ignoreCache value to be equal true.
+     * @deprecated Use get_post_authors instead.
+     * @return array Array of Author objects, a single WP_User object, or empty.
+     */
+    function get_multiple_authors($post = 0, $filter_the_author_deprecated = false, $archive_deprecated = false, $ignoreCache = false)
+    {
+        if ($archive_deprecated) {
+            $archiveAuthor = get_archive_author();
+
+            return empty($archiveAuthor) ? [] : [$archiveAuthor];
+        }
+
+        return get_post_authors($post, $ignoreCache);
     }
 }
 
@@ -186,7 +205,7 @@ if (!function_exists('multiple_authors_get_all_authors')) {
             }, $postTypes);
             $postTypes = implode(', ', $postTypes);
 
-            $terms = $wpdb->get_results(
+            $terms = $wpdb->get_results( // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                 "SELECT
                     t.term_id as `term_id`
                 FROM
@@ -244,7 +263,7 @@ if (!function_exists('is_multiple_author_for_post')) {
         }
 
         if (!isset($postAuthorsCache[$post_id])) {
-            $coauthors = get_multiple_authors($post_id);
+            $coauthors = get_post_authors($post_id);
 
             $postAuthorsCache[$post_id] = $coauthors;
         }
@@ -355,7 +374,7 @@ if (!function_exists('multiple_authors__echo')) {
         $output .= $separators['after'];
 
         if ($echo) {
-            echo $output;
+            echo $output;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         }
 
         return $output;
@@ -671,9 +690,7 @@ if (!function_exists('multiple_authors_ids')) {
 if (!function_exists('get_the_multiple_author_meta')) {
     function get_the_multiple_author_meta($field)
     {
-        global $wp_query, $post;
-
-        $authors = get_multiple_authors();
+        $authors = get_post_authors();
         $meta    = [];
 
         foreach ($authors as $author) {
@@ -688,7 +705,7 @@ if (!function_exists('the_multiple_author_meta')) {
     function the_multiple_author_meta($field, $user_id = 0)
     {
         // TODO: need before after options
-        echo get_the_multiple_author_meta($field, $user_id);
+        echo get_the_multiple_author_meta($field, $user_id);  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
 }
 
@@ -728,7 +745,7 @@ if (!function_exists('multiple_authors_wp_list_authors')) {
             return $return;
         }
 
-        echo $return;
+        echo $return;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
 }
 
@@ -786,7 +803,7 @@ if (!function_exists('the_authors')) {
      */
     function the_authors()
     {
-        echo get_the_authors();
+        echo get_the_authors();  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
 }
 
@@ -799,7 +816,7 @@ if (!function_exists('get_the_authors')) {
     function get_the_authors()
     {
         return authors_render(
-            get_multiple_authors(),
+            get_post_authors(),
             function ($author) {
                 return $author->display_name;
             }
@@ -815,7 +832,7 @@ if (!function_exists('the_authors_posts_links')) {
      */
     function the_authors_posts_links()
     {
-        echo get_the_authors_posts_links();
+        echo get_the_authors_posts_links();  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
 }
 
@@ -826,7 +843,7 @@ if (!function_exists('get_the_authors_posts_links')) {
     function get_the_authors_posts_links()
     {
         return authors_render(
-            get_multiple_authors(),
+            get_post_authors(),
             function ($author) {
                 $link = is_a($author, 'WP_User') ? get_author_posts_url($author->ID) : $author->link;
                 $args = [
@@ -872,7 +889,7 @@ if (!function_exists('the_authors_links')) {
      */
     function the_authors_links()
     {
-        echo get_the_authors_links();
+        echo get_the_authors_links();  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
 }
 
@@ -883,7 +900,7 @@ if (!function_exists('get_the_authors_links')) {
     function get_the_authors_links()
     {
         return authors_render(
-            get_multiple_authors(),
+            get_post_authors(),
             function ($author) {
                 if ($author->user_url) {
                     return sprintf(

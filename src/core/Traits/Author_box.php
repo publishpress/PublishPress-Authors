@@ -134,7 +134,11 @@ trait Author_box
             $post = $this->postCache[$post_id];
         }
 
-        $authorsList = get_multiple_authors($post_id, true, $archive);
+        if ($archive) {
+            $authorsList = [get_archive_author()];
+        } else {
+            $authorsList = get_post_authors($post_id, true, $archive);
+        }
 
         $this->authorsCount = count($authorsList);
 

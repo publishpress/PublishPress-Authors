@@ -249,7 +249,7 @@ class Author_Editor
         foreach ($fields as $key => $args) {
             $args['key']   = $key;
             $args['value'] = $author->$key;
-            echo self::get_rendered_author_partial($args);
+            echo self::get_rendered_author_partial($args); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         }
 
         wp_nonce_field('author-edit', 'author-edit-nonce');
@@ -350,11 +350,11 @@ class Author_Editor
                         </div>
                         <p class="hide-if-no-js">
                             <a class="select-author-image-field <?php echo $author_image ? 'hidden' : ''; ?>" href="#">
-                                <?php _e('Select image', 'publishpress-authors'); ?>
+                                <?php esc_html_e('Select image', 'publishpress-authors'); ?>
                             </a>
                             <a class="delete-author-image-field <?php echo !$author_image ? 'hidden' : ''; ?>"
                                href="#">
-                                <?php _e('Remove this image', 'publishpress-authors'); ?>
+                                <?php esc_html_e('Remove this image', 'publishpress-authors'); ?>
                             </a>
                         </p>
                         <input name="<?php echo esc_attr($key); ?>" class="author-image-field-id" type="hidden"
@@ -384,7 +384,7 @@ class Author_Editor
                 <?php endif; ?>
 
                 <?php if (isset($args['description'])) : ?>
-                    <p class="description"><?php echo $args['description']; ?></p>
+                    <p class="description"><?php echo esc_html($args['description']); ?></p>
                 <?php endif; ?>
             </td>
         </tr>
@@ -400,7 +400,7 @@ class Author_Editor
     public static function action_edited_author($term_id)
     {
         if (empty($_POST['author-edit-nonce'])
-            || !wp_verify_nonce($_POST['author-edit-nonce'], 'author-edit')) {
+            || !wp_verify_nonce(sanitize_key($_POST['author-edit-nonce']), 'author-edit')) {
             return;
         }
         $author = Author::get_by_term_id($term_id);
@@ -410,7 +410,7 @@ class Author_Editor
                 continue;
             }
             $sanitize = isset($args['sanitize']) ? $args['sanitize'] : 'sanitize_text_field';
-            update_term_meta($term_id, $key, $sanitize($_POST['authors-' . $key]));
+            update_term_meta($term_id, $key, $sanitize($_POST['authors-' . $key])); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
         }
 
         // If there is a mapper user, make sure the author url (slug) is the same of the user.
@@ -446,14 +446,17 @@ class Author_Editor
         $legacyPlugin = Factory::getLegacyPlugin();
 
         if (!isset($legacyPlugin->modules->multiple_authors)) {
-            error_log(
-                sprintf(
-                    "[PublishPress Authors] Warning: Module multiple_authors not loaded. %s [user_id=\"%s\"]\n  - %s",
-                    __METHOD__,
-                    $user_id,
-                    implode("\n  - ", wp_debug_backtrace_summary(null, 0, false))
-                )
-            );
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log(
+                    sprintf(
+                        "[PublishPress Authors] Warning: Module multiple_authors not loaded. %s [user_id=\"%s\"]\n  - %s",
+                        __METHOD__,
+                        $user_id,
+                        implode("\n  - ", wp_debug_backtrace_summary(null, 0, false))
+                    )
+                );
+            }
+
             return;
         }
 
@@ -479,14 +482,14 @@ class Author_Editor
 
         ?>
         <div class="form-field term-user_id-wrap">
-        <label for="tag-user-id"><?php echo __('Mapped User (optional)', 'publishpress-authors'); ?></label>
+        <label for="tag-user-id"><?php echo esc_html__('Mapped User (optional)', 'publishpress-authors'); ?></label>
         <?php
-        echo static::get_rendered_author_partial(
+        echo static::get_rendered_author_partial( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             [
                 'type'        => 'ajax_user_select',
                 'value'       => '',
                 'key'         => 'new',
-                'description' => __(
+                'description' => esc_html__(
                     'You don’t have to choose a Mapped User. Leave this choice blank and you can create a Guest Author with no WordPress account.',
                     'publishpress-authors'
                 ),
@@ -529,11 +532,11 @@ class Author_Editor
      */
     public static function action_created_author($term_id)
     {
-        if (!isset($_POST['authors-new']) || empty($_POST['authors-new'])) {
+        if (!isset($_POST['authors-new']) || empty($_POST['authors-new'])) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
             return;
         }
 
-        Author::update_author_from_user($term_id, $_POST['authors-new']);
+        Author::update_author_from_user($term_id, (int)$_POST['authors-new']); // phpcs:ignore WordPress.Security.NonceVerification.Missing
     }
 
     /**
@@ -618,9 +621,12 @@ class Author_Editor
             echo '<div id="message" class="updated fade">';
 
             if (empty($count)) {
-                __('No authors were updated', 'publishpress-authors');
+                esc_html__('No authors were updated', 'publishpress-authors');
             } else {
-                printf(__('Updated %d authors', 'publishpress-authors'), $count);
+                printf(
+                        esc_html__('Updated %d authors', 'publishpress-authors'),
+                        esc_html($count)
+                );
             }
 
             echo '</div>';
