@@ -281,10 +281,6 @@ class Author_Editor
             'user_email'  => [
                 'label'       => esc_html__('Email', 'publishpress-authors'),
                 'type'        => 'email',
-                'description' => esc_html__(
-                    'To show the avatar from the Mapped User, enter the same email address as the Mapped User. To show the avatar for a Guest Author, enter the email for their Gravatar account.',
-                    'publishpress-authors'
-                ),
             ],
             'avatar'      => [
                 'label'    => esc_html__('Custom Avatar', 'publishpress-authors'),
