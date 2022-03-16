@@ -12,6 +12,7 @@ namespace MultipleAuthors\Classes;
 use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Factory;
+use WP_Error;
 
 /**
  * Class Author_Editor
@@ -624,5 +625,74 @@ class Author_Editor
 
             echo '</div>';
         }
+    }
+
+    /**
+     * Author term mapped limit validation
+	 *
+	 * @param string|WP_Error $term     The term name to add, or a WP_Error object if there's an error.
+	 * @param string          $taxonomy Taxonomy slug.
+     * 
+     * @return array|WP_Error
+     */
+    public static function filter_pre_insert_term($term, $taxonomy)
+    {
+        if ($taxonomy === 'author') {
+            /**
+             * Check if term with this user exist
+             */
+            if (isset($_POST['authors-new']) 
+                && $author_id = (int)$_POST['authors-new'] > 0
+            ) {
+                $author = Author::get_by_user_id($author_id);
+                if ($author 
+                    && is_object($author) 
+                    && isset($author->term_id) 
+                    && (int)$author->term_id > 0
+                ) {
+                    return new WP_Error(
+                        'duplicate_mapped_user', 
+                        __(
+                            'This user is already mapped to another author.', 
+                            'publishpress-authors'
+                        )
+                    );
+                }
+            }
+
+            /**
+             * Check if user with term slug already exists
+             */
+            if (empty($_POST['slug'])) {
+                $slug = sanitize_title($_POST['tag-name']);
+            } else {
+                $slug = sanitize_text_field($_POST['slug']);
+            }
+
+            $author_slug_user = get_user_by('slug', $slug);
+            if ($author_slug_user 
+                && is_object($author_slug_user) 
+                && isset($author_slug_user->ID)
+            ) {
+                if ((!isset($_POST['authors-new']))
+                    || (isset($_POST['authors-new']) 
+                    && (int)$author_slug_user->ID != (int)$_POST['authors-new'])
+                ) {
+                    /**
+                     * Return error if author is not linked or 
+                     * linked author ID is not equal return ID
+                     */
+                    return new WP_Error(
+                        'slug_exists', 
+                        __(
+                            'User with the author name already exists.', 
+                            'publishpress-authors'
+                        )
+                    );
+                }
+            }
+        }
+
+        return $term;
     }
 }

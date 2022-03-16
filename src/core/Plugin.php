@@ -250,6 +250,16 @@ class Plugin
                 'admin_notices',
                 ['MultipleAuthors\\Classes\\Author_Editor', 'admin_notices']
             );
+            add_filter(
+                'pre_insert_term',
+                ['MultipleAuthors\\Classes\\Author_Editor', 'filter_pre_insert_term'],
+                10,
+                2
+            );
+            add_action(
+                'wp_ajax_mapped_author_validation',
+                ['MultipleAuthors\\Classes\\Admin_Ajax', 'handle_mapped_author_validation']
+            );
 
             add_filter('admin_footer_text', [$this, 'update_footer_admin']);
         }
@@ -1391,6 +1401,7 @@ class Plugin
                 'Sorry, the request returned an error.',
                 'publishpress-authors'
             ),
+            'mapped_author_nonce'           => wp_create_nonce("mapped_author_nonce"),
         ];
 
         wp_localize_script(

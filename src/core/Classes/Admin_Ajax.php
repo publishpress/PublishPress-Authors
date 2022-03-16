@@ -209,4 +209,68 @@ class Admin_Ajax
         echo wp_json_encode($response);
         exit;
     }
+
+    /**
+     * Handle a request to validate mapped author.
+     */
+    public static function handle_mapped_author_validation()
+    {
+
+        $response['status']  = 'success';
+        $response['content'] = esc_html__('Request status.', 'publishpress-authors');
+
+        //do not process request if nonce validation failed
+        if (empty($_POST['nonce']) 
+            || !wp_verify_nonce(sanitize_key($_POST['nonce']), 'mapped_author_nonce')
+        ) {
+            $response['status']  = 'error';
+            $response['content'] = esc_html__(
+                'Security error. Kindly reload this page and try again', 
+                'publishpress-authors'
+            );
+        } else {
+            $author_slug = !empty($_POST['author_slug']) ? sanitize_title($_POST['author_slug']) : '';
+            $author_id   = !empty($_POST['author_id']) ? (int)($_POST['author_id']) : 0;
+            $term_id     = !empty($_POST['term_id']) ? (int)($_POST['term_id']) : 0;
+
+            if ($author_id > 0) {
+                $author = Author::get_by_user_id($author_id);
+                if ($author && is_object($author) && isset($author->term_id)) {
+                    if ((int)$author->term_id !== (int)$term_id) {
+                        $response['status']  = 'error';
+                        $response['content'] = esc_html__(
+                            'This user is already mapped to another author.', 
+                            'publishpress-authors'
+                        );
+                    }
+                }
+            }
+
+            if (empty($author_slug)) {
+                $response['status']  = 'error';
+                $response['content'] = esc_html__('Author URL cannot be empty.', 'publishpress-authors');
+            } else {
+                $author_slug_user = get_user_by('slug', $author_slug);
+                if ($author_slug_user && is_object($author_slug_user) && isset($author_slug_user->ID)) {
+                    if (($author_id === 0)
+                        || ($author_id > 0
+                        && (int)$author_slug_user->ID != (int)$author_id)
+                    ) {
+                        /**
+                         * Return error if author is not linked or 
+                         * linked author ID is not equal return ID
+                         */
+                        $response['status']  = 'error';
+                        $response['content'] = esc_html__(
+                            'Another user with Author URL already exists.', 
+                            'publishpress-authors'
+                        );
+                    }
+                }
+            }
+        }
+
+        wp_send_json($response);
+        exit;
+    }
 }
