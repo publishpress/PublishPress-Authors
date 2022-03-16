@@ -112,7 +112,9 @@ if (!class_exists('MA_Wpengine_Integration')) {
             // If there's no cache, we don't need to flush anyway.
 
             if (!empty($wp_object_cache) && is_object($wp_object_cache)) {
-                @wp_cache_flush();
+                if (function_exists('wp_cache_flush')) {
+                    wp_cache_flush();
+                }
             }
         }
     }

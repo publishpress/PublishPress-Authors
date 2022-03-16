@@ -17,7 +17,7 @@ if (!function_exists('get_bylines')) {
      */
     function get_bylines($post = null)
     {
-        return get_multiple_authors($post);
+        return get_post_authors($post);
     }
 }
 

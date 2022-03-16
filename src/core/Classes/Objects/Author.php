@@ -149,7 +149,7 @@ class Author
 
         if (! is_a($user, 'WP_User')) {
             if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log(
+                error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
                     sprintf(
                         '[PublishPress Authors] The method %s found that the expected user doesn\'t exist: %s',
                         __METHOD__,
@@ -165,6 +165,11 @@ class Author
             return false;
         }
 
+        $existentAuthor = self::get_by_user_id($user->ID);
+        if (!empty($existentAuthor)) {
+            return $existentAuthor;
+        }
+
         $author = self::create(
             [
                 'display_name' => $user->display_name,
@@ -173,9 +178,12 @@ class Author
         );
 
         if (is_wp_error($author) || !is_object($author)) {
-            error_log(
-                sprintf('[PublishPress Authors] The method %s found an error trying to create an author', __METHOD__)
-            );
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+                    sprintf('[PublishPress Authors] The method %s found an error trying to create an author', __METHOD__)
+                );
+            }
+
             return false;
         }
 
@@ -231,13 +239,23 @@ class Author
     public static function create($args)
     {
         if (empty($args['slug'])) {
-            error_log(sprintf('[PublishPress Authors] The method %s is missing the slug in the arguments', __METHOD__));
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+                    sprintf('[PublishPress Authors] The method %s is missing the slug in the arguments', __METHOD__)
+                );
+            }
             return false;
         }
         if (empty($args['display_name'])) {
-            error_log(
-                sprintf('[PublishPress Authors] The method %s is missing the display_name in the arguments', __METHOD__)
-            );
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+                    sprintf(
+                        '[PublishPress Authors] The method %s is missing the display_name in the arguments',
+                        __METHOD__
+                    )
+                );
+            }
+
             return false;
         }
 
@@ -252,14 +270,16 @@ class Author
         if (is_wp_error($termData)) {
             $backtraceSeparator = "\n  - ";
 
-            error_log(
-                sprintf(
-                    "[PublishPress Authors] %s %s\n%s",
-                    $termData->get_error_message(),
-                    __METHOD__,
-                    $backtraceSeparator . implode($backtraceSeparator, wp_debug_backtrace_summary(null, 0, false))
-                )
-            );
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+                    sprintf(
+                        "[PublishPress Authors] %s %s\n%s",
+                        $termData->get_error_message(),
+                        __METHOD__,
+                        $backtraceSeparator . implode($backtraceSeparator, wp_debug_backtrace_summary(null, 0, false))
+                    )
+                );
+            }
 
             return false;
         }
@@ -491,14 +511,16 @@ class Author
         }
 
         if (is_wp_error($return)) {
-            error_log(
-                sprintf(
-                    '[PublishPress Authors] Error found while getting author\'s %s attribute (term_id = %d): %s',
-                    $attribute,
-                    $this->term_id,
-                    $return->get_error_message()
-                )
-            );
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+                    sprintf(
+                        '[PublishPress Authors] Error found while getting author\'s %s attribute (term_id = %d): %s',
+                        $attribute,
+                        $this->term_id,
+                        $return->get_error_message()
+                    )
+                );
+            }
 
             $return = false;
         }

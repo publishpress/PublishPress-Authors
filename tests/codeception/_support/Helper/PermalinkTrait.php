@@ -12,7 +12,7 @@ trait PermalinkTrait
 
         $wp_rewrite->init();
         $wp_rewrite->set_permalink_structure($structure);
-        $wp_rewrite->flush_rules(true);
+        $wp_rewrite->flush_rules(true); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.flush_rules_flush_rules
     }
 
     public function getRelativePostPermalink($postId)

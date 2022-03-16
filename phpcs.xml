@@ -6,8 +6,6 @@
     <file>src</file>
     <file>tests</file>
     <file>activation.php</file>
-    <file>bylines_functions.php</file>
-    <file>coauthors_functions.php</file>
     <file>defines.php</file>
     <file>deprecated.php</file>
     <file>includes.php</file>
@@ -21,9 +19,11 @@
     <exclude-pattern>*/legacy-tests$</exclude-pattern>
     <exclude-pattern>*/node_modules$</exclude-pattern>
     <exclude-pattern>*/tests/*/*\.(inc|css|js|sql|yml|feature)$</exclude-pattern>
-    <exclude-pattern>*/tests/_output$</exclude-pattern>
-    <exclude-pattern>*/tests/_support/_generated$</exclude-pattern>
+    <exclude-pattern>*/tests/codeception/_output$</exclude-pattern>
+    <exclude-pattern>*/tests/codeception/_support/_generated$</exclude-pattern>
+    <exclude-pattern>*/tests/codeception/_data/themes/custom_twentytwenty</exclude-pattern>
     <exclude-pattern>*/vendor$</exclude-pattern>
+    <exclude-pattern>*/src/assets/lib$</exclude-pattern>
 
     <arg name="basepath" value="."/>
     <arg name="colors"/>
@@ -31,5 +31,11 @@
     <arg value="np"/>
 
     <!-- Include the whole PEAR standard -->
-    <rule ref="PSR12"/>
+<!--    <rule ref="PSR12"/>-->
+    <rule ref="WordPressVIPMinimum">
+        <exclude name="WordPressVIPMinimum.Variables.RestrictedVariables.user_meta__wpdb__users" />
+        <exclude-pattern>tests/</exclude-pattern>
+    </rule>
+<!--    <rule ref="WordPress-VIP-Go"/>-->
+<!--    <rule ref="VariableAnalysis"/>-->
 </ruleset>

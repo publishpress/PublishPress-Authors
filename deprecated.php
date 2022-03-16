@@ -48,10 +48,6 @@ class_alias(
     PublishPress\Addon\Multiple_authors\Classes\Objects\Author::class
 );
 class_alias(
-    MultipleAuthors\Classes\Integrations\RSS::class,
-    PublishPress\Addon\Multiple_authors\Classes\Integrations\RSS::class
-);
-class_alias(
     MultipleAuthors\Classes\Integrations\Theme::class,
     PublishPress\Addon\Multiple_authors\Classes\Integrations\Theme::class
 );

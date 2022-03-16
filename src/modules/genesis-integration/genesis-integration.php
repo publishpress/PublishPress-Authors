@@ -104,10 +104,9 @@ if (!class_exists('MA_Genesis_Integration')) {
             add_filter(
                 'document_title_parts',
                 function ($parts) {
-                    if (isset($parts['title']) && function_exists('get_multiple_authors') && Util::isAuthor()) {
-                        $authors = get_multiple_authors(0, true, true);
-                        if (!empty($authors)) {
-                            $author         = $authors[0];
+                    if (isset($parts['title']) && function_exists('get_post_authors') && Util::isAuthor()) {
+                        $author = get_archive_author();
+                        if (!empty($author)) {
                             $parts['title'] = $author->display_name;
                         }
                     }
@@ -126,7 +125,7 @@ if (!class_exists('MA_Genesis_Integration')) {
          */
         public function filter_genesis_post_author_posts_link_shortcode($output, $attr)
         {
-            $authors = get_multiple_authors();
+            $authors = get_post_authors();
 
             $output = '';
             foreach ($authors as $author) {
@@ -151,7 +150,7 @@ if (!class_exists('MA_Genesis_Integration')) {
                 return '';
             }
 
-            $authors = get_multiple_authors();
+            $authors = get_post_authors();
 
             if (empty($authors)) {
                 return '';
@@ -189,7 +188,7 @@ if (!class_exists('MA_Genesis_Integration')) {
                 return '';
             }
 
-            $authors = get_multiple_authors();
+            $authors = get_post_authors();
 
             if (empty($authors)) {
                 return '';

@@ -81,8 +81,4 @@ if (!defined('PP_AUTHORS_LOADED')) {
     }
 
     require_once PP_AUTHORS_MODULES_PATH . 'multiple-authors/multiple-authors.php';
-
-    if (!defined('PP_WP_BANNERS_VERSION')) {
-        require_once __DIR__ . '/vendor/publishpress/wordpress-banners/BannersMain.php';
-    }
 }

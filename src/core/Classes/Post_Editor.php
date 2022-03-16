@@ -60,7 +60,7 @@ class Post_Editor
                         <span class="title">Authors</span>
                     </label>
                     <?php
-                    echo self::get_rendered_authors_selection([], false);
+                    echo self::get_rendered_authors_selection([], false); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     ?>
                 </div>
             </fieldset>
@@ -106,7 +106,7 @@ class Post_Editor
         if ('authors' === $column) {
             // We need to ignore the cache for following call when this method were called after saved the post in a
             // quick edit operation, otherwise the authors column will show old values.
-            $authors = get_multiple_authors($post_id, false, false, true);
+            $authors = get_post_authors($post_id, true);
 
             $post_type = get_post_type($post_id);
             $post      = get_post($post_id);
@@ -144,7 +144,7 @@ class Post_Editor
                         esc_attr($author->slug),
                         esc_attr($author->display_name),
                         esc_attr($author->is_guest() ? 1 : 0),
-                        implode(' ', $classes),
+                        esc_attr(implode(' ', $classes)),
                         esc_html($author->display_name)
                     );
                 }
@@ -153,20 +153,20 @@ class Post_Editor
             if (empty($authors_str)) {
                 $authors_str[] = sprintf(
                     '<span class="current-post-author-warning">%s</span>',
-                    __('No author term', 'publishpress-authors')
+                    esc_html__('No author term', 'publishpress-authors')
                 );
             }
 
-            echo implode(', ', $authors_str);
+            echo implode(', ', $authors_str); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
             if (!$showedPostAuthorUser) {
                 if (empty($post->post_author)) {
-                    echo sprintf('<span class="current-post-author-warning">[%s]</span>', __('"post_author" is empty', 'publishpress-authors'));
+                    echo sprintf('<span class="current-post-author-warning">[%s]</span>', esc_html__('"post_author" is empty', 'publishpress-authors'));
                 } else {
                     $user = get_user_by('ID', $post->post_author);
 
                     if (is_a($user, 'WP_User')) {
-                        echo sprintf('<span class="current-post-author-off">[%s]</span>', $user->display_name);
+                        echo sprintf('<span class="current-post-author-off">[%s]</span>', esc_html($user->display_name));
                     }
                 }
             }
@@ -207,9 +207,9 @@ class Post_Editor
             return;
         }
 
-        $authors = get_multiple_authors();
+        $authors = get_post_authors();
 
-        echo self::get_rendered_authors_selection($authors, false);
+        echo self::get_rendered_authors_selection($authors, false);  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
 
     /**
@@ -224,8 +224,7 @@ class Post_Editor
             $classes[] = 'authors-current-user-can-assign';
         }
         ?>
-        <ul class="<?php
-        echo(implode(' ', $classes)); ?>">
+        <ul class="<?php echo esc_attr(implode(' ', $classes)); ?>">
             <?php
             if (!empty($authors)) {
                 foreach ($authors as $author) {
@@ -251,7 +250,7 @@ class Post_Editor
                         $args['avatar'] = $author->get_avatar(20);
                     }
 
-                    echo self::get_rendered_author_partial($args);
+                    echo self::get_rendered_author_partial($args);  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 }
             }
             ?>
@@ -271,7 +270,7 @@ class Post_Editor
             </select>
             <script type="text/html" id="tmpl-authors-author-partial">
                 <?php
-                echo self::get_rendered_author_partial(
+                echo self::get_rendered_author_partial(  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     [
                         'display_name' => '{{ data.display_name }}',
                         'term'         => '{{ data.id }}',
@@ -287,7 +286,7 @@ class Post_Editor
             <div id="publishpress-authors-user-author-wrapper">
                 <hr>
                 <label for="publishpress-authors-user-author-select"><?php
-                    echo __(
+                    echo esc_html__(
                         'This option is showing because you do not have a WordPress user selected as an author. For some tasks, it can be helpful to have a user selected here. This user will not be visible on the front of your site.',
                         'publishpress-authors'
                     ); ?></label>
@@ -298,7 +297,7 @@ class Post_Editor
                         esc_attr_e('Search for an user', 'publishpress-authors'); ?>" style="width: 100%"
                         name="fallback_author_user">
                     <option value="<?php echo (int)$post->post_author; ?>">
-                        <?php echo is_object($userAuthor) ? $userAuthor->display_name : ''; ?>
+                        <?php echo is_object($userAuthor) ? esc_html($userAuthor->display_name) : ''; ?>
                     </option>
                 </select>
             </div>
@@ -333,13 +332,11 @@ class Post_Editor
             <?php
             if (!empty($args['avatar'])) : ?>
                 <?php
-                echo $args['avatar']; ?>
+                echo $args['avatar'];  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
             <?php
             endif; ?>
-            <span class="display-name"><?php
-                echo wp_kses_post($args['display_name']); ?></span>
-            <input type="hidden" name="authors[]" value="<?php
-            echo esc_attr($args['term']); ?>">
+            <span class="display-name"><?php echo esc_html($args['display_name']); ?></span>
+            <input type="hidden" name="authors[]" value="<?php echo esc_attr($args['term']); ?>">
         </li>
         <?php
         return ob_get_clean();
@@ -350,11 +347,13 @@ class Post_Editor
      */
     public static function save_bulk_edit_authors()
     {
-        global $wpdb;
+        if (!isset($_POST['post_ids'])) {
+            return;
+        }
 
-        $post_ids = $_POST['post_ids'];
+        $post_ids = array_map('sanitize_key', $_POST['post_ids']);
         if (!isset($_POST['bulkEditNonce'])
-            || !wp_verify_nonce($_POST['bulkEditNonce'], 'bulk-edit-nonce')
+            || !wp_verify_nonce(sanitize_key($_POST['bulkEditNonce']), 'bulk-edit-nonce')
             || !current_user_can(get_taxonomy('author')->cap->assign_terms)
         ) {
             return;
@@ -365,7 +364,7 @@ class Post_Editor
             return;
         }
 
-        $authors = isset($_POST['authors_ids']) ? $_POST['authors_ids'] : [];
+        $authors = isset($_POST['authors_ids']) ? array_map('sanitize_text_field', $_POST['authors_ids']) : [];
         $authors = self::remove_dirty_authors_from_authors_arr($authors);
 
         $fallbackUserId = isset($_POST['fallback_author_user']) ? (int)$_POST['fallback_author_user'] : null;
@@ -399,13 +398,13 @@ class Post_Editor
 
         if (
             !isset($_POST['authors-save'])
-            || !wp_verify_nonce($_POST['authors-save'], 'authors-save')
+            || !wp_verify_nonce(sanitize_key($_POST['authors-save']), 'authors-save')
             || !current_user_can(get_taxonomy('author')->cap->assign_terms)
         ) {
             return;
         }
 
-        $authors = isset($_POST['authors']) ? $_POST['authors'] : [];
+        $authors = isset($_POST['authors']) ? Utils::sanitizeArray($_POST['authors']) : []; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
         $authors = self::remove_dirty_authors_from_authors_arr($authors);
 
         $fallbackUserId = isset($_POST['fallback_author_user']) ? (int)$_POST['fallback_author_user'] : null;

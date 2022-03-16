@@ -65,7 +65,7 @@ class Wpunit extends \Codeception\Module
 
     public function getMultipleAuthorsForPost($postId)
     {
-        return get_multiple_authors($postId);
+        return get_post_authors($postId);
     }
 
     public function getAuthorByUserId($userId)

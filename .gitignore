@@ -33,4 +33,3 @@ node_modules
 /dist
 .env.testing
 builder.yml
-phpcs.xml
