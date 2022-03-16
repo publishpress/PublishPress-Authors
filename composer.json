@@ -48,7 +48,8 @@
     "symfony/polyfill-ctype": "1.19.0",
     "psr/container": "1.0.0",
     "publishpress/wordpress-version-notices": "^1",
-    "publishpress/wordpress-reviews":  "^1.1"
+    "publishpress/wordpress-reviews":  "^1.1",
+    "publishpress/wordpress-banners": "^1.2"
   },
   "require-dev": {
     "lucatume/wp-browser": "^3",
@@ -60,13 +61,15 @@
     "codeception/module-cli": "^1.0",
     "codeception/util-universalframework": "^1.0",
     "codeception/module-rest": "^1.3",
+    "codeception/module-sequence": "^2.0",
     "publishpress/publishpress-plugin-builder": "^1.2",
     "phpmd/phpmd": "^2.8",
     "squizlabs/php_codesniffer": "^3.5",
     "sebastian/phpcpd": "^5.0",
     "overtrue/phplint": "^2.1",
     "wp-cli/wp-cli": "^2.5",
-    "wp-cli/i18n-command": "^2.2"
+    "wp-cli/i18n-command": "^2.2",
+    "hoa/console": "^3.17"
   },
   "scripts": {
     "cs-check": "vendor/bin/phpcs --standard=PSR12 ./src/ publishpress-authors.php --colors",

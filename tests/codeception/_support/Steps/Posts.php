@@ -6,6 +6,8 @@ namespace Steps;
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Classes\Utils;
 
+use function sq;
+
 trait Posts
 {
     /**
@@ -13,6 +15,9 @@ trait Posts
      */
     public function aPostNamedExistsForAuthor($postName, $authorSlug)
     {
+        $postName = sq($postName);
+        $authorSlug = sq($authorSlug);
+
         $author = Author::get_by_term_slug($authorSlug);
 
         $postId = $this->factory('Creating a new post')->post->create(
@@ -30,6 +35,10 @@ trait Posts
      */
     public function aPostNamedExistsForAuthor1AndAuthor2($postName, $author1Slug, $author2Slug)
     {
+        $postName = sq($postName);
+        $author1Slug = sq($author1Slug);
+        $author2Slug = sq($author2Slug);
+
         $author1 = Author::get_by_term_slug($author1Slug);
         $author2 = Author::get_by_term_slug($author2Slug);
 
@@ -48,6 +57,10 @@ trait Posts
      */
     public function aPostNamedExistsForGuestAuthorAndFallbackUser($postName, $authorSlug, $fallbackUserSlug)
     {
+        $postName = sq($postName);
+        $authorSlug = sq($authorSlug);
+        $fallbackUserSlug = sq($fallbackUserSlug);
+
         $author = Author::get_by_term_slug($authorSlug);
 
         $postId = $this->factory('Creating a new post')->post->create(
@@ -67,8 +80,11 @@ trait Posts
      */
     public function iSeeUserIsTheAuthorForThePost($userSlug, $postSlug)
     {
+        $userSlug = sq($userSlug);
+        $postSlug = sq($postSlug);
+
         $post = get_page_by_path($postSlug, OBJECT, 'post');
-        $user = get_user_by('nicename', $userSlug);
+        get_user_by('nicename', $userSlug);
 
         $this->seeElement("#post-{$post->ID} td.authors a[data-author-slug=\"{$userSlug}\"]");
     }
@@ -78,7 +94,7 @@ trait Posts
      */
     public function iDonSeeAPostWithTitle($posTitle)
     {
-        $this->dontSee($posTitle);
+        $this->dontSee(sq($posTitle));
     }
 
     /**
@@ -86,7 +102,7 @@ trait Posts
      */
     public function iSeeAPostWithTitle($posTitle)
     {
-        $this->see($posTitle);
+        $this->see(sq($posTitle));
     }
 
     /**
@@ -94,7 +110,7 @@ trait Posts
      */
     public function iEditPostNamed($postSlug)
     {
-        $post = $this->grabPostBySlug($postSlug);
+        $post = $this->grabPostBySlug(sq($postSlug));
 
         $this->amEditingPostWithId($post->ID);
         $this->makeScreenshot('Editing post');
@@ -105,7 +121,7 @@ trait Posts
      */
     public function iViewThePost($postSlug)
     {
-        $this->amOnPage('/' . $postSlug);
+        $this->amOnPage('/' . sq($postSlug));
     }
 
     /**
@@ -114,7 +130,6 @@ trait Posts
     public function iOpenAllPostsPage()
     {
         $this->amOnAdminPage('edit.php?post_type=post');
-        $this->makeScreenshot();
     }
 
     /**
@@ -173,7 +188,7 @@ trait Posts
         $this->assertTrue($foundTheBlock, 'We need to see the added block in the editor');
     }
 
-    public function grabPostBySlug($postSlug, $postType = 'post')
+    private function grabPostBySlug($postSlug, $postType = 'post')
     {
         $posts = get_posts(
             [
@@ -191,7 +206,16 @@ trait Posts
      */
     public function iSeeTextInColumnForPost($text, $columnId, $postSlug)
     {
-        $post = $this->grabPostBySlug($postSlug);
+        // Do we have any sq block?
+        $text = preg_replace_callback(
+            '/{{([^{]+)}}/',
+            function ($matches) {
+                return sq($matches[1]);
+            },
+            $text
+        );
+
+        $post = $this->grabPostBySlug(sq($postSlug));
 
         $this->see($text, "tr#post-{$post->ID} td.column-{$columnId}");
     }

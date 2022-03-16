@@ -2,6 +2,7 @@
 
 namespace Steps;
 
+use function sq;
 
 trait Login
 {
@@ -10,6 +11,8 @@ trait Login
      */
     public function iAmLoggedInAsUser($userLogin)
     {
+        $userLogin = sq($userLogin);
+
         $this->loginAs($userLogin, $userLogin);
 
         $user = get_user_by('login', $userLogin);

@@ -134,37 +134,45 @@ class Author
      */
     public static function create_from_user($user)
     {
+        if (empty($user)) {
+            return false;
+        }
+
         if (is_numeric($user)) {
             $user = get_user_by('id', (int)$user);
         }
 
         if (is_a($user, 'stdClass')) {
             $userInstance = new WP_User($user);
-            $user         = $userInstance;
+            $user = $userInstance;
         }
 
-        if (!is_a($user, 'WP_User')) {
-            error_log(
-                sprintf(
-                    '[PublishPress Authors] The method %s found that the expected user doesn\'t exist: %s',
-                    __METHOD__,
-                    maybe_serialize($user)
-                )
-            );
+        if (! is_a($user, 'WP_User')) {
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log(
+                    sprintf(
+                        '[PublishPress Authors] The method %s found that the expected user doesn\'t exist: %s',
+                        __METHOD__,
+                        maybe_serialize($user)
+                    )
+                );
+            }
+
             return false;
         }
-        $existing = self::get_by_user_id($user->ID);
-        if ($existing) {
-            return $existing;
+
+        if (empty($user)) {
+            return false;
         }
+
         $author = self::create(
             [
                 'display_name' => $user->display_name,
-                'slug'         => $user->user_nicename,
+                'slug' => $user->user_nicename,
             ]
         );
 
-        if (is_wp_error($author)) {
+        if (is_wp_error($author) || !is_object($author)) {
             error_log(
                 sprintf('[PublishPress Authors] The method %s found an error trying to create an author', __METHOD__)
             );

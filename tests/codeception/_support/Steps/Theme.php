@@ -5,6 +5,8 @@ namespace Steps;
 
 use MultipleAuthors\Classes\Objects\Author;
 
+use function sq;
+
 trait Theme
 {
     /**
@@ -12,7 +14,7 @@ trait Theme
      */
     public function iSeeAuthorNameInTheByline($authorName)
     {
-        $this->see($authorName, '.posted-by .byline a');
+        $this->see(sq($authorName), '.posted-by .byline a');
     }
 
     /**
@@ -22,7 +24,7 @@ trait Theme
     {
         $this->setPermalinkStructure('');
 
-        $author = Author::get_by_term_slug($authorSlug);
+        $author = Author::get_by_term_slug(sq($authorSlug));
 
         $expectedAuthorLink = $_ENV['TEST_SITE_WP_URL'] . '/?author=' . $author->ID;
         $authorLink         = $this->grabAttributeFrom('.posted-by .byline a', 'href');
@@ -35,7 +37,7 @@ trait Theme
      */
     public function iSeeAuthorBoxForAuthorAfterContent($authorSlug)
     {
-        $this->seeElement('.multiple-authors-target-the-content li.author_' . $authorSlug);
+        $this->seeElement('.multiple-authors-target-the-content li.author_' . sq($authorSlug));
     }
 
     /**
@@ -43,7 +45,7 @@ trait Theme
      */
     public function iSeeAuthorNameInTheBoxAfterContent($authorName)
     {
-        $this->see($authorName, '.multiple-authors-target-the-content li .multiple-authors-name a.author');
+        $this->see(sq($authorName), '.multiple-authors-target-the-content li .multiple-authors-name a.author');
     }
 }
 
