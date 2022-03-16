@@ -224,6 +224,29 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [3.15.10] - UNRELEASED =
+
+* Fixed: Fix error where secondary authors were dropped off the posts if loading author pages on sites using plain permalinks, #593;
+* Fixed: Fix error when trying to create an author for user that already is author, #592;
+* Fixed: Abort author creation if user is empty;
+* Fixed: Removed redundant check for existent user when creating author from user;
+* Fixed: Fix compatibility with Elementor Pro and archive page title checking the constant "PUBLISHPRESS_AUTHORS_DISABLE_FILTER_THE_AUTHOR", if true, disables the "the_author" filter, #563;
+* Fixed: Fix nonce validation all over the plugin;
+* Fixed: Fix input sanitization all over the plugin;
+* Fixed: Fix output escaping;
+* Fixed: Added additional capability check before running maintenance tasks: manage_options;
+* Fixed: Added capability check before allowing to search users and authors in the admin: ppma_edit_post_authors;
+* Fixed: Improved data escaping and sanitization on a few queries;
+* Fixed: Improved performance removing redundant plugin version option update on every request, #588;
+* Fixed: Improved upgrade and install routines to not run on front-end requests, only in the admin, #589;
+* Fixed: Fixed many WP Vip PHPCS warnings and errors;
+* Removed: Remove not used method "MA_Settings::helper_print_error_or_description";
+* Removed: Remove commented code from WP_Cli class;
+* Removed: Remove deprecated class "PublishPress\Addon\Multiple_authors\Classes\Integrations\RSS";
+* Changed: Deprecated function "get_multiple_authors", which is replaced by "get_post_authors" and "get_archive_author";
+* Changed: Added conditional looking for WP_DEBUG = true before logging some errors;
+* Fixed: Fix WordPress Banners library using autoload to fix an issue about file not found "BannersMain.php" on the Pro plugin, or sites that rely on Composer;
+
 = [3.14.10] - UNRELEASED =
 
 * Fixed: Fix the character "&" in the Bibliographical Info field, which was converted to "&amp;", #566;
