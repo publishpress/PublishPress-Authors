@@ -282,7 +282,7 @@ class Author_Editor
                 'label'       => __('Email', 'publishpress-authors'),
                 'type'        => 'email',
                 'description' => __(
-                    'To show the avatar from the Mapped User, enter the same email address as the Mapped User. <br> To show the avatar for a Guest Author, enter the email for their Gravatar account.',
+                    'To show the avatar from the Mapped User, enter the same email address as the Mapped User. To show the avatar for a Guest Author, enter the email for their Gravatar account.',
                     'publishpress-authors'
                 ),
             ],
