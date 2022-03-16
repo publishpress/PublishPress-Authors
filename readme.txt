@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
 Tested up to: 5.9
-Stable tag: 3.14.9
+Stable tag: 3.14.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -224,7 +224,7 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= [3.14.10] - UNRELEASED =
+= [3.14.10] - 16 Mar 2022 =
 
 * Fixed: Fix the character "&" in the Bibliographical Info field, which was converted to "&amp;", #566;
 * Fixed: Fix PHP 8 compatibility addressing the error: PHP Fatal error: Uncaught TypeError: array_key_exists, #585;
