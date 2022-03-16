@@ -49,7 +49,19 @@ trait Settings
         global $wp_rewrite;
 
         $wp_rewrite->init();
-        $wp_rewrite->permalink_structure = $structure;
+        $wp_rewrite->set_permalink_structure($structure);
+        $wp_rewrite->flush_rules(true);
+    }
+
+    /**
+     * @Given I set permalink structure to plain
+     */
+    public function iSetPermalinkStructureToPlain()
+    {
+        global $wp_rewrite;
+
+        $wp_rewrite->init();
+        $wp_rewrite->set_permalink_structure(false);
         $wp_rewrite->flush_rules(true);
     }
 

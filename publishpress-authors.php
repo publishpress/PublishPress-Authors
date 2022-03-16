@@ -5,7 +5,7 @@
  * Description: PublishPress Authors allows you to add multiple authors and guest authors to WordPress posts
  * Author:      PublishPress
  * Author URI:  https://publishpress.com
- * Version: 3.14.10
+ * Version: 3.15.0
  * Text Domain: publishpress-authors
  *
  * ------------------------------------------------------------------------------
@@ -79,7 +79,7 @@ if (!defined('PP_AUTHORS_LOADED')) {
         {
             $comment   = get_comment($comment_id);
             $post      = get_post($comment->comment_post_ID);
-            $coauthors = get_multiple_authors($post->ID);
+            $coauthors = get_post_authors($post->ID);
             foreach ($coauthors as $author) {
                 // The comment was left by the co-author
                 if ($comment->user_id == $author->ID) {
@@ -96,7 +96,10 @@ if (!defined('PP_AUTHORS_LOADED')) {
                     return false;
                 }
 
-                $comment_author_domain = @gethostbyaddr($comment->comment_author_IP);
+                $comment_author_domain = '';
+                if (function_exists('gethostbyaddr')) {
+                    $comment_author_domain = gethostbyaddr($comment->comment_author_IP);
+                }
 
                 // The blogname option is escaped with esc_html on the way into the database in sanitize_option
                 // we want to reverse this for the plain text arena of emails.
@@ -178,7 +181,10 @@ if (!defined('PP_AUTHORS_LOADED')) {
                         admin_url("comment.php?action=spam&c=$comment_id")
                     ) . "\r\n";
 
-                $wp_email = 'wordpress@' . preg_replace('#^www\.#', '', strtolower($_SERVER['SERVER_NAME']));
+                $wp_email = 'wordpress@example.com';
+                if (isset($_SERVER['SERVER_NAME'])) {
+                    $wp_email = 'wordpress@' . preg_replace('#^www\.#', '', strtolower(sanitize_text_field($_SERVER['SERVER_NAME'])));
+                }
 
                 if ('' == $comment->comment_author) {
                     $from = "From: \"$blogname\" <$wp_email>";
@@ -203,7 +209,7 @@ if (!defined('PP_AUTHORS_LOADED')) {
                 $subject         = apply_filters('comment_notification_subject', $subject, $comment_id);
                 $message_headers = apply_filters('comment_notification_headers', $message_headers, $comment_id);
 
-                @wp_mail($author->user_email, $subject, $notify_message, $message_headers);
+                wp_mail($author->user_email, $subject, $notify_message, $message_headers);
             }
 
             return true;

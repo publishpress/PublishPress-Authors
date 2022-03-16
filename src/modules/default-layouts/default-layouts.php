@@ -104,25 +104,29 @@ if (!class_exists('MA_Default_Layouts')) {
             // Check if the layout exists
             $twigFile = 'author_layout/' . $args['layout'] . '.twig';
             if (!file_exists(PP_AUTHORS_TWIG_PATH . $twigFile)) {
-                error_log(
-                    sprintf(
-                        '[PublishPress Authors] Twig file not found for the layout: %s. Falling back to "%s"',
-                        $args['layout'],
-                        Utils::getDefaultLayout()
-                    )
-                );
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+                        sprintf(
+                            '[PublishPress Authors] Twig file not found for the layout: %s. Falling back to "%s"',
+                            $args['layout'],
+                            Utils::getDefaultLayout()
+                        )
+                    );
+                }
 
                 $args['layout'] = Utils::getDefaultLayout();
                 $twigFile       = 'author_layout/' . $args['layout'] . '.twig';
             }
 
             if (!file_exists(PP_AUTHORS_TWIG_PATH . $twigFile)) {
-                error_log(
-                    sprintf(
-                        '[PublishPress Authors] Twig file not found for the layout: %s.',
-                        $args['layout']
-                    )
-                );
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+                        sprintf(
+                            '[PublishPress Authors] Twig file not found for the layout: %s.',
+                            $args['layout']
+                        )
+                    );
+                }
             }
 
             $args['strings'] = [

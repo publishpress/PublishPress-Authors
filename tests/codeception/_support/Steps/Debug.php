@@ -22,6 +22,8 @@ trait Debug
     }
 
     /**
+     * @Given I pause
+     * @When I pause
      * @Then I pause
      */
     public function pause()

@@ -11,7 +11,7 @@ if (!function_exists('cap_add_amp_actions')) {
 
     function cap_update_amp_json_metadata($metadata, $post)
     {
-        $authors = get_multiple_authors($post->ID);
+        $authors = get_post_authors($post->ID);
 
         $authors_json = [];
         foreach ($authors as $author) {

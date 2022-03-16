@@ -112,7 +112,7 @@ if (!class_exists('MA_REST_API')) {
                 return [];
             }
 
-            $authors = get_multiple_authors($postData['id']);
+            $authors = get_post_authors($postData['id']);
 
             $authorsData = [];
 

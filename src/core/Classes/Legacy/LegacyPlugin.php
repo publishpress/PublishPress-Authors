@@ -43,8 +43,15 @@ class LegacyPlugin
         add_action('init', [$this, 'action_init'], 1000);
         add_action('init', [$this, 'action_init_after'], 1100);
 
-        add_action('init', [$this, 'action_ini_for_admin'], 1010);
-        add_action('admin_menu', [$this, 'action_admin_menu'], 9);
+        if (
+            is_admin()
+            && (!defined('DOING_AJAX') || !DOING_AJAX)
+            && (!defined('DOING_CRON') || !DOING_CRON)
+            && (!defined('PUBLISHPRESS_AUTHORS_BYPASS_INSTALLER') || !PUBLISHPRESS_AUTHORS_BYPASS_INSTALLER)
+        ) {
+            add_action('admin_init', [$this, 'action_ini_for_admin']);
+            add_action('admin_menu', [$this, 'action_admin_menu'], 9);
+        }
 
         do_action_ref_array('multiple_authors_after_setup_actions', [$this]);
 
@@ -89,7 +96,7 @@ class LegacyPlugin
 
         foreach ($module_dirs as $module_slug => $base_path) {
             if (file_exists("{$base_path}/{$module_slug}/{$module_slug}.php")) {
-                include_once "{$base_path}/{$module_slug}/{$module_slug}.php";
+                include_once "{$base_path}/{$module_slug}/{$module_slug}.php"; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.NotAbsolutePath
 
                 // Prepare the class name because it should be standardized
                 $tmp        = explode('-', $module_slug);
@@ -304,9 +311,11 @@ class LegacyPlugin
             }
         }
 
-        update_option($versionOption, PP_AUTHORS_VERSION);
+        if ($previous_version !== PP_AUTHORS_VERSION) {
+            update_option($versionOption, PP_AUTHORS_VERSION);
+        }
 
-        // For each module that's been loaded, auto-load data if it's never been run before
+        // For each module that's been loaded, autoload data if it's never been run before
         foreach ($this->modules as $mod_name => $mod_data) {
             // If the module has never been loaded before, run the install method if there is one
             if (!isset($mod_data->options->loaded_once) || !$mod_data->options->loaded_once) {

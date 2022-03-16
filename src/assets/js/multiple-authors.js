@@ -361,6 +361,7 @@ jQuery(document).ready(function ($) {
     //==================================================================
 
     // Fix the admin menu selection for Authors.
+    // phpcs:disable
     if (
         (window.location.pathname === "/wp-admin/edit-tags.php" ||
             window.location.pathname === "/wp-admin/term.php") &&
@@ -386,6 +387,7 @@ jQuery(document).ready(function ($) {
                 "wp-has-current-submenu wp-menu-open open-if-no-js menu-top-first"
             );
     }
+    // phpcs:enable
 
     var $mappedUser = $('select[name="authors-user_id"]');
     var $slug = $("#slug");

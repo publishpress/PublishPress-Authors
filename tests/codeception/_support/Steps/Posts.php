@@ -5,6 +5,7 @@ namespace Steps;
 
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Classes\Utils;
+use Exception;
 
 use function sq;
 
@@ -118,10 +119,30 @@ trait Posts
 
     /**
      * @When I view the post :postSlug
+     * @Given I view the post :postSlug
      */
     public function iViewThePost($postSlug)
     {
-        $this->amOnPage('/' . sq($postSlug));
+        global $wp_rewrite;
+
+        if ($wp_rewrite->permalink_structure) {
+            $this->amOnPage('/' . sq($postSlug));
+        } else {
+            $posts = get_posts(
+                [
+                    'name' => sq($postSlug),
+                    'post_type' => 'post',
+                    'post_status' => 'publish',
+                    'numberposts' => 1,
+                ]
+            );
+
+            if ($posts) {
+                $this->amOnPage('/?p=' . $posts[0]->ID);
+            } else {
+                throw new Exception('Post not found: ' . sq($postSlug));
+            }
+        }
     }
 
     /**

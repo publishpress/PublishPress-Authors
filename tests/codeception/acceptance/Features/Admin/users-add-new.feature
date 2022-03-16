@@ -10,7 +10,6 @@ Feature: Add new user in the backend
     Scenario: Author is created when user is created in the admin for a selected role
         Given I selected role "author" for the Automatically Create Author Profiles setting
         When I create a new user "user_1" with role "author"
-        Then I wait for 30 seconds
         And I open the Authors admin page
         Then I see user "user_1" as author in the list
 

@@ -82,6 +82,7 @@ if (!class_exists('MA_Divi_Integration')) {
             try {
                 add_filter('et_builder_resolve_dynamic_content', [$this, 'resolveDefaultDynamicContent'], 15, 6);
             } catch (Exception $e) {
+                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
                 error_log(
                     sprintf('[PublishPress Authors] Method [%s] caught the exception %s', __METHOD__, $e->getMessage())
                 );
@@ -103,8 +104,6 @@ if (!class_exists('MA_Divi_Integration')) {
          */
         public function resolveDefaultDynamicContent($content, $name, $settings, $post_id, $context, $overrides)
         {
-            global $shortname, $wp_query;
-
             $_                 = ET_Core_Data_Utils::instance();
             $def               = 'et_builder_get_dynamic_attribute_field_default';
             $post              = get_post($post_id);
@@ -118,7 +117,7 @@ if (!class_exists('MA_Divi_Integration')) {
                     $author = Author::get_by_user_id($author->ID);
                 }
             } elseif ($post) {
-                $author = get_multiple_authors($post_id);
+                $author = get_post_authors($post_id);
                 $author = $author[0];
             }
 

@@ -43,14 +43,14 @@ class PostsSkinClassic extends Skin_Classic
         ?>
         <span class="elementor-post-author">
 			<?php
-            $authors     = get_multiple_authors();
+            $authors     = get_post_authors();
             $authorNames = [];
 
             foreach ($authors as $author) {
                 $authorNames[] = $author->display_name;
             }
 
-            echo apply_filters(
+            echo apply_filters( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 'publishpress_authors_elementor_posts_skin_classic_byline',
                 implode(', ', $authorNames),
                 $authorNames,

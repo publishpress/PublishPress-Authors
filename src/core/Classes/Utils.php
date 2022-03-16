@@ -343,7 +343,7 @@ class Utils
         }
 
         if (in_array($pagenow, ['edit-tags.php', 'term.php'])) {
-            $taxonomy = isset($_GET['taxonomy']) ? $_GET['taxonomy'] : null;
+            $taxonomy = isset($_GET['taxonomy']) ? sanitize_text_field($_GET['taxonomy']) : null;
 
             if ('author' !== $taxonomy) {
                 return false;
@@ -499,7 +499,7 @@ class Utils
             $post = get_post();
             if (empty($post)) {
                 if (isset($_GET['post'])) {
-                    $post = get_post($_GET['post']);
+                    $post = get_post((int)$_GET['post']);
                 } else {
                     return false;
                 }
@@ -641,12 +641,15 @@ class Utils
 
         foreach ($requiredClasses as $className) {
             if (! class_exists($className)) {
-                error_log(
-                    sprintf(
-                        '[PublishPress Authors] Elementor module did not find the class %s',
-                        $className
-                    )
-                );
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+                        sprintf(
+                            '[PublishPress Authors] Elementor module did not find the class %s',
+                            $className
+                        )
+                    );
+                }
+
                 $abort = true;
             }
         }
@@ -658,12 +661,15 @@ class Utils
 
         foreach ($requiredTraits as $traitName) {
             if (! trait_exists($traitName)) {
-                error_log(
-                    sprintf(
-                        '[PublishPress Authors] Elementor module did not find the trait %s',
-                        $traitName
-                    )
-                );
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+                        sprintf(
+                            '[PublishPress Authors] Elementor module did not find the trait %s',
+                            $traitName
+                        )
+                    );
+                }
+
                 $abort = true;
             }
         }
@@ -706,15 +712,17 @@ class Utils
 
         if (version_compare(WPSEO_VERSION, '14.1', '<')) {
             if (! get_transient('publishpress_authors_not_compatible_yoast_warning')) {
-                error_log(
-                    sprintf(
-                        '[PublishPress Authors] %s %s - %s. %s',
-                        __METHOD__,
-                        'detected a not supported version of the Yoast SEO plugin',
-                        WPSEO_VERSION,
-                        'It requires 13.4.1 or later. Please, update it'
-                    )
-                );
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+                        sprintf(
+                            '[PublishPress Authors] %s %s - %s. %s',
+                            __METHOD__,
+                            'detected a not supported version of the Yoast SEO plugin',
+                            WPSEO_VERSION,
+                            'It requires 13.4.1 or later. Please, update it'
+                        )
+                    );
+                }
 
                 set_transient('publishpress_authors_not_compatible_yoast_warning', true, 24 * 60 * 60 * 2);
             }
@@ -765,7 +773,7 @@ class Utils
 
     public static function isAuthorOfPost($postId, $author)
     {
-        $postAuthors = get_multiple_authors($postId);
+        $postAuthors = get_post_authors($postId);
         if (empty($postAuthors)) {
             return false;
         }
@@ -787,5 +795,23 @@ class Utils
         }
 
         return false;
+    }
+
+    public static function sanitizeArray($array)
+    {
+        $sanitizedArray = [];
+
+        foreach ($array as $key => $value) {
+            $key = sanitize_key($key);
+
+            if (is_array($value)) {
+                $sanitizedArray[$key] = self::sanitizeArray($value);
+                continue;
+            }
+
+            $sanitizedArray[$key] = sanitize_text_field($value);
+        }
+
+        return $sanitizedArray;
     }
 }

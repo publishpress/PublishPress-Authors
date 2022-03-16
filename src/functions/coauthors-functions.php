@@ -12,7 +12,7 @@ use MultipleAuthors\Classes\Authors_Iterator;
 if (!function_exists('get_coauthors')) {
     function get_coauthors($post_id = 0)
     {
-        return get_multiple_authors($post_id);
+        return get_post_authors($post_id);
     }
 }
 
@@ -155,7 +155,7 @@ if (!function_exists('cap_filter_comment_moderation_email_recipients')) {
         $post_id = $comment->comment_post_ID;
 
         if (isset($post_id)) {
-            $coauthors        = get_multiple_authors($post_id);
+            $coauthors        = get_post_authors($post_id);
             $extra_recipients = [];
             foreach ($coauthors as $user) {
                 if (!empty($user->user_email)) {
