@@ -224,7 +224,7 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= [3.15.10] - UNRELEASED =
+= [3.15.0] - UNRELEASED =
 
 * Fixed: Fix error where secondary authors were dropped off the posts if loading author pages on sites using plain permalinks, #593;
 * Fixed: Fix error when trying to create an author for user that already is author, #592;
