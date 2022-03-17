@@ -17,6 +17,7 @@ class RoboFile extends PackageBuilderTasks
             [
                 'webpack.config.js',
                 'legacy-tests',
+                'phpcs.xml',
                 'src/assets/lib/chosen-v1.8.3/docsupport',
                 'src/assets/lib/chosen-v1.8.3/bower.json',
                 'src/assets/lib/chosen-v1.8.3/create-example.jquery.html',
@@ -27,6 +28,7 @@ class RoboFile extends PackageBuilderTasks
                 'vendor/pimple/pimple/.gitignore',
                 'vendor/pimple/pimple/.php_cs.dist',
                 'vendor/psr/container/.gitignore',
+                'vendor/publishpress/wordpress-reviews/phpcs.xml.dist',
                 'vendor/publishpress/wordpress-version-notices/.gitignore',
                 'vendor/publishpress/wordpress-version-notices/README.md',
                 'vendor/publishpress/wordpress-version-notices/bin',
