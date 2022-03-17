@@ -529,9 +529,9 @@ jQuery(document).ready(function ($) {
         if(clicked_element.val() === 'custom_image'){
             clicked_element.closest('tr').find('.author-image-field-wrapper').show();
        }else{
-           //trigger image remove action
-            $('.delete-author-image-field').trigger('click');
-           //hide image field wrapper
+            //trigger image remove action
+            clicked_element.closest('tr').find('.delete-author-image-field').trigger('click');
+            //hide image field wrapper
             clicked_element.closest('tr').find('.author-image-field-wrapper').hide();
        }
     });
