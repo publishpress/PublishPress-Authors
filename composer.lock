@@ -115,16 +115,16 @@
         },
         {
             "name": "publishpress/wordpress-banners",
-            "version": "v1.2.7",
+            "version": "v1.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/publishpress/wordpress-banners.git",
-                "reference": "fbc31f612468db297f57f38f20f3e8749b1894f9"
+                "reference": "79a02716f89b93daec5b2dc0e8c1bc4d1cf9967c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/publishpress/wordpress-banners/zipball/fbc31f612468db297f57f38f20f3e8749b1894f9",
-                "reference": "fbc31f612468db297f57f38f20f3e8749b1894f9",
+                "url": "https://api.github.com/repos/publishpress/wordpress-banners/zipball/79a02716f89b93daec5b2dc0e8c1bc4d1cf9967c",
+                "reference": "79a02716f89b93daec5b2dc0e8c1bc4d1cf9967c",
                 "shasum": ""
             },
             "require": {
@@ -150,9 +150,9 @@
             "homepage": "http://publishpress.com/",
             "support": {
                 "issues": "https://github.com/publishpress/wordpress-banners/issues",
-                "source": "https://github.com/publishpress/wordpress-banners/tree/v1.2.7"
+                "source": "https://github.com/publishpress/wordpress-banners/tree/v1.2.8"
             },
-            "time": "2022-03-17T00:55:57+00:00"
+            "time": "2022-03-18T14:49:29+00:00"
         },
         {
             "name": "publishpress/wordpress-reviews",
@@ -4091,9 +4091,6 @@
                 "bordoni/phpass": "0.3.*",
                 "illuminate/support": ">=4.0.0",
                 "php": ">=5.3.0"
-            },
-            "replace": {
-                "mikemclin/laravel-wp-password": "self.version"
             },
             "require-dev": {
                 "mockery/mockery": "~0.9",
@@ -9562,5 +9559,5 @@
         "php": ">=5.6.20"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.2.0"
 }
