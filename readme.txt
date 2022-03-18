@@ -224,6 +224,10 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= UNRELEASED =
+
+* Fixed: Fix PHP notice Constant PP_WP_BANNERS_VERSION already defined, #603;
+
 = [3.15.1] - 17 Mar 2022 =
 
 * Fixed: Fix fatal error: Cannot declare class PublishPress\WordPressBanners\BannersMain;
