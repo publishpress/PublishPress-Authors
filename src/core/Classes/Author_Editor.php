@@ -316,7 +316,7 @@ class Author_Editor
          * @param array $fields_tabs Existing fields tabs to display.
          * @param Author $author Author to be rendered.
          */
-        $fields_tabs = apply_filters('authors_editor_fields', $fields_tabs, $author);
+        $fields_tabs = apply_filters('authors_editor_fields_tabs', $fields_tabs, $author);
 
         return $fields_tabs;
     }
