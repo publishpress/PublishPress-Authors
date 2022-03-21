@@ -413,10 +413,10 @@ class Author_Editor
             'label'       => '',
             'description' => '',
         ];
-        $args     = array_merge($defaults, $args);
-        $key      = 'authors-' . $args['key'];
-        $tab_class= 'ppma-tab-content ppma-' . $args['tab'] . '-tab';
-        $tab_style= ($args['tab'] === self::AUTHOR_EDITOR_DEFAULT_TAB) ? '' : 'display:none;';
+        $args      = array_merge($defaults, $args);
+        $key       = 'authors-' . $args['key'];
+        $tab_class = 'ppma-tab-content ppma-' . $args['tab'] . '-tab';
+        $tab_style = ($args['tab'] === self::AUTHOR_EDITOR_DEFAULT_TAB) ? '' : 'display:none;';
         ob_start();
         ?>
         <tr 
@@ -458,16 +458,16 @@ class Author_Editor
                     $author_image = wp_get_attachment_image_url($args['value'], 'thumbnail');
                     $avatar_options = $args['options'];
 
-                    if($author_image){
+                    if ($author_image) {
                         $checked_option    = 'custom_image';
                         $image_field_style = '';
-                    }else{
+                    } else {
                         $checked_option    = 'gravatar';
                         $image_field_style = 'display:none;';
                     }
                     ?>
 
-                    <?php foreach ($avatar_options as $avatar_option_key => $avatar_option_data){ ?>
+                    <?php foreach ($avatar_options as $avatar_option_key => $avatar_option_data) { ?>
                         <p>
                             <input name="<?php echo esc_attr($key.'-options'); ?>" type="radio"
                                 value="<?php echo esc_attr($avatar_option_key); ?>"
