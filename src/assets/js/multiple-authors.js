@@ -517,6 +517,9 @@ jQuery(document).ready(function ($) {
         $('.ppma-tab-content').hide();
         //show this current tab contents
         $('.ppma-' + clicked_tab + '-tab').show();
+
+        // Make sure the description field is hidden. It was being displayed after navigating throw tabs.
+        $('.form-field.term-description-wrap').hide();
     });
 
     /**
