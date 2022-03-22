@@ -802,9 +802,9 @@ class Author_Editor
                     && (int)$author->term_id > 0
                 ) {
                     return new WP_Error(
-                        'duplicate_mapped_user', 
-                        __(
-                            'This user is already mapped to another author.', 
+                        'publishpress_authors_duplicate_mapped_user',
+                        esc_html__(
+                            'This user is already mapped to another author.',
                             'publishpress-authors'
                         )
                     );
@@ -835,9 +835,9 @@ class Author_Editor
                      * linked author ID is not equal return ID
                      */
                     return new WP_Error(
-                        'slug_exists', 
-                        __(
-                            'User with the author name already exists.', 
+                        'publishpress_authors_slug_exists',
+                        esc_html__(
+                            'An author with the name provided already exists.',
                             'publishpress-authors'
                         )
                     );
