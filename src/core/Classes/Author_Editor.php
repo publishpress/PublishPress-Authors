@@ -777,10 +777,10 @@ class Author_Editor
 
     /**
      * Author term mapped limit validation
-	 *
-	 * @param string|WP_Error $term     The term name to add, or a WP_Error object if there's an error.
-	 * @param string          $taxonomy Taxonomy slug.
-     * 
+     *
+     * @param string|WP_Error $term The term name to add, or a WP_Error object if there's an error.
+     * @param string $taxonomy Taxonomy slug.
+     *
      * @return array|WP_Error
      */
     public static function filter_pre_insert_term($term, $taxonomy)
@@ -789,13 +789,16 @@ class Author_Editor
             /**
              * Check if term with this user exist
              */
-            if (isset($_POST['authors-new']) 
+            if (
+                isset($_POST['authors-new'])
                 && $author_id = (int)$_POST['authors-new'] > 0
             ) {
                 $author = Author::get_by_user_id($author_id);
-                if ($author 
-                    && is_object($author) 
-                    && isset($author->term_id) 
+
+                if (
+                    $author
+                    && is_object($author)
+                    && isset($author->term_id)
                     && (int)$author->term_id > 0
                 ) {
                     return new WP_Error(
@@ -818,8 +821,9 @@ class Author_Editor
             }
 
             $author_slug_user = get_user_by('slug', $slug);
-            if ($author_slug_user 
-                && is_object($author_slug_user) 
+            if (
+                $author_slug_user
+                && is_object($author_slug_user)
                 && isset($author_slug_user->ID)
             ) {
                 if ((!isset($_POST['authors-new']))
