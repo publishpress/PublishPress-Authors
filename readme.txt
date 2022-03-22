@@ -224,9 +224,11 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= UNRELEASED =
+= [3.16.0] - UNRELEASED =
 
 * Fixed: Fix PHP notice Constant PP_WP_BANNERS_VERSION already defined, #603;
+* Fixed: Improve the selection of avatar for authors, making it clear if is using gravatar or custom image, #564;
+* Fixed: Updated Italian translation files;
 
 = [3.15.1] - 17 Mar 2022 =
 
