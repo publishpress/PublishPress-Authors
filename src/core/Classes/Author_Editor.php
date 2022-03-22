@@ -817,7 +817,7 @@ class Author_Editor
             if (empty($_POST['slug'])) {
                 $slug = sanitize_title($_POST['tag-name']);
             } else {
-                $slug = sanitize_text_field($_POST['slug']);
+                $slug = sanitize_title($_POST['slug']);
             }
 
             $author_slug_user = get_user_by('slug', $slug);
