@@ -217,6 +217,10 @@ class Plugin
                 2
             );
             add_action(
+                'author_term_edit_form_top',
+                ['MultipleAuthors\\Classes\\Author_Editor', 'action_author_edit_form_fields_tab']
+            );
+            add_action(
                 'author_edit_form_fields',
                 ['MultipleAuthors\\Classes\\Author_Editor', 'action_author_edit_form_fields']
             );
