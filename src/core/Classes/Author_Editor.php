@@ -826,14 +826,10 @@ class Author_Editor
                 && is_object($author_slug_user)
                 && isset($author_slug_user->ID)
             ) {
-                if ((!isset($_POST['authors-new']))
-                    || (isset($_POST['authors-new']) 
-                    && (int)$author_slug_user->ID != (int)$_POST['authors-new'])
+                if (
+                    (! isset($_POST['authors-new']))
+                    || ((int)$author_slug_user->ID != (int)$_POST['authors-new'])
                 ) {
-                    /**
-                     * Return error if author is not linked or 
-                     * linked author ID is not equal return ID
-                     */
                     return new WP_Error(
                         'publishpress_authors_slug_exists',
                         esc_html__(
