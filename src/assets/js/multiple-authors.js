@@ -113,8 +113,7 @@ jQuery(document).ready(function ($) {
         });
     }
 
-    function hasSelectedOnlyGuests(parent)
-    {
+    function hasSelectedOnlyGuests(parent) {
         if (typeof parent === 'undefined' || parent.length == 0) {
             parent = $('.authors-list');
         }
@@ -131,8 +130,7 @@ jQuery(document).ready(function ($) {
         return guestAuthorsCount === selectedAuthors.length;
     }
 
-    function handleUsersAuthorField(parent)
-    {
+    function handleUsersAuthorField(parent) {
         let $authorsUserField = $('#publishpress-authors-user-author-wrapper');
         if (hasSelectedOnlyGuests(parent)) {
             $authorsUserField.show();
@@ -141,8 +139,7 @@ jQuery(document).ready(function ($) {
         }
     }
 
-    function authorsUserSelect2(selector)
-    {
+    function authorsUserSelect2(selector) {
         selector.each(function () {
             var authorsSearch = $(this).ppma_select2({
                 placeholder: $(this).data("placeholder"),
@@ -259,7 +256,7 @@ jQuery(document).ready(function ($) {
             selectedAuthors.push(parseInt($(this).val()));
         });
 
-        var selectedFallbackUser= $('#publishpress-authors-user-author-select').val();
+        var selectedFallbackUser = $('#publishpress-authors-user-author-select').val();
 
         // save the data
         $.ajax({
@@ -488,56 +485,56 @@ jQuery(document).ready(function ($) {
             return false;
         });
     });
-  
+
     /**
      * Add tab class to author editor's tr without tab
-     * 
+     *
      * This will add general tab class to 'Name' and Author URL
-     * or any tab that's rendered by default or third party 
+     * or any tab that's rendered by default or third party
      *  without tab attribute
      */
     if ($('body').hasClass('taxonomy-author')) {
-      $('form#edittag tr.form-field:not(.ppma-tab-content)')
-        .addClass('ppma-tab-content ppma-general-tab')
-        .attr('data-tab', 'general');
+        $('form#edittag tr.form-field:not(.ppma-tab-content)')
+            .addClass('ppma-tab-content ppma-general-tab')
+            .attr('data-tab', 'general');
     }
-  
+
     /**
      * Author editor tab switch
      */
     $(document).on('click', '.ppma-editor-tabs a', function (event) {
-      
-      event.preventDefault();
-       
-      var clicked_tab = $(this).attr('data-tab');
-      
-      //remove active class from all tabs
-      $('.ppma-editor-tabs a').removeClass('nav-tab-active');
-      //add active class to current tab
-      $(this).addClass('nav-tab-active');
-  
-      //hide all tabs contents
-      $('.ppma-tab-content').hide();
-      //show this current tab contents
-      $('.ppma-' + clicked_tab + '-tab').show();
-  
+
+        event.preventDefault();
+
+        var clicked_tab = $(this).attr('data-tab');
+
+        //remove active class from all tabs
+        $('.ppma-editor-tabs a').removeClass('nav-tab-active');
+        //add active class to current tab
+        $(this).addClass('nav-tab-active');
+
+        //hide all tabs contents
+        $('.ppma-tab-content').hide();
+        //show this current tab contents
+        $('.ppma-' + clicked_tab + '-tab').show();
     });
-  
+
     /**
      * Author image avatar source option toggle
      */
     $(document).on('click', 'input[name="authors-avatar-options"]', function () {
         var clicked_element = $(this);
-        if(clicked_element.val() === 'custom_image'){
+
+        if (clicked_element.val() === 'custom_image') {
             clicked_element.closest('tr').find('.author-image-field-wrapper').show();
-       }else{
+        } else {
             //trigger image remove action
             clicked_element.closest('tr').find('.delete-author-image-field').trigger('click');
             //hide image field wrapper
             clicked_element.closest('tr').find('.author-image-field-wrapper').hide();
-       }
+        }
     });
-  
+
     /**
      * Switch focus to general email from image tab handler
      */
@@ -547,47 +544,46 @@ jQuery(document).ready(function ($) {
         $('.ppma-editor-tabs a[data-tab="general"]').trigger('click');
         //set focus on email field
         $('input[name="authors-user_email"]').focus();
-
     });
 
     //process a request to validate author mapped user.
     $('body.taxonomy-author form#edittag').submit(function (event) {
-  
-      var $mappedUser = $('select[name="authors-user_id"]').val();
-      var $authorSlug = $('input[name="slug"]').val();
-      var $termId = $('input[name="tag_ID"]').val();
-      var $form = $(this);
-  
-      $('.author-response-notice').remove();
-  
-      event.preventDefault();
-  
-      //prepare ajax data
-      var data = {
-        action: "mapped_author_validation",
-        author_id: $mappedUser,
-        author_slug: $authorSlug,
-        term_id: $termId,
-        nonce: MultipleAuthorsStrings.mapped_author_nonce,
-      };
-  
-      if ($('.author-loading-spinner').length === 0) {
-        $('.edit-tag-actions input[type="submit"]').after('<div class="author-loading-spinner spinner is-active" style="float: none;"></div>');
-      }
-  
-      $('.author-loading-spinner').addClass('is-active');
-  
-      $.post(ajaxurl, data, function (response) {
-        if (response.status === 'error') {
-          $('.edit-tag-actions').after('<div class="author-response-notice notice notice-error" style="margin-top: 10px;"><p> ' + response.content + ' </p></div>');
-          $('.author-loading-spinner').removeClass('is-active');
-        } else {
-          $form.unbind('submit').submit();
+
+        var $mappedUser = $('select[name="authors-user_id"]').val();
+        var $authorSlug = $('input[name="slug"]').val();
+        var $termId = $('input[name="tag_ID"]').val();
+        var $form = $(this);
+
+        $('.author-response-notice').remove();
+
+        event.preventDefault();
+
+        //prepare ajax data
+        var data = {
+            action: "mapped_author_validation",
+            author_id: $mappedUser,
+            author_slug: $authorSlug,
+            term_id: $termId,
+            nonce: MultipleAuthorsStrings.mapped_author_nonce,
+        };
+
+        if ($('.author-loading-spinner').length === 0) {
+            $('.edit-tag-actions input[type="submit"]').after('<div class="author-loading-spinner spinner is-active" style="float: none;"></div>');
         }
-      });
-  
+
+        $('.author-loading-spinner').addClass('is-active');
+
+        $.post(ajaxurl, data, function (response) {
+            if (response.status === 'error') {
+                $('.edit-tag-actions').after('<div class="author-response-notice notice notice-error" style="margin-top: 10px;"><p> ' + response.content + ' </p></div>');
+                $('.author-loading-spinner').removeClass('is-active');
+            } else {
+                $form.unbind('submit').submit();
+            }
+        });
+
     });
-    
+
 });
 
 if (typeof console === "undefined") {
