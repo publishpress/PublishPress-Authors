@@ -363,7 +363,7 @@ class Author_Editor
                         'label'         => __('Gravatar', 'publishpress-authors'),
                         'description'   => sprintf(
                                             esc_html__(
-                                                '(Uses the %1s author e-mail %2s as Gravatar account)', 
+                                                '(Uses the %sauthor e-mail%s as Gravatar account)',
                                                 'publishpress-authors'
                                             ), 
                                             '<a href="#" class="ppma-image-general-author-focus">', '</a>'
