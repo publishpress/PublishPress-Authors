@@ -339,3 +339,7 @@ div.pp-authors-menus-wrapper-promo select.ppc-nav-menu-role {
     height: 450px;
   }
 }
+
+body.term-php .term-slug-wrap .description {
+    display: none;
+}

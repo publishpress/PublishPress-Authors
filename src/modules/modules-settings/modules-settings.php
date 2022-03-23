@@ -31,6 +31,7 @@
 use MultipleAuthors\Classes\Legacy\Module;
 use MultipleAuthors\Classes\Utils;
 use MultipleAuthors\Factory;
+use PublishPress\WordPressBanners\BannersMain;
 
 if (!class_exists('MA_Modules_Settings')) {
     /**
@@ -273,10 +274,10 @@ if (!class_exists('MA_Modules_Settings')) {
                         submit_button(null, 'primary', 'submit', false); ?>
                     </form>
                 </div><!-- .pp-column-left -->
-                <?php if( !PP_AUTHORS_BLOCKS_INSTALLED ) { ?>
+                <?php if (apply_filters('publishpress_authors_show_blocks_recommendation_banner', ! PP_AUTHORS_BLOCKS_INSTALLED)) { ?>
                     <div class="pp-column-right">
                         <?php
-                        $banners = new PublishPress\WordPressBanners\BannersMain;
+                        $banners = new BannersMain;
                         $banners->pp_display_banner(
                             esc_html__( 'Recommendations for you', 'publishpress-authors' ),
                             esc_html__( 'Showcase your Authors with PublishPress Blocks', 'publishpress-authors' ),

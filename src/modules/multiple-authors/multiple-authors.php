@@ -183,6 +183,9 @@ if (!class_exists('MA_Multiple_Authors')) {
             if (!is_admin()) {
                 add_filter('body_class', [$this, 'filter_body_class']);
                 add_filter('comment_class', [$this, 'filterCommentClass'], 10, 5);
+            }else{
+                //author profile edit body class
+                add_filter('admin_body_class', [$this, 'filter_admin_body_class']);
             }
 
             // Fix upload permissions for multiple authors.
@@ -252,6 +255,9 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_action('profile_update', [$this, 'userProfileUpdate'], 10, 2);
 
             add_filter('pre_comment_approved', [$this, 'preCommentApproved'], 10, 2);
+
+            // Allow author to edit own author profile.
+            add_filter('map_meta_cap', [$this, 'filter_term_map_meta_cap'], 10, 4);
         }
 
         /**
@@ -268,6 +274,25 @@ if (!class_exists('MA_Multiple_Authors')) {
                 'dashicons-groups',
                 26
             );
+
+            $current_author = Author::get_by_user_id(get_current_user_id());
+            if (
+                !current_user_can(apply_filters('pp_multiple_authors_manage_authors_cap', 'ppma_manage_authors')) && 
+                $current_author && 
+                is_object($current_author) && 
+                isset($current_author->term_id)
+                ) {
+                add_menu_page(
+                    esc_html__('Author Profile', 'publishpress-authors'),
+                    esc_html__('Author Profile', 'publishpress-authors'),
+                    apply_filters('pp_multiple_authors_edit_own_profile_cap', 'ppma_edit_own_profile'),
+                    'term.php?taxonomy=author&tag_ID='.$current_author->term_id,
+                    __return_empty_string(),
+                    'dashicons-groups',
+                    26
+                );
+            }
+
         }
 
         /**
@@ -1170,32 +1195,14 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             $taxonomy = isset($_GET['taxonomy']) ? sanitize_key($_GET['taxonomy']) : null;
-
             if ('author' !== $taxonomy) {
                 return $translation;
             }
 
-            // The description of the field Name
-            if ('default' === $domain && 'The name is how it appears on your site.' === $translation) {
-                $translation = esc_html__(
-                    'This is how the author’s name will appears on your site.',
-                    'publishpress-authors'
-                );
-            }
-
             // The name of field Slug, convert to Author URL
-            if (isset($_GET['taxonomy']) && 'author' === $_GET['taxonomy']) {
-                if ('default' === $domain) {
-                    if ('Slug' === $translation) {
-                        $translation = esc_html__('Author URL', 'publishpress-authors');
-                    }
-
-                    if ('The &#8220;slug&#8221; is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens.' === $translation) {
-                        $translation = esc_html__(
-                            'This forms part of the URL for the author’s profile page. If you choose a Mapped User, this URL is taken from the user’s account and can not be changed.',
-                            'publishpress-authors'
-                        );
-                    }
+            if ('default' === $domain) {
+                if ('Slug' === $translation) {
+                    $translation = esc_html__('Author URL', 'publishpress-authors');
                 }
             }
 
@@ -2065,16 +2072,27 @@ if (!class_exists('MA_Multiple_Authors')) {
          */
         public function migrate_legacy_settings()
         {
-            if (get_option('publishpress_multiple_authors_settings_migrated_3_0_0')) {
-                return false;
-            }
+            if (!get_option('publishpress_multiple_authors_settings_migrated_3_0_0')) {
+                $legacyOptions = get_option('publishpress_multiple_authors_options');
+                if (!empty($legacyOptions)) {
+                    update_option('multiple_authors_multiple_authors_options', $legacyOptions);
+                }
 
-            $legacyOptions = get_option('publishpress_multiple_authors_options');
-            if (!empty($legacyOptions)) {
-                update_option('multiple_authors_multiple_authors_options', $legacyOptions);
+                update_option('publishpress_multiple_authors_settings_migrated_3_0_0', 1);
             }
-
-            update_option('publishpress_multiple_authors_settings_migrated_3_0_0', 1);
+            
+            if (!get_option('publishpress_multiple_authors_settings_migrated_3_15_0')) {
+               if (function_exists('get_role')) {
+                   $capability_roles = ['administrator', 'editor', 'author'];
+                   foreach ($capability_roles as $capability_role) {
+                        $role = get_role($capability_role);
+                        if (is_object($role) && !is_wp_error($role)) {
+                            $role->add_cap('ppma_edit_own_profile');
+                        }
+                    }
+                    update_option('publishpress_multiple_authors_settings_migrated_3_15_0', 1);
+               }
+            }
         }
 
         /**
@@ -2797,6 +2815,71 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             return $approved;
+        }
+
+        /**
+         * Allow author to edit own author profile.
+         *
+         * @param $caps
+         * @param $cap
+         * @param $user_id
+         * @param $args
+         *
+         * @return mixed
+         */
+        public function filter_term_map_meta_cap($caps, $cap, $user_id, $args)
+        {
+            if (in_array($cap, ['edit_term', 'ppma_manage_authors']) && in_array('ppma_manage_authors', $caps, true)) {
+
+                $term_id = 0;
+                if (isset($args[0])) {
+                    $term_id = (int)$args[0];
+                }else if (isset($_POST['action']) && $_POST['action'] === 'editedtag' && isset($_POST['tag_ID']) && (int)$_POST['tag_ID'] > 0) {
+                    //this is needed for when saving the profile as it run through edit-tags.php which user doesn't have permission
+                    $term_id = (int)$_POST['tag_ID'];
+                }
+                $current_author = Author::get_by_user_id(get_current_user_id());
+            
+                //allow user to edit own profile.
+                if (
+                    $term_id > 0 &&
+                    $current_author &&
+                    is_object($current_author) &&
+                    isset($current_author->term_id) &&
+                    (int)$current_author->term_id === $term_id
+                ) {
+                    foreach ($caps as &$item) {
+                        if ($item === 'ppma_manage_authors') {
+                            $item = 'ppma_edit_own_profile';
+                        }
+                    }
+                    $caps = apply_filters('pp_authors_filter_term_map_meta_cap', $caps, $cap, $user_id, $term_id);
+                }
+            }
+
+            return $caps;
+        }
+
+        /**
+         * Author profile edit body class
+         * 
+         * @param string $class
+         *
+         * @return string
+         */
+        public function filter_admin_body_class($classes) {
+            
+            if (!function_exists('get_current_screen')) {
+                return $classes;
+            }
+
+            $screen = get_current_screen();
+
+            if ($screen && is_object($screen) && isset($screen->id) && $screen->id === 'edit-author') {
+                $classes .= (current_user_can(apply_filters('pp_multiple_authors_manage_authors_cap', 'ppma_manage_authors'))) ? ' authorised-profile-edit ' : ' own-profile-edit ';
+            }
+
+            return $classes;
         }
     }
 }

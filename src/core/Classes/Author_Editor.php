@@ -12,6 +12,7 @@ namespace MultipleAuthors\Classes;
 use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Factory;
+use WP_Error;
 
 /**
  * Class Author_Editor
@@ -22,6 +23,9 @@ use MultipleAuthors\Factory;
  */
 class Author_Editor
 {
+
+    const AUTHOR_EDITOR_DEFAULT_TAB = 'general';
+
     /**
      * Customize the term table to look more like the users table.
      *
@@ -227,6 +231,41 @@ class Author_Editor
     }
 
     /**
+     * Render fields tabs for the author profile editor
+     *
+     * @param WP_Term $term Author term being edited.
+     */
+    public static function action_author_edit_form_fields_tab($term)
+    {
+        $author = Author::get_by_term_id($term->term_id);
+
+        /**
+         * Filter the fields tabs on the Author's profile.
+         *
+         * @param array $tabs
+         * @param Author $author
+         *
+         * @return array
+         */
+        $fields_tabs  = apply_filters('multiple_authors_author_fields_tabs', self::get_fields_tabs($author), $author);
+
+        echo '<h2 class="ppma-editor-tabs nav-tab-wrapper">';
+
+        foreach ($fields_tabs as $key => $args) {
+            $active_tab = ($key === self::AUTHOR_EDITOR_DEFAULT_TAB) ? ' nav-tab-active' : '';
+        ?>
+        <a data-tab="<?php esc_attr_e($key); ?>" 
+            class="<?php esc_attr_e('tab-link nav-tab' . $active_tab ); ?>" 
+            href="#"
+            >
+            <?php esc_html_e($args['label']); ?>
+        </a>
+        <?php
+        }
+        echo '</h2>';
+    }
+
+    /**
      * Render fields for the author profile editor
      *
      * @param WP_Term $term Author term being edited.
@@ -255,6 +294,35 @@ class Author_Editor
     }
 
     /**
+     * Get the fields tabs to be rendered in the author editor
+     *
+     * @param Author $author Author to be rendered.
+     *
+     * @return array
+     */
+    public static function get_fields_tabs($author)
+    {
+        $fields_tabs = [
+            'general'     => [
+                'label'    => __('General', 'publishpress-authors'),
+            ],
+            'image'  => [
+                'label' => __('Image', 'publishpress-authors'),
+            ],
+        ];
+
+        /**
+         * Customize fields tabs presented in the author editor.
+         *
+         * @param array $fields_tabs Existing fields tabs to display.
+         * @param Author $author Author to be rendered.
+         */
+        $fields_tabs = apply_filters('authors_editor_fields_tabs', $fields_tabs, $author);
+
+        return $fields_tabs;
+    }
+
+    /**
      * Get the fields to be rendered in the author editor
      *
      * @param Author $author Author to be rendered.
@@ -265,40 +333,58 @@ class Author_Editor
     {
         $fields = [
             'user_id'     => [
-                'label'    => __('Mapped User', 'publishpress-authors'),
+                'label'    => esc_html__('Mapped User', 'publishpress-authors'),
                 'type'     => 'ajax_user_select',
                 'sanitize' => 'intval',
+                'tab'      => 'general',
             ],
             'first_name'  => [
-                'label' => __('First Name', 'publishpress-authors'),
+                'label' => esc_html__('First Name', 'publishpress-authors'),
                 'type'  => 'text',
+                'tab'   => 'general',
             ],
             'last_name'   => [
-                'label' => __('Last Name', 'publishpress-authors'),
+                'label' => esc_html__('Last Name', 'publishpress-authors'),
                 'type'  => 'text',
+                'tab'   => 'general',
             ],
             'user_email'  => [
-                'label'       => __('Email', 'publishpress-authors'),
+                'label'       => esc_html__('Email', 'publishpress-authors'),
                 'type'        => 'email',
-                'description' => __(
-                    'To show the avatar from the Mapped User, enter the same email address as the Mapped User. <br> To show the avatar for a Guest Author, enter the email for their Gravatar account.',
-                    'publishpress-authors'
-                ),
+                'tab'         => 'general',
             ],
             'avatar'      => [
-                'label'    => __('Custom Avatar', 'publishpress-authors'),
-                'type'     => 'image',
-                'sanitize' => 'intval',
+                'label'       => __('Avatar Source', 'publishpress-authors'),
+                'type'        => 'avatar',
+                'sanitize'    => 'intval',
+                'tab'         => 'image',
+                'options'     => [
+                    'gravatar'     => [
+                        'label'         => __('Gravatar', 'publishpress-authors'),
+                        'description'   => sprintf(
+                                            esc_html__(
+                                                '(Uses the %sauthor e-mail%s as Gravatar account)',
+                                                'publishpress-authors'
+                                            ), 
+                                            '<a href="#" class="ppma-image-general-author-focus">', '</a>'
+                                        )
+                    ],
+                    'custom_image'  => [
+                        'label'         => __('Custom image', 'publishpress-authors'),
+                    ],
+                ],
             ],
             'user_url'    => [
-                'label'    => __('Website', 'publishpress-authors'),
+                'label'    => esc_html__('Website', 'publishpress-authors'),
                 'type'     => 'url',
                 'sanitize' => 'esc_url_raw',
+                'tab'      => 'general',
             ],
             'description' => [
-                'label'    => __('Biographical Info', 'publishpress-authors'),
+                'label'    => esc_html__('Biographical Info', 'publishpress-authors'),
                 'type'     => 'textarea',
                 'sanitize' => 'sanitize_textarea_field',
+                'tab'      => 'general',
             ],
         ];
 
@@ -322,15 +408,23 @@ class Author_Editor
     {
         $defaults = [
             'type'        => 'text',
+            'tab'         => self::AUTHOR_EDITOR_DEFAULT_TAB,
+            'options'     => [],
             'value'       => '',
             'label'       => '',
             'description' => '',
         ];
-        $args     = array_merge($defaults, $args);
-        $key      = 'authors-' . $args['key'];
+        $args      = array_merge($defaults, $args);
+        $key       = 'authors-' . $args['key'];
+        $tab_class = 'ppma-tab-content ppma-' . $args['tab'] . '-tab';
+        $tab_style = ($args['tab'] === self::AUTHOR_EDITOR_DEFAULT_TAB) ? '' : 'display:none;';
         ob_start();
         ?>
-        <tr class="<?php echo esc_attr('form-field term-' . $key . '-wrap'); ?>">
+        <tr 
+            class="<?php echo esc_attr('form-field term-' . $key . '-wrap '. $tab_class); ?>"
+            data-tab="<?php echo esc_attr($args['tab']); ?>"
+            style="<?php echo esc_attr($tab_style); ?>"
+            >
             <th scope="row">
                 <?php if (!empty($args['label'])) : ?>
                     <label for="<?php echo esc_attr($key); ?>"><?php echo esc_html($args['label']); ?></label>
@@ -354,6 +448,55 @@ class Author_Editor
                             <a class="delete-author-image-field <?php echo !$author_image ? 'hidden' : ''; ?>"
                                href="#">
                                 <?php esc_html_e('Remove this image', 'publishpress-authors'); ?>
+                            </a>
+                        </p>
+                        <input name="<?php echo esc_attr($key); ?>" class="author-image-field-id" type="hidden"
+                               value="<?php echo esc_attr($args['value']); ?>"/>
+                    </div>
+                <?php 
+                elseif ('avatar' === $args['type']) :
+
+                    $author_image = wp_get_attachment_image_url($args['value'], 'thumbnail');
+                    $avatar_options = $args['options'];
+
+                    if ($author_image) {
+                        $checked_option    = 'custom_image';
+                        $image_field_style = '';
+                    } else {
+                        $checked_option    = 'gravatar';
+                        $image_field_style = 'display:none;';
+                    }
+                    ?>
+
+                    <?php foreach ($avatar_options as $avatar_option_key => $avatar_option_data) { ?>
+                        <p>
+                            <input name="<?php echo esc_attr($key.'-options'); ?>" type="radio"
+                                value="<?php echo esc_attr($avatar_option_key); ?>"
+                                id="<?php echo esc_attr($avatar_option_key.'-'.$key.'-options'); ?>"
+                                <?php checked($avatar_option_key, $checked_option); ?> />
+                            
+                            <label for="<?php echo esc_attr($avatar_option_key.'-'.$key.'-options'); ?>">
+                                <?php echo esc_html($avatar_option_data['label']); ?>
+                                <?php if (isset($avatar_option_data['description'])) : ?>
+                                    <span class="description"><?php echo $avatar_option_data['description']; ?></span>
+                                <?php endif; ?>
+                            </label>
+                        </p>
+                    <?php } ?>
+
+                    <div class="author-image-field-wrapper" style="<?php echo esc_attr($image_field_style); ?>">
+                        <div class="author-image-field-container">
+                            <?php if ($author_image) : ?>
+                                <img src="<?php echo esc_url($author_image); ?>" alt=""/>
+                            <?php endif; ?>
+                        </div>
+                        <p class="hide-if-no-js">
+                            <a class="select-author-image-field <?php echo $author_image ? 'hidden' : ''; ?>" href="#">
+                                <?php _e('Select image', 'publishpress-authors'); ?>
+                            </a>
+                            <a class="delete-author-image-field <?php echo !$author_image ? 'hidden' : ''; ?>"
+                               href="#">
+                                <?php _e('Remove this image', 'publishpress-authors'); ?>
                             </a>
                         </p>
                         <input name="<?php echo esc_attr($key); ?>" class="author-image-field-id" type="hidden"
@@ -630,5 +773,74 @@ class Author_Editor
 
             echo '</div>';
         }
+    }
+
+    /**
+     * Author term mapped limit validation
+     *
+     * @param string|WP_Error $term The term name to add, or a WP_Error object if there's an error.
+     * @param string $taxonomy Taxonomy slug.
+     *
+     * @return array|WP_Error
+     */
+    public static function filter_pre_insert_term($term, $taxonomy)
+    {
+        if ($taxonomy === 'author') {
+            /**
+             * Check if term with this user exist
+             */
+            if (
+                isset($_POST['authors-new'])
+                && $author_id = (int)$_POST['authors-new'] > 0
+            ) {
+                $author = Author::get_by_user_id($author_id);
+
+                if (
+                    $author
+                    && is_object($author)
+                    && isset($author->term_id)
+                    && (int)$author->term_id > 0
+                ) {
+                    return new WP_Error(
+                        'publishpress_authors_duplicate_mapped_user',
+                        esc_html__(
+                            'This user is already mapped to another author.',
+                            'publishpress-authors'
+                        )
+                    );
+                }
+            }
+
+            /**
+             * Check if user with term slug already exists
+             */
+            if (empty($_POST['slug'])) {
+                $slug = sanitize_title($_POST['tag-name']);
+            } else {
+                $slug = sanitize_title($_POST['slug']);
+            }
+
+            $author_slug_user = get_user_by('slug', $slug);
+            if (
+                $author_slug_user
+                && is_object($author_slug_user)
+                && isset($author_slug_user->ID)
+            ) {
+                if (
+                    (! isset($_POST['authors-new']))
+                    || ((int)$author_slug_user->ID != (int)$_POST['authors-new'])
+                ) {
+                    return new WP_Error(
+                        'publishpress_authors_slug_exists',
+                        esc_html__(
+                            'An author with the name provided already exists.',
+                            'publishpress-authors'
+                        )
+                    );
+                }
+            }
+        }
+
+        return $term;
     }
 }

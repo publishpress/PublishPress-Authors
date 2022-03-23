@@ -1,4 +1,4 @@
-Feature: Post edit author in the admin
+Feature: Edit authors on posts in the admin using the Post Edit page
     In order to edit the post author
     As an admin
     I need to be able to select one or more authors for a post
