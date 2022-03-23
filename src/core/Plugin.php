@@ -259,6 +259,16 @@ class Plugin
                 'admin_notices',
                 ['MultipleAuthors\\Classes\\Author_Editor', 'admin_notices']
             );
+            add_filter(
+                'pre_insert_term',
+                ['MultipleAuthors\\Classes\\Author_Editor', 'filter_pre_insert_term'],
+                10,
+                2
+            );
+            add_action(
+                'wp_ajax_mapped_author_validation',
+                ['MultipleAuthors\\Classes\\Admin_Ajax', 'handle_mapped_author_validation']
+            );
 
             add_filter('admin_footer_text', [$this, 'update_footer_admin']);
         }
@@ -451,6 +461,38 @@ class Plugin
             null,
             plugin_basename(PP_AUTHORS_BASE_PATH) . '/languages/'
         );
+
+        add_filter('taxonomy_labels_author', [$this, 'filter_author_taxonomy_labels']);
+    }
+
+    public function filter_author_taxonomy_labels($labels)
+    {
+        global $pagenow;
+
+        if (
+            is_admin()
+            && $pagenow === 'term.php'
+            && isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'author'
+            && isset($_GET['tag_ID'])
+        ) {
+            $author = Author::get_by_term_id((int)$_GET['tag_ID']);
+
+            if (is_object($author) && !is_wp_error($author) && (int)$author->user_id === get_current_user_id()) {
+                $labels->edit_item = __('Edit My Author Profile', 'publishpress-authors');
+            }
+        }
+
+        $labels->name_field_description = esc_html__(
+            'This is the name that will show on the site.',
+            'publishpress-authors'
+        );
+
+        $labels->slug_field_description = esc_html__(
+            'This forms part of the URL for the author’s profile page. If you choose a Mapped User, this URL is taken from the user’s account and can not be changed.',
+            'publishpress-authors'
+        );
+
+        return $labels;
     }
 
     /**
@@ -471,23 +513,23 @@ class Plugin
                     'taxonomy singular name',
                     'publishpress-authors'
                 ),
-                'search_items'               => __('Search authors', 'publishpress-authors'),
-                'popular_items'              => __('Popular authors', 'publishpress-authors'),
-                'all_items'                  => __('All authors', 'publishpress-authors'),
-                'parent_item'                => __('Parent author', 'publishpress-authors'),
-                'parent_item_colon'          => __('Parent author:', 'publishpress-authors'),
-                'edit_item'                  => __('Edit author', 'publishpress-authors'),
-                'view_item'                  => __('View author', 'publishpress-authors'),
-                'update_item'                => __('Update author', 'publishpress-authors'),
-                'add_new_item'               => __('New author', 'publishpress-authors'),
-                'new_item_name'              => __('New author', 'publishpress-authors'),
+                'search_items'               => __('Search Authors', 'publishpress-authors'),
+                'popular_items'              => __('Popular Authors', 'publishpress-authors'),
+                'all_items'                  => __('All Authors', 'publishpress-authors'),
+                'parent_item'                => __('Parent Author', 'publishpress-authors'),
+                'parent_item_colon'          => __('Parent Author:', 'publishpress-authors'),
+                'edit_item'                  => __('Edit Author', 'publishpress-authors'),
+                'view_item'                  => __('View Author', 'publishpress-authors'),
+                'update_item'                => __('Update Author', 'publishpress-authors'),
+                'add_new_item'               => __('New Author', 'publishpress-authors'),
+                'new_item_name'              => __('New Author', 'publishpress-authors'),
                 'separate_items_with_commas' => __(
                     'Separate authors with commas',
                     'publishpress-authors'
                 ),
                 'add_or_remove_items'        => __('Add or remove authors', 'publishpress-authors'),
                 'choose_from_most_used'      => __(
-                    'Choose from the most used authors',
+                    'Choose from the most used Authors',
                     'publishpress-authors'
                 ),
                 'not_found'                  => __('No authors found.', 'publishpress-authors'),
@@ -1386,6 +1428,7 @@ class Plugin
                 'Sorry, the request returned an error.',
                 'publishpress-authors'
             ),
+            'mapped_author_nonce'           => wp_create_nonce("mapped_author_nonce"),
         ];
 
         wp_localize_script(
@@ -1709,6 +1752,7 @@ class Plugin
             [
                 'ppma_manage_authors',
                 'ppma_edit_post_authors',
+                'ppma_edit_own_profile',
             ]
         );
 

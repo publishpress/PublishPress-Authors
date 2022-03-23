@@ -12,6 +12,7 @@ namespace MultipleAuthors\Classes;
 use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Factory;
+use WP_Error;
 
 /**
  * Class Author_Editor
@@ -332,23 +333,23 @@ class Author_Editor
     {
         $fields = [
             'user_id'     => [
-                'label'    => __('Mapped User', 'publishpress-authors'),
+                'label'    => esc_html__('Mapped User', 'publishpress-authors'),
                 'type'     => 'ajax_user_select',
                 'sanitize' => 'intval',
                 'tab'      => 'general',
             ],
             'first_name'  => [
-                'label' => __('First Name', 'publishpress-authors'),
+                'label' => esc_html__('First Name', 'publishpress-authors'),
                 'type'  => 'text',
                 'tab'   => 'general',
             ],
             'last_name'   => [
-                'label' => __('Last Name', 'publishpress-authors'),
+                'label' => esc_html__('Last Name', 'publishpress-authors'),
                 'type'  => 'text',
                 'tab'   => 'general',
             ],
             'user_email'  => [
-                'label'       => __('Email', 'publishpress-authors'),
+                'label'       => esc_html__('Email', 'publishpress-authors'),
                 'type'        => 'email',
                 'tab'         => 'general',
             ],
@@ -362,7 +363,7 @@ class Author_Editor
                         'label'         => __('Gravatar', 'publishpress-authors'),
                         'description'   => sprintf(
                                             esc_html__(
-                                                '(Uses the %1s author e-mail %2s as Gravatar account)', 
+                                                '(Uses the %sauthor e-mail%s as Gravatar account)',
                                                 'publishpress-authors'
                                             ), 
                                             '<a href="#" class="ppma-image-general-author-focus">', '</a>'
@@ -374,13 +375,13 @@ class Author_Editor
                 ],
             ],
             'user_url'    => [
-                'label'    => __('Website', 'publishpress-authors'),
+                'label'    => esc_html__('Website', 'publishpress-authors'),
                 'type'     => 'url',
                 'sanitize' => 'esc_url_raw',
                 'tab'      => 'general',
             ],
             'description' => [
-                'label'    => __('Biographical Info', 'publishpress-authors'),
+                'label'    => esc_html__('Biographical Info', 'publishpress-authors'),
                 'type'     => 'textarea',
                 'sanitize' => 'sanitize_textarea_field',
                 'tab'      => 'general',
@@ -772,5 +773,74 @@ class Author_Editor
 
             echo '</div>';
         }
+    }
+
+    /**
+     * Author term mapped limit validation
+     *
+     * @param string|WP_Error $term The term name to add, or a WP_Error object if there's an error.
+     * @param string $taxonomy Taxonomy slug.
+     *
+     * @return array|WP_Error
+     */
+    public static function filter_pre_insert_term($term, $taxonomy)
+    {
+        if ($taxonomy === 'author') {
+            /**
+             * Check if term with this user exist
+             */
+            if (
+                isset($_POST['authors-new'])
+                && $author_id = (int)$_POST['authors-new'] > 0
+            ) {
+                $author = Author::get_by_user_id($author_id);
+
+                if (
+                    $author
+                    && is_object($author)
+                    && isset($author->term_id)
+                    && (int)$author->term_id > 0
+                ) {
+                    return new WP_Error(
+                        'publishpress_authors_duplicate_mapped_user',
+                        esc_html__(
+                            'This user is already mapped to another author.',
+                            'publishpress-authors'
+                        )
+                    );
+                }
+            }
+
+            /**
+             * Check if user with term slug already exists
+             */
+            if (empty($_POST['slug'])) {
+                $slug = sanitize_title($_POST['tag-name']);
+            } else {
+                $slug = sanitize_title($_POST['slug']);
+            }
+
+            $author_slug_user = get_user_by('slug', $slug);
+            if (
+                $author_slug_user
+                && is_object($author_slug_user)
+                && isset($author_slug_user->ID)
+            ) {
+                if (
+                    (! isset($_POST['authors-new']))
+                    || ((int)$author_slug_user->ID != (int)$_POST['authors-new'])
+                ) {
+                    return new WP_Error(
+                        'publishpress_authors_slug_exists',
+                        esc_html__(
+                            'An author with the name provided already exists.',
+                            'publishpress-authors'
+                        )
+                    );
+                }
+            }
+        }
+
+        return $term;
     }
 }

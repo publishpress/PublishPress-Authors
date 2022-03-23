@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
 Tested up to: 5.9
-Stable tag: 3.15.1
+Stable tag: 3.16.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -224,11 +224,15 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= [3.16.0] - UNRELEASED =
+= [3.16.0] - 23 Mar 2022 =
 
+* Added: Add option to authors update their own profile, #24;
+* Fixed: Fix new author form not allowing to map a user to multiple authors, #64;
 * Fixed: Fix PHP notice Constant PP_WP_BANNERS_VERSION already defined, #603;
 * Fixed: Improve the selection of avatar for authors, making it clear if is using gravatar or custom image, #564;
 * Fixed: Updated Italian translation files;
+* Fixed: Fix description field that were displayed in the author profile after navigating throw the tabs, #605;
+* Fixed: Fix small extra spacing in image link, #607;
 
 = [3.15.1] - 17 Mar 2022 =
 
