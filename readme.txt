@@ -224,7 +224,7 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= [3.16.0] - UNRELEASED =
+= [3.16.0] - 23 Mar 2022 =
 
 * Added: Add option to authors update their own profile, #24;
 * Fixed: Fix new author form not allowing to map a user to multiple authors, #64;
