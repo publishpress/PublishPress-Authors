@@ -383,7 +383,7 @@ class Author_Editor
             'description' => [
                 'label'    => esc_html__('Biographical Info', 'publishpress-authors'),
                 'type'     => 'textarea',
-                'sanitize' => 'sanitize_textarea_field',
+                'sanitize' => 'wp_kses_post',
                 'tab'      => 'general',
             ],
         ];
@@ -555,7 +555,7 @@ class Author_Editor
             update_term_meta($term_id, $key, $sanitize($_POST['authors-' . $key])); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
         }
 
-        // If there is a mapper user, make sure the author url (slug) is the same of the user.
+        // If there is a mapped user, make sure the author url (slug) is the same of the user.
         if (isset($_POST['authors-user_id']) && !empty($_POST['authors-user_id'])) {
             $user_id = (int)$_POST['authors-user_id'];
 

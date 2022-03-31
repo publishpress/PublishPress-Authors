@@ -77,4 +77,53 @@ trait Authors
 
         $this->amOnPage($author->link);
     }
+
+    /**
+     * @Given I create a new author :authorSlug
+     */
+    public function iCreateNewAuthor($authorSlug)
+    {
+        $authorSlug = sq($authorSlug);
+
+        Author::create(
+            [
+                'slug' => $authorSlug,
+                'display_name' => $authorSlug
+            ]
+        );
+    }
+
+    /**
+     * @Given I edit author :authorSlug setting biographical info :bioText
+     */
+    public function iEditAuthorSettingBioInfo($authorSlug, $bioText)
+    {
+        $authorSlug = sq($authorSlug);
+
+        $author = Author::get_by_term_slug($authorSlug);
+
+        $this->amOnAdminPage('term.php?taxonomy=author&tag_ID=' . $author->term_id);
+        $this->fillField('.term-authors-description-wrap textarea', $bioText);
+        $this->click('Update');
+    }
+
+    /**
+     * @When I view the author profile :authorSlug
+     */
+    public function iViewAuthorProfile($authorSlug)
+    {
+        $authorSlug = sq($authorSlug);
+
+        $author = Author::get_by_term_slug($authorSlug);
+
+        $this->amOnAdminPage('term.php?taxonomy=author&tag_ID=' . $author->term_id);
+    }
+
+    /**
+     * @Then I see :bioText in the biographical info field
+     */
+    public function iSeeBioText($bioText)
+    {
+        $this->seeInField('.term-authors-description-wrap textarea', $bioText);
+    }
 }
