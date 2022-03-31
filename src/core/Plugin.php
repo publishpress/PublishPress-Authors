@@ -1429,6 +1429,8 @@ class Plugin
                 'publishpress-authors'
             ),
             'mapped_author_nonce'           => wp_create_nonce("mapped_author_nonce"),
+            'home_url'                      => home_url(),
+            'view_text'                     => esc_html__('View', 'publishpress-authors'),
         ];
 
         wp_localize_script(
