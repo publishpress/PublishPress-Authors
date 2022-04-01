@@ -836,11 +836,9 @@ class Author
                     LEFT JOIN {$wpdb->term_taxonomy} ON ( {$wpdb->term_relationships}.term_taxonomy_id = {$wpdb->term_taxonomy}.term_taxonomy_id )
                     WHERE {$wpdb->term_taxonomy}.taxonomy = %s
                     AND {$wpdb->term_taxonomy}.term_id = %d
-                    AND {$wpdb->term_taxonomy}.taxonomy = %s
-                    AND {$wpdb->term_taxonomy}.term_id = %d
                     AND {$wpdb->posts}.post_type = %s
                     AND {$wpdb->posts}.post_status NOT IN ('trash', 'auto-draft')",
-                    ["author", $term_id, "author", $term_id, $post_type]
+                    ["author", $term_id, $post_type]
                 )
             );
             wp_cache_set($cache_key, $counts, 'counts');
