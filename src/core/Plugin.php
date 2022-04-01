@@ -1465,12 +1465,8 @@ class Plugin
      */
     public function filter_views($views)
     {
-        if (! is_array($views)) {
+        if (!is_array($views)) {
             $views = [];
-        }
-
-        if (array_key_exists('mine', $views)) {
-            return $views;
         }
 
         $views     = array_reverse($views);
@@ -1486,7 +1482,11 @@ class Plugin
         } else {
             $class = '';
         }
-        $views['mine'] = $view_mine = '<a' . $class . ' href="' . esc_url(
+
+        $author     = Author::get_by_user_id(get_current_user_id());
+        $mine_count = Author::get_author_posts_count($author->term_id, Util::get_current_post_type());
+
+        $views['mine'] = '<a' . $class . ' href="' . esc_url(
             add_query_arg(
                 array_map(
                     'rawurlencode',
@@ -1497,7 +1497,7 @@ class Plugin
         ) . '">' . __(
             'Mine',
             'publishpress-authors'
-        ) . '</a>';
+        ) . ' <span class="count">('. number_format_i18n($mine_count) .')</span></a>';
 
         $views['all'] = str_replace($class, '', $all_view);
         $views        = array_reverse($views);

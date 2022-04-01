@@ -812,4 +812,48 @@ class Author
         return self::get_by_term_id($id);
     }
 
+    /**
+     * Get author posts count with support for post_type.
+     *
+     * @param integer $term_id for the author.
+     * @param string $post_type.
+     *
+     * @return integer $counts
+     */
+    public static function get_author_posts_count($term_id, $post_type = 'post')
+    {
+        global $wpdb;
+        
+        $cache_key = $post_type. '_' .$term_id;
+     
+        $counts = wp_cache_get( $cache_key, 'counts' );
+
+        if (!$counts) {
+            $counts =
+                $wpdb->get_var(
+                    $wpdb->prepare(
+                        "SELECT COUNT(DISTINCT {$wpdb->posts}.ID) FROM {$wpdb->posts}
+                        LEFT JOIN {$wpdb->term_relationships} ON ({$wpdb->posts}.ID = {$wpdb->term_relationships}.object_id)
+                        LEFT JOIN {$wpdb->term_taxonomy} ON ( {$wpdb->term_relationships}.term_taxonomy_id = {$wpdb->term_taxonomy}.term_taxonomy_id )
+                        WHERE {$wpdb->term_taxonomy}.taxonomy = %s
+                        AND {$wpdb->term_taxonomy}.term_id = %d
+                        AND {$wpdb->term_taxonomy}.taxonomy = %s
+                        AND {$wpdb->term_taxonomy}.term_id = %d
+                        AND {$wpdb->posts}.post_type = %s
+                        AND {$wpdb->posts}.post_status NOT IN ('trash', 'auto-draft')",
+                        ["author", $term_id, "author", $term_id, $post_type]
+                    )
+                );
+            wp_cache_set($cache_key, $counts, 'counts');
+        }
+        
+        /**
+         * Filter author posts count.
+         * 
+         * @param integer $counts
+         * @param string   $post_type   Post type.
+         */
+        return apply_filters( 'author_posts_count', $counts, $post_type );
+    }
+
 }
