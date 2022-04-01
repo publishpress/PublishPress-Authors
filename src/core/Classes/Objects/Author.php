@@ -833,7 +833,7 @@ class Author
                 $wpdb->prepare(
                     "SELECT COUNT(DISTINCT {$wpdb->posts}.ID) FROM {$wpdb->posts}
                     LEFT JOIN {$wpdb->term_relationships} ON ({$wpdb->posts}.ID = {$wpdb->term_relationships}.object_id)
-                    LEFT JOIN {$wpdb->term_taxonomy} ON ( {$wpdb->term_relationships}.term_taxonomy_id = {$wpdb->term_taxonomy}.term_taxonomy_id )
+                    LEFT JOIN {$wpdb->term_taxonomy} ON ({$wpdb->term_relationships}.term_taxonomy_id = {$wpdb->term_taxonomy}.term_taxonomy_id)
                     WHERE {$wpdb->term_taxonomy}.taxonomy = %s
                     AND {$wpdb->term_taxonomy}.term_id = %d
                     AND {$wpdb->posts}.post_type = %s
