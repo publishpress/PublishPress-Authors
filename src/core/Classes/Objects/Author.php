@@ -824,7 +824,7 @@ class Author
     {
         global $wpdb;
         
-        $cache_key = $post_type. '_' .$term_id;
+        $cache_key = $post_type . '_' . $term_id;
      
         $counts = wp_cache_get($cache_key, 'counts');
 

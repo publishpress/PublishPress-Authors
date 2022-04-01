@@ -1497,7 +1497,7 @@ class Plugin
         ) . '">' . __(
             'Mine',
             'publishpress-authors'
-        ) . ' <span class="count">('. number_format_i18n($mine_count) .')</span></a>';
+        ) . ' <span class="count">(' . number_format_i18n($mine_count) . ')</span></a>';
 
         $views['all'] = str_replace($class, '', $all_view);
         $views        = array_reverse($views);
