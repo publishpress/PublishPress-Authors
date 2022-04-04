@@ -791,9 +791,10 @@ class Author_Editor
              */
             if (
                 isset($_POST['authors-new'])
-                && $author_id = (int)$_POST['authors-new'] > 0
+                && (int)$_POST['authors-new'] > 0
             ) {
-                $author = Author::get_by_user_id($author_id);
+                $author_id = (int)$_POST['authors-new'];
+                $author    = Author::get_by_user_id($author_id);
 
                 if (
                     $author
