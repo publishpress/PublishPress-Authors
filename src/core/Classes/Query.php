@@ -150,6 +150,19 @@ class Query
             -1
         );
 
+        /**
+         * There was an issue with replacement for 
+         * roles other than administrator due to wordpress
+         * author post query having two entry for post_author 
+         * thereby causing issue when replaced by PPMA.
+         * 
+         * The original issue doesn't seems to be PPMA issue 
+         * as the double post_author query exists without the 
+         * plugin been active but doesn't do any harm since 
+         * it doesn't hurt to have same condition twice.
+         */
+        $where = str_replace("))))", ")))", $where);
+
         $where = static::add_custom_post_types_to_query($where);
 
         return apply_filters('publishpress_authors_filter_posts_list_where', $where, $query, $term);
@@ -263,6 +276,19 @@ class Query
             $where,
             -1
         );
+
+        /**
+         * There was an issue with replacement for 
+         * roles other than administrator due to wordpress
+         * author post query having two entry for post_author 
+         * thereby causing issue when replaced by PPMA.
+         * 
+         * The original issue doesn't seems to be PPMA issue 
+         * as the double post_author query exists without the 
+         * plugin been active but doesn't do any harm since 
+         * it doesn't hurt to have same condition twice.
+         */
+        $where = str_replace("))))", ")))", $where);
 
         return apply_filters('publishpress_authors_filter_posts_list_where', $where, $query, $author);
     }
