@@ -60,7 +60,7 @@ class Post_Editor
                         <span class="title">Authors</span>
                     </label>
                     <?php
-                    echo self::get_rendered_authors_selection([], false); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                    echo self::get_rendered_authors_selection([], false, true); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     ?>
                 </div>
             </fieldset>
@@ -215,7 +215,7 @@ class Post_Editor
     /**
      * Get rendered authors selection.
      */
-    public static function get_rendered_authors_selection($authors, $showAvatars = true)
+    public static function get_rendered_authors_selection($authors, $showAvatars = true, $bulkEdit = false)
     {
         $classes = [
             'authors-list',
@@ -283,6 +283,20 @@ class Post_Editor
             $post       = get_post();
             $userAuthor = get_user_by('ID', $post->post_author);
             ?>
+            <?php if (!$bulkEdit) : ?>
+                <div class="ppma-authors-display-option-wrapper">
+                    <input name="ppma_save_disable_author_box" type="hidden" value="1" />
+                    <input name="ppma_disable_author_box" 
+                            id="ppma_disable_author_box" 
+                            value="1" 
+                            type="checkbox"
+                            <?php checked((int)get_post_meta($post->ID, 'ppma_disable_author_box', true), 1); ?>
+                        />
+                    <label for="ppma_disable_author_box">
+                        <?php echo esc_html_e('Disable post author box display?', 'publishpress-authors'); ?>
+                    </label>
+                </div>
+            <?php endif; ?>
             <div id="publishpress-authors-user-author-wrapper">
                 <hr>
                 <label for="publishpress-authors-user-author-select"><?php
@@ -408,8 +422,12 @@ class Post_Editor
         $authors = self::remove_dirty_authors_from_authors_arr($authors);
 
         $fallbackUserId = isset($_POST['fallback_author_user']) ? (int)$_POST['fallback_author_user'] : null;
+        $disableAuthorBox = isset($_POST['ppma_disable_author_box']) ? (int)$_POST['ppma_disable_author_box'] : 0;
 
         Utils::set_post_authors($post_id, $authors, true, $fallbackUserId);
+        if (isset($_POST['ppma_save_disable_author_box']) && (int)$_POST['ppma_save_disable_author_box'] > 0) {
+            update_post_meta($post_id, 'ppma_disable_author_box', $disableAuthorBox);
+        }
 
         do_action('publishpress_authors_flush_cache');
     }
