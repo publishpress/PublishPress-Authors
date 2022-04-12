@@ -1712,7 +1712,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 do_action('multiple_authors_' . $action);
 
                 wp_redirect(
-                    admin_ur1l('/admin.php?page=ppma-modules-settings&author_term_reset_notice=success'),
+                    admin_url('/admin.php?page=ppma-modules-settings&author_term_reset_notice=success'),
                     301
                 );
                 exit;
