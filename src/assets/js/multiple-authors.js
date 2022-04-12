@@ -501,12 +501,7 @@ jQuery(document).ready(function ($) {
         /**
          * Add view link to author url field
          */
-         $('form#edittag tr.form-field #slug')
-             .css({
-                 'width': '85%',
-                 'margin-right': '5px'
-             })
-             .after('<a href="' + MultipleAuthorsStrings.home_url + '/author/' + $("#slug").val() + '/" class="button-secondary" target="_blank">' + MultipleAuthorsStrings.view_text + '</a>')
+        $('form#edittag tr.form-field #slug').after('<a href="' + MultipleAuthorsStrings.term_author_slug + '" class="button-secondary" target="_blank">' + MultipleAuthorsStrings.view_text + '</a>');
     }
 
     /**
