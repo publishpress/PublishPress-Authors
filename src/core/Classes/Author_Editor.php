@@ -791,9 +791,10 @@ class Author_Editor
              */
             if (
                 isset($_POST['authors-new'])
-                && $author_id = (int)$_POST['authors-new'] > 0
+                && (int)$_POST['authors-new'] > 0
             ) {
-                $author = Author::get_by_user_id($author_id);
+                $author_id = (int)$_POST['authors-new'];
+                $author    = Author::get_by_user_id($author_id);
 
                 if (
                     $author
@@ -821,13 +822,11 @@ class Author_Editor
             }
 
             $author_slug_user = get_user_by('slug', $slug);
-            if (
-                $author_slug_user
+            if ($author_slug_user
                 && is_object($author_slug_user)
                 && isset($author_slug_user->ID)
             ) {
-                if (
-                    (! isset($_POST['authors-new']))
+                if ((! isset($_POST['authors-new']))
                     || ((int)$author_slug_user->ID != (int)$_POST['authors-new'])
                 ) {
                     return new WP_Error(
