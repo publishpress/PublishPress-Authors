@@ -785,7 +785,7 @@ class Author_Editor
      */
     public static function filter_pre_insert_term($term, $taxonomy)
     {
-        if ($taxonomy === 'author') {
+        if ($taxonomy === 'author' && !empty($_POST)) {
             /**
              * Check if term with this user exist
              */
