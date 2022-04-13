@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
 Tested up to: 5.9
-Stable tag: 3.16.0
+Stable tag: 3.16.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -223,6 +223,14 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [3.16.1] - 13 Apr 2022 =
+
+* Fixed: Fix author mapped to user error when adding new author, #626;
+* Fixed: Fix test for checking the author link in the frontend;
+* Fixed: Fix Undefined array key "tag-name" when bulk delete all authors, #628;
+* Fixed: Fix Fatal error when "Create missed post authors" button is clicked, #623;
+* Fixed: Fix author profile allowing to add html tags in the bio text, #619;
 
 = [3.16.0] - 23 Mar 2022 =
 
