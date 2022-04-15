@@ -848,9 +848,10 @@ class Author
          * Filter author posts count.
          * 
          * @param integer $counts
+         * @param string   $term_id     Term ID.
          * @param string   $post_type   Post type.
          */
-        return apply_filters('author_posts_count', $counts, $post_type);
+        return apply_filters('author_posts_count', $counts, $term_id, $post_type);
     }
 
 }
