@@ -1675,28 +1675,11 @@ class Plugin
         // Check if it is configured to append to the content
         $append_to_content = 'yes' === $legacyPlugin->modules->multiple_authors->options->append_to_content;
 
-        if (!$this->ppma_post_author_box_disabled() && $this->should_display_author_box() && $append_to_content) {
+        if ($this->should_display_author_box() && $append_to_content) {
             $content .= $this->get_author_box_markup('the_content');
         }
 
         return $content;
-    }
-
-    /**
-     * Check if author box display is disabled for single post
-     * 
-     * @return bool
-     */
-    public function ppma_post_author_box_disabled()
-    {
-        global $post;
-
-        $disabled = (is_object($post) 
-                    && isset($post->ID) 
-                    && (int) get_post_meta($post->ID, 'ppma_disable_author_box', true) > 0
-                   ) ? true : false;
-
-        return apply_filters('ppma_post_author_box_disabled', $disabled, $post);
     }
 
     /**
