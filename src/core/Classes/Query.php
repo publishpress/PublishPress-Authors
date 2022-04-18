@@ -143,25 +143,46 @@ class Query
 
         $query->authors_having_terms = ' ' . $wpdb->term_taxonomy . '.term_id = \'' . (int)$term->term_id . '\' ';
 
+        /**
+         * For user other than administrator or without 
+         * permission to read private post, we need to replace 
+         * (post_author = %d AND post_status = 'private') with 
+         * %d been current user id and must be replaced with 
+         * current user author term ID or 0? if user is not
+         * an author as user check is included for private posts 
+         * to be sure the current user can only read private 
+         * post where they are author.
+         * 
+         * So, we should do the replacement first before main
+         * author replace
+         */
+        $current_user_id   = get_current_user_id();
+        $current_author    = Author::get_by_user_id($current_user_id);
+        if (
+            $current_author
+            && is_object($current_author)
+            && isset($current_author->term_id)
+            && (int)$current_author->term_id > 0
+        ) {
+            $current_user_term_id = $current_author->term_id;
+        } else {
+            $current_user_term_id = 0;
+        }
+        $where = preg_replace(
+            '/(?:' . $wpdb->posts . '\.)?post_author = (.*?) AND (?:' . $wpdb->posts . '\.)?post_status = \'private\'/', 
+            '' . $wpdb->term_taxonomy . '.taxonomy = "author" AND ' . $wpdb->term_taxonomy . '.term_id = \'' . (int)$current_user_term_id . '\' ' . ' AND ' . $wpdb->posts . '.post_status = \'private\'', 
+            $where
+        );
+
+        /**
+         * Post author replace
+         */
         $where = preg_replace(
             '/\(?\b(?:' . $wpdb->posts . '\.)?post_author\s*(?:=|IN)\s*\(?(\d+)\)?/',
             '(' . $maybe_both_query . ' ' . '(' . $wpdb->term_taxonomy . '.taxonomy = "author" AND ' . $wpdb->term_taxonomy . '.term_id = \'' . (int)$term->term_id . '\') ' . ')',
             $where,
             -1
         );
-
-        /**
-         * There was an issue with replacement for 
-         * roles other than administrator due to wordpress
-         * author post query having two entry for post_author 
-         * thereby causing issue when replaced by PPMA.
-         * 
-         * The original issue doesn't seems to be PPMA issue 
-         * as the double post_author query exists without the 
-         * plugin been active but doesn't do any harm since 
-         * it doesn't hurt to have same condition twice.
-         */
-        $where = str_replace("))))", ")))", $where);
 
         $where = static::add_custom_post_types_to_query($where);
 
@@ -269,6 +290,41 @@ class Query
         }
 
         $terms_implode = '(' . $wpdb->term_taxonomy . '.taxonomy = "author" AND ' . $wpdb->term_taxonomy . '.term_id = \'' . (int)$author->getTerm()->term_id . '\') ';
+        
+        /**
+         * For user other than administrator or without 
+         * permission to read private post, we need to replace 
+         * (post_author = %d AND post_status = 'private') with 
+         * %d been current user id and must be replaced with 
+         * current user author term ID or 0? if user is not
+         * an author as user check is included for private posts 
+         * to be sure the current user can only read private 
+         * post where they are author.
+         * 
+         * So, we should do the replacement first before main
+         * author replace
+         */
+        $current_user_id   = get_current_user_id();
+        $current_author    = Author::get_by_user_id($current_user_id);
+        if (
+            $current_author
+            && is_object($current_author)
+            && isset($current_author->term_id)
+            && (int)$current_author->term_id > 0
+        ) {
+            $current_user_term_id = $current_author->term_id;
+        } else {
+            $current_user_term_id = 0;
+        }
+        $where = preg_replace(
+            '/(?:' . $wpdb->posts . '\.)?post_author = (.*?) AND (?:' . $wpdb->posts . '\.)?post_status = \'private\'/', 
+            '' . $wpdb->term_taxonomy . '.taxonomy = "author" AND ' . $wpdb->term_taxonomy . '.term_id = \'' . (int)$current_user_term_id . '\' ' . ' AND ' . $wpdb->posts . '.post_status = \'private\'', 
+            $where
+        );
+
+        /**
+         * Post author replace
+         */
 
         $where = preg_replace(
             '/\(?\b(?:' . $wpdb->posts . '\.)?post_author\s*(?:=|IN|NOT IN)\s*\(?(\d+)\)?/',
@@ -276,19 +332,6 @@ class Query
             $where,
             -1
         );
-
-        /**
-         * There was an issue with replacement for 
-         * roles other than administrator due to wordpress
-         * author post query having two entry for post_author 
-         * thereby causing issue when replaced by PPMA.
-         * 
-         * The original issue doesn't seems to be PPMA issue 
-         * as the double post_author query exists without the 
-         * plugin been active but doesn't do any harm since 
-         * it doesn't hurt to have same condition twice.
-         */
-        $where = str_replace("))))", ")))", $where);
 
         return apply_filters('publishpress_authors_filter_posts_list_where', $where, $query, $author);
     }
