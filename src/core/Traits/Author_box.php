@@ -34,12 +34,32 @@ trait Author_box
      */
     protected function should_display_author_box()
     {
-        $display = $this->is_valid_page_to_display_author_box() && $this->is_valid_post_type_to_display_author_box();
+        $display = !$this->is_post_author_box_disabled() 
+            && $this->is_valid_page_to_display_author_box() 
+            && $this->is_valid_post_type_to_display_author_box();
 
         // Apply a filter
         $display = apply_filters('pp_multiple_authors_filter_should_display_author_box', $display);
 
         return $display;
+    }
+
+    /**
+     * Return true if author box display is disabled 
+     * for current global $post.
+     * 
+     * @return bool
+     */
+    protected function is_post_author_box_disabled()
+    {
+        global $post;
+
+        $disabled = (is_object($post)
+            && isset($post->ID)
+            && (int) get_post_meta($post->ID, 'ppma_disable_author_box', true) > 0
+        ) ? true : false;
+
+        return $disabled;
     }
 
     /**
