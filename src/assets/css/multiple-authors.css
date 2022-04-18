@@ -332,3 +332,8 @@ body.own-profile-edit .term-authors-user_id-wrap,
 body.own-profile-edit .edit-tag-actions span#delete-link {
     display: none !important;
 }
+
+form#edittag tr.form-field #slug {
+    width: 85%;
+    margin-right: 5px;
+}

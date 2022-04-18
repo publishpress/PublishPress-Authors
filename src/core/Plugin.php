@@ -1321,6 +1321,8 @@ class Plugin
      */
     public function enqueue_scripts($hook_suffix)
     {
+        global $pagenow;
+
         wp_enqueue_script('jquery');
         wp_enqueue_script('jquery-ui-sortable');
 
@@ -1382,6 +1384,21 @@ class Plugin
 
         $legacyPlugin = Factory::getLegacyPlugin();
 
+        $term_author_link = '';
+
+        if (
+            is_admin()
+            && $pagenow === 'term.php'
+            && isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'author'
+            && isset($_GET['tag_ID'])
+        ) {
+            $author = Author::get_by_term_id((int)$_GET['tag_ID']);
+
+            if (is_object($author) && !is_wp_error($author) && isset($author->link)) {
+                $term_author_link = $author->link;
+            }
+        }
+
         $js_strings = [
             'edit_label'                    => __('Edit', 'publishpress-authors'),
             'confirm_delete'                => __(
@@ -1429,6 +1446,8 @@ class Plugin
                 'publishpress-authors'
             ),
             'mapped_author_nonce'           => wp_create_nonce("mapped_author_nonce"),
+            'term_author_link'              => esc_url_raw($term_author_link),
+            'view_text'                     => esc_html__('View', 'publishpress-authors'),
         ];
 
         wp_localize_script(
