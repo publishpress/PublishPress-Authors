@@ -829,10 +829,11 @@ class Author
         $counts = wp_cache_get($cache_key, 'counts');
 
         if (!$counts) {
-            $distinct = '';
-            $join     = '';
-            $where    = '';
-            $query    = '';
+            $expire_days = 7;
+            $distinct    = '';
+            $join        = '';
+            $where       = '';
+            $query       = '';
 
             $distinct   .= "COUNT(DISTINCT {$wpdb->posts}.ID)";
 
@@ -892,7 +893,25 @@ class Author
 
             $counts = (int)$wpdb->get_var($query);
 
-            wp_cache_set($cache_key, $counts, 'counts');
+            /**
+             * Filters author posts count expire days.
+             *
+             * @param integer  $expire_days current expire days.
+             * @param integer  $term_id  Author term id.
+             * @param string   $post_type Post type.
+             *
+             * @since 3.16.2
+             */
+            $expire_days = apply_filters(
+                'ppma_author_posts_count_cache_expire', 
+                $expire_days, 
+                $term_id, 
+                $post_type
+            );
+
+            $expire = (int)$expire_days * DAY_IN_SECONDS;
+
+            wp_cache_set($cache_key, $counts, 'counts', $expire);
         }
         
         /**
