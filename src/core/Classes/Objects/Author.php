@@ -829,18 +829,69 @@ class Author
         $counts = wp_cache_get($cache_key, 'counts');
 
         if (!$counts) {
-            $counts = $wpdb->get_var(
-                $wpdb->prepare(
-                    "SELECT COUNT(DISTINCT {$wpdb->posts}.ID) FROM {$wpdb->posts}
-                    LEFT JOIN {$wpdb->term_relationships} ON ({$wpdb->posts}.ID = {$wpdb->term_relationships}.object_id)
-                    LEFT JOIN {$wpdb->term_taxonomy} ON ({$wpdb->term_relationships}.term_taxonomy_id = {$wpdb->term_taxonomy}.term_taxonomy_id)
-                    WHERE {$wpdb->term_taxonomy}.taxonomy = %s
-                    AND {$wpdb->term_taxonomy}.term_id = %d
-                    AND {$wpdb->posts}.post_type = %s
-                    AND {$wpdb->posts}.post_status NOT IN ('trash', 'auto-draft')",
-                    ["author", $term_id, $post_type]
-                )
-            );
+            $distinct = '';
+            $join     = '';
+            $where    = '';
+            $query    = '';
+
+            $distinct   .= "COUNT(DISTINCT {$wpdb->posts}.ID)";
+
+            $join       .= " LEFT JOIN {$wpdb->term_relationships} ON ({$wpdb->posts}.ID = {$wpdb->term_relationships}.object_id)";
+            $join       .= " LEFT JOIN {$wpdb->term_taxonomy} ON ({$wpdb->term_relationships}.term_taxonomy_id = {$wpdb->term_taxonomy}.term_taxonomy_id)";
+            
+            $where      .= $wpdb->prepare(" AND {$wpdb->term_taxonomy}.taxonomy = %s", "author");
+            $where      .= $wpdb->prepare(" AND {$wpdb->term_taxonomy}.term_id = %d", $term_id);
+            $where      .= $wpdb->prepare(" AND {$wpdb->posts}.post_type = %s", $post_type);
+            $where      .= " AND {$wpdb->posts}.post_status NOT IN ('trash', 'auto-draft')";
+
+            /**
+             * Filters the DISTINCT clause of the query.
+             *
+             * @param string   $distinct The DISTINCT clause of the query.
+             * @param integer  $term_id  Author term id.
+             * @param string   $post_type Post type.
+             *
+             * @since 3.16.2
+             */
+            $distinct = apply_filters('ppma_author_posts_count_distinct', $distinct, $term_id, $post_type);
+
+            /**
+             * Filters the JOIN clause of the query.
+             *
+             * @param string   $join The JOIN clause of the query.
+             * @param integer  $term_id  Author term id.
+             * @param string   $post_type Post type.
+             *
+             * @since 3.16.2
+             */
+            $join     = apply_filters('ppma_author_posts_count_join', $join, $term_id, $post_type);
+
+            /**
+             * Filters the WHERE clause of the query.
+             *
+             * @param string   $where The WHERE clause of the query.
+             * @param integer  $term_id  Author term id.
+             * @param string   $post_type Post type.
+             *
+             * @since 3.16.2
+             */
+            $where     = apply_filters('ppma_author_posts_count_where', $where, $term_id, $post_type);
+
+            $query     = "SELECT $distinct FROM {$wpdb->posts} $join WHERE 1=1 $where";
+
+            /**
+             * Filters the whole count query.
+             *
+             * @param string   $query The count query.
+             * @param integer  $term_id  Author term id.
+             * @param string   $post_type Post type.
+             *
+             * @since 3.16.2
+             */
+            $query    = apply_filters('ppma_author_posts_count_query', $query, $term_id, $post_type);
+
+            $counts = (int)$wpdb->get_var($query);
+
             wp_cache_set($cache_key, $counts, 'counts');
         }
         
@@ -848,8 +899,10 @@ class Author
          * Filter author posts count.
          * 
          * @param integer $counts
-         * @param string   $term_id     Term ID.
-         * @param string   $post_type   Post type.
+         * @param string  $term_id  Author term id.
+         * @param string  $post_type   Post type.
+         * 
+         * @since 3.16.2
          */
         return apply_filters('ppma_author_posts_count', $counts, $term_id, $post_type);
     }
