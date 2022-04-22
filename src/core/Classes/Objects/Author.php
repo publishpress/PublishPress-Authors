@@ -903,7 +903,7 @@ class Author
              * @since 3.16.2
              */
             $expire_days = apply_filters(
-                'ppma_author_posts_count_cache_expire', 
+                'ppma_author_posts_count_cache_expire_days', 
                 $expire_days, 
                 $term_id, 
                 $post_type
