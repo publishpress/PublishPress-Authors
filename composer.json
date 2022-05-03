@@ -57,7 +57,7 @@
     "publishpress/wordpress-version-notices": "^1",
     "publishpress/wordpress-reviews":  "^1.1",
     "publishpress/wordpress-banners": "^1.2",
-    "publishpress/publishpress-instance-protection": "1.0"
+    "publishpress/publishpress-instance-protection": "^1.0"
   },
   "require-dev": {
     "lucatume/wp-browser": "^3",
