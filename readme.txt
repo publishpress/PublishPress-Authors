@@ -224,6 +224,13 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [3.16.2] - 09 May 2022 =
+
+* Fixed: Fix incorrect "Mine" counter in admin posts list, #591
+* Fixed: Fix error with subscribers/non admin inability to see see Author page posts, #584
+* Added: Add metabox to control author display on pages #60
+* Added: Added Author Profile URL #616
+
 = [3.16.1] - 13 Apr 2022 =
 
 * Fixed: Fix author mapped to user error when adding new author, #626;
