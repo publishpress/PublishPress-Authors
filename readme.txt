@@ -1,6 +1,6 @@
 === Co-Authors, Multiple Authors and Guest Authors in an Author Box with PublishPress Authors ===
 
-Contributors: publishpress, kevinB, stevejburge, andergmartins
+Contributors: publishpress, kevinB, stevejburge, andergmartins, ojopaul
 Author: PublishPress
 Author URI: https://publishpress.com
 Tags: multiple authors, authors, guest authors, author fields, author layouts
