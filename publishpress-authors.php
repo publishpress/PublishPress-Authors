@@ -55,6 +55,20 @@ if (class_exists('PublishPressInstanceProtection\\Config')) {
     $pluginChecker = new PublishPressInstanceProtection\InstanceChecker($pluginCheckerConfig);
 }
 
+if (defined('PP_AUTHORS_PRO_LOADED')) {
+    add_filter(
+        'plugin_row_meta',
+        function ($links, $file) {
+            if ($file == plugin_basename(__FILE__)) {
+                $links[]= '<strong>' . esc_html__('This plugin can be deleted.', 'publishpress-authors') . '</strong>';
+            }
+
+            return $links;
+        },
+        10,
+        2
+    );
+}
 
 if (! defined('PP_AUTHORS_LOADED')) {
 
