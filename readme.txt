@@ -230,6 +230,8 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: Fix error with subscribers/non admin inability to see see Author page posts, #584
 * Added: Add metabox to control author display on pages #60
 * Added: Added Author Profile URL #616
+* Update: Use built-in capability check when searching users via ajax, #645
+* Added: Disable Free version with Pro is active #615
 
 = [3.16.1] - 13 Apr 2022 =
 
