@@ -486,17 +486,22 @@ jQuery(document).ready(function ($) {
         });
     });
 
-    /**
-     * Add tab class to author editor's tr without tab
-     *
-     * This will add general tab class to 'Name' and Author URL
-     * or any tab that's rendered by default or third party
-     *  without tab attribute
-     */
     if ($('body').hasClass('taxonomy-author')) {
+        /**
+         * Add tab class to author editor's tr without tab
+         *
+         * This will add general tab class to 'Name' and Author URL
+         * or any tab that's rendered by default or third party
+         *  without tab attribute
+         */
         $('form#edittag tr.form-field:not(.ppma-tab-content)')
             .addClass('ppma-tab-content ppma-general-tab')
             .attr('data-tab', 'general');
+        
+        /**
+         * Add view link to author url field
+         */
+        $('form#edittag tr.form-field #slug').after('<a href="' + MultipleAuthorsStrings.term_author_link + '" class="button-secondary" target="_blank">' + MultipleAuthorsStrings.view_text + '</a>');
     }
 
     /**
