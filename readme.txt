@@ -1,13 +1,13 @@
 === Co-Authors, Multiple Authors and Guest Authors in an Author Box with PublishPress Authors ===
 
-Contributors: publishpress, kevinB, stevejburge, andergmartins
+Contributors: publishpress, kevinB, stevejburge, andergmartins, ojopaul
 Author: PublishPress
 Author URI: https://publishpress.com
 Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
 Tested up to: 5.9
-Stable tag: 3.16.1
+Stable tag: 3.16.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -223,6 +223,13 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+* Fixed: Fix incorrect "Mine" counter in admin posts list, #591
+* Fixed: Fix error with subscribers/non admin inability to see see Author page posts, #584
+* Added: Add metabox to control author display on pages #60
+* Added: Added Author Profile URL #616
+* Update: Use built-in capability check when searching users via ajax, #645
+* Added: Disable Free version with Pro is active #615
 
 = [3.16.1] - 13 Apr 2022 =
 
