@@ -802,7 +802,7 @@ if (!class_exists('MA_Multiple_Authors')) {
     
             //add author box shortcode
             $shortcodes['author_box'] = [
-                'label'         => esc_html__('Author box', 'publishpress-authors'),
+                'label'         => esc_html__('Author Box', 'publishpress-authors'),
                 'description'   => esc_html__('With the shortcode you can display the author box in any part of the content. ', 'publishpress-authors'),
                 'options'       => [
                     'option_1' => [
