@@ -629,14 +629,12 @@ if (!class_exists('MA_Multiple_Authors')) {
                 add_settings_field(
                     $shortcode . 'settings_shortcodes',
                     $args['label'],
-                    [$this, 'settings_author_box_shortcodes'],
+                    [$this, 'settings_shortcodes_callback'],
                     $this->module->options_group_name,
                     $this->module->options_group_name . '_shortcodes',
                     $args
                 );
             }
-            
-
 
             /**
              * Maintenance
@@ -897,7 +895,7 @@ if (!class_exists('MA_Multiple_Authors')) {
          *
          * @param array
          */
-        public function settings_author_box_shortcodes($args = [])
+        public function settings_shortcodes_callback($args = [])
         {
             ?>
             <?php if (isset($args['description'])) : ?>
