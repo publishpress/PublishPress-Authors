@@ -366,7 +366,7 @@ form#edittag tr.form-field #slug {
 
 .ppma-settings-shortcodes-shortcode .shortcode-field {
     width: 82%;
-    max-width: 350px;
+    max-width: 440px;
     padding: 8px 10px;
     border-radius: 3px;
 }
