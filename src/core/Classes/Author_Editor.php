@@ -478,7 +478,7 @@ class Author_Editor
                             <label for="<?php echo esc_attr($avatar_option_key.'-'.$key.'-options'); ?>">
                                 <?php echo esc_html($avatar_option_data['label']); ?>
                                 <?php if (isset($avatar_option_data['description'])) : ?>
-                                    <span class="description"><?php echo $avatar_option_data['description']; ?></span>
+                                    <span class="description"><?php echo $avatar_option_data['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
                                 <?php endif; ?>
                             </label>
                         </p>

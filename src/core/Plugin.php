@@ -1041,9 +1041,10 @@ class Plugin
         $orderby       = 'ORDER BY tr.term_order';
         $order         = 'ASC';
         $object_ids    = (int)$object_ids;
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         $raw_coauthors = $wpdb->get_results(
-            $wpdb->prepare( // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-                "SELECT t.name, t.term_id, tt.term_taxonomy_id FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_id = t.term_id INNER JOIN $wpdb->term_relationships AS tr ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy IN (%s) AND tr.object_id IN (%s) $orderby $order",
+            $wpdb->prepare(
+                "SELECT t.name, t.term_id, tt.term_taxonomy_id FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_id = t.term_id INNER JOIN $wpdb->term_relationships AS tr ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy IN (%s) AND tr.object_id IN (%s) $orderby $order", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                 $this->coauthor_taxonomy,
                 $object_ids
             )

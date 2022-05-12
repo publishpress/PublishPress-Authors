@@ -237,8 +237,8 @@ class Admin_Ajax
             );
         } else {
             $author_slug = !empty($_POST['author_slug']) ? sanitize_title($_POST['author_slug']) : '';
-            $author_id   = !empty($_POST['author_id']) ? (int)($_POST['author_id']) : 0;
-            $term_id     = !empty($_POST['term_id']) ? (int)($_POST['term_id']) : 0;
+            $author_id   = !empty($_POST['author_id']) ? (int) $_POST['author_id'] : 0;
+            $term_id     = !empty($_POST['term_id']) ? (int) $_POST['term_id'] : 0;
 
             if ($author_id > 0) {
                 $author = Author::get_by_user_id($author_id);
