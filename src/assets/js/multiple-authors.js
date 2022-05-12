@@ -592,6 +592,35 @@ jQuery(document).ready(function ($) {
 
     });
 
+    /**
+     * Settings shortcode copy to clipboard
+     */
+    $(document).on('click', '.ppma-copy-clipboard', function (event) {
+        //get the text field
+        var shortcode_input = event.target.closest('.ppma-settings-shortcodes-shortcode').querySelector('.shortcode-field');
+        //select the text field
+        shortcode_input.select();
+        shortcode_input.setSelectionRange(0, 99999); /* For mobile devices */
+        //copy the text inside the text field
+        navigator.clipboard.writeText(shortcode_input.value);
+        //update tooltip notification
+        event.target.closest('.ppma-settings-shortcodes-shortcode')
+            .querySelector('.ppma-copy-clipboard span')
+            .innerHTML = event.target.closest('.ppma-settings-shortcodes-shortcode').querySelector('.ppma-copy-clipboard span')
+                .getAttribute('data-copied');
+    });
+
+    /**
+     * Copy to clipboard copied text change
+     */
+    $(document).on('mouseleave', '.ppma-copy-clipboard', function (event) {
+        //update tooltip text
+        event.target.closest('.ppma-settings-shortcodes-shortcode')
+            .querySelector('.ppma-copy-clipboard span')
+            .innerHTML = event.target.closest('.ppma-settings-shortcodes-shortcode').querySelector('.ppma-copy-clipboard span')
+                .getAttribute('data-copy');
+    });
+
 });
 
 if (typeof console === "undefined") {

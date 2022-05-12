@@ -345,3 +345,75 @@ form#edittag tr.form-field #slug {
     width: 85%;
     margin-right: 5px;
 }
+
+.ppma-settings-shortcodes-shortcode {
+    margin-bottom: 30px;
+    margin-top: 10px;
+}
+
+.ppma-settings-shortcodes-shortcode code {
+    font-family: Consolas,monaco,monospace;
+    font-size: 14px;
+    white-space: nowrap;
+    padding: 2px 6px;
+    border: 1px solid #e9e9e9;
+    border-radius: 3px;
+}
+
+.ppma-settings-shortcodes-shortcode code.color-red {
+    color: #de3e3e;
+}
+
+.ppma-settings-shortcodes-shortcode .shortcode-field {
+    width: 82%;
+    max-width: 350px;
+    padding: 8px 10px;
+    border-radius: 3px;
+}
+
+.ppma-settings-shortcodes-shortcode .ppma-copy-clipboard {
+    cursor: pointer;
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    position: relative;
+    right: 30px;
+    top: 15px;
+    color: #655997;
+}
+
+.ppma-settings-shortcodes-shortcode .ppma-copy-clipboard span {
+    position: absolute;
+    bottom: calc(100% + 13px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    background: #655997;
+    padding: 5px;
+    border-radius: 5px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all .3s ease;
+    color: #fff;
+    text-align: center;
+    padding-bottom: 10px;
+    font-size: 150px;
+    line-height: 1.3;
+    font-size: 14px;
+}
+
+.ppma-settings-shortcodes-shortcode .ppma-copy-clipboard span:before {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-top: 8px solid#655997;
+    border-right: 8px solid transparent;
+    border-left: 8px solid transparent;
+    content: '';
+}
+
+.ppma-settings-shortcodes-shortcode .ppma-copy-clipboard:hover span {
+    opacity: 1;
+    visibility: visible;
+}

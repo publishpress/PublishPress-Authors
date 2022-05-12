@@ -612,6 +612,32 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $this->module->options_group_name . '_display'
             );
 
+
+            /**
+             * Shortcodes
+             */
+
+            add_settings_section(
+                $this->module->options_group_name . '_shortcodes',
+                __return_false(),
+                [$this, 'settings_section_shortcodes'],
+                $this->module->options_group_name
+            );
+
+            foreach ($this->settings_ppma_shortcodes() as $shortcode => $args) {
+                $args['shortcode'] = $shortcode;
+                add_settings_field(
+                    $shortcode . 'settings_shortcodes',
+                    $args['label'],
+                    [$this, 'settings_author_box_shortcodes'],
+                    $this->module->options_group_name,
+                    $this->module->options_group_name . '_shortcodes',
+                    $args
+                );
+            }
+            
+
+
             /**
              * Maintenance
              */
@@ -642,6 +668,11 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function settings_section_display()
         {
             echo '<input type="hidden" id="ppma-tab-display" />';
+        }
+
+        public function settings_section_shortcodes()
+        {
+            echo '<input type="hidden" id="ppma-tab-shortcodes" />';
         }
 
         public function settings_section_maintenance()
@@ -760,6 +791,143 @@ if (!class_exists('MA_Multiple_Authors')) {
                     $pluralValue
                 ) . '" id="' . esc_attr($idPlural) . '" name="' . esc_attr($this->module->options_group_name) . '[title_appended_to_content_plural]" class="regular-text" />';
             echo '</div>';
+        }
+
+        /**
+         * PublishPress Authors Shortcodes
+         *
+         * @param array $shortcodes
+         * 
+         * @return array
+         */
+        private function settings_ppma_shortcodes($shortcodes = []) {
+    
+            //add author box shortcode
+            $shortcodes['author_box'] = [
+                'label'         => esc_html__('Author box', 'publishpress-authors'),
+                'description'   => esc_html__('With the shortcode you can display the author box in any part of the content. ', 'publishpress-authors'),
+                'options'       => [
+                    'option_1' => [
+                        'shortcode' => '[author_box]'
+                    ],
+                    'option_2' => [
+                        'shortcode'   => '[author_box layout="boxed"]',
+                        'description' => sprintf(
+                            esc_html__(
+                                'You can choose from the following layouts: %1s %2s %3s %4s %5s. You can see full details of each layout option %6s in this guide %7s.',
+                                'publishpress-authors'
+                            ),
+                            '<code>simple_list</code>',
+                            '<code>centered</code>',
+                            '<code>boxed</code>',
+                            '<code>inline</code>',
+                            '<code>inline_avatar</code>',
+                            '<a href="https://publishpress.com/knowledge-base/layout/">',
+                            '</a>'
+                        ),
+                    ],
+                    'option_3' => [
+                        'shortcode'   => '[author_box layout="boxed" show_title="true"]',
+                        'description' => sprintf(
+                            esc_html__(
+                                'You can also decide whether or not to show the main title, using %1s or %2s.',
+                                'publishpress-authors'
+                            ),
+                            '<code class="color-red">show_title="true"</code>',
+                            '<code class="color-red">show_title="false"</code>',
+                        ),
+                    ],
+                    'option_4' => [
+                        'shortcode'   => '[author_box layout="boxed" post_id="32"]',
+                        'description' => esc_html__(
+                            'You can load the authors for a specific post, even if you are not in that post currently. For example, this shortcode will load the authors for the post with the ID of 32',
+                            'publishpress-authors'
+                        ),
+                    ],
+                    'option_5' => [
+                        'shortcode'   => '[author_box layout="boxed" archive="true"]',
+                        'description' => sprintf(
+                            esc_html__(
+                                'There is one final option to mention. This is mostly useful if you\'re using a theme or page builder to customize the Author profile pages you find at URLs such as /author/username/. You can use the following shortcode on the authors page to display the profile of the current author. You just need to add the parameter %s.',
+                                'publishpress-authors'
+                            ),
+                            '<code class="color-red">archive="true"</code>',
+                        ),
+                    ],
+                ],
+            ];
+
+            /**
+             * Filter shortcodes before deprecated shortcode.
+             *
+             * @param array $shortcodes
+             */
+            $shortcodes = apply_filters('ppma_before_deprecated_shortcodes', $shortcodes);
+    
+            //add authors list(deprecated) shortcode
+            $shortcodes['authors_list'] = [
+                'label'         => esc_html__('Deprecated Shortcode', 'publishpress-authors'),
+                'description'   => esc_html__('Before version 3.14.0 the author list shortcode was this.', 'publishpress-authors'),
+                'options'       => [
+                    'option_1'      => [
+                        'shortcode'   => '[authors_list]',
+                        'description' => sprintf(
+                            esc_html__(
+                                'However, the lack of a specific prefix leads to conflict issues with 3rd party plugins. For backward compatibility, we keep both shortcodes enabled by default. If the deprecated shortcode is conflicting with any other plugin or theme, you can disable it by defining %1s constant in the “wp-config.php”',
+                                'publishpress-authors'
+                            ),
+                            '<code>define(\'PUBLISHPRESS_AUTHORS_LOAD_LEGACY_SHORTCODES\', false);</code>',
+                        ),
+                    ],
+                ],
+            ];
+
+            /**
+             * Filter shortcodes.
+             *
+             * @param array $shortcodes
+             */
+            $shortcodes = apply_filters('ppma_shortcodes', $shortcodes);
+
+            return $shortcodes;
+        }
+
+        /**
+         * Displays shortcode tab content
+         *
+         * @param array
+         */
+        public function settings_author_box_shortcodes($args = [])
+        {
+            ?>
+            <?php if (isset($args['description'])) : ?>
+                <span class="ppma_settings_field_description"><?php echo $args['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+            </span>
+            <?php endif; ?>
+
+            <?php foreach ($args['options'] as $option) : ?>
+                    <div class="ppma-settings-shortcodes-shortcode">
+                    <?php if (isset($option['description'])) : ?>
+                        <div class="ppma_settings_field_description">
+                            <?php echo $option['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                        </div>
+                    <?php endif; ?>
+                    <input 
+                        class="shortcode-field"
+                        type="text"
+                        value="<?php echo esc_attr($option['shortcode']); ?>"
+                        readonly
+                        />
+                    <span class="ppma-copy-clipboard dashicons dashicons-admin-page">
+                        <span data-copied="<?php echo esc_attr__('Copied!', 'publishpress-authors'); ?>"
+                            data-copy="<?php echo esc_attr__('Click To Copy!', 'publishpress-authors'); ?>">
+                            <?php echo esc_html__('Click To Copy!', 'publishpress-authors'); ?>
+                        </span>
+                    </span>
+                    </div>
+            <?php endforeach; ?>
+            
+            <?php
         }
 
         /**
@@ -1114,6 +1282,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 [
                     '#ppma-tab-general'     => esc_html__('General', 'publishpress-authors'),
                     '#ppma-tab-display'     => esc_html__('Display', 'publishpress-authors'),
+                    '#ppma-tab-shortcodes'  => esc_html__('Shortcodes', 'publishpress-authors'),
                     '#ppma-tab-maintenance' => esc_html__('Maintenance', 'publishpress-authors'),
                 ]
             );
