@@ -327,15 +327,6 @@ body.block-editor-page select[id^="post-author-selector-"] {
     font-style: italic;
 }
 
-/* Set tab active class if user is on their author profile edit page */
-body.own-profile-edit li[class*=' toplevel_page_term?taxonomy=author&tag_ID'] {
-    border: 0 none;
-}
-body.own-profile-edit li[class*=' toplevel_page_term?taxonomy=author&tag_ID'] a.menu-top {
-    background: #2271b1;
-    color: #fff;
-}
-
 body.own-profile-edit .term-authors-user_id-wrap,
 body.own-profile-edit .edit-tag-actions span#delete-link {
     display: none !important;
