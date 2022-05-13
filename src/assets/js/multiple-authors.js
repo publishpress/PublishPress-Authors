@@ -621,6 +621,41 @@ jQuery(document).ready(function ($) {
                 .getAttribute('data-copy');
     });
 
+    /**
+     * Author profile edit active class for when 
+     * user is editing own profile.
+     * 
+     * i.) Remove active class from main author 
+     * profile if it has one .
+     * 
+     * ii.) Add active class to new author profile
+     * link
+     */
+    if ($('body').hasClass('own-profile-edit')) {
+        var main_menu   = $("#toplevel_page_ppma-authors");
+        var profile_menu = $("li[class*=' toplevel_page_term?taxonomy=author&tag_ID']");
+
+        //remove active from main author menu
+        main_menu
+            .addClass('wp-not-current-submenu')
+            .removeClass('wp-has-current-submenu')
+            .removeClass('wp-menu-open')
+            .removeClass('current')
+            .find('ul li.current')
+            .removeClass('current');
+        
+        //add class to user author menu
+        profile_menu
+            .removeClass('wp-not-current-submenu')
+            .addClass('current');
+        
+        profile_menu
+            .find('a')
+            .removeClass('wp-not-current-submenu')
+            .addClass('current');
+             
+    }
+
 });
 
 if (typeof console === "undefined") {

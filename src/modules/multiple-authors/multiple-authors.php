@@ -277,7 +277,6 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             $current_author = Author::get_by_user_id(get_current_user_id());
             if (
-                !current_user_can(apply_filters('pp_multiple_authors_manage_authors_cap', 'ppma_manage_authors')) && 
                 $current_author && 
                 is_object($current_author) && 
                 isset($current_author->term_id)
@@ -289,7 +288,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'term.php?taxonomy=author&tag_ID='.$current_author->term_id,
                     __return_empty_string(),
                     'dashicons-groups',
-                    26
+                    27
                 );
             }
 
@@ -3043,7 +3042,22 @@ if (!class_exists('MA_Multiple_Authors')) {
             $screen = get_current_screen();
 
             if ($screen && is_object($screen) && isset($screen->id) && $screen->id === 'edit-author') {
-                $classes .= (current_user_can(apply_filters('pp_multiple_authors_manage_authors_cap', 'ppma_manage_authors'))) ? ' authorised-profile-edit ' : ' own-profile-edit ';
+
+                $current_tag_id =  (isset($_REQUEST['tag_ID']) && (int) $_REQUEST['tag_ID'] > 0) ? (int) $_REQUEST['tag_ID'] : 0;
+                $current_author = Author::get_by_user_id(get_current_user_id());
+
+            if (
+                $current_author && 
+                is_object($current_author) && 
+                isset($current_author->term_id) && 
+                (int) $current_author->term_id === $current_tag_id
+                ) {
+                    $classes .= ' own-profile-edit ';
+                } elseif (current_user_can(apply_filters('pp_multiple_authors_manage_authors_cap', 'ppma_manage_authors'))) {
+                    $classes .= ' authorised-profile-edi ';
+                } else {
+                    $classes .= ' own-profile-edit ';
+                }
             }
 
             return $classes;
