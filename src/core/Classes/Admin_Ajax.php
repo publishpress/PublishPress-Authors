@@ -135,8 +135,6 @@ class Admin_Ajax
             wp_send_json_error(null, 403);
         }
 
-        // We load 100, but only display 20. We load more, because we are filtering users with "edit_posts" capability.
-        // TODO: Add settings field for selecting what user role could be used to map users to authors, so we can filter the user role instead.
         $user_args = [
             'number' => 20,
             'capability' => 'edit_posts',
@@ -149,7 +147,7 @@ class Admin_Ajax
         $results = [];
         foreach ($users as $user) {
             $results[] = [
-                'id'   => $user->ID,
+                'id'   => (isset($_GET['field']) && sanitize_key($_GET['field']) === 'slug') ? $user->user_nicename : $user->ID,
                 'text' => $user->display_name,
             ];
         }

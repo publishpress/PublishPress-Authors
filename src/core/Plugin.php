@@ -367,6 +367,10 @@ class Plugin
             10,
             3
         );
+        add_action(
+            'restrict_manage_posts',
+            ['MultipleAuthors\\Classes\\Post_Editor', 'post_author_filter_field']
+        );
 
         // Notification Workflow support
         add_filter(
