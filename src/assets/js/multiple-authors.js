@@ -161,11 +161,37 @@ jQuery(document).ready(function ($) {
         });
     }
 
+    function authorsUserSlugSelect2(selector) {
+        selector.each(function () {
+            var authorsSearch = $(this).ppma_select2({
+                placeholder: $(this).data("placeholder"),
+                allowClear: true,
+                ajax: {
+                    url:
+                        window.ajaxurl +
+                        "?action=authors_users_search&field=slug&nonce=" +
+                        $(this).data("nonce"),
+                    dataType: "json",
+                    data: function (params) {
+                        return {
+                            q: params.term,
+                            ignored: []
+                        };
+                    }
+                }
+            });
+        });
+    }
+    
     if ($("body").hasClass("post-php") || $("body").hasClass("post-new-php")) {
         authorsSelect2($(".authors-select2.authors-search"));
         authorsUserSelect2($('.authors-user-search'));
         sortedAuthorsList($(".authors-current-user-can-assign"));
         handleUsersAuthorField();
+    }
+
+    if ($("body").hasClass("edit-php")) {
+        authorsUserSlugSelect2($('.authors-user-slug-search'));
     }
 
     /****************
