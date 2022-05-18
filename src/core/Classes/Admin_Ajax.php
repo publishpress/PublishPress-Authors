@@ -50,6 +50,42 @@ class Admin_Ajax
     }
 
     /**
+     * Handle an ajax request to search filter available authors
+     */
+     public static function handle_filter_authors_search()
+     {
+         header('Content-Type: application/javascript');
+ 
+        if (empty($_GET['nonce'])
+            || !wp_verify_nonce(sanitize_key($_GET['nonce']), 'authors-user-search')
+        ) {
+            wp_send_json_error(null, 403);
+        }
+ 
+        if (! Capability::currentUserCanEditPostAuthors()) {
+            wp_send_json_error(null, 403);
+        }
+
+        $search   = !empty($_GET['q']) ? sanitize_text_field($_GET['q']) : '';
+        $ignored  = !empty($_GET['ignored']) ? array_map('sanitize_text_field', $_GET['ignored']) : [];
+        $authors  = self::get_possible_authors_for_search($search, $ignored);
+
+        $results = [];
+        foreach ($authors as $author) {
+            $results[] = [
+                'id'   => (isset($_GET['field']) && sanitize_key($_GET['field']) === 'slug') ? $author['slug'] : $author['id'],
+                'text' => $author['display_name'],
+            ];
+        }
+
+        $response = [
+            'results' => $results,
+        ];
+        echo wp_json_encode($response);
+        exit;
+    }
+
+    /**
      * Get the possible authors for a given search query.
      *
      * @param string $search Search query.
@@ -110,6 +146,7 @@ class Admin_Ajax
                     'text'         => $text,
                     'term'         => (int)$term->term_id,
                     'display_name' => $text,
+                    'slug'         => $term->slug,
                     'user_id'      => $author->user_id,
                     'is_guest'     => $author->is_guest() ? 1 : 0,
                 ];
@@ -135,8 +172,6 @@ class Admin_Ajax
             wp_send_json_error(null, 403);
         }
 
-        // We load 100, but only display 20. We load more, because we are filtering users with "edit_posts" capability.
-        // TODO: Add settings field for selecting what user role could be used to map users to authors, so we can filter the user role instead.
         $user_args = [
             'number' => 20,
             'capability' => 'edit_posts',
@@ -149,7 +184,7 @@ class Admin_Ajax
         $results = [];
         foreach ($users as $user) {
             $results[] = [
-                'id'   => $user->ID,
+                'id'   => (isset($_GET['field']) && sanitize_key($_GET['field']) === 'slug') ? $user->user_nicename : $user->ID,
                 'text' => $user->display_name,
             ];
         }
@@ -237,8 +272,8 @@ class Admin_Ajax
             );
         } else {
             $author_slug = !empty($_POST['author_slug']) ? sanitize_title($_POST['author_slug']) : '';
-            $author_id   = !empty($_POST['author_id']) ? (int)($_POST['author_id']) : 0;
-            $term_id     = !empty($_POST['term_id']) ? (int)($_POST['term_id']) : 0;
+            $author_id   = !empty($_POST['author_id']) ? (int) $_POST['author_id'] : 0;
+            $term_id     = !empty($_POST['term_id']) ? (int) $_POST['term_id'] : 0;
 
             if ($author_id > 0) {
                 $author = Author::get_by_user_id($author_id);

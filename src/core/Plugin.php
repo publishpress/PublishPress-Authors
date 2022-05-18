@@ -338,6 +338,10 @@ class Plugin
             ['MultipleAuthors\\Classes\\Admin_Ajax', 'handle_users_search']
         );
         add_action(
+            'wp_ajax_authors_filter_authors_search',
+            ['MultipleAuthors\\Classes\\Admin_Ajax', 'handle_filter_authors_search']
+        );
+        add_action(
             'wp_ajax_author_create_from_user',
             ['MultipleAuthors\\Classes\\Admin_Ajax', 'handle_author_create_from_user']
         );
@@ -366,6 +370,10 @@ class Plugin
             ],
             10,
             3
+        );
+        add_action(
+            'restrict_manage_posts',
+            ['MultipleAuthors\\Classes\\Post_Editor', 'post_author_filter_field']
         );
 
         // Notification Workflow support
@@ -1041,9 +1049,10 @@ class Plugin
         $orderby       = 'ORDER BY tr.term_order';
         $order         = 'ASC';
         $object_ids    = (int)$object_ids;
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         $raw_coauthors = $wpdb->get_results(
-            $wpdb->prepare( // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-                "SELECT t.name, t.term_id, tt.term_taxonomy_id FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_id = t.term_id INNER JOIN $wpdb->term_relationships AS tr ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy IN (%s) AND tr.object_id IN (%s) $orderby $order",
+            $wpdb->prepare(
+                "SELECT t.name, t.term_id, tt.term_taxonomy_id FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_id = t.term_id INNER JOIN $wpdb->term_relationships AS tr ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy IN (%s) AND tr.object_id IN (%s) $orderby $order", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                 $this->coauthor_taxonomy,
                 $object_ids
             )

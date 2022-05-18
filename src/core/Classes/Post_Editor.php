@@ -320,6 +320,50 @@ class Post_Editor
     }
 
     /**
+     * Add author filter to admin post filter
+     *
+     * @return void
+     */
+    public static function post_author_filter_field()
+    {
+        $post_type = isset($_GET['post_type']) ? sanitize_key($_GET['post_type']) : 'post';
+        
+        if (Utils::is_post_type_enabled($post_type)) {
+
+            $userAuthor = false;
+            $authorSlug = false;
+            if (isset($_GET['author_name'])) {
+                $authorSlug = sanitize_key($_GET['author_name']);
+            } elseif (isset($_GET['ppma_author'])) {
+                $authorSlug = sanitize_key($_GET['ppma_author']);
+            }
+
+            if ($authorSlug) {
+                $userAuthor = Author::get_by_term_slug($authorSlug);
+                if (!$userAuthor) {
+                    $userAuthor = get_user_by('slug', $authorSlug);
+                }
+            }
+            ?>
+            <select data-nonce="<?php
+                echo esc_attr(wp_create_nonce('authors-user-search')); ?>"
+                    class="authors-select2 authors-user-slug-search"
+                    data-placeholder="<?php
+                    esc_attr_e('All Authors', 'publishpress-authors'); ?>" style="width: 150px"
+                    name="author_name">
+                    <?php if ($userAuthor && is_object($userAuthor)) : ?>
+                        <option value="<?php echo esc_attr($userAuthor->user_nicename); ?>">
+                            <?php echo esc_html($userAuthor->display_name); ?>
+                        </option>
+                <?php else : ?>
+                    <option></option>
+                <?php endif; ?>
+            </select>
+            <?php
+        }
+    }
+
+    /**
      * Get a rendered author partial
      *
      * @param array $args Arguments to render in the partial.

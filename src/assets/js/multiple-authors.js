@@ -161,11 +161,37 @@ jQuery(document).ready(function ($) {
         });
     }
 
+    function authorsUserSlugSelect2(selector) {
+        selector.each(function () {
+            var authorsSearch = $(this).ppma_select2({
+                placeholder: $(this).data("placeholder"),
+                allowClear: true,
+                ajax: {
+                    url:
+                        window.ajaxurl +
+                        "?action=authors_filter_authors_search&field=slug&nonce=" +
+                        $(this).data("nonce"),
+                    dataType: "json",
+                    data: function (params) {
+                        return {
+                            q: params.term,
+                            ignored: []
+                        };
+                    }
+                }
+            });
+        });
+    }
+    
     if ($("body").hasClass("post-php") || $("body").hasClass("post-new-php")) {
         authorsSelect2($(".authors-select2.authors-search"));
         authorsUserSelect2($('.authors-user-search'));
         sortedAuthorsList($(".authors-current-user-can-assign"));
         handleUsersAuthorField();
+    }
+
+    if ($("body").hasClass("edit-php")) {
+        authorsUserSlugSelect2($('.authors-user-slug-search'));
     }
 
     /****************
@@ -591,6 +617,70 @@ jQuery(document).ready(function ($) {
         });
 
     });
+
+    /**
+     * Settings shortcode copy to clipboard
+     */
+    $(document).on('click', '.ppma-copy-clipboard', function (event) {
+        //get the text field
+        var shortcode_input = event.target.closest('.ppma-settings-shortcodes-shortcode').querySelector('.shortcode-field');
+        //select the text field
+        shortcode_input.select();
+        shortcode_input.setSelectionRange(0, 99999); /* For mobile devices */
+        //copy the text inside the text field
+        navigator.clipboard.writeText(shortcode_input.value);
+        //update tooltip notification
+        event.target.closest('.ppma-settings-shortcodes-shortcode')
+            .querySelector('.ppma-copy-clipboard span')
+            .innerHTML = event.target.closest('.ppma-settings-shortcodes-shortcode').querySelector('.ppma-copy-clipboard span')
+                .getAttribute('data-copied');
+    });
+
+    /**
+     * Copy to clipboard copied text change
+     */
+    $(document).on('mouseleave', '.ppma-copy-clipboard', function (event) {
+        //update tooltip text
+        event.target.closest('.ppma-settings-shortcodes-shortcode')
+            .querySelector('.ppma-copy-clipboard span')
+            .innerHTML = event.target.closest('.ppma-settings-shortcodes-shortcode').querySelector('.ppma-copy-clipboard span')
+                .getAttribute('data-copy');
+    });
+
+    /**
+     * Author profile edit active class for when 
+     * user is editing own profile.
+     * 
+     * i.) Remove active class from main author 
+     * profile if it has one .
+     * 
+     * ii.) Add active class to new author profile
+     * link
+     */
+    if ($('body').hasClass('own-profile-edit')) {
+        var main_menu   = $("#toplevel_page_ppma-authors");
+        var profile_menu = $("li[class*=' toplevel_page_term?taxonomy=author&tag_ID']");
+
+        //remove active from main author menu
+        main_menu
+            .addClass('wp-not-current-submenu')
+            .removeClass('wp-has-current-submenu')
+            .removeClass('wp-menu-open')
+            .removeClass('current')
+            .find('ul li.current')
+            .removeClass('current');
+        
+        //add class to user author menu
+        profile_menu
+            .removeClass('wp-not-current-submenu')
+            .addClass('current');
+        
+        profile_menu
+            .find('a')
+            .removeClass('wp-not-current-submenu')
+            .addClass('current');
+             
+    }
 
 });
 

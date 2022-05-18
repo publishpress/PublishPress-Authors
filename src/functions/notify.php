@@ -147,6 +147,7 @@ if (!function_exists('wp_notify_postauthor')) {
             $subject         = apply_filters('comment_notification_subject', $subject, $comment_id);
             $message_headers = apply_filters('comment_notification_headers', $message_headers, $comment_id);
 
+             // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.wp_mail_wp_mail
             wp_mail($author->user_email, $subject, $notify_message, $message_headers);
         }
 
