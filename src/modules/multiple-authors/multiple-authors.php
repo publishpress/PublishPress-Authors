@@ -855,31 +855,6 @@ if (!class_exists('MA_Multiple_Authors')) {
             ];
 
             /**
-             * Filter shortcodes before deprecated shortcode.
-             *
-             * @param array $shortcodes
-             */
-            $shortcodes = apply_filters('ppma_before_deprecated_shortcodes', $shortcodes);
-    
-            //add authors list(deprecated) shortcode
-            $shortcodes['authors_list'] = [
-                'label'         => esc_html__('Deprecated Shortcode', 'publishpress-authors'),
-                'description'   => esc_html__('Before version 3.14.0 the author list shortcode was this.', 'publishpress-authors'),
-                'options'       => [
-                    'option_1'      => [
-                        'shortcode'   => '[authors_list]',
-                        'description' => sprintf(
-                            esc_html__(
-                                'However, the lack of a specific prefix leads to conflict issues with 3rd party plugins. For backward compatibility, we keep both shortcodes enabled by default. If the deprecated shortcode is conflicting with any other plugin or theme, you can disable it by defining %1s constant in the “wp-config.php”',
-                                'publishpress-authors'
-                            ),
-                            '<code>define(\'PUBLISHPRESS_AUTHORS_LOAD_LEGACY_SHORTCODES\', false);</code>',
-                        ),
-                    ],
-                ],
-            ];
-
-            /**
              * Filter shortcodes.
              *
              * @param array $shortcodes
