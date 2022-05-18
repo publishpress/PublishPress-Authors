@@ -93,6 +93,4 @@ if (! defined('PP_AUTHORS_LOADED')) {
     );
 
     include_once __DIR__ . '/src/functions/notify.php';
-
-    define('PP_AUTHORS_LOADED', true);
 }

@@ -49,4 +49,6 @@ if (!defined('PP_AUTHORS_LOADED')) {
     if (!defined('PUBLISHPRESS_AUTHORS_LOAD_STYLE_IN_FRONTEND')) {
         define('PUBLISHPRESS_AUTHORS_LOAD_STYLE_IN_FRONTEND', true);
     }
+
+    define('PP_AUTHORS_LOADED', true);
 }
