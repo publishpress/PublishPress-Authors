@@ -224,6 +224,15 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [3.16.3] - 18 May 2022 =
+
+* Added: Add an Author Filter for Posts, #90
+* Update: Enable Author Profile for Administator and other roles with 'ppma_manage_authors', #649
+* Added: Add a shortcodes tab to settings, #641
+* Update: Run the WordPress VIP scans on Authors, #639
+
+= [3.16.2] - 09 May 2022 =
+
 * Fixed: Fix incorrect "Mine" counter in admin posts list, #591
 * Fixed: Fix error with subscribers/non admin inability to see see Author page posts, #584
 * Added: Add metabox to control author display on pages #60
