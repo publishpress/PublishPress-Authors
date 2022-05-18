@@ -50,6 +50,42 @@ class Admin_Ajax
     }
 
     /**
+     * Handle an ajax request to search filter available authors
+     */
+     public static function handle_filter_authors_search()
+     {
+         header('Content-Type: application/javascript');
+ 
+        if (empty($_GET['nonce'])
+            || !wp_verify_nonce(sanitize_key($_GET['nonce']), 'authors-user-search')
+        ) {
+            wp_send_json_error(null, 403);
+        }
+ 
+        if (! Capability::currentUserCanEditPostAuthors()) {
+            wp_send_json_error(null, 403);
+        }
+
+        $search   = !empty($_GET['q']) ? sanitize_text_field($_GET['q']) : '';
+        $ignored  = !empty($_GET['ignored']) ? array_map('sanitize_text_field', $_GET['ignored']) : [];
+        $authors  = self::get_possible_authors_for_search($search, $ignored);
+
+        $results = [];
+        foreach ($authors as $author) {
+            $results[] = [
+                'id'   => (isset($_GET['field']) && sanitize_key($_GET['field']) === 'slug') ? $author['slug'] : $author['id'],
+                'text' => $author['display_name'],
+            ];
+        }
+
+        $response = [
+            'results' => $results,
+        ];
+        echo wp_json_encode($response);
+        exit;
+    }
+
+    /**
      * Get the possible authors for a given search query.
      *
      * @param string $search Search query.
@@ -110,6 +146,7 @@ class Admin_Ajax
                     'text'         => $text,
                     'term'         => (int)$term->term_id,
                     'display_name' => $text,
+                    'slug'         => $term->slug,
                     'user_id'      => $author->user_id,
                     'is_guest'     => $author->is_guest() ? 1 : 0,
                 ];
