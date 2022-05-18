@@ -169,7 +169,7 @@ jQuery(document).ready(function ($) {
                 ajax: {
                     url:
                         window.ajaxurl +
-                        "?action=authors_users_search&field=slug&nonce=" +
+                        "?action=authors_filter_authors_search&field=slug&nonce=" +
                         $(this).data("nonce"),
                     dataType: "json",
                     data: function (params) {

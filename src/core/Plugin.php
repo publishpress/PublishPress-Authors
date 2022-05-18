@@ -338,6 +338,10 @@ class Plugin
             ['MultipleAuthors\\Classes\\Admin_Ajax', 'handle_users_search']
         );
         add_action(
+            'wp_ajax_authors_filter_authors_search',
+            ['MultipleAuthors\\Classes\\Admin_Ajax', 'handle_filter_authors_search']
+        );
+        add_action(
             'wp_ajax_author_create_from_user',
             ['MultipleAuthors\\Classes\\Admin_Ajax', 'handle_author_create_from_user']
         );
