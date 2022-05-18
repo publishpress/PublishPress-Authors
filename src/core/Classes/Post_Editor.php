@@ -331,19 +331,25 @@ class Post_Editor
         if (Utils::is_post_type_enabled($post_type)) {
 
             $userAuthor = false;
+            $authorSlug = false;
             if (isset($_GET['author_name'])) {
-                $filter_user_id = sanitize_key($_GET['author_name']);
-                $userAuthor    = get_user_by('slug', $filter_user_id);
+                $authorSlug = sanitize_key($_GET['author_name']);
             } elseif (isset($_GET['ppma_author'])) {
-                $filter_user_id = sanitize_key($_GET['ppma_author']);
-                $userAuthor    = get_user_by('slug', $filter_user_id);
+                $authorSlug = sanitize_key($_GET['ppma_author']);
+            }
+
+            if ($authorSlug) {
+                $userAuthor = Author::get_by_term_slug($authorSlug);
+                if (!$userAuthor) {
+                    $userAuthor = get_user_by('slug', $authorSlug);
+                }
             }
             ?>
             <select data-nonce="<?php
                 echo esc_attr(wp_create_nonce('authors-user-search')); ?>"
                     class="authors-select2 authors-user-slug-search"
                     data-placeholder="<?php
-                    esc_attr_e('All Author', 'publishpress-authors'); ?>" style="width: 150px"
+                    esc_attr_e('All Authors', 'publishpress-authors'); ?>" style="width: 150px"
                     name="author_name">
                     <?php if ($userAuthor && is_object($userAuthor)) : ?>
                         <option value="<?php echo esc_attr($userAuthor->user_nicename); ?>">
