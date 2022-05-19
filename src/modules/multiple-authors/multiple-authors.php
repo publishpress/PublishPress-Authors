@@ -800,15 +800,15 @@ if (!class_exists('MA_Multiple_Authors')) {
         private function settings_ppma_shortcodes($shortcodes = []) {
     
             //add author box shortcode
-            $shortcodes['author_box'] = [
-                'label'         => esc_html__('Author Box', 'publishpress-authors'),
+            $shortcodes['publishpress_authors_box'] = [
+                'label'         => esc_html__('Authors Box', 'publishpress-authors'),
                 'description'   => esc_html__('With the shortcode you can display the author box in any part of the content. ', 'publishpress-authors'),
                 'options'       => [
                     'option_1' => [
-                        'shortcode' => '[author_box]'
+                        'shortcode' => '[publishpress_authors_box]'
                     ],
                     'option_2' => [
-                        'shortcode'   => '[author_box layout="boxed"]',
+                        'shortcode'   => '[publishpress_authors_box layout="boxed"]',
                         'description' => sprintf(
                             esc_html__(
                                 'You can choose from the following layouts: %1s %2s %3s %4s %5s. You can see full details of each layout option %6s in this guide %7s.',
@@ -824,7 +824,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         ),
                     ],
                     'option_3' => [
-                        'shortcode'   => '[author_box layout="boxed" show_title="true"]',
+                        'shortcode'   => '[publishpress_authors_box layout="boxed" show_title="true"]',
                         'description' => sprintf(
                             esc_html__(
                                 'You can also decide whether or not to show the main title, using %1s or %2s.',
@@ -835,14 +835,14 @@ if (!class_exists('MA_Multiple_Authors')) {
                         ),
                     ],
                     'option_4' => [
-                        'shortcode'   => '[author_box layout="boxed" post_id="32"]',
+                        'shortcode'   => '[publishpress_authors_box layout="boxed" post_id="32"]',
                         'description' => esc_html__(
                             'You can load the authors for a specific post, even if you are not in that post currently. For example, this shortcode will load the authors for the post with the ID of 32',
                             'publishpress-authors'
                         ),
                     ],
                     'option_5' => [
-                        'shortcode'   => '[author_box layout="boxed" archive="true"]',
+                        'shortcode'   => '[publishpress_authors_box layout="boxed" archive="true"]',
                         'description' => sprintf(
                             esc_html__(
                                 'There is one final option to mention. This is mostly useful if you\'re using a theme or page builder to customize the Author profile pages you find at URLs such as /author/username/. You can use the following shortcode on the authors page to display the profile of the current author. You just need to add the parameter %s.',
