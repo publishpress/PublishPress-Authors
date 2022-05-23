@@ -35,6 +35,8 @@ class SchemaFacade
         add_filter('wpseo_schema_webpage', [$this, 'handleSchemaArticle'], 10, 2);
         add_filter('wpseo_schema_author', [$this, 'handleSchemaAuthor'], 10, 2);
         add_filter('wpseo_schema_article', [$this, 'handleSchemaArticle'], 10, 2);
+        add_filter('wpseo_opengraph_title', [$this, 'handleAuthorWpseoTitle']);
+        add_filter('wpseo_title', [$this, 'handleAuthorWpseoTitle']);
     }
 
     public function handleSchemaAuthor($graphPiece, $context)
@@ -97,5 +99,25 @@ class SchemaFacade
         return $context->site_url . Schema_IDs::PERSON_HASH . wp_hash(
                 $author->slug . $author->ID
             );
+    }
+
+    /**
+     * Replace author name for yoast SEO
+     *
+     * @param string $title current page title
+     * 
+     * @return string
+     */
+    public function handleAuthorWpseoTitle($title)
+    {
+        if (is_author()) {
+            $titleAuthorName = get_the_author();
+            $realAuthorData  = get_queried_object();
+            if (is_object($realAuthorData) && !is_wp_error($realAuthorData) && isset($realAuthorData->display_name)) {
+                $title = str_replace($titleAuthorName, $realAuthorData->display_name, $title);
+            }
+        }
+
+        return $title;
     }
 }
