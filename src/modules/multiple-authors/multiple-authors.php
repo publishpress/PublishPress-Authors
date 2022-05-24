@@ -854,6 +854,46 @@ if (!class_exists('MA_Multiple_Authors')) {
                 ],
             ];
 
+            //add authors data shortcode
+            $shortcodes['publishpress_authors_data'] = [
+                'label'         => esc_html__('Authors Data', 'publishpress-authors'),
+                'description'   => esc_html__('With the shortcode you can display the author names or any profile field in any part of the content.', 'publishpress-authors'),
+                'options'       => [
+                    'option_1' => [
+                        'shortcode' => '[publishpress_authors_data]'
+                    ],
+                    'option_2' => [
+                        'shortcode'   => '[publishpress_authors_data field="display_name"]',
+                        'description' => sprintf(
+                            esc_html__(
+                                'The authors data shortcode accepts field parameter like: %1s %2s %3s %4s %5s %6s which can be specified to determine what field should be return.',
+                                'publishpress-authors'
+                            ),
+                            '<code>display_name</code>',
+                            '<code>first_name</code>',
+                            '<code>last_name</code>',
+                            '<code>ID</code>',
+                            '<code>user_nicename</code>',
+                            '<code>user_email</code>',
+                        ),
+                    ],
+                    'option_3' => [
+                        'shortcode'   => '[publishpress_authors_data seperator=","]',
+                        'description' => esc_html__(
+                            'You can also specify the seperator to be used for mulitple authors data.',
+                            'publishpress-authors'
+                        ),
+                    ],
+                    'option_4' => [
+                        'shortcode'   => '[publishpress_authors_data post_id="32"]',
+                        'description' => esc_html__(
+                            'You can load the authors for a specific post, even if you are not in that post currently. For example, this shortcode will load the authors for the post with the ID of 32',
+                            'publishpress-authors'
+                        ),
+                    ],
+                ],
+            ];
+
             /**
              * Filter shortcodes.
              *

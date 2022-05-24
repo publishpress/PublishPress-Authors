@@ -10,6 +10,7 @@
 namespace MultipleAuthors\Traits;
 
 use MultipleAuthors\Classes\Authors_Iterator;
+use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Classes\Objects\Post;
 use MultipleAuthors\Classes\Utils;
@@ -240,5 +241,45 @@ trait Author_box
         );
 
         return $html;
+    }
+
+    /**
+     * Returns the authors data.
+     *
+     * @param int $post_id
+     * @param string $field
+     * @param mixed $seperator
+     *
+     * @return string
+     */
+    protected function get_authors_data(
+        $post_id = false,
+        $field = 'display_name',
+        $seperator = ','
+    ) {
+        global $post;
+
+        $output = [];
+
+        if (!function_exists('multiple_authors')) {
+            require_once PP_AUTHORS_BASE_PATH . 'src/functions/template-tags.php';
+        }
+
+        if (!$post_id && is_object($post) && isset($post->ID)) {
+            $post_id = $post->ID;
+        } else {
+            $post_id = (int) $post_id;
+        }
+
+        $authors = get_post_authors($post_id, true, false);
+
+        if (!empty($authors)) {
+            foreach ($authors as $author) {
+                $author = Author::get_by_term_id($author->term_id);
+                $output[] = isset($author->$field) ? $author->$field : $author->display_name;
+            }
+        }
+        
+        return join($seperator, $output);
     }
 }
