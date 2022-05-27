@@ -224,6 +224,14 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [3.17.0] - 30 May 2022 =
+
+* Added: Option to enable/disable loading font awesome assets in frontend, #625
+* Added: Support for user fields WPML translations, #642
+* Added: Add new shortcode [publishpress_authors_data] which can be used to display the author names or any profile field, #673
+* Fixed: Multiple Authors Compability with Yoast SEO authors's title, #672
+* Update: Change [author_box] to [publishpress_authors_box] in shortcode tab, #670
+
 = [3.16.3] - 18 May 2022 =
 
 * Added: Add an Author Filter for Posts, #90
