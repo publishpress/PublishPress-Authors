@@ -120,6 +120,27 @@ trait Author_box
                 PP_AUTHORS_VERSION,
                 'all'
             );
+
+            //load font awesome assets if enable
+            $load_font_awesome = isset($legacyPlugin->modules->multiple_authors->options->load_font_awesome)
+            ? 'yes' === $legacyPlugin->modules->multiple_authors->options->load_font_awesome : true;
+
+            if ($load_font_awesome) {
+                wp_enqueue_style(
+                    'multiple-authors-fontawesome',
+                    PP_AUTHORS_ASSETS_URL . 'lib/fontawesome/css/fontawesome.min.css',
+                    false,
+                    PP_AUTHORS_VERSION,
+                    'all'
+                );
+    
+                wp_enqueue_script(
+                    'multiple-authors-fontawesome',
+                    PP_AUTHORS_ASSETS_URL . 'lib/fontawesome/js/fontawesome.min.js',
+                    ['jquery'],
+                    PP_AUTHORS_VERSION
+                );
+            }
         }
 
         if (!function_exists('multiple_authors')) {
