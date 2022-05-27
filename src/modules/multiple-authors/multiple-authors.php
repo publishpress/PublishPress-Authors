@@ -611,6 +611,14 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $this->module->options_group_name . '_display'
             );
 
+            add_settings_field(
+                'load_font_awesome',
+                __('Load font awesome:', 'publishpress-authors'),
+                [$this, 'settings_load_font_awesome_option'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_display'
+            );
+
 
             /**
              * Shortcodes
@@ -1112,6 +1120,26 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
+         * Display load font awesome option field.
+         *
+         * @param array
+         */
+        public function settings_load_font_awesome_option($args = [])
+        {
+            $id    = $this->module->options_group_name . '_load_font_awesome';
+            $value = isset($this->module->options->load_font_awesome) ? $this->module->options->load_font_awesome : 'no';
+
+            echo '<label for="' . esc_attr($id) . '">';
+            echo '<input type="checkbox" value="yes" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[load_font_awesome]" '
+                . checked($value, 'yes', false) . ' />';
+            echo '&nbsp;&nbsp;&nbsp; <span class="ppma_settings_field_description">' . esc_html__(
+                    'This will load font awesome css to enable usage of font awesome icons.',
+                    'publishpress-authors'
+                ) . '</span>';
+            echo '</label>';
+        }
+
+        /**
          * Displays the button to reset the author terms.
          *
          * @param array
@@ -1252,6 +1280,10 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             if (!isset($new_options['show_site_link'])) {
                 $new_options['show_site_link'] = 'no';
+            }
+
+            if (!isset($new_options['load_font_awesome'])) {
+                $new_options['load_font_awesome'] = 'no';
             }
 
             if (!isset($new_options['username_in_search_field'])) {
