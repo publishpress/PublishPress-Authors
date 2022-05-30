@@ -874,7 +874,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'shortcode'   => '[publishpress_authors_data field="display_name"]',
                         'description' => sprintf(
                             esc_html__(
-                                'The authors data shortcode accepts field parameter like: %1s %2s %3s %4s %5s %6s which can be specified to determine what field should be return.',
+                                'The authors data shortcode accepts field parameter such as: %1s %2s %3s %4s %5s %6s.',
                                 'publishpress-authors'
                             ),
                             '<code>display_name</code>',
