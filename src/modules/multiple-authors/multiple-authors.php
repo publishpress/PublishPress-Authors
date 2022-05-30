@@ -272,7 +272,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 self::MENU_SLUG,
                 '',
                 'dashicons-groups',
-                26
+                26.7
             );
 
             $current_author = Author::get_by_user_id(get_current_user_id());
@@ -288,7 +288,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'term.php?taxonomy=author&tag_ID='.$current_author->term_id,
                     __return_empty_string(),
                     'dashicons-groups',
-                    27
+                    26.8
                 );
             }
 
@@ -613,7 +613,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             add_settings_field(
                 'load_font_awesome',
-                __('Load font awesome:', 'publishpress-authors'),
+                __('Layout icons:', 'publishpress-authors'),
                 [$this, 'settings_load_font_awesome_option'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_display'
@@ -874,7 +874,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'shortcode'   => '[publishpress_authors_data field="display_name"]',
                         'description' => sprintf(
                             esc_html__(
-                                'The authors data shortcode accepts field parameter like: %1s %2s %3s %4s %5s %6s which can be specified to determine what field should be return.',
+                                'The authors data shortcode accepts field parameter such as: %1s %2s %3s %4s %5s %6s. You can see full details and parameters %7s in this guide %8s.',
                                 'publishpress-authors'
                             ),
                             '<code>display_name</code>',
@@ -883,6 +883,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                             '<code>ID</code>',
                             '<code>user_nicename</code>',
                             '<code>user_email</code>',
+                            '<a href="https://publishpress.com/knowledge-base/authors-data-backup/">',
+                            '</a>'
                         ),
                     ],
                     'option_3' => [
@@ -1120,7 +1122,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
-         * Display load font awesome option field.
+         * Display layout icons option field.
          *
          * @param array
          */
@@ -1133,7 +1135,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '<input type="checkbox" value="yes" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[load_font_awesome]" '
                 . checked($value, 'yes', false) . ' />';
             echo '&nbsp;&nbsp;&nbsp; <span class="ppma_settings_field_description">' . esc_html__(
-                    'This will load font awesome css to enable usage of font awesome icons.',
+                    'This will load Font Awesome icons for use in layouts.',
                     'publishpress-authors'
                 ) . '</span>';
             echo '</label>';
