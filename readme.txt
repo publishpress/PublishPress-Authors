@@ -238,6 +238,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Update: Enable Author Profile for Administator and other roles with 'ppma_manage_authors', #649
 * Added: Add a shortcodes tab to settings, #641
 * Update: Run the WordPress VIP scans on Authors, #639
+* Fixed: Authors menu links can be split up by PODS content types, #684
 
 = [3.16.2] - 09 May 2022 =
 

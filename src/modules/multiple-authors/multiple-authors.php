@@ -272,7 +272,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 self::MENU_SLUG,
                 '',
                 'dashicons-groups',
-                26
+                26.7
             );
 
             $current_author = Author::get_by_user_id(get_current_user_id());
@@ -288,7 +288,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'term.php?taxonomy=author&tag_ID='.$current_author->term_id,
                     __return_empty_string(),
                     'dashicons-groups',
-                    27
+                    26.8
                 );
             }
 
