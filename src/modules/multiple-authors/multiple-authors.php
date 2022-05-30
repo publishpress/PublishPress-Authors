@@ -3113,4 +3113,3 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
     }
 }
-ch
