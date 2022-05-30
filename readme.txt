@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
 Tested up to: 6.0
-Stable tag: 3.16.3
+Stable tag: 3.17.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -224,12 +224,21 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [3.17.0] - 30 May 2022 =
+
+* Added: Option to enable/disable loading font awesome assets in frontend, #625
+* Added: Support for user fields WPML translations, #642
+* Added: Add new shortcode [publishpress_authors_data] which can be used to display the author names or any profile field, #673
+* Fixed: Multiple Authors Compability with Yoast SEO authors's title, #672
+* Update: Change [author_box] to [publishpress_authors_box] in shortcode tab, #670
+
 = [3.16.3] - 18 May 2022 =
 
 * Added: Add an Author Filter for Posts, #90
 * Update: Enable Author Profile for Administator and other roles with 'ppma_manage_authors', #649
 * Added: Add a shortcodes tab to settings, #641
 * Update: Run the WordPress VIP scans on Authors, #639
+* Fixed: Authors menu links can be split up by PODS content types, #684
 
 = [3.16.2] - 09 May 2022 =
 
