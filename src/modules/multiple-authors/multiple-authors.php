@@ -272,7 +272,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 self::MENU_SLUG,
                 '',
                 'dashicons-groups',
-                26
+                26.7
             );
 
             $current_author = Author::get_by_user_id(get_current_user_id());
@@ -288,7 +288,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'term.php?taxonomy=author&tag_ID='.$current_author->term_id,
                     __return_empty_string(),
                     'dashicons-groups',
-                    27
+                    26.8
                 );
             }
 
@@ -611,6 +611,14 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $this->module->options_group_name . '_display'
             );
 
+            add_settings_field(
+                'load_font_awesome',
+                __('Layout icons:', 'publishpress-authors'),
+                [$this, 'settings_load_font_awesome_option'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_display'
+            );
+
 
             /**
              * Shortcodes
@@ -800,15 +808,15 @@ if (!class_exists('MA_Multiple_Authors')) {
         private function settings_ppma_shortcodes($shortcodes = []) {
     
             //add author box shortcode
-            $shortcodes['author_box'] = [
-                'label'         => esc_html__('Author Box', 'publishpress-authors'),
+            $shortcodes['publishpress_authors_box'] = [
+                'label'         => esc_html__('Authors Box', 'publishpress-authors'),
                 'description'   => esc_html__('With the shortcode you can display the author box in any part of the content. ', 'publishpress-authors'),
                 'options'       => [
                     'option_1' => [
-                        'shortcode' => '[author_box]'
+                        'shortcode' => '[publishpress_authors_box]'
                     ],
                     'option_2' => [
-                        'shortcode'   => '[author_box layout="boxed"]',
+                        'shortcode'   => '[publishpress_authors_box layout="boxed"]',
                         'description' => sprintf(
                             esc_html__(
                                 'You can choose from the following layouts: %1s %2s %3s %4s %5s. You can see full details of each layout option %6s in this guide %7s.',
@@ -824,7 +832,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         ),
                     ],
                     'option_3' => [
-                        'shortcode'   => '[author_box layout="boxed" show_title="true"]',
+                        'shortcode'   => '[publishpress_authors_box layout="boxed" show_title="true"]',
                         'description' => sprintf(
                             esc_html__(
                                 'You can also decide whether or not to show the main title, using %1s or %2s.',
@@ -835,20 +843,62 @@ if (!class_exists('MA_Multiple_Authors')) {
                         ),
                     ],
                     'option_4' => [
-                        'shortcode'   => '[author_box layout="boxed" post_id="32"]',
+                        'shortcode'   => '[publishpress_authors_box layout="boxed" post_id="32"]',
                         'description' => esc_html__(
                             'You can load the authors for a specific post, even if you are not in that post currently. For example, this shortcode will load the authors for the post with the ID of 32',
                             'publishpress-authors'
                         ),
                     ],
                     'option_5' => [
-                        'shortcode'   => '[author_box layout="boxed" archive="true"]',
+                        'shortcode'   => '[publishpress_authors_box layout="boxed" archive="true"]',
                         'description' => sprintf(
                             esc_html__(
                                 'There is one final option to mention. This is mostly useful if you\'re using a theme or page builder to customize the Author profile pages you find at URLs such as /author/username/. You can use the following shortcode on the authors page to display the profile of the current author. You just need to add the parameter %s.',
                                 'publishpress-authors'
                             ),
                             '<code class="color-red">archive="true"</code>',
+                        ),
+                    ],
+                ],
+            ];
+
+            //add authors data shortcode
+            $shortcodes['publishpress_authors_data'] = [
+                'label'         => esc_html__('Authors Data', 'publishpress-authors'),
+                'description'   => esc_html__('With the shortcode you can display the author names or any profile field in any part of the content.', 'publishpress-authors'),
+                'options'       => [
+                    'option_1' => [
+                        'shortcode' => '[publishpress_authors_data]'
+                    ],
+                    'option_2' => [
+                        'shortcode'   => '[publishpress_authors_data field="display_name"]',
+                        'description' => sprintf(
+                            esc_html__(
+                                'The authors data shortcode accepts field parameter such as: %1s %2s %3s %4s %5s %6s. You can see full details and parameters %7s in this guide %8s.',
+                                'publishpress-authors'
+                            ),
+                            '<code>display_name</code>',
+                            '<code>first_name</code>',
+                            '<code>last_name</code>',
+                            '<code>ID</code>',
+                            '<code>user_nicename</code>',
+                            '<code>user_email</code>',
+                            '<a href="https://publishpress.com/knowledge-base/authors-data-backup/">',
+                            '</a>'
+                        ),
+                    ],
+                    'option_3' => [
+                        'shortcode'   => '[publishpress_authors_data seperator=","]',
+                        'description' => esc_html__(
+                            'You can also specify the seperator to be used for mulitple authors data.',
+                            'publishpress-authors'
+                        ),
+                    ],
+                    'option_4' => [
+                        'shortcode'   => '[publishpress_authors_data post_id="32"]',
+                        'description' => esc_html__(
+                            'You can load the authors for a specific post, even if you are not in that post currently. For example, this shortcode will load the authors for the post with the ID of 32',
+                            'publishpress-authors'
                         ),
                     ],
                 ],
@@ -1072,6 +1122,26 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
+         * Display layout icons option field.
+         *
+         * @param array
+         */
+        public function settings_load_font_awesome_option($args = [])
+        {
+            $id    = $this->module->options_group_name . '_load_font_awesome';
+            $value = isset($this->module->options->load_font_awesome) ? $this->module->options->load_font_awesome : 'no';
+
+            echo '<label for="' . esc_attr($id) . '">';
+            echo '<input type="checkbox" value="yes" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[load_font_awesome]" '
+                . checked($value, 'yes', false) . ' />';
+            echo '&nbsp;&nbsp;&nbsp; <span class="ppma_settings_field_description">' . esc_html__(
+                    'This will load Font Awesome icons for use in layouts.',
+                    'publishpress-authors'
+                ) . '</span>';
+            echo '</label>';
+        }
+
+        /**
          * Displays the button to reset the author terms.
          *
          * @param array
@@ -1212,6 +1282,10 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             if (!isset($new_options['show_site_link'])) {
                 $new_options['show_site_link'] = 'no';
+            }
+
+            if (!isset($new_options['load_font_awesome'])) {
+                $new_options['load_font_awesome'] = 'no';
             }
 
             if (!isset($new_options['username_in_search_field'])) {

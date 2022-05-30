@@ -553,6 +553,13 @@ class Author_Editor
             }
             $sanitize = isset($args['sanitize']) ? $args['sanitize'] : 'sanitize_text_field';
             update_term_meta($term_id, $key, $sanitize($_POST['authors-' . $key])); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+            if (in_array($args['type'], ['text', 'textarea'])) {
+                /**
+                 * Register strings for wpml translation
+                 */
+                do_action('wpml_register_single_string', 'PublishPress Authors', '#'.$term_id.' '.$args['label'], $sanitize($_POST['authors-' . $key]));
+            }
         }
 
         // If there is a mapped user, make sure the author url (slug) is the same of the user.
