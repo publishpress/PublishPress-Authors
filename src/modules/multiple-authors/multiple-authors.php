@@ -888,9 +888,9 @@ if (!class_exists('MA_Multiple_Authors')) {
                         ),
                     ],
                     'option_3' => [
-                        'shortcode'   => '[publishpress_authors_data seperator=","]',
+                        'shortcode'   => '[publishpress_authors_data separator=","]',
                         'description' => esc_html__(
-                            'You can also specify the seperator to be used for mulitple authors data.',
+                            'You can also specify the separator to be used for mulitple authors data.',
                             'publishpress-authors'
                         ),
                     ],

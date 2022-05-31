@@ -1755,22 +1755,24 @@ class Plugin
     {
         $field      = 'display_name';
         $post_id   = false;
-        $seperator = ',';
+        $separator = ',';
 
 
         if (isset($attributes['post_id'])) {
             $post_id = $attributes['post_id'];
         }
         
-        if (isset($attributes['seperator'])) {
-            $seperator = $attributes['seperator'];
+        if (isset($attributes['separator'])) {
+            $separator = $attributes['separator'];
+        } elseif (isset($attributes['seperator'])) {
+            $separator = $attributes['seperator'];
         }
         
         if (isset($attributes['field'])) {
             $field = $attributes['field'];
         }
 
-        return $this->get_authors_data($post_id, $field, $seperator);
+        return $this->get_authors_data($post_id, $field, $separator);
     }
 
     /**
