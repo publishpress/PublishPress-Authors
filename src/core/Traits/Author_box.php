@@ -269,14 +269,14 @@ trait Author_box
      *
      * @param int $post_id
      * @param string $field
-     * @param mixed $seperator
+     * @param mixed $separator
      *
      * @return string
      */
     protected function get_authors_data(
         $post_id = false,
         $field = 'display_name',
-        $seperator = ','
+        $separator = ','
     ) {
         global $post;
 
@@ -301,6 +301,6 @@ trait Author_box
             }
         }
         
-        return join($seperator, $output);
+        return join($separator, $output);
     }
 }
