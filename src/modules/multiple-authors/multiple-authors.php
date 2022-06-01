@@ -850,6 +850,16 @@ if (!class_exists('MA_Multiple_Authors')) {
                         ),
                     ],
                     'option_5' => [
+                        'shortcode'   => '[publishpress_authors_box layout="author_box" archive="1"]',
+                        'description' => sprintf(
+                            esc_html__(
+                                'If you are having problems showing PublishPress Authors on author profile pages, you can use this shortcode below. The argument %s forces the plugin to retrieve the Author from the profile page and not any other posts on the same screen.',
+                                'publishpress-authors-pro'
+                            ),
+                            '<code class="color-red">archive="1"</code>',
+                        ),
+                    ],
+                    'option_6' => [
                         'shortcode'   => '[publishpress_authors_box layout="boxed" archive="true"]',
                         'description' => sprintf(
                             esc_html__(
