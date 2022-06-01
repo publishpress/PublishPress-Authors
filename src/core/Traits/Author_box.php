@@ -270,13 +270,15 @@ trait Author_box
      * @param int $post_id
      * @param string $field
      * @param mixed $separator
+     * @param mixed $user_objects
      *
      * @return string
      */
     protected function get_authors_data(
         $post_id = false,
         $field = 'display_name',
-        $separator = ','
+        $separator = ',',
+        $user_objects = false
     ) {
         global $post;
 
@@ -294,13 +296,16 @@ trait Author_box
 
         $authors = get_post_authors($post_id, true, false);
 
-        if (!empty($authors)) {
-            foreach ($authors as $author) {
-                $author = Author::get_by_term_id($author->term_id);
-                $output[] = isset($author->$field) ? $author->$field : $author->display_name;
+        if (!$user_objects) {
+            if (!empty($authors)) {
+                foreach ($authors as $author) {
+                    $output[] = isset($author->$field) ? $author->$field : $author->display_name;
+                }
             }
+            $output  = array_filter($output);
+            $authors = join($separator, $output);
         }
         
-        return join($separator, $output);
+        return $authors;
     }
 }

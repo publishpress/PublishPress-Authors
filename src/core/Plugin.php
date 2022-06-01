@@ -1753,9 +1753,10 @@ class Plugin
      */
     public function shortcodeAuthorsData($attributes)
     {
-        $field      = 'display_name';
-        $post_id   = false;
-        $separator = ',';
+        $field         = 'display_name';
+        $post_id      = false;
+        $separator    = ',';
+        $user_objects = false;
 
 
         if (isset($attributes['post_id'])) {
@@ -1772,7 +1773,11 @@ class Plugin
             $field = $attributes['field'];
         }
 
-        return $this->get_authors_data($post_id, $field, $separator);
+        if (isset($attributes['user_objects'])) {
+            $user_objects = $attributes['user_objects'] === 'true' || (int)$attributes['user_objects'] === 1;
+        }
+
+        return $this->get_authors_data($post_id, $field, $separator, $user_objects);
     }
 
     /**

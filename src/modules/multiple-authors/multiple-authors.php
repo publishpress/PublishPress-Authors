@@ -901,6 +901,18 @@ if (!class_exists('MA_Multiple_Authors')) {
                             'publishpress-authors'
                         ),
                     ],
+                    'option_5' => [
+                        'shortcode'   => '[publishpress_authors_data user_objects="true"]',
+                        'description' => sprintf(
+                            esc_html__(
+                                'You can also decide to return array lists of authors for custom use or formatting by using %1s which will return all authors object data as array. You can check full details and sample usage %2s in this guide %3s',
+                                'publishpress-authors'
+                            ),
+                            '<code class="color-red">user_objects="true"</code>',
+                            '<a href="https://publishpress.com/knowledge-base/authors-data-backup/">',
+                            '</a>'
+                        ),
+                    ],
                 ],
             ];
 
