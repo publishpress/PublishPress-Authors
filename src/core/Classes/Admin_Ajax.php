@@ -107,6 +107,7 @@ class Admin_Ajax
         ];
 
         if (!empty($search)) {
+            $search = str_replace(['\"', "\'"], '', $search);
             $term_args['search'] = $search;
         }
 
