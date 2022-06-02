@@ -316,4 +316,44 @@ class Admin_Ajax
         wp_send_json($response);
         exit;
     }
+
+    /**
+     * Handle a request to generate author slug.
+     */
+    public static function handle_author_slug_generation()
+    {
+
+        $response['status']  = 'success';
+        $response['content'] = esc_html__('Request status.', 'publishpress-authors');
+
+        //do not process request if nonce validation failed
+        if (empty($_POST['nonce']) 
+            || !wp_verify_nonce(sanitize_key($_POST['nonce']), 'generate_author_slug_nonce')
+        ) {
+            $response['status']  = 'error';
+            $response['content'] = esc_html__(
+                'Security error. Kindly reload this page and try again', 
+                'publishpress-authors'
+            );
+        } elseif (empty($_POST['author_name'])) {
+            $response['status']  = 'error';
+            $response['content'] = esc_html__('Author name is required', 'publishpress-authors');
+        } else {
+            $author_slug        = !empty($_POST['author_name']) ? sanitize_title($_POST['author_name']) : '';
+            $generated_slug     =  $author_slug;
+            $generated_slug_n   = '';
+            while (get_term_by('slug', $generated_slug .'-' . $generated_slug_n, 'author')) {
+                if ($generated_slug_n == '') { 
+                    $generated_slug_n = 1; 
+                } else {
+                    $generated_slug_n++;
+                }
+            }
+            $new_slug                = $generated_slug .'-' . $generated_slug_n;
+            $response['author_slug'] = $new_slug;
+        }
+
+        wp_send_json($response);
+        exit;
+    }
 }
