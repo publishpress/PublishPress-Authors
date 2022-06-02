@@ -270,6 +270,10 @@ class Plugin
                 'wp_ajax_mapped_author_validation',
                 ['MultipleAuthors\\Classes\\Admin_Ajax', 'handle_mapped_author_validation']
             );
+            add_action(
+                'wp_ajax_handle_author_slug_generation',
+                ['MultipleAuthors\\Classes\\Admin_Ajax', 'handle_author_slug_generation']
+            );
 
             add_filter('admin_footer_text', [$this, 'update_footer_admin']);
         }
@@ -1456,6 +1460,7 @@ class Plugin
                 'publishpress-authors'
             ),
             'mapped_author_nonce'           => wp_create_nonce("mapped_author_nonce"),
+            'generate_author_slug_nonce'    => wp_create_nonce("generate_author_slug_nonce"),
             'term_author_link'              => esc_url_raw($term_author_link),
             'view_text'                     => esc_html__('View', 'publishpress-authors'),
         ];

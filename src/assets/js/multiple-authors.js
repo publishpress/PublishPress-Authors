@@ -618,6 +618,41 @@ jQuery(document).ready(function ($) {
 
     });
 
+    //change submit button to enable slug generation on custom button click
+    if ($('body.taxonomy-author form#addtag #submit').length > 0) {
+        $('body.taxonomy-author form#addtag #submit').hide();
+        $('body.taxonomy-author form#addtag #submit').after('<input type="button" id="author-submit" class="button button-primary" value="' + $('body.taxonomy-author form#addtag #submit').val() + '">');
+    }
+
+    //generate author slug when adding author.
+    $(document).on('click', 'body.taxonomy-author form#addtag #author-submit', function (event) {
+
+        var $authorName = $('input[name="tag-name"]').val();
+        var $form = $(this).closest('form#addtag');
+
+        event.preventDefault();
+
+        //prepare ajax data
+        var data = {
+            action: "handle_author_slug_generation",
+            author_name: $authorName,
+            nonce: MultipleAuthorsStrings.generate_author_slug_nonce,
+        };
+
+        $form.find('.spinner').addClass('is-active');
+
+        $.post(ajaxurl, data, function (response) {
+            $form.find('.spinner').removeClass('is-active');
+            if (response.author_slug) {
+                $('input[name="slug"]').val(response.author_slug);
+                $('body.taxonomy-author form#addtag #submit').trigger('click');
+            } else {
+                $('body.taxonomy-author form#addtag #submit').trigger('click');
+            }
+        });
+
+    });
+
     /**
      * Settings shortcode copy to clipboard
      */
