@@ -342,14 +342,16 @@ class Admin_Ajax
             $author_slug        = !empty($_POST['author_name']) ? sanitize_title($_POST['author_name']) : '';
             $generated_slug     =  $author_slug;
             $generated_slug_n   = '';
-            while (get_term_by('slug', $generated_slug .'-' . $generated_slug_n, 'author')) {
+
+            $new_slug           = $generated_slug;
+            while (get_term_by('slug', $new_slug, 'author')) {
                 if ($generated_slug_n == '') { 
                     $generated_slug_n = 1; 
                 } else {
                     $generated_slug_n++;
                 }
+                $new_slug = $generated_slug .'-' . $generated_slug_n;
             }
-            $new_slug                = $generated_slug .'-' . $generated_slug_n;
             $response['author_slug'] = $new_slug;
         }
 
