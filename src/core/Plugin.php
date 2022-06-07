@@ -110,6 +110,7 @@ class Plugin
 
         add_shortcode('publishpress_authors_box', [$this, 'shortcodeAuthorsBox']);
         add_shortcode('publishpress_authors_data', [$this, 'shortcodeAuthorsData']);
+        add_shortcode('publishpress_authors_list', [$this, 'shortcodeAuthorsList']);
 
         // Action to display the author box
         add_action('pp_multiple_authors_show_author_box', [$this, 'action_echo_author_box'], 10, 5);
@@ -1747,6 +1748,21 @@ class Plugin
         }
 
         return $this->get_author_box_markup('shortcode', $show_title, $layout, $archive, $post_id);
+    }
+
+    public function shortcodeAuthorsList($attributes)
+    {
+        $widget = new Authors_Widget('authors_list_shortcode', 'authors_list_shortcode');
+
+        $defaults = [
+            'show_title' => true
+        ];
+
+        $attributes = wp_parse_args($attributes, $defaults);
+
+        ob_start();
+        $widget->widget([], $attributes);
+        return ob_get_clean();
     }
 
     /**
