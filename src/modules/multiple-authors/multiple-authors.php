@@ -839,7 +839,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                                 'publishpress-authors'
                             ),
                             '<code class="color-red">show_title="true"</code>',
-                            '<code class="color-red">show_title="false"</code>',
+                            '<code class="color-red">show_title="false"</code>'
                         ),
                     ],
                     'option_4' => [
@@ -856,7 +856,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                                 'If you are having problems showing PublishPress Authors on author profile pages, you can use this shortcode below. The argument %s forces the plugin to retrieve the Author from the profile page and not any other posts on the same screen.',
                                 'publishpress-authors-pro'
                             ),
-                            '<code class="color-red">archive="1"</code>',
+                            '<code class="color-red">archive="1"</code>'
                         ),
                     ],
                     'option_6' => [
@@ -866,7 +866,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                                 'There is one final option to mention. This is mostly useful if you\'re using a theme or page builder to customize the Author profile pages you find at URLs such as /author/username/. You can use the following shortcode on the authors page to display the profile of the current author. You just need to add the parameter %s.',
                                 'publishpress-authors'
                             ),
-                            '<code class="color-red">archive="true"</code>',
+                            '<code class="color-red">archive="true"</code>'
                         ),
                     ],
                 ],
