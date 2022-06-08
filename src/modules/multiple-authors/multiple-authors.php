@@ -926,6 +926,33 @@ if (!class_exists('MA_Multiple_Authors')) {
                 ],
             ];
 
+            //add authors list shortcode
+            $shortcodes['publishpress_authors_list'] = [
+                'label'         => esc_html__('Authors List', 'publishpress-authors-pro'),
+                'description'   => esc_html__('Shortcode to show all the authors on your site. It accept all parameters as in Author box shortcode.', 'publishpress-authors-pro'),
+                'options'       => [
+                    'option_1' => [
+                        'shortcode' => '[publishpress_authors_list]'
+                    ],
+                    'option_2' => [
+                        'shortcode'   => '[publishpress_authors_list layout="boxed"]',
+                        'description' => sprintf(
+                            esc_html__(
+                                'You can choose from the following layouts: %1s %2s %3s %4s %5s. You can see full details of each layout option %6s in this guide %7s.',
+                                'publishpress-authors-pro'
+                            ),
+                            '<code>simple_list</code>',
+                            '<code>centered</code>',
+                            '<code>boxed</code>',
+                            '<code>inline</code>',
+                            '<code>inline_avatar</code>',
+                            '<a href="https://publishpress.com/knowledge-base/layout/">',
+                            '</a>'
+                        ),
+                    ],
+                ],
+            ];
+
             /**
              * Filter shortcodes.
              *
