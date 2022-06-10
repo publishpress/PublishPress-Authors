@@ -272,14 +272,13 @@ if (!class_exists('MA_Multiple_Authors')) {
                 self::MENU_SLUG,
                 '',
                 'dashicons-groups',
-                26.7
+                26
             );
 
             $current_author = Author::get_by_user_id(get_current_user_id());
-            if (
-                $current_author && 
-                is_object($current_author) && 
-                isset($current_author->term_id)
+            if ($current_author 
+                && is_object($current_author) 
+                && isset($current_author->term_id)
                 ) {
                 add_menu_page(
                     esc_html__('Author Profile', 'publishpress-authors'),
@@ -288,7 +287,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'term.php?taxonomy=author&tag_ID='.$current_author->term_id,
                     __return_empty_string(),
                     'dashicons-groups',
-                    26.8
+                    26
                 );
             }
 
