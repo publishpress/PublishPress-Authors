@@ -157,6 +157,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                 add_action('multiple_authors_admin_menu_page', [$this, 'action_admin_menu_page']);
                 add_action('multiple_authors_admin_submenu', [$this, 'action_admin_submenu'], 50);
                 add_filter('custom_menu_order', [$this, 'filter_custom_menu_order']);
+                //add plugin row meta
+                add_filter('plugin_row_meta', [$this, 'add_plugin_meta'], 10, 2);
 
                 add_action('admin_enqueue_scripts', [$this, 'admin_enqueue_scripts']);
             }
@@ -322,6 +324,24 @@ if (!class_exists('MA_Multiple_Authors')) {
                 __return_empty_string(),
                 10
             );
+        }
+
+        /**
+         * Add Authors and Settings to plugin row meta
+         *
+         * @param array $links
+         * @param string $file
+         * 
+         * @return array
+         */
+        public function add_plugin_meta($links, $file) 
+        {
+            if ($file == plugin_basename(PP_AUTHORS_FILE)) {
+                $links[] = '<a href="'. esc_url(admin_url('edit-tags.php?taxonomy=author')) .'">' . esc_html__('Authors', 'publishpress-authors') . '</a>';
+                $links[] = '<a href="'. esc_url(admin_url('admin.php?page=ppma-modules-settings')) .'">' . esc_html__('Settings', 'publishpress-authors') . '</a>';
+            }
+
+            return $links;
         }
 
         public function redirect_to_edit_terms_page()
