@@ -224,6 +224,19 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [3.18.0] - 13 Jun 2022 =
+
+* Fixed: Allow authors to have the same name, #682
+* Added: Extend [publishpress_authors_data] shortcode to return authors user object, #697
+* Fixed: Search box doesn't accept ' characters in username, #699
+* Added: Add Authors important menu link to plugin row, #714
+* Fixed: Author menu missing in admin menus, #715
+* Fixed: PHP 7.2 compability, #711
+* Added: Add [publishpress_authors_list] shortcode to the Free version, #706
+* Fixed: Most important buttons should be yellow only, #704
+* Fixed: Author Box shortcode is in the wrong place, #695
+* Fixed: Small typo in shortcode, #693
+
 = [3.17.0] - 30 May 2022 =
 
 * Added: Option to enable/disable loading font awesome assets in frontend, #625
