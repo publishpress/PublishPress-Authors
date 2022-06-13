@@ -157,6 +157,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                 add_action('multiple_authors_admin_menu_page', [$this, 'action_admin_menu_page']);
                 add_action('multiple_authors_admin_submenu', [$this, 'action_admin_submenu'], 50);
                 add_filter('custom_menu_order', [$this, 'filter_custom_menu_order']);
+                //add plugin row meta
+                add_filter('plugin_row_meta', [$this, 'add_plugin_meta'], 10, 2);
 
                 add_action('admin_enqueue_scripts', [$this, 'admin_enqueue_scripts']);
             }
@@ -272,14 +274,13 @@ if (!class_exists('MA_Multiple_Authors')) {
                 self::MENU_SLUG,
                 '',
                 'dashicons-groups',
-                26.7
+                '26.7'
             );
 
             $current_author = Author::get_by_user_id(get_current_user_id());
-            if (
-                $current_author && 
-                is_object($current_author) && 
-                isset($current_author->term_id)
+            if ($current_author 
+                && is_object($current_author) 
+                && isset($current_author->term_id)
                 ) {
                 add_menu_page(
                     esc_html__('Author Profile', 'publishpress-authors'),
@@ -288,7 +289,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'term.php?taxonomy=author&tag_ID='.$current_author->term_id,
                     __return_empty_string(),
                     'dashicons-groups',
-                    26.8
+                    '26.8'
                 );
             }
 
@@ -323,6 +324,24 @@ if (!class_exists('MA_Multiple_Authors')) {
                 __return_empty_string(),
                 10
             );
+        }
+
+        /**
+         * Add Authors and Settings to plugin row meta
+         *
+         * @param array $links
+         * @param string $file
+         * 
+         * @return array
+         */
+        public function add_plugin_meta($links, $file) 
+        {
+            if ($file == plugin_basename(PP_AUTHORS_FILE)) {
+                $links[] = '<a href="'. esc_url(admin_url('edit-tags.php?taxonomy=author')) .'">' . esc_html__('Authors', 'publishpress-authors') . '</a>';
+                $links[] = '<a href="'. esc_url(admin_url('admin.php?page=ppma-modules-settings')) .'">' . esc_html__('Settings', 'publishpress-authors') . '</a>';
+            }
+
+            return $links;
         }
 
         public function redirect_to_edit_terms_page()
@@ -839,7 +858,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                                 'publishpress-authors'
                             ),
                             '<code class="color-red">show_title="true"</code>',
-                            '<code class="color-red">show_title="false"</code>',
+                            '<code class="color-red">show_title="false"</code>'
                         ),
                     ],
                     'option_4' => [
@@ -850,13 +869,23 @@ if (!class_exists('MA_Multiple_Authors')) {
                         ),
                     ],
                     'option_5' => [
+                        'shortcode'   => '[publishpress_authors_box layout="author_box" archive="1"]',
+                        'description' => sprintf(
+                            esc_html__(
+                                'If you are having problems showing PublishPress Authors on author profile pages, you can use this shortcode below. The argument %s forces the plugin to retrieve the Author from the profile page and not any other posts on the same screen.',
+                                'publishpress-authors-pro'
+                            ),
+                            '<code class="color-red">archive="1"</code>'
+                        ),
+                    ],
+                    'option_6' => [
                         'shortcode'   => '[publishpress_authors_box layout="boxed" archive="true"]',
                         'description' => sprintf(
                             esc_html__(
                                 'There is one final option to mention. This is mostly useful if you\'re using a theme or page builder to customize the Author profile pages you find at URLs such as /author/username/. You can use the following shortcode on the authors page to display the profile of the current author. You just need to add the parameter %s.',
                                 'publishpress-authors'
                             ),
-                            '<code class="color-red">archive="true"</code>',
+                            '<code class="color-red">archive="true"</code>'
                         ),
                     ],
                 ],
@@ -888,9 +917,9 @@ if (!class_exists('MA_Multiple_Authors')) {
                         ),
                     ],
                     'option_3' => [
-                        'shortcode'   => '[publishpress_authors_data seperator=","]',
+                        'shortcode'   => '[publishpress_authors_data separator=","]',
                         'description' => esc_html__(
-                            'You can also specify the seperator to be used for mulitple authors data.',
+                            'You can also specify the separator to be used for mulitple authors data.',
                             'publishpress-authors'
                         ),
                     ],
@@ -899,6 +928,45 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'description' => esc_html__(
                             'You can load the authors for a specific post, even if you are not in that post currently. For example, this shortcode will load the authors for the post with the ID of 32',
                             'publishpress-authors'
+                        ),
+                    ],
+                    'option_5' => [
+                        'shortcode'   => '[publishpress_authors_data user_objects="true"]',
+                        'description' => sprintf(
+                            esc_html__(
+                                'You can also decide to return array lists of authors for custom use or formatting by using %1s which will return all authors object data as array. You can check full details and sample usage %2s in this guide %3s',
+                                'publishpress-authors'
+                            ),
+                            '<code class="color-red">user_objects="true"</code>',
+                            '<a href="https://publishpress.com/knowledge-base/authors-data-backup/">',
+                            '</a>'
+                        ),
+                    ],
+                ],
+            ];
+
+            //add authors list shortcode
+            $shortcodes['publishpress_authors_list'] = [
+                'label'         => esc_html__('Authors List', 'publishpress-authors-pro'),
+                'description'   => esc_html__('Shortcode to show all the authors on your site. It accept all parameters as in Author box shortcode.', 'publishpress-authors-pro'),
+                'options'       => [
+                    'option_1' => [
+                        'shortcode' => '[publishpress_authors_list]'
+                    ],
+                    'option_2' => [
+                        'shortcode'   => '[publishpress_authors_list layout="boxed"]',
+                        'description' => sprintf(
+                            esc_html__(
+                                'You can choose from the following layouts: %1s %2s %3s %4s %5s. You can see full details of each layout option %6s in this guide %7s.',
+                                'publishpress-authors-pro'
+                            ),
+                            '<code>simple_list</code>',
+                            '<code>centered</code>',
+                            '<code>boxed</code>',
+                            '<code>inline</code>',
+                            '<code>inline_avatar</code>',
+                            '<a href="https://publishpress.com/knowledge-base/layout/">',
+                            '</a>'
                         ),
                     ],
                 ],

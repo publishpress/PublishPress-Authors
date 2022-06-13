@@ -110,6 +110,7 @@ class Plugin
 
         add_shortcode('publishpress_authors_box', [$this, 'shortcodeAuthorsBox']);
         add_shortcode('publishpress_authors_data', [$this, 'shortcodeAuthorsData']);
+        add_shortcode('publishpress_authors_list', [$this, 'shortcodeAuthorsList']);
 
         // Action to display the author box
         add_action('pp_multiple_authors_show_author_box', [$this, 'action_echo_author_box'], 10, 5);
@@ -269,6 +270,10 @@ class Plugin
             add_action(
                 'wp_ajax_mapped_author_validation',
                 ['MultipleAuthors\\Classes\\Admin_Ajax', 'handle_mapped_author_validation']
+            );
+            add_action(
+                'wp_ajax_handle_author_slug_generation',
+                ['MultipleAuthors\\Classes\\Admin_Ajax', 'handle_author_slug_generation']
             );
 
             add_filter('admin_footer_text', [$this, 'update_footer_admin']);
@@ -1456,6 +1461,7 @@ class Plugin
                 'publishpress-authors'
             ),
             'mapped_author_nonce'           => wp_create_nonce("mapped_author_nonce"),
+            'generate_author_slug_nonce'    => wp_create_nonce("generate_author_slug_nonce"),
             'term_author_link'              => esc_url_raw($term_author_link),
             'view_text'                     => esc_html__('View', 'publishpress-authors'),
         ];
@@ -1744,6 +1750,21 @@ class Plugin
         return $this->get_author_box_markup('shortcode', $show_title, $layout, $archive, $post_id);
     }
 
+    public function shortcodeAuthorsList($attributes)
+    {
+        $widget = new Authors_Widget('authors_list_shortcode', 'authors_list_shortcode');
+
+        $defaults = [
+            'show_title' => true
+        ];
+
+        $attributes = wp_parse_args($attributes, $defaults);
+
+        ob_start();
+        $widget->widget([], $attributes);
+        return ob_get_clean();
+    }
+
     /**
      * Shortcode to get the authors data
      *
@@ -1753,24 +1774,31 @@ class Plugin
      */
     public function shortcodeAuthorsData($attributes)
     {
-        $field      = 'display_name';
-        $post_id   = false;
-        $seperator = ',';
+        $field         = 'display_name';
+        $post_id      = false;
+        $separator    = ',';
+        $user_objects = false;
 
 
         if (isset($attributes['post_id'])) {
             $post_id = $attributes['post_id'];
         }
         
-        if (isset($attributes['seperator'])) {
-            $seperator = $attributes['seperator'];
+        if (isset($attributes['separator'])) {
+            $separator = $attributes['separator'];
+        } elseif (isset($attributes['seperator'])) {
+            $separator = $attributes['seperator'];
         }
         
         if (isset($attributes['field'])) {
             $field = $attributes['field'];
         }
 
-        return $this->get_authors_data($post_id, $field, $seperator);
+        if (isset($attributes['user_objects'])) {
+            $user_objects = $attributes['user_objects'] === 'true' || (int)$attributes['user_objects'] === 1;
+        }
+
+        return $this->get_authors_data($post_id, $field, $separator, $user_objects);
     }
 
     /**
