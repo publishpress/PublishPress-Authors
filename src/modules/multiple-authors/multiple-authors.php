@@ -3236,14 +3236,14 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $taxonomy_template = locate_template( array('taxonomy-author.php') );
                 if (!$taxonomy_template ) {
                     $taxonomy_template = PP_AUTHORS_BASE_PATH . 'src/templates/taxonomy-author.php';
-                    wp_enqueue_style(
-                        'multiple-authors-page-css',
-                        PP_AUTHORS_ASSETS_URL . 'css/multiple-authors-page.css',
-                        false,
-                        PP_AUTHORS_VERSION,
-                        'all'
-                    );
                 }
+                wp_enqueue_style(
+                    'multiple-authors-page-css',
+                    PP_AUTHORS_ASSETS_URL . 'css/multiple-authors-page.css',
+                    false,
+                    PP_AUTHORS_VERSION,
+                    'all'
+                );
             }
             
             return $taxonomy_template;
