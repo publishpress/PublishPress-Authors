@@ -92,7 +92,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'author_for_new_users'         => [],
                     'layout'                       => Utils::getDefaultLayout(),
                     'force_empty_author'           => 'no',
-                    'username_in_search_field'     => 'no',
+                    'username_in_search_field'      => 'no',
+                    'enable_plugin_authors_profile' => 'no',
                     'default_author_for_new_posts' => null,
                     'author_page_post_types'       => []
                 ],
@@ -185,7 +186,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             if (!is_admin()) {
                 add_filter('body_class', [$this, 'filter_body_class']);
                 add_filter('comment_class', [$this, 'filterCommentClass'], 10, 5);
-            }else{
+            } else {
                 //author profile edit body class
                 add_filter('admin_body_class', [$this, 'filter_admin_body_class']);
             }
@@ -260,6 +261,9 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             // Allow author to edit own author profile.
             add_filter('map_meta_cap', [$this, 'filter_term_map_meta_cap'], 10, 4);
+
+            //add authors template
+            add_filter('template_include', [$this, 'authors_taxonomy_template']);
         }
 
         /**
@@ -515,6 +519,17 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             do_action(
                 'publishpress_authors_register_settings_before',
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_general'
+            );
+
+            add_settings_field(
+                'enable_plugin_authors_profile',
+                __(
+                    'Enable custom authors profile:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_enable_plugin_authors_profile'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_general'
             );
@@ -1113,6 +1128,30 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '</label>';
         }
 
+
+        /**
+         * @param array $args
+         */
+        public function settings_enable_plugin_authors_profile($args = [])
+        {
+            $id    = $this->module->options_group_name . '_enable_plugin_authors_profile';
+            $value = isset($this->module->options->enable_plugin_authors_profile) ? $this->module->options->enable_plugin_authors_profile : '';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[enable_plugin_authors_profile]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
+
+            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
+                . esc_html__(
+                    'If enabled, PublishPress Authors profile will be enabled and all other authors page will be redirected to the new PublishPress Authors compatible authors page.',
+                    'publishpress-authors'
+                )
+                . '</span>';
+
+
+            echo '</label>';
+        }
+
         /**
          * Default author for new posts
          *
@@ -1358,6 +1397,10 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             if (!isset($new_options['username_in_search_field'])) {
                 $new_options['username_in_search_field'] = 'no';
+            }
+
+            if (!isset($new_options['enable_plugin_authors_profile'])) {
+                $new_options['enable_plugin_authors_profile'] = 'no';
             }
 
             if (isset($new_options['layout'])) {
@@ -3178,6 +3221,32 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             return $classes;
+        }
+    
+        /**
+         * Add authors template
+         *
+         * @param string $taxonomy_template
+         * @return string
+         */
+        public function authors_taxonomy_template($taxonomy_template) {
+
+            if (is_tax('author')) {
+                //look for authors template from theme
+                $taxonomy_template = locate_template( array('taxonomy-author.php') );
+                if (!$taxonomy_template ) {
+                    $taxonomy_template = PP_AUTHORS_BASE_PATH . 'src/templates/taxonomy-author.php';
+                    wp_enqueue_style(
+                        'multiple-authors-page-css',
+                        PP_AUTHORS_ASSETS_URL . 'css/multiple-authors-page.css',
+                        false,
+                        PP_AUTHORS_VERSION,
+                        'all'
+                    );
+                }
+            }
+            
+            return $taxonomy_template;
         }
     }
 }

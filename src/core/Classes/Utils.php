@@ -814,4 +814,62 @@ class Utils
 
         return $sanitizedArray;
     }
+
+    /**
+     * Helper function to check if template exist in theme/child theme.
+     * We couldn't use wordpress locate_template() as it support theme compact which load 
+     * default template for files like sidebar.php even if it doesn't exist in theme
+     * 
+     * @param array $template
+     * @return mixed
+     */
+    public static function authors_locate_template($template_names)
+    {
+        $template = false;
+
+        foreach ((array) $template_names as $template_name) {
+            if (!$template_name ) {
+                continue;
+            }
+            if (file_exists(STYLESHEETPATH . '/' . $template_name )) {
+                $template = STYLESHEETPATH . '/' . $template_name;
+                break;
+            } elseif (file_exists( TEMPLATEPATH . '/' . $template_name )) {
+                $template = TEMPLATEPATH . '/' . $template_name;
+                break;
+            }
+        }
+        
+        return $template;
+    }
+
+    /**
+     * Get article excerpt
+     *
+     * @param integer $limit
+     * @param string $source
+     * @param boolean $echo
+     * @param boolean $read_more_link
+     * @return string
+     */
+    public static function ppma_article_excerpt($limit, $source = null, $echo = false, $read_more_link = false) {
+
+        $excerpt = $source == "content" ? get_the_content() : get_the_excerpt();
+        $excerpt = preg_replace(" (\[.*?\])",'',$excerpt);
+        $excerpt = strip_shortcodes($excerpt);
+        $excerpt = wp_strip_all_tags($excerpt);
+        $excerpt = substr($excerpt, 0, $limit);
+        $excerpt = substr($excerpt, 0, strripos($excerpt, " "));
+        $excerpt = trim(preg_replace('/\s+/', ' ', $excerpt));
+        if ($read_more_link && !empty(trim($excerpt))) {
+            $excerpt = $excerpt.'... <a href="'. esc_url(get_permalink()) .'">'. esc_html__('Read more.', 'publishpress-authors') .'</a>';
+        }
+
+        if ($echo) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+            echo $excerpt;
+        } else {
+            return $excerpt;
+        }
+    }
 }

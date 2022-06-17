@@ -1,0 +1,214 @@
+.site-content,
+.content-area,
+.site-main,
+.ppma-page-header,
+.ppma-page-content,
+#content,
+#primary,
+#main,
+main {
+    background-color: #ffffff;
+}
+
+.ppma-page-header {
+    border-bottom: 3px solid #eeeeee;
+    padding-bottom: 10px;
+}
+
+.ppma-page-header .ppma-page-title {
+    margin-top: 5px;
+    font-size: 3rem;
+    line-height: 1.2;
+    color: #111;
+    margin-bottom: 6px;
+    font-weight: 700;
+    font-family: 'sans-serif';
+}
+
+.ppma-page-content .ppma-article {
+    word-break: break-word;
+    position: relative;
+    margin: 0 0 20px;
+}
+
+.ppma-page-content a {
+    margin: 0;
+    padding: 0;
+    color: #000;
+    background-color: transparent;
+    transition: color .3s;
+    text-decoration: none;
+    vertical-align: baseline;
+}
+
+.ppma-page-content .article-content {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: start;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.ppma-page-content .article-image {
+    position: relative;
+    width: 27%;
+    margin-right: 0;
+}
+
+.ppma-page-content .featured-image-link {
+    display: block;
+    position: relative;
+    width: 100%;
+    background: #f5f5f5 url('../img/no-image.jpeg');
+    vertical-align: top;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    height: 100%;
+    transition: transform .3s ease,opacity .3s;
+    transition-timing-function: cubic-bezier(0.39,0.76,0.51,0.56);
+}
+
+.ppma-page-content .featured-image-link:before {
+    display: block;
+    content: "";
+    width: 100%;
+    padding-top: 66.6667%;
+    background: none!important;
+    box-shadow: none!important;
+}
+
+.ppma-page-content .featured-image-link:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 0;
+    z-index: 1;
+    transition: opacity .3s ease;
+}
+.ppma-page-content .article-image:hover .featured-image-link:after {
+    opacity: .3;
+}
+
+.ppma-page-content .article-body {
+    padding-left: 20px;
+    flex: 1;
+}
+
+.ppma-page-content .category-links {
+    overflow: hidden;
+    margin-bottom: 0;
+    display: inline-block;
+}
+.ppma-page-content.category-links a, 
+.ppma-page-content .category-links a {
+    float: left;
+    background: #000;
+    font-size: 10px;
+    font-size: 1rem;
+    text-align: left;
+    transition: all .3s;
+    color: #fff;
+    font-weight: 500;
+    padding: 0 5px;
+    height: 16px;
+    line-height: 16px;
+    margin-right: 5px;
+    margin-bottom: 3px;
+}
+
+.ppma-page-content .article-title {
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 1.25;
+    text-align: left;
+    margin: 0;
+    margin-bottom: 4px;
+    clear: both;
+}
+
+.ppma-page-content .article-meta {
+    color: #999;
+    font-size: 1.2rem;
+}
+.ppma-page-content .article-meta-item {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.ppma-page-content .article-meta a {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+}
+
+.ppma-page-content .article-meta .dashicons {
+    margin-right: 3px;
+    vertical-align: middle;
+}
+
+.ppma-page-content .article-entry-excerpt {
+    margin: 1.5em 0 0;
+    margin-top: 9px;
+    line-height: 1.71;
+    text-align: left;
+}
+
+.ppma-page-content .article-entry-excerpt:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.ppma-page-content .article-footer .tags-links {
+    display: inline-block;
+    margin: 10px -2.5px 5px;
+    width: 100%;
+}
+
+.ppma-page-content .article-footer .tags-links a {
+    display: inline-block;
+    min-height: 24px;
+    line-height: 24px;
+    font-size: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: left;
+    color: #888;
+    background: #ececec;
+    transition: all .3s;
+    margin: 0 2.5px 5px;
+    text-transform: uppercase;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.ppma-article-pagination {
+    display: inline-block;
+    margin: -5px -5px 0;
+    vertical-align: top;
+}
+
+.ppma-article-pagination a {
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+    display: inline-block;
+    background: transparent;
+    color: #111;
+    min-width: 32px;
+    height: 32px;
+    line-height: 32px;
+    transition: all .3s;
+}
