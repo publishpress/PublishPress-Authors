@@ -93,7 +93,18 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'layout'                       => Utils::getDefaultLayout(),
                     'force_empty_author'           => 'no',
                     'username_in_search_field'      => 'no',
-                    'enable_plugin_authors_profile' => 'no',
+                    'enable_plugin_author_pages'   => 'no',
+                    'author_pages_layout'          => 'list',
+                    'show_author_pages_description' => 'yes',
+                    'show_author_pages_avatar'     => 'yes',
+                    'show_author_post_featured_image' => 'yes',
+                    'show_author_post_excerpt'     => 'yes',
+                    'show_author_post_authors'     => 'yes',
+                    'show_author_post_date'        => 'yes',
+                    'show_author_post_comments'    => 'yes',
+                    'show_author_post_category'    => 'yes',
+                    'show_author_post_tags'        => 'yes',
+                    'show_author_post_readmore'    => 'yes',
                     'default_author_for_new_posts' => null,
                     'author_page_post_types'       => []
                 ],
@@ -264,6 +275,9 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             //add authors template
             add_filter('template_include', [$this, 'authors_taxonomy_template']);
+
+            //author redirect
+            add_action('template_redirect', [$this, 'authors_template_redirect']);
         }
 
         /**
@@ -524,17 +538,6 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
 
             add_settings_field(
-                'enable_plugin_authors_profile',
-                __(
-                    'Enable custom authors profile:',
-                    'publishpress-authors'
-                ),
-                [$this, 'settings_enable_plugin_authors_profile'],
-                $this->module->options_group_name,
-                $this->module->options_group_name . '_general'
-            );
-
-            add_settings_field(
                 'post_types',
                 __('Add to these post types:', 'publishpress-authors'),
                 [$this, 'settings_post_types_option'],
@@ -653,6 +656,149 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $this->module->options_group_name . '_display'
             );
 
+            /**
+             * Author Pages
+             */
+
+            add_settings_section(
+                $this->module->options_group_name . '_author_pages',
+                __return_false(),
+                [$this, 'settings_section_author_pages'],
+                $this->module->options_group_name
+            );
+
+            add_settings_field(
+                'enable_plugin_author_pages',
+                __(
+                    'Enable author pages:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_enable_plugin_author_pages'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_author_pages'
+            );
+
+            add_settings_field(
+                'author_pages_layout',
+                __(
+                    'Author pages layout:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_author_pages_layout'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_author_pages'
+            );
+
+            add_settings_field(
+                'show_author_pages_description',
+                __(
+                    'Show author description:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_show_author_pages_description'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_author_pages'
+            );
+
+            add_settings_field(
+                'show_author_pages_avatar',
+                __(
+                    'Show author avatar:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_show_author_pages_avatar'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_author_pages'
+            );
+
+            add_settings_field(
+                'show_author_post_featured_image',
+                __(
+                    'Show featured image:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_show_author_post_featured_image'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_author_pages'
+            );
+
+            add_settings_field(
+                'show_author_post_excerpt',
+                __(
+                    'Show excerpt:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_show_author_post_excerpt'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_author_pages'
+            );
+
+            add_settings_field(
+                'show_author_post_authors',
+                __(
+                    'Show authors:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_show_author_post_authors'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_author_pages'
+            );
+
+            add_settings_field(
+                'show_author_post_date',
+                __(
+                    'Show post date:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_show_author_post_date'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_author_pages'
+            );
+
+            add_settings_field(
+                'show_author_post_comments',
+                __(
+                    'Show comment counts:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_show_author_post_comments'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_author_pages'
+            );
+
+            add_settings_field(
+                'show_author_post_category',
+                __(
+                    'Show Category:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_show_author_post_category'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_author_pages'
+            );
+
+            add_settings_field(
+                'show_author_post_tags',
+                __(
+                    'Show tags:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_show_author_post_tags'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_author_pages'
+            );
+
+            add_settings_field(
+                'show_author_post_readmore',
+                __(
+                    'Show read more link:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_show_author_post_readmore'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_author_pages'
+            );
+
 
             /**
              * Shortcodes
@@ -707,6 +853,11 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function settings_section_display()
         {
             echo '<input type="hidden" id="ppma-tab-display" />';
+        }
+
+        public function settings_section_author_pages()
+        {
+            echo '<input type="hidden" id="ppma-tab-author-pages" />';
         }
 
         public function settings_section_shortcodes()
@@ -1132,18 +1283,289 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          * @param array $args
          */
-        public function settings_enable_plugin_authors_profile($args = [])
+        public function settings_enable_plugin_author_pages($args = [])
         {
-            $id    = $this->module->options_group_name . '_enable_plugin_authors_profile';
-            $value = isset($this->module->options->enable_plugin_authors_profile) ? $this->module->options->enable_plugin_authors_profile : '';
+            $id    = $this->module->options_group_name . '_enable_plugin_author_pages';
+            $value = isset($this->module->options->enable_plugin_author_pages) ? $this->module->options->enable_plugin_author_pages : '';
 
             echo '<label for="' . esc_attr($id) . '">';
 
-            echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[enable_plugin_authors_profile]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
+            echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[enable_plugin_author_pages]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
 
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
-                    'If enabled, PublishPress Authors profile will be enabled and all other authors page will be redirected to the new PublishPress Authors compatible authors page.',
+                    'If enabled, PublishPress Authors compatible author pages will be used.',
+                    'publishpress-authors'
+                )
+                . '</span>';
+
+
+            echo '</label>';
+        }
+
+
+        /**
+         * @param array $args
+         */
+        public function settings_author_pages_layout($args = [])
+        {
+            $id    = $this->module->options_group_name . '_author_pages_layout';
+            $value = isset($this->module->options->author_pages_layout) ? $this->module->options->author_pages_layout : 'list';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<select id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_pages_layout]">';
+
+            $author_pages_layouts = apply_filters(
+                'pp_multiple_authors_pages_layout',
+                [
+                    'list' => esc_html__('List', 'publishpress-authors'), 
+                    'grid' => esc_html__('Grid', 'publishpress-authors')
+                ]
+            );
+
+            foreach ($author_pages_layouts as $layout => $text) {
+                $selected = $value === $layout ? 'selected="selected"' : '';
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                echo '<option value="' . esc_attr($layout) . '" ' . $selected . '>' . esc_html($text) . ' &emsp; &emsp; &emsp; &emsp; </option>';
+            }
+
+            echo '</select>';
+            echo '</label>';
+        }
+
+
+        /**
+         * @param array $args
+         */
+        public function settings_show_author_pages_description($args = [])
+        {
+            $id    = $this->module->options_group_name . '_show_author_pages_description';
+            $value = isset($this->module->options->show_author_pages_description) ? $this->module->options->show_author_pages_description : '';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[show_author_pages_description]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
+
+            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
+                . esc_html__(
+                    'Whether to display authors biography on author pages.',
+                    'publishpress-authors'
+                )
+                . '</span>';
+
+
+            echo '</label>';
+        }
+
+
+        /**
+         * @param array $args
+         */
+        public function settings_show_author_pages_avatar($args = [])
+        {
+            $id    = $this->module->options_group_name . '_show_author_pages_avatar';
+            $value = isset($this->module->options->show_author_pages_avatar) ? $this->module->options->show_author_pages_avatar : '';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[show_author_pages_avatar]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
+
+            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
+                . esc_html__(
+                    'Whether to display authors avatar on author pages.',
+                    'publishpress-authors'
+                )
+                . '</span>';
+
+
+            echo '</label>';
+        }
+
+
+        /**
+         * @param array $args
+         */
+        public function settings_show_author_post_featured_image($args = [])
+        {
+            $id    = $this->module->options_group_name . '_show_author_post_featured_image';
+            $value = isset($this->module->options->show_author_post_featured_image) ? $this->module->options->show_author_post_featured_image : '';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[show_author_post_featured_image]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
+
+            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
+                . esc_html__(
+                    'Whether to display post featured image.',
+                    'publishpress-authors'
+                )
+                . '</span>';
+
+
+            echo '</label>';
+        }
+
+
+        /**
+         * @param array $args
+         */
+        public function settings_show_author_post_excerpt($args = [])
+        {
+            $id    = $this->module->options_group_name . '_show_author_post_excerpt';
+            $value = isset($this->module->options->show_author_post_excerpt) ? $this->module->options->show_author_post_excerpt : '';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[show_author_post_excerpt]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
+
+            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
+                . esc_html__(
+                    'Whether to display post excerpt.',
+                    'publishpress-authors'
+                )
+                . '</span>';
+
+
+            echo '</label>';
+        }
+
+
+        /**
+         * @param array $args
+         */
+        public function settings_show_author_post_authors($args = [])
+        {
+            $id    = $this->module->options_group_name . '_show_author_post_authors';
+            $value = isset($this->module->options->show_author_post_authors) ? $this->module->options->show_author_post_authors : '';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[show_author_post_authors]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
+
+            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
+                . esc_html__(
+                    'Whether to display post authors.',
+                    'publishpress-authors'
+                )
+                . '</span>';
+
+
+            echo '</label>';
+        }
+
+
+        /**
+         * @param array $args
+         */
+        public function settings_show_author_post_date($args = [])
+        {
+            $id    = $this->module->options_group_name . '_show_author_post_date';
+            $value = isset($this->module->options->show_author_post_date) ? $this->module->options->show_author_post_date : '';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[show_author_post_date]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
+
+            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
+                . esc_html__(
+                    'Whether to display post date.',
+                    'publishpress-authors'
+                )
+                . '</span>';
+
+
+            echo '</label>';
+        }
+
+
+        /**
+         * @param array $args
+         */
+        public function settings_show_author_post_comments($args = [])
+        {
+            $id    = $this->module->options_group_name . '_show_author_post_comments';
+            $value = isset($this->module->options->show_author_post_comments) ? $this->module->options->show_author_post_comments : '';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[show_author_post_comments]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
+
+            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
+                . esc_html__(
+                    'Whether to display post comment counts.',
+                    'publishpress-authors'
+                )
+                . '</span>';
+
+
+            echo '</label>';
+        }
+
+
+        /**
+         * @param array $args
+         */
+        public function settings_show_author_post_category($args = [])
+        {
+            $id    = $this->module->options_group_name . '_show_author_post_category';
+            $value = isset($this->module->options->show_author_post_category) ? $this->module->options->show_author_post_category : '';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[show_author_post_category]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
+
+            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
+                . esc_html__(
+                    'Whether to display post category.',
+                    'publishpress-authors'
+                )
+                . '</span>';
+
+
+            echo '</label>';
+        }
+
+
+        /**
+         * @param array $args
+         */
+        public function settings_show_author_post_tags($args = [])
+        {
+            $id    = $this->module->options_group_name . '_show_author_post_tags';
+            $value = isset($this->module->options->show_author_post_tags) ? $this->module->options->show_author_post_tags : '';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[show_author_post_tags]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
+
+            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
+                . esc_html__(
+                    'Whether to display post tags.',
+                    'publishpress-authors'
+                )
+                . '</span>';
+
+
+            echo '</label>';
+        }
+
+
+        /**
+         * @param array $args
+         */
+        public function settings_show_author_post_readmore($args = [])
+        {
+            $id    = $this->module->options_group_name . '_show_author_post_readmore';
+            $value = isset($this->module->options->show_author_post_readmore) ? $this->module->options->show_author_post_readmore : '';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[show_author_post_readmore]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
+
+            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
+                . esc_html__(
+                    'Whether to display post read more link.',
                     'publishpress-authors'
                 )
                 . '</span>';
@@ -1399,8 +1821,48 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $new_options['username_in_search_field'] = 'no';
             }
 
-            if (!isset($new_options['enable_plugin_authors_profile'])) {
-                $new_options['enable_plugin_authors_profile'] = 'no';
+            if (!isset($new_options['enable_plugin_author_pages'])) {
+                $new_options['enable_plugin_author_pages'] = 'no';
+            }
+
+            if (!isset($new_options['show_author_pages_description'])) {
+                $new_options['show_author_pages_description'] = 'no';
+            }
+
+            if (!isset($new_options['show_author_pages_avatar'])) {
+                $new_options['show_author_pages_avatar'] = 'no';
+            }
+
+            if (!isset($new_options['show_author_post_featured_image'])) {
+                $new_options['show_author_post_featured_image'] = 'no';
+            }
+
+            if (!isset($new_options['show_author_post_excerpt'])) {
+                $new_options['show_author_post_excerpt'] = 'no';
+            }
+
+            if (!isset($new_options['show_author_post_authors'])) {
+                $new_options['show_author_post_authors'] = 'no';
+            }
+
+            if (!isset($new_options['show_author_post_date'])) {
+                $new_options['show_author_post_date'] = 'no';
+            }
+
+            if (!isset($new_options['show_author_post_comments'])) {
+                $new_options['show_author_post_comments'] = 'no';
+            }
+
+            if (!isset($new_options['show_author_post_category'])) {
+                $new_options['show_author_post_category'] = 'no';
+            }
+
+            if (!isset($new_options['show_author_post_tags'])) {
+                $new_options['show_author_post_tags'] = 'no';
+            }
+
+            if (!isset($new_options['show_author_post_readmore'])) {
+                $new_options['show_author_post_readmore'] = 'no';
             }
 
             if (isset($new_options['layout'])) {
@@ -1439,6 +1901,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 [
                     '#ppma-tab-general'     => esc_html__('General', 'publishpress-authors'),
                     '#ppma-tab-display'     => esc_html__('Display', 'publishpress-authors'),
+                    '#ppma-tab-author-pages' => esc_html__('Author Pages', 'publishpress-authors'),
                     '#ppma-tab-shortcodes'  => esc_html__('Shortcodes', 'publishpress-authors'),
                     '#ppma-tab-maintenance' => esc_html__('Maintenance', 'publishpress-authors'),
                 ]
@@ -3233,7 +3696,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             if (is_tax('author')) {
                 //look for authors template from theme
-                $taxonomy_template = locate_template( array('taxonomy-author.php') );
+                $taxonomy_template = locate_template(['taxonomy-author.php']);
                 if (!$taxonomy_template ) {
                     $taxonomy_template = PP_AUTHORS_BASE_PATH . 'src/templates/taxonomy-author.php';
                 }
@@ -3247,6 +3710,30 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
             
             return $taxonomy_template;
+        }
+    
+        /**
+         * Redirect to author's page
+         *
+         * @param string $taxonomy_template
+         * @return string
+         */
+        public function authors_template_redirect($taxonomy_template) {
+            global $wp_query;
+            if ( $wp_query->is_author ) {
+                $author_id = (int) get_query_var('author');
+                if ($author_id > 0) {
+                    $author_data    = Author::get_by_user_id($author_id);
+                } elseif (isset($wp_query->queried_object->term_id)) {
+                    $author_term_id = abs($wp_query->queried_object->term_id);
+                    $author_data    = Author::get_by_term_id($author_term_id);
+                }
+
+                if (is_object($author_data)) {
+                    wp_safe_redirect(get_term_link($author_data->term_id), 301);
+                    die();
+                }
+            }
         }
     }
 }

@@ -516,8 +516,8 @@ class Plugin
     {
         $legacyPlugin          = Factory::getLegacyPlugin();
         if (!empty($legacyPlugin) && isset($legacyPlugin->multiple_authors)
-            && isset($legacyPlugin->modules->multiple_authors->options->enable_plugin_authors_profile)
-            && $legacyPlugin->modules->multiple_authors->options->enable_plugin_authors_profile === 'yes'
+            && isset($legacyPlugin->modules->multiple_authors->options->enable_plugin_author_pages)
+            && $legacyPlugin->modules->multiple_authors->options->enable_plugin_author_pages === 'yes'
         ) {
             $enable_authors_profile = true;
         } else {
