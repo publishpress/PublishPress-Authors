@@ -10,6 +10,7 @@
 namespace MultipleAuthors\Classes;
 
 use MultipleAuthors\Classes\Objects\Author;
+use MultipleAuthors\Factory;
 
 /**
  * Declaration of the content model
@@ -51,15 +52,28 @@ class Content_Model
             return $link;
         }
 
-        $author      = Author::get_by_term_id($term->term_id);
-        $author_slug = is_object($author) ? $author->slug : '';
-        $permastruct = $wp_rewrite->get_author_permastruct();
+        $legacyPlugin = Factory::getLegacyPlugin();
 
-        if ($permastruct) {
-            $link = str_replace('%author%', $author_slug, $permastruct);
-            $link = home_url(user_trailingslashit($link));
+        if (!empty($legacyPlugin) && isset($legacyPlugin->multiple_authors)
+            && isset($legacyPlugin->modules->multiple_authors->options->enable_plugin_author_pages)
+            && $legacyPlugin->modules->multiple_authors->options->enable_plugin_author_pages === 'yes'
+        ) {
+            $enable_authors_profile = true;
         } else {
-            $link = add_query_arg('author_name', rawurlencode($author_slug), home_url() . '/');
+            $enable_authors_profile = false;
+        }
+
+        if (!$enable_authors_profile) {
+            $author      = Author::get_by_term_id($term->term_id);
+            $author_slug = is_object($author) ? $author->slug : '';
+            $permastruct = $wp_rewrite->get_author_permastruct();
+
+            if ($permastruct) {
+                $link = str_replace('%author%', $author_slug, $permastruct);
+                $link = home_url(user_trailingslashit($link));
+            } else {
+                $link = add_query_arg('author_name', rawurlencode($author_slug), home_url() . '/');
+            }
         }
 
         return $link;
@@ -77,9 +91,20 @@ class Content_Model
     {
         global $wp_rewrite;
 
+        $legacyPlugin = Factory::getLegacyPlugin();
+
+        if (!empty($legacyPlugin) && isset($legacyPlugin->multiple_authors)
+            && isset($legacyPlugin->modules->multiple_authors->options->enable_plugin_author_pages)
+            && $legacyPlugin->modules->multiple_authors->options->enable_plugin_author_pages === 'yes'
+        ) {
+            $enable_authors_profile = true;
+        } else {
+            $enable_authors_profile = false;
+        }
+
         $permastruct = $wp_rewrite->get_author_permastruct();
 
-        if (empty($permastruct)) {
+        if (empty($permastruct) && !$enable_authors_profile) {
             return $link;
         }
 
@@ -90,6 +115,13 @@ class Content_Model
 
             if (is_object($author)) {
                 return $author->link;
+            }
+        }
+
+        if ($enable_authors_profile) {
+            $author_data    = Author::get_by_user_id($author_id);
+            if (is_object($author_data)) {
+                return get_term_link($author_data->term_id);
             }
         }
 
