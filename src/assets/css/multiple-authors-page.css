@@ -2,7 +2,7 @@
 .content-area,
 .site-main,
 .ppma-page-header,
-.ppma-page-content,
+.ppma-page-content.list,
 #content,
 #primary,
 #main,
@@ -25,13 +25,13 @@ main {
     font-family: 'sans-serif';
 }
 
-.ppma-page-content .ppma-article {
+.ppma-page-content.list .ppma-article {
     word-break: break-word;
     position: relative;
     margin: 0 0 20px;
 }
 
-.ppma-page-content a {
+.ppma-page-content.list a:not(.read-more):not(.page-numbers) {
     margin: 0;
     padding: 0;
     color: #000;
@@ -41,7 +41,7 @@ main {
     vertical-align: baseline;
 }
 
-.ppma-page-content .article-content {
+.ppma-page-content.list .article-content {
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -53,13 +53,13 @@ main {
     margin-bottom: 20px;
 }
 
-.ppma-page-content .article-image {
+.ppma-page-content.list .article-image {
     position: relative;
     width: 27%;
     margin-right: 0;
 }
 
-.ppma-page-content .featured-image-link {
+.ppma-page-content.list .featured-image-link {
     display: block;
     position: relative;
     width: 100%;
@@ -76,7 +76,7 @@ main {
     transition-timing-function: cubic-bezier(0.39,0.76,0.51,0.56);
 }
 
-.ppma-page-content .featured-image-link:before {
+.ppma-page-content.list .featured-image-link:before {
     display: block;
     content: "";
     width: 100%;
@@ -85,7 +85,7 @@ main {
     box-shadow: none!important;
 }
 
-.ppma-page-content .featured-image-link:after {
+.ppma-page-content.list .featured-image-link:after {
     content: "";
     position: absolute;
     top: 0;
@@ -97,22 +97,22 @@ main {
     z-index: 1;
     transition: opacity .3s ease;
 }
-.ppma-page-content .article-image:hover .featured-image-link:after {
+.ppma-page-content.list .article-image:hover .featured-image-link:after {
     opacity: .3;
 }
 
-.ppma-page-content .article-body {
+.ppma-page-content.list .article-body {
     padding-left: 20px;
     flex: 1;
 }
 
-.ppma-page-content .category-links {
+.ppma-page-content.list .category-links {
     overflow: hidden;
     margin-bottom: 0;
     display: inline-block;
 }
-.ppma-page-content.category-links a, 
-.ppma-page-content .category-links a {
+.ppma-page-content.list.category-links a, 
+.ppma-page-content.list .category-links a {
     float: left;
     background: #000;
     font-size: 10px;
@@ -128,7 +128,7 @@ main {
     margin-bottom: 3px;
 }
 
-.ppma-page-content .article-title {
+.ppma-page-content.list .article-title {
     font-weight: 400;
     font-size: 24px;
     line-height: 1.25;
@@ -138,46 +138,46 @@ main {
     clear: both;
 }
 
-.ppma-page-content .article-meta {
+.ppma-page-content.list .article-meta {
     color: #999;
     font-size: 1.2rem;
 }
-.ppma-page-content .article-meta-item {
+.ppma-page-content.list .article-meta-item {
     display: inline-block;
     margin-right: 10px;
 }
 
-.ppma-page-content .article-meta a {
+.ppma-page-content.list .article-meta a {
     font-family: inherit;
     font-size: inherit;
     color: inherit;
 }
 
-.ppma-page-content .article-meta .dashicons {
+.ppma-page-content.list .article-meta .dashicons {
     margin-right: 3px;
     vertical-align: middle;
 }
 
-.ppma-page-content .article-entry-excerpt {
+.ppma-page-content.list .article-entry-excerpt {
     margin: 1.5em 0 0;
     margin-top: 9px;
     line-height: 1.71;
     text-align: left;
 }
 
-.ppma-page-content .article-entry-excerpt:after {
+.ppma-page-content.list .article-entry-excerpt:after {
     content: "";
     display: table;
     clear: both;
 }
 
-.ppma-page-content .article-footer .tags-links {
+.ppma-page-content.list .article-footer .tags-links {
     display: inline-block;
     margin: 10px -2.5px 5px;
     width: 100%;
 }
 
-.ppma-page-content .article-footer .tags-links a {
+.ppma-page-content.list .article-footer .tags-links a {
     display: inline-block;
     min-height: 24px;
     line-height: 24px;
@@ -194,21 +194,110 @@ main {
     padding-right: 10px;
 }
 
-.ppma-article-pagination {
-    display: inline-block;
-    margin: -5px -5px 0;
-    vertical-align: top;
+.ppma-article-pagination  {
+    clear: both;
+    overflow: hidden;
+    text-align: center;
+    padding: 20px 0;
+    width: 100%;
+    font-size: 14px;
+    font-size: 1.4rem;
+    font-weight: 600
 }
 
-.ppma-article-pagination a {
+.ppma-article-pagination  .nav-links {
+    display: inline-block;
+    margin: -5px -5px 0;
+    vertical-align: top
+}
+
+.penci-pag-center .ppma-article-pagination  .nav-links {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto
+}
+
+.penci-pag-left .ppma-article-pagination  .nav-links {
+    float: left
+}
+
+.penci-pag-right .ppma-article-pagination  .nav-links {
+    float: right
+}
+
+.ppma-article-pagination .penci-pag-center .nav-links {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto
+}
+
+.ppma-article-pagination .penci-pag-left .nav-links {
+    float: left
+}
+
+.ppma-article-pagination .penci-pag-right .nav-links {
+    float: right
+}
+
+.ppma-article-pagination a,
+.ppma-article-pagination span {
     margin-left: 5px;
     margin-right: 5px;
     margin-top: 5px;
+    float: left;
     display: inline-block;
     background: transparent;
+    border: solid 1px #ececec;
     color: #111;
     min-width: 32px;
     height: 32px;
     line-height: 32px;
-    transition: all .3s;
+    transition: all .3s
+}
+
+.ppma-article-pagination  span.current,
+.ppma-article-pagination  a:hover{
+    border-color: #00b0ff;
+    background-color: #00b0ff;
+    color:#fff;
+}
+
+.ppma-author-pages-author-box-wrap {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: start;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    border: 1px solid #eeeeee;
+    padding: 21px;
+    margin-top: 19px;
+    margin-bottom: 0;
+    font-size: 12px;
+}
+
+.ppma-author-pages-author-box-wrap .author-img-wrap {
+    margin-right: 20px;
+    position: relative; 
+}
+
+.ppma-author-pages-author-box-wrap .author-img-wrap img {
+    height: auto;
+    max-width: 100%;
+}
+
+.ppma-author-pages-author-box-wrap .author-description-wrap {
+    flex: 1;
+}
+
+.ppma-author-pages-author-box-wrap .author-description-wrap .author-description {
+    line-height: 21px;
+    margin-bottom: 12px;
+    margin-top: 5px;
+}
+
+.ppma-page-content.list .no-featured-image .article-image {
+    display: none;
 }
