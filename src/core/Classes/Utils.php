@@ -831,10 +831,10 @@ class Utils
             if (!$template_name ) {
                 continue;
             }
-            if (file_exists(STYLESHEETPATH . '/' . $template_name )) {
+            if (file_exists(STYLESHEETPATH . '/' . $template_name)) {
                 $template = STYLESHEETPATH . '/' . $template_name;
                 break;
-            } elseif (file_exists( TEMPLATEPATH . '/' . $template_name )) {
+            } elseif (file_exists(TEMPLATEPATH . '/' . $template_name)) {
                 $template = TEMPLATEPATH . '/' . $template_name;
                 break;
             }

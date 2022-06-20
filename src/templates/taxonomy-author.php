@@ -35,11 +35,6 @@ if (!$layout_template ) {
 //load layout template
 load_template($layout_template, true);
 
-//load sidebar
-if (Utils::authors_locate_template(['sidebar.php'])) {
-    get_sidebar(); 
-}
-
  //load footer
 if (Utils::authors_locate_template(['footer.php'])) {
     get_footer(); 
