@@ -1294,7 +1294,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
-                    'If enabled, PublishPress Authors compatible author pages will be used.',
+                    'If enabled, PublishPress Authors will replace the default WordPress author pages.',
                     'publishpress-authors'
                 )
                 . '</span>';
