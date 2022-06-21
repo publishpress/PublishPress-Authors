@@ -542,7 +542,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 __('Add to these post types:', 'publishpress-authors'),
                 [$this, 'settings_post_types_option'],
                 $this->module->options_group_name,
-                $this->module->options_group_name . '_general'
+                $this->module->options_group_name . '_author_pages'
             );
 
             add_settings_field(
@@ -550,7 +550,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 __('Post types to display on the author\'s profile page:', 'publishpress-authors'),
                 [$this, 'settings_author_page_post_types_option'],
                 $this->module->options_group_name,
-                $this->module->options_group_name . '_general'
+                $this->module->options_group_name . '_author_pages'
             );
 
             add_settings_field(
@@ -3721,17 +3721,23 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function authors_template_redirect($taxonomy_template) {
             global $wp_query;
             if ( $wp_query->is_author ) {
-                $author_id = (int) get_query_var('author');
-                if ($author_id > 0) {
-                    $author_data    = Author::get_by_user_id($author_id);
-                } elseif (isset($wp_query->queried_object->term_id)) {
-                    $author_term_id = abs($wp_query->queried_object->term_id);
-                    $author_data    = Author::get_by_term_id($author_term_id);
-                }
+                $legacyPlugin          = Factory::getLegacyPlugin();
+                if (!empty($legacyPlugin) && isset($legacyPlugin->multiple_authors)
+                    && isset($legacyPlugin->modules->multiple_authors->options->enable_plugin_author_pages)
+                    && $legacyPlugin->modules->multiple_authors->options->enable_plugin_author_pages === 'yes'
+                ) {
+                    $author_id = (int) get_query_var('author');
+                    if ($author_id > 0) {
+                        $author_data    = Author::get_by_user_id($author_id);
+                    } elseif (isset($wp_query->queried_object->term_id)) {
+                        $author_term_id = abs($wp_query->queried_object->term_id);
+                        $author_data    = Author::get_by_term_id($author_term_id);
+                    }
 
-                if (is_object($author_data)) {
-                    wp_safe_redirect(get_term_link($author_data->term_id), 301);
-                    die();
+                    if (is_object($author_data)) {
+                        wp_safe_redirect(get_term_link($author_data->term_id), 301);
+                        die();
+                    }
                 }
             }
         }
