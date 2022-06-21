@@ -38,7 +38,7 @@ $extra_post_class         = 'ppma-article';
 $extra_post_class         .= ($show_post_featured_image) ? ' has-featured-image' : ' no-featured-image';
 ?>
 <div class="ppma-page-header alignwide">
-    <?php the_archive_title('<h1 class="ppma-page-title">', '</h1>'); ?>
+    <?php the_archive_title('<h1 class="ppma-page-title page-title">', '</h1>'); ?>
     <?php if ($show_pages_avatar || $show_pages_description) : ?>
         <div class="ppma-author-pages-author-box-wrap">
             <?php if ($show_pages_avatar) : ?>
@@ -79,19 +79,19 @@ $extra_post_class         .= ($show_post_featured_image) ? ' has-featured-image'
                     </div>
                 
                     <div class="ppma-grid-post-content">
-                        <h3 class="ppma-grid-post-title entry-title">
+                        <h2 class="ppma-grid-post-title entry-title title">
                             <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                        </h3>
+                        </h2>
                         
                         <?php if ($show_post_excerpt ) : ?>
-                            <div class="article-entry-excerpt">
+                            <div class="article-entry-excerpt post-entry-excerpt entry-excerpt excerpt">
                                 <?php Utils::ppma_article_excerpt(160, 'content', true, $show_post_readmore ); ?>
                             </div>
                         <?php endif; ?>
                         
                         <div class="ppma-grid-post-meta">
                         <?php if ($show_post_authors && !empty($post_authors)) : ?>
-                            <span class="entry-meta-item posted-by"><span class="author vcard">
+                            <span class="entry-meta-item post-meta-item post-meta meta posted-by"><span class="author vcard">
                                 <?php foreach ($post_authors as $index => $post_author) : $index++; ?>
                                     <?php $term_link = get_term_link($post_author->term_id); ?>
                                     <a href="<?php echo ($term_link) ? esc_url($term_link) : ''; ?>">
@@ -105,7 +105,7 @@ $extra_post_class         .= ($show_post_featured_image) ? ' has-featured-image'
                             </span></span>
                         <?php endif; ?>
                             <?php if ($show_post_date ) : ?>
-                                <span class="entry-meta-item posted-on">
+                                <span class="entry-meta-item post-meta-item post-meta meta posted-on">
                                     <span class="dashicons dashicons-clock"></span>
                                     <time class="article-date published" datetime="<?php echo esc_attr(get_the_date(DATE_W3C)); ?>">
                                         <?php echo esc_html(get_the_date()); ?>
@@ -114,7 +114,7 @@ $extra_post_class         .= ($show_post_featured_image) ? ' has-featured-image'
                             <?php endif; ?>
                             
                             <?php if ($show_post_comments ) : ?>
-                                <span class="entry-meta-item">
+                                <span class="entry-meta-item post-meta-item post-meta meta">
                                     <a href="<?php echo esc_url(the_permalink() . '#comments'); ?>">
                                         <span class="dashicons dashicons-admin-comments"></span><?php echo esc_html(get_comments_number()); ?>
                                     </a>
