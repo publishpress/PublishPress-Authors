@@ -85,6 +85,23 @@ class Query
     }
 
     /**
+     * Fix for publishpress author pages post type.
+     *
+     * @param WP_Query $wp_query Query object.
+     */
+    public static function fix_frontend_query_pre_get_posts($wp_query)
+    {
+        if (is_string($wp_query) || empty($wp_query)) {
+            global $wp_query; // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.VariableRedeclaration
+        }
+
+        if (!is_admin() && $wp_query->is_main_query() && $wp_query->is_tax('author')) {
+            $selectedPostTypesForAuthorsPage = static::getSelectedPostTypesForAuthorsPage();
+            $wp_query->set('post_type', $selectedPostTypesForAuthorsPage);
+        }
+    }
+
+    /**
      * Modify the WHERE clause on author queries.
      *
      * @param string $where Existing WHERE clause.

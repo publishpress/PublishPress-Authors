@@ -284,6 +284,10 @@ class Plugin
             'pre_get_posts',
             ['MultipleAuthors\\Classes\\Query', 'fix_query_pre_get_posts']
         );
+        add_action(
+            'pre_get_posts',
+            ['MultipleAuthors\\Classes\\Query', 'fix_frontend_query_pre_get_posts']
+        );
         add_filter(
             'posts_where',
             ['MultipleAuthors\\Classes\\Query', 'filter_author_posts_where'],
