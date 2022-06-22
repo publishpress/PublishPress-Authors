@@ -97,6 +97,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'author_pages_layout'          => 'list',
                     'show_author_pages_bio'        => 'yes',
                     'author_pages_bio_layout'      => 'boxed',
+                    'author_pages_grid_layout_column' => '4',
                     'show_author_post_featured_image' => 'yes',
                     'show_author_post_excerpt'     => 'yes',
                     'show_author_post_authors'     => 'yes',
@@ -685,6 +686,17 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'publishpress-authors'
                 ),
                 [$this, 'settings_author_pages_layout'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_author_pages'
+            );
+
+            add_settings_field(
+                'author_pages_grid_layout_column',
+                __(
+                    'Grid layout column:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_author_pages_grid_layout_column'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_author_pages'
             );
@@ -1329,6 +1341,22 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '</select>';
             echo '</label>';
+        }
+
+        /**
+         * @param array $args
+         */
+        public function settings_author_pages_grid_layout_column($args = [])
+        {
+            $id    = $this->module->options_group_name . '_author_pages_grid_layout_column';
+            $value = isset($this->module->options->author_pages_grid_layout_column) ? $this->module->options->author_pages_grid_layout_column : '';
+
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="number" min="1" step="1" class="small-text" value="' . esc_attr($value) . '" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_pages_grid_layout_column]">';
+            echo '</label>';
+
         }
 
 
@@ -3694,11 +3722,28 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function authors_taxonomy_template($taxonomy_template) {
 
             if (is_tax('author')) {
+                $legacyPlugin          = Factory::getLegacyPlugin();
                 //look for authors template from theme
                 $taxonomy_template = locate_template(['taxonomy-author.php']);
                 if (!$taxonomy_template ) {
                     $taxonomy_template = PP_AUTHORS_BASE_PATH . 'src/templates/taxonomy-author.php';
                 }
+                $author_pages_bio_layout  = (int) $legacyPlugin->modules->multiple_authors->options->author_pages_grid_layout_column;
+                $author_pages_bio_layout  = $author_pages_bio_layout === 0 ? 4 : $author_pages_bio_layout;
+                
+                //get inline style for grid column
+                $inline_style = '';
+                for ( $i=1; $i<=$author_pages_bio_layout; $i++ ) {
+                    $inline_style .= '.ppma-page-content.grid .ppma-article:nth-child('.$i.')';
+                    $inline_style .= ($i === $author_pages_bio_layout) ? '' : ',';
+                }
+                $inline_style .= '{
+                    margin-top: 0;
+                }';
+                $inline_style .= '.ppma-page-content.grid .ppma-article:nth-child('.$author_pages_bio_layout.'n +1) {clear: both;}';
+
+                $inline_style .= '.ppma-page-content.grid .ppma-article {width: '.((100-8)/$author_pages_bio_layout) .'%;}';
+
                 wp_enqueue_style(
                     'multiple-authors-page-css',
                     PP_AUTHORS_ASSETS_URL . 'css/multiple-authors-page.css',
@@ -3706,6 +3751,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     PP_AUTHORS_VERSION,
                     'all'
                 );
+                wp_add_inline_style('multiple-authors-page-css', $inline_style);
             }
             
             return $taxonomy_template;

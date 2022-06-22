@@ -172,17 +172,6 @@ body.tax-author .ast-container {
     word-break: break-word;
 }
 
-.ppma-page-content.grid  .ppma-article:nth-child(1), 
-.ppma-page-content.grid  .ppma-article:nth-child(2), 
-.ppma-page-content.grid  .ppma-article:nth-child(3), 
-.ppma-page-content.grid  .ppma-article:nth-child(4) {
-    margin-top: 0;
-}
-
-.ppma-page-content.grid .ppma-article:nth-child(4n +1) {
-    clear: both;
-}
-
 .ppma-page-content.grid .ppma-article:last-of-type {
     margin-bottom: 50px;
 }
