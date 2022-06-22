@@ -145,40 +145,6 @@ body.tax-author .ast-container {
     padding-right: 10px;
 }
 
-.ppma-author-pages-author-box-wrap {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: start;
-    -webkit-align-items: flex-start;
-    -ms-flex-align: start;
-    align-items: flex-start;
-    padding: 21px;
-    margin-top: 19px;
-    margin-bottom: 0;
-}
-
-.ppma-author-pages-author-box-wrap .author-img-wrap {
-    margin-right: 20px;
-    position: relative; 
-}
-
-.ppma-author-pages-author-box-wrap .author-img-wrap img {
-    height: auto;
-    max-width: 100%;
-}
-
-.ppma-author-pages-author-box-wrap .author-description-wrap {
-    flex: 1;
-}
-
-.ppma-author-pages-author-box-wrap .author-description-wrap .author-description {
-    line-height: 21px;
-    margin-bottom: 12px;
-    margin-top: 5px;
-}
-
 .ppma-page-content.list .no-featured-image .article-image {
     display: none;
 }

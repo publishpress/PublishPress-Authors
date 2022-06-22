@@ -95,8 +95,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'username_in_search_field'      => 'no',
                     'enable_plugin_author_pages'   => 'no',
                     'author_pages_layout'          => 'list',
-                    'show_author_pages_description' => 'yes',
-                    'show_author_pages_avatar'     => 'yes',
+                    'show_author_pages_bio'        => 'yes',
+                    'author_pages_bio_layout'      => 'boxed',
                     'show_author_post_featured_image' => 'yes',
                     'show_author_post_excerpt'     => 'yes',
                     'show_author_post_authors'     => 'yes',
@@ -690,23 +690,20 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
 
             add_settings_field(
-                'show_author_pages_description',
+                'show_author_pages_bio',
                 __(
-                    'Show author description:',
+                    'Show author bio:',
                     'publishpress-authors'
                 ),
-                [$this, 'settings_show_author_pages_description'],
+                [$this, 'settings_show_author_pages_bio'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_author_pages'
             );
 
             add_settings_field(
-                'show_author_pages_avatar',
-                __(
-                    'Show author avatar:',
-                    'publishpress-authors'
-                ),
-                [$this, 'settings_show_author_pages_avatar'],
+                'author_pages_bio_layout',
+                __('Author bio layout:', 'publishpress-authors'),
+                [$this, 'settings_author_pages_bio_layout'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_author_pages'
             );
@@ -1338,18 +1335,18 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          * @param array $args
          */
-        public function settings_show_author_pages_description($args = [])
+        public function settings_show_author_pages_bio($args = [])
         {
-            $id    = $this->module->options_group_name . '_show_author_pages_description';
-            $value = isset($this->module->options->show_author_pages_description) ? $this->module->options->show_author_pages_description : '';
+            $id    = $this->module->options_group_name . '_show_author_pages_bio';
+            $value = isset($this->module->options->show_author_pages_bio) ? $this->module->options->show_author_pages_bio : '';
 
             echo '<label for="' . esc_attr($id) . '">';
 
-            echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[show_author_pages_description]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
+            echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[show_author_pages_bio]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
 
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
-                    'This will display the author description.',
+                    'This will display the author bio.',
                     'publishpress-authors'
                 )
                 . '</span>';
@@ -1358,27 +1355,29 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '</label>';
         }
 
-
         /**
-         * @param array $args
+         *  @param array $args
          */
-        public function settings_show_author_pages_avatar($args = [])
+        public function settings_author_pages_bio_layout($args = [])
         {
-            $id    = $this->module->options_group_name . '_show_author_pages_avatar';
-            $value = isset($this->module->options->show_author_pages_avatar) ? $this->module->options->show_author_pages_avatar : '';
+            $id    = $this->module->options_group_name . '_author_pages_bio_layout';
+            $value = isset($this->module->options->author_pages_bio_layout) 
+                ? $this->module->options->author_pages_bio_layout 
+                : Utils::getDefaultLayout();
 
             echo '<label for="' . esc_attr($id) . '">';
 
-            echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[show_author_pages_avatar]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
+            echo '<select id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_pages_bio_layout]">';
 
-            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
-                . esc_html__(
-                    'This will display the author avatar.',
-                    'publishpress-authors'
-                )
-                . '</span>';
+            $layouts = apply_filters('pp_multiple_authors_author_layouts', []);
 
+            foreach ($layouts as $layout => $text) {
+                $selected = $value === $layout ? 'selected="selected"' : '';
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                echo '<option value="' . esc_attr($layout) . '" ' . $selected . '>' . esc_html($text) . '</option>';
+            }
 
+            echo '</select>';
             echo '</label>';
         }
 
@@ -1825,12 +1824,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $new_options['enable_plugin_author_pages'] = 'no';
             }
 
-            if (!isset($new_options['show_author_pages_description'])) {
-                $new_options['show_author_pages_description'] = 'no';
-            }
-
-            if (!isset($new_options['show_author_pages_avatar'])) {
-                $new_options['show_author_pages_avatar'] = 'no';
+            if (!isset($new_options['show_author_pages_bio'])) {
+                $new_options['show_author_pages_bio'] = 'no';
             }
 
             if (!isset($new_options['show_author_post_featured_image'])) {
@@ -1873,6 +1868,10 @@ if (!class_exists('MA_Multiple_Authors')) {
 
                 if (!array_key_exists($new_options['layout'], $layouts)) {
                     $new_options['layout'] = Utils::getDefaultLayout();
+                }
+
+                if (!array_key_exists($new_options['author_pages_bio_layout'], $layouts)) {
+                    $new_options['author_pages_bio_layout'] = Utils::getDefaultLayout();
                 }
             }
 

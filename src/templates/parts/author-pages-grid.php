@@ -23,8 +23,8 @@ $legacyPlugin             = Factory::getLegacyPlugin();
 $current_author_term_id   = get_queried_object_id();
 $current_author_data      = Author::get_by_term_id($current_author_term_id);
 
-$show_pages_description   = $legacyPlugin->modules->multiple_authors->options->show_author_pages_description === 'yes';
-$show_pages_avatar        = $legacyPlugin->modules->multiple_authors->options->show_author_pages_avatar === 'yes';
+$author_pages_bio_layout  = $legacyPlugin->modules->multiple_authors->options->author_pages_bio_layout;
+$show_author_pages_bio    = $legacyPlugin->modules->multiple_authors->options->show_author_pages_bio === 'yes';
 $show_post_featured_image = $legacyPlugin->modules->multiple_authors->options->show_author_post_featured_image === 'yes';
 $show_post_excerpt        = $legacyPlugin->modules->multiple_authors->options->show_author_post_excerpt === 'yes';
 $show_post_authors        = $legacyPlugin->modules->multiple_authors->options->show_author_post_authors === 'yes';
@@ -40,20 +40,12 @@ $extra_post_class         .= ($show_post_featured_image) ? ' has-featured-image'
 <div class="site-main alignwide">
     <div class="ppma-page-header">
         <?php the_archive_title('<h1 class="ppma-page-title page-title">', '</h1>'); ?>
-        <?php if ($show_pages_avatar || $show_pages_description) : ?>
+        <?php if ($show_author_pages_bio) : ?>
             <div class="ppma-author-pages-author-box-wrap">
-                <?php if ($show_pages_avatar) : ?>
-                    <div class="author-img-wrap">
-                        <?php echo $current_author_data->get_avatar(100);// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-                    </div>
-                <?php endif; ?>
-                <?php if ($show_pages_description) : ?>
-                    <div class="author-description-wrap">
-                        <div class="author-description">
-                            <?php echo $current_author_data->description;// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-                        </div>
-                    </div>
-                <?php endif; ?>
+               <?php 
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                echo do_shortcode('[publishpress_authors_box archive="1" show_title="false" layout="'. $author_pages_bio_layout .'"]'); 
+               ?>
             </div>
         <?php endif; ?>
     </div><!-- .page-header -->
