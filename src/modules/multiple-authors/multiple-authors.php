@@ -769,7 +769,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_settings_field(
                 'show_author_post_category',
                 __(
-                    'Show Category:',
+                    'Show category:',
                     'publishpress-authors'
                 ),
                 [$this, 'settings_show_author_post_category'],
@@ -1349,7 +1349,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
-                    'Whether to display authors biography on author pages.',
+                    'This will display the author description.',
                     'publishpress-authors'
                 )
                 . '</span>';
@@ -1373,7 +1373,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
-                    'Whether to display authors avatar on author pages.',
+                    'This will display the author avatar.',
                     'publishpress-authors'
                 )
                 . '</span>';
@@ -1397,7 +1397,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
-                    'Whether to display post featured image.',
+                    'This will display post featured image.',
                     'publishpress-authors'
                 )
                 . '</span>';
@@ -1421,7 +1421,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
-                    'Whether to display post excerpt.',
+                    'This will display post excerpt.',
                     'publishpress-authors'
                 )
                 . '</span>';
@@ -1445,7 +1445,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
-                    'Whether to display post authors.',
+                    'This will display post authors.',
                     'publishpress-authors'
                 )
                 . '</span>';
@@ -1469,7 +1469,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
-                    'Whether to display post date.',
+                    'This will display post date.',
                     'publishpress-authors'
                 )
                 . '</span>';
@@ -1493,7 +1493,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
-                    'Whether to display post comment counts.',
+                    'This will display post comment counts.',
                     'publishpress-authors'
                 )
                 . '</span>';
@@ -1517,7 +1517,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
-                    'Whether to display post category.',
+                    'This will display category.',
                     'publishpress-authors'
                 )
                 . '</span>';
@@ -1541,7 +1541,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
-                    'Whether to display post tags.',
+                    'This will display post tags.',
                     'publishpress-authors'
                 )
                 . '</span>';
@@ -1565,7 +1565,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
-                    'Whether to display post read more link.',
+                    'This will display post read more link.',
                     'publishpress-authors'
                 )
                 . '</span>';
