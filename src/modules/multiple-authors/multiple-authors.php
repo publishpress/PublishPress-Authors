@@ -539,10 +539,10 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             add_settings_field(
                 'post_types',
-                __('Add to these post types:', 'publishpress-authors'),
+                __('Enable PublishPress Authors for these post types:', 'publishpress-authors'),
                 [$this, 'settings_post_types_option'],
                 $this->module->options_group_name,
-                $this->module->options_group_name . '_author_pages'
+                $this->module->options_group_name . '_general'
             );
 
             add_settings_field(
@@ -550,7 +550,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 __('Post types to display on the author\'s profile page:', 'publishpress-authors'),
                 [$this, 'settings_author_page_post_types_option'],
                 $this->module->options_group_name,
-                $this->module->options_group_name . '_author_pages'
+                $this->module->options_group_name . '_general'
             );
 
             add_settings_field(
