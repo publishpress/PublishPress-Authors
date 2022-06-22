@@ -70,12 +70,6 @@ $extra_post_class         .= ($show_post_featured_image) ? ' has-featured-image'
                 <article id="post-<?php the_ID(); ?>" <?php post_class($extra_post_class); ?>>
                     <div class="ppma-grid-post-thumb">
                         <a class="ppma-grid-post-image-holder" href="<?php the_permalink(); ?>" style="<?php esc_attr_e($featured_image); ?>"></a>
-                        
-                        <?php if ($show_post_category && $post_categories && is_array($post_categories) && !empty($post_categories)) : ?>
-                            <div class="entry-meta-item ppma-grid-post-cat">
-                                <a class="category-cat-name" href="<?php echo esc_url(get_category_link($post_categories[0])); ?>" rel="category tag"><?php echo esc_html($post_categories[0]->cat_name); ?></a>
-                            </div>
-                        <?php endif; ?>
                     </div>
                 
                     <div class="ppma-grid-post-content">
@@ -86,6 +80,14 @@ $extra_post_class         .= ($show_post_featured_image) ? ' has-featured-image'
                         <?php if ($show_post_excerpt ) : ?>
                             <div class="article-entry-excerpt post-entry-excerpt entry-excerpt excerpt">
                                 <?php Utils::ppma_article_excerpt(160, 'content', true, $show_post_readmore ); ?>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($show_post_category && $post_categories && is_array($post_categories) && !empty($post_categories)) : ?>
+                            <div class="article-entry-categories post-entry-categories entry-categories categories">
+                                <span class="category-links">
+                                    <a href="<?php echo esc_url(get_category_link($post_categories[0])); ?>" rel="category tag"><?php echo esc_html($post_categories[0]->cat_name); ?></a>
+                                </span>
                             </div>
                         <?php endif; ?>
                         
@@ -121,6 +123,19 @@ $extra_post_class         .= ($show_post_featured_image) ? ' has-featured-image'
                                 </span>
                             <?php endif; ?>
                         </div>
+
+                        <footer class="article-footer entry-footer post-footer">
+                            <?php if ($post_tags && !empty($post_tags)) : ?>
+                                    <span class="tags-links">
+                                        <?php foreach($post_tags as $post_tag) : ?>
+                                            <a href="<?php echo esc_url(get_tag_link($post_tag->term_id)); ?>" rel="tag">
+                                                <?php echo esc_html($post_tag->name); ?>
+                                            </a>
+                                        <?php endforeach; ?>
+                                    </span>
+                            <?php endif; ?>
+                        </footer><!-- .entry-footer -->
+
                     </div>
                 </article>
          <?php endwhile; ?>

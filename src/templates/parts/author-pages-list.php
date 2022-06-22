@@ -120,7 +120,7 @@ $extra_post_class         .= ($show_post_featured_image) ? ' has-featured-image'
                                     <?php Utils::ppma_article_excerpt(160, 'content', true, $show_post_readmore ); ?>
                                 </div>
                             <?php endif; ?>
-                            <footer class="article-footer">
+                            <footer class="article-footer entry-footer post-footer">
                                 <?php if ($post_tags && !empty($post_tags)) : ?>
                                         <span class="tags-links">
                                             <?php foreach($post_tags as $post_tag) : ?>
