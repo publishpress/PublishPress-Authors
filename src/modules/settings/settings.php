@@ -326,6 +326,9 @@ if (!class_exists('MA_Settings')) {
                 if (method_exists($legacyPlugin->$module_name, 'settings_save')) {
                     $legacyPlugin->$module_name->settings_save($new_options);
                 }
+
+                // Flush rewrite rules due to authors page slug
+                set_transient('ppma_flush_rewrite_rules', true);
             }
 
             // Redirect back to the settings page that was submitted without any previous messages
