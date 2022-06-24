@@ -56,7 +56,7 @@ $extra_post_class         .= ($show_post_featured_image) ? ' has-featured-image'
                     <?php
                     $featured_image = ($show_post_featured_image && has_post_thumbnail())
                     ? 'background-image: url("'. wp_get_attachment_image_src(get_post_thumbnail_id(), 'single-post-thumbnail')[0] .'");' : '';
-                    $post_categories  = ($show_post_category) ? get_the_category() : [];
+                    $post_categories  = ($show_post_category) ? get_the_category_list(wp_get_list_item_separator()) : false;
                     $post_tags        = ($show_post_tags) ? get_the_tags() : [];
                     $post_authors     = ($show_post_authors) ? get_post_authors() : [];
                     ?>
@@ -68,9 +68,9 @@ $extra_post_class         .= ($show_post_featured_image) ? ' has-featured-image'
 
                             <div class="article-body">
                                 <header class="article-header">
-                                    <?php if ($show_post_category && $post_categories && is_array($post_categories) && !empty($post_categories)) : ?>
-                                        <span class="category-links">
-                                            <a href="<?php echo esc_url(get_category_link($post_categories[0])); ?>" rel="category tag"><?php echo esc_html($post_categories[0]->cat_name); ?></a>
+                                    <?php if ($show_post_category && $post_categories) : ?>
+                                        <span class="category-link cat-links">
+                                          <?php echo $post_categories; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                                         </span>
                                     <?php endif; ?>
                                     <h2 class="article-title entry-title title">
