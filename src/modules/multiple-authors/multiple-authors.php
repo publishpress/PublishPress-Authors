@@ -1424,7 +1424,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
-                    'This will display post featured image.',
+                    'This will display the featured image.',
                     'publishpress-authors'
                 )
                 . '</span>';
@@ -1448,7 +1448,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
-                    'This will display post excerpt.',
+                    'This will display the excerpt.',
                     'publishpress-authors'
                 )
                 . '</span>';
@@ -1472,7 +1472,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
-                    'This will display post authors.',
+                    'This will display the authors.',
                     'publishpress-authors'
                 )
                 . '</span>';
@@ -1496,7 +1496,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
-                    'This will display post date.',
+                    'This will display the published date.',
                     'publishpress-authors'
                 )
                 . '</span>';
@@ -1520,7 +1520,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
-                    'This will display post comment counts.',
+                    'This will display the comment count.',
                     'publishpress-authors'
                 )
                 . '</span>';
@@ -1544,7 +1544,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
-                    'This will display category.',
+                    'This will display the categories.',
                     'publishpress-authors'
                 )
                 . '</span>';
@@ -1568,7 +1568,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
-                    'This will display post tags.',
+                    'This will display the tags.',
                     'publishpress-authors'
                 )
                 . '</span>';
@@ -1592,7 +1592,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
-                    'This will display post read more link.',
+                    'This will display the read more link.',
                     'publishpress-authors'
                 )
                 . '</span>';
