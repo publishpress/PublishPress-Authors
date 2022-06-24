@@ -131,7 +131,7 @@ if (!class_exists('MA_REST_API')) {
                 ];
             }
 
-            return $authorsData = apply_filters('pp_rest_api_authors_data', $authorsData);
+            return $authorsData = apply_filters('ppma_rest_api_authors_data', $authorsData);
         }
     }
 }
