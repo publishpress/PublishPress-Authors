@@ -229,6 +229,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Feature: Added new Author Profile Pages, #417
 * Added: Settings tab for "Author Pages", #729
 * Update: Authors taxonomy queries improvement, #527
+* Added: Added filter to authors rest response, #726
 
 = [3.18.0] - 13 Jun 2022 =
 
