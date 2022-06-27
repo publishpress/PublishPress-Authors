@@ -54,7 +54,7 @@ class Plugin
     {
         // Register our models
         add_action('init', [$this, 'action_init']);
-        add_action('init', [$this, 'action_init_late'], 15);
+        add_action('init', [$this, 'action_init_late'], 1001);
 
         // Installation hooks
         add_action(
@@ -283,6 +283,10 @@ class Plugin
         add_action(
             'pre_get_posts',
             ['MultipleAuthors\\Classes\\Query', 'fix_query_pre_get_posts']
+        );
+        add_action(
+            'pre_get_posts',
+            ['MultipleAuthors\\Classes\\Query', 'fix_frontend_query_pre_get_posts']
         );
         add_filter(
             'posts_where',
@@ -514,6 +518,16 @@ class Plugin
      */
     public function action_init_late()
     {
+        $legacyPlugin          = Factory::getLegacyPlugin();
+        if (!empty($legacyPlugin) && isset($legacyPlugin->multiple_authors)
+            && isset($legacyPlugin->modules->multiple_authors->options->enable_plugin_author_pages)
+            && $legacyPlugin->modules->multiple_authors->options->enable_plugin_author_pages === 'yes'
+        ) {
+            $enable_authors_profile = true;
+        } else {
+            $enable_authors_profile = false;
+        }
+
         // Register new taxonomy so that we can store all the relationships
         $args = [
             'labels'             => [
@@ -550,7 +564,7 @@ class Plugin
                 'menu_name'                  => __('Author', 'publishpress-authors'),
                 'back_to_items'              => __('Back to Authors', 'publishpress-authors'),
             ],
-            'public'             => false,
+            'public'             => $enable_authors_profile ? true : false,
             'hierarchical'       => false,
             'sort'               => true,
             'args'               => [
@@ -567,7 +581,9 @@ class Plugin
             'show_in_quick_edit' => false,
             'meta_box_cb'        => false,
             'query_var'          => 'ppma_author',
-            'rewrite'            => false,
+            'show_in_rest'       => $enable_authors_profile ? true : false,
+            'rest_base'          => $enable_authors_profile ? 'ppma_author' : '',
+            'rewrite'            => $enable_authors_profile ? ['slug' => 'author', 'with_front' => true] : false,
         ];
 
         // If we use the nasty SQL query, we need our custom callback. Otherwise, we still need to flush cache.
@@ -577,6 +593,10 @@ class Plugin
 
         $supported_post_types = Utils::get_post_types_that_support_authors();
         register_taxonomy($this->coauthor_taxonomy, $supported_post_types, $args);
+
+        if (delete_transient('ppma_flush_rewrite_rules')) {
+            flush_rewrite_rules(true);
+        }
     }
 
     /**
@@ -1783,13 +1803,13 @@ class Plugin
         if (isset($attributes['post_id'])) {
             $post_id = $attributes['post_id'];
         }
-        
+
         if (isset($attributes['separator'])) {
             $separator = $attributes['separator'];
         } elseif (isset($attributes['seperator'])) {
             $separator = $attributes['seperator'];
         }
-        
+
         if (isset($attributes['field'])) {
             $field = $attributes['field'];
         }

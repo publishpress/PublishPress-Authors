@@ -22,11 +22,12 @@ if (!function_exists('get_archive_author')) {
      */
     function get_archive_author()
     {
-        if (!is_author()) {
+        if (!is_author() && !is_tax('author')) {
             return false;
         }
 
-        $authorName = get_query_var('author_name');
+        $authorName = is_tax('author') ? get_query_var('ppma_author') : get_query_var('author_name');
+
         if (empty($authorName)) {
             $authorId = get_query_var('author');
             $user = get_user_by('ID', $authorId);
