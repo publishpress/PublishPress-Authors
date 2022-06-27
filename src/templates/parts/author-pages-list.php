@@ -56,7 +56,7 @@ $extra_post_class         .= ($show_post_featured_image) ? ' has-featured-image'
                     <?php
                     $featured_image = ($show_post_featured_image && has_post_thumbnail())
                     ? 'background-image: url("'. wp_get_attachment_image_src(get_post_thumbnail_id(), 'single-post-thumbnail')[0] .'");' : '';
-                    $post_categories  = ($show_post_category) ? get_the_category_list(wp_get_list_item_separator()) : false;
+                    $post_categories  = ($show_post_category) ? get_the_category_list(',') : false;
                     $post_tags        = ($show_post_tags) ? get_the_tags() : [];
                     $post_authors     = ($show_post_authors) ? get_post_authors() : [];
                     ?>
