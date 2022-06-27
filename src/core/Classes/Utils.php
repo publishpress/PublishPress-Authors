@@ -814,4 +814,166 @@ class Utils
 
         return $sanitizedArray;
     }
+
+    /**
+     * Helper function to check if template exist in theme/child theme.
+     * We couldn't use wordpress locate_template() as it support theme compact which load 
+     * default template for files like sidebar.php even if it doesn't exist in theme
+     * 
+     * @param array $template
+     * @return mixed
+     */
+    public static function authors_locate_template($template_names)
+    {
+        $template = false;
+
+        foreach ((array) $template_names as $template_name) {
+            if (!$template_name ) {
+                continue;
+            }
+            if (file_exists(STYLESHEETPATH . '/' . $template_name)) {
+                $template = STYLESHEETPATH . '/' . $template_name;
+                break;
+            } elseif (file_exists(TEMPLATEPATH . '/' . $template_name)) {
+                $template = TEMPLATEPATH . '/' . $template_name;
+                break;
+            }
+        }
+        
+        return $template;
+    }
+
+    /**
+     * Get article excerpt
+     *
+     * @param integer $limit
+     * @param string $source
+     * @param boolean $echo
+     * @param boolean $read_more_link
+     * @return string
+     */
+    public static function ppma_article_excerpt($limit, $source = null, $echo = false, $read_more_link = false) 
+    {
+
+        $excerpt = $source == "content" ? get_the_content() : get_the_excerpt();
+        $excerpt = preg_replace(" (\[.*?\])",'',$excerpt);
+        $excerpt = strip_shortcodes($excerpt);
+        $excerpt = wp_strip_all_tags($excerpt);
+        $excerpt = substr($excerpt, 0, $limit);
+        $excerpt = substr($excerpt, 0, strripos($excerpt, " "));
+        $excerpt = trim(preg_replace('/\s+/', ' ', $excerpt));
+        if (!empty(trim($excerpt))) {
+            $excerpt .= '... ';
+        }
+        if ($read_more_link) {
+            $excerpt .= '<a class="read-more" href="'. esc_url(get_permalink()) .'">'. esc_html__('Read more.', 'publishpress-authors') .'</a>';
+        }
+
+        if ($echo) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+            echo $excerpt;
+        } else {
+            return $excerpt;
+        }
+    }
+
+    /**
+     * Check if current active theme is block theme/support full site editing
+     *
+     * @return bool
+     */
+    public static function ppma_is_block_theme() 
+    {
+
+        $is_block_theme = false;
+
+        if (function_exists('wp_is_block_theme') 
+            && function_exists('block_template_part') 
+            && wp_is_block_theme()
+        ) {
+            $is_block_theme = true;
+        }
+
+        return $is_block_theme;
+    }
+
+    /**
+     * Retreive block theme header
+     *
+     * @return string
+     */
+    public static function ppma_get_block_theme_header() 
+    {
+
+        $block_theme_header = '';
+
+        if (self::ppma_is_block_theme()) {
+            $header_template_part = get_block_template(get_stylesheet() . '//header', 'wp_template_part');
+            if ($header_template_part && isset($header_template_part->content)) {
+                $block_theme_header = do_blocks($header_template_part->content);
+            }
+        }
+
+        return $block_theme_header;
+    }
+
+    /**
+     * Retreive block theme footer
+     *
+     * @return string
+     */
+    public static function ppma_get_block_theme_footer() 
+    {
+
+        $block_theme_footer = '';
+
+        if (self::ppma_is_block_theme()) {
+            $footer_template_part = get_block_template(get_stylesheet() . '//footer', 'wp_template_part');
+            if ($footer_template_part && isset($footer_template_part->content)) {
+                $block_theme_footer = do_blocks($footer_template_part->content);
+            }
+        }
+
+        return $block_theme_footer;
+    }
+
+    /**
+     * Format block theme header
+     *
+     * @return void
+     */
+    public static function ppma_format_block_theme_header() 
+    {
+        $fse_header = self::ppma_get_block_theme_header();
+        $fse_footer = self::ppma_get_block_theme_footer();//we need to get footer as well before wp_head() call to enable fse css generator
+        ?> 
+        <!doctype html>
+        <html <?php language_attributes(); ?>>
+        <head>
+             <meta charset="<?php bloginfo('charset'); ?>">
+             <?php wp_head(); ?>
+        </head>
+        <body <?php body_class(); ?>>
+        <?php wp_body_open(); ?>
+        <div class="wp-site-blocks">
+        <?php echo $fse_header; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+    }
+
+    /**
+     * Format block theme footer
+     *
+     * @return void
+     */
+    public static function ppma_format_block_theme_footer() 
+    {
+        $fse_footer = self::ppma_get_block_theme_footer();
+        ?>
+        </div>
+        <?php echo $fse_footer; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        wp_footer();
+        ?>
+            </body>
+        </html>
+        <?php
+    }
 }
