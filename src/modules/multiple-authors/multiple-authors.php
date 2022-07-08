@@ -1927,7 +1927,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $tabs,
                 [
                     '#ppma-tab-general'     => esc_html__('General', 'publishpress-authors'),
-                    '#ppma-tab-display'     => esc_html__('Display', 'publishpress-authors'),
+                    '#ppma-tab-display'     => esc_html__('Author Boxes', 'publishpress-authors'),
                     '#ppma-tab-author-pages' => esc_html__('Author Pages', 'publishpress-authors'),
                     '#ppma-tab-shortcodes'  => esc_html__('Shortcodes', 'publishpress-authors'),
                     '#ppma-tab-maintenance' => esc_html__('Maintenance', 'publishpress-authors'),
