@@ -262,6 +262,20 @@ if (!function_exists('is_multiple_author_for_post')) {
         if (!$user) {
             return false;
         }
+        $currentPostType = get_post_type($post_id);
+        $enabledPostTypes  = Utils::get_enabled_post_types();
+
+        if (!in_array($currentPostType, $enabledPostTypes)) {
+            $postAuthorId = get_the_author_meta('ID');
+
+            if (is_numeric($user)) {
+                $userId = $user;
+            } else {
+                $userId = $user->ID;
+            }
+
+            return (int)$postAuthorId === (int)$userId;
+        }
 
         if (!isset($postAuthorsCache[$post_id])) {
             $coauthors = get_post_authors($post_id);
