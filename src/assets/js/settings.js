@@ -9,6 +9,10 @@ jQuery(document).ready(function ($) {
 
         var panel = $(this).find('a').first().attr('href');
 
+        if (browserSupportStorage()) {
+            saveStorageData('ppma_settings_active_tab', panel.slice(1));
+        }
+
         $('table[id^="ppma-"]').hide();
         $(panel).show();
     });
@@ -18,6 +22,9 @@ jQuery(document).ready(function ($) {
     if (typeof ppmaSettings != 'undefined' && typeof ppmaSettings.tab != 'undefined') {
        ppmaTab = ppmaSettings.tab;
        $('#publishpress-authors-settings-tabs a[href="#' + ppmaTab + '"]').click();
+    } else if (browserSupportStorage() && getStorageData('ppma_settings_active_tab')) {
+        ppmaTab = getStorageData('ppma_settings_active_tab');
+        $('#publishpress-authors-settings-tabs a[href="#' + ppmaTab + '"]').click();
     }
 
     var $hiddenFields = $('input[id^="ppma-tab-"]');
@@ -86,4 +93,42 @@ jQuery(document).ready(function ($) {
             $('.ppauthors-color-scheme-field').hide();
         }
     });
+
+    /**
+     * Check if browser support local storage
+     * @returns
+     */
+    function browserSupportStorage() {
+      if (typeof (Storage) !== "undefined") {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    /**
+     * Save local storage data
+     * @param {*} storageName 
+     * @param {*} storageValue 
+     */
+    function saveStorageData(storageName, storageValue) {
+      removeStorageData(storageName);
+      window.localStorage.setItem(storageName, JSON.stringify(storageValue));
+    }
+    
+    /**
+     * Get local storage data
+     * @param {*} storageName 
+     * @returns 
+     */
+    function getStorageData(storageName) {
+      return JSON.parse(window.localStorage.getItem(storageName));
+    }
+    
+    /**
+     * Remove local storage data
+     * @param {*} storageName 
+     */
+    function removeStorageData(storageName) {
+      window.localStorage.removeItem(storageName);
+    }
 });
