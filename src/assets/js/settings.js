@@ -84,6 +84,26 @@ jQuery(document).ready(function ($) {
         }
     });
 
+    $('.fallback-user-search-select2').each(function () {
+        var authorsSearch = $(this).ppma_select2({
+            placeholder: $(this).data("placeholder"),
+            allowClear: true,
+            ajax: {
+                url:
+                    window.ajaxurl +
+                    "?action=authors_users_search&nonce=" +
+                    $(this).data("nonce"),
+                dataType: "json",
+                data: function (params) {
+                    return {
+                        q: params.term,
+                        ignored: []
+                    };
+                }
+            }
+        });
+    });
+
     // Show color scheme field only when boxed or centered layouts are selected
     $('#multiple_authors_multiple_authors_options_layout').on('change', function(){
         $selected_layout = $(this).val();
