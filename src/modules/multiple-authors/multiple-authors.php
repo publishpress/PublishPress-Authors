@@ -107,6 +107,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'show_author_post_tags'        => 'yes',
                     'show_author_post_readmore'    => 'yes',
                     'default_author_for_new_posts' => null,
+                    'fallback_user_for_guest_post' => function_exists('get_current_user_id') ? get_current_user_id() : 0,
                     'author_page_post_types'       => []
                 ],
                 'options_page'         => false,
@@ -583,6 +584,17 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'publishpress-authors'
                 ),
                 [$this, 'settings_default_author_for_new_posts'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_general'
+            );
+
+            add_settings_field(
+                'fallback_user_for_guest_post',
+                __(
+                    'Fallback user for Guest Authors:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_fallback_user_for_guest_post'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_general'
             );
@@ -1633,6 +1645,39 @@ if (!class_exists('MA_Multiple_Authors')) {
                 <a href="https://publishpress.com/knowledge-base/troubleshooting/#default-author-is-not-applied-to-new-posts" target="_blank">
                     <?php echo esc_html('Click here for more details.', 'publishpress-authors'); ?>
                 </a>
+            </p>
+            <?php
+        }
+
+        /**
+         * Fallback user for Guest Authors
+         *
+         * @param array $args
+         */
+        public function settings_fallback_user_for_guest_post()
+        {
+            $id    = $this->module->options_group_name . '_fallback_user_for_guest_post';
+            $value = isset($this->module->options->fallback_user_for_guest_post) ? $this->module->options->fallback_user_for_guest_post : '';
+            ?>
+            <label for="<?php echo esc_attr($id); ?>">
+                <select data-value="<?php echo esc_attr($value); ?>"
+                        name="<?php echo esc_attr($this->module->options_group_name) . '[fallback_user_for_guest_post]'; ?>"
+                        data-nonce="<?php echo esc_attr(wp_create_nonce('authors-user-search')); ?>"
+                        class="authors-select2 authors-user-search fallback-user-search-select2"
+                        data-placeholder="<?php esc_attr_e('Search for a fallback author', 'authors'); ?>" style="width: 350px">
+                    <option value=""></option>
+                    <?php
+                    if (!empty($value)) {
+                        $author = Author::get_by_user_id($value);
+                        ?>
+                        <option value="<?php echo esc_attr($value); ?>"
+                                selected="selected"><?php echo esc_html($author->display_name); ?></option>
+                    <?php } ?>
+                </select>
+
+            </label>
+            <p class="ppma_settings_field_description">
+                <?php echo esc_html__('If you only have Guest Authors selected for a post, this user may be used as a fallback. WordPress sometimes requires a WordPress user to be assigned to each post. This user will not be visible on the front of your site.', 'publishpress-authors'); ?>
             </p>
             <?php
         }
