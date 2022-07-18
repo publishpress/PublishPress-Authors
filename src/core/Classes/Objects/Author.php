@@ -926,4 +926,26 @@ class Author
         return apply_filters('ppma_author_posts_count', $counts, $term_id, $post_type);
     }
 
+    /**
+     * Authors description with limit.
+     *
+     * @param int $size
+     * @param mixed $end
+     *
+     * @return string
+     */
+    public function get_description($limit = 0, $end = '...')
+    {
+        $authorDescription = isset($this->description) ? $this->description : '';
+        $descriptionLimit  = (int)$limit;
+
+        if (!empty($authorDescription) && $limit > 0) {
+            if (mb_strwidth($authorDescription, 'UTF-8') > $limit) {
+                $authorDescription = rtrim(mb_strimwidth($authorDescription, 0, $limit, '', 'UTF-8')).$end;
+            }
+        }
+
+        return $authorDescription;
+    }
+
 }

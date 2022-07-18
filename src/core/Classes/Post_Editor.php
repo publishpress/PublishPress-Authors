@@ -166,7 +166,7 @@ class Post_Editor
                     $user = get_user_by('ID', $post->post_author);
 
                     if (is_a($user, 'WP_User')) {
-                        echo sprintf('<span class="current-post-author-off">[%s]</span>', esc_html($user->display_name));
+                        echo sprintf('<span style="display:none;" class="current-post-author-off">[%s]</span>', esc_html($user->display_name));
                     }
                 }
             }
@@ -280,8 +280,19 @@ class Post_Editor
                 ?>
             </script>
             <?php
-            $post       = get_post();
-            $userAuthor = get_user_by('ID', $post->post_author);
+            $post         = get_post();
+            $userAuthor   = get_user_by('ID', $post->post_author);
+            $postAuthorId = $post->post_author;
+
+            $legacyPlugin           = Factory::getLegacyPlugin();
+            $fallbackAuthor         = isset($legacyPlugin->modules->multiple_authors->options->fallback_user_for_guest_post) ?
+                (int)$legacyPlugin->modules->multiple_authors->options->fallback_user_for_guest_post : 0;
+    
+            if ($fallbackAuthor > 0) {
+                $postAuthorId = $fallbackAuthor;
+                $userAuthor   = Author::get_by_user_id($postAuthorId);
+
+            }
             ?>
             <?php if (!$bulkEdit) : ?>
                 <div class="ppma-authors-display-option-wrapper">
@@ -297,23 +308,25 @@ class Post_Editor
                     </label>
                 </div>
             <?php endif; ?>
-            <div id="publishpress-authors-user-author-wrapper">
-                <hr>
-                <label for="publishpress-authors-user-author-select"><?php
-                    echo esc_html__(
-                        'This option is showing because you do not have a WordPress user selected as an author. For some tasks, it can be helpful to have a user selected here. This user will not be visible on the front of your site.',
-                        'publishpress-authors'
-                    ); ?></label>
-                <select id="publishpress-authors-user-author-select" data-nonce="<?php
-                echo esc_attr(wp_create_nonce('authors-user-search')); ?>"
-                        class="authors-select2 authors-user-search"
-                        data-placeholder="<?php
-                        esc_attr_e('Search for an user', 'publishpress-authors'); ?>" style="width: 100%"
-                        name="fallback_author_user">
-                    <option value="<?php echo (int)$post->post_author; ?>">
-                        <?php echo is_object($userAuthor) ? esc_html($userAuthor->display_name) : ''; ?>
-                    </option>
-                </select>
+            <div style="display: none">
+                <div id="publishpress-authors-user-author-wrapper">
+                    <hr>
+                    <label for="publishpress-authors-user-author-select"><?php
+                        echo esc_html__(
+                            'This option is showing because you do not have a WordPress user selected as an author. For some tasks, it can be helpful to have a user selected here. This user will not be visible on the front of your site.',
+                            'publishpress-authors'
+                        ); ?></label>
+                    <select id="publishpress-authors-user-author-select" data-nonce="<?php
+                    echo esc_attr(wp_create_nonce('authors-user-search')); ?>"
+                            class="authors-select2 authors-user-search"
+                            data-placeholder="<?php
+                            esc_attr_e('Search for an user', 'publishpress-authors'); ?>" style="width: 100%"
+                            name="fallback_author_user">
+                        <option value="<?php echo (int)$postAuthorId; ?>">
+                            <?php echo is_object($userAuthor) ? esc_html($userAuthor->display_name) : ''; ?>
+                        </option>
+                    </select>
+                </div>
             </div>
             <?php
         }
