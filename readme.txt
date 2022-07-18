@@ -224,6 +224,16 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [3.19.1] - 18 Jul 2022 =
+
+* Feature: Add a setting for selecting Fallback user for Guest Authors, #743
+* Feature: Allow users to limit the length of a bio in a layout using author.get_description(150), #754
+* Fixed: Conflict between All in one SEO and PublishPress Authors Pro, #762
+* Update: Updated Spanish and Italian translation files, #757
+* Fixed: Empty space between categories is missing, #753
+* Update: Change "Display" tab to "Author Boxes" in settings, #755
+* Update: Remain on active tab after updating settings, #746
+
 = [3.19.0] - 27 Jun 2022 =
 
 * Feature: Added new Author Profile Pages, #417
