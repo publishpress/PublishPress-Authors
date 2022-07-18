@@ -166,7 +166,7 @@ class Post_Editor
                     $user = get_user_by('ID', $post->post_author);
 
                     if (is_a($user, 'WP_User')) {
-                        echo sprintf('<span class="current-post-author-off">[%s]</span>', esc_html($user->display_name));
+                        echo sprintf('<span style="display:none;" class="current-post-author-off">[%s]</span>', esc_html($user->display_name));
                     }
                 }
             }
