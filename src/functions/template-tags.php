@@ -293,11 +293,17 @@ if (!function_exists('multiple_authors_get_all_authors')) {
             } elseif ($result_type === 'recent') {
                 //query recent post by authors
                 $author_recent_args = [
-                    'author'         => $author->ID,
                     'orderby'        => 'post_date',
                     'order'          => 'ASC',
                     'fields'          => 'ids',
-                    'posts_per_page' => 5
+                    'posts_per_page' => 5,
+                    'tax_query' => array(
+                        array(
+                            'taxonomy' => 'author',
+                            'terms'    => $author->term_id,
+                            'field'     => 'term_id'
+                        )
+                    )
                 ];
                 $author_recent_posts = get_posts($author_recent_args);
 
