@@ -214,6 +214,14 @@ if (!function_exists('multiple_authors_get_all_authors')) {
             $guests_only = true;
         }
 
+        //add sort option
+        if (!isset($args['order']) && isset($instance['order'])) {
+            $args['order'] = $instance['order'];
+        }
+        if (!isset($args['orderby']) && isset($instance['orderby'])) {
+            $args['orderby'] = $instance['orderby'];
+        }
+
         //check if result limit is set (only work when request is not guest or user only)
         if (isset($instance['limit_per_page']) && !$users_only && !$guests_only) {
             $paged          = (int)$instance['page'];
@@ -257,7 +265,13 @@ if (!function_exists('multiple_authors_get_all_authors')) {
             }
 
             $term_query .= "GROUP BY t.term_id ";
-            $term_query .= "ORDER BY t.name ASC";
+
+            if ($args['orderby'] === 'count') {
+                $sql_order_by = 'tt.' . $args['orderby'];
+            } else {
+                $sql_order_by = 't.' . $args['orderby'];
+            }
+            $term_query .= "ORDER BY {$sql_order_by} {$args['order']}";
             //add limit if it's a paginated request
             if ($paged) {
                 $term_query .= " LIMIT {$offset}, {$per_page}";
