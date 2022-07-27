@@ -308,7 +308,7 @@ if (!function_exists('multiple_authors_get_all_authors')) {
                 //query recent post by authors
                 $author_recent_args = [
                     'orderby'        => 'post_date',
-                    'order'          => 'ASC',
+                    'order'          => 'DESC',
                     'fields'          => 'ids',
                     'posts_per_page' => 5,
                     'tax_query' => array(
