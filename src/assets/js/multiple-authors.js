@@ -269,12 +269,26 @@ jQuery(document).ready(function ($) {
             .find("#bulk-titles")
             .children()
             .each(function () {
-                $post_ids.push(
-                    $(this)
-                        .attr("id")
-                        .replace(/^(ttle)/i, "")
-                );
+                var new_id = Number($(this)
+                    .attr("id")
+                    .replace(/^(ttle)/i, ""));
+                if (new_id > 0) {
+                    $post_ids.push(new_id);
+                }
             });
+        
+        if (!$post_ids.length) {
+            $bulk_row
+                .find("#bulk-titles .ntdelitem .button-link")
+                .each(function () {
+                    var new_id = Number($(this)
+                        .attr("id")
+                        .replace(/\D/g,''));
+                    if (new_id > 0) {
+                        $post_ids.push(new_id);
+                    }
+                });
+        }
 
         // get the data
         var selectedAuthors = [];
