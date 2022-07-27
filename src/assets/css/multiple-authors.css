@@ -311,10 +311,6 @@ body.block-editor-page select[id^="post-author-selector-"] {
     line-height: 1.5em;
 }
 
-.authors .author_in_post {
-    font-weight: bold;
-}
-
 .current-post-author-off {
     color: silver;
     display: block;
