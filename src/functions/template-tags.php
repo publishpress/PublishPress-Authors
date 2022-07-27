@@ -330,7 +330,14 @@ if (!function_exists('multiple_authors_get_all_authors')) {
                     foreach ($author_recent_posts as $author_recent_post) {
                         $post_index++;
                         if ($post_index === 1) {
-                            $featured_image = has_post_thumbnail($author_recent_post) ? wp_get_attachment_image_src(get_post_thumbnail_id($author_recent_post))[0] : PP_AUTHORS_ASSETS_URL . 'img/no-image.jpeg';
+                            $featured_image = PP_AUTHORS_ASSETS_URL . 'img/no-image.jpeg';
+                            if (has_post_thumbnail($author_recent_post)) {
+                                $featured_image_data = wp_get_attachment_image_src(get_post_thumbnail_id($author_recent_post));
+                                if ($featured_image_data && is_array($featured_image_data)) {
+                                    $featured_image = $featured_image_data[0];
+                                }
+                            }
+                            
                         } else {
                             $featured_image = false;
                         }
