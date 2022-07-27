@@ -184,6 +184,21 @@ class Authors_Widget extends WP_Widget
                 'all'
             );
 
+            if (isset($instance['authors_recent_col']) && (int)$instance['authors_recent_col'] > 0) {
+                $column_width = ((100-8)/(int)$instance['authors_recent_col']);
+                $inline_style = '@media (min-width: 768px) {
+                    .pp-multiple-authors-recent .ppma-col-md-3 {
+                        -webkit-box-flex: 0;
+                        -webkit-flex: 0 0 '.$column_width.'%;
+                        -moz-box-flex: 0;
+                        -ms-flex: 0 0 '.$column_width.'%;
+                        flex: 0 0 '.$column_width.'%;
+                        max-width: '.$column_width.'%;
+                    }
+                }';
+                wp_add_inline_style('multiple-authors-widget-css', $inline_style);
+            }
+
             //load font awesome assets if enable
             $load_font_awesome = isset($legacyPlugin->modules->multiple_authors->options->load_font_awesome)
             ? 'yes' === $legacyPlugin->modules->multiple_authors->options->load_font_awesome : true;
@@ -205,6 +220,13 @@ class Authors_Widget extends WP_Widget
                 );
             }
         }
+    
+        wp_enqueue_script(
+            'multiple-authors-widget',
+            PP_AUTHORS_ASSETS_URL . 'js/multiple-authors-widget.js',
+            ['jquery'],
+            PP_AUTHORS_VERSION
+        );
 
         if (!function_exists('multiple_authors')) {
             require_once PP_AUTHORS_BASE_PATH . 'functions/template-tags.php';
@@ -213,6 +235,10 @@ class Authors_Widget extends WP_Widget
         $css_class = '';
         if (!empty($target)) {
             $css_class = 'multiple-authors-target-' . str_replace('_', '-', $target);
+        }
+
+        if (isset($instance['authors_recent_col']) && (int)$instance['authors_recent_col'] > 0) {
+            $css_class .= ' multiple-authors-col-' . (int)$instance['authors_recent_col'] . '';
         }
 
         $title = isset($instance['title']) ? esc_html($instance['title']) : '';
@@ -236,11 +262,38 @@ class Authors_Widget extends WP_Widget
 
         $showEmpty = isset($instance['show_empty']) ? $instance['show_empty'] : false;
 
+        if (isset($instance['limit_per_page']) && !isset($instance['page'])) {
+            $instance['page'] = (get_query_var('paged')) ? get_query_var('paged') : 1;
+        }
+
+        $author_results   = multiple_authors_get_all_authors(array('hide_empty' => !$showEmpty), $instance);
+        if (isset($author_results['page'])) {
+            $authors     = $author_results['authors'];
+            $total_terms = $author_results['total'];
+            $per_page    = $author_results['per_page'];
+            $page        = $author_results['page'];
+            $pages       = ceil($total_terms/$per_page);
+            $pagination  = paginate_links(
+                [
+                    'current' => $page,
+                    'total' => ceil($total_terms / $per_page)
+                ]
+            );
+
+        } else {
+            $authors    = $author_results;
+            $pagination = false;
+        }
+
         $args = [
             'show_title'   => false,
             'css_class'    => esc_attr($css_class),
             'title'        => $title,
-            'authors'      => multiple_authors_get_all_authors(array('hide_empty' => !$showEmpty)),
+            'authors'      => $authors,
+            'results'      => $authors,
+            'pagination'   => $pagination,
+            'all_text'     => esc_html__('All Authors', 'publishpress-authors'),
+            'no_post_text' => esc_html__('No recent post from this author', 'publishpress-authors'),
             'target'       => $target,
             'item_class'   => 'author url fn',
             'layout'       => $layout,

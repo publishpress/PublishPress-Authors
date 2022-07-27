@@ -1,0 +1,45 @@
+<div class="pp-multiple-authors-wrapper pp-multiple-authors-index alignwide {{ css_class }} pp-multiple-authors-layout-{{ layout }}">
+
+    <ul class="author-index-navigation">
+        <li class="page-item active" data-item="all"><a class="page-link " href="#">{{ all_text }}</a></li>
+        {% for key, value in results %}
+            <li class="page-item" data-item="{{ key }}">
+                <a class="page-link" href="#">{{ key|upper }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% set currentUserIndex = 0 %}
+    {% for alphabet, users in results %}
+        <div class="author-index-group author-index-group-{{ alphabet }}">
+            <div class="author-index-header">
+                <h4 class="author-list-head author-list-head-{{ alphabet }}">{{ alphabet|upper }}</h4>
+            </div>
+            <div class="author-index-authors author-index-{{ alphabet }}">
+                <ul>
+                    {% for author in users %}
+                        {% set currentUserIndex = currentUserIndex + 1 %}
+                        <li class="author-index-item author_index_{{ currentUserIndex }} author_{{ author.slug }}">
+                            <div class="tease-author">
+                                <div class="author-index-author-name">
+                                    <a href="{{ author.link }}" class="{{ item_class }}" rel="author">
+                                        {{ author.display_name|raw }}
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endfor %}
+
+    {% if pagination %}
+        <nav class="footer-navigation navigation pagination">
+            <div class="nav-links">
+                {{ pagination|raw }}
+            </div>
+        </nav>
+    {% endif %}
+
+</div>
