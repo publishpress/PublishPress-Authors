@@ -224,6 +224,20 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [3.20.0] - 28 Jul 2022 =
+
+* Fixed: Bulk edit not working, #741
+* Feature: Added 'authors_recent' layout for Authors List, #124
+* Feature: Added 'authors_index' layout for Authors List, #124
+* Feature: Added 'limit_per_page' option to authors shortcode and widget, #788
+* Feature: Added 'show_empty' option to authors shortcode and widget, #788
+* Feature: Added 'authors' option to authors shortcode and widget, #788
+* Feature: Added 'order' option to authors shortcode and widget, #788
+* Feature: Added 'orderby' option to authors shortcode and widget, #788
+* Feature: Added 'authors_recent_col' to authors shortcode and widget, #788
+* Feature: Add new options to author list widget, #788
+* Update: Italian and spanish translation update, #772
+
 = [3.19.1] - 18 Jul 2022 =
 
 * Feature: Add a setting for selecting Fallback user for Guest Authors, #743
