@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
 Tested up to: 6.0
-Stable tag: 3.19.1
+Stable tag: 3.20.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -223,6 +223,20 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [3.20.0] - 28 Jul 2022 =
+
+* Fixed: Bulk edit not working, #741
+* Feature: Added 'authors_recent' layout for Authors List, #124
+* Feature: Added 'authors_index' layout for Authors List, #124
+* Feature: Added 'limit_per_page' option to authors shortcode and widget, #788
+* Feature: Added 'show_empty' option to authors shortcode and widget, #788
+* Feature: Added 'authors' option to authors shortcode and widget, #788
+* Feature: Added 'order' option to authors shortcode and widget, #788
+* Feature: Added 'orderby' option to authors shortcode and widget, #788
+* Feature: Added 'authors_recent_col' to authors shortcode and widget, #788
+* Feature: Add new options to author list widget, #788
+* Update: Italian and spanish translation update, #772
 
 = [3.19.1] - 18 Jul 2022 =
 
