@@ -1156,6 +1156,85 @@ if (!class_exists('MA_Multiple_Authors')) {
                             '</a>'
                         ),
                     ],
+                    'option_3' => [
+                        'shortcode'   => '[publishpress_authors_list layout="authors_index"]',
+                        'description' => sprintf(
+                            esc_html__(
+                                '%1s Since Authors 3.20.0, we introduced more parameters and new layouts for authors list enhancement. %2s %3s %4s The new layouts are: %5s %6s',
+                                'publishpress-authors-pro'
+                            ),
+                            '<strong>',
+                            '</strong>',
+                            '<br />',
+                            '<br />',
+                            '<code>authors_index</code>',
+                            '<code>authors_recent</code>'
+                        ),
+                    ],
+                    'option_4' => [
+                        'shortcode'   => '[publishpress_authors_box layout="authors_recent" limit_per_page="12"]',
+                        'description' => sprintf(
+                            esc_html__(
+                                'You can also decide the number of authors per page, using %1s where 12 is the limit. Pagination will automatically be enabled when this option is provided',
+                                'publishpress-authors'
+                            ),
+                            '<code class="color-red">limit_per_page="12"</code>'
+                        ),
+                    ],
+                    'option_5' => [
+                        'shortcode'   => '[publishpress_authors_box layout="authors_recent" show_empty="1"]',
+                        'description' => sprintf(
+                            esc_html__(
+                                'You can limit the result to only authors with post by using %1s or %2s to show all authors including those without any post.',
+                                'publishpress-authors'
+                            ),
+                            '<code class="color-red">show_empty="0"</code>',
+                            '<code class="color-red">show_empty="1"</code>'
+                        ),
+                    ],
+                    'option_6' => [
+                        'shortcode'   => '[publishpress_authors_box layout="authors_recent" authors="guests"]',
+                        'description' => sprintf(
+                            esc_html__(
+                                'You can also limit the result to only guest authors by using %1s or %2s to limit to only users.',
+                                'publishpress-authors'
+                            ),
+                            '<code class="color-red">authors="guests"</code>',
+                            '<code class="color-red">authors="users"</code>'
+                        ),
+                    ],
+                    'option_7' => [
+                        'shortcode'   => '[publishpress_authors_box layout="authors_recent" authors_recent_col="4"]',
+                        'description' => sprintf(
+                            esc_html__(
+                                'This is an optional parameter introduced mainly for authors_recent layout to define number of column by using %1s where 4 is the number of column.',
+                                'publishpress-authors'
+                            ),
+                            '<code class="color-red">authors_recent_col="12"</code>'
+                        ),
+                    ],
+                    'option_8' => [
+                        'shortcode'   => '[publishpress_authors_box orderby="count"]',
+                        'description' => sprintf(
+                            esc_html__(
+                                'It\'s now possible to order result based post count by using %1s or name by using %2s',
+                                'publishpress-authors'
+                            ),
+                            '<code class="color-red">orderby="count"</code>',
+                            '<code class="color-red">orderby="name"</code>'
+                        ),
+                    ],
+                    'option_9' => [
+                        'shortcode'   => '[publishpress_authors_box orderby="name" order="asc"]',
+                        'description' => sprintf(
+                            esc_html__(
+                                'You can set the order by using %1s or %2s',
+                                'publishpress-authors'
+                            ),
+                            '<code class="color-red">order="asc"</code>',
+                            '<code class="color-red">order="desc"</code>'
+                        ),
+                    ],
                 ],
             ];
 
