@@ -1161,7 +1161,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         ),
                     ],
                     'option_4' => [
-                        'shortcode'   => '[publishpress_authors_box layout="authors_recent" limit_per_page="12"]',
+                        'shortcode'   => '[publishpress_authors_list layout="authors_recent" limit_per_page="12"]',
                         'description' => sprintf(
                             esc_html__(
                                 'You can choose the number of authors per page using %1s. %2s Pagination will be automatically added if required.',
@@ -1172,7 +1172,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         ),
                     ],
                     'option_5' => [
-                        'shortcode'   => '[publishpress_authors_box layout="authors_recent" show_empty="1"]',
+                        'shortcode'   => '[publishpress_authors_list layout="authors_recent" show_empty="1"]',
                         'description' => sprintf(
                             esc_html__(
                                 'You can limit the result to only authors who are assigned to posts by using %1s. %2s Alternatively, use %3s to show all authors, including those without any posts.',
@@ -1184,7 +1184,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         ),
                     ],
                     'option_6' => [
-                        'shortcode'   => '[publishpress_authors_box layout="authors_recent" authors="guests"]',
+                        'shortcode'   => '[publishpress_authors_list layout="authors_recent" authors="guests"]',
                         'description' => sprintf(
                             esc_html__(
                                 'You can limit the result to only guest authors by using %1s. %2s Alternatively, %3s will show only authors with a WordPress account.',
@@ -1196,7 +1196,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         ),
                     ],
                     'option_7' => [
-                        'shortcode'   => '[publishpress_authors_box layout="authors_recent" authors_recent_col="4"]',
+                        'shortcode'   => '[publishpress_authors_list layout="authors_recent" authors_recent_col="4"]',
                         'description' => sprintf(
                             esc_html__(
                                 'If you are using the authors_recent layout, you can define the number of columns by using %1s.',
@@ -1206,7 +1206,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         ),
                     ],
                     'option_8' => [
-                        'shortcode'   => '[publishpress_authors_box orderby="count"]',
+                        'shortcode'   => '[publishpress_authors_list orderby="count"]',
                         'description' => sprintf(
                             esc_html__(
                                 'To order the results based on post count, use %1s. To order the results by name, use %2s.',
@@ -1217,7 +1217,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         ),
                     ],
                     'option_9' => [
-                        'shortcode'   => '[publishpress_authors_box orderby="name" order="asc"]',
+                        'shortcode'   => '[publishpress_authors_list orderby="name" order="asc"]',
                         'description' => sprintf(
                             esc_html__(
                                 'To further customize the order of results, use %1s or %2s.',
