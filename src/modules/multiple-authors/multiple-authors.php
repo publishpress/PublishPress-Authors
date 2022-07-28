@@ -1210,7 +1210,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                                 'This is an optional parameter introduced mainly for authors_recent layout to define number of column by using %1s where 4 is the number of column.',
                                 'publishpress-authors'
                             ),
-                            '<code class="color-red">authors_recent_col="12"</code>'
+                            '<code class="color-red">authors_recent_col="4"</code>'
                         ),
                     ],
                     'option_8' => [
