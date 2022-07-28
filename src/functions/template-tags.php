@@ -223,7 +223,7 @@ if (!function_exists('multiple_authors_get_all_authors')) {
         }
 
         //check if result limit is set (only work when request is not guest or user only)
-        if (isset($instance['limit_per_page']) && !$users_only && !$guests_only) {
+        if (isset($instance['limit_per_page']) && (int)$instance['limit_per_page'] > 0 && !$users_only && !$guests_only) {
             $paged          = (int)$instance['page'];
             $per_page       = (int)$instance['limit_per_page'];
             $offset         = ($paged-1) * $per_page;
