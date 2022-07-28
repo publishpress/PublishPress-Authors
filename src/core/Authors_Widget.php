@@ -93,15 +93,24 @@ class Authors_Widget extends WP_Widget
         $instance = wp_parse_args(
             (array)$instance,
             array(
-                'title'      => esc_html($this->title),
-                'layout'     => esc_html($legacyPlugin->modules->multiple_authors->options->layout),
-                'show_empty' => true
+                'title'          => esc_html($this->title),
+                'layout'         => esc_html($legacyPlugin->modules->multiple_authors->options->layout),
+                'show_empty'     => true,
+                'limit_per_page' => '',
+                'authors'        => '',
+                'order'          => 'asc',
+                'orderby'        => 'name'
             )
         );
 
-        $title     = esc_html($instance['title']);
-        $layout    = esc_html($instance['layout']);
-        $showEmpty = isset($instance['show_empty']) && (bool)$instance['show_empty'];
+        $title          = esc_html($instance['title']);
+        $layout         = esc_html($instance['layout']);
+        $showEmpty      = isset($instance['show_empty']) && (bool)$instance['show_empty'];
+        $limitPerPage   = esc_html($instance['limit_per_page']);
+        $authors        = esc_html($instance['authors']);
+        $order          = esc_html($instance['order']);
+        $orderBy        = esc_html($instance['orderby']);
+
         $context   = array(
             'labels'  => array(
                 'title'      => esc_html__('Title', 'publishpress-authors'),
@@ -109,22 +118,53 @@ class Authors_Widget extends WP_Widget
                 'show_empty' => esc_html__(
                     'Display All Authors (including those who have not written any posts)',
                     'publishpress-authors'
-                )
+                ),
+                'limit_per_page' => esc_html__('Limits per page', 'publishpress-authors'),
+                'authors'        => esc_html__('Authors', 'publishpress-authors'),
+                'order'          => esc_html__('Order', 'publishpress-authors'),
+                'orderby'        => esc_html__('Order by', 'publishpress-authors')
             ),
             'ids'     => array(
-                'title'      => esc_html($this->get_field_id('title')),
-                'layout'     => esc_html($this->get_field_id('layout')),
-                'show_empty' => esc_html($this->get_field_id('show_empty'))
+                'title'          => esc_html($this->get_field_id('title')),
+                'layout'         => esc_html($this->get_field_id('layout')),
+                'show_empty'     => esc_html($this->get_field_id('show_empty')),
+                'limit_per_page' => esc_html($this->get_field_id('limit_per_page')),
+                'authors'        => esc_html($this->get_field_id('authors')),
+                'order'          => esc_html($this->get_field_id('order')),
+                'orderby'        => esc_html($this->get_field_id('orderby'))
             ),
             'names'   => array(
-                'title'      => esc_html($this->get_field_name('title')),
-                'layout'     => esc_html($this->get_field_name('layout')),
-                'show_empty' => esc_html($this->get_field_name('show_empty'))
+                'title'          => esc_html($this->get_field_name('title')),
+                'layout'         => esc_html($this->get_field_name('layout')),
+                'show_empty'     => esc_html($this->get_field_name('show_empty')),
+                'limit_per_page' => esc_html($this->get_field_name('limit_per_page')),
+                'authors'        => esc_html($this->get_field_name('authors')),
+                'order'          => esc_html($this->get_field_name('order')),
+                'orderby'        => esc_html($this->get_field_name('orderby'))
             ),
             'values'  => array(
-                'title'      => esc_html($title),
-                'layout'     => esc_html($layout),
-                'show_empty' => $showEmpty
+                'title'          => esc_html($title),
+                'layout'         => esc_html($layout),
+                'show_empty'     => $showEmpty,
+                'limit_per_page' => $limitPerPage,
+                'authors'        => $authors,
+                'order'          => $order,
+                'orderby'        => $orderBy
+            ),
+            'options'  => array(
+                'authors'        => [
+                    ''          => esc_html__('All Authors', 'publishpress-authors'),
+                    'guests'    => esc_html__('Guest Authors', 'publishpress-authors'),
+                    'users'     => esc_html__('Users Authors', 'publishpress-authors')
+                ],
+                'order'           => [
+                    'asc'       => esc_html__('Ascending', 'publishpress-authors'),
+                    'desc'      => esc_html__('Descending', 'publishpress-authors')
+                ],
+                'orderby'         => [
+                    'name'       => esc_html__('Name', 'publishpress-authors'),
+                    'count'      => esc_html__('Post Counts', 'publishpress-authors')
+                ]
             ),
             'layouts' => apply_filters('pp_multiple_authors_author_layouts', array()),
         );
@@ -144,10 +184,14 @@ class Authors_Widget extends WP_Widget
     {
         $instance = array();
 
-        $instance['title']      = sanitize_text_field($new_instance['title']);
-        $instance['layout']     = sanitize_text_field($new_instance['layout']);
-        $instance['show_empty'] = isset($new_instance['show_empty']) ? (bool)$new_instance['show_empty'] : false;
-        $layouts                = apply_filters('pp_multiple_authors_author_layouts', array());
+        $instance['title']          = sanitize_text_field($new_instance['title']);
+        $instance['layout']         = sanitize_text_field($new_instance['layout']);
+        $instance['limit_per_page'] = isset($new_instance['limit_per_page']) ? sanitize_text_field($new_instance['limit_per_page']) : '';
+        $instance['authors']        = isset($new_instance['authors']) ? sanitize_text_field($new_instance['authors']) : '';
+        $instance['order']          = isset($new_instance['order']) ? sanitize_text_field($new_instance['order']) : '';
+        $instance['orderby']        = isset($new_instance['orderby']) ? sanitize_text_field($new_instance['orderby']) : '';
+        $instance['show_empty']     = isset($new_instance['show_empty']) ? (bool)$new_instance['show_empty'] : false;
+        $layouts                    = apply_filters('pp_multiple_authors_author_layouts', array());
 
         if (!array_key_exists($instance['layout'], $layouts)) {
             $instance['layout'] = Utils::getDefaultLayout();
@@ -184,6 +228,21 @@ class Authors_Widget extends WP_Widget
                 'all'
             );
 
+            if (isset($instance['authors_recent_col']) && (int)$instance['authors_recent_col'] > 0) {
+                $column_width = ((100-8)/(int)$instance['authors_recent_col']);
+                $inline_style = '@media (min-width: 768px) {
+                    .pp-multiple-authors-recent .ppma-col-md-3 {
+                        -webkit-box-flex: 0;
+                        -webkit-flex: 0 0 '.$column_width.'%;
+                        -moz-box-flex: 0;
+                        -ms-flex: 0 0 '.$column_width.'%;
+                        flex: 0 0 '.$column_width.'%;
+                        max-width: '.$column_width.'%;
+                    }
+                }';
+                wp_add_inline_style('multiple-authors-widget-css', $inline_style);
+            }
+
             //load font awesome assets if enable
             $load_font_awesome = isset($legacyPlugin->modules->multiple_authors->options->load_font_awesome)
             ? 'yes' === $legacyPlugin->modules->multiple_authors->options->load_font_awesome : true;
@@ -205,6 +264,13 @@ class Authors_Widget extends WP_Widget
                 );
             }
         }
+    
+        wp_enqueue_script(
+            'multiple-authors-widget',
+            PP_AUTHORS_ASSETS_URL . 'js/multiple-authors-widget.js',
+            ['jquery'],
+            PP_AUTHORS_VERSION
+        );
 
         if (!function_exists('multiple_authors')) {
             require_once PP_AUTHORS_BASE_PATH . 'functions/template-tags.php';
@@ -213,6 +279,10 @@ class Authors_Widget extends WP_Widget
         $css_class = '';
         if (!empty($target)) {
             $css_class = 'multiple-authors-target-' . str_replace('_', '-', $target);
+        }
+
+        if (isset($instance['authors_recent_col']) && (int)$instance['authors_recent_col'] > 0) {
+            $css_class .= ' multiple-authors-col-' . (int)$instance['authors_recent_col'] . '';
         }
 
         $title = isset($instance['title']) ? esc_html($instance['title']) : '';
@@ -236,11 +306,38 @@ class Authors_Widget extends WP_Widget
 
         $showEmpty = isset($instance['show_empty']) ? $instance['show_empty'] : false;
 
+        if (isset($instance['limit_per_page']) && (int)$instance['limit_per_page'] > 0 && !isset($instance['page'])) {
+            $instance['page'] = (get_query_var('paged')) ? get_query_var('paged') : 1;
+        }
+
+        $author_results   = multiple_authors_get_all_authors(array('hide_empty' => !$showEmpty), $instance);
+        if (isset($author_results['page'])) {
+            $authors     = $author_results['authors'];
+            $total_terms = $author_results['total'];
+            $per_page    = $author_results['per_page'];
+            $page        = $author_results['page'];
+            $pages       = ceil($total_terms/$per_page);
+            $pagination  = paginate_links(
+                [
+                    'current' => $page,
+                    'total' => ceil($total_terms / $per_page)
+                ]
+            );
+
+        } else {
+            $authors    = $author_results;
+            $pagination = false;
+        }
+
         $args = [
             'show_title'   => false,
             'css_class'    => esc_attr($css_class),
             'title'        => $title,
-            'authors'      => multiple_authors_get_all_authors(array('hide_empty' => !$showEmpty)),
+            'authors'      => $authors,
+            'results'      => $authors,
+            'pagination'   => $pagination,
+            'all_text'     => esc_html__('All Authors', 'publishpress-authors'),
+            'no_post_text' => esc_html__('No recent post from this author', 'publishpress-authors'),
             'target'       => $target,
             'item_class'   => 'author url fn',
             'layout'       => $layout,

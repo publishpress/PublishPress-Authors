@@ -1778,6 +1778,10 @@ class Plugin
             'show_title' => true
         ];
 
+        if (isset($attributes['layout']) && in_array($attributes['layout'], ['authors_index', 'authors_recent'])) {
+            $attributes['show_title'] = false;
+        }
+
         $attributes = wp_parse_args($attributes, $defaults);
 
         ob_start();

@@ -311,10 +311,6 @@ body.block-editor-page select[id^="post-author-selector-"] {
     line-height: 1.5em;
 }
 
-.authors .author_in_post {
-    font-weight: bold;
-}
-
 .current-post-author-off {
     color: silver;
     display: block;
@@ -357,7 +353,7 @@ form#edittag tr.form-field #slug {
 
 .ppma-settings-shortcodes-shortcode .shortcode-field {
     width: 82%;
-    max-width: 440px;
+    max-width: 540px;
     padding: 8px 10px;
     border-radius: 3px;
 }

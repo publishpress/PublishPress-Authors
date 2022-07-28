@@ -1,0 +1,84 @@
+<div class="pp-multiple-authors-wrapper pp-multiple-authors-recent alignwide {{ css_class }} pp-multiple-authors-layout-{{ layout }}">
+    <div class="ppma-row">
+        {% for result in results %}
+            {% set author = result.author %}
+            <div class="author_index_{{ loop.index }} author_{{ author.slug }} ppma-author-entry ppma-col-md-3 ppma-col-sm-4 ppma-col-12">
+                <div class="name-row"><a href="{{ author.link }}" class="{{ item_class }}" rel="author">
+                    <h4>{{ author.display_name|raw }}</h4>
+                    </a>
+                    <a href="{{ author.link }}">
+                        {% if author.get_avatar %}
+                            {{ author.get_avatar(107)|raw }}
+                        {% else %}
+                            {{ get_avatar(author.user_email, 107)|raw }}
+                        {% endif %}
+                    </a>
+                </div>
+                <div class="ppma-row-article-block main-block">
+                    <div class="ppma-row">
+                        {% if result.recent_posts %}
+                            {% for post_id, post in result.recent_posts %}
+                                {% if post.featuired_image %}
+                                    <div class="ppma-col-5 featured-image-col post-{{ post_id }}">
+                                        <a href="{{ post.permalink }}">
+                                            <img src="{{ post.featuired_image }}">
+                                        </a>
+                                    </div>
+                                    
+                                    <div class="ppma-col-5 post-{{ post_id }}">
+                                        <div class="text">
+                                            <a href="{{ post.permalink }}" class="headline">
+                                                {{ post.post_title }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="ppma-col-12 post-column post-{{ post_id }}">
+                                        <div class="ppma-row-article-block secondary">
+                                            <div class="ppma-col-12">
+                                                <div class="text">
+                                                    <a href="{{ post.permalink }}" class="headline">
+                                                        {{ post.post_title }}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if result.view_link %}
+                                <div class="ppma-col-12 all-author-post-link">
+                                    <a href="{{ author.link }}">
+                                        <div class="ppma-col-sm-12 article-cta">
+                                            <p>{{ result.view_link|raw }}</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <div class="ppma-col-12">
+                                <div class="ppma-row-article-block secondary">
+                                    <div class="ppma-col-12">
+                                        <div class="text">
+                                            <p class="no-post">{{ no_post_text }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if pagination %}
+        <nav class="footer-navigation navigation pagination">
+            <div class="nav-links">
+                {{ pagination|raw }}
+            </div>
+        </nav>
+    {% endif %}
+    
+</div>
