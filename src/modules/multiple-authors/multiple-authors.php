@@ -1016,7 +1016,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             //add author box shortcode
             $shortcodes['publishpress_authors_box'] = [
                 'label'         => esc_html__('Authors Box', 'publishpress-authors'),
-                'description'   => esc_html__('With the shortcode you can display the author box in any part of the content. ', 'publishpress-authors'),
+                'description'   => esc_html__('With this shortcode you can display the author box in any part of the content. ', 'publishpress-authors'),
                 'options'       => [
                     'option_1' => [
                         'shortcode' => '[publishpress_authors_box]'
@@ -1081,7 +1081,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             //add authors data shortcode
             $shortcodes['publishpress_authors_data'] = [
                 'label'         => esc_html__('Authors Data', 'publishpress-authors'),
-                'description'   => esc_html__('With the shortcode you can display the author names or any profile field in any part of the content.', 'publishpress-authors'),
+                'description'   => esc_html__('With this shortcode you can display the author names or any profile field in any part of the content.', 'publishpress-authors'),
                 'options'       => [
                     'option_1' => [
                         'shortcode' => '[publishpress_authors_data]'
