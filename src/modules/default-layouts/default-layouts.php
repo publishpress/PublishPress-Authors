@@ -103,29 +103,36 @@ if (!class_exists('MA_Default_Layouts')) {
 
             // Check if the layout exists
             $twigFile = 'author_layout/' . $args['layout'] . '.twig';
-            if (!file_exists(PP_AUTHORS_TWIG_PATH . $twigFile)) {
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+            
+            $theme_layout = locate_template(['publishpress-authors/twig/' . $args['layout'] . '.twig']);
+
+            if ($theme_layout) {
+                $twigFile       = $args['layout'] . '.twig';
+            } else {
+                if (!file_exists(PP_AUTHORS_TWIG_PATH . $twigFile)) {
+                    if (defined('WP_DEBUG') && WP_DEBUG) {
+                        error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
                         sprintf(
                             '[PublishPress Authors] Twig file not found for the layout: %s. Falling back to "%s"',
                             $args['layout'],
                             Utils::getDefaultLayout()
                         )
-                    );
+                        );
+                    }
+
+                    $args['layout'] = Utils::getDefaultLayout();
+                    $twigFile       = 'author_layout/' . $args['layout'] . '.twig';
                 }
 
-                $args['layout'] = Utils::getDefaultLayout();
-                $twigFile       = 'author_layout/' . $args['layout'] . '.twig';
-            }
-
-            if (!file_exists(PP_AUTHORS_TWIG_PATH . $twigFile)) {
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+                if (!file_exists(PP_AUTHORS_TWIG_PATH . $twigFile)) {
+                    if (defined('WP_DEBUG') && WP_DEBUG) {
+                        error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
                         sprintf(
                             '[PublishPress Authors] Twig file not found for the layout: %s.',
                             $args['layout']
                         )
-                    );
+                        );
+                    }
                 }
             }
 
@@ -134,9 +141,13 @@ if (!class_exists('MA_Default_Layouts')) {
             ];
 
             $container = Factory::get_container();
+
+            if ($theme_layout) {
+                $theme_path = substr($theme_layout, 0, strrpos($theme_layout, '/'));
+                $container['twig_loader'] = new Twig_Loader_Filesystem($theme_path);
+            }
+            
             $twig      = $container['twig'];
-
-
             $html = $twig->render($twigFile, $args);
 
             return $html;
