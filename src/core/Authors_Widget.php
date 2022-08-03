@@ -343,7 +343,20 @@ class Authors_Widget extends WP_Widget
             'layout'       => $layout,
             'color_scheme' => $color_scheme,
             'show_email'   => $show_email,
-            'show_site'    => $show_site
+            'show_site'    => $show_site,
+            'shortcode'    => $instance,
+            'filter_fields'  => [
+                ''             => esc_html__('Default Search', 'publishpress-authors'),
+                'display_name' => esc_html__('Display Name', 'publishpress-authors'),
+                'first_name'    => esc_html__('First Name', 'publishpress-authors'),
+                'last_name'    => esc_html__('Last Name', 'publishpress-authors')
+            ],
+            'template_options' => [
+                'search_placeholder' => esc_html__('Search Box', 'publishpress-authors'),
+                'search_query'       => isset($_GET['seach_query']) ? esc_attr($_GET['seach_query']) : '',
+                'selected_option'    => isset($_GET['authors_search_filter']) ? esc_attr($_GET['authors_search_filter']) : '',
+                'search_submit'      => esc_html__('Search', 'publishpress-authors')
+            ]
         ];
 
         /**
