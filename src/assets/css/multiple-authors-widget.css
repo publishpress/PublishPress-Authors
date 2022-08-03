@@ -408,6 +408,10 @@
     font-weight: 400;
 }
 
+.pp-multiple-authors-searchbox {
+    margin-bottom: 20px;
+}
+
 @media (min-width: 576px) {
     .pp-multiple-authors-recent .ppma-col-sm-4 {
         -webkit-box-flex: 0;
