@@ -9,6 +9,7 @@
 
 namespace MultipleAuthors;
 
+use MultipleAuthors\Classes\Author_Editor;
 use MultipleAuthors\Classes\Utils;
 use WP_Widget;
 
@@ -329,6 +330,21 @@ class Authors_Widget extends WP_Widget
             $pagination = false;
         }
 
+        $filter_fields = false;
+        if (isset($instance['search_field']) && !empty($instance['search_field'])) {
+            $valid_fields         = Author_Editor::get_fields(false);
+            $search_field_options = explode(',', $instance['search_field']);
+            $search_field_options = array_map('trim', $search_field_options);
+            $filter_fields = [];
+            $filter_fields[''] = esc_html__('Default Search', 'publishpress-authors');
+            foreach ($search_field_options as $search_field_option) {
+                if (isset($valid_fields[$search_field_option])) {
+                    $filter_fields[$search_field_option] = $valid_fields[$search_field_option]['label'];
+                }
+            }
+
+        }
+
         $args = [
             'show_title'   => false,
             'css_class'    => esc_attr($css_class),
@@ -345,16 +361,11 @@ class Authors_Widget extends WP_Widget
             'show_email'   => $show_email,
             'show_site'    => $show_site,
             'shortcode'    => $instance,
-            'filter_fields'  => [
-                ''             => esc_html__('Default Search', 'publishpress-authors'),
-                'display_name' => esc_html__('Display Name', 'publishpress-authors'),
-                'first_name'    => esc_html__('First Name', 'publishpress-authors'),
-                'last_name'    => esc_html__('Last Name', 'publishpress-authors')
-            ],
             'template_options' => [
+                'filter_fields'        => $filter_fields,
                 'search_placeholder' => esc_html__('Search Box', 'publishpress-authors'),
                 'search_query'       => isset($_GET['seach_query']) ? esc_attr($_GET['seach_query']) : '',
-                'selected_option'    => isset($_GET['authors_search_filter']) ? esc_attr($_GET['authors_search_filter']) : '',
+                'selected_option'    => isset($_GET['search_field']) ? esc_attr($_GET['search_field']) : '',
                 'search_submit'      => esc_html__('Search', 'publishpress-authors')
             ]
         ];

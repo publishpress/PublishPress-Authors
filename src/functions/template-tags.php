@@ -231,6 +231,15 @@ if (!function_exists('multiple_authors_get_all_authors')) {
             $args['offset'] = $offset;
         }
 
+        $search_instance = (isset($instance['search_box']) && ($instance['search_box'] === true || $instance['search_box'] === 'true')) ? true : false;
+
+        $search_text = false;
+        $search_field = false;
+        if ($search_instance && !empty($_GET['seach_query'])) {
+            $search_text = !empty($_GET['seach_query']) ? sanitize_text_field($_GET['seach_query']) : '';
+            $search_field = !empty($_GET['search_field']) ? sanitize_text_field($_GET['search_field']) : false;
+        }
+
         $defaults = [
             'hide_empty' => false,
             'orderby'    => 'name',
@@ -239,7 +248,7 @@ if (!function_exists('multiple_authors_get_all_authors')) {
 
         $args = wp_parse_args($args, $defaults);
 
-        if (true === $args['hide_empty']) {
+        if (true === $args['hide_empty'] || $search_text) {
             global $wpdb;
 
             $postTypes = Utils::get_enabled_post_types();
@@ -252,11 +261,24 @@ if (!function_exists('multiple_authors_get_all_authors')) {
             $term_query .= "SELECT t.term_id as `term_id` ";
             $term_query .= "FROM {$wpdb->terms} AS t ";
             $term_query .= "INNER JOIN {$wpdb->term_taxonomy} AS tt ON (tt.term_id = t.term_id) ";
-            $term_query .= "INNER JOIN {$wpdb->term_relationships} AS tr ON (tt.term_taxonomy_id = tr.term_taxonomy_id) ";
-            $term_query .= "INNER JOIN {$wpdb->posts} AS p ON (tr.object_id = p.ID) ";
+            if (true === $args['hide_empty']) {
+                $term_query .= "INNER JOIN {$wpdb->term_relationships} AS tr ON (tt.term_taxonomy_id = tr.term_taxonomy_id) ";
+                $term_query .= "INNER JOIN {$wpdb->posts} AS p ON (tr.object_id = p.ID) ";
+            }
+            if ($search_text && $search_field) {
+                $term_query .= "INNER JOIN {$wpdb->termmeta} AS tm ON (tm.term_id = t.term_id) ";
+            }
             $term_query .= "WHERE tt.taxonomy = 'author' ";
-            $term_query .= "AND p.post_status IN ('publish') ";
-            $term_query .= "AND p.post_type IN ({$postTypes}) ";
+            if (true === $args['hide_empty']) {
+                $term_query .= "AND p.post_status IN ('publish') ";
+                $term_query .= "AND p.post_type IN ({$postTypes}) ";
+            }
+            if ($search_text && !$search_field) {
+                $term_query .= "AND (t.name LIKE '%" . $wpdb->esc_like($search_text) . "%' OR t.slug LIKE '%" . $wpdb->esc_like($search_text) . "%') ";
+            } elseif ($search_text && $search_field) {
+                $term_query .= "AND (tm.meta_key = '{$search_field}'
+                AND tm.meta_value LIKE '%" . $wpdb->esc_like($search_text) . "%') ";
+            }
 
             //get term count before before limit and group by incase it's paginated query
             if ($paged) {
