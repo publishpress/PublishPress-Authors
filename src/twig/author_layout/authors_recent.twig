@@ -1,4 +1,21 @@
 <div class="pp-multiple-authors-wrapper pp-multiple-authors-recent alignwide {{ css_class }} pp-multiple-authors-layout-{{ layout }}">
+    {% if shortcode.search_box %}
+        <div class="pp-multiple-authors-searchbox searchbox">
+            <form action="" method="GET">
+                <input class="widefat" id="authors-search-input" name="seach_query" type="search"
+                    value="{{ template_options.search_query }}" placeholder="{{ template_options.search_placeholder }}">
+                {% if template_options.filter_fields %}
+                    <select id="authors-search-filter" name="search_field">';
+                        {% for option, text in template_options.filter_fields %}
+                            <option value="{{ option }}"
+                                    {% if option == template_options.selected_option %}selected="selected"{% endif %}>{{ text }}</option>
+                        {% endfor %}
+                    </select>
+                {% endif %}
+                <input type="submit" class="button search-submit" id="" name="submit" value="{{ template_options.search_submit }}"/>
+            </form>
+        </div>
+    {% endif %}
     <div class="ppma-row">
         {% for result in results %}
             {% set author = result.author %}
