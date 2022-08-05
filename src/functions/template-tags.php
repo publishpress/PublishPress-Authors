@@ -53,10 +53,11 @@ if (!function_exists('get_post_authors')) {
      *                                            in quick edit after saving.
      *                                            That's why in Post_Editor we called this function with overriding
      *                                            ignoreCache value to be equal true.
+     * @param bool $updateAuthors Updating authors early causes issue with some plugins that get post earlier
      *
      * @return array Array of Author objects, a single WP_User object, or empty.
      */
-    function get_post_authors($post = 0, $ignoreCache = false)
+    function get_post_authors($post = 0, $ignoreCache = false, $updateAuthors = true)
     {
         if (is_object($post)) {
             $post = $post->ID;
@@ -141,7 +142,7 @@ if (!function_exists('get_post_authors')) {
                 $authorsInstances = [$author];
             }
 
-            if (!empty($authorsInstances)) {
+            if (!empty($authorsInstances) && $updateAuthors) {
                 Utils::set_post_authors($postId, $authorsInstances);
             }
         }
@@ -447,7 +448,8 @@ if (!function_exists('is_multiple_author_for_post')) {
         }
 
         if (!isset($postAuthorsCache[$post_id])) {
-            $coauthors = get_post_authors($post_id);
+
+            $coauthors = get_post_authors($post_id, false, false);
 
             $postAuthorsCache[$post_id] = $coauthors;
         }
