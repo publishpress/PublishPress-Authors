@@ -1227,6 +1227,26 @@ if (!class_exists('MA_Multiple_Authors')) {
                             '<code class="color-red">order="desc"</code>'
                         ),
                     ],
+                    'option_10' => [
+                        'shortcode'   => '[publishpress_authors_list layout="authors_recent" search_box="true"]',
+                        'description' => sprintf(
+                            esc_html__(
+                                'To display author search box, use %1s.',
+                                'publishpress-authors'
+                            ),
+                            '<code class="color-red">search_box="true"</code>'
+                        ),
+                    ],
+                    'option_11' => [
+                        'shortcode'   => '[publishpress_authors_list search_box="true" search_field="first_name,last_name" layout="authors_recent"]',
+                        'description' => sprintf(
+                            esc_html__(
+                                'To display a field filter dropdown beside search box, use %1s. This also require search_box parameter and you can seperate multiple fields by comma(\',\') and accept all inbuilt and custom fields',
+                                'publishpress-authors'
+                            ),
+                            '<code class="color-red">search_field="first_name,last_name"</code>'
+                        ),
+                    ],
                 ],
             ];
 
