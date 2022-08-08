@@ -224,7 +224,7 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= [3.20.1] - 07 Aug 2022 =
+= [3.20.1] - 08 Aug 2022 =
 
 * Feature: Added 'search_box' option to authors shortcode and widget, #780
 * Feature: Added 'search_field' option to authors shortcode and widget, #780
