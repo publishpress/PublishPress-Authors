@@ -367,7 +367,7 @@ class Authors_Widget extends WP_Widget
             'results'      => $authors,
             'pagination'   => $pagination,
             'all_text'     => esc_html__('All Authors', 'publishpress-authors'),
-            'no_post_text' => esc_html__('No recent post from this author', 'publishpress-authors'),
+            'no_post_text' => esc_html__('No recent posts from this author', 'publishpress-authors'),
             'target'       => $target,
             'item_class'   => 'author url fn',
             'layout'       => $layout,
