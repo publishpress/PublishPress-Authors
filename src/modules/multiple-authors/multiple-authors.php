@@ -1016,7 +1016,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             //add author box shortcode
             $shortcodes['publishpress_authors_box'] = [
                 'label'         => esc_html__('Authors Box', 'publishpress-authors'),
-                'description'   => esc_html__('With the shortcode you can display the author box in any part of the content. ', 'publishpress-authors'),
+                'description'   => esc_html__('With this shortcode you can display the author box in any part of the content. ', 'publishpress-authors'),
                 'options'       => [
                     'option_1' => [
                         'shortcode' => '[publishpress_authors_box]'
@@ -1081,7 +1081,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             //add authors data shortcode
             $shortcodes['publishpress_authors_data'] = [
                 'label'         => esc_html__('Authors Data', 'publishpress-authors'),
-                'description'   => esc_html__('With the shortcode you can display the author names or any profile field in any part of the content.', 'publishpress-authors'),
+                'description'   => esc_html__('With this shortcode you can display the author names or any profile field in any part of the content.', 'publishpress-authors'),
                 'options'       => [
                     'option_1' => [
                         'shortcode' => '[publishpress_authors_data]'
@@ -1225,6 +1225,26 @@ if (!class_exists('MA_Multiple_Authors')) {
                             ),
                             '<code class="color-red">order="asc"</code>',
                             '<code class="color-red">order="desc"</code>'
+                        ),
+                    ],
+                    'option_10' => [
+                        'shortcode'   => '[publishpress_authors_list layout="authors_recent" search_box="true"]',
+                        'description' => sprintf(
+                            esc_html__(
+                                'To display a search box for authors, use %1s.',
+                                'publishpress-authors'
+                            ),
+                            '<code class="color-red">search_box="true"</code>'
+                        ),
+                    ],
+                    'option_11' => [
+                        'shortcode'   => '[publishpress_authors_list search_box="true" search_field="first_name,last_name" layout="authors_recent"]',
+                        'description' => sprintf(
+                            esc_html__(
+                                'You can also show a dropdown menu that allows users to search on specific author fields. You can add fields to the dropdown using %1s. This requires the search box to be active.',
+                                'publishpress-authors'
+                            ),
+                            '<code class="color-red">search_field="first_name,last_name"</code>'
                         ),
                     ],
                 ],

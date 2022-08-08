@@ -9,6 +9,7 @@
 
 namespace MultipleAuthors;
 
+use MultipleAuthors\Classes\Author_Editor;
 use MultipleAuthors\Classes\Utils;
 use WP_Widget;
 
@@ -96,20 +97,24 @@ class Authors_Widget extends WP_Widget
                 'title'          => esc_html($this->title),
                 'layout'         => esc_html($legacyPlugin->modules->multiple_authors->options->layout),
                 'show_empty'     => true,
+                'search_box'     => false,
                 'limit_per_page' => '',
                 'authors'        => '',
                 'order'          => 'asc',
-                'orderby'        => 'name'
+                'orderby'        => 'name',
+                'search_field'    => 'first_name,last_name'
             )
         );
 
+        $showEmpty      = isset($instance['show_empty']) && (bool)$instance['show_empty'];
+        $searchBox      = isset($instance['search_box']) && (bool)$instance['search_box'];
         $title          = esc_html($instance['title']);
         $layout         = esc_html($instance['layout']);
-        $showEmpty      = isset($instance['show_empty']) && (bool)$instance['show_empty'];
         $limitPerPage   = esc_html($instance['limit_per_page']);
         $authors        = esc_html($instance['authors']);
         $order          = esc_html($instance['order']);
         $orderBy        = esc_html($instance['orderby']);
+        $search_field    = esc_html($instance['search_field']);
 
         $context   = array(
             'labels'  => array(
@@ -119,15 +124,19 @@ class Authors_Widget extends WP_Widget
                     'Display All Authors (including those who have not written any posts)',
                     'publishpress-authors'
                 ),
+                'search_box'     => esc_html__('Enable author\'s search box', 'publishpress-authors'),
                 'limit_per_page' => esc_html__('Limits per page', 'publishpress-authors'),
                 'authors'        => esc_html__('Authors', 'publishpress-authors'),
                 'order'          => esc_html__('Order', 'publishpress-authors'),
-                'orderby'        => esc_html__('Order by', 'publishpress-authors')
+                'orderby'        => esc_html__('Order by', 'publishpress-authors'),
+                'search_field'    => esc_html__('Author\'s search box field (Seperate multiple fields by comma(\',\'))', 'publishpress-authors')
             ),
             'ids'     => array(
                 'title'          => esc_html($this->get_field_id('title')),
                 'layout'         => esc_html($this->get_field_id('layout')),
                 'show_empty'     => esc_html($this->get_field_id('show_empty')),
+                'search_box'     => esc_html($this->get_field_id('search_box')),
+                'search_field'    => esc_html($this->get_field_id('search_field')),
                 'limit_per_page' => esc_html($this->get_field_id('limit_per_page')),
                 'authors'        => esc_html($this->get_field_id('authors')),
                 'order'          => esc_html($this->get_field_id('order')),
@@ -137,6 +146,8 @@ class Authors_Widget extends WP_Widget
                 'title'          => esc_html($this->get_field_name('title')),
                 'layout'         => esc_html($this->get_field_name('layout')),
                 'show_empty'     => esc_html($this->get_field_name('show_empty')),
+                'search_box'     => esc_html($this->get_field_name('search_box')),
+                'search_field'    => esc_html($this->get_field_name('search_field')),
                 'limit_per_page' => esc_html($this->get_field_name('limit_per_page')),
                 'authors'        => esc_html($this->get_field_name('authors')),
                 'order'          => esc_html($this->get_field_name('order')),
@@ -146,6 +157,8 @@ class Authors_Widget extends WP_Widget
                 'title'          => esc_html($title),
                 'layout'         => esc_html($layout),
                 'show_empty'     => $showEmpty,
+                'search_box'     => $searchBox,
+                'search_field'    => $search_field,
                 'limit_per_page' => $limitPerPage,
                 'authors'        => $authors,
                 'order'          => $order,
@@ -191,6 +204,8 @@ class Authors_Widget extends WP_Widget
         $instance['order']          = isset($new_instance['order']) ? sanitize_text_field($new_instance['order']) : '';
         $instance['orderby']        = isset($new_instance['orderby']) ? sanitize_text_field($new_instance['orderby']) : '';
         $instance['show_empty']     = isset($new_instance['show_empty']) ? (bool)$new_instance['show_empty'] : false;
+        $instance['search_field']    = isset($new_instance['search_field']) ? sanitize_text_field($new_instance['search_field']) : '';
+        $instance['search_box']     = isset($new_instance['search_box']) ? (bool)$new_instance['search_box'] : false;
         $layouts                    = apply_filters('pp_multiple_authors_author_layouts', array());
 
         if (!array_key_exists($instance['layout'], $layouts)) {
@@ -329,6 +344,21 @@ class Authors_Widget extends WP_Widget
             $pagination = false;
         }
 
+        $filter_fields = false;
+        if (isset($instance['search_field']) && !empty($instance['search_field'])) {
+            $valid_fields         = Author_Editor::get_fields(false);
+            $search_field_options = explode(',', $instance['search_field']);
+            $search_field_options = array_map('trim', $search_field_options);
+            $filter_fields = [];
+            $filter_fields[''] = esc_html__('Default Search', 'publishpress-authors');
+            foreach ($search_field_options as $search_field_option) {
+                if (isset($valid_fields[$search_field_option])) {
+                    $filter_fields[$search_field_option] = $valid_fields[$search_field_option]['label'];
+                }
+            }
+
+        }
+
         $args = [
             'show_title'   => false,
             'css_class'    => esc_attr($css_class),
@@ -337,13 +367,21 @@ class Authors_Widget extends WP_Widget
             'results'      => $authors,
             'pagination'   => $pagination,
             'all_text'     => esc_html__('All Authors', 'publishpress-authors'),
-            'no_post_text' => esc_html__('No recent post from this author', 'publishpress-authors'),
+            'no_post_text' => esc_html__('No recent posts from this author', 'publishpress-authors'),
             'target'       => $target,
             'item_class'   => 'author url fn',
             'layout'       => $layout,
             'color_scheme' => $color_scheme,
             'show_email'   => $show_email,
-            'show_site'    => $show_site
+            'show_site'    => $show_site,
+            'shortcode'    => $instance,
+            'template_options' => [
+                'filter_fields'        => $filter_fields,
+                'search_placeholder' => esc_html__('Search Box', 'publishpress-authors'),
+                'search_query'       => isset($_GET['seach_query']) ? esc_attr($_GET['seach_query']) : '',
+                'selected_option'    => isset($_GET['search_field']) ? esc_attr($_GET['search_field']) : '',
+                'search_submit'      => esc_html__('Search', 'publishpress-authors')
+            ]
         ];
 
         /**

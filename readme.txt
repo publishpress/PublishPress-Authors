@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
 Tested up to: 6.0
-Stable tag: 3.20.0
+Stable tag: 3.20.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -223,6 +223,16 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [3.20.1] - 08 Aug 2022 =
+
+* Feature: Added 'search_box' option to authors shortcode and widget, #780
+* Feature: Added 'search_field' option to authors shortcode and widget, #780
+* Feature: Added pagination and Search to all defaults layout, #819
+* Feature: Added search box and search field option to authors list widget #822
+* Fixed: Conflict with PublishPress Calendar, #818
+* Update: Allow users to edit "Authors Recent", "Authors Index" and default layouts, #801
+* Update: ES-FR-IT translation updates, #804
 
 = [3.20.0] - 28 Jul 2022 =
 
