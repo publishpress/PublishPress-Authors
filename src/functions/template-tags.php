@@ -284,7 +284,7 @@ if (!function_exists('multiple_authors_get_all_authors')) {
             //get term count before before limit and group by incase it's paginated query
             if ($paged) {
                 $term_count_query = str_replace("SELECT t.term_id as `term_id`", "SELECT COUNT(DISTINCT t.term_id)", $term_query);
-                $term_counts = $wpdb->get_var($term_query);
+                $term_counts = $wpdb->get_var($term_count_query);
             }
 
             $term_query .= "GROUP BY t.term_id ";

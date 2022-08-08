@@ -2,9 +2,35 @@
     <h2 class="pp-multiple-authors-layout-inline widget-title">{{ title }}</h2>
 {% endif %}
 
+{% if shortcode.search_box %}
+    <div class="pp-multiple-authors-searchbox searchbox">
+        <form action="" method="GET">
+            <input class="widefat" id="authors-search-input" name="seach_query" type="search"
+                value="{{ template_options.search_query }}" placeholder="{{ template_options.search_placeholder }}">
+            {% if template_options.filter_fields %}
+                <select id="authors-search-filter" name="search_field">';
+                    {% for option, text in template_options.filter_fields %}
+                        <option value="{{ option }}"
+                                {% if option == template_options.selected_option %}selected="selected"{% endif %}>{{ text }}</option>
+                    {% endfor %}
+                </select>
+            {% endif %}
+            <input type="submit" class="button search-submit" id="" name="submit" value="{{ template_options.search_submit }}"/>
+        </form>
+    </div>
+{% endif %}
+
 {% for author in authors %}
     <span class="pp-multiple-authors-layout-inline author_index_{{ loop.index }} author_{{ author.slug }}">
         <a href="{{ author.link }}" class="{{ item_class }}"
            rel="author">{{ author.display_name|raw }}</a>{% if loop.index < authors|length %},{% endif %}
     </span>
 {% endfor %}
+
+{% if pagination %}
+    <nav class="footer-navigation navigation pagination">
+        <div class="nav-links">
+            {{ pagination|raw }}
+        </div>
+    </nav>
+ {% endif %}
