@@ -97,7 +97,7 @@ class Authors_Widget extends WP_Widget
                 'title'          => esc_html($this->title),
                 'layout'         => esc_html($legacyPlugin->modules->multiple_authors->options->layout),
                 'show_empty'     => true,
-                'search_box'     => true,
+                'search_box'     => false,
                 'limit_per_page' => '',
                 'authors'        => '',
                 'order'          => 'asc',
