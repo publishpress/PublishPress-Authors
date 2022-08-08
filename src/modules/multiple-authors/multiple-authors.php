@@ -1231,7 +1231,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'shortcode'   => '[publishpress_authors_list layout="authors_recent" search_box="true"]',
                         'description' => sprintf(
                             esc_html__(
-                                'To display author search box, use %1s.',
+                                'To display a search box for authors, use %1s.',
                                 'publishpress-authors'
                             ),
                             '<code class="color-red">search_box="true"</code>'
@@ -1241,7 +1241,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'shortcode'   => '[publishpress_authors_list search_box="true" search_field="first_name,last_name" layout="authors_recent"]',
                         'description' => sprintf(
                             esc_html__(
-                                'To display a field filter dropdown beside search box, use %1s. This also require search_box parameter and you can seperate multiple fields by comma(\',\') and accept all inbuilt and custom fields',
+                                'You can also show a dropdown menu that allows users to search on specific author fields. You can add fields to the dropdown using %1s. This requires the search box to be active.',
                                 'publishpress-authors'
                             ),
                             '<code class="color-red">search_field="first_name,last_name"</code>'
