@@ -224,6 +224,16 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [3.20.1] - 07 Aug 2022 =
+
+* Feature: Added 'search_box' option to authors shortcode and widget, #780
+* Feature: Added 'search_field' option to authors shortcode and widget, #780
+* Feature: Added pagination and Search to all defaults layout, #819
+* Feature: Added search box and search field option to authors list widget #822
+* Fixed: Conflict with PublishPress Calendar, #818
+* Update: Allow users to edit "Authors Recent", "Authors Index" and default layouts, #801
+* Update: ES-FR-IT translation updates, #804
+
 = [3.20.0] - 28 Jul 2022 =
 
 * Fixed: Bulk edit not working, #741
