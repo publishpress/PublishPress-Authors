@@ -51,6 +51,19 @@
     />
     <label for="{{ esc_attr( ids.show_empty ) }}">{{ labels.show_empty }}</label>
 </p>
+
+<p>
+    <input class="checkbox" id="{{ esc_attr( ids.search_box ) }}" name="{{ esc_attr( names.search_box ) }}" type="checkbox"
+        {% if values.search_box %} checked {% endif %}
+    />
+    <label for="{{ esc_attr( ids.search_box ) }}">{{ labels.search_box|raw }}</label>
+</p>
+
+<p>
+    <label for="{{ esc_attr( ids.search_field ) }}">{{ labels.search_field|raw }}:</label>
+    <input class="widefat" id="{{ esc_attr( ids.search_field ) }}" name="{{ esc_attr( names.search_field ) }}" type="text"
+           value="{{ esc_attr( values.search_field ) }}">
+</p>
 {% endblock %}
 
 {% block plural_field %}
