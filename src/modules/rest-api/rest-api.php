@@ -128,6 +128,7 @@ if (!class_exists('MA_REST_API')) {
                     'is_guest'     => $isGuest,
                     'slug'         => $author->slug,
                     'display_name' => $author->display_name,
+                    'avatar_url'   => $author->get_avatar_url(),
                 ];
             }
 
