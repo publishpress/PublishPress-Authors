@@ -114,12 +114,6 @@
     margin-left: 1px
 }
 
-.pp-multiple-authors-layout-boxed .multiple-authors-links a:nth-child(1) span,
-.pp-multiple-authors-layout-centered .multiple-authors-links a:nth-child(1) span  {
-    font-size: 14px;
-    vertical-align: middle;
-}
-
 .pp-multiple-authors-layout-boxed .ppma-links {
     position: absolute;
     top: 10px;
