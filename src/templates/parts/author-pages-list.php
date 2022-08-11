@@ -1,8 +1,8 @@
 <?php
 /**
  * The template for author taxonomy
- * 
- * This template can be overridden by copying this file in '/publishpress-authors/templates/' 
+ *
+ * This template can be overridden by copying this file in '/publishpress-authors/templates/'
  * of your root theme or child theme's directory. E.g:
  * /publishpress-authors/templates/author-pages-list.php to your theme or child theme's directory
  * and customize.
@@ -42,9 +42,9 @@ $extra_post_class         .= ($show_post_featured_image) ? ' has-featured-image'
         <?php the_archive_title('<h1 class="ppma-page-title page-title">', '</h1>'); ?>
         <?php if ($show_author_pages_bio) : ?>
             <div class="ppma-author-pages-author-box-wrap">
-               <?php 
+               <?php
                 // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-                echo do_shortcode('[publishpress_authors_box archive="1" show_title="false" layout="'. $author_pages_bio_layout .'"]'); 
+                echo do_shortcode('[publishpress_authors_box archive="1" show_title="false" layout="'. $author_pages_bio_layout .'"]');
                ?>
             </div>
         <?php endif; ?>
@@ -83,9 +83,9 @@ $extra_post_class         .= ($show_post_featured_image) ? ' has-featured-image'
                                                         <?php $term_link = get_term_link($post_author->term_id); ?>
                                                         <a href="<?php echo ($term_link) ? esc_url($term_link) : ''; ?>">
                                                             <?php echo esc_html($post_author->display_name); ?><?php
-                                                            if (count($post_authors) !== $index) { 
+                                                            if (count($post_authors) !== $index) {
                                                                 echo ', ';
-                                                            } 
+                                                            }
                                                             ?>
                                                         </a>
                                                     <?php endforeach; ?>
@@ -128,7 +128,7 @@ $extra_post_class         .= ($show_post_featured_image) ? ' has-featured-image'
                         </div>
                     </article>
             <?php endwhile; ?>
-            
+
             <div class="ppma-article-pagination">
                 <?php the_posts_pagination(
                     [
@@ -143,4 +143,4 @@ $extra_post_class         .= ($show_post_featured_image) ? ' has-featured-image'
             <h2><?php esc_html_e('Post not found for the author', 'publishpress-authors'); ?></h2>
         <?php endif; ?>
     </div> <!-- #main-content -->
-</div
+</div>
