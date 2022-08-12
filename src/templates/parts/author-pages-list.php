@@ -33,13 +33,17 @@ $show_post_comments       = $legacyPlugin->modules->multiple_authors->options->s
 $show_post_category       = $legacyPlugin->modules->multiple_authors->options->show_author_post_category === 'yes';
 $show_post_tags           = $legacyPlugin->modules->multiple_authors->options->show_author_post_tags === 'yes';
 $show_post_readmore       = $legacyPlugin->modules->multiple_authors->options->show_author_post_readmore === 'yes';
+$show_author_page_title   = $legacyPlugin->modules->multiple_authors->options->show_author_page_title === 'yes';
 
 $extra_post_class         = 'ppma-article';
 $extra_post_class         .= ($show_post_featured_image) ? ' has-featured-image' : ' no-featured-image';
 ?>
 <div class="site-main alignwide">
     <div class="ppma-page-header">
-        <?php the_archive_title('<h1 class="ppma-page-title page-title">', '</h1>'); ?>
+        <?php 
+        if ($show_author_page_title) {
+            the_archive_title('<h1 class="ppma-page-title page-title">', '</h1>');
+        } ?>
         <?php if ($show_author_pages_bio) : ?>
             <div class="ppma-author-pages-author-box-wrap">
                <?php
