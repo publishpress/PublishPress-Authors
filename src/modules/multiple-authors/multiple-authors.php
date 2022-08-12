@@ -107,6 +107,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'show_author_post_tags'        => 'yes',
                     'show_author_post_readmore'    => 'yes',
                     'show_author_page_title'       => 'yes',
+                    'author_pages_title_header'    => 'h1',
+                    'author_post_title_header'     => 'h2',
                     'default_author_for_new_posts' => null,
                     'fallback_user_for_guest_post' => function_exists('get_current_user_id') ? get_current_user_id() : 0,
                     'author_page_post_types'       => []
@@ -740,6 +742,22 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'publishpress-authors'
                 ),
                 [$this, 'settings_show_author_page_title'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_author_pages'
+            );
+
+            add_settings_field(
+                'author_pages_title_header',
+                __('Author pages title header:', 'publishpress-authors'),
+                [$this, 'settings_author_pages_title_header'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_author_pages'
+            );
+
+            add_settings_field(
+                'author_post_title_header',
+                __('Author post title header:', 'publishpress-authors'),
+                [$this, 'settings_author_post_title_header'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_author_pages'
             );
@@ -1449,6 +1467,70 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
 
             foreach ($author_pages_layouts as $layout => $text) {
+                $selected = $value === $layout ? 'selected="selected"' : '';
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                echo '<option value="' . esc_attr($layout) . '" ' . $selected . '>' . esc_html($text) . ' &emsp; &emsp; &emsp; &emsp; </option>';
+            }
+
+            echo '</select>';
+            echo '</label>';
+        }
+
+
+        /**
+         * @param array $args
+         */
+        public function settings_author_pages_title_header($args = [])
+        {
+            $id    = $this->module->options_group_name . '_author_pages_title_header';
+            $value = isset($this->module->options->author_pages_title_header) ? $this->module->options->author_pages_title_header : 'list';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<select id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_pages_title_header]">';
+
+            $author_pages_title_headers = [
+                'h1' => esc_html__('H1', 'publishpress-authors'), 
+                'h2' => esc_html__('H2', 'publishpress-authors'), 
+                'h3' => esc_html__('H3', 'publishpress-authors'), 
+                'h4' => esc_html__('H4', 'publishpress-authors'), 
+                'h5' => esc_html__('H5', 'publishpress-authors'), 
+                'h6' => esc_html__('H6', 'publishpress-authors')
+            ];
+
+            foreach ($author_pages_title_headers as $layout => $text) {
+                $selected = $value === $layout ? 'selected="selected"' : '';
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                echo '<option value="' . esc_attr($layout) . '" ' . $selected . '>' . esc_html($text) . ' &emsp; &emsp; &emsp; &emsp; </option>';
+            }
+
+            echo '</select>';
+            echo '</label>';
+        }
+
+
+        /**
+         * @param array $args
+         */
+        public function settings_author_post_title_header($args = [])
+        {
+            $id    = $this->module->options_group_name . '_author_post_title_header';
+            $value = isset($this->module->options->author_post_title_header) ? $this->module->options->author_post_title_header : 'list';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<select id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_post_title_header]">';
+
+            $author_post_title_headers = [
+                'h1' => esc_html__('H1', 'publishpress-authors'), 
+                'h2' => esc_html__('H2', 'publishpress-authors'), 
+                'h3' => esc_html__('H3', 'publishpress-authors'), 
+                'h4' => esc_html__('H4', 'publishpress-authors'), 
+                'h5' => esc_html__('H5', 'publishpress-authors'), 
+                'h6' => esc_html__('H6', 'publishpress-authors')
+            ];
+
+            foreach ($author_post_title_headers as $layout => $text) {
                 $selected = $value === $layout ? 'selected="selected"' : '';
                 // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 echo '<option value="' . esc_attr($layout) . '" ' . $selected . '>' . esc_html($text) . ' &emsp; &emsp; &emsp; &emsp; </option>';
