@@ -109,6 +109,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'show_author_page_title'       => 'yes',
                     'author_pages_title_header'    => 'h1',
                     'author_post_title_header'     => 'h2',
+                    'author_post_custom_width'     => '',
+                    'author_post_custom_height'    => '',
                     'default_author_for_new_posts' => null,
                     'fallback_user_for_guest_post' => function_exists('get_current_user_id') ? get_current_user_id() : 0,
                     'author_page_post_types'       => []
@@ -769,6 +771,28 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'publishpress-authors'
                 ),
                 [$this, 'settings_show_author_post_featured_image'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_author_pages'
+            );
+
+            add_settings_field(
+                'author_post_custom_width',
+                __(
+                    'Featured image custom width:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_author_post_custom_width'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_author_pages'
+            );
+
+            add_settings_field(
+                'author_post_custom_height',
+                __(
+                    'Featured image custom height:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_author_post_custom_height'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_author_pages'
             );
@@ -1552,6 +1576,38 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '<label for="' . esc_attr($id) . '">';
 
             echo '<input type="number" min="1" step="1" class="small-text" value="' . esc_attr($value) . '" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_pages_grid_layout_column]">';
+            echo '</label>';
+
+        }
+
+        /**
+         * @param array $args
+         */
+        public function settings_author_post_custom_width($args = [])
+        {
+            $id    = $this->module->options_group_name . '_author_post_custom_width';
+            $value = isset($this->module->options->author_post_custom_width) ? $this->module->options->author_post_custom_width : '';
+
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="number" min="1" step="1" class="small-text" value="' . esc_attr($value) . '" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_post_custom_width]">';
+            echo '</label>';
+
+        }
+
+        /**
+         * @param array $args
+         */
+        public function settings_author_post_custom_height($args = [])
+        {
+            $id    = $this->module->options_group_name . '_author_post_custom_height';
+            $value = isset($this->module->options->author_post_custom_height) ? $this->module->options->author_post_custom_height : '';
+
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="number" min="1" step="1" class="small-text" value="' . esc_attr($value) . '" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_post_custom_height]">';
             echo '</label>';
 
         }

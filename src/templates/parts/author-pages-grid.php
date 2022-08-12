@@ -36,9 +36,19 @@ $show_post_readmore        = $legacyPlugin->modules->multiple_authors->options->
 $show_author_page_title    = $legacyPlugin->modules->multiple_authors->options->show_author_page_title === 'yes';
 $author_pages_title_header = $legacyPlugin->modules->multiple_authors->options->author_pages_title_header;
 $author_post_title_header  = $legacyPlugin->modules->multiple_authors->options->author_post_title_header;
+$author_post_custom_width  = (int) $legacyPlugin->modules->multiple_authors->options->author_post_custom_width;
+$author_post_custom_height = (int) $legacyPlugin->modules->multiple_authors->options->author_post_custom_height;
 
 $extra_post_class          = 'ppma-article';
 $extra_post_class          .= ($show_post_featured_image) ? ' has-featured-image' : ' no-featured-image';
+
+$featured_image_style      = '';
+if ($author_post_custom_width > 0) {
+    $featured_image_style  .= 'width: '.$author_post_custom_width.'px;'; 
+}
+if ($author_post_custom_height > 0) {
+    $featured_image_style  .= 'height: '.$author_post_custom_height.'px;'; 
+}
 ?>
 <div class="site-main alignwide">
     <div class="ppma-page-header">
@@ -60,15 +70,17 @@ $extra_post_class          .= ($show_post_featured_image) ? ' has-featured-image
         <?php if (have_posts()) : ?>
             <?php while ( have_posts() ) : the_post(); ?>
                     <?php
-                    $featured_image = ($show_post_featured_image && has_post_thumbnail())
-                    ? 'background-image: url("'. wp_get_attachment_image_src(get_post_thumbnail_id(), 'single-post-thumbnail')[0] .'");' : '';
+                    $featured_image = PP_AUTHORS_ASSETS_URL . 'img/no-image-450.jpeg';
+                    $featured_image = has_post_thumbnail() ? wp_get_attachment_image_src(get_post_thumbnail_id(), 'single-post-thumbnail')[0] : $featured_image;
                     $post_categories  = ($show_post_category) ? get_the_category_list(', ') : false;
                     $post_tags        = ($show_post_tags) ? get_the_tags() : [];
                     $post_authors     = ($show_post_authors) ? get_post_authors() : [];
                     ?>
                     <article id="post-<?php the_ID(); ?>" <?php post_class($extra_post_class); ?>>
                         <div class="ppma-grid-post-thumb">
-                            <a class="ppma-grid-post-image-holder" href="<?php the_permalink(); ?>" style="<?php esc_attr_e($featured_image); ?>"></a>
+                            <?php if ($show_post_featured_image) : ?>
+                                <img src="<?php echo esc_url($featured_image); ?>" style="<?php echo esc_attr($featured_image_style); ?>">
+                            <?php endif; ?>
                         </div>
 
                         <div class="ppma-grid-post-content">
