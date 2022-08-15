@@ -366,7 +366,7 @@ if (!function_exists('multiple_authors_get_all_authors')) {
                         }
                         $author_recent[$author_recent_post] = [
                             'ID'              => $author_recent_post,
-                            'post_title'      => get_the_title($author_recent_post),
+                            'post_title'      => html_entity_decode(get_the_title($author_recent_post)),
                             'permalink'       => get_the_permalink($author_recent_post),
                             'featuired_image' => $featured_image
 
