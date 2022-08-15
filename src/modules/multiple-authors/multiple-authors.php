@@ -1172,6 +1172,13 @@ if (!class_exists('MA_Multiple_Authors')) {
                         ),
                     ],
                     'option_5' => [
+                        'shortcode'   => '[publishpress_authors_data term_id="102"]',
+                        'description' => esc_html__(
+                            'You can retrieve a specific author data by providing the author term id. For example, this shortcode will load the author with term id of 102',
+                            'publishpress-authors'
+                        ),
+                    ],
+                    'option_6' => [
                         'shortcode'   => '[publishpress_authors_data user_objects="true"]',
                         'description' => sprintf(
                             esc_html__(
