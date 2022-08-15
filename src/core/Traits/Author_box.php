@@ -271,6 +271,7 @@ trait Author_box
      * @param string $field
      * @param mixed $separator
      * @param mixed $user_objects
+     * @param mixed $term_id
      *
      * @return string
      */
@@ -278,7 +279,8 @@ trait Author_box
         $post_id = false,
         $field = 'display_name',
         $separator = ',',
-        $user_objects = false
+        $user_objects = false,
+        $term_id = false
     ) {
         global $post;
 
@@ -294,7 +296,15 @@ trait Author_box
             $post_id = (int) $post_id;
         }
 
-        $authors = get_post_authors($post_id, true, false);
+        if ($term_id && (int)$term_id > 0) {
+            $authors = [];
+            $term_author = Author::get_by_term_id($term_id);
+            if ($term_author) {
+                $authors[] = $term_author;
+            }
+        } else {
+            $authors = get_post_authors($post_id, true, false);
+        }
 
         if (!$user_objects) {
             if (!empty($authors)) {

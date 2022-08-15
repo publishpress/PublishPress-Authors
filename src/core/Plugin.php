@@ -1802,6 +1802,7 @@ class Plugin
         $post_id      = false;
         $separator    = ',';
         $user_objects = false;
+        $term_id      = false;
 
 
         if (isset($attributes['post_id'])) {
@@ -1822,7 +1823,11 @@ class Plugin
             $user_objects = $attributes['user_objects'] === 'true' || (int)$attributes['user_objects'] === 1;
         }
 
-        return $this->get_authors_data($post_id, $field, $separator, $user_objects);
+        if (isset($attributes['term_id'])) {
+            $term_id = $attributes['term_id'];
+        }
+
+        return $this->get_authors_data($post_id, $field, $separator, $user_objects, $term_id);
     }
 
     /**
