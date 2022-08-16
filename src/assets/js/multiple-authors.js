@@ -634,8 +634,11 @@ jQuery(document).ready(function ($) {
 
     //change submit button to enable slug generation on custom button click
     if ($('body.taxonomy-author form#addtag #submit').length > 0) {
-        $('body.taxonomy-author form#addtag #submit').hide();
-        $('body.taxonomy-author form#addtag #submit').after('<input type="button" id="author-submit" class="button button-primary" value="' + $('body.taxonomy-author form#addtag #submit').val() + '">');
+        var buttonTimeoutFn = setTimeout(function () {
+            $('body.taxonomy-author form#addtag #submit').hide();
+            $('body.taxonomy-author form#addtag #submit').after('<input type="button" id="author-submit" class="button button-primary" value="' + $('body.taxonomy-author form#addtag #submit').val() + '">');
+            clearTimeout(buttonTimeoutFn);
+        }, 50);
     }
 
     //generate author slug when adding author.
