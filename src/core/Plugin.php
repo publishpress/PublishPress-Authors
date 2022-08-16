@@ -1506,6 +1506,10 @@ class Plugin
      */
     public function load_edit()
     {
+        if (isset($_GET['action']) && $_GET['action'] === 'edit') {
+            return;
+        }
+        
         $screen               = get_current_screen();
         $supported_post_types = Utils::get_post_types_that_support_authors();
         if (in_array($screen->post_type, $supported_post_types)) {
