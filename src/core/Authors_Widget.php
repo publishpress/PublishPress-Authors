@@ -185,7 +185,9 @@ class Authors_Widget extends WP_Widget
                 ],
                 'orderby'         => [
                     'name'       => esc_html__('Name', 'publishpress-authors'),
-                    'count'      => esc_html__('Post Counts', 'publishpress-authors')
+                    'count'      => esc_html__('Post Counts', 'publishpress-authors'),
+                    'first_name'  => esc_html__('First Name', 'publishpress-authors'),
+                    'last_name'  => esc_html__('Last Name', 'publishpress-authors')
                 ]
             ),
             'layouts' => apply_filters('pp_multiple_authors_author_layouts', array()),
