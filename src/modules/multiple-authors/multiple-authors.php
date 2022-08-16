@@ -1270,11 +1270,13 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'shortcode'   => '[publishpress_authors_list orderby="count"]',
                         'description' => sprintf(
                             esc_html__(
-                                'To order the results based on post count, use %1s. To order the results by name, use %2s.',
+                                'To order the results based on post count, use %1s. To order the results by name, use %2s. Alternatively, you can order by profile fields like %3s, %4s etc',
                                 'publishpress-authors'
                             ),
                             '<code class="color-red">orderby="count"</code>',
-                            '<code class="color-red">orderby="name"</code>'
+                            '<code class="color-red">orderby="name"</code>',
+                            '<code class="color-red">first_name</code>',
+                            '<code class="color-red">last_name</code>'
                         ),
                     ],
                     'option_9' => [
