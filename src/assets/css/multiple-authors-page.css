@@ -40,6 +40,13 @@ body.tax-author .ast-container {
     margin-right: 0;
 }
 
+.ppma-page-content.list .article-image img {
+    height: auto;
+    max-width: 100%;
+    max-height: 208px;
+    width: 313px;
+}
+
 .ppma-page-content.list .featured-image-link {
     display: block;
     position: relative;
@@ -180,6 +187,11 @@ body.tax-author .ast-container {
     position: relative;
     overflow: hidden;
     display: block;
+}
+
+.ppma-page-content.grid .ppma-grid-post-thumb img {
+    height: auto;
+    max-width: 100%;
 }
 
 .ppma-page-content.grid .ppma-grid-post-thumb .ppma-grid-post-image-holder {

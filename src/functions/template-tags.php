@@ -249,7 +249,13 @@ if (!function_exists('multiple_authors_get_all_authors')) {
 
         $args = wp_parse_args($args, $defaults);
 
-        if (true === $args['hide_empty'] || $search_text) {
+        if (isset($args['orderby']) && !empty($args['orderby']) && !in_array($args['orderby'], ['name', 'count'])) {
+            $meta_order = true;
+        } else {
+            $meta_order = true;
+        }
+
+        if (true === $args['hide_empty'] || $search_text || $meta_order) {
             global $wpdb;
 
             $postTypes = Utils::get_enabled_post_types();
@@ -266,7 +272,7 @@ if (!function_exists('multiple_authors_get_all_authors')) {
                 $term_query .= "INNER JOIN {$wpdb->term_relationships} AS tr ON (tt.term_taxonomy_id = tr.term_taxonomy_id) ";
                 $term_query .= "INNER JOIN {$wpdb->posts} AS p ON (tr.object_id = p.ID) ";
             }
-            if ($search_text && $search_field) {
+            if (($search_text && $search_field) || $meta_order) {
                 $term_query .= "INNER JOIN {$wpdb->termmeta} AS tm ON (tm.term_id = t.term_id) ";
             }
             $term_query .= "WHERE tt.taxonomy = 'author' ";
@@ -281,6 +287,10 @@ if (!function_exists('multiple_authors_get_all_authors')) {
                 AND tm.meta_value LIKE '%" . $wpdb->esc_like($search_text) . "%') ";
             }
 
+            if ($meta_order) {
+                $term_query .= "AND (tm.meta_key = '{$args['orderby']}') ";
+            }
+
             //get term count before before limit and group by incase it's paginated query
             if ($paged) {
                 $term_count_query = str_replace("SELECT t.term_id as `term_id`", "SELECT COUNT(DISTINCT t.term_id)", $term_query);
@@ -291,8 +301,10 @@ if (!function_exists('multiple_authors_get_all_authors')) {
 
             if ($args['orderby'] === 'count') {
                 $sql_order_by = 'tt.' . $args['orderby'];
-            } else {
+            } elseif ($args['orderby'] === 'name') {
                 $sql_order_by = 't.' . $args['orderby'];
+            } else {
+                $sql_order_by = "tm.meta_value";
             }
             $term_query .= "ORDER BY {$sql_order_by} {$args['order']}";
             //add limit if it's a paginated request
@@ -366,7 +378,7 @@ if (!function_exists('multiple_authors_get_all_authors')) {
                         }
                         $author_recent[$author_recent_post] = [
                             'ID'              => $author_recent_post,
-                            'post_title'      => get_the_title($author_recent_post),
+                            'post_title'      => html_entity_decode(get_the_title($author_recent_post)),
                             'permalink'       => get_the_permalink($author_recent_post),
                             'featuired_image' => $featured_image
 

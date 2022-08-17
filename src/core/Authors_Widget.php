@@ -66,12 +66,21 @@ class Authors_Widget extends WP_Widget
             }
 
             if (!isset($instance['show_title']) || true === $instance['show_title']) {
-                echo sprintf(
-                    '%s<h2 class="widget-title">%s</h2>%s',
-                    isset($args['before_title']) ? $args['before_title'] : '', // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                if (isset($args['before_title']) && isset($args['after_title'])) {
+                    echo sprintf(
+                        '%s%s%s',
+                        isset($args['before_title']) ? $args['before_title'] : '', // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     esc_html(apply_filters('widget_title', $title)), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     isset($args['after_title']) ? $args['after_title'] : '' // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-                );
+                    );
+                } else {
+                    echo sprintf(
+                        '%s<h2 class="widget-title">%s</h2>%s',
+                        isset($args['before_title']) ? $args['before_title'] : '', // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                    esc_html(apply_filters('widget_title', $title)), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                    isset($args['after_title']) ? $args['after_title'] : '' // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                    );
+                }
             }
 
             echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -176,7 +185,9 @@ class Authors_Widget extends WP_Widget
                 ],
                 'orderby'         => [
                     'name'       => esc_html__('Name', 'publishpress-authors'),
-                    'count'      => esc_html__('Post Counts', 'publishpress-authors')
+                    'count'      => esc_html__('Post Counts', 'publishpress-authors'),
+                    'first_name'  => esc_html__('First Name', 'publishpress-authors'),
+                    'last_name'  => esc_html__('Last Name', 'publishpress-authors')
                 ]
             ),
             'layouts' => apply_filters('pp_multiple_authors_author_layouts', array()),

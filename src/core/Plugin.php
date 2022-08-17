@@ -366,6 +366,12 @@ class Plugin
             ['MultipleAuthors\\Classes\\Post_Editor', 'action_add_meta_boxes_late'],
             100
         );
+        add_filter(
+            'rest_prepare_taxonomy',
+            ['MultipleAuthors\\Classes\\Post_Editor', 'action_remove_gutenberg_author_metabox'],
+            100,
+            3
+        );
         add_action(
             'save_post',
             ['MultipleAuthors\\Classes\\Post_Editor', 'action_save_post_authors_metabox'],
@@ -581,8 +587,8 @@ class Plugin
             'show_in_quick_edit' => false,
             'meta_box_cb'        => false,
             'query_var'          => 'ppma_author',
-            'show_in_rest'       => $enable_authors_profile ? true : false,
-            'rest_base'          => $enable_authors_profile ? 'ppma_author' : '',
+            'show_in_rest'       => true,
+            'rest_base'          => 'ppma_author',
             'rewrite'            => $enable_authors_profile ? ['slug' => 'author', 'with_front' => true] : false,
         ];
 
@@ -591,7 +597,7 @@ class Plugin
             add_action('edited_term_taxonomy', [$this, 'action_edited_term_taxonomy_flush_cache'], 10, 2);
         }
 
-        $supported_post_types = Utils::get_post_types_that_support_authors();
+        $supported_post_types = Utils::get_enabled_post_types();
         register_taxonomy($this->coauthor_taxonomy, $supported_post_types, $args);
 
         if (delete_transient('ppma_flush_rewrite_rules')) {
@@ -1506,8 +1512,12 @@ class Plugin
      */
     public function load_edit()
     {
+        if (isset($_GET['action']) && $_GET['action'] === 'edit') {
+            return;
+        }
+        
         $screen               = get_current_screen();
-        $supported_post_types = Utils::get_post_types_that_support_authors();
+        $supported_post_types = Utils::get_enabled_post_types();
         if (in_array($screen->post_type, $supported_post_types)) {
             add_filter('views_' . $screen->id, [$this, 'filter_views']);
         }
@@ -1802,6 +1812,7 @@ class Plugin
         $post_id      = false;
         $separator    = ',';
         $user_objects = false;
+        $term_id      = false;
 
 
         if (isset($attributes['post_id'])) {
@@ -1822,7 +1833,11 @@ class Plugin
             $user_objects = $attributes['user_objects'] === 'true' || (int)$attributes['user_objects'] === 1;
         }
 
-        return $this->get_authors_data($post_id, $field, $separator, $user_objects);
+        if (isset($attributes['term_id'])) {
+            $term_id = $attributes['term_id'];
+        }
+
+        return $this->get_authors_data($post_id, $field, $separator, $user_objects, $term_id);
     }
 
     /**

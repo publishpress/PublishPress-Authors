@@ -106,6 +106,11 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'show_author_post_category'    => 'yes',
                     'show_author_post_tags'        => 'yes',
                     'show_author_post_readmore'    => 'yes',
+                    'show_author_page_title'       => 'yes',
+                    'author_pages_title_header'    => 'h1',
+                    'author_post_title_header'     => 'h2',
+                    'author_post_custom_width'     => '',
+                    'author_post_custom_height'    => '',
                     'default_author_for_new_posts' => null,
                     'fallback_user_for_guest_post' => function_exists('get_current_user_id') ? get_current_user_id() : 0,
                     'author_page_post_types'       => []
@@ -733,12 +738,61 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
 
             add_settings_field(
+                'show_author_page_title',
+                __(
+                    'Show author page title:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_show_author_page_title'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_author_pages'
+            );
+
+            add_settings_field(
+                'author_pages_title_header',
+                __('Author pages title header:', 'publishpress-authors'),
+                [$this, 'settings_author_pages_title_header'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_author_pages'
+            );
+
+            add_settings_field(
+                'author_post_title_header',
+                __('Author post title header:', 'publishpress-authors'),
+                [$this, 'settings_author_post_title_header'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_author_pages'
+            );
+
+            add_settings_field(
                 'show_author_post_featured_image',
                 __(
                     'Show featured image:',
                     'publishpress-authors'
                 ),
                 [$this, 'settings_show_author_post_featured_image'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_author_pages'
+            );
+
+            add_settings_field(
+                'author_post_custom_width',
+                __(
+                    'Featured image custom width:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_author_post_custom_width'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_author_pages'
+            );
+
+            add_settings_field(
+                'author_post_custom_height',
+                __(
+                    'Featured image custom height:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_author_post_custom_height'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_author_pages'
             );
@@ -1118,6 +1172,13 @@ if (!class_exists('MA_Multiple_Authors')) {
                         ),
                     ],
                     'option_5' => [
+                        'shortcode'   => '[publishpress_authors_data term_id="102"]',
+                        'description' => esc_html__(
+                            'You can retrieve a specific author data by providing the author term id. For example, this shortcode will load the author with term id of 102',
+                            'publishpress-authors'
+                        ),
+                    ],
+                    'option_6' => [
                         'shortcode'   => '[publishpress_authors_data user_objects="true"]',
                         'description' => sprintf(
                             esc_html__(
@@ -1209,11 +1270,13 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'shortcode'   => '[publishpress_authors_list orderby="count"]',
                         'description' => sprintf(
                             esc_html__(
-                                'To order the results based on post count, use %1s. To order the results by name, use %2s.',
+                                'To order the results based on post count, use %1s. To order the results by name, use %2s. Alternatively, you can order by profile fields like %3s, %4s etc',
                                 'publishpress-authors'
                             ),
                             '<code class="color-red">orderby="count"</code>',
-                            '<code class="color-red">orderby="name"</code>'
+                            '<code class="color-red">orderby="name"</code>',
+                            '<code class="color-red">first_name</code>',
+                            '<code class="color-red">last_name</code>'
                         ),
                     ],
                     'option_9' => [
@@ -1446,6 +1509,70 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '</label>';
         }
 
+
+        /**
+         * @param array $args
+         */
+        public function settings_author_pages_title_header($args = [])
+        {
+            $id    = $this->module->options_group_name . '_author_pages_title_header';
+            $value = isset($this->module->options->author_pages_title_header) ? $this->module->options->author_pages_title_header : 'list';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<select id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_pages_title_header]">';
+
+            $author_pages_title_headers = [
+                'h1' => esc_html__('H1', 'publishpress-authors'), 
+                'h2' => esc_html__('H2', 'publishpress-authors'), 
+                'h3' => esc_html__('H3', 'publishpress-authors'), 
+                'h4' => esc_html__('H4', 'publishpress-authors'), 
+                'h5' => esc_html__('H5', 'publishpress-authors'), 
+                'h6' => esc_html__('H6', 'publishpress-authors')
+            ];
+
+            foreach ($author_pages_title_headers as $layout => $text) {
+                $selected = $value === $layout ? 'selected="selected"' : '';
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                echo '<option value="' . esc_attr($layout) . '" ' . $selected . '>' . esc_html($text) . ' &emsp; &emsp; &emsp; &emsp; </option>';
+            }
+
+            echo '</select>';
+            echo '</label>';
+        }
+
+
+        /**
+         * @param array $args
+         */
+        public function settings_author_post_title_header($args = [])
+        {
+            $id    = $this->module->options_group_name . '_author_post_title_header';
+            $value = isset($this->module->options->author_post_title_header) ? $this->module->options->author_post_title_header : 'list';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<select id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_post_title_header]">';
+
+            $author_post_title_headers = [
+                'h1' => esc_html__('H1', 'publishpress-authors'), 
+                'h2' => esc_html__('H2', 'publishpress-authors'), 
+                'h3' => esc_html__('H3', 'publishpress-authors'), 
+                'h4' => esc_html__('H4', 'publishpress-authors'), 
+                'h5' => esc_html__('H5', 'publishpress-authors'), 
+                'h6' => esc_html__('H6', 'publishpress-authors')
+            ];
+
+            foreach ($author_post_title_headers as $layout => $text) {
+                $selected = $value === $layout ? 'selected="selected"' : '';
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                echo '<option value="' . esc_attr($layout) . '" ' . $selected . '>' . esc_html($text) . ' &emsp; &emsp; &emsp; &emsp; </option>';
+            }
+
+            echo '</select>';
+            echo '</label>';
+        }
+
         /**
          * @param array $args
          */
@@ -1458,6 +1585,38 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '<label for="' . esc_attr($id) . '">';
 
             echo '<input type="number" min="1" step="1" class="small-text" value="' . esc_attr($value) . '" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_pages_grid_layout_column]">';
+            echo '</label>';
+
+        }
+
+        /**
+         * @param array $args
+         */
+        public function settings_author_post_custom_width($args = [])
+        {
+            $id    = $this->module->options_group_name . '_author_post_custom_width';
+            $value = isset($this->module->options->author_post_custom_width) ? $this->module->options->author_post_custom_width : '';
+
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="number" min="1" step="1" class="small-text" value="' . esc_attr($value) . '" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_post_custom_width]">';
+            echo '</label>';
+
+        }
+
+        /**
+         * @param array $args
+         */
+        public function settings_author_post_custom_height($args = [])
+        {
+            $id    = $this->module->options_group_name . '_author_post_custom_height';
+            $value = isset($this->module->options->author_post_custom_height) ? $this->module->options->author_post_custom_height : '';
+
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="number" min="1" step="1" class="small-text" value="' . esc_attr($value) . '" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_post_custom_height]">';
             echo '</label>';
 
         }
@@ -1528,6 +1687,30 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
                     'This will display the featured image.',
+                    'publishpress-authors'
+                )
+                . '</span>';
+
+
+            echo '</label>';
+        }
+
+
+        /**
+         * @param array $args
+         */
+        public function settings_show_author_page_title($args = [])
+        {
+            $id    = $this->module->options_group_name . '_show_author_page_title';
+            $value = isset($this->module->options->show_author_page_title) ? $this->module->options->show_author_page_title : '';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[show_author_page_title]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
+
+            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
+                . esc_html__(
+                    'This will display author page title.',
                     'publishpress-authors'
                 )
                 . '</span>';
@@ -2024,6 +2207,10 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $new_options['show_author_post_readmore'] = 'no';
             }
 
+            if (!isset($new_options['show_author_page_title'])) {
+                $new_options['show_author_page_title'] = 'no';
+            }
+            
             if (isset($new_options['layout'])) {
                 /**
                  * Filter the list of available layouts.

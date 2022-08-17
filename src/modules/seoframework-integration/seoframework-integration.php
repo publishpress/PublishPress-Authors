@@ -86,7 +86,7 @@ if (!class_exists('MA_Seoframework_Integration')) {
          */
         public function init()
         {
-            add_filter('the_seo_framework_the_archive_title', [$this, 'setArchiveTitle'], 10, 2);
+            add_filter('the_seo_framework_generated_archive_title', [$this, 'setArchiveTitle'], 10, 2);
         }
 
         public function setArchiveTitle($title, $term)
