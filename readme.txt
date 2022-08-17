@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
 Tested up to: 6.0
-Stable tag: 3.20.1
+Stable tag: 3.21.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -223,6 +223,23 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [3.21.0] - 17 Aug 2022 =
+
+* Update: Improved REST API support, #509
+* Feature: Add profile field sorting options to the Authors List (first_name last_name custom_field_slug), #257
+* Update: Add shortcode to display specific authors using [publishpress_authors_data term_id="102"], #556
+* Update: Allow user to change author pages headers (H1, H2, H3, H4, H5, H6), #832
+* Update: Allow users to disable the title for Authors Pages, #833
+* Update: Improve design for layout shortcodes, #844
+* Update: Add avatar_url to Post Author REST API, #837
+* Fixed: Double widget header title div for authors list widget, #852
+* Fixed: New taxonomy box showing for Authors, #866
+* Fixed: Issue with Easy Digital Download and Authors installed together, #865
+* Fixed: Double submit button in php 8.1.6 author screen, #861
+* Fixed: SEO Framework plugin integration errors, #709
+* Fixed: Broken closing div in author page, #841
+* Update: Authors-ES-FR-IT- Translation-Update-August2022, #847
 
 = [3.20.1] - 08 Aug 2022 =
 
