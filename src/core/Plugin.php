@@ -581,8 +581,8 @@ class Plugin
             'show_in_quick_edit' => false,
             'meta_box_cb'        => false,
             'query_var'          => 'ppma_author',
-            'show_in_rest'       => $enable_authors_profile ? true : false,
-            'rest_base'          => $enable_authors_profile ? 'ppma_author' : '',
+            'show_in_rest'       => true,
+            'rest_base'          => 'ppma_author',
             'rewrite'            => $enable_authors_profile ? ['slug' => 'author', 'with_front' => true] : false,
         ];
 
