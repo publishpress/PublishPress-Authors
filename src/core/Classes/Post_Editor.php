@@ -199,6 +199,29 @@ class Post_Editor
     }
 
     /**
+     * Remove author metabox for gutenberg
+     *
+     * @param object $response
+     * @param object $taxonomy
+     * @param array $request
+     * 
+     * @return object $response
+     */
+    public static function action_remove_gutenberg_author_metabox($response, $taxonomy, $request) {
+        $context       = ! empty( $request['context'] ) ? $request['context'] : 'view';
+        $taxonomy_name = isset($taxonomy->name) ? $taxonomy->name : false;
+
+        // Context is edit in the editor
+        if ($taxonomy_name === 'author' && $context === 'edit' && $taxonomy->meta_box_cb === false) {
+            $data_response = $response->get_data();
+            $data_response['visibility']['show_ui'] = false;
+            $response->set_data($data_response);
+        }
+
+        return $response;
+    }
+
+    /**
      * Render the Author meta box.
      */
     public static function render_authors_metabox()

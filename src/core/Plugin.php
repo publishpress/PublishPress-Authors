@@ -366,6 +366,12 @@ class Plugin
             ['MultipleAuthors\\Classes\\Post_Editor', 'action_add_meta_boxes_late'],
             100
         );
+        add_filter(
+            'rest_prepare_taxonomy',
+            ['MultipleAuthors\\Classes\\Post_Editor', 'action_remove_gutenberg_author_metabox'],
+            100,
+            3
+        );
         add_action(
             'save_post',
             ['MultipleAuthors\\Classes\\Post_Editor', 'action_save_post_authors_metabox'],
