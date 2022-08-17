@@ -591,7 +591,7 @@ class Plugin
             add_action('edited_term_taxonomy', [$this, 'action_edited_term_taxonomy_flush_cache'], 10, 2);
         }
 
-        $supported_post_types = Utils::get_post_types_that_support_authors();
+        $supported_post_types = Utils::get_enabled_post_types();
         register_taxonomy($this->coauthor_taxonomy, $supported_post_types, $args);
 
         if (delete_transient('ppma_flush_rewrite_rules')) {
@@ -1511,7 +1511,7 @@ class Plugin
         }
         
         $screen               = get_current_screen();
-        $supported_post_types = Utils::get_post_types_that_support_authors();
+        $supported_post_types = Utils::get_enabled_post_types();
         if (in_array($screen->post_type, $supported_post_types)) {
             add_filter('views_' . $screen->id, [$this, 'filter_views']);
         }
