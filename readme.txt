@@ -224,6 +224,10 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [3.21.1] - 23 Aug 2022 =
+
+* Fixed: Empty author result when using [publishpress_authors_list] shortcode, #878
+
 = [3.21.0] - 17 Aug 2022 =
 
 * Update: Improved REST API support, #509
