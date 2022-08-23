@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
 Tested up to: 6.0
-Stable tag: 3.21.0
+Stable tag: 3.21.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -223,6 +223,10 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [3.21.1] - 23 Aug 2022 =
+
+* Fixed: Empty author result when using [publishpress_authors_list] shortcode, #878
 
 = [3.21.0] - 17 Aug 2022 =
 
