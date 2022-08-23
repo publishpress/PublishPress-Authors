@@ -252,7 +252,7 @@ if (!function_exists('multiple_authors_get_all_authors')) {
         if (isset($args['orderby']) && !empty($args['orderby']) && !in_array($args['orderby'], ['name', 'count'])) {
             $meta_order = true;
         } else {
-            $meta_order = true;
+            $meta_order = false;
         }
 
         if (true === $args['hide_empty'] || $search_text || $meta_order) {
