@@ -357,7 +357,9 @@ class Authors_Widget extends WP_Widget
 
         $filter_fields = false;
         if (isset($instance['search_field']) && !empty($instance['search_field'])) {
-            $valid_fields         = Author_Editor::get_fields(false);
+            $valid_fields = Author_Editor::get_fields(false);
+            $valid_fields = apply_filters('multiple_authors_author_fields', $valid_fields, false);
+
             $search_field_options = explode(',', $instance['search_field']);
             $search_field_options = array_map('trim', $search_field_options);
             $filter_fields = [];
