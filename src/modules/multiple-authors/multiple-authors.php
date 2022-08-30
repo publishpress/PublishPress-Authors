@@ -1156,7 +1156,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'shortcode'   => '[publishpress_authors_data field="display_name"]',
                         'description' => sprintf(
                             esc_html__(
-                                'The authors data shortcode accepts field parameter such as: %1s %2s %3s %4s %5s %6s. You can see full details and parameters %7s in this guide %8s.',
+                                'The authors data shortcode accepts field parameter such as: %1s %2s %3s %4s %5s %6s %7s. You can see full details and parameters %8s in this guide %9s.',
                                 'publishpress-authors'
                             ),
                             '<code>display_name</code>',
@@ -1165,6 +1165,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                             '<code>ID</code>',
                             '<code>user_nicename</code>',
                             '<code>user_email</code>',
+                            '<code>avatar</code>',
                             '<a href="https://publishpress.com/knowledge-base/authors-data-backup/">',
                             '</a>'
                         ),

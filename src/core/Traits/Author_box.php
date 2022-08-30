@@ -309,7 +309,11 @@ trait Author_box
         if (!$user_objects) {
             if (!empty($authors)) {
                 foreach ($authors as $author) {
-                    $output[] = isset($author->$field) ? $author->$field : $author->display_name;
+                    if ($field === 'avatar') {
+                        $output[] = $author->get_avatar_url();
+                    } else {
+                        $output[] = isset($author->$field) ? $author->$field : $author->display_name;
+                    }
                 }
             }
             $output  = array_filter($output);
