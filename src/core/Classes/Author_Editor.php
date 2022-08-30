@@ -796,15 +796,16 @@ class Author_Editor
             /**
              * Check if term with this user exist
              */
-            if (
-                isset($_POST['authors-new'])
+            if (isset($_POST['authors-new'])
                 && (int)$_POST['authors-new'] > 0
             ) {
                 $author_id = (int)$_POST['authors-new'];
                 $author    = Author::get_by_user_id($author_id);
-
-                if (
-                    $author
+                $legacyPlugin = Factory::getLegacyPlugin();
+                $remove_single_user_map_restriction = $legacyPlugin->modules->multiple_authors->options->remove_single_user_map_restriction === 'yes';
+                
+                if (!$remove_single_user_map_restriction
+                    && $author
                     && is_object($author)
                     && isset($author->term_id)
                     && (int)$author->term_id > 0

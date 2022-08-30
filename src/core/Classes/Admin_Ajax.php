@@ -275,8 +275,10 @@ class Admin_Ajax
             $author_slug = !empty($_POST['author_slug']) ? sanitize_title($_POST['author_slug']) : '';
             $author_id   = !empty($_POST['author_id']) ? (int) $_POST['author_id'] : 0;
             $term_id     = !empty($_POST['term_id']) ? (int) $_POST['term_id'] : 0;
+            $legacyPlugin = Factory::getLegacyPlugin();
+            $remove_single_user_map_restriction = $legacyPlugin->modules->multiple_authors->options->remove_single_user_map_restriction === 'yes';
 
-            if ($author_id > 0) {
+            if (!$remove_single_user_map_restriction && $author_id > 0) {
                 $author = Author::get_by_user_id($author_id);
                 if ($author && is_object($author) && isset($author->term_id)) {
                     if ((int)$author->term_id !== (int)$term_id) {
