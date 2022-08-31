@@ -224,6 +224,16 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [3.22.0] - 31 Aug 2022 =
+
+* Update: Added avatar to publishpress_authors_data shortcode [publishpress_authors_data field="avatar"]  #887
+* Update: Added settings to disable mapped user check when creating author, #885
+* Update: Added First Name to Authors REST API data #877
+* Update: Added Last Name to Authors REST API data #877
+* Update: Added User Biography to Authors REST API data #877
+* Update: Added Custom fields to Authors REST API data #877
+* Update: Authors_ES_FR_IT_Translations_August17-2022, #876
+
 = [3.21.1] - 23 Aug 2022 =
 
 * Fixed: Empty author result when using [publishpress_authors_list] shortcode, #878
