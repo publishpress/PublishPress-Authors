@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 5.6
 Tested up to: 6.0
-Stable tag: 3.21.1
+Stable tag: 3.22.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -223,6 +223,16 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [3.22.0] - 1 Sep 2022 =
+
+* Update: Added avatar to publishpress_authors_data shortcode [publishpress_authors_data field="avatar"]  #887
+* Update: Added settings to disable mapped user check when creating author, #885
+* Update: Added First Name to Authors REST API data #877
+* Update: Added Last Name to Authors REST API data #877
+* Update: Added User Biography to Authors REST API data #877
+* Update: Added Custom fields to Authors REST API data #877
+* Update: Authors_ES_FR_IT_Translations_August17-2022, #876
 
 = [3.21.1] - 23 Aug 2022 =
 
