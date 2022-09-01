@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Plugins - Co-Authors, Multiple Authors and Guest Authors in an Author Box with PublishPress Authors - Stable (latest release)\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2022-08-10 18:55-0500\n"
+"PO-Revision-Date: 2022-08-17 16:52-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: it\n"
@@ -14,63 +14,121 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Poedit 3.0.1\n"
 
-#: src/modules/multiple-authors/multiple-authors.php:1243
+#: src/modules/multiple-authors/multiple-authors.php:1712
+msgid "This will display author page title."
+msgstr "Questo visualizzerà il titolo della pagina dell'autore."
+
+#: src/modules/multiple-authors/multiple-authors.php:1531
+#: src/modules/multiple-authors/multiple-authors.php:1563
+msgid "H6"
+msgstr "H6"
+
+#: src/modules/multiple-authors/multiple-authors.php:1530
+#: src/modules/multiple-authors/multiple-authors.php:1562
+msgid "H5"
+msgstr "H5"
+
+#: src/modules/multiple-authors/multiple-authors.php:1529
+#: src/modules/multiple-authors/multiple-authors.php:1561
+msgid "H4"
+msgstr "H4"
+
+#: src/modules/multiple-authors/multiple-authors.php:1528
+#: src/modules/multiple-authors/multiple-authors.php:1560
+msgid "H3"
+msgstr "H3"
+
+#: src/modules/multiple-authors/multiple-authors.php:1527
+#: src/modules/multiple-authors/multiple-authors.php:1559
+msgid "H2"
+msgstr "H2"
+
+#: src/modules/multiple-authors/multiple-authors.php:1526
+#: src/modules/multiple-authors/multiple-authors.php:1558
+msgid "H1"
+msgstr "H1"
+
+#: src/modules/multiple-authors/multiple-authors.php:1272
+msgid "To order the results based on post count, use %1s. To order the results by name, use %2s. Alternatively, you can order by profile fields like %3s, %4s etc"
+msgstr "Per ordinare i risultati in base al numero di articoli, usare %1s. Per ordinare i risultati in base al nome, usare %2s. In alternativa, è possibile ordinare i risultati in base ai campi del profilo, come %3s, %4s ecc."
+
+#: src/modules/multiple-authors/multiple-authors.php:1176
+msgid "You can retrieve a specific author data by providing the author term id. For example, this shortcode will load the author with term id of 102"
+msgstr "È possibile ricercare i dati di un autore specifico fornendo l'id del termine dell'autore. Ad esempio, questo shortcode caricherà l'autore con l'id del termine 102"
+
+#: src/modules/multiple-authors/multiple-authors.php:791
+msgid "Featured image custom height:"
+msgstr "Altezza personalizzata dell'immagine in evidenza:"
+
+#: src/modules/multiple-authors/multiple-authors.php:780
+msgid "Featured image custom width:"
+msgstr "Larghezza personalizzata dell'immagine in evidenza:"
+
+#: src/modules/multiple-authors/multiple-authors.php:761
+msgid "Author post title header:"
+msgstr "Header del titolo dell'articolo dell'autore:"
+
+#: src/modules/multiple-authors/multiple-authors.php:753
+msgid "Author pages title header:"
+msgstr "Header del titolo della pagina dell'autore:"
+
+#: src/modules/multiple-authors/multiple-authors.php:742
+msgid "Show author page title:"
+msgstr "Mostra il titolo della pagina dell'autore:"
+
+#: src/modules/multiple-authors/multiple-authors.php:1306
 msgid "You can also show a dropdown menu that allows users to search on specific author fields. You can add fields to the dropdown using %1s. This requires the search box to be active."
 msgstr "Puoi anche visualizzare un menu a tendina che consente agli utenti di effettuare ricerche su campi specifici dell'autore. È possibile aggiungere campi al menu a tendina utilizzando %1s. Ciò richiede che la casella di ricerca sia attiva."
 
-#: src/modules/multiple-authors/multiple-authors.php:1233
+#: src/modules/multiple-authors/multiple-authors.php:1296
 msgid "To display a search box for authors, use %1s."
 msgstr "Per visualizzare una casella di ricerca per gli autori, usare %1s."
 
-#: src/core/Authors_Widget.php:383
+#: src/core/Authors_Widget.php:394
 msgid "Search"
 msgstr "Cerca"
 
-#: src/core/Authors_Widget.php:380
+#: src/core/Authors_Widget.php:391
 msgid "Search Box"
 msgstr "Casella di ricerca"
 
-#: src/core/Authors_Widget.php:353
+#: src/core/Authors_Widget.php:364
 msgid "Default Search"
 msgstr "Ricerca predefinita"
 
-#: src/core/Authors_Widget.php:132
+#: src/core/Authors_Widget.php:141
 msgid "Author's search box field (Seperate multiple fields by comma(','))"
 msgstr "Campo della casella di ricerca dell'autore (separare più campi con una virgola(','))"
 
-#: src/core/Authors_Widget.php:127
+#: src/core/Authors_Widget.php:136
 msgid "Enable author's search box"
 msgstr "Abilita la casella di ricerca dell'autore"
 
-#: src/modules/multiple-authors/multiple-authors.php:1222
+#: src/modules/multiple-authors/multiple-authors.php:1285
 msgid "To further customize the order of results, use %1s or %2s."
 msgstr "Per personalizzare ulteriormente l'ordine dei risultati, usare %1s o %2s."
 
-#: src/modules/multiple-authors/multiple-authors.php:1211
-msgid "To order the results based on post count, use %1s. To order the results by name, use %2s."
-msgstr "Per ordinare i risultati in base al conteggio degli articoli, usare %1s. Per ordinare i risultati in base al nome, usare %2s."
-
-#: src/modules/multiple-authors/multiple-authors.php:1201
+#: src/modules/multiple-authors/multiple-authors.php:1262
 msgid "If you are using the authors_recent layout, you can define the number of columns by using %1s."
 msgstr "Se stai utilizzando il layout authors_recent, puoi definire il numero di colonne utilizzando %1s."
 
-#: src/modules/multiple-authors/multiple-authors.php:1189
+#: src/modules/multiple-authors/multiple-authors.php:1250
 msgid "You can limit the result to only guest authors by using %1s. %2s Alternatively, %3s will show only authors with a WordPress account."
 msgstr "Puoi limitare i risultati solo agli autori ospiti utilizzando %1s. %2s In alternativa,%3s verranno mostrati solo gli autori che hanno un account WordPress."
 
-#: src/modules/multiple-authors/multiple-authors.php:1177
+#: src/modules/multiple-authors/multiple-authors.php:1238
 msgid "You can limit the result to only authors who are assigned to posts by using %1s. %2s Alternatively, use %3s to show all authors, including those without any posts."
 msgstr "Puoi limitare i risultati solo agli autori assegnati a degli articoli utilizzando %1s. %2s In alternativa, puoi usare %3s per mostrare tutti gli autori, incluso quelli senza articoli."
 
-#: src/modules/multiple-authors/multiple-authors.php:1166
+#: src/modules/multiple-authors/multiple-authors.php:1227
 msgid "You can choose the number of authors per page using %1s. %2s Pagination will be automatically added if required."
 msgstr "Puoi scegliere il numero di autori per pagina usando %1s. %2s La paginazione verrà aggiunta automaticamente se necessaria."
 
-#: src/modules/multiple-authors/multiple-authors.php:1146
+#: src/modules/multiple-authors/multiple-authors.php:1207
 msgid "You can choose from the following default layouts: %1s %2s %3s %4s %5s. You can see full details of each layout option %6s in this guide %7s. %8s %9s This shortcode also provides two custom layouts: %10s %11s."
 msgstr "È possibile scegliere tra i seguenti layout predefiniti: %1s %2s %3s %4s %5s. È possibile vedere tutti i dettagli di ogni opzione del layout %6s in questa guida %7s. %8s %9s Questo shortcode offre anche due layout personalizzati: %10s %11s."
 
-#: src/modules/multiple-authors/multiple-authors.php:1138
+#: src/modules/multiple-authors/multiple-authors.php:1199
 msgid "With this shortcode, you can show all the authors together in a single display."
 msgstr "Con questo shortcode, è possibile mostrare tutti gli autori insieme in un'unica visualizzazione."
 
@@ -82,182 +140,182 @@ msgstr "Autori recenti"
 msgid "Authors index"
 msgstr "Indice degli autori"
 
-#: src/functions/template-tags.php:378
+#: src/functions/template-tags.php:390
 msgid "%1sView all posts%2s by %3s"
 msgstr "%1sVisualizza tutti gli articoli %2s di %3s"
 
-#: src/core/Authors_Widget.php:370
+#: src/core/Authors_Widget.php:381
 msgid "No recent posts from this author"
 msgstr "Nessun articolo recente per questo autore"
 
-#: src/core/Authors_Widget.php:179
+#: src/core/Authors_Widget.php:188
 msgid "Post Counts"
 msgstr "Conteggio degli articoli"
 
-#: src/core/Authors_Widget.php:175
+#: src/core/Authors_Widget.php:184
 msgid "Descending"
 msgstr "Discendente"
 
-#: src/core/Authors_Widget.php:174
+#: src/core/Authors_Widget.php:183
 msgid "Ascending"
 msgstr "Ascendente"
 
-#: src/core/Authors_Widget.php:171
+#: src/core/Authors_Widget.php:180
 msgid "Users Authors"
 msgstr "Autori utenti"
 
-#: src/core/Authors_Widget.php:170
+#: src/core/Authors_Widget.php:179
 msgid "Guest Authors"
 msgstr "Autori ospiti"
 
-#: src/core/Authors_Widget.php:131
+#: src/core/Authors_Widget.php:140
 msgid "Order by"
 msgstr "Ordina per"
 
-#: src/core/Authors_Widget.php:130
+#: src/core/Authors_Widget.php:139
 msgid "Order"
 msgstr "Ordina"
 
-#: src/core/Authors_Widget.php:128
+#: src/core/Authors_Widget.php:137
 msgid "Limits per page"
 msgstr "Limite per pagina"
 
-#: src/modules/multiple-authors/multiple-authors.php:2066
+#: src/modules/multiple-authors/multiple-authors.php:2253
 msgid "Author Boxes"
 msgstr "Riquadri autore"
 
-#: src/modules/multiple-authors/multiple-authors.php:1771
+#: src/modules/multiple-authors/multiple-authors.php:1954
 msgid "If you only have Guest Authors selected for a post, this user may be used as a fallback. WordPress sometimes requires a WordPress user to be assigned to each post. This user will not be visible on the front of your site."
 msgstr "Se per un articolo sono stati selezionati solo autori ospiti, questo utente può essere utilizzato come alternativo. WordPress a volte richiede l'assegnazione di un utente WordPress a ciascun articolo. Questo utente non sarà visibile nel frontend del tuo sito."
 
-#: src/modules/multiple-authors/multiple-authors.php:1758
+#: src/modules/multiple-authors/multiple-authors.php:1941
 msgid "Search for a fallback author"
 msgstr "Ricerca di un autore alternativo"
 
-#: src/modules/multiple-authors/multiple-authors.php:593
+#: src/modules/multiple-authors/multiple-authors.php:598
 msgid "Fallback user for Guest Authors:"
 msgstr "Utente alternativo per autori ospiti:"
 
-#: src/templates/parts/author-pages-grid.php:149
-#: src/templates/parts/author-pages-list.php:143
+#: src/templates/parts/author-pages-grid.php:167
+#: src/templates/parts/author-pages-list.php:161
 msgid "Post not found for the author"
 msgstr "Articolo non trovato per l'autore"
 
-#: src/templates/parts/author-pages-grid.php:143
-#: src/templates/parts/author-pages-list.php:137
+#: src/templates/parts/author-pages-grid.php:161
+#: src/templates/parts/author-pages-list.php:155
 msgid "Next"
 msgstr "Successivo"
 
-#: src/templates/parts/author-pages-grid.php:142
-#: src/templates/parts/author-pages-list.php:136
+#: src/templates/parts/author-pages-grid.php:160
+#: src/templates/parts/author-pages-list.php:154
 msgid "Prev"
 msgstr "Precedente"
 
-#: src/modules/multiple-authors/multiple-authors.php:2067
+#: src/modules/multiple-authors/multiple-authors.php:2254
 msgid "Author Pages"
 msgstr "Pagine degli autori"
 
-#: src/modules/multiple-authors/multiple-authors.php:1697
+#: src/modules/multiple-authors/multiple-authors.php:1880
 msgid "This will display the read more link."
 msgstr "Questo visualizzerà il link \"leggi tutto\"."
 
-#: src/modules/multiple-authors/multiple-authors.php:1673
+#: src/modules/multiple-authors/multiple-authors.php:1856
 msgid "This will display the tags."
 msgstr "Questo visualizzerà i tag."
 
-#: src/modules/multiple-authors/multiple-authors.php:1649
+#: src/modules/multiple-authors/multiple-authors.php:1832
 msgid "This will display the categories."
 msgstr "Questo visualizzerà le categorie."
 
-#: src/modules/multiple-authors/multiple-authors.php:1625
+#: src/modules/multiple-authors/multiple-authors.php:1808
 msgid "This will display the comment count."
 msgstr "Questo visualizzerà il conteggio dei commenti."
 
-#: src/modules/multiple-authors/multiple-authors.php:1601
+#: src/modules/multiple-authors/multiple-authors.php:1784
 msgid "This will display the published date."
 msgstr "Questo visualizzerà la data di pubblicazione."
 
-#: src/modules/multiple-authors/multiple-authors.php:1577
+#: src/modules/multiple-authors/multiple-authors.php:1760
 msgid "This will display the authors."
 msgstr "Questo visualizzerà gli autori."
 
-#: src/modules/multiple-authors/multiple-authors.php:1553
+#: src/modules/multiple-authors/multiple-authors.php:1736
 msgid "This will display the excerpt."
 msgstr "Questo visualizzerà il riassunto."
 
-#: src/modules/multiple-authors/multiple-authors.php:1529
+#: src/modules/multiple-authors/multiple-authors.php:1688
 msgid "This will display the featured image."
 msgstr "Questo visualizzerà l'immagine in evidenza."
 
-#: src/modules/multiple-authors/multiple-authors.php:1479
+#: src/modules/multiple-authors/multiple-authors.php:1638
 msgid "This will display the author bio."
 msgstr "Questo visualizzerà la biografia dell'autore."
 
-#: src/modules/multiple-authors/multiple-authors.php:1435
+#: src/modules/multiple-authors/multiple-authors.php:1498
 msgid "Grid"
 msgstr "Griglia"
 
-#: src/modules/multiple-authors/multiple-authors.php:1434
+#: src/modules/multiple-authors/multiple-authors.php:1497
 msgid "List"
 msgstr "Elenco"
 
-#: src/modules/multiple-authors/multiple-authors.php:1408
+#: src/modules/multiple-authors/multiple-authors.php:1471
 msgid "If enabled, PublishPress Authors will replace the default WordPress author pages."
 msgstr "Se abilitato, PublishPress Authors sostituirà le pagine autore predefinite di WordPress."
 
-#: src/modules/multiple-authors/multiple-authors.php:814
+#: src/modules/multiple-authors/multiple-authors.php:868
 msgid "Show read more link:"
 msgstr "Mostra il link \"leggi tutto\":"
 
-#: src/modules/multiple-authors/multiple-authors.php:803
+#: src/modules/multiple-authors/multiple-authors.php:857
 msgid "Show tags:"
 msgstr "Mostra i tag:"
 
-#: src/modules/multiple-authors/multiple-authors.php:792
+#: src/modules/multiple-authors/multiple-authors.php:846
 msgid "Show category:"
 msgstr "Mostra le categorie:"
 
-#: src/modules/multiple-authors/multiple-authors.php:781
+#: src/modules/multiple-authors/multiple-authors.php:835
 msgid "Show comment counts:"
 msgstr "Mostra conteggio commenti:"
 
-#: src/modules/multiple-authors/multiple-authors.php:770
+#: src/modules/multiple-authors/multiple-authors.php:824
 msgid "Show post date:"
 msgstr "Mostra data di pubblicazione:"
 
-#: src/modules/multiple-authors/multiple-authors.php:759
+#: src/modules/multiple-authors/multiple-authors.php:813
 msgid "Show authors:"
 msgstr "Mostra gli autori:"
 
-#: src/modules/multiple-authors/multiple-authors.php:748
+#: src/modules/multiple-authors/multiple-authors.php:802
 msgid "Show excerpt:"
 msgstr "Mostra il riassunto:"
 
-#: src/modules/multiple-authors/multiple-authors.php:737
+#: src/modules/multiple-authors/multiple-authors.php:769
 msgid "Show featured image:"
 msgstr "Mostra l'immagine in evidenza:"
 
-#: src/modules/multiple-authors/multiple-authors.php:729
+#: src/modules/multiple-authors/multiple-authors.php:734
 msgid "Author bio layout:"
 msgstr "Layout della biografia dell'autore:"
 
-#: src/modules/multiple-authors/multiple-authors.php:718
+#: src/modules/multiple-authors/multiple-authors.php:723
 msgid "Show author bio:"
 msgstr "Mostra la biografia dell'autore:"
 
-#: src/modules/multiple-authors/multiple-authors.php:707
+#: src/modules/multiple-authors/multiple-authors.php:712
 msgid "Grid layout column:"
 msgstr "Layout delle colonne della griglia:"
 
-#: src/modules/multiple-authors/multiple-authors.php:696
+#: src/modules/multiple-authors/multiple-authors.php:701
 msgid "Author pages layout:"
 msgstr "Layout delle pagine degli autori:"
 
-#: src/modules/multiple-authors/multiple-authors.php:685
+#: src/modules/multiple-authors/multiple-authors.php:690
 msgid "Enable author pages:"
 msgstr "Abilita le pagine degli autori:"
 
-#: src/modules/multiple-authors/multiple-authors.php:544
+#: src/modules/multiple-authors/multiple-authors.php:549
 msgid "Enable PublishPress Authors for these post types:"
 msgstr "Abilita PublishPress Authors per questi tipi di contenuto:"
 
@@ -265,11 +323,11 @@ msgstr "Abilita PublishPress Authors per questi tipi di contenuto:"
 msgid "Read more."
 msgstr "Leggi tutto."
 
-#: src/modules/multiple-authors/multiple-authors.php:1123
+#: src/modules/multiple-authors/multiple-authors.php:1184
 msgid "You can also decide to return array lists of authors for custom use or formatting by using %1s which will return all authors object data as array. You can check full details and sample usage %2s in this guide %3s"
 msgstr "Puoi anche decidere di restituire elenchi di autori in array per un uso o una formattazione personalizzata, usando %1s che restituirà tutti i dati degli oggetti autori come array. Si possono verificare tutti i dettagli e gli esempi di utilizzo %2s in questa guida %3s"
 
-#: src/modules/multiple-authors/multiple-authors.php:1061
+#: src/modules/multiple-authors/multiple-authors.php:1115
 msgid "If you are having problems showing PublishPress Authors on author profile pages, you can use this shortcode below. The argument %s forces the plugin to retrieve the Author from the profile page and not any other posts on the same screen."
 msgstr "Se hai problemi a mostrare PublishPress Authors nelle pagine del profilo dell'autore, puoi usare lo shortcode qui sotto. L'argomento %s costringe il plugin a recuperare l'autore dalla pagina del profilo e non da altri articoli nella stessa schermata."
 
@@ -277,73 +335,73 @@ msgstr "Se hai problemi a mostrare PublishPress Authors nelle pagine del profilo
 msgid "Author name is required"
 msgstr "Il nome dell'autore è necessario"
 
-#: src/modules/multiple-authors/multiple-authors.php:1829
+#: src/modules/multiple-authors/multiple-authors.php:2012
 msgid "This will load Font Awesome icons for use in layouts."
 msgstr "Questo caricherà le icone Font Awesome da usare nei layout."
 
-#: src/modules/multiple-authors/multiple-authors.php:1108
+#: src/modules/multiple-authors/multiple-authors.php:1162
 msgid "You can also specify the separator to be used for mulitple authors data."
 msgstr "Puoi anche specificare il separatore da usare per i dati degli autori multipli."
 
-#: src/modules/multiple-authors/multiple-authors.php:1092
+#: src/modules/multiple-authors/multiple-authors.php:1146
 msgid "The authors data shortcode accepts field parameter such as: %1s %2s %3s %4s %5s %6s. You can see full details and parameters %7s in this guide %8s."
 msgstr "Lo shortcode dei dati degli autori accetta i parametri per questi campi: %1s %2s %3s %4s %5s %6s. Puoi trovare i dettagli completi e i parametri %7s in questa guida %8s."
 
-#: src/modules/multiple-authors/multiple-authors.php:1084
+#: src/modules/multiple-authors/multiple-authors.php:1138
 msgid "With this shortcode you can display the author names or any profile field in any part of the content."
 msgstr "Usando lo shortcode puoi visualizzare i nomi degli autori o un altro campo del profilo in qualsiasi parte del contenuto."
 
-#: src/modules/multiple-authors/multiple-authors.php:1083
+#: src/modules/multiple-authors/multiple-authors.php:1137
 msgid "Authors Data"
 msgstr "Dati dell'autore"
 
-#: src/modules/multiple-authors/multiple-authors.php:666
+#: src/modules/multiple-authors/multiple-authors.php:671
 msgid "Layout icons:"
 msgstr "Iconde layout:"
 
-#: src/modules/multiple-authors/multiple-authors.php:2068
+#: src/modules/multiple-authors/multiple-authors.php:2255
 msgid "Shortcodes"
 msgstr "Shortcode"
 
-#: src/modules/multiple-authors/multiple-authors.php:1291
-#: src/modules/multiple-authors/multiple-authors.php:1292
+#: src/modules/multiple-authors/multiple-authors.php:1354
+#: src/modules/multiple-authors/multiple-authors.php:1355
 msgid "Click To Copy!"
 msgstr "Fai clic per copiare!"
 
-#: src/modules/multiple-authors/multiple-authors.php:1290
+#: src/modules/multiple-authors/multiple-authors.php:1353
 msgid "Copied!"
 msgstr "Copiato!"
 
-#: src/modules/multiple-authors/multiple-authors.php:1071
+#: src/modules/multiple-authors/multiple-authors.php:1125
 msgid "There is one final option to mention. This is mostly useful if you're using a theme or page builder to customize the Author profile pages you find at URLs such as /author/username/. You can use the following shortcode on the authors page to display the profile of the current author. You just need to add the parameter %s."
 msgstr "C'è un'ultima opzione da menzionare. È utile soprattutto se si utilizza un tema o un page builder per personalizzare le pagine del profilo dell'autore che si trovano in un URL del tipo /author/username/. È possibile utilizzare il seguente shortcode nella pagina degli autori per visualizzare il profilo dell'autore attuale. È sufficiente aggiungere il parametro %s."
 
-#: src/modules/multiple-authors/multiple-authors.php:1053
-#: src/modules/multiple-authors/multiple-authors.php:1115
+#: src/modules/multiple-authors/multiple-authors.php:1107
+#: src/modules/multiple-authors/multiple-authors.php:1169
 msgid "You can load the authors for a specific post, even if you are not in that post currently. For example, this shortcode will load the authors for the post with the ID of 32"
 msgstr "È possibile caricare gli autori di un articolo specifico, anche se al momento non ci si trova in quell'articolo. Per esempio, questo shortcode caricherà gli autori per l'articolo con l'ID 32"
 
-#: src/modules/multiple-authors/multiple-authors.php:1043
+#: src/modules/multiple-authors/multiple-authors.php:1097
 msgid "You can also decide whether or not to show the main title, using %1s or %2s."
 msgstr "Puoi anche scegliere se mostrare o meno il titolo principale, usando %1s o %2s."
 
-#: src/modules/multiple-authors/multiple-authors.php:1027
+#: src/modules/multiple-authors/multiple-authors.php:1081
 msgid "You can choose from the following layouts: %1s %2s %3s %4s %5s. You can see full details of each layout option %6s in this guide %7s."
 msgstr "Puoi scegliere tra i seguenti layout: %1s %2s %3s %4s %5s. I dettagli completi di ogni opzione di layout %6s sono riportati in questa guida %7s."
 
-#: src/modules/multiple-authors/multiple-authors.php:1019
+#: src/modules/multiple-authors/multiple-authors.php:1073
 msgid "With this shortcode you can display the author box in any part of the content. "
 msgstr "Con lo shortcode puoi visualizzare il riquadro autore in qualsiasi parte del contenuto. "
 
-#: src/modules/multiple-authors/multiple-authors.php:1018
+#: src/modules/multiple-authors/multiple-authors.php:1072
 msgid "Authors Box"
 msgstr "Riquadro autore"
 
-#: src/core/Plugin.php:1486
+#: src/core/Plugin.php:1492
 msgid "View"
 msgstr "Visualizza"
 
-#: src/core/Classes/Post_Editor.php:307
+#: src/core/Classes/Post_Editor.php:330
 msgid "Disable post author box display?"
 msgstr "Disattivare la visualizzazione del riquadro autore dell' articolo?"
 
@@ -351,16 +409,16 @@ msgstr "Disattivare la visualizzazione del riquadro autore dell' articolo?"
 msgid "This plugin can be deleted."
 msgstr "Questo plugin può essere eliminato."
 
-#: src/modules/multiple-authors/multiple-authors.php:306
-#: src/modules/multiple-authors/multiple-authors.php:307
+#: src/modules/multiple-authors/multiple-authors.php:311
+#: src/modules/multiple-authors/multiple-authors.php:312
 msgid "Author Profile"
 msgstr "Profilo autore"
 
-#: src/core/Plugin.php:503
+#: src/core/Plugin.php:509
 msgid "This is the name that will show on the site."
 msgstr "Questo è il nome che verrà visualizzato nel sito."
 
-#: src/core/Plugin.php:499
+#: src/core/Plugin.php:505
 msgid "Edit My Author Profile"
 msgstr "Modifica il mio profilo autore"
 
@@ -412,11 +470,11 @@ msgstr "Errore di sicurezza. Ricarica la pagina e riprova"
 msgid "Request status."
 msgstr "Stato della richiesta."
 
-#: src/modules/multiple-authors/multiple-authors.php:2658
+#: src/modules/multiple-authors/multiple-authors.php:2845
 msgid "Access denied"
 msgstr "Accesso negato"
 
-#: src/modules/multiple-authors/multiple-authors.php:2654
+#: src/modules/multiple-authors/multiple-authors.php:2841
 msgid "Invalid nonce"
 msgstr "Nonce invalido"
 
@@ -456,7 +514,7 @@ msgstr "Visualizza tutti gli articoli"
 msgid "Reviews"
 msgstr "Recensioni"
 
-#: src/modules/multiple-authors/multiple-authors.php:1735
+#: src/modules/multiple-authors/multiple-authors.php:1918
 msgid "This setting may be disabled for users who can not edit others posts."
 msgstr "Questa impostazione può essere disabilitata per gli utenti che non possono modificare gli articoli degli altri."
 
@@ -602,7 +660,7 @@ msgstr "Raccogliendo i dati per la migrazione…"
 msgid "Create Author Profile"
 msgstr "Crea il profilo autore"
 
-#: src/modules/multiple-authors/multiple-authors.php:552
+#: src/modules/multiple-authors/multiple-authors.php:557
 msgid "Post types to display on the author's profile page:"
 msgstr "Tipi di contenuto da mostrare nella pagina del profilo autore:"
 
@@ -638,11 +696,11 @@ msgstr "%d/%d: Ispezionando l'utente %d"
 msgid "Now inspecting or updating %d total authors"
 msgstr "Ora ispezionando o aggiornando %d autori totali"
 
-#: src/core/Classes/Post_Editor.php:323
+#: src/core/Classes/Post_Editor.php:346
 msgid "Search for an user"
 msgstr "Cerca l'utente"
 
-#: src/core/Classes/Post_Editor.php:315
+#: src/core/Classes/Post_Editor.php:338
 msgid "This option is showing because you do not have a WordPress user selected as an author. For some tasks, it can be helpful to have a user selected here. This user will not be visible on the front of your site."
 msgstr "Questa opzione viene visualizzata perché non hai un utente WordPress impostato come autore. Per alcune operazioni potrebbe essere utile avere un utente selezionato qui. Questo utente non sarà comunque visibile sul lato pubblico del sito."
 
@@ -699,7 +757,7 @@ msgstr "Campi"
 msgid "Pro Placeholders"
 msgstr "Segnaposti Pro"
 
-#: src/modules/multiple-authors/multiple-authors.php:641
+#: src/modules/multiple-authors/multiple-authors.php:646
 msgid "Color scheme:"
 msgstr "Schema dei colori:"
 
@@ -727,11 +785,11 @@ msgstr "Titolo plurale"
 msgid "Single Title"
 msgstr "Titolo singolare"
 
-#: src/modules/multiple-authors/multiple-authors.php:1000
+#: src/modules/multiple-authors/multiple-authors.php:1054
 msgid "Plural"
 msgstr "Plurale"
 
-#: src/modules/multiple-authors/multiple-authors.php:993
+#: src/modules/multiple-authors/multiple-authors.php:1047
 msgid "Single"
 msgstr "Singolare"
 
@@ -755,15 +813,15 @@ msgstr "Aggiungi compatibilità con il plugin Edit Flow"
 msgid "Edit Flow Integration"
 msgstr "Integrazione con Edit Flow"
 
-#: src/modules/multiple-authors/multiple-authors.php:3567
+#: src/modules/multiple-authors/multiple-authors.php:3754
 msgid "Click to run the update now"
 msgstr "Fai clic per avviare adesso l'aggiornamento"
 
-#: src/modules/multiple-authors/multiple-authors.php:3566
+#: src/modules/multiple-authors/multiple-authors.php:3753
 msgid "PublishPress Authors needs a database update for Permissions integration."
 msgstr "PublishPress Authors deve aggiornare il database per l'integrazione con il plugin Permissions."
 
-#: src/modules/multiple-authors/multiple-authors.php:1867
+#: src/modules/multiple-authors/multiple-authors.php:2050
 msgid "Synchronize Author slugs to User logins"
 msgstr "Sincronizza gli slug dell'autore con gli accessi dell'utente"
 
@@ -779,18 +837,18 @@ msgstr "Aggiungi le informazioni di debug per il plugin"
 msgid "Debug"
 msgstr "Debug"
 
-#: src/core/Plugin.php:1468
+#: src/core/Plugin.php:1474
 msgid "Are you sure you want to update the author slug for all the users?"
 msgstr "Vuoi davvero aggiornare lo slug autore di tutti gli utenti?"
 
 #. translators: %s: Number of posts.
-#: src/core/Plugin.php:784
+#: src/core/Plugin.php:790
 msgid "%s post by this author"
 msgid_plural "%s posts by this author"
 msgstr[0] "%s articolo di questo autore"
 msgstr[1] "%s articoli di questo autore"
 
-#: src/core/Classes/Author_Editor.php:59 src/core/Plugin.php:756
+#: src/core/Classes/Author_Editor.php:59 src/core/Plugin.php:762
 msgid "Published posts of the following post types: %s"
 msgstr "Articoli pubblicati per i seguenti tipi di articoli: %s"
 
@@ -798,7 +856,7 @@ msgstr "Articoli pubblicati per i seguenti tipi di articoli: %s"
 msgid "Update post count"
 msgstr "Aggiorna conteggio articoli"
 
-#: src/core/Plugin.php:1464
+#: src/core/Plugin.php:1470
 msgid "Are you sure you want to update the author column for all the posts?"
 msgstr "Sei sicuro di voler aggiornare la colonna autore di tutti gli articoli?"
 
@@ -810,25 +868,25 @@ msgstr "Aggiungi compatibilità con il plugin Ultimate Member"
 msgid "Ultimate Member Integration"
 msgstr "Integrazione Ultimate Member"
 
-#: src/modules/multiple-authors/multiple-authors.php:1860
+#: src/modules/multiple-authors/multiple-authors.php:2043
 #: src/modules/multiple-authors/assets/js/sync-post-author.jsx:15
 msgid "Update author field on posts"
 msgstr "Aggiorna il campo autore negli articoli"
 
-#: src/modules/multiple-authors/multiple-authors.php:582
+#: src/modules/multiple-authors/multiple-authors.php:587
 msgid "Default author for new posts:"
 msgstr "Autore predefinito per i nuovi articoli:"
 
-#: src/modules/multiple-authors/multiple-authors.php:3499
-#: src/modules/multiple-authors/multiple-authors.php:3573
+#: src/modules/multiple-authors/multiple-authors.php:3686
+#: src/modules/multiple-authors/multiple-authors.php:3760
 msgid "Dismiss"
 msgstr "Ignora"
 
-#: src/modules/multiple-authors/multiple-authors.php:3494
+#: src/modules/multiple-authors/multiple-authors.php:3681
 msgid "Please click here and read this guide!"
 msgstr "Fai clic qui e leggi questa guida!"
 
-#: src/modules/multiple-authors/multiple-authors.php:3493
+#: src/modules/multiple-authors/multiple-authors.php:3680
 msgid "It looks like you have Co-Authors Plus installed."
 msgstr "Sembra che tu hai installato anche Co-Authors Plus."
 
@@ -838,15 +896,15 @@ msgstr "Sembra che tu hai installato anche Co-Authors Plus."
 msgid "PublishPress Authors allows you to add multiple authors and guest authors to WordPress posts"
 msgstr "PublishPress Authors ti permette di aggiungere autori multipli e autori ospiti agli articoli di WordPress"
 
-#: src/modules/multiple-authors/multiple-authors.php:1384
+#: src/modules/multiple-authors/multiple-authors.php:1447
 msgid "If the Author is mapped to a WordPress user, this will display the authors' \"Display name\" and their \"Username\". The default is to show only the \"Display name\". Showing the \"Username\" is useful if you have several authors with similar names."
 msgstr "Se l'autore è mappato a un utente WordPress, questo mostrerà il «Nome visualizzato» degli autori e il loro «Nome utente». L'impostazione predefinita è mostrare solo il «Nome visualizzato». La visualizzazione del «Nome utente» è utile se hai più autori con nomi simili."
 
-#: src/modules/multiple-authors/multiple-authors.php:571
+#: src/modules/multiple-authors/multiple-authors.php:576
 msgid "Show username in the search field:"
 msgstr "Mostra il nome utente nel campo di ricerca:"
 
-#: src/core/Authors_Widget.php:123
+#: src/core/Authors_Widget.php:132
 msgid "Display All Authors (including those who have not written any posts)"
 msgstr "Visualizza tutti gli autori (incluso anche quelli che non hanno ancora scritto alcun articolo)"
 
@@ -855,7 +913,7 @@ msgid "Display authors list."
 msgstr "Visualizza lista autori."
 
 #: src/core/Authors_Widget.php:23
-#: src/modules/multiple-authors/multiple-authors.php:1137
+#: src/modules/multiple-authors/multiple-authors.php:1198
 msgid "Authors List"
 msgstr "Lista autori"
 
@@ -939,26 +997,26 @@ msgstr "Migrare i dati info autori"
 msgid "Add compatibility with the Yoast SEO plugin"
 msgstr "Aggiungi compatibilità con il plugin Yoast SEO"
 
-#: src/functions/template-tags.php:1126
+#: src/functions/template-tags.php:1138
 msgid ", and "
 msgstr ", e "
 
 #. translators: Posts by a given author.
-#: src/functions/template-tags.php:1040
+#: src/functions/template-tags.php:1052
 msgid "Posts by %1$s"
 msgstr "Articoli da %1$s"
 
 #. Translators: refers to the author's website.
-#: src/functions/template-tags.php:839 src/functions/template-tags.php:1095
+#: src/functions/template-tags.php:851 src/functions/template-tags.php:1107
 msgid "Visit %s&#8217;s website"
 msgstr "Visita il sito web di %s"
 
-#: src/functions/template-tags.php:655
-#: src/modules/multiple-authors/multiple-authors.php:2087
+#: src/functions/template-tags.php:667
+#: src/modules/multiple-authors/multiple-authors.php:2274
 msgid "Posts by %s"
 msgstr "Articoli da %s"
 
-#: src/functions/template-tags.php:504 src/functions/template-tags.php:1125
+#: src/functions/template-tags.php:516 src/functions/template-tags.php:1137
 msgid " and "
 msgstr " e "
 
@@ -1086,120 +1144,120 @@ msgstr "Funzionalità"
 msgid "Authors Settings"
 msgstr "Impostazioni autori"
 
-#: src/modules/multiple-authors/multiple-authors.php:2834
+#: src/modules/multiple-authors/multiple-authors.php:3021
 msgid "Maintenance completed successfully."
 msgstr "La manutenzione è stata completata con successo."
 
-#: src/modules/multiple-authors/multiple-authors.php:2823
+#: src/modules/multiple-authors/multiple-authors.php:3010
 msgid "Error. Author terms could not be reseted."
 msgstr "Errore. Impossibile reimpostare i termini dell'autore."
 
-#: src/core/Plugin.php:508
+#: src/core/Plugin.php:514
 msgid "This forms part of the URL for the author’s profile page. If you choose a Mapped User, this URL is taken from the user’s account and can not be changed."
 msgstr "Questo fa parte dell'URL della pagina del profilo dell'autore. Se scegli un utente mappato, questo URL viene preso dall'account dell'utente e non può essere modificato."
 
 #: src/core/Classes/Term_Editor.php:56
-#: src/modules/multiple-authors/multiple-authors.php:2157
+#: src/modules/multiple-authors/multiple-authors.php:2344
 msgid "Author URL"
 msgstr "URL autore"
 
-#: src/modules/multiple-authors/multiple-authors.php:2069
+#: src/modules/multiple-authors/multiple-authors.php:2256
 msgid "Maintenance"
 msgstr "Manutenzione"
 
 #: src/core/Classes/Author_Editor.php:307
-#: src/modules/multiple-authors/multiple-authors.php:2065
+#: src/modules/multiple-authors/multiple-authors.php:2252
 msgid "General"
 msgstr "Generale"
 
-#: src/modules/multiple-authors/multiple-authors.php:1904
+#: src/modules/multiple-authors/multiple-authors.php:2087
 msgid "Please be careful clicking these buttons. Before clicking, we recommend taking a site backup in case anything goes wrong."
 msgstr "Fai attenzione a fare clic su questi pulsanti. Prima di fare clic, ti consigliamo di eseguire un backup del sito nel caso in cui qualcosa possa andare storto."
 
-#: src/modules/multiple-authors/multiple-authors.php:1898
+#: src/modules/multiple-authors/multiple-authors.php:2081
 msgid "Delete all guest authors"
 msgstr "Elimina tutti gli autori ospiti"
 
-#: src/modules/multiple-authors/multiple-authors.php:1896
+#: src/modules/multiple-authors/multiple-authors.php:2079
 msgid "Delete Guest Authors"
 msgstr "Elimina gli autori ospiti"
 
-#: src/modules/multiple-authors/multiple-authors.php:1891
+#: src/modules/multiple-authors/multiple-authors.php:2074
 msgid "Delete all authors mapped to users"
 msgstr "Elimina tutti gli autori mappati come utenti"
 
-#: src/modules/multiple-authors/multiple-authors.php:1889
+#: src/modules/multiple-authors/multiple-authors.php:2072
 msgid "Delete Mapped Authors"
 msgstr "Elimina tutti gli autori mappati"
 
-#: src/modules/multiple-authors/multiple-authors.php:1881
+#: src/modules/multiple-authors/multiple-authors.php:2064
 msgid "Copy Co-Authors Plus Data"
 msgstr "Copia i dati Co-Authors Plus"
 
-#: src/modules/multiple-authors/multiple-authors.php:1854
-#: src/modules/multiple-authors/multiple-authors.php:1856
+#: src/modules/multiple-authors/multiple-authors.php:2037
+#: src/modules/multiple-authors/multiple-authors.php:2039
 msgid "Create missed authors from role"
 msgstr "Crea autori persi dal ruolo"
 
-#: src/modules/multiple-authors/multiple-authors.php:1848
-#: src/modules/multiple-authors/multiple-authors.php:1850
+#: src/modules/multiple-authors/multiple-authors.php:2031
+#: src/modules/multiple-authors/multiple-authors.php:2033
 msgid "Create missed post authors"
 msgstr "Crea autori di articoli persi"
 
-#: src/modules/multiple-authors/multiple-authors.php:1809
+#: src/modules/multiple-authors/multiple-authors.php:1992
 msgid "This will display the authors site in the author box."
 msgstr "Questo visualizzerà il sito degli autori nel riquadro dell'autore."
 
-#: src/modules/multiple-authors/multiple-authors.php:1789
+#: src/modules/multiple-authors/multiple-authors.php:1972
 msgid "This will display the authors email in the author box."
 msgstr "Questo visualizzerà l'indirizzo email degli autori nel riquadro dell'autore."
 
-#: src/modules/multiple-authors/multiple-authors.php:1363
+#: src/modules/multiple-authors/multiple-authors.php:1426
 msgid "Author profiles can be mapped to WordPress user accounts. This option allows you to automatically create author profiles when users are created in these roles. You can also do this for existing users by clicking the \"Create missed authors from role\" button in the Maintenance tab."
 msgstr "I profili degli autori possono essere mappati agli account utente di WordPress. Questa opzione consente di creare automaticamente i profili dell'autore quando gli utenti vengono creati in questi ruoli. Puoi farlo anche per gli utenti esistenti facendo clic sul pulsante \"Crea autori mancanti dal ruolo\" nella scheda Manutenzione."
 
-#: src/modules/multiple-authors/multiple-authors.php:965
+#: src/modules/multiple-authors/multiple-authors.php:1019
 msgid "This will display the authors box at the end of the content."
 msgstr "Questo visualizzerà il riquadro degli autori alla fine del contenuto."
 
-#: src/modules/multiple-authors/multiple-authors.php:658
+#: src/modules/multiple-authors/multiple-authors.php:663
 msgid "Show site link:"
 msgstr "Mostra link del sito:"
 
-#: src/modules/multiple-authors/multiple-authors.php:650
+#: src/modules/multiple-authors/multiple-authors.php:655
 msgid "Show email link:"
 msgstr "Mostra link email:"
 
-#: src/modules/multiple-authors/multiple-authors.php:633
+#: src/modules/multiple-authors/multiple-authors.php:638
 msgid "Layout:"
 msgstr "Layout:"
 
-#: src/modules/multiple-authors/multiple-authors.php:625
+#: src/modules/multiple-authors/multiple-authors.php:630
 msgid "Title for the author box:"
 msgstr "Titolo del riquadro autore:"
 
-#: src/modules/multiple-authors/multiple-authors.php:617
+#: src/modules/multiple-authors/multiple-authors.php:622
 msgid "Show below the content:"
 msgstr "Mostra sotto al contenuto:"
 
-#: src/modules/multiple-authors/multiple-authors.php:560
+#: src/modules/multiple-authors/multiple-authors.php:565
 msgid "Automatically create author profiles:"
 msgstr "Crea automaticamente i profili degli autori:"
 
-#: src/modules/multiple-authors/multiple-authors.php:945
+#: src/modules/multiple-authors/multiple-authors.php:999
 #: src/modules/settings/settings.php:271
 msgid "Disabled because add_post_type_support('%1$s', '%2$s') is included in a loaded file."
 msgstr "Disabilitato perché add_post_type_support('%1$s', '%2$s') è incluso in un file già caricato."
 
-#: src/modules/multiple-authors/multiple-authors.php:137
-#: src/modules/multiple-authors/multiple-authors.php:908
+#: src/modules/multiple-authors/multiple-authors.php:142
+#: src/modules/multiple-authors/multiple-authors.php:962
 #: src/modules/settings/settings.php:249
 msgid "Pages"
 msgstr "Pagine"
 
-#: src/core/Classes/Author_Editor.php:57 src/core/Plugin.php:754
-#: src/modules/multiple-authors/multiple-authors.php:136
-#: src/modules/multiple-authors/multiple-authors.php:907
+#: src/core/Classes/Author_Editor.php:57 src/core/Plugin.php:760
+#: src/modules/multiple-authors/multiple-authors.php:141
+#: src/modules/multiple-authors/multiple-authors.php:961
 #: src/modules/settings/settings.php:248
 msgid "Posts"
 msgstr "Articoli"
@@ -1208,7 +1266,7 @@ msgstr "Articoli"
 msgid "There are no PublishPress modules registered"
 msgstr "Non ci sono moduli di PublishPress registrati"
 
-#: src/modules/multiple-authors/multiple-authors.php:361
+#: src/modules/multiple-authors/multiple-authors.php:366
 #: src/modules/settings/settings.php:102
 msgid "Settings"
 msgstr "Impostazioni"
@@ -1217,15 +1275,15 @@ msgstr "Impostazioni"
 msgid "Multiple Authors Settings"
 msgstr "Impostazioni autori multipli"
 
-#: src/core/Plugin.php:1552
+#: src/core/Plugin.php:1562
 msgid "Mine"
 msgstr "Miei"
 
-#: src/core/Plugin.php:1479
+#: src/core/Plugin.php:1485
 msgid "Sorry, the request returned an error."
 msgstr "Spiacenti, la richiesta ha restituito un errore."
 
-#: src/core/Plugin.php:1478
+#: src/core/Plugin.php:1484
 #: src/modules/byline-migration/assets/js/byline-migration.jsx:131
 #: src/modules/bylines-migration/assets/js/bylines-migration.jsx:153
 #: src/modules/multiple-authors/assets/js/coauthors-migration.jsx:164
@@ -1234,114 +1292,114 @@ msgstr "Spiacenti, la richiesta ha restituito un errore."
 msgid "Please, wait..."
 msgstr "Attendere prego…"
 
-#: src/core/Plugin.php:1472
+#: src/core/Plugin.php:1478
 msgid "Are you sure you want to create authors for the selected roles?"
 msgstr "Sei sicuro di voler creare degli autori per i ruoli selezionati?"
 
-#: src/core/Plugin.php:1460
+#: src/core/Plugin.php:1466
 msgid "Are you sure you want to create author profiles for the missed post authors?"
 msgstr "Sei sicuro di voler creare dei profili autore per gli autori di articoli persi?"
 
-#: src/core/Plugin.php:1456
+#: src/core/Plugin.php:1462
 msgid "Are you sure you want to delete the guest authors profiles? This action can't be undone."
 msgstr "Sei sicuro di voler eliminare i profili degli autori ospiti? Questa azione non può essere annullata."
 
-#: src/core/Plugin.php:1452
+#: src/core/Plugin.php:1458
 msgid "Are you sure you want to delete the authors profiles mapped to users? This action can't be undone."
 msgstr "Sei sicuro di voler eliminare i profili degli autori mappati agli utenti? Questa azione non può essere annullata."
 
-#: src/core/Plugin.php:1448
+#: src/core/Plugin.php:1454
 msgid "Click on an author to change them. Drag to change their order. Click on <strong>Remove</strong> to remove them."
 msgstr "Fai click su ogni autore per modificarli, puoi anche trascinarli per cambiarne l'ordine oppure fai clic su <strong>Rimuovi</strong> per rimuoverli."
 
-#: src/core/Plugin.php:1443
+#: src/core/Plugin.php:1449
 msgid "Click to change this author, or drag to change their position"
 msgstr "Fai click per modificare questo autore li, oppure puoi anche trascinarlo per cambiarne la posizione"
 
-#: src/core/Plugin.php:1439
+#: src/core/Plugin.php:1445
 msgid "Are you sure you want to remove this author?"
 msgstr "Sei sicuro di voler rimuovere questo autore?"
 
-#: src/core/Plugin.php:1438
+#: src/core/Plugin.php:1444
 msgid "Edit"
 msgstr "Modifica"
 
-#: src/core/Plugin.php:876
+#: src/core/Plugin.php:882
 msgid "No co-author exists for that term"
 msgstr "Nessun coautore esiste per quel termine"
 
-#: src/core/Plugin.php:837
+#: src/core/Plugin.php:843
 msgid "Click on an author to change them. Drag to change their order."
 msgstr "Fai click su ogni autore per modificarli. Trascinali per cambiarne l'ordine."
 
-#: src/core/Plugin.php:692
+#: src/core/Plugin.php:698
 msgid "If you like %s please leave us a %s rating. Thank you!"
 msgstr "Se sei soddisfatto di %s, lasciaci una valutazione di %s!"
 
-#: src/core/Plugin.php:565
+#: src/core/Plugin.php:571
 msgid "Back to Authors"
 msgstr "Torna ad autori"
 
-#: src/core/Plugin.php:564 src/core/Traits/Author_box.php:189
-#: src/modules/multiple-authors/multiple-authors.php:981
+#: src/core/Plugin.php:570 src/core/Traits/Author_box.php:189
+#: src/modules/multiple-authors/multiple-authors.php:1035
 msgid "Author"
 msgstr "Autore"
 
-#: src/core/Plugin.php:563
+#: src/core/Plugin.php:569
 msgid "No authors found."
 msgstr "Nessun autore trovato."
 
-#: src/core/Plugin.php:559
+#: src/core/Plugin.php:565
 msgid "Choose from the most used Authors"
 msgstr "Scegli tra gli autori più utilizzati"
 
-#: src/core/Plugin.php:558
+#: src/core/Plugin.php:564
 msgid "Add or remove authors"
 msgstr "Aggiungi o rimuovi autori"
 
-#: src/core/Plugin.php:554
+#: src/core/Plugin.php:560
 msgid "Separate authors with commas"
 msgstr "Separare gli autori con virgole"
 
-#: src/core/Plugin.php:552 src/core/Plugin.php:553
+#: src/core/Plugin.php:558 src/core/Plugin.php:559
 msgid "New Author"
 msgstr "Nuovo autore"
 
-#: src/core/Plugin.php:551
+#: src/core/Plugin.php:557
 msgid "Update Author"
 msgstr "Aggiorna autore"
 
-#: src/core/Plugin.php:550
+#: src/core/Plugin.php:556
 msgid "View Author"
 msgstr "Visualizza autore"
 
-#: src/core/Plugin.php:548
+#: src/core/Plugin.php:554
 msgid "Parent Author:"
 msgstr "Autore genitore:"
 
-#: src/core/Plugin.php:547
+#: src/core/Plugin.php:553
 msgid "Parent Author"
 msgstr "Autore genitore"
 
-#: src/core/Authors_Widget.php:169 src/core/Authors_Widget.php:369
-#: src/core/Classes/Post_Editor.php:365 src/core/Plugin.php:546
+#: src/core/Authors_Widget.php:178 src/core/Authors_Widget.php:380
+#: src/core/Classes/Post_Editor.php:388 src/core/Plugin.php:552
 msgid "All Authors"
 msgstr "Tutti gli autori"
 
-#: src/core/Plugin.php:545
+#: src/core/Plugin.php:551
 msgid "Popular Authors"
 msgstr "Autori popolari"
 
-#: src/core/Plugin.php:544
+#: src/core/Plugin.php:550
 msgid "Search Authors"
 msgstr "Cerca autori"
 
-#: src/core/Plugin.php:539
+#: src/core/Plugin.php:545
 msgctxt "taxonomy singular name"
 msgid "Author"
 msgstr "Autore"
 
-#: src/core/Plugin.php:534
+#: src/core/Plugin.php:540
 msgctxt "taxonomy general name"
 msgid "Authors"
 msgstr "Autori"
@@ -1421,11 +1479,11 @@ msgstr "Informazioni biografiche"
 msgid "Website"
 msgstr "Sito web"
 
-#: src/core/Classes/Author_Editor.php:347
+#: src/core/Authors_Widget.php:190 src/core/Classes/Author_Editor.php:347
 msgid "Last Name"
 msgstr "Cognome"
 
-#: src/core/Classes/Author_Editor.php:342
+#: src/core/Authors_Widget.php:189 src/core/Classes/Author_Editor.php:342
 msgid "First Name"
 msgstr "Nome"
 
@@ -1438,7 +1496,7 @@ msgstr "Utente mappato"
 msgid "Edit Author Profile"
 msgstr "Modifica profilo autore"
 
-#: src/core/Plugin.php:549
+#: src/core/Plugin.php:555
 msgid "Edit Author"
 msgstr "Modifica autore"
 
@@ -1459,7 +1517,7 @@ msgstr "Utente"
 msgid "Email"
 msgstr "Email"
 
-#: src/core/Authors_Widget.php:178 src/core/Classes/Author_Editor.php:47
+#: src/core/Authors_Widget.php:187 src/core/Classes/Author_Editor.php:47
 msgid "Name"
 msgstr "Nome"
 
@@ -1471,8 +1529,8 @@ msgstr "Nessun ID articolo fornito per il costruttore Authors_Iterator. Non sei 
 msgid "Author: %s"
 msgstr "Autore: %s"
 
-#: src/core/Classes/Post_Editor.php:268 src/core/Plugin.php:1447
-#: src/modules/multiple-authors/multiple-authors.php:1722
+#: src/core/Classes/Post_Editor.php:291 src/core/Plugin.php:1453
+#: src/modules/multiple-authors/multiple-authors.php:1905
 msgid "Search for an author"
 msgstr "Cerca un autore"
 
@@ -1480,11 +1538,11 @@ msgstr "Cerca un autore"
 msgid "Co-Authors Plus must be installed and active."
 msgstr "Co-Authors Plus deve essere installato e attivato."
 
-#: src/core/Authors_Widget.php:122 src/core/Widget.php:123
+#: src/core/Authors_Widget.php:131 src/core/Widget.php:123
 msgid "Layout"
 msgstr "Layout"
 
-#: src/core/Authors_Widget.php:121
+#: src/core/Authors_Widget.php:130
 msgid "Title"
 msgstr "Titolo"
 
@@ -1496,16 +1554,16 @@ msgstr "Autori multipli"
 msgid "Display a list of authors for the current post."
 msgstr "Visualizza un elenco degli autori per l'articolo corrente."
 
-#: src/core/Authors_Widget.php:129 src/core/Classes/Post_Editor.php:89
-#: src/core/Classes/Post_Editor.php:192 src/core/Plugin.php:834
+#: src/core/Authors_Widget.php:138 src/core/Classes/Post_Editor.php:89
+#: src/core/Classes/Post_Editor.php:192 src/core/Plugin.php:840
 #: src/core/Traits/Author_box.php:195
 #: src/modules/editflow-integration/editflow-integration.php:113
-#: src/modules/multiple-authors/multiple-authors.php:291
-#: src/modules/multiple-authors/multiple-authors.php:292
-#: src/modules/multiple-authors/multiple-authors.php:340
-#: src/modules/multiple-authors/multiple-authors.php:341
-#: src/modules/multiple-authors/multiple-authors.php:360
-#: src/modules/multiple-authors/multiple-authors.php:987
+#: src/modules/multiple-authors/multiple-authors.php:296
+#: src/modules/multiple-authors/multiple-authors.php:297
+#: src/modules/multiple-authors/multiple-authors.php:345
+#: src/modules/multiple-authors/multiple-authors.php:346
+#: src/modules/multiple-authors/multiple-authors.php:365
+#: src/modules/multiple-authors/multiple-authors.php:1041
 msgid "Authors"
 msgstr "Autori"
 
@@ -1518,6 +1576,6 @@ msgid "PublishPress"
 msgstr "PublishPress"
 
 #. Plugin Name of the plugin
-#: src/core/Plugin.php:689 src/modules/settings/settings.php:61
+#: src/core/Plugin.php:695 src/modules/settings/settings.php:61
 msgid "PublishPress Authors"
 msgstr "PublishPress Authors"

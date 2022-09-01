@@ -100,6 +100,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'author_pages_grid_layout_column' => '4',
                     'show_author_post_featured_image' => 'yes',
                     'show_author_post_excerpt'     => 'yes',
+                    'remove_single_user_map_restriction'  => 'no',
                     'show_author_post_authors'     => 'yes',
                     'show_author_post_date'        => 'yes',
                     'show_author_post_comments'    => 'yes',
@@ -600,6 +601,17 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'publishpress-authors'
                 ),
                 [$this, 'settings_fallback_user_for_guest_post'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_general'
+            );
+
+            add_settings_field(
+                'remove_single_user_map_restriction',
+                __(
+                    'Remove single author map restriction:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_remove_single_user_map_restriction'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_general'
             );
@@ -1144,7 +1156,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'shortcode'   => '[publishpress_authors_data field="display_name"]',
                         'description' => sprintf(
                             esc_html__(
-                                'The authors data shortcode accepts field parameter such as: %1s %2s %3s %4s %5s %6s. You can see full details and parameters %7s in this guide %8s.',
+                                'The authors data shortcode accepts field parameter such as: %1s %2s %3s %4s %5s %6s %7s. You can see full details and parameters %8s in this guide %9s.',
                                 'publishpress-authors'
                             ),
                             '<code>display_name</code>',
@@ -1153,6 +1165,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                             '<code>ID</code>',
                             '<code>user_nicename</code>',
                             '<code>user_email</code>',
+                            '<code>avatar</code>',
                             '<a href="https://publishpress.com/knowledge-base/authors-data-backup/">',
                             '</a>'
                         ),
@@ -1747,6 +1760,30 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          * @param array $args
          */
+        public function settings_remove_single_user_map_restriction($args = [])
+        {
+            $id    = $this->module->options_group_name . '_remove_single_user_map_restriction';
+            $value = isset($this->module->options->remove_single_user_map_restriction) ? $this->module->options->remove_single_user_map_restriction : '';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[remove_single_user_map_restriction]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
+
+            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
+                . esc_html__(
+                    'This will allow to map more than one user to an author. This feature is not advisable to be enabled unless there\'s a conflict as authors works better when it\'s one to one pairing.',
+                    'publishpress-authors'
+                )
+                . '</span>';
+
+
+            echo '</label>';
+        }
+
+
+        /**
+         * @param array $args
+         */
         public function settings_show_author_post_authors($args = [])
         {
             $id    = $this->module->options_group_name . '_show_author_post_authors';
@@ -2181,6 +2218,10 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             if (!isset($new_options['show_author_post_excerpt'])) {
                 $new_options['show_author_post_excerpt'] = 'no';
+            }
+
+            if (!isset($new_options['remove_single_user_map_restriction'])) {
+                $new_options['remove_single_user_map_restriction'] = 'no';
             }
 
             if (!isset($new_options['show_author_post_authors'])) {

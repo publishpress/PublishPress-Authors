@@ -24,6 +24,7 @@
 use MultipleAuthors\Classes\Legacy\Module;
 use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Classes\Objects\Author;
+use MultipleAuthors\Classes\Author_Editor;
 use MultipleAuthors\Factory;
 
 
@@ -116,13 +117,21 @@ if (!class_exists('MA_REST_API')) {
 
             $authorsData = [];
 
+            $authors_fields = Author_Editor::get_fields(false);
+            $authors_fields = apply_filters('multiple_authors_author_fields', $authors_fields, false);
+            $authors_fields = array_keys($authors_fields);
+
+            $excluded_fields = ['user_id', 'user_email', 'avatar'];
+            $excluded_fields = apply_filters('ppma_rest_api_authors_meta_excluded_fields', $excluded_fields);
+
             foreach ($authors as $author) {
                 $isGuest = 0;
                 if (is_a($author, Author::class)) {
                     $isGuest = $author->is_guest() ? 1 : 0;
                 }
 
-                $authorsData[] = [
+                //add default fields
+                $currentAuthorData = [
                     'term_id'      => (int)$author->term_id,
                     'user_id'      => (int)$author->user_id,
                     'is_guest'     => $isGuest,
@@ -130,6 +139,16 @@ if (!class_exists('MA_REST_API')) {
                     'display_name' => $author->display_name,
                     'avatar_url'   => $author->get_avatar_url(),
                 ];
+                
+                //add other fields
+                foreach ($authors_fields as $authors_field) {
+                    if (in_array($authors_field, $excluded_fields)) {
+                        continue;
+                    }
+                    $currentAuthorData[$authors_field] = $author->$authors_field;
+                }
+
+                $authorsData[] = $currentAuthorData;
             }
 
             return $authorsData = apply_filters('ppma_rest_api_authors_data', $authorsData);
