@@ -130,6 +130,10 @@ if (!class_exists('MA_REST_API')) {
                     $isGuest = $author->is_guest() ? 1 : 0;
                 }
 
+                if (!is_object($author) || is_wp_error($author)) {
+                    continue;
+                }
+
                 //add default fields
                 $currentAuthorData = [
                     'term_id'      => (int)$author->term_id,
