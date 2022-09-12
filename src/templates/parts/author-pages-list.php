@@ -92,14 +92,15 @@ if ($author_post_custom_height > 0) {
                                         </span>
                                     <?php endif; ?>
                                     <?php echo '<'.$author_post_title_header.' class="article-title entry-title title">'; ?>
-                                        <a href="<?php the_permalink(); ?>" rel="bookmark"><?php the_title(); ?></a>
+                                        <a href="<?php the_permalink(); ?>" rel="bookmark" title="<?php echo esc_attr(get_the_title()); ?>"><?php the_title(); ?></a>
                                     <?php echo '</'.$author_post_title_header.'>'; ?>
                                     <div class="article-meta post-meta meta">
                                         <?php if ($show_post_authors && !empty($post_authors)) : ?>
                                                 <span class="article-meta-item">by <span class="author vcard">
                                                     <?php foreach ($post_authors as $index => $post_author) : $index++; ?>
                                                         <?php $term_link = get_term_link($post_author->term_id); ?>
-                                                        <a href="<?php echo ($term_link) ? esc_url($term_link) : ''; ?>">
+                                                        <a href="<?php echo ($term_link) ? esc_url($term_link) : ''; ?>"
+                                                        title="<?php echo esc_attr($post_author->display_name); ?>">
                                                             <?php echo esc_html($post_author->display_name); ?><?php
                                                             if (count($post_authors) !== $index) {
                                                                 echo ', ';
@@ -112,14 +113,14 @@ if ($author_post_custom_height > 0) {
                                         <?php if ($show_post_date ) : ?>
                                             <span class="article-meta-item entry-meta-item post-meta-item post-meta meta">
                                                 <span class="dashicons dashicons-clock"></span>
-                                                <a href="<?php the_permalink(); ?>" rel="bookmark">
+                                                <a href="<?php the_permalink(); ?>" rel="bookmark" title="<?php echo esc_html__('Published date', 'publishpress-authors'); ?>">
                                                     <time class="article-date published" datetime="<?php echo esc_attr(get_the_date(DATE_W3C)); ?>"><?php echo esc_html(get_the_date()); ?></time>
                                                 </a>
                                             </span>
                                         <?php endif; ?>
                                         <?php if ($show_post_comments ) : ?>
                                         <span class="article-meta-item entry-meta-item post-meta-item post-meta meta">
-                                            <a href="<?php echo esc_url(the_permalink() . '#comments'); ?>">
+                                            <a href="<?php echo esc_url(the_permalink() . '#comments'); ?>" title="<?php echo esc_html__('Comment counts', 'publishpress-authors'); ?>">
                                                 <span class="dashicons dashicons-admin-comments"></span><?php echo esc_html(get_comments_number()); ?>
                                             </a>
                                         </span>
@@ -135,7 +136,7 @@ if ($author_post_custom_height > 0) {
                                     <?php if ($post_tags && !empty($post_tags)) : ?>
                                             <span class="tags-links">
                                                 <?php foreach($post_tags as $post_tag) : ?>
-                                                    <a href="<?php echo esc_url(get_tag_link($post_tag->term_id)); ?>" rel="tag">
+                                                    <a href="<?php echo esc_url(get_tag_link($post_tag->term_id)); ?>" rel="tag" title="<?php echo esc_attr($post_tag->name); ?>">
                                                         <?php echo esc_html($post_tag->name); ?>
                                                     </a>
                                                 <?php endforeach; ?>

@@ -25,7 +25,7 @@
     {% for author in authors %}
         <span class="multiple-authors-layout-inline author_index_{{ loop.index }} author_{{ author.slug }}">
             <a href="{{ author.link }}" class="{{ item_class }}"
-               rel="author">{{ author.display_name|raw }}</a>{% if loop.index < authors|length %},{% endif %}
+               rel="author" title="{{ author.display_name }}">{{ author.display_name|raw }}</a>{% if loop.index < authors|length %},{% endif %}
         </span>
     {% endfor %}
 

@@ -866,7 +866,7 @@ class Utils
             $excerpt .= '... ';
         }
         if ($read_more_link) {
-            $excerpt .= '<a class="read-more" href="'. esc_url(get_permalink()) .'">'. esc_html__('Read more.', 'publishpress-authors') .'</a>';
+            $excerpt .= '<a class="read-more" href="'. esc_url(get_permalink()) .'" title="'. esc_attr__('Read more.', 'publishpress-authors') .'">'. esc_html__('Read more.', 'publishpress-authors') .'</a>';
         }
 
         if ($echo) {
