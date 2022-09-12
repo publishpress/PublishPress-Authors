@@ -85,7 +85,7 @@ if ($author_post_custom_height > 0) {
 
                         <div class="ppma-grid-post-content">
                             <?php echo '<'.$author_post_title_header.' class="ppma-grid-post-title entry-title title">'; ?>
-                                <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                                <a href="<?php the_permalink(); ?>" title="<?php echo esc_attr(get_the_title()); ?>"><?php the_title(); ?></a>
                             <?php echo '</'.$author_post_title_header.'>'; ?>
 
                             <?php if ($show_post_excerpt ) : ?>
@@ -109,7 +109,8 @@ if ($author_post_custom_height > 0) {
                                 <span class="entry-meta-item post-meta-item post-meta meta posted-by"><span class="author vcard">
                                     <?php foreach ($post_authors as $index => $post_author) : $index++; ?>
                                         <?php $term_link = get_term_link($post_author->term_id); ?>
-                                        <a href="<?php echo ($term_link) ? esc_url($term_link) : ''; ?>">
+                                        <a href="<?php echo ($term_link) ? esc_url($term_link) : ''; ?>"
+                                        title="<?php echo esc_attr($post_author->display_name); ?>">
                                             <?php echo esc_html($post_author->display_name); ?><?php
                                             if (count($post_authors) !== $index) {
                                                 echo ', ';
@@ -130,7 +131,7 @@ if ($author_post_custom_height > 0) {
 
                                 <?php if ($show_post_comments ) : ?>
                                     <span class="entry-meta-item post-meta-item post-meta meta">
-                                        <a href="<?php echo esc_url(the_permalink() . '#comments'); ?>">
+                                        <a href="<?php echo esc_url(the_permalink() . '#comments'); ?>" title="<?php echo esc_html__('Comment counts', 'publishpress-authors'); ?>">
                                             <span class="dashicons dashicons-admin-comments"></span><?php echo esc_html(get_comments_number()); ?>
                                         </a>
                                     </span>
@@ -141,7 +142,8 @@ if ($author_post_custom_height > 0) {
                                 <?php if ($post_tags && !empty($post_tags)) : ?>
                                         <span class="tags-links">
                                             <?php foreach($post_tags as $post_tag) : ?>
-                                                <a href="<?php echo esc_url(get_tag_link($post_tag->term_id)); ?>" rel="tag">
+                                                <a href="<?php echo esc_url(get_tag_link($post_tag->term_id)); ?>" rel="tag"
+                                                title="<?php echo esc_attr($post_tag->name); ?>">
                                                     <?php echo esc_html($post_tag->name); ?>
                                                 </a>
                                             <?php endforeach; ?>
