@@ -100,8 +100,8 @@
     font-size: 16px;
 }
 
-.pp-multiple-authors-layout-boxed .multiple-authors-links a:nth-child(1),
-.pp-multiple-authors-layout-centered .multiple-authors-links a:nth-child(1) {
+.pp-multiple-authors-layout-boxed .multiple-authors-links a span:not(.dashicons),
+.pp-multiple-authors-layout-centered .multiple-authors-links a span:not(.dashicons) {
     padding: 0 14px;
 }
 
