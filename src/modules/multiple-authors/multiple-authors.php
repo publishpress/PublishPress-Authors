@@ -114,7 +114,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'author_post_custom_height'    => '',
                     'default_author_for_new_posts' => null,
                     'fallback_user_for_guest_post' => function_exists('get_current_user_id') ? get_current_user_id() : 0,
-                    'author_page_post_types'       => []
+                    'author_page_post_types'       => [],
+                    'disable_quick_edit_author_box' => 'no'
                 ],
                 'options_page'         => false,
                 'autoload'             => true,
@@ -682,6 +683,14 @@ if (!class_exists('MA_Multiple_Authors')) {
                 'load_font_awesome',
                 __('Layout icons:', 'publishpress-authors'),
                 [$this, 'settings_load_font_awesome_option'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_display'
+            );
+
+            add_settings_field(
+                'disable_quick_edit_author_box',
+                __('Disable the "Authors" box when using "Quick Edit":', 'publishpress-authors'),
+                [$this, 'settings_disable_quick_edit_author_box_option'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_display'
             );
@@ -2054,6 +2063,24 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
+         * @param array
+         */
+        public function settings_disable_quick_edit_author_box_option($args = [])
+        {
+            $id    = $this->module->options_group_name . '_disable_quick_edit_author_box';
+            $value = isset($this->module->options->disable_quick_edit_author_box) ? $this->module->options->disable_quick_edit_author_box : 'no';
+
+            echo '<label for="' . esc_attr($id) . '">';
+            echo '<input type="checkbox" value="yes" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[disable_quick_edit_author_box]" '
+                . checked($value, 'yes', false) . ' />';
+            echo '&nbsp;&nbsp;&nbsp; <span class="ppma_settings_field_description">' . esc_html__(
+                    'This will remove the Authors Box in "Quick Edit".',
+                    'publishpress-authors'
+                ) . '</span>';
+            echo '</label>';
+        }
+
+        /**
          * Displays the button to reset the author terms.
          *
          * @param array
@@ -2198,6 +2225,10 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             if (!isset($new_options['load_font_awesome'])) {
                 $new_options['load_font_awesome'] = 'no';
+            }
+
+            if (!isset($new_options['disable_quick_edit_author_box'])) {
+                $new_options['disable_quick_edit_author_box'] = 'no';
             }
 
             if (!isset($new_options['username_in_search_field'])) {

@@ -53,8 +53,12 @@ class Post_Editor
     public static function add_author_bulk_quick_edit_custom_box($column_name, $post_type)
     {
         if (Utils::is_post_type_enabled($post_type) && $column_name === 'authors') {
+            $legacyPlugin      = Factory::getLegacyPlugin(); 
+            $quick_edit_styles = isset($legacyPlugin->modules->multiple_authors->options->disable_quick_edit_author_box) 
+                && 'yes' === $legacyPlugin->modules->multiple_authors->options->disable_quick_edit_author_box
+                ? 'display:none;' : '';
             ?>
-            <fieldset class="inline-edit-col-left">
+            <fieldset class="inline-edit-col-left" style="<?php echo esc_attr($quick_edit_styles); ?>">
                 <div class="inline-edit-col">
                     <label style="display: inline-flex">
                         <span class="title">Authors</span>
