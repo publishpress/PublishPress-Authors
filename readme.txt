@@ -5,7 +5,7 @@ Author: PublishPress
 Author URI: https://publishpress.com
 Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
-Requires PHP: 5.6
+Requires PHP: 7.2.5
 Tested up to: 6.0
 Stable tag: 3.22.0
 License: GPLv2 or later
