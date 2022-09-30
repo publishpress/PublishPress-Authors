@@ -81,7 +81,7 @@ if (! defined('PP_AUTHORS_LOADED')) {
             echo '<div class="error"><p><strong>' . esc_html__('Warning:', ' publishpress-authors') . '</strong> '
                 . sprintf(esc_html__('The active plugin %s is not compatible with your PHP version.', ' publishpress-authors') .'</p><p>',
                     '&laquo;' . esc_html($data['Name']) . ' ' . esc_html($data['Version']) . '&raquo;')
-                . sprintf(esc_html__('%s is required for this plugin.', ' publishpress-authors'), '7.2.5 ')
+                . sprintf(esc_html__('%s is the minimum version required for this plugin.', ' publishpress-authors'), 'PHP 7.2.5 ')
                 . '</p></div>';
         });
         return;
