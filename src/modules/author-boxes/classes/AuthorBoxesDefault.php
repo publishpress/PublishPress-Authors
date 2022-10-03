@@ -110,6 +110,7 @@ class AuthorBoxesDefault
         $editor_data['box_layout_shadow_vertical_offset'] = 10;
         $editor_data['box_layout_shadow_blur'] = 0;
         $editor_data['box_layout_shadow_speed'] = 0;
+        $editor_data['box_layout_color'] = '#3c434a';
 
         return $editor_data;
     }
@@ -160,6 +161,7 @@ class AuthorBoxesDefault
         $editor_data['box_layout_shadow_vertical_offset'] = 10;
         $editor_data['box_layout_shadow_blur'] = 0;
         $editor_data['box_layout_shadow_speed'] = 0;
+        $editor_data['box_layout_color'] = '#3c434a';
 
         return $editor_data;
     }
@@ -206,6 +208,7 @@ class AuthorBoxesDefault
         $editor_data['box_layout_shadow_vertical_offset'] = 10;
         $editor_data['box_layout_shadow_blur'] = 0;
         $editor_data['box_layout_shadow_speed'] = 0;
+        $editor_data['box_layout_color'] = '#3c434a';
         //default css
         $editor_data['box_tab_custom_css'] = '.pp-multiple-authors-layout-inline ul.pp-multiple-authors-boxes-ul {
             display: flex;
@@ -269,6 +272,7 @@ class AuthorBoxesDefault
         $editor_data['box_layout_shadow_vertical_offset'] = 10;
         $editor_data['box_layout_shadow_blur'] = 0;
         $editor_data['box_layout_shadow_speed'] = 0;
+        $editor_data['box_layout_color'] = '#3c434a';
         //default css
         $editor_data['box_tab_custom_css'] = '.pp-multiple-authors-layout-inline ul.pp-multiple-authors-boxes-ul {
             display: flex;
@@ -337,6 +341,7 @@ class AuthorBoxesDefault
         $editor_data['box_layout_shadow_vertical_offset'] = 10;
         $editor_data['box_layout_shadow_blur'] = 0;
         $editor_data['box_layout_shadow_speed'] = 0;
+        $editor_data['box_layout_color'] = '#3c434a';
         //default css
         $editor_data['box_tab_custom_css'] = '.pp-multiple-authors-boxes-wrapper.pp-multiple-authors-layout-simple_list .pp-multiple-authors-boxes-ul li {
             border-left: none !important;
