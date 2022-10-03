@@ -224,9 +224,10 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= [3.22.0] - 3 Oct 2022 =
+= [3.23.0] - 3 Oct 2022 =
 
 * Update: Upgrade twig to v1.44.7, #921
+* Update: Update minimum php requirement to PHP 7.2.5
 
 = [3.22.0] - 1 Sep 2022 =
 
