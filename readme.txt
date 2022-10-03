@@ -5,9 +5,9 @@ Author: PublishPress
 Author URI: https://publishpress.com
 Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
-Requires PHP: 5.6
+Requires PHP: 7.2.5
 Tested up to: 6.0
-Stable tag: 3.23.1
+Stable tag: 2.23.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -223,6 +223,11 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [3.23.0] - 3 Oct 2022 =
+
+* Update: Upgrade twig to v1.44.7, #921
+* Update: Update minimum php requirement to PHP 7.2.5
 
 = [3.22.0] - 1 Sep 2022 =
 

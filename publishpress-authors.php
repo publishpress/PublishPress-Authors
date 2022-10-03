@@ -5,7 +5,7 @@
  * Description: PublishPress Authors allows you to add multiple authors and guest authors to WordPress posts
  * Author:      PublishPress
  * Author URI:  https://publishpress.com
- * Version: 3.23.1
+ * Version: 2.23.0
  * Text Domain: publishpress-authors
  *
  * ------------------------------------------------------------------------------
@@ -71,6 +71,21 @@ if (defined('PP_AUTHORS_PRO_LOADED')) {
 }
 
 if (! defined('PP_AUTHORS_LOADED')) {
+
+    // Check required PHP version.
+    if ( version_compare(PHP_VERSION, '7.2.5', '<') ) {
+        // Send an armin warning
+        add_action('admin_notices', function() {
+            $data = get_plugin_data(__FILE__);
+
+            echo '<div class="error"><p><strong>' . esc_html__('Warning:', ' publishpress-authors') . '</strong> '
+                . sprintf(esc_html__('The active plugin %s is not compatible with your PHP version.', ' publishpress-authors') .'</p><p>',
+                    '&laquo;' . esc_html($data['Name']) . ' ' . esc_html($data['Version']) . '&raquo;')
+                . sprintf(esc_html__('%s is the minimum version required for this plugin.', ' publishpress-authors'), 'PHP 7.2.5 ')
+                . '</p></div>';
+        });
+        return;
+    }
 
     require_once __DIR__ . '/includes.php';
 
