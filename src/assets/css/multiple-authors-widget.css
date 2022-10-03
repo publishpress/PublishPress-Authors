@@ -105,6 +105,31 @@
     padding: 0 14px;
 }
 
+.pp-author-boxes-recent-posts {
+    margin-top: 10px;
+}
+
+.pp-author-boxes-recent-posts .pp-author-boxes-recent-posts-title {
+    width: 100%;
+    margin-bottom: 20px;
+    padding-bottom: 2px;
+    border-bottom: 1px dotted #333;
+    font-size: 18px;
+    text-align: left;
+}
+
+.pp-author-boxes-recent-posts .pp-author-boxes-recent-posts-item {
+    font-size: 14px;
+}
+
+.pp-author-boxes-recent-posts .pp-author-boxes-recent-posts-item span.dashicons {
+    margin: 0 0.2rem 0 0;
+}
+
+.pp-author-boxes-recent-posts-empty {
+    font-size: 12px;
+}
+
 .pp-multiple-authors-layout-boxed .multiple-authors-links a:nth-child(1) {
     margin-right: 2px;
 }
