@@ -418,7 +418,7 @@ class MA_Author_Boxes extends Module
 
         $theme_author_boxes = [];
         foreach ($directories as $directory) {
-            $dir_files = list_files($directory, 1);
+            $dir_files = self::authorboxesListDirectoryFiles($directory, 1);
             if (!empty($dir_files)) {
                 foreach ($dir_files as $dir_file) {
                     $file_extension = pathinfo($dir_file, PATHINFO_EXTENSION);
@@ -432,6 +432,71 @@ class MA_Author_Boxes extends Module
         }
 
         return $theme_author_boxes;
+    }
+
+    /**
+     * This is a clone of wordpress 'list_files' that's been caught in undefined function.
+     * 
+     * Returns a listing of all files in the specified folder and all subdirectories up to 100 levels deep.
+     *
+     * The depth of the recursiveness can be controlled by the $levels param.
+     *
+     * @since 2.6.0
+     * @since 4.9.0 Added the `$exclusions` parameter.
+     *
+     * @param string   $folder     Optional. Full path to folder. Default empty.
+     * @param int      $levels     Optional. Levels of folders to follow, Default 100 (PHP Loop limit).
+     * @param string[] $exclusions Optional. List of folders and files to skip.
+     * @return string[]|false Array of files on success, false on failure.
+     */
+    public static function authorboxesListDirectoryFiles($folder = '', $levels = 100, $exclusions = array()) {
+
+        if (function_exists('list_files')) {
+            return list_files($folder, $levels);
+        } else {
+            if ( empty( $folder ) ) {
+                return false;
+            }
+        
+            $folder = trailingslashit( $folder );
+        
+            if ( ! $levels ) {
+                return false;
+            }
+        
+            $files = array();
+        
+            $dir = @opendir( $folder );
+        
+            if ( $dir ) {
+                while ( ( $file = readdir( $dir ) ) !== false ) {
+                    // Skip current and parent folder links.
+                    if ( in_array( $file, array( '.', '..' ), true ) ) {
+                        continue;
+                    }
+        
+                    // Skip hidden and excluded files.
+                    if ( '.' === $file[0] || in_array( $file, $exclusions, true ) ) {
+                        continue;
+                    }
+        
+                    if ( is_dir( $folder . $file ) ) {
+                        $files2 = list_files( $folder . $file, $levels - 1 );
+                        if ( $files2 ) {
+                            $files = array_merge( $files, $files2 );
+                        } else {
+                            $files[] = $folder . $file . '/';
+                        }
+                    } else {
+                        $files[] = $folder . $file;
+                    }
+                }
+        
+                closedir( $dir );
+            }
+        
+            return $files;
+        }
     }
 
     /**
