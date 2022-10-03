@@ -224,6 +224,10 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [3.22.0] - 3 Oct 2022 =
+
+* Update: Upgrade twig to v1.44.7, #921
+
 = [3.22.0] - 1 Sep 2022 =
 
 * Update: Added avatar to publishpress_authors_data shortcode [publishpress_authors_data field="avatar"]  #887
