@@ -42,14 +42,12 @@ class AuthorBoxesEditorFields
         ];
         $fields['title_bottom_space'] = [
             'label'    => esc_html__('Bottom space', 'publishpress-authors'),
-            'description' => esc_html__('Author box header title space in pixels that separate the title from author box.', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'title',
         ];
         $fields['title_size'] = [
             'label'    => esc_html__('Size', 'publishpress-authors'),
-            'description' => esc_html__('Author box header title font size in pixels.', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'title',
@@ -209,10 +207,9 @@ class AuthorBoxesEditorFields
         ];
         $fields['avatar_border_radius'] = [
             'label'      => esc_html__('Border Radius (%)', 'publishpress-authors'),
-            'type'       => 'range',
+            'type'       => 'number',
             'min'        => '0',
             'max'        => '100',
-            'show_input' => true,
             'sanitize'   => 'intval',
             'tab'        => 'avatar',
         ];
@@ -230,7 +227,6 @@ class AuthorBoxesEditorFields
     {
         $fields['name_size'] = [
             'label'    => esc_html__('Size', 'publishpress-authors'),
-            'description' => esc_html__('Author name font size in pixels.', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'name',
@@ -373,7 +369,6 @@ class AuthorBoxesEditorFields
         ];
         $fields['meta_size'] = [
             'label'    => esc_html__('Size', 'publishpress-authors'),
-            'description' => esc_html__('Author meta font size in pixels.', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'meta',
@@ -517,7 +512,6 @@ class AuthorBoxesEditorFields
         ];
         $fields['author_bio_size'] = [
             'label'    => esc_html__('Size', 'publishpress-authors'),
-            'description' => esc_html__('Author bio font size in pixels.', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'author_bio',
@@ -720,7 +714,6 @@ class AuthorBoxesEditorFields
         ];
         $fields['author_recent_posts_size'] = [
             'label'    => esc_html__('Size', 'publishpress-authors'),
-            'description' => esc_html__('Author recent posts font size in pixels.', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'author_recent_posts',
@@ -923,7 +916,7 @@ class AuthorBoxesEditorFields
         ];
         $fields['box_layout_box_width'] = [
             'label'      => esc_html__('Box Width (%)', 'publishpress-authors'),
-            'type'       => 'range',
+            'type'       => 'number',
             'min'        => '0',
             'max'        => '100',
             'show_input' => true,
@@ -1000,7 +993,8 @@ class AuthorBoxesEditorFields
 
         $fields['box_tab_custom_wrapper_class'] = [
             'label'       => esc_html__('Layout Wrapper Class Name', 'publishpress-authors'),
-            'placeholder' => esc_html__('class-name', 'publishpress-authors'),
+            'description' => esc_html__('You can separate multiple class name with space.', 'publishpress-authors'),
+            'placeholder' => esc_html__('Enter class name without dot(.)', 'publishpress-authors'),
             'type'     => 'text',
             'sanitize' => 'sanitize_text_field',
             'tab'      => 'custom_css',

@@ -1,8 +1,7 @@
 (function ($) {
     'use strict';
 
-    $(window).load(function () {
-        var color_pickers_data = [];
+    jQuery(document).ready(function($) {
 
         if ($('body').hasClass('post-type-ppma_boxes') && $(".publishpress-author-box-editor").length > 0) {
             /**
@@ -14,91 +13,19 @@
             /**
              * color picker init
              */
-            $(".pp-editor-color-picker").each(function (e, i) {
-                var picker_id = $(this).attr("id");
-                var $pickr_variable;
-                $pickr_variable = 'pickr_' + e;
-                $pickr_variable = Pickr.create(
-                    {
-                        el: '.' + picker_id,
-                        container: 'body',
-                        theme: 'nano',
-                        closeOnScroll: true,
-                        padding: 8,
-                        inline: false,
-                        autoReposition: false,
-                        sliders: 'h',
-                        disabled: false,
-                        comparison: false,
-                        defaultRepresentation: 'HEX',
-                        position: 'bottom-end',
-                        adjustableNumbers: true,
-
-                        default: $(this).val(),
-
-                        swatches: [
-                            'rgba(244, 67, 54, 1)',
-                            'rgba(233, 30, 99, 0.95)',
-                            'rgba(156, 39, 176, 0.9)',
-                            'rgba(103, 58, 183, 0.85)',
-                            'rgba(63, 81, 181, 0.8)',
-                            'rgba(33, 150, 243, 0.75)',
-                            'rgba(3, 169, 244, 0.7)',
-                            'rgba(0, 188, 212, 0.7)',
-                            'rgba(0, 150, 136, 0.75)',
-                            'rgba(76, 175, 80, 0.8)',
-                            'rgba(139, 195, 74, 0.85)',
-                            'rgba(205, 220, 57, 0.9)',
-                            'rgba(255, 235, 59, 0.95)',
-                            'rgba(255, 193, 7, 1)'
-                        ],
-
-                        components: {
-                            preview: true,
-                            opacity: true,
-                            hue: true,
-                            interaction: {
-                                hex: true,
-                                rgba: true,
-                                hsla: false,
-                                hsva: false,
-                                cmyk: false,
-                                input: true,
-                                clear: true,
-                                save: true
-                            },
-                        },
-                        i18n: {
-                            'ui:dialog': 'color picker dialog',
-                            'btn:toggle': 'toggle color picker dialog',
-                            'btn:swatch': 'color swatch',
-                            'btn:last-color': 'use previous color',
-                            'btn:save': authorBoxesEditor.btnSave,
-                            'btn:cancel': authorBoxesEditor.btnCancel,
-                            'btn:clear': authorBoxesEditor.btnClear,
-                            'aria:btn:save': 'save and close',
-                            'aria:btn:cancel': 'cancel and close',
-                            'aria:btn:clear': 'clear and close',
-                            'aria:input': 'color input field',
-                            'aria:palette': 'color selection area',
-                            'aria:hue': 'hue selection slider',
-                            'aria:opacity': 'selection slider'
-                        },
-                    }).on('change', (color, instance) => {
-                        let hidden = document.getElementById(picker_id);
-                        hidden.value = color.toHEXA().toString();
-                        hidden.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
-                        hidden.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
-                    }).on('clear', instance => {
-                        let hidden = document.getElementById(picker_id);
-                        hidden.value = 'transparent';
-                        hidden.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
-                        hidden.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
-                    }).on('save', (color, instance) => {
-                        $pickr_variable.hide();
-                    });
-                color_pickers_data[picker_id] = $pickr_variable;
-
+            $('.pp-editor-color-picker').wpColorPicker({
+                change: function (event, ui) {
+                    setTimeout(
+                        function() {
+                            generateEditorPreview(getAllEditorFieldsValues(), false);
+                    }, 100);
+                 },
+                clear: function () { 
+                    setTimeout(
+                        function() {
+                            generateEditorPreview(getAllEditorFieldsValues(), false);
+                    }, 100);
+                },
             });
         }
 
@@ -124,17 +51,6 @@
             }
             //show this current tab contents
             $('.ppma-' + clicked_tab + '-tab').show();
-        });
-
-        /**
-         * range slider and input change
-         */
-        $(document).on('input', '.pp-editor-range, .pp-editor-range-input', function (event) {
-            if ($(this).hasClass('pp-editor-range')) {
-                $(this).closest('.input').find('.pp-editor-range-input').val($(this).val());
-            } else {
-                $(this).closest('.input').find('.pp-editor-range').val($(this).val());
-            }
         });
 
         /**
@@ -190,8 +106,7 @@
                     }
                     
                     if (field.hasClass('pp-editor-color-picker')) {
-                        var field_picker = color_pickers_data[key];
-                        field_picker.setColor(value, true);
+                        field.trigger('change');
                     }
                 }
 
@@ -199,7 +114,8 @@
                     function() {
                         $('#import_action').val('');
                         $('#avatar_show').trigger('change');
-                }, 1000);
+                        $('.ppma-editor-data-imported').css('color', 'green').show().delay(2000).fadeOut('slow');
+                }, 500);
 
             } else {
                 $(".ppma-editor-data-imported").css('color', 'red').html($(this).attr('data-invalid')).show().delay(2000).fadeOut('slow');

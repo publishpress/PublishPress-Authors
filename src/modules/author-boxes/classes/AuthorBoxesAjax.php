@@ -219,33 +219,38 @@ $custom_styles = '.pp-multiple-authors-layout-boxed ul li > div:nth-child(1) {fl
     </ul>
 </div>
 
+<?php 
+$generated_styles = '';
+if (!empty($custom_styles)) {
+    $generated_styles .= $custom_styles . "\n";
+}
+if (!empty($new_style_1 = AuthorBoxesStyles::getTitleFieldStyles($args, ''))) {
+    $generated_styles .= $new_style_1 . "\n";
+}
+if (!empty($new_style_2 = AuthorBoxesStyles::getAvatarFieldStyles($args, ''))) {
+    $generated_styles .= $new_style_2 . "\n";
+}
+if (!empty($new_style_3 = AuthorBoxesStyles::getNameFieldStyles($args, ''))) {
+    $generated_styles .= $new_style_3 . "\n";
+}
+if (!empty($new_style_4 = AuthorBoxesStyles::getBioFieldStyles($args, ''))) {
+    $generated_styles .= $new_style_4 . "\n";
+}
+if (!empty($new_style_5 = AuthorBoxesStyles::getMetaFieldStyles($args, ''))) {
+    $generated_styles .= $new_style_5 . "\n";
+}
+if (!empty($new_style_6 = AuthorBoxesStyles::getRecentPostsFieldStyles($args, ''))) {
+    $generated_styles .= $new_style_6 . "\n";
+}
+if (!empty($new_style_7 = AuthorBoxesStyles::getBoxLayoutFieldStyles($args, ''))) {
+    $generated_styles .= $new_style_7 . "\n";
+}
+if (!empty($new_style_8 = AuthorBoxesStyles::getCustomCssFieldStyles($args, ''))) {
+    $generated_styles .= $new_style_8 . "\n";
+}
+?>
 <style>
-    <?php echo (!empty($custom_styles)) ? $custom_styles : ''; ?>
-
-
-    <?php echo AuthorBoxesStyles::getTitleFieldStyles($args, ''); ?>
-
-
-    <?php echo AuthorBoxesStyles::getAvatarFieldStyles($args, ''); ?>
-
-
-    <?php echo AuthorBoxesStyles::getNameFieldStyles($args, ''); ?>
-
-
-    <?php echo AuthorBoxesStyles::getBioFieldStyles($args, ''); ?>
-
-
-    <?php echo AuthorBoxesStyles::getMetaFieldStyles($args, ''); ?>
-
-
-    <?php echo AuthorBoxesStyles::getRecentPostsFieldStyles($args, ''); ?>
-
-
-    <?php echo AuthorBoxesStyles::getBoxLayoutFieldStyles($args, ''); ?>
-
-
-    <?php echo AuthorBoxesStyles::getCustomCssFieldStyles($args, ''); ?>
-
+    <?php echo $generated_styles; ?>
 </style>
             <?php 
             $response['content'] = ob_get_clean();

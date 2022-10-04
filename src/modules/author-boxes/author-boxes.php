@@ -873,26 +873,30 @@ class MA_Author_Boxes extends Module
             </div>
 
             <div class="ppma-author-box-editor-fields wrapper-column">
-                <?php 
-                if ($post->post_status === 'auto-draft'
-                    || empty(get_post_meta($post->ID, self::META_PREFIX . 'layout_meta_value', true))
-                ) {
-                    $editor_data = AuthorBoxesDefault::getAuthorBoxesDefaultData('author_boxes_boxed');
-                } else {
-                    $editor_data = (array) get_post_meta($post->ID, self::META_PREFIX . 'layout_meta_value', true);
-                }
+                <table class="form-table ppma-author-boxes-editor-table" role="presentation">
+                    <tbody>
+                        <?php 
+                        if ($post->post_status === 'auto-draft'
+                            || empty(get_post_meta($post->ID, self::META_PREFIX . 'layout_meta_value', true))
+                        ) {
+                            $editor_data = AuthorBoxesDefault::getAuthorBoxesDefaultData('author_boxes_boxed');
+                        } else {
+                            $editor_data = (array) get_post_meta($post->ID, self::META_PREFIX . 'layout_meta_value', true);
+                        }
 
-                /**
-                 * Render fields
-                 */
-                foreach ($fields as $key => $args) {
-                    $args['key']   = $key;
-                    $args['value'] = isset($editor_data[$key]) ? $editor_data[$key] : '';
-                    echo self::get_rendered_author_boxes_editor_partial($args); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-                }
+                        /**
+                         * Render fields
+                         */
+                        foreach ($fields as $key => $args) {
+                            $args['key']   = $key;
+                            $args['value'] = isset($editor_data[$key]) ? $editor_data[$key] : '';
+                            echo self::get_rendered_author_boxes_editor_partial($args); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                        }
 
-                wp_nonce_field('author-boxes-editor', 'author-boxes-editor-nonce');
-                ?>
+                        wp_nonce_field('author-boxes-editor', 'author-boxes-editor-nonce');
+                        ?>
+                    </tbody>
+                </table>
             </div>
         </div>
         <?php
@@ -1090,25 +1094,26 @@ class MA_Author_Boxes extends Module
         $tab_style = ($args['tab'] === self::AUTHOR_BOXES_EDITOR_DEFAULT_TAB) ? '' : 'display:none;';
         ob_start();
         $generate_tab_title = false;
+        if (in_array($args['type'], ['textarea', 'export_action', 'import_action', 'template_action'])) {
+            $th_style = 'display: none;';
+            $colspan  = 2;
+        } else {
+            $th_style = '';
+            $colspan  = '';
+        }
         ?>
-        <div 
+        <tr 
             class="<?php echo esc_attr($tab_class); ?>"
             data-tab="<?php echo esc_attr($args['tab']); ?>"
             style="<?php echo esc_attr($tab_style); ?>">
             <?php if (!empty($args['label'])) : ?>
-                <div class="label">
+                <th scope="row" style="<?php echo esc_attr($th_style); ?>">
                     <label for="<?php echo esc_attr($key); ?>">
-                    <?php echo esc_html($args['label']); ?>
-                    <?php if (isset($args['description']) && !empty($args['description'])) : ?>
-                        <span class="description pp-editor-tooltip">
-                            <span class="dashicons dashicons-info"></span>
-                            <span class="text"><?php echo $args['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
-                        </span>
-                    <?php endif; ?>
+                        <?php echo esc_html($args['label']); ?>
                     </label>
-                </div>
+                </th>
             <?php endif; ?>
-            <div class="input">
+            <td class="input" colspan="<?php echo esc_attr($colspan); ?>">
                 <?php
                 if ('number' === $args['type']) :
                     ?>
@@ -1147,39 +1152,18 @@ class MA_Author_Boxes extends Module
                         <?php endforeach; ?>
                     </select>
                 <?php
-                elseif ('range' === $args['type']) :
-                    ?>
-                    <input name="<?php echo esc_attr($key); ?>-slider"
-                        class="pp-editor-range"
-                        id="<?php echo esc_attr($key); ?>" 
-                        type="<?php echo esc_attr($args['type']); ?>"
-                        value="<?php echo esc_attr($args['value']); ?>"
-                        min="<?php echo esc_attr($args['min']); ?>"
-                        max="<?php echo esc_attr($args['max']); ?>" />
-                    <?php if ($args['show_input']) : ?>
-                        <input name="<?php echo esc_attr($key); ?>"
-                        class="pp-editor-range-input <?php echo esc_attr($key); ?>-input small-text" 
-                        id="<?php echo esc_attr($key); ?>-input" 
-                        type="number"
-                        value="<?php echo esc_attr($args['value']); ?>"
-                        min="<?php echo esc_attr($args['min']); ?>"
-                        max="<?php echo esc_attr($args['max']); ?>" />
-                    <?php endif; ?>
-                <?php
                 elseif ('color' === $args['type']) :
                     ?>
                     <input name="<?php echo esc_attr($key); ?>"
                         class="pp-editor-color-picker"
                         id="<?php echo esc_attr($key); ?>" 
                         type="text"
-                        value="<?php echo esc_attr($args['value']); ?>"
-                        style="display:none;" />
-                    <div class="<?php echo esc_attr($key); ?>"></div>
+                        value="<?php echo esc_attr($args['value']); ?>" />
                 <?php
                 elseif ('export_action' === $args['type']) :
                     ?>
                     <h2 class="title"><?php echo esc_html__('Export Editor Settings', 'publishpress-authors'); ?></h2>
-                    <p class="description"><?php echo sprintf(esc_html__('You can import the below data using author box %1s editor import tab to copy this editor design to a %2s new editor or another website with the plugin active.', 'publishpress-authors'), '<br />', '<br />'); ?></p>
+                    <p class="description"><?php echo esc_html__('You can import the below data using author box editor import tab to copy this editor design to a new editor or another website with the plugin active.', 'publishpress-authors'); ?></p>
                     <textarea name="<?php echo esc_attr($key); ?>"
                         id="<?php echo esc_attr($key); ?>" 
                         type="<?php echo esc_attr($args['type']); ?>"
@@ -1236,6 +1220,7 @@ class MA_Author_Boxes extends Module
                                 ) . '</a>'
                             ); ?>
                         </p>
+                        <br />
                     </div>
                     <textarea name="<?php echo esc_attr($key); ?>"
                         id="<?php echo esc_attr($key); ?>" 
@@ -1282,8 +1267,16 @@ class MA_Author_Boxes extends Module
                         <?php echo (isset($args['readonly']) && $args['readonly'] === true) ? 'readonly' : ''; ?>
                          />
                 <?php endif; ?>
-            </div>
-        </div> 
+                <?php if (isset($args['description']) && !empty($args['description'])) : ?>
+                        <?php if($args['type'] !== 'checkbox') : ?>
+                            <br />
+                        <?php endif; ?>
+                        <span class="field-description description">
+                            <?php echo $args['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+                        </span>
+                <?php endif; ?>
+            </td>
+        </tr> 
         <?php
         return ob_get_clean();
     }
@@ -1305,18 +1298,15 @@ class MA_Author_Boxes extends Module
         $author          = Author::get_by_user_id(get_current_user_id());
         $moduleAssetsUrl = PP_AUTHORS_URL . 'src/modules/author-boxes/assets';
 
-        wp_enqueue_script(
-            'author-boxes-pickr-js',
-            $moduleAssetsUrl . '/lib/pickr/js/pickr.es5.min.js',
-            [],
-            PP_AUTHORS_VERSION
-        );
+        //color picker style
+  		wp_enqueue_style('wp-color-picker');
 
         wp_enqueue_script(
             'author-boxes-editor-js',
             $moduleAssetsUrl . '/js/author-boxes-editor.js',
             [
                 'jquery',
+                'wp-color-picker',
             ],
             PP_AUTHORS_VERSION
         );
@@ -1345,13 +1335,6 @@ class MA_Author_Boxes extends Module
             'author-boxes-editor-js',
             'authorBoxesEditor',
             $localized_data
-        );
-
-        wp_enqueue_style(
-            'author-boxes-pickr-css',
-             $moduleAssetsUrl . '/lib/pickr/css/nano.min.css',
-            [],
-            PP_AUTHORS_VERSION
         );
 
         wp_enqueue_style(
