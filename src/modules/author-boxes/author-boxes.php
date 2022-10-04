@@ -109,6 +109,7 @@ class MA_Author_Boxes extends Module
         add_action('multiple_authors_admin_submenu', [$this, 'adminSubmenu'], 50);
         add_filter('post_updated_messages', [$this, 'setPostUpdateMessages']);
         add_filter('bulk_post_updated_messages', [$this, 'setPostBulkUpdateMessages'], 10, 2);
+        add_action('add_meta_boxes', [$this, 'addPreviewMetabox']);
         add_action('add_meta_boxes', [$this, 'addEditorMetabox']);
         add_action('add_meta_boxes', [$this, 'addLayoutSlugMetabox']);
         add_action('add_meta_boxes', [$this, 'addShortcodeMetabox']);
@@ -592,12 +593,29 @@ class MA_Author_Boxes extends Module
      *
      * @return void
      */
+    public function addPreviewMetabox()
+    {
+        add_meta_box(
+            self::META_PREFIX . 'preview_area',
+            __('Author Box Preview', 'publishpress-authors'),
+            [$this, 'renderPreviewMetabox'],
+            self::POST_TYPE_BOXES,
+            'normal',
+            'high'
+        );
+    }
+
+    /**
+     * Add editor metabox
+     *
+     * @return void
+     */
     public function addEditorMetabox()
     {
         add_meta_box(
             self::META_PREFIX . 'editor_area',
             __('Author Box Editor', 'publishpress-authors'),
-            [$this, 'renderMetaboxes'],
+            [$this, 'renderEditorMetabox'],
             self::POST_TYPE_BOXES,
             'normal',
             'high'
@@ -616,8 +634,7 @@ class MA_Author_Boxes extends Module
             __('Layout Slug', 'publishpress-authors'),
             [$this, 'renderLayoutSLugMetabox'],
             self::POST_TYPE_BOXES,
-            'normal',
-            'high'
+            'side'
         );
     }
 
@@ -633,8 +650,7 @@ class MA_Author_Boxes extends Module
             __('Shortcode', 'publishpress-authors'),
             [$this, 'renderShortcodeMetabox'],
             self::POST_TYPE_BOXES,
-            'normal',
-            'high'
+            'side'
         );
     }
 
@@ -751,19 +767,67 @@ class MA_Author_Boxes extends Module
     { 
         $layout_slug = MA_Author_Boxes::POST_TYPE_BOXES . '_' . $post->ID;
     ?>
-        <input type="text" value='[publishpress_authors_box layout="<?php echo esc_attr($layout_slug); ?>"]'' readonly />
+        <textarea readonly>[publishpress_authors_box layout="<?php echo esc_attr($layout_slug); ?>"]</textarea>
         <p class="description"><?php esc_html_e('Shortcode will only render for saved author box.', 'publishpress-authors'); ?></p>
     <?php
     }
 
     /**
-     * Render metaboxes
+     * Render preview metabox
      *
      * @param \WP_Post $post
      * 
      * @return void
      */
-    public function renderMetaboxes(\WP_Post $post)
+    public function renderPreviewMetabox(\WP_Post $post)
+    {
+        $fields = apply_filters('multiple_authors_author_boxes_fields', self::get_fields($post), $post);
+
+        if ($post->post_status === 'auto-draft'
+            || empty(get_post_meta($post->ID, self::META_PREFIX . 'layout_meta_value', true))
+        ) {
+            $editor_data = AuthorBoxesDefault::getAuthorBoxesDefaultData('author_boxes_boxed');
+        } else {
+            $editor_data = (array) get_post_meta($post->ID, self::META_PREFIX . 'layout_meta_value', true);
+        }
+        
+        /**
+         * Render fields
+         */
+        $preview_args = [];
+        //set current user as author
+        $preview_args['authors'] = [Author::get_by_user_id(get_current_user_id())];
+        $preview_args['post_id'] = $post->ID;
+        $preview_args['admin_preview'] = true;
+        foreach ($fields as $key => $args) {
+            $args['key']   = $key;
+            $args['value'] = isset($editor_data[$key]) ? $editor_data[$key] : '';
+            $preview_args[$key] = $args;
+        } 
+        
+        ?>
+        <div class="pressshack-admin-wrapper publishpress-author-box-editor">
+            <div class="preview-section wrapper-column">
+                <?php 
+                /**
+                 * Render editor preview
+                 */
+                echo self::get_rendered_author_boxes_editor_preview($preview_args);
+                ?>
+            </div>
+        </div>
+<?php
+
+    }
+
+    /**
+     * Render editor metabox
+     *
+     * @param \WP_Post $post
+     * 
+     * @return void
+     */
+    public function renderEditorMetabox(\WP_Post $post)
     {
         /**
          * Filter the fields tabs on the Author boxes editor.
@@ -821,28 +885,13 @@ class MA_Author_Boxes extends Module
                 /**
                  * Render fields
                  */
-                $preview_args = [];
-                //set current user as author
-                $preview_args['authors'] = [Author::get_by_user_id(get_current_user_id())];
-                $preview_args['post_id'] = $post->ID;
-                $preview_args['admin_preview'] = true;
                 foreach ($fields as $key => $args) {
                     $args['key']   = $key;
                     $args['value'] = isset($editor_data[$key]) ? $editor_data[$key] : '';
-                    $preview_args[$key] = $args;
                     echo self::get_rendered_author_boxes_editor_partial($args); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 }
 
                 wp_nonce_field('author-boxes-editor', 'author-boxes-editor-nonce');
-                ?>
-            </div>
-
-            <div class="preview-section wrapper-column">
-                <?php 
-                /**
-                 * Render editor preview
-                 */
-                echo self::get_rendered_author_boxes_editor_preview($preview_args);
                 ?>
             </div>
         </div>
@@ -874,9 +923,6 @@ class MA_Author_Boxes extends Module
         <?php if ($admin_preview) : ?>
         <div class="preview-container">
             <div class="live-preview">
-                <div class="live-preview-label">
-                    <?php echo esc_html__('Previewing as current user', 'publishpress-authors'); ?>
-                </div>
                 <div class="live-preview-box">
         <?php endif; ?>
                     <!--begin code -->

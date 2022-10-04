@@ -8,8 +8,8 @@
             /**
              * set editor screen to one column
              */
-            $('#screen-options-wrap .columns-prefs-1 input').trigger('click');
-            $('#screen-options-wrap .columns-prefs').hide();
+            //$('#screen-options-wrap .columns-prefs-1 input').trigger('click');
+            //$('#screen-options-wrap .columns-prefs').hide();
 
             /**
              * color picker init
