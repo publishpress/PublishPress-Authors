@@ -45,6 +45,7 @@ class Installer
 
         self::addDefaultCapabilitiesForAdministrators();
         self::addEditPostAuthorsCapabilitiesToRoles();
+        self::addManageLayoutsCapabilitiesToRoles();
         self::flushRewriteRules();
         self::createDefaultAuthorBoxes();
 
@@ -74,6 +75,7 @@ class Installer
         }
 
         if (version_compare($currentVersions, '3.30.0', '<')) {
+            self::addManageLayoutsCapabilitiesToRoles();
             self::createDefaultAuthorBoxes();
         }
 
@@ -370,5 +372,11 @@ class Installer
                 $role->add_cap($cap);
             }
         }
+    }
+
+    private function addManageLayoutsCapabilitiesToRoles()
+    {
+        $adminRole = get_role('administrator');
+        $adminRole->add_cap('ppma_manage_layouts');
     }
 }

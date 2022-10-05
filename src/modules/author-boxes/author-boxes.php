@@ -160,7 +160,7 @@ class MA_Author_Boxes extends Module
         $columns['shortcode'] = esc_html__('Shortcode', 'publishpress-authors');
 
         unset($columns['date']);
-        
+
         return $columns;
     }
 
@@ -313,7 +313,7 @@ class MA_Author_Boxes extends Module
             \MA_Multiple_Authors::MENU_SLUG,
             esc_html__('Author Boxes', 'publishpress-authors'),
             esc_html__('Author Boxes', 'publishpress-authors'),
-            apply_filters('pp_multiple_authors_manage_author_boxes_cap', 'manage_options'),
+            apply_filters('pp_multiple_authors_manage_layouts_cap', 'ppma_manage_layouts'),
             'edit.php?post_type=' . self::POST_TYPE_BOXES
         );
     }
