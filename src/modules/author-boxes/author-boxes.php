@@ -125,7 +125,9 @@ class MA_Author_Boxes extends Module
         add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getExportFields'], 10, 2);
         add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getImportFields'], 10, 2);
         add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getGenerateTemplateFields'], 10, 2);
-        add_action("save_post_" . MA_Author_Boxes::POST_TYPE_BOXES, [$this, 'saveAuthorBoxesData']);
+        add_action("save_post_" . self::POST_TYPE_BOXES, [$this, 'saveAuthorBoxesData']);
+        add_filter('manage_edit-' . self::POST_TYPE_BOXES . '_columns', [$this, 'filterAuthorBoxesColumns']);
+        add_action('manage_' . self::POST_TYPE_BOXES . '_posts_custom_column', [$this, 'manageAuthorBoxesColumns'], 10, 2);
         add_filter('pp_multiple_authors_author_layouts', [$this, 'filterAuthorLayouts'], 20);
         add_filter('pp_multiple_authors_author_box_html', [$this, 'filterAuthorBoxHtml'], 9, 2);
         add_filter('pp_multiple_authors_authors_list_box_html', [$this, 'filterAuthorBoxHtml'], 9, 2);
@@ -146,6 +148,34 @@ class MA_Author_Boxes extends Module
         );
 
         $this->registerPostType();
+    }
+
+    /**
+     * @param $columns
+     *
+     * @return array
+     */
+    public function filterAuthorBoxesColumns($columns)
+    {
+        $columns['shortcode'] = esc_html__('Shortcode', 'publishpress-authors');
+
+        unset($columns['date']);
+        
+        return $columns;
+    }
+
+    /**
+     * @param $column
+     * @param $postId
+     */
+    public function manageAuthorBoxesColumns($column, $postId)
+    {
+        if ($column === 'shortcode') {
+            $layout_slug = self::POST_TYPE_BOXES . '_' . $postId;
+        ?>
+            <input readonly type="text" value='[publishpress_authors_box layout="<?php echo esc_attr($layout_slug); ?>"]' />
+        <?php
+        }
     }
 
     /**
@@ -198,7 +228,7 @@ class MA_Author_Boxes extends Module
     protected static function createLayoutPost($name, $title)
     {
         // Check if we already have the layout based on the slug.
-        if (get_page_by_title($title, OBJECT, MA_Author_Boxes::POST_TYPE_BOXES)) {
+        if (get_page_by_title($title, OBJECT, self::POST_TYPE_BOXES)) {
             return;
         }
 
@@ -206,7 +236,7 @@ class MA_Author_Boxes extends Module
         if ($editor_data && is_array($editor_data)) {
             $post_id = wp_insert_post(
                 [
-                    'post_type' => MA_Author_Boxes::POST_TYPE_BOXES,
+                    'post_type' => self::POST_TYPE_BOXES,
                     'post_title' => $title,
                     'post_content' => $title,
                     'post_status' => 'publish',
@@ -399,7 +429,7 @@ class MA_Author_Boxes extends Module
 
         if (! empty($posts)) {
             foreach ($posts as $post) {
-                $author_boxes[MA_Author_Boxes::POST_TYPE_BOXES . '_' . $post->ID] = $post->post_title . ' [' . __('Author Boxes', 'publishpress-authors') . ']';
+                $author_boxes[self::POST_TYPE_BOXES . '_' . $post->ID] = $post->post_title . ' [' . __('Author Boxes', 'publishpress-authors') . ']';
             }
         }
 
@@ -529,7 +559,7 @@ class MA_Author_Boxes extends Module
 
         $layoutName = sanitize_text_field($args['layout']);
         $author_box_id = false;
-        if (substr($layoutName, 0, 10) === MA_Author_Boxes::POST_TYPE_BOXES) {
+        if (substr($layoutName, 0, 10) === self::POST_TYPE_BOXES) {
             $author_box_id = preg_replace("/[^0-9]/", "", $layoutName );
         } else {
             //check in theme boxes template
@@ -751,7 +781,7 @@ class MA_Author_Boxes extends Module
      */
     public function renderLayoutSLugMetabox(\WP_Post $post)
     { 
-        $layout_slug = MA_Author_Boxes::POST_TYPE_BOXES . '_' . $post->ID;
+        $layout_slug = self::POST_TYPE_BOXES . '_' . $post->ID;
     ?>
         <input type="text" value="<?php echo esc_attr($layout_slug); ?>" readonly />
     <?php
@@ -765,7 +795,7 @@ class MA_Author_Boxes extends Module
      */
     public function renderShortcodeMetabox(\WP_Post $post)
     { 
-        $layout_slug = MA_Author_Boxes::POST_TYPE_BOXES . '_' . $post->ID;
+        $layout_slug = self::POST_TYPE_BOXES . '_' . $post->ID;
     ?>
         <textarea readonly>[publishpress_authors_box layout="<?php echo esc_attr($layout_slug); ?>"]</textarea>
         <p class="description"><?php esc_html_e('Shortcode will only render for saved author box.', 'publishpress-authors'); ?></p>
@@ -1291,7 +1321,7 @@ class MA_Author_Boxes extends Module
         global $pagenow, $post_type, $post;
 
         if (! in_array($pagenow, ['post.php', 'post-new.php'])
-            || $post_type !== MA_Author_Boxes::POST_TYPE_BOXES
+            || $post_type !== self::POST_TYPE_BOXES
         ) {
             return;
         }
@@ -1299,7 +1329,7 @@ class MA_Author_Boxes extends Module
         $moduleAssetsUrl = PP_AUTHORS_URL . 'src/modules/author-boxes/assets';
 
         //color picker style
-  		wp_enqueue_style('wp-color-picker');
+        wp_enqueue_style('wp-color-picker');
 
         wp_enqueue_script(
             'author-boxes-editor-js',
