@@ -3115,6 +3115,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
                     // Check if the user is an author for the current post
                     if ($post_id > 0) {
+                        remove_filter('map_meta_cap', [$this, 'filter_map_meta_cap'], 10);
                         if (is_multiple_author_for_post($user_id, $post_id)) {
                             foreach ($caps as &$item) {
                                 // If he is an author for this post we should only check edit_posts.
