@@ -374,7 +374,7 @@ class Installer
         }
     }
 
-    private function addManageLayoutsCapabilitiesToRoles()
+    private static function addManageLayoutsCapabilitiesToRoles()
     {
         $adminRole = get_role('administrator');
         $adminRole->add_cap('ppma_manage_layouts');
