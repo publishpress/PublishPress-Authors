@@ -428,6 +428,7 @@ if (!function_exists('is_multiple_author_for_post')) {
     {
         global $post;
         global $postAuthorsCache;
+        global $authordata;
 
         if (empty($postAuthorsCache)) {
             $postAuthorsCache = [];
@@ -444,11 +445,16 @@ if (!function_exists('is_multiple_author_for_post')) {
         if (!$user) {
             return false;
         }
+        if (get_post_status($post_id) === 'auto-draft') {
+            return false;
+        }
+
         $currentPostType = get_post_type($post_id);
         $enabledPostTypes  = Utils::get_enabled_post_types();
 
         if (!in_array($currentPostType, $enabledPostTypes)) {
-            $postAuthorId = get_the_author_meta('ID');
+            $authorDataUserid = isset($authordata->ID) ? $authordata->ID : 0;
+            $postAuthorId = get_the_author_meta('ID', $authorDataUserid);
 
             if (is_numeric($user)) {
                 $userId = $user;
