@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Plugins - Co-Authors, Multiple Authors and Guest Authors in an Author Box with PublishPress Authors - Stable (latest release)\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2022-09-15 16:47-0500\n"
+"PO-Revision-Date: 2022-10-07 11:48+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -13,6 +13,18 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Poedit 3.0.1\n"
+
+#: publishpress-authors.php:84
+msgid "%s is the minimum version required for this plugin."
+msgstr "%s est la version minimale nécessaire pour cette extension."
+
+#: publishpress-authors.php:82
+msgid "The active plugin %s is not compatible with your PHP version."
+msgstr "L’extension active %s n’est pas compatible avec votre version de PHP."
+
+#: publishpress-authors.php:81
+msgid "Warning:"
+msgstr "Avertissement :"
 
 #: src/modules/multiple-authors/multiple-authors.php:1773
 msgid "This will allow to map more than one user to an author. This feature is not advisable to be enabled unless there's a conflict as authors works better when it's one to one pairing."
