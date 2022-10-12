@@ -404,3 +404,14 @@ form#edittag tr.form-field #slug {
     opacity: 1;
     visibility: visible;
 }
+
+.post-type-ppma_boxes .shortcode.column-shortcode input[type=text] {
+    min-width: 400px;
+}
+
+@media screen and (max-width: 768px) {
+    .post-type-ppma_boxes .shortcode.column-shortcode input[type=text] {
+        min-width: 90%;
+        width: 90%;
+    }
+}

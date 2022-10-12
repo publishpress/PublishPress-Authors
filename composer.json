@@ -30,6 +30,7 @@
   "autoload": {
     "psr-4": {
       "MultipleAuthors\\": "src/core/",
+      "MultipleAuthorBoxes\\": "src/modules/author-boxes/classes/",
       "PPAuthors\\YoastSEO\\": "src/modules/yoast-seo-integration/src/"
     }
   },
