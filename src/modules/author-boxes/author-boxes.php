@@ -24,6 +24,7 @@
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Classes\Legacy\Module;
 use MultipleAuthorBoxes\AuthorBoxesDefault;
+use MultipleAuthors\Classes\Author_Editor;
 use MultipleAuthorBoxes\AuthorBoxesStyles;
 use MultipleAuthorBoxes\AuthorBoxesAjax;
 use MultipleAuthors\Classes\Legacy\Util;
@@ -43,6 +44,11 @@ class MA_Author_Boxes extends Module
      * Default tab
      */
     const AUTHOR_BOXES_EDITOR_DEFAULT_TAB = 'title';
+
+    /**
+     * Excluded profile fields
+     */
+    const AUTHOR_BOXES_EXCLUDED_FIELDS = ['user_id', 'avatar', 'description'];
 
     /**
      * Meta data prefix.
@@ -118,6 +124,7 @@ class MA_Author_Boxes extends Module
         add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getAvatarFields'], 10, 2);
         add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getNameFields'], 10, 2);
         add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getMetaFields'], 10, 2);
+        add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getProfileFields'], 10, 2);
         add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getBioFields'], 10, 2);
         add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getRecentPostsFields'], 10, 2);
         add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getBoxLayoutFields'], 10, 2);
@@ -200,8 +207,16 @@ class MA_Author_Boxes extends Module
             if (!isset($_POST[$key]) || in_array($key, $excluded_input)) {
                 continue;
             }
-            $sanitize = isset($args['sanitize']) ? $args['sanitize'] : 'sanitize_text_field';
-            $meta_data[$key] = (isset($_POST[$key]) && $_POST[$key] !== '') ? $sanitize($_POST[$key]) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+            if (isset($args['sanitize']) && is_array($args['sanitize']) && $_POST[$key] !== '') {
+                $value = $_POST[$key]; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+                foreach ($args['sanitize'] as $sanitize) {
+                    $value = $sanitize($value);
+                }
+                $meta_data[$key] = $value;
+            } else {
+                $sanitize = isset($args['sanitize']) ? $args['sanitize'] : 'sanitize_text_field';
+                $meta_data[$key] = (isset($_POST[$key]) && $_POST[$key] !== '') ? $sanitize($_POST[$key]) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+            }
         }
         update_post_meta($post_id, self::META_PREFIX . 'layout_meta_value', $meta_data);
     }
@@ -467,7 +482,7 @@ class MA_Author_Boxes extends Module
     }
 
     /**
-     * This is a clone of wordpress 'list_files' that's been caught in undefined function.
+     * This is a clone of wordpress 'list_files' that's been caught in undefined function in some themes.
      * 
      * Returns a listing of all files in the specified folder and all subdirectories up to 100 levels deep.
      *
@@ -486,47 +501,47 @@ class MA_Author_Boxes extends Module
         if (function_exists('list_files')) {
             return list_files($folder, $levels);
         } else {
-            if ( empty( $folder ) ) {
+            if (empty($folder)) {
                 return false;
             }
-        
-            $folder = trailingslashit( $folder );
-        
-            if ( ! $levels ) {
+                
+            $folder = trailingslashit($folder);
+                
+            if (! $levels) {
                 return false;
             }
-        
+                
             $files = array();
-        
-            $dir = @opendir( $folder );
-        
-            if ( $dir ) {
-                while ( ( $file = readdir( $dir ) ) !== false ) {
+                
+            $dir = @opendir($folder);
+                
+            if ($dir) {
+                while (($file = readdir($dir)) !== false) {
                     // Skip current and parent folder links.
-                    if ( in_array( $file, array( '.', '..' ), true ) ) {
+                    if (in_array($file, array( '.', '..' ), true)) {
                         continue;
                     }
-        
+                
                     // Skip hidden and excluded files.
-                    if ( '.' === $file[0] || in_array( $file, $exclusions, true ) ) {
+                    if ('.' === $file[0] || in_array($file, $exclusions, true)) {
                         continue;
                     }
-        
-                    if ( is_dir( $folder . $file ) ) {
-                        $files2 = list_files( $folder . $file, $levels - 1 );
-                        if ( $files2 ) {
-                            $files = array_merge( $files, $files2 );
+                
+                    if (is_dir($folder . $file)) {
+                        /*$files2 = self::authorboxesListDirectoryFiles($folder . $file, $levels - 1);
+                        if ($files2) {
+                            $files = array_merge($files, $files2);
                         } else {
                             $files[] = $folder . $file . '/';
-                        }
+                        }*/
                     } else {
                         $files[] = $folder . $file;
                     }
                 }
-        
-                closedir( $dir );
+                
+                closedir($dir);
             }
-        
+                
             return $files;
         }
     }
@@ -715,6 +730,10 @@ class MA_Author_Boxes extends Module
                 'label' => __('Meta', 'publishpress-authors'),
                 'icon'  => 'dashicons dashicons-forms',
             ],
+            'profile_fields'  => [
+                'label' => __('Profile Fields', 'publishpress-authors'),
+                'icon'  => 'dashicons dashicons-groups',
+            ],
             'author_recent_posts'  => [
                 'label' => __('Author Recent Posts', 'publishpress-authors'),
                 'icon'  => 'dashicons dashicons-admin-page',
@@ -843,7 +862,7 @@ class MA_Author_Boxes extends Module
                 /**
                  * Render editor preview
                  */
-                echo self::get_rendered_author_boxes_editor_preview($preview_args);
+                echo self::get_rendered_author_boxes_editor_preview($preview_args); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 ?>
             </div>
         </div>
@@ -948,11 +967,15 @@ class MA_Author_Boxes extends Module
         $custom_styles = AuthorBoxesStyles::getNameFieldStyles($args, $custom_styles);
         $custom_styles = AuthorBoxesStyles::getBioFieldStyles($args, $custom_styles);
         $custom_styles = AuthorBoxesStyles::getMetaFieldStyles($args, $custom_styles);
+        $custom_styles = AuthorBoxesStyles::getRProfileFieldStyles($args, $custom_styles);
         $custom_styles = AuthorBoxesStyles::getRecentPostsFieldStyles($args, $custom_styles);
         $custom_styles = AuthorBoxesStyles::getBoxLayoutFieldStyles($args, $custom_styles);
         $custom_styles = AuthorBoxesStyles::getCustomCssFieldStyles($args, $custom_styles);
 
         $admin_preview = (isset($args['admin_preview']) && $args['admin_preview']) ? true : false;
+
+        $profile_fields   = Author_Editor::get_fields(false);
+        $profile_fields   = apply_filters('multiple_authors_author_fields', $profile_fields, false);
         ?>
 
         <?php if ($admin_preview) : ?>
@@ -988,7 +1011,7 @@ class MA_Author_Boxes extends Module
                                             <?php if ($args['avatar_show']['value']) : ?>
                                                 <div class="pp-author-boxes-avatar">
                                                     <?php if ($author->get_avatar) : ?>
-                                                        <?php echo $author->get_avatar($args['avatar_size']['value']); ?>
+                                                        <?php echo $author->get_avatar($args['avatar_size']['value']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                                                     <?php else : ?>
                                                         <?php echo get_avatar($author->user_email, $args['avatar_size']['value']); ?>
                                                     <?php endif; ?>
@@ -1006,7 +1029,7 @@ class MA_Author_Boxes extends Module
                                                 </<?php echo esc_html($args['name_html_tag']['value']); ?>>
                                                 <?php if ($args['author_bio_show']['value']) : ?>
                                                     <<?php echo esc_html($args['author_bio_html_tag']['value']); ?> class="pp-author-boxes-description multiple-authors-description">
-                                                        <?php echo $author->get_description($args['author_bio_limit']['value']); ?>
+                                                        <?php echo esc_html($author->get_description($args['author_bio_limit']['value'])); ?>
                                                     </<?php echo esc_html($args['author_bio_html_tag']['value']); ?>>
                                                 <?php endif; ?>
 
@@ -1029,6 +1052,76 @@ class MA_Author_Boxes extends Module
                                                         <?php endif; ?>
                                                     </<?php echo esc_html($args['meta_html_tag']['value']); ?>>
                                                 <?php endif; ?>
+                                                
+                                                <div class="pp-author-boxes-profile-fields">
+                                                    <?php 
+                                                    foreach ($profile_fields as $key => $data) {
+                                                        if (!in_array($key, self::AUTHOR_BOXES_EXCLUDED_FIELDS)) {
+                                                            $profile_show_field = $args['profile_fields_show_' . $key]['value'] ? true : false;
+
+                                                            $profile_html_tag  = !empty($args['profile_fields_' . $key . '_html_tag']['value']) 
+                                                                ? $args['profile_fields_' . $key . '_html_tag']['value'] : 'span';
+
+                                                            $profile_display  = !empty($args['profile_fields_' . $key . '_display']['value']) 
+                                                                ? $args['profile_fields_' . $key . '_display']['value'] : 'icon_prefix_value_suffix';
+
+                                                            $profile_value_prefix   = $args['profile_fields_' . $key . '_value_prefix']['value'];
+                                                            $profile_display_prefix = $args['profile_fields_' . $key . '_display_prefix']['value'];
+                                                            $profile_display_suffix = $args['profile_fields_' . $key . '_display_suffix']['value'];
+                                                            $profile_display_icon  = $args['profile_fields_' . $key . '_display_icon']['value'];
+
+                                                            $field_value = $author->$key;
+
+                                                            $display_field_value = '';
+                                                            if ($profile_display === 'icon_prefix_value_suffix') {
+                                                                if (!empty($profile_display_icon)) {
+                                                                    $display_field_value .= html_entity_decode($profile_display_icon) . ' ';
+                                                                }
+                                                                if (!empty($profile_display_prefix)) {
+                                                                    $display_field_value .= esc_html($profile_display_prefix) . ' ';
+                                                                }
+                                                                if (!empty($field_value)) {
+                                                                    $display_field_value .= esc_html($field_value) . ' ';
+                                                                }
+                                                                if (!empty($profile_display_suffix)) {
+                                                                    $display_field_value .= esc_html($profile_display_suffix);
+                                                                }
+                                                            } elseif ($profile_display === 'value') {
+                                                                $display_field_value .= esc_html($field_value);
+                                                            } elseif ($profile_display === 'prefix') {
+                                                                $display_field_value .= esc_html($profile_display_prefix);
+                                                            } elseif ($profile_display === 'suffix') {
+                                                                $display_field_value .= esc_html($profile_display_suffix);
+                                                            } elseif ($profile_display === 'icon') {
+                                                                $display_field_value .= html_entity_decode($profile_display_icon) . ' ';
+                                                            } elseif ($profile_display === 'prefix_value_suffix') {
+                                                                if (!empty($profile_display_prefix)) {
+                                                                    $display_field_value .= esc_html($profile_display_prefix) . ' ';
+                                                                }
+                                                                if (!empty($field_value)) {
+                                                                    $display_field_value .= esc_html($field_value) . ' ';
+                                                                }
+                                                                if (!empty($profile_display_suffix)) {
+                                                                    $display_field_value .= esc_html($profile_display_suffix);
+                                                                }
+                                                            }
+
+                                                            if ($profile_show_field || $admin_preview) : ?>
+                                                            <<?php echo esc_html($profile_html_tag); ?> 
+                                                            class="ppma-author-<?php echo esc_attr($key); ?>-profile-data"
+                                                            <?php if ($profile_html_tag === 'a') : ?>
+                                                                href="<?php echo $profile_value_prefix.$field_value; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>"
+                                                            <?php endif; ?>
+                                                            >
+                                                                <?php if ($profile_show_field) : ?>
+                                                                    <?php echo $display_field_value; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                                                                <?php endif; ?>
+                                                            </<?php echo esc_html($profile_html_tag); ?>>
+                                                            <?php endif;
+                                                        }
+                                                    }
+                                                    ?>
+                                                </div>
 
                                                 <?php if ($args['author_recent_posts_show']['value']) : ?>
                                                     <div class="pp-author-boxes-recent-posts">
@@ -1056,7 +1149,6 @@ class MA_Author_Boxes extends Module
                                                     </div>
                                                 <?php endif; ?>
                                             </div>
-                                            
                                         </li>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
@@ -1080,7 +1172,7 @@ class MA_Author_Boxes extends Module
             ); ?>
             <div class="pp-author-boxes-editor-preview-styles">
                 <style>
-                    <?php echo $custom_styles; ?>
+                    <?php echo $custom_styles; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                 </style>
             </div>
         <?php else : ?>
@@ -1114,6 +1206,8 @@ class MA_Author_Boxes extends Module
             'placeholder' => '',
             'rows'        => '20',
             'readonly'    => false,
+            'tabbed'      => 0,
+            'tab_name'    => '',
             'show_input'  => false,
         ];
         $args      = array_merge($defaults, $args);
@@ -1122,10 +1216,15 @@ class MA_Author_Boxes extends Module
         if ('range' === $args['type'] && $args['show_input']) {
             $tab_class .= ' double-input';
         }
+
+        if ((int)$args['tabbed'] > 0) {
+            $tab_class .= ' tabbed-content tabbed-content-' . $args['tab_name'];
+        }
+            
         $tab_style = ($args['tab'] === self::AUTHOR_BOXES_EDITOR_DEFAULT_TAB) ? '' : 'display:none;';
         ob_start();
         $generate_tab_title = false;
-        if (in_array($args['type'], ['textarea', 'export_action', 'import_action', 'template_action'])) {
+        if (in_array($args['type'], ['textarea', 'export_action', 'import_action', 'template_action', 'line_break', 'profile_header'])) {
             $th_style = 'display: none;';
             $colspan  = 2;
         } else {
@@ -1289,6 +1388,22 @@ class MA_Author_Boxes extends Module
                         placeholder="<?php echo esc_attr($args['placeholder']); ?>"
                         <?php echo (isset($args['readonly']) && $args['readonly'] === true) ? 'readonly' : ''; ?>
                         ><?php echo esc_html($args['value']); ?></textarea>
+                <?php
+                elseif ('profile_header' === $args['type']) :
+                    $additional_class = (int)$args['index'] === 1 ? 'opened' : 'closed';
+                    $additional_class .= ' profile-header-' .$args['tab_name'];
+                    ?>
+                <div class="ppma-editor-profile-header-title <?php echo esc_attr($additional_class); ?>"
+                    data-fields_name="<?php echo esc_attr($args['tab_name']); ?>">
+                    <h2 class="title-text">
+                        <?php echo esc_html($args['label']); ?>
+                    </h2>
+                    <div class="title-toggle">
+                        <button type="button">
+                            <span class="toggle-indicator" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
                 <?php else : ?>
                     <input name="<?php echo esc_attr($key); ?>"
                         id="<?php echo esc_attr($key); ?>" 
@@ -1343,25 +1458,21 @@ class MA_Author_Boxes extends Module
         );
 
         $localized_data = [
-            'btnSave'   => esc_html__('Apply', 'publishpress-authors'),
-            'btnCancel' => esc_html__('Cancel', 'publishpress-authors'),
-            'btnClear'  => esc_html__('Clear', 'publishpress-authors'),
             'post_id'   => $post->ID,
+            'author_term_id'   => $author->term_id,
             'nonce'     => wp_create_nonce('author-boxes-request-nonce')
         ];
-        if ($author && is_object($author) && isset($author->term_id)) {
-            $localized_data['author_slug']         = $author->slug;
-            $localized_data['author_user_email']   = $author->user_email;
-            $localized_data['author_link']         = $author->link;
-            $localized_data['author_display_name'] = $author->display_name;
-            $localized_data['author_term_id']      = $author->term_id;
-        } else {
-            $localized_data['author_slug']         = '';
-            $localized_data['author_user_email']   = '';
-            $localized_data['author_link']         = '';
-            $localized_data['author_display_name'] = '';
-            $localized_data['author_term_id']      = '';
+        $profile_fields   = Author_Editor::get_fields(false);
+        $profile_fields   = apply_filters('multiple_authors_author_fields', $profile_fields, false);
+        $profile_fields_keys = [];
+        foreach ($profile_fields as $key => $data) {
+            if (!in_array($key, self::AUTHOR_BOXES_EXCLUDED_FIELDS)) {
+                $profile_fields_keys[]  = $key;
+                $localized_data[$key] = $author->$key;
+            }
         }
+        $localized_data['profileFields'] = wp_json_encode($profile_fields_keys);
+
         wp_localize_script(
             'author-boxes-editor-js',
             'authorBoxesEditor',

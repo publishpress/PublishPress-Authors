@@ -4,11 +4,6 @@
     jQuery(document).ready(function($) {
 
         if ($('body').hasClass('post-type-ppma_boxes') && $(".publishpress-author-box-editor").length > 0) {
-            /**
-             * set editor screen to one column
-             */
-            //$('#screen-options-wrap .columns-prefs-1 input').trigger('click');
-            //$('#screen-options-wrap .columns-prefs').hide();
 
             /**
              * color picker init
@@ -26,6 +21,23 @@
                             generateEditorPreview(getAllEditorFieldsValues(), false);
                     }, 100);
                 },
+            });
+
+            /**
+             * Profile fields title toggle
+             */
+            $(document).on('click', '.ppma-editor-profile-header-title', function (event) {
+                event.preventDefault();
+                var current_header = $(this);
+                var current_name   = current_header.attr('data-fields_name');
+                
+                if (current_header.hasClass('opened')) {
+                    current_header.removeClass('opened').addClass('closed');
+                    $('.tabbed-content-' + current_name).hide();
+                } else {
+                    current_header.removeClass('closed').addClass('opened');
+                    $('.tabbed-content-' + current_name).show();
+                }
             });
         }
 
@@ -51,6 +63,10 @@
             }
             //show this current tab contents
             $('.ppma-' + clicked_tab + '-tab').show();
+            //only show active tab content if it's profile tab
+            if (clicked_tab === 'profile_fields') {
+                toggleProfileFieldsActiveTab();
+            }
         });
 
         /**
@@ -262,14 +278,45 @@
                 'meta_email_show',
                 'meta_site_link_show'
             ];
-            var force_refresh = false;
 
-            if (post_refresh_trigger.includes(current_field_name) || bio_refresh_trigger.includes(current_field_name) || avatar_refresh_trigger.includes(current_field_name) || meta_refresh_trigger.includes(current_field_name)) {
+
+            var profile_fields = JSON.parse(authorBoxesEditor.profileFields);
+            var field_key = '';
+            var profile_refresh_trigger = [];
+            for (field_key in profile_fields) {
+                var field_name = profile_fields[field_key];
+                profile_refresh_trigger.push('profile_fields_show_' + field_name);
+                profile_refresh_trigger.push('profile_fields_' + field_name + '_html_tag');
+                profile_refresh_trigger.push('profile_fields_' + field_name + '_value_prefix');
+                profile_refresh_trigger.push('profile_fields_' + field_name + '_display');
+                profile_refresh_trigger.push('profile_fields_' + field_name + '_display_prefix');
+                profile_refresh_trigger.push('profile_fields_' + field_name + '_display_suffix');
+                profile_refresh_trigger.push('profile_fields_' + field_name + '_display_icon');
+            }
+
+            var force_refresh = false;
+            if (post_refresh_trigger.includes(current_field_name) || bio_refresh_trigger.includes(current_field_name) || avatar_refresh_trigger.includes(current_field_name) || meta_refresh_trigger.includes(current_field_name) || profile_refresh_trigger.includes(current_field_name)) {
                 force_refresh = true;
             }
 
             generateEditorPreview(editor_values, force_refresh);
         });
+
+        /**
+         * Toggle profile fields active tab
+         */
+        function toggleProfileFieldsActiveTab() {
+            $('.ppma-editor-profile-header-title').each(function () {
+                var current_header = $(this);
+                var current_name   = current_header.attr('data-fields_name');
+                
+                if (current_header.hasClass('opened')) {
+                    $('.tabbed-content-' + current_name).show();
+                } else {
+                    $('.tabbed-content-' + current_name).hide();
+                }
+            });
+        }
 
         /**
          * Function for generating editor preview
@@ -345,11 +392,43 @@
         function generateEditorPreviewStyles(editor_values) {
             var editor_preview_styles = '';
             var key = '';
+            var field_key = '';
             var post_id = authorBoxesEditor.post_id;
 
             if (Number(editor_values.avatar_show) === 0) {
                 editor_preview_styles += '.pp-multiple-authors-layout-boxed ul li > div:nth-child(1) {flex: 1 !important;}';
             }
+            var profile_fields = JSON.parse(authorBoxesEditor.profileFields);
+            
+            //profile styles
+            for (field_key in profile_fields) {
+                var field_name = profile_fields[field_key];
+                if (editor_values['profile_fields_' + field_name + '_size']) {
+                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + ' .ppma-author-' + field_name + '-profile-data { font-size: ' + editor_values['profile_fields_' + field_name + '_size'] + 'px !important; } ';
+                }
+                if (editor_values['profile_fields_' + field_name + '_line_height']) {
+                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + ' .ppma-author-' + field_name + '-profile-data { line-height: ' + editor_values['profile_fields_' + field_name + '_line_height'] + 'px !important; } ';
+                }
+                if (editor_values['profile_fields_' + field_name + '_weight']) {
+                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + ' .ppma-author-' + field_name + '-profile-data { font-weight: ' + editor_values['profile_fields_' + field_name + '_weight'] + ' !important; } ';
+                }
+                if (editor_values['profile_fields_' + field_name + '_transform']) {
+                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + ' .ppma-author-' + field_name + '-profile-data { text-transform: ' + editor_values['profile_fields_' + field_name + '_transform'] + ' !important; } ';
+                }
+                if (editor_values['profile_fields_' + field_name + '_style']) {
+                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + ' .ppma-author-' + field_name + '-profile-data { font-style: ' + editor_values['profile_fields_' + field_name + '_style'] + ' !important; } ';
+                }
+                if (editor_values['profile_fields_' + field_name + '_decoration']) {
+                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + ' .ppma-author-' + field_name + '-profile-data { text-decoration: ' + editor_values['profile_fields_' + field_name + '_decoration'] + ' !important; } ';
+                }
+                if (editor_values['profile_fields_' + field_name + '_alignment']) {
+                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + ' .ppma-author-' + field_name + '-profile-data { text-align: ' + editor_values['profile_fields_' + field_name + '_alignment'] + ' !important; } ';
+                }
+                if (editor_values['profile_fields_' + field_name + '_color']) {
+                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + ' .ppma-author-' + field_name + '-profile-data { color: ' + editor_values['profile_fields_' + field_name + '_color'] + ' !important; } ';
+                }
+            }
+
             for (key in editor_values) {
                 var value = editor_values[key];
                 switch (key) {

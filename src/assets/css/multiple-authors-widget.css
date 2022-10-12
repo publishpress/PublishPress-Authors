@@ -130,6 +130,23 @@
     font-size: 12px;
 }
 
+.pp-author-boxes-profile-fields {
+    margin-top: 4px;
+}
+
+.pp-author-boxes-profile-fields a,
+.pp-author-boxes-profile-fields span,
+.pp-author-boxes-profile-fields p,
+.pp-author-boxes-profile-fields div,
+.pp-author-boxes-profile-fields h1,
+.pp-author-boxes-profile-fields h2,
+.pp-author-boxes-profile-fields h3,
+.pp-author-boxes-profile-fields h4,
+.pp-author-boxes-profile-fields h5,
+.pp-author-boxes-profile-fields h6 {
+    margin-right: 4px;
+}
+
 .pp-multiple-authors-layout-boxed .multiple-authors-links a:nth-child(1) {
     margin-right: 2px;
 }

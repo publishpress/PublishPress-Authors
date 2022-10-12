@@ -56,7 +56,7 @@ class AuthorBoxesDefault
         //add inline avatar
         $editor_datas['author_boxes_inline_avatar'] = self::getAuthorBoxesInlineAvatarEditorData();
         //add simple list
-        $editor_datas['author_boxes_simple_list']    = self::getAuthorBoxesSimpleListEditorData();
+        $editor_datas['author_boxes_simple_list']   = self::getAuthorBoxesSimpleListEditorData();
 
         if (array_key_exists($default_slug, $editor_datas)) {
             return $editor_datas[$default_slug];

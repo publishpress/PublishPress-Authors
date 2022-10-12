@@ -10,6 +10,9 @@
 
 namespace MultipleAuthorBoxes;
 
+use MultipleAuthors\Classes\Author_Editor;
+use MA_Author_Boxes;
+
 /**
  * Author boxes Editor Fields
  *
@@ -485,6 +488,219 @@ class AuthorBoxesEditorFields
             ],
             'tab'      => 'meta',
         ];
+
+        return $fields;
+    }
+
+    /**
+     * Add profile fields to the author boxes editor.
+     *
+     * @param array $fields Existing fields to display.
+     * @param WP_Post $post object.
+     */
+    public static function getProfileFields($fields, $post) 
+    {
+        $profile_fields   = Author_Editor::get_fields(false);
+        $profile_fields   = apply_filters('multiple_authors_author_fields', $profile_fields, false);
+        
+        $index = 0;
+        foreach ($profile_fields as $key => $data) {
+            if (!in_array($key, MA_Author_Boxes::AUTHOR_BOXES_EXCLUDED_FIELDS)) {
+                $index++;
+                $fields['profile_fields_' . $key . '_header'] = [
+                    'label'       => $data['label'],
+                    'index'       => $index,
+                    'type'        => 'profile_header',
+                    'sanitize'    => 'sanitize_text_field',
+                    'tab_name'    => $key,
+                    'tab'         => 'profile_fields',
+                ];
+                $fields['profile_fields_show_' . $key] = [
+                    'label'       => sprintf(esc_html__('Show %1s', 'publishpress-authors'), $data['label']),
+                    'type'        => 'checkbox',
+                    'sanitize'    => 'absint',
+                    'tabbed'      => 1,
+                    'tab_name'    => $key,
+                    'tab'         => 'profile_fields',
+                ];
+                $fields['profile_fields_' . $key . '_html_tag'] = [
+                    'label'    => esc_html__('HTML Tag', 'publishpress-authors'),
+                    'description' => esc_html__('\'span\' will display as inline element while \'div\' will display as block element. To make display a link, select \'link\' and enter link text in prefix field or link icon in icon field while selecting corresponding display in Display field', 'publishpress-authors'),
+                    'type'     => 'select',
+                    'sanitize' => 'sanitize_text_field',
+                    'tabbed'      => 1,
+                    'tab_name'    => $key,
+                    'options'  => [
+                        'span' => esc_html__('span', 'publishpress-authors'),
+                        'a'    => esc_html__('link', 'publishpress-authors'),
+                        'div'  => esc_html__('div', 'publishpress-authors'),
+                        'p'    => esc_html__('p', 'publishpress-authors'),
+                        'h1'   => esc_html__('H1', 'publishpress-authors'),
+                        'h2'   => esc_html__('H2', 'publishpress-authors'),
+                        'h3'   => esc_html__('H3', 'publishpress-authors'),
+                        'h4'   => esc_html__('H4', 'publishpress-authors'),
+                        'h5'   => esc_html__('H5', 'publishpress-authors'),
+                        'h6'   => esc_html__('H6', 'publishpress-authors')
+                    ],
+                    'tab'      => 'profile_fields',
+                ];
+                $fields['profile_fields_' . $key . '_value_prefix'] = [
+                    'label'       => sprintf(esc_html__('%1s Value Prefix', 'publishpress-authors'), $data['label']),
+                    'description' => esc_html__('This is useful when linking to an email or other protocol. For example, \'mailto:\' can be added as value prefix if html tag is link and the expected value is an email address', 'publishpress-authors'),
+                    'type'        => 'text',
+                    'sanitize'    => 'sanitize_text_field',
+                    'tabbed'      => 1,
+                    'tab_name'    => $key,
+                    'tab'         => 'profile_fields',
+                ];
+                $fields['profile_fields_' . $key . '_display'] = [
+                    'label'    => sprintf(esc_html__('%1s Display', 'publishpress-authors'), $data['label']),
+                    'type'     => 'select',
+                    'sanitize' => 'sanitize_text_field',
+                    'tabbed'      => 1,
+                    'tab_name'    => $key,
+                    'options'  => [
+                        'icon_prefix_value_suffix'   => esc_html__('Field Icon + Prefix + Value + Suffix', 'publishpress-authors'),
+                        'value' => esc_html__('Field Value', 'publishpress-authors'),
+                        'prefix'    => esc_html__('Field Prefix', 'publishpress-authors'),
+                        'suffix'    => esc_html__('Field Suffix', 'publishpress-authors'),
+                        'icon'     => esc_html__('Field Icon', 'publishpress-authors'),
+                        'prefix_value_suffix'   => esc_html__('Field Prefix + Value + Suffix', 'publishpress-authors')
+                    ],
+                    'tab'      => 'profile_fields',
+                ];
+                $fields['profile_fields_' . $key . '_display_prefix'] = [
+                    'label'       => sprintf(esc_html__('%1s Display Prefix', 'publishpress-authors'), $data['label']),
+                    'type'        => 'text',
+                    'sanitize'    => 'sanitize_text_field',
+                    'tabbed'      => 1,
+                    'tab_name'    => $key,
+                    'tab'         => 'profile_fields',
+                ];
+                $fields['profile_fields_' . $key . '_display_suffix'] = [
+                    'label'       => sprintf(esc_html__('%1s Display Suffix', 'publishpress-authors'), $data['label']),
+                    'type'        => 'text',
+                    'sanitize'    => 'sanitize_text_field',
+                    'tabbed'      => 1,
+                    'tab_name'    => $key,
+                    'tab'         => 'profile_fields',
+                ];
+                $fields['profile_fields_' . $key . '_display_icon'] = [
+                    'label'       => sprintf(esc_html__('%1s Display Icon', 'publishpress-authors'), $data['label']),
+                    'description' => esc_html__('Example, <span class="dashicons dashicons-admin-links"></span>', 'publishpress-authors'),
+                    'type'        => 'text',
+                    'sanitize'    => ['stripslashes_deep', 'htmlspecialchars'],
+                    'tabbed'      => 1,
+                    'tab_name'    => $key,
+                    'tab'         => 'profile_fields',
+                ];
+                $fields['profile_fields_' . $key . '_size'] = [
+                    'label'    => esc_html__('Size', 'publishpress-authors'),
+                    'type'     => 'number',
+                    'sanitize' => 'intval',
+                    'tabbed'      => 1,
+                    'tab_name'    => $key,
+                    'tab'      => 'profile_fields',
+                ];
+                $fields['profile_fields_' . $key . '_line_height'] = [
+                    'label'    => esc_html__('Line Height (px)', 'publishpress-authors'),
+                    'type'     => 'number',
+                    'sanitize' => 'intval',
+                    'tabbed'      => 1,
+                    'tab_name'    => $key,
+                    'tab'      => 'profile_fields',
+                ];
+                $fields['profile_fields_' . $key . '_weight'] = [
+                    'label'    => esc_html__('Weight', 'publishpress-authors'),
+                    'type'     => 'select',
+                    'sanitize' => 'sanitize_text_field',
+                    'tabbed'      => 1,
+                    'tab_name'    => $key,
+                    'options'  => [
+                        ''        => esc_html__('Default', 'publishpress-authors'),
+                        'normal'  => esc_html__('Normal', 'publishpress-authors'),
+                        'bold'    => esc_html__('Bold', 'publishpress-authors'),
+                        '100'     => esc_html__('100 - Thin', 'publishpress-authors'),
+                        '200'     => esc_html__('200 - Extra light', 'publishpress-authors'),
+                        '300'     => esc_html__('300 - Light', 'publishpress-authors'),
+                        '400'     => esc_html__('400 - Normal', 'publishpress-authors'),
+                        '500'     => esc_html__('500 - Medium', 'publishpress-authors'),
+                        '600'     => esc_html__('600 - Semi bold', 'publishpress-authors'),
+                        '700'     => esc_html__('700 - Bold', 'publishpress-authors'),
+                        '800'     => esc_html__('800 - Extra bold', 'publishpress-authors'),
+                        '900'     => esc_html__('900 - Black', 'publishpress-authors')
+                    ],
+                    'tab'      => 'profile_fields',
+                ];
+                $fields['profile_fields_' . $key . '_transform'] = [
+                    'label'    => esc_html__('Transform', 'publishpress-authors'),
+                    'type'     => 'select',
+                    'sanitize' => 'sanitize_text_field',
+                    'tabbed'      => 1,
+                    'tab_name'    => $key,
+                    'options'  => [
+                        ''            => esc_html__('Default', 'publishpress-authors'),
+                        'uppercase'   => esc_html__('Uppercase', 'publishpress-authors'),
+                        'lowercase'   => esc_html__('Lowercase', 'publishpress-authors'),
+                        'capitalize'  => esc_html__('Capitalize', 'publishpress-authors'),
+                        'none'        => esc_html__('Normal', 'publishpress-authors')
+                    ],
+                    'tab'      => 'profile_fields',
+                ];
+                $fields['profile_fields_' . $key . '_style'] = [
+                    'label'    => esc_html__('Style', 'publishpress-authors'),
+                    'type'     => 'select',
+                    'sanitize' => 'sanitize_text_field',
+                    'tabbed'      => 1,
+                    'tab_name'    => $key,
+                    'options'  => [
+                        ''         => esc_html__('Default', 'publishpress-authors'),
+                        'none'     => esc_html__('Normal', 'publishpress-authors'),
+                        'italic'   => esc_html__('Italic', 'publishpress-authors'),
+                        'oblique'  => esc_html__('Oblique', 'publishpress-authors')
+                    ],
+                    'tab'      => 'profile_fields',
+                ];
+                $fields['profile_fields_' . $key . '_decoration'] = [
+                    'label'    => esc_html__('Decoration', 'publishpress-authors'),
+                    'type'     => 'select',
+                    'sanitize' => 'sanitize_text_field',
+                    'tabbed'      => 1,
+                    'tab_name'    => $key,
+                    'options'  => [
+                        ''             => esc_html__('Default', 'publishpress-authors'),
+                        'underline'    => esc_html__('Underline', 'publishpress-authors'),
+                        'overline'     => esc_html__('Overline', 'publishpress-authors'),
+                        'line-through' => esc_html__('Line Through', 'publishpress-authors'),
+                        'none'         => esc_html__('Normal', 'publishpress-authors')
+                    ],
+                    'tab'      => 'profile_fields',
+                ];
+                $fields['profile_fields_' . $key . '_alignment'] = [
+                    'label'    => esc_html__('Alignment', 'publishpress-authors'),
+                    'type'     => 'select',
+                    'sanitize' => 'sanitize_text_field',
+                    'tabbed'      => 1,
+                    'tab_name'    => $key,
+                    'options'  => [
+                        ''        => esc_html__('Default', 'publishpress-authors'),
+                        'left'    => esc_html__('Left', 'publishpress-authors'),
+                        'center'  => esc_html__('Center', 'publishpress-authors'),
+                        'right'   => esc_html__('Right', 'publishpress-authors'),
+                        'justify' => esc_html__('Justify', 'publishpress-authors')
+                    ],
+                    'tab'      => 'profile_fields',
+                ];
+                $fields['profile_fields_' . $key . '_color'] = [
+                    'label'    => esc_html__('Color', 'publishpress-authors'),
+                    'type'     => 'color',
+                    'sanitize' => 'sanitize_text_field',
+                    'tabbed'      => 1,
+                    'tab_name'    => $key,
+                    'tab'      => 'profile_fields',
+                ];
+            }
+        }
 
         return $fields;
     }

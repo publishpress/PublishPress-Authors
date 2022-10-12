@@ -10,6 +10,9 @@
 
 namespace MultipleAuthorBoxes;
 
+use MultipleAuthors\Classes\Author_Editor;
+use MA_Author_Boxes;
+
 /**
  * Author boxes field styles
  *
@@ -201,6 +204,50 @@ class AuthorBoxesStyles
         }
         if (!empty($args['meta_link_hover_color']['value'])) {
             $custom_styles .= '.pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].' .pp-author-boxes-meta a:hover { color: '. $args['meta_link_hover_color']['value'] .' !important; } ';
+        }
+
+        return $custom_styles;
+    }
+    
+    /**
+     * Get profile field styles based on editor settings
+     *
+     * @param array $args
+     * @param string $custom_styles
+     * @return string
+     */
+    public static function getRProfileFieldStyles($args, $custom_styles) {
+
+        $profile_fields   = Author_Editor::get_fields(false);
+        $profile_fields   = apply_filters('multiple_authors_author_fields', $profile_fields, false);
+
+        foreach ($profile_fields as $key => $data) {
+            if (!in_array($key, MA_Author_Boxes::AUTHOR_BOXES_EXCLUDED_FIELDS)) {
+                if ($args['profile_fields_' . $key . '_size']['value']) {
+                    $custom_styles .= '.pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].' .ppma-author-'. $key .'-profile-data { font-size: '. $args['profile_fields_' . $key . '_size']['value'] .'px !important; } ';
+                }
+                if ($args['profile_fields_' . $key . '_line_height']['value']) {
+                    $custom_styles .= '.pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].' .ppma-author-'. $key .'-profile-data { line-height: '. $args['profile_fields_' . $key . '_line_height']['value'] .'px !important; } ';
+                }
+                if (!empty($args['profile_fields_' . $key . '_weight']['value'])) {
+                    $custom_styles .= '.pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].' .ppma-author-'. $key .'-profile-data { font-weight: '. $args['profile_fields_' . $key . '_weight']['value'] .' !important; } ';
+                }
+                if (!empty($args['profile_fields_' . $key . '_transform']['value'])) {
+                    $custom_styles .= '.pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].' .ppma-author-'. $key .'-profile-data { text-transform: '. $args['profile_fields_' . $key . '_transform']['value'] .' !important; } ';
+                }
+                if (!empty($args['profile_fields_' . $key . '_style']['value'])) {
+                    $custom_styles .= '.pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].' .ppma-author-'. $key .'-profile-data { font-style: '. $args['profile_fields_' . $key . '_style']['value'] .' !important; } ';
+                }
+                if (!empty($args['profile_fields_' . $key . '_decoration']['value'])) {
+                    $custom_styles .= '.pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].' .ppma-author-'. $key .'-profile-data { text-decoration: '. $args['profile_fields_' . $key . '_decoration']['value'] .' !important; } ';
+                }
+                if (!empty($args['profile_fields_' . $key . '_alignment']['value'])) {
+                    $custom_styles .= '.pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].' .ppma-author-'. $key .'-profile-data { text-align: '. $args['profile_fields_' . $key . '_alignment']['value'] .' !important; } ';
+                }
+                if (!empty($args['profile_fields_' . $key . '_color']['value'])) {
+                    $custom_styles .= '.pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].' .ppma-author-'. $key .'-profile-data { color: '. $args['profile_fields_' . $key . '_color']['value'] .' !important; } ';
+                }
+            }
         }
 
         return $custom_styles;
