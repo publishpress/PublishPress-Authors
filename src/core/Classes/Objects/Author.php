@@ -662,7 +662,7 @@ class Author
             if ($this->has_custom_avatar()) {
                 $avatar = $this->get_custom_avatar($size);
             } else {
-                $avatar = get_avatar($this->user_email, $size);
+                $avatar = get_avatar($this->user_email, $size, '', $this->display_name);
             }
 
             /**
@@ -697,7 +697,7 @@ class Author
             'avatar',
         ];
 
-        $alt = '';
+        $alt = $this->display_name;
 
         // Build the HTML tag.
         $avatar = sprintf(
