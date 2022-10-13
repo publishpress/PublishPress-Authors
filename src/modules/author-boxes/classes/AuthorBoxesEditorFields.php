@@ -1209,7 +1209,7 @@ class AuthorBoxesEditorFields
 
         $fields['box_tab_custom_wrapper_class'] = [
             'label'       => esc_html__('Layout Wrapper Class Name', 'publishpress-authors'),
-            'description' => esc_html__('You can separate multiple class name with space.', 'publishpress-authors'),
+            'description' => esc_html__('You can use multiple class names. Leave a space between each class.', 'publishpress-authors'),
             'placeholder' => esc_html__('Enter class name without dot(.)', 'publishpress-authors'),
             'type'     => 'text',
             'sanitize' => 'sanitize_text_field',
