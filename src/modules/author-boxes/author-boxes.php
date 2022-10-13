@@ -1293,7 +1293,7 @@ class MA_Author_Boxes extends Module
                 elseif ('export_action' === $args['type']) :
                     ?>
                     <h2 class="title"><?php echo esc_html__('Export Editor Settings', 'publishpress-authors'); ?></h2>
-                    <p class="description"><?php echo esc_html__('You can import the below data using author box editor import tab to copy this editor design to a new editor or another website with the plugin active.', 'publishpress-authors'); ?></p>
+                    <p class="description"><?php echo esc_html__('You can use this data to export your author box design and import it to a new site.', 'publishpress-authors'); ?></p>
                     <textarea name="<?php echo esc_attr($key); ?>"
                         id="<?php echo esc_attr($key); ?>" 
                         type="<?php echo esc_attr($args['type']); ?>"
