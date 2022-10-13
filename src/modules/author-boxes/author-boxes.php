@@ -1313,7 +1313,7 @@ class MA_Author_Boxes extends Module
                 elseif ('import_action' === $args['type']) :
                     ?>
                     <h2 class="title"><?php echo esc_html__('Import Editor Settings', 'publishpress-authors'); ?></h2>
-                    <p class="description"><?php echo esc_html__('Paste a valid editor data below to import it design.', 'publishpress-authors'); ?></p>
+                    <p class="description"><?php echo esc_html__('Paste the editor data from the "Export" tab on another site.', 'publishpress-authors'); ?></p>
                     <textarea name="<?php echo esc_attr($key); ?>"
                         id="<?php echo esc_attr($key); ?>" 
                         type="<?php echo esc_attr($args['type']); ?>"
