@@ -525,7 +525,7 @@ class AuthorBoxesEditorFields
                 ];
                 $fields['profile_fields_' . $key . '_html_tag'] = [
                     'label'    => esc_html__('HTML Tag', 'publishpress-authors'),
-                    'description' => esc_html__('\'span\' will display as inline element while \'div\' will display as block element. To make display a link, select \'link\' and enter link text in prefix field or link icon in icon field while selecting corresponding display in Display field', 'publishpress-authors'),
+                    'description' => esc_html__('\'span\' will display as an inline element and \'div\' will display as a block element. To make this display into a link, select \'link\' and enter the first part of the URL into the \'Prefix\' field.', 'publishpress-authors'),
                     'type'     => 'select',
                     'sanitize' => 'sanitize_text_field',
                     'tabbed'      => 1,
@@ -546,7 +546,7 @@ class AuthorBoxesEditorFields
                 ];
                 $fields['profile_fields_' . $key . '_value_prefix'] = [
                     'label'       => sprintf(esc_html__('%1s Value Prefix', 'publishpress-authors'), $data['label']),
-                    'description' => esc_html__('This is useful when linking to an email or other protocol. For example, \'mailto:\' can be added as value prefix if html tag is link and the expected value is an email address', 'publishpress-authors'),
+                    'description' => esc_html__('This is useful when linking to an email, URL, or phone number. For example, \'mailto:\', \'https://\' or \'tel:\' can be added as the prefix.', 'publishpress-authors'),
                     'type'        => 'text',
                     'sanitize'    => 'sanitize_text_field',
                     'tabbed'      => 1,
