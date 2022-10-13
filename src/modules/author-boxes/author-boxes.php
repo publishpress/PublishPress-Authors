@@ -1332,14 +1332,13 @@ class MA_Author_Boxes extends Module
                 <?php
                 elseif ('template_action' === $args['type']) :
                     ?>
-                    <h2 class="title"><?php echo esc_html__('How to generate and use template', 'publishpress-authors'); ?></h2>
+                    <h2 class="title"><?php echo esc_html__('How to generate and use a theme template file', 'publishpress-authors'); ?></h2>
                     <div class="input-area-text">
                         <ul class="template-generator-instruction">
-                            <li><?php echo esc_html__('Click "Generate Template" button under the textarea and wait for the code to be generated.', 'publishpress-authors'); ?></li>
-                            <li><?php echo sprintf(esc_html__('Create an empty php template file with your desired file slug in %1s /publishpress-authors/author-boxes/ %2s folder of your theme. For example %3s /wp-content/themes/%4syour-theme-name%5s/publishpress-authors/author-boxes/my-first-custom-author-template.php %6s .', 'publishpress-authors'), '<font color="red">', '</font>', '<font color="red">', '<strong>', '</strong>', '</font>'); ?></li>
-                            <li><?php echo esc_html__('Copy the generated code and paste inside the newly created file. You can add as many templates as you want for different design.', 'publishpress-authors'); ?></li>
-                            <li><?php echo sprintf(esc_html__('All template inside %1s /publishpress-authors/author-boxes/ %2s folder of your theme will be available for selection in settings layouts and the template slug can be use as layout parameter in shortcode.', 'publishpress-authors'), '<font color="red">', '</font>'); ?></li>
-                            <li><?php echo esc_html__('Note, the template is independent of this editor layout settings and can be use across different themes and sites.', 'publishpress-authors'); ?></li>
+                            <li><?php echo esc_html__('Click the "Generate Template" button under the text area. Wait for the code to be generated.', 'publishpress-authors'); ?></li>
+                            <li><?php echo sprintf(esc_html__('Create an empty php template file with your desired file slug in the %1s /publishpress-authors/author-boxes/ %2s folder of your theme. %3s For example, the file can be located here: %4s /wp-content/themes/%5syour-theme-name%6s/publishpress-authors/author-boxes/my-first-custom-author-template.php %7s .', 'publishpress-authors'), '<font color="red">', '</font>', '<br />', '<font color="red">', '<strong>', '</strong>', '</font>'); ?></li>
+                            <li><?php echo esc_html__('Copy the generated code and paste it inside the newly created file.', 'publishpress-authors'); ?></li>
+                            <li><?php echo sprintf(esc_html__('Congratulations. Your can now choose your template inside the PublishPress Authors Settings.', 'publishpress-authors'), '<font color="red">', '</font>'); ?></li>
                         </ul>
                         <p><?php
                             printf(
