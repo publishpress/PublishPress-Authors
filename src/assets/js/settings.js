@@ -112,7 +112,35 @@ jQuery(document).ready(function ($) {
         } else {
             $('.ppauthors-color-scheme-field').hide();
         }
+        hideDisplayLegacySettings();
     });
+
+    //hide legacy layout settings
+    hideDisplayLegacySettings();
+    if ($('#multiple_authors_multiple_authors_options_layout').length > 0) {
+        hideDisplayLegacySettings();
+    }
+
+    /**
+     * Hide or Show legacy layout settings
+     */
+    function hideDisplayLegacySettings() {
+        var selected_settings = $('#multiple_authors_multiple_authors_options_layout option:selected').text();
+
+        if (selected_settings.endsWith('(Legacy)')) {
+            $('#multiple_authors_multiple_authors_options_title_appended_to_content').closest('tr').hide();
+            $('tr.ppauthors-color-scheme-field').hide();
+            $('#multiple_authors_multiple_authors_options_show_email_link').closest('tr').hide();
+            $('#multiple_authors_multiple_authors_options_show_site_link').closest('tr').hide();
+            $('#multiple_authors_multiple_authors_options_load_font_awesome').closest('tr').hide();
+        } else {
+            $('#multiple_authors_multiple_authors_options_title_appended_to_content').closest('tr').show();
+            $('tr.ppauthors-color-scheme-field').show();
+            $('#multiple_authors_multiple_authors_options_show_email_link').closest('tr').show();
+            $('#multiple_authors_multiple_authors_options_show_site_link').closest('tr').show();
+            $('#multiple_authors_multiple_authors_options_load_font_awesome').closest('tr').show();
+        }
+    }
 
     /**
      * Check if browser support local storage

@@ -161,13 +161,13 @@ if (!class_exists('MA_Default_Layouts')) {
         public function getListOfLayouts($layouts)
         {
             $layouts = [
-                'boxed'          => __('Boxed', 'publishpress-authors'),
-                'centered'       => __('Centered', 'publishpress-authors'),
-                'inline'         => __('Inline', 'publishpress-authors'),
-                'inline_avatar'  => __('Inline with avatar', 'publishpress-authors'),
-                'simple_list'    => __('Simple list', 'publishpress-authors'),
-                'authors_index'  => __('Authors index', 'publishpress-authors'),
-                'authors_recent' => __('Authors recent', 'publishpress-authors'),
+                'boxed'          => __('Boxed (Legacy)', 'publishpress-authors'),
+                'centered'       => __('Centered (Legacy)', 'publishpress-authors'),
+                'inline'         => __('Inline (Legacy)', 'publishpress-authors'),
+                'inline_avatar'  => __('Inline with avatar (Legacy)', 'publishpress-authors'),
+                'simple_list'    => __('Simple list (Legacy)', 'publishpress-authors'),
+                'authors_index'  => __('Authors index (Legacy)', 'publishpress-authors'),
+                'authors_recent' => __('Authors recent (Legacy)', 'publishpress-authors'),
             ];
 
             return $layouts;
