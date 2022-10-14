@@ -445,7 +445,7 @@ class MA_Author_Boxes extends Module
 
         if (! empty($posts)) {
             foreach ($posts as $post) {
-                $author_boxes[self::POST_TYPE_BOXES . '_' . $post->ID] = $post->post_title . ' [' . __('Author Boxes', 'publishpress-authors') . ']';
+                $author_boxes[self::POST_TYPE_BOXES . '_' . $post->ID] = $post->post_title;
             }
         }
 
@@ -472,7 +472,7 @@ class MA_Author_Boxes extends Module
                     $filename       = basename($dir_file);
                     $filename       = str_ireplace('.php', '', $filename);
                     if ($file_extension === 'php') { 
-                        $theme_author_boxes[$filename] = self::cleanThemeBoxName($filename) . ' [' . __('Theme Boxes', 'publishpress-authors') . ']';
+                        $theme_author_boxes[$filename] = self::cleanThemeBoxName($filename) . ' (' . __('Theme', 'publishpress-authors') . ')';
                     }
                 }
             } 

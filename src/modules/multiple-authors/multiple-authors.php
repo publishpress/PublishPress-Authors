@@ -648,9 +648,9 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
 
             add_settings_field(
-                'title_appended_to_content',
-                __('Title for the author box:', 'publishpress-authors'),
-                [$this, 'settings_title_appended_to_content_option'],
+                'disable_quick_edit_author_box',
+                __('Disable the "Authors" box when using "Quick Edit":', 'publishpress-authors'),
+                [$this, 'settings_disable_quick_edit_author_box_option'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_display'
             );
@@ -659,6 +659,14 @@ if (!class_exists('MA_Multiple_Authors')) {
                 'layout',
                 __('Layout:', 'publishpress-authors'),
                 [$this, 'settings_layout_option'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_display'
+            );
+
+            add_settings_field(
+                'title_appended_to_content',
+                __('Title for the author box:', 'publishpress-authors'),
+                [$this, 'settings_title_appended_to_content_option'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_display'
             );
@@ -692,14 +700,6 @@ if (!class_exists('MA_Multiple_Authors')) {
                 'load_font_awesome',
                 __('Layout icons:', 'publishpress-authors'),
                 [$this, 'settings_load_font_awesome_option'],
-                $this->module->options_group_name,
-                $this->module->options_group_name . '_display'
-            );
-
-            add_settings_field(
-                'disable_quick_edit_author_box',
-                __('Disable the "Authors" box when using "Quick Edit":', 'publishpress-authors'),
-                [$this, 'settings_disable_quick_edit_author_box_option'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_display'
             );
