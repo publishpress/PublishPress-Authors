@@ -292,6 +292,9 @@ class AuthorBoxesDefault
         .pp-multiple-authors-layout-inline ul.pp-multiple-authors-boxes-ul li.has-avatar .pp-author-boxes-avatar,
         .pp-multiple-authors-layout-inline ul.pp-multiple-authors-boxes-ul li.has-avatar .pp-author-boxes-avatar-details {
             display: inline-block;
+        }
+        .pp-multiple-authors-layout-inline .pp-multiple-authors-boxes-ul .pp-author-boxes-profile-fields {
+            display:none;
         }';
 
         return $editor_data;
