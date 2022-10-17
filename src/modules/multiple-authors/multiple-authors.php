@@ -652,7 +652,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 __('Disable the "Authors" box when using "Quick Edit":', 'publishpress-authors'),
                 [$this, 'settings_disable_quick_edit_author_box_option'],
                 $this->module->options_group_name,
-                $this->module->options_group_name . '_display'
+                $this->module->options_group_name . '_general'
             );
 
             add_settings_field(
