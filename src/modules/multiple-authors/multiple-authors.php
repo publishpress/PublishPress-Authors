@@ -1789,7 +1789,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
-                    'This will allow to map more than one user to an author. This feature is not advisable to be enabled unless there\'s a conflict as authors works better when it\'s one to one pairing.',
+                    'This will allows you map a WordPress user to more than one author. Don\'t use this feature unless requested to do so by the PublishPress team. This plugin works better when authors and users are paired one-to-one.',
                     'publishpress-authors'
                 )
                 . '</span>';
