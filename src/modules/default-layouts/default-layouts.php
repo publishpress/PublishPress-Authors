@@ -76,7 +76,7 @@ if (!class_exists('MA_Default_Layouts')) {
         {
             add_filter('pp_multiple_authors_author_box_html', [$this, 'renderBoxHTML'], 10, 2);
             add_filter('pp_multiple_authors_authors_list_box_html', [$this, 'renderBoxHTML'], 10, 2);
-            add_filter('pp_multiple_authors_author_layouts', [$this, 'getListOfLayouts'], 10, 2);
+            add_filter('pp_multiple_authors_author_layouts', [$this, 'getListOfLayouts'], 21);
         }
 
         /**
@@ -160,7 +160,7 @@ if (!class_exists('MA_Default_Layouts')) {
          */
         public function getListOfLayouts($layouts)
         {
-            $layouts = [
+            $new_layout = [
                 'boxed'          => __('Boxed (Legacy)', 'publishpress-authors'),
                 'centered'       => __('Centered (Legacy)', 'publishpress-authors'),
                 'inline'         => __('Inline (Legacy)', 'publishpress-authors'),
@@ -169,6 +169,7 @@ if (!class_exists('MA_Default_Layouts')) {
                 'authors_index'  => __('Authors index (Legacy)', 'publishpress-authors'),
                 'authors_recent' => __('Authors recent (Legacy)', 'publishpress-authors'),
             ];
+            $layouts = array_merge($layouts, $new_layout);
 
             return $layouts;
         }
