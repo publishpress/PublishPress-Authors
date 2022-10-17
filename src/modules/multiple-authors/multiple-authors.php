@@ -1405,6 +1405,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '<select id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[layout]">';
 
             $layouts = apply_filters('pp_multiple_authors_author_layouts', []);
+            unset($layouts['authors_index']);
+            unset($layouts['authors_recent']);
 
             foreach ($layouts as $layout => $text) {
                 $selected = $value === $layout ? 'selected="selected"' : '';
@@ -1691,6 +1693,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '<select id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_pages_bio_layout]">';
 
             $layouts = apply_filters('pp_multiple_authors_author_layouts', []);
+            unset($layouts['authors_index']);
+            unset($layouts['authors_recent']);
 
             foreach ($layouts as $layout => $text) {
                 $selected = $value === $layout ? 'selected="selected"' : '';
