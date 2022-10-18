@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 7.2.5
 Tested up to: 6.0
-Stable tag: 3.23.0
+Stable tag: 3.30.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -223,6 +223,23 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [3.30.0] - 18 Oct 2022 =
+
+* Feature: Add new improved layouts (Author Boxes), #896
+* Update: Deprecate Twig layout as legacy, #758
+* Fixed: Authors plugin causes a fatal error and prevents pages from loading, #863
+* Update: Remove "Layouts" promo link, #959
+* Update: Remove Author Recent and Author Index from layout list, #956
+* Update: Move Disable the "Authors" box when using "Quick Edit" to General tab, #953
+* Fixed: Small settings typo, #955
+* Update: Add an ALT Text for the avatars, #931
+* Update: Allow users to disable Authors Box in Quick Edit, #897
+* Update: Add descriptive text to Authors links, #807
+* Update: Prevent some critical error on wp api author response, #898
+* Update: authors-IT-translation-update_september2022, #899
+* Update: Authors-FR-TranslationUpdate-September2022, #908
+* Update: NewAuthors-Version3.22.0-ES-FR-IT-TranslationUpdate-7October2022, #932
 
 = [3.23.0] - 3 Oct 2022 =
 
