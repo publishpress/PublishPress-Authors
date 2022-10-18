@@ -114,7 +114,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'author_post_custom_height'    => '',
                     'default_author_for_new_posts' => null,
                     'fallback_user_for_guest_post' => function_exists('get_current_user_id') ? get_current_user_id() : 0,
-                    'author_page_post_types'       => []
+                    'author_page_post_types'       => [],
+                    'disable_quick_edit_author_box' => 'no'
                 ],
                 'options_page'         => false,
                 'autoload'             => true,
@@ -188,6 +189,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_action('multiple_authors_create_post_authors', [$this, 'action_create_post_authors']);
             add_action('multiple_authors_create_role_authors', [$this, 'action_create_role_authors']);
             add_action('multiple_authors_copy_coauthor_plus_data', [$this, 'action_copy_coauthor_plus_data']);
+            add_action('multiple_authors_create_default_author_boxes', [$this, 'action_create_default_author_boxes']);
 
             add_action('deleted_user', [$this, 'handle_deleted_user']);
 
@@ -386,6 +388,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
                 // Get the index for the menus, removing the first submenu which was automatically created by WP.
                 $itemsToSort = [
+                    'edit.php?post_type=ppma_boxes'    => null,
                     'edit-tags.php?taxonomy=author'    => null,
                     'edit.php?post_type=ppmacf_field'  => null,
                     'edit.php?post_type=ppmacf_layout' => null,
@@ -414,6 +417,13 @@ if (!class_exists('MA_Multiple_Authors')) {
                     unset($currentSubmenu[$itemsToSort['edit-tags.php?taxonomy=author']]);
                 }
 
+                // Author Boxes
+                if (isset($itemsToSort['edit.php?post_type=ppma_boxes'])) {
+                    $newSubmenu[] = $currentSubmenu[$itemsToSort['edit.php?post_type=ppma_boxes']];
+
+                    unset($currentSubmenu[$itemsToSort['edit.php?post_type=ppma_boxes']]);
+                }
+
                 // Fields
                 if (isset($itemsToSort['edit.php?post_type=ppmacf_field'])) {
                     $newSubmenu[] = $currentSubmenu[$itemsToSort['edit.php?post_type=ppmacf_field']];
@@ -433,13 +443,6 @@ if (!class_exists('MA_Multiple_Authors')) {
                     $newSubmenu[] = $currentSubmenu[$itemsToSort['admin.php?page=ppma-pro-placeholders-fields']];
 
                     unset($currentSubmenu[$itemsToSort['admin.php?page=ppma-pro-placeholders-fields']]);
-                }
-
-                // Layouts - Pro Placeholders
-                if (isset($itemsToSort['admin.php?page=ppma-pro-placeholders-layouts'])) {
-                    $newSubmenu[] = $currentSubmenu[$itemsToSort['admin.php?page=ppma-pro-placeholders-layouts']];
-
-                    unset($currentSubmenu[$itemsToSort['admin.php?page=ppma-pro-placeholders-layouts']]);
                 }
 
                 // Check if we have other menu items, except settings. They will be added to the end.
@@ -638,17 +641,25 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
 
             add_settings_field(
-                'title_appended_to_content',
-                __('Title for the author box:', 'publishpress-authors'),
-                [$this, 'settings_title_appended_to_content_option'],
+                'disable_quick_edit_author_box',
+                __('Disable the "Authors" box when using "Quick Edit":', 'publishpress-authors'),
+                [$this, 'settings_disable_quick_edit_author_box_option'],
                 $this->module->options_group_name,
-                $this->module->options_group_name . '_display'
+                $this->module->options_group_name . '_general'
             );
 
             add_settings_field(
                 'layout',
                 __('Layout:', 'publishpress-authors'),
                 [$this, 'settings_layout_option'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_display'
+            );
+
+            add_settings_field(
+                'title_appended_to_content',
+                __('Title for the author box:', 'publishpress-authors'),
+                [$this, 'settings_title_appended_to_content_option'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_display'
             );
@@ -1387,6 +1398,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '<select id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[layout]">';
 
             $layouts = apply_filters('pp_multiple_authors_author_layouts', []);
+            unset($layouts['authors_index']);
+            unset($layouts['authors_recent']);
 
             foreach ($layouts as $layout => $text) {
                 $selected = $value === $layout ? 'selected="selected"' : '';
@@ -1673,6 +1686,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '<select id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_pages_bio_layout]">';
 
             $layouts = apply_filters('pp_multiple_authors_author_layouts', []);
+            unset($layouts['authors_index']);
+            unset($layouts['authors_recent']);
 
             foreach ($layouts as $layout => $text) {
                 $selected = $value === $layout ? 'selected="selected"' : '';
@@ -1771,7 +1786,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
-                    'This will allow to map more than one user to an author. This feature is not advisable to be enabled unless there\'s a conflict as authors works better when it\'s one to one pairing.',
+                    'This will allows you map a WordPress user to more than one author. Don\'t use this feature unless requested to do so by the PublishPress team. This plugin works better when authors and users are paired one-to-one.',
                     'publishpress-authors'
                 )
                 . '</span>';
@@ -2054,6 +2069,24 @@ if (!class_exists('MA_Multiple_Authors')) {
         }
 
         /**
+         * @param array
+         */
+        public function settings_disable_quick_edit_author_box_option($args = [])
+        {
+            $id    = $this->module->options_group_name . '_disable_quick_edit_author_box';
+            $value = isset($this->module->options->disable_quick_edit_author_box) ? $this->module->options->disable_quick_edit_author_box : 'no';
+
+            echo '<label for="' . esc_attr($id) . '">';
+            echo '<input type="checkbox" value="yes" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[disable_quick_edit_author_box]" '
+                . checked($value, 'yes', false) . ' />';
+            echo '&nbsp;&nbsp;&nbsp; <span class="ppma_settings_field_description">' . esc_html__(
+                    'This will remove the Authors Box in "Quick Edit".',
+                    'publishpress-authors'
+                ) . '</span>';
+            echo '</label>';
+        }
+
+        /**
          * Displays the button to reset the author terms.
          *
          * @param array
@@ -2088,6 +2121,12 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'description' => 'For compatibility with PublishPress Permissions, each Author\'s slug needs to match their User login.',
                     'button_link' => '',
                     'after'       => '<div id="publishpress-authors-sync-author-slug"></div>',
+                ],
+
+                'create_default_author_boxes' => [
+                    'title'       => esc_html__('Create default Author Boxes', 'publishpress-authors'),
+                    'description' => 'This action creates the default author boxes if they don\'t exist or were accidentally deleted.',
+                    'button_label' => __('Create default Author Boxes', 'publishpress-authors'),
                 ],
             ];
 
@@ -2198,6 +2237,10 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             if (!isset($new_options['load_font_awesome'])) {
                 $new_options['load_font_awesome'] = 'no';
+            }
+
+            if (!isset($new_options['disable_quick_edit_author_box'])) {
+                $new_options['disable_quick_edit_author_box'] = 'no';
             }
 
             if (!isset($new_options['username_in_search_field'])) {
@@ -2869,6 +2912,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 'copy_coauthor_plus_data',
                 'sync_post_author',
                 'sync_author_slug',
+                'create_default_author_boxes'
             ];
 
             if (! isset($_GET['ppma_action']) || isset($_GET['author_term_reset_notice'])
@@ -2996,6 +3040,12 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
         }
 
+
+        public function action_create_default_author_boxes()
+        {
+            MA_Author_Boxes::createDefaultAuthorBoxes();
+        }
+
         public function action_copy_coauthor_plus_data()
         {
             if (!class_exists('CoAuthorsIterator')) {
@@ -3084,6 +3134,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
                     // Check if the user is an author for the current post
                     if ($post_id > 0) {
+                        remove_filter('map_meta_cap', [$this, 'filter_map_meta_cap'], 10);
                         if (is_multiple_author_for_post($user_id, $post_id)) {
                             foreach ($caps as &$item) {
                                 // If he is an author for this post we should only check edit_posts.

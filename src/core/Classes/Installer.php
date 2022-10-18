@@ -25,6 +25,7 @@ namespace MultipleAuthors\Classes;
 
 use MultipleAuthors\Capability;
 use MultipleAuthors\Classes\Objects\Author;
+use MA_Author_Boxes;
 use WP_Role;
 
 class Installer
@@ -44,7 +45,9 @@ class Installer
 
         self::addDefaultCapabilitiesForAdministrators();
         self::addEditPostAuthorsCapabilitiesToRoles();
+        self::addManageLayoutsCapabilitiesToRoles();
         self::flushRewriteRules();
+        self::createDefaultAuthorBoxes();
 
         /**
          * @param string $currentVersion
@@ -71,6 +74,11 @@ class Installer
             self::addEditPostAuthorsCapabilitiesToRoles();
         }
 
+        if (version_compare($currentVersions, '3.30.0', '<')) {
+            self::addManageLayoutsCapabilitiesToRoles();
+            self::createDefaultAuthorBoxes();
+        }
+
         /**
          * @param string $previousVersion
          */
@@ -78,6 +86,14 @@ class Installer
 
         self::addDefaultCapabilitiesForAdministrators();
         self::flushRewriteRules();
+    }
+
+    /**
+     * Create the default author boxes.
+     */
+    private static function createDefaultAuthorBoxes()
+    {
+        MA_Author_Boxes::createDefaultAuthorBoxes();
     }
 
     public static function getUsersAuthorsWithNoAuthorTerm($args = null)
@@ -356,5 +372,11 @@ class Installer
                 $role->add_cap($cap);
             }
         }
+    }
+
+    private static function addManageLayoutsCapabilitiesToRoles()
+    {
+        $adminRole = get_role('administrator');
+        $adminRole->add_cap('ppma_manage_layouts');
     }
 }

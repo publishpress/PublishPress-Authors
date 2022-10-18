@@ -1,0 +1,177 @@
+#poststuff #ppma_boxes_editor_area .inside {
+    background: #f5f6fa;
+    padding: 0;
+    margin-top: 0;
+}
+
+.ppma-author-boxes-editor-table input[type=text],
+.ppma-author-boxes-editor-table input[type=number],
+.ppma-author-boxes-editor-table select {
+    width: 300px;
+}
+
+.ppma-author-boxes-editor-table textarea {
+    width: 100%;
+    resize: none;
+}
+
+.ppma-author-boxes-editor-table button.wp-color-result {
+    min-height: 30px !important;
+    margin: 0 6px 6px 0 !important;
+    padding: 0 0 0 30px !important;
+    font-size: 11px !important;
+}
+
+.ppma-author-boxes-editor-table .field-description {
+    color: gray;
+}
+
+.post-type-ppma_boxes #slugdiv.postbox,
+.post-type-ppma_boxes label[for="slugdiv-hide"]  {
+    display: none !important;
+}
+
+.publishpress-author-box-editor {
+    display: flex;
+}
+
+.publishpress-author-box-editor .ppma-author-box-editor-tabs {
+    min-width: 250px;
+    margin: 0;
+    line-height: 1em;
+    padding: 0 0 10px;
+    position: relative;
+    background-color: #fafafa;
+    border-right: 1px solid #eee;
+    box-sizing: border-box;
+}
+
+.ppma-author-box-editor-fields {
+    width: 100%;
+    min-width: 320px;
+    padding: 10px;
+    background: #fff;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.ppma-boxes-editor-tab-content ul.template-generator-instruction {
+    margin-top: 0;
+    margin-left: 25px;
+    list-style: decimal;
+}
+
+.ppma-boxes-editor-tab-content ul.template-generator-instruction li {
+    list-style: decimal;
+}
+
+.ppma-boxes-editor-tab-content .generate-template-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1px;
+}
+
+.ppma-boxes-editor-tab-content .author-editor-loading-spinner {
+    float: none;
+    margin-left: 0;
+}
+
+.ppma-editor-copied-to-clipboard,
+.ppma-editor-data-imported,
+.ppma-editor-template-generated {
+    color: green;
+    display: none;
+}
+
+.ppma-boxes-editor-tab-content.ppma-export-tab .title,
+.ppma-boxes-editor-tab-content.ppma-import-tab .title,
+.ppma-boxes-editor-tab-content.ppma-editor-template_action .title {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    vertical-align: top;
+    text-align: left;
+    padding: 20px 10px 20px 0;
+    line-height: 1.3;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+.ppma-boxes-editor-tab-content.ppma-profile_fields-tab.profile_header .input {
+    padding-left: 0;
+}
+
+.ppma-editor-profile-header-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #c3c4c7;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
+    background: #fff;
+    border-bottom: 1px solid #c3c4c7;
+    padding: 0;
+    cursor: pointer;
+}
+
+.ppma-editor-profile-header-title.closed .toggle-indicator::before {
+    content: "\f140";
+}
+
+.ppma-editor-profile-header-title .title-toggle button {
+    border: none !important;
+    background: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.publishpress-author-box-editor .ppma-author-box-editor-tabs ul {
+    padding-top: 0;
+    margin-top: 0;
+}
+
+.publishpress-author-box-editor .ppma-author-box-editor-tabs ul li a {
+    margin: 0;
+    padding: 10px;
+    display: block;
+    box-shadow: none;
+    text-decoration: none;
+    line-height: 20px !important;
+    border-bottom: 1px solid #eee;
+}
+
+.publishpress-author-box-editor .ppma-author-box-editor-tabs ul li {
+    margin: 0;
+    padding: 0;
+    display: block;
+    position: relative;
+}
+
+.publishpress-author-box-editor .ppma-author-box-editor-tabs ul li a.active {
+    color: #555;
+    position: relative;
+    background-color: #eee;
+}
+
+.publishpress-author-box-editor .ppma-author-box-editor-tabs ul li a span {
+    margin-right: 0.618em;
+}
+
+.publishpress-author-box-editor .ppma-author-box-editor-tabs ul li a span.dashicons {
+    margin-left: 0;
+    font-size: 15px;
+    vertical-align: sub;
+}
+
+.publishpress-author-box-editor .preview-section {
+    width: 100%;
+}
+
+#ppma_boxes_shortcode textarea {
+    resize: none;
+    width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+    .publishpress-author-box-editor {
+       display: block;
+    }
+}

@@ -99,26 +99,11 @@ if (!class_exists('MA_Pro_Placeholders')) {
                 [$this, 'placeholderPageFields'],
                 12
             );
-
-            add_submenu_page(
-                MA_Multiple_Authors::MENU_SLUG,
-                esc_html__('Layouts', 'publishpress-authors'),
-                esc_html__('Layouts', 'publishpress-authors'),
-                apply_filters('pp_multiple_authors_manage_authors_cap', 'ppma_manage_authors'),
-                'ppma-pro-placeholders-layouts',
-                [$this, 'placeholderPageLayouts'],
-                13
-            );
         }
 
         public function placeholderPageFields()
         {
             include_once __DIR__ . '/views/fields-placeholder.php';
-        }
-
-        public function placeholderPageLayouts()
-        {
-            include_once __DIR__ . '/views/layouts-placeholder.php';
         }
     }
 }

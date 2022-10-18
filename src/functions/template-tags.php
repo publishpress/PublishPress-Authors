@@ -181,6 +181,56 @@ if (!function_exists('get_multiple_authors')) {
 }
 
 
+if (!function_exists('multiple_authors_get_author_recent_posts')) {
+    /**
+     * Get multiple authors recent posts
+     * @param object $author
+     * @param boolen $id_only
+     * @param integer $limit
+     * @param string $orderby
+     * @param string $order
+     *
+     * @return array
+     */
+    function multiple_authors_get_author_recent_posts(
+        $author = false,
+        $id_only = true, 
+        $limit = 5, 
+        $orderby = 'post_date', 
+        $order = 'DESC'
+    ) {
+        if (!$author) {
+            $author = Author::get_by_user_id(get_current_user_id());
+        }
+
+        if ((int)$limit === 0) {
+            $limit = 5;
+        }
+        
+        $author_recent_args = [
+            'orderby'        => $orderby,
+            'order'          => $order,
+            'posts_per_page' => $limit,
+            'tax_query' => [
+                [
+                    'taxonomy' => 'author',
+                    'terms'    => $author->term_id,
+                    'field'     => 'term_id'
+                ]
+            ]
+        ];
+
+        if ($id_only) {
+            $author_recent_args['fields'] = 'ids';
+        }
+
+        $author_recent_posts = get_posts($author_recent_args);
+
+        return $author_recent_posts;
+    }
+}
+
+
 if (!function_exists('multiple_authors_get_all_authors')) {
     /**
      * @param array $args
@@ -354,7 +404,7 @@ if (!function_exists('multiple_authors_get_all_authors')) {
                         )
                     )
                 ];
-                $author_recent_posts = get_posts($author_recent_args);
+                $author_recent_posts = multiple_authors_get_author_recent_posts($author);
 
                 //add recent posts
                 $author_recent    = '';
@@ -372,7 +422,7 @@ if (!function_exists('multiple_authors_get_all_authors')) {
                                     $featured_image = $featured_image_data[0];
                                 }
                             }
-                            
+
                         } else {
                             $featured_image = false;
                         }
@@ -428,6 +478,7 @@ if (!function_exists('is_multiple_author_for_post')) {
     {
         global $post;
         global $postAuthorsCache;
+        global $authordata;
 
         if (empty($postAuthorsCache)) {
             $postAuthorsCache = [];
@@ -444,11 +495,16 @@ if (!function_exists('is_multiple_author_for_post')) {
         if (!$user) {
             return false;
         }
+        if (get_post_status($post_id) === 'auto-draft') {
+            return false;
+        }
+
         $currentPostType = get_post_type($post_id);
         $enabledPostTypes  = Utils::get_enabled_post_types();
 
         if (!in_array($currentPostType, $enabledPostTypes)) {
-            $postAuthorId = get_the_author_meta('ID');
+            $authorDataUserid = isset($authordata->ID) ? $authordata->ID : 0;
+            $postAuthorId = get_the_author_meta('ID', $authorDataUserid);
 
             if (is_numeric($user)) {
                 $userId = $user;
@@ -492,10 +548,10 @@ if (!function_exists('is_multiple_author_for_post')) {
         }
 
         foreach ($coauthors as $coauthor) {
-            if (is_object($user_term) && 
-                is_object($coauthor) && 
-                isset($user_term->term_id) && 
-                isset($coauthor->term_id) && 
+            if (is_object($user_term) &&
+                is_object($coauthor) &&
+                isset($user_term->term_id) &&
+                isset($coauthor->term_id) &&
                 $user_term->term_id == $coauthor->term_id
                 ) {
                 return true;
