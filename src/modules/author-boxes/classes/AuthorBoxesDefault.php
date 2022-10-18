@@ -76,6 +76,7 @@ class AuthorBoxesDefault
         //title default
         $editor_data['show_title'] = 1;
         $editor_data['title_text'] = esc_html__('Author', 'publishpress-authors');
+        $editor_data['title_text_plural'] = esc_html__('Authors', 'publishpress-authors');
         $editor_data['title_html_tag'] = 'h2';
         $editor_data['box_tab_custom_wrapper_class'] = 'pp-multiple-authors-layout-boxed';
         //avatar default
@@ -126,6 +127,7 @@ class AuthorBoxesDefault
         //title default
         $editor_data['show_title'] = 1;
         $editor_data['title_text'] = esc_html__('Author', 'publishpress-authors');
+        $editor_data['title_text_plural'] = esc_html__('Authors', 'publishpress-authors');
         $editor_data['title_html_tag'] = 'h2';
         $editor_data['box_tab_custom_wrapper_class'] = 'pp-multiple-authors-layout-centered';
         //avatar default
@@ -176,6 +178,7 @@ class AuthorBoxesDefault
         $editor_data = [];
         //title default
         $editor_data['title_text'] = esc_html__('Author', 'publishpress-authors');
+        $editor_data['title_text_plural'] = esc_html__('Authors', 'publishpress-authors');
         $editor_data['title_html_tag'] = 'h2';
         $editor_data['box_tab_custom_wrapper_class'] = 'pp-multiple-authors-layout-inline';
         //avatar default
@@ -239,6 +242,7 @@ class AuthorBoxesDefault
         $editor_data = [];
         //title default
         $editor_data['title_text'] = esc_html__('Author', 'publishpress-authors');
+        $editor_data['title_text_plural'] = esc_html__('Authors', 'publishpress-authors');
         $editor_data['title_html_tag'] = 'h2';
         $editor_data['box_tab_custom_wrapper_class'] = 'pp-multiple-authors-layout-inline';
         //avatar default
@@ -310,6 +314,7 @@ class AuthorBoxesDefault
         $editor_data = [];
         //title default
         $editor_data['title_text'] = esc_html__('Author', 'publishpress-authors');
+        $editor_data['title_text_plural'] = esc_html__('Authors', 'publishpress-authors');
         $editor_data['title_html_tag'] = 'h2';
         $editor_data['box_tab_custom_wrapper_class'] = 'pp-multiple-authors-layout-simple_list';
         //avatar default

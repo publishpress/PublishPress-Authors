@@ -38,7 +38,13 @@ class AuthorBoxesEditorFields
             'tab'         => 'title',
         ];
         $fields['title_text'] = [
-            'label'       => esc_html__('Title Text', 'publishpress-authors'),
+            'label'       => esc_html__('Title Text (Single)', 'publishpress-authors'),
+            'type'        => 'text',
+            'sanitize'    => 'sanitize_text_field',
+            'tab'         => 'title',
+        ];
+        $fields['title_text_plural'] = [
+            'label'       => esc_html__('Title Text (Plural)', 'publishpress-authors'),
             'type'        => 'text',
             'sanitize'    => 'sanitize_text_field',
             'tab'         => 'title',

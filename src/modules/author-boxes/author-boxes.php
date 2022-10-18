@@ -976,6 +976,8 @@ class MA_Author_Boxes extends Module
 
         $profile_fields   = Author_Editor::get_fields(false);
         $profile_fields   = apply_filters('multiple_authors_author_fields', $profile_fields, false);
+
+        $authors = (isset($args['authors']) && is_array($args['authors']) && !empty($args['authors'])) ? $args['authors'] : [];
         ?>
 
         <?php if ($admin_preview) : ?>
@@ -987,11 +989,15 @@ class MA_Author_Boxes extends Module
                     <div class="pp-multiple-authors-boxes-wrapper pp-multiple-authors-wrapper <?php echo esc_attr($args['box_tab_custom_wrapper_class']['value']); ?> box-post-id-<?php echo esc_attr($args['post_id']); ?>"
                     data-original_class="pp-multiple-authors-boxes-wrapper pp-multiple-authors-wrapper box-post-id-<?php echo esc_attr($args['post_id']); ?>">
                         <?php if ($args['show_title']['value']) : ?>
-                            <<?php echo esc_html($args['title_html_tag']['value']); ?> class="widget-title box-header-title"><?php echo esc_html($args['title_text']['value']); ?></<?php echo esc_html($args['title_html_tag']['value']); ?>>
+                            <?php if (count($authors) > 1) : ?>
+                                <<?php echo esc_html($args['title_html_tag']['value']); ?> class="widget-title box-header-title"><?php echo esc_html($args['title_text_plural']['value']); ?></<?php echo esc_html($args['title_html_tag']['value']); ?>>
+                            <?php else : ?>
+                                <<?php echo esc_html($args['title_html_tag']['value']); ?> class="widget-title box-header-title"><?php echo esc_html($args['title_text']['value']); ?></<?php echo esc_html($args['title_html_tag']['value']); ?>>
+                            <?php endif; ?>
                         <?php endif; ?>
                         <ul class="pp-multiple-authors-boxes-ul">
-                            <?php if (isset($args['authors']) && is_array($args['authors']) && !empty($args['authors'])) : ?>
-                                <?php foreach ($args['authors'] as $index => $author) : ?>
+                            <?php if (!empty($authors)) : ?>
+                                <?php foreach ($authors as $index => $author) : ?>
                                     <?php if ($author && is_object($author) && isset($author->term_id)) : ?>
                                         <?php 
                                         if ($args['author_recent_posts_show']['value']) :

@@ -132,7 +132,11 @@ $post_id = isset($ppma_template_authors_post->ID) ? $ppma_template_authors_post-
 <div class="pp-multiple-authors-boxes-wrapper pp-multiple-authors-wrapper <?php echo esc_attr($args['box_tab_custom_wrapper_class']['value']); ?> box-post-id-</?php echo esc_attr($post_id); ?>"">
 <?php if ($args['show_title']['value']) : ?>
     <<?php echo esc_html($args['title_html_tag']['value']); ?> class="widget-title box-header-title">
-        <?php echo esc_html($args['title_text']['value']); ?><?php echo "\n"; ?>
+        </?php if (count($authors) > 1) : ?>
+            <?php echo esc_html($args['title_text_plural']['value']); ?><?php echo "\n"; ?>
+        </?php else : ?>
+            <?php echo esc_html($args['title_text']['value']); ?><?php echo "\n"; ?>
+        </?php endif; ?>
     </<?php echo esc_html($args['title_html_tag']['value']); ?>>
 <?php endif; ?>
 
