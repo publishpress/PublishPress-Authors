@@ -98,7 +98,7 @@ if (!class_exists('MA_Settings')) {
             // Main Menu
             add_submenu_page(
                 MA_Multiple_Authors::MENU_SLUG,
-                esc_html__('Multiple Authors Settings', 'publishpress-authors'),
+                esc_html__('PublishPress Authors Settings', 'publishpress-authors'),
                 esc_html__('Settings', 'publishpress-authors'),
                 Capability::getManageOptionsCapability(),
                 self::MENU_SLUG,
