@@ -383,7 +383,7 @@ class MA_Author_Boxes extends Module
             'locked' => sprintf(
                 _n(
                     '%1$s %2$s not updated, somebody is editing it.',
-                    '%1$s %3$s updated, somebody is editing them.',
+                    '%1$s %3$s not updated, somebody is editing them.',
                     $countsLocked
                 ),
                 $countsLocked,
