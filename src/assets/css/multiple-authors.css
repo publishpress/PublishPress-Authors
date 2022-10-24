@@ -409,6 +409,10 @@ form#edittag tr.form-field #slug {
     min-width: 400px;
 }
 
+.post-type-ppma_boxes .tablenav.top .alignleft.actions:nth-of-type(1) {
+    display: none;
+}
+
 @media screen and (max-width: 768px) {
     .post-type-ppma_boxes .shortcode.column-shortcode input[type=text] {
         min-width: 90%;
