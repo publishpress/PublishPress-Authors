@@ -272,7 +272,7 @@ class Authors_Widget extends WP_Widget
             if (isset($instance['layout_columns']) && (int)$instance['layout_columns'] > 1) {
                 $column_width = ((100-8)/(int)$instance['layout_columns']);
                 $inline_style = '@media (min-width: 768px) {
-                    .pp-multiple-authors-layout-'.$instance['layout'].' ul li {
+                    .pp-multiple-authors-wrapper ul li {
                         position: relative;
                         width: '.$column_width.'%;
                         float: left;
