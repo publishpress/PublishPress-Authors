@@ -1245,6 +1245,16 @@ if (!class_exists('MA_Multiple_Authors')) {
                             '<code>authors_recent</code>'
                         ),
                     ],
+                    'option_3' => [
+                        'shortcode'   => '[publishpress_authors_list layout="boxed" layout_columns="2"]',
+                        'description' => sprintf(
+                            esc_html__(
+                                'You can define the number of layout columns by using %1s to show authors in 2 column.',
+                                'publishpress-authors'
+                            ),
+                            '<code class="color-red">layout_columns="2"</code>'
+                        ),
+                    ],
                     'option_4' => [
                         'shortcode'   => '[publishpress_authors_list layout="authors_recent" limit_per_page="12"]',
                         'description' => sprintf(
