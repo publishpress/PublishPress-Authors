@@ -542,6 +542,11 @@ jQuery(document).ready(function ($) {
          * Add view link to author url field
          */
         $('form#edittag tr.form-field #slug').after('<a href="' + MultipleAuthorsStrings.term_author_link + '" class="button-secondary" target="_blank">' + MultipleAuthorsStrings.view_text + '</a>');
+
+        /**
+         * Update name field
+         */
+        $('form#edittag tr.form-field.term-name-wrap th label').html(MultipleAuthorsStrings.name_label);
     }
 
     /**
