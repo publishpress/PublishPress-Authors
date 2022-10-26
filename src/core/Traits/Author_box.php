@@ -229,7 +229,7 @@ trait Author_box
          */
         $html = apply_filters('pp_multiple_authors_author_box_html', null, $args);
 
-        $authors_iterator = new Authors_Iterator(0, $archive);
+        $authors_iterator = new Authors_Iterator($post_id ?? 0, $archive);
 
         /**
          * Filter the rendered markup of the author box.
