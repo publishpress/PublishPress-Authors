@@ -388,7 +388,9 @@ if (!function_exists('multiple_authors_get_all_authors')) {
 
             if ($result_type === 'grouped') {
                 //group authors by first letter of their name
-                $authors[strtolower($author->display_name[0])][]  = $author;
+                $group_by     = isset($instance['group_by']) ? $instance['group_by'] : 'display_name';
+                $grouped_name = (isset($author->$group_by) && !empty($author->$group_by)) ? $author->$group_by : $author->display_name;
+                $authors[strtolower($grouped_name[0])][]  = $author;
             } elseif ($result_type === 'recent') {
                 //query recent post by authors
                 $author_recent_args = [

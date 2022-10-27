@@ -1301,6 +1301,16 @@ if (!class_exists('MA_Multiple_Authors')) {
                         ),
                     ],
                     'option_8' => [
+                        'shortcode'   => '[publishpress_authors_list layout="authors_index" group_by="last_name"]',
+                        'description' => sprintf(
+                            esc_html__(
+                                'For authors_index layout, you can group user by profile field by using %1s .',
+                                'publishpress-authors'
+                            ),
+                            '<code class="color-red">group_by="last_name"</code>'
+                        ),
+                    ],
+                    'option_9' => [
                         'shortcode'   => '[publishpress_authors_list orderby="count"]',
                         'description' => sprintf(
                             esc_html__(
@@ -1313,7 +1323,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                             '<code class="color-red">last_name</code>'
                         ),
                     ],
-                    'option_9' => [
+                    'option_10' => [
                         'shortcode'   => '[publishpress_authors_list orderby="name" order="asc"]',
                         'description' => sprintf(
                             esc_html__(
@@ -1324,7 +1334,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                             '<code class="color-red">order="desc"</code>'
                         ),
                     ],
-                    'option_10' => [
+                    'option_11' => [
                         'shortcode'   => '[publishpress_authors_list layout="authors_recent" search_box="true"]',
                         'description' => sprintf(
                             esc_html__(
@@ -1334,7 +1344,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                             '<code class="color-red">search_box="true"</code>'
                         ),
                     ],
-                    'option_11' => [
+                    'option_12' => [
                         'shortcode'   => '[publishpress_authors_list search_box="true" search_field="first_name,last_name" layout="authors_recent"]',
                         'description' => sprintf(
                             esc_html__(
