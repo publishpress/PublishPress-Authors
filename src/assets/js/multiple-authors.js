@@ -188,6 +188,10 @@ jQuery(document).ready(function ($) {
         authorsUserSelect2($('.authors-user-search'));
         sortedAuthorsList($(".authors-current-user-can-assign"));
         handleUsersAuthorField();
+        if ($('.authors-user-slug-search').length > 0) {
+            authorsUserSlugSelect2($('.authors-user-slug-search'));
+
+        }
     }
 
     if ($("body").hasClass("edit-php")) {

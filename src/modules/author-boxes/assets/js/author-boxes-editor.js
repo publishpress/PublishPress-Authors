@@ -172,7 +172,7 @@
         /**
          * editor live changes
          */
-        $(document).on('change input keyup', '.ppma-author-box-editor-fields .input input, .ppma-author-box-editor-fields .input textarea, .ppma-author-box-editor-fields .input select', function () {
+        $(document).on('change input keyup', '.ppma-author-box-editor-fields .input input, .ppma-author-box-editor-fields .input textarea, .ppma-author-box-editor-fields .input select, .editor-preview-author-users select', function () {
             var current_field = $(this);
             var current_field_name = current_field.attr('name');
 
@@ -295,7 +295,7 @@
             }
 
             var force_refresh = false;
-            if (post_refresh_trigger.includes(current_field_name) || bio_refresh_trigger.includes(current_field_name) || avatar_refresh_trigger.includes(current_field_name) || meta_refresh_trigger.includes(current_field_name) || profile_refresh_trigger.includes(current_field_name)) {
+            if (post_refresh_trigger.includes(current_field_name) || bio_refresh_trigger.includes(current_field_name) || avatar_refresh_trigger.includes(current_field_name) || meta_refresh_trigger.includes(current_field_name) || profile_refresh_trigger.includes(current_field_name) || current_field_name === 'preview_author_names[]') {
                 force_refresh = true;
             }
 
@@ -334,6 +334,7 @@
                     action: "author_boxes_editor_get_preview",
                     editor_data: $.extend({}, editor_values),
                     author_term_id: authorBoxesEditor.author_term_id,
+                    preview_author_slugs: $('.editor-preview-author-users select').val(),
                     post_id: authorBoxesEditor.post_id,
                     nonce: authorBoxesEditor.nonce,
                 };
