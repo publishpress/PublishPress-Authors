@@ -13,6 +13,7 @@ namespace MultipleAuthors\Classes;
 use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Factory;
+use MA_Author_Boxes;
 use stdClass;
 use WP_Error;
 
@@ -739,7 +740,20 @@ class Utils
             return self::$defaultLayout;
         }
 
-        self::$defaultLayout = apply_filters('pp_multiple_authors_default_layout', 'boxed');
+        $args = [
+            'name'           => 'author_boxes_boxed',
+            'post_type'      => MA_Author_Boxes::POST_TYPE_BOXES,
+            'post_status'    => 'publish',
+            'posts_per_page' => 1
+        ];
+        $default_post = get_posts($args);
+        if (!empty($default_post)) {
+            $default_layout = MA_Author_Boxes::POST_TYPE_BOXES . '_' . $default_post[0]->ID;
+        } else {
+            $default_layout = 'boxed';
+        }
+
+        self::$defaultLayout = apply_filters('pp_multiple_authors_default_layout', $default_layout);
 
         return self::$defaultLayout;
     }

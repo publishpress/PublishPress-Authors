@@ -96,7 +96,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'enable_plugin_author_pages'   => 'no',
                     'author_pages_layout'          => 'list',
                     'show_author_pages_bio'        => 'yes',
-                    'author_pages_bio_layout'      => 'boxed',
+                    'author_pages_bio_layout'      => Utils::getDefaultLayout(),
                     'author_pages_grid_layout_column' => '4',
                     'show_author_post_featured_image' => 'yes',
                     'show_author_post_excerpt'     => 'yes',
