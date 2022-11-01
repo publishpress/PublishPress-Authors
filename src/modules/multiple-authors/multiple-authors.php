@@ -1354,6 +1354,16 @@ if (!class_exists('MA_Multiple_Authors')) {
                             '<code class="color-red">search_field="first_name,last_name"</code>'
                         ),
                     ],
+                    'option_13' => [
+                        'shortcode'   => '[publishpress_authors_list last_article_date="1 year ago"]',
+                        'description' => sprintf(
+                            esc_html__(
+                                'You can limit the author list to users with a published post within a specific period using %1s . This accept english date value like 1 week ago, 1 month ago, 6 months ago, 1 year ago etc.',
+                                'publishpress-authors'
+                            ),
+                            '<code class="color-red">last_article_date="1 year ago"</code>'
+                        ),
+                    ],
                 ],
             ];
 
