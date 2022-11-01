@@ -291,6 +291,10 @@ if (!function_exists('multiple_authors_get_all_authors')) {
             $search_field = !empty($_GET['search_field']) ? sanitize_text_field($_GET['search_field']) : false;
         }
 
+        //other query limit condition
+        $last_article_date  = (isset($instance['last_article_date']) && !empty($instance['last_article_date'])) 
+            ? sanitize_text_field($instance['last_article_date']) : false;
+
         $defaults = [
             'hide_empty' => false,
             'orderby'    => 'name',
@@ -299,13 +303,21 @@ if (!function_exists('multiple_authors_get_all_authors')) {
 
         $args = wp_parse_args($args, $defaults);
 
+        /**
+         * Filter author query args
+         * 
+         * @param array $args Original passed args.
+         * @param array $instance Original passed instance.
+         */
+        $args = apply_filters('pp_multiple_authors_get_all_authors_args', $args, $instance);
+
         if (isset($args['orderby']) && !empty($args['orderby']) && !in_array($args['orderby'], ['name', 'count'])) {
             $meta_order = true;
         } else {
             $meta_order = false;
         }
 
-        if (true === $args['hide_empty'] || $search_text || $meta_order) {
+        if (true === $args['hide_empty'] || $search_text || $meta_order || $last_article_date) {
             global $wpdb;
 
             $postTypes = Utils::get_enabled_post_types();
@@ -326,9 +338,13 @@ if (!function_exists('multiple_authors_get_all_authors')) {
                 $term_query .= "INNER JOIN {$wpdb->termmeta} AS tm ON (tm.term_id = t.term_id) ";
             }
             $term_query .= "WHERE tt.taxonomy = 'author' ";
-            if (true === $args['hide_empty']) {
+            if (true === $args['hide_empty'] || $last_article_date) {
                 $term_query .= "AND p.post_status IN ('publish') ";
                 $term_query .= "AND p.post_type IN ({$postTypes}) ";
+                if ($last_article_date) {
+                    $last_article_date = str_replace(' ago', '', $last_article_date);
+                    $term_query .= 'AND p.post_date > "' . date('Y-m-d H:i:s', strtotime("-{$last_article_date}")) . '" ';
+                }
             }
             if ($search_text && !$search_field) {
                 $term_query .= "AND (t.name LIKE '%" . $wpdb->esc_like($search_text) . "%' OR t.slug LIKE '%" . $wpdb->esc_like($search_text) . "%') ";
@@ -344,6 +360,16 @@ if (!function_exists('multiple_authors_get_all_authors')) {
             //get term count before before limit and group by incase it's paginated query
             if ($paged) {
                 $term_count_query = str_replace("SELECT t.term_id as `term_id`", "SELECT COUNT(DISTINCT t.term_id)", $term_query);
+            
+                /**
+                 * Filter author terms query
+                 * 
+                 * @param array $term_count_query.
+                 * @param array $args Original passed args.
+                 * @param array $instance Original passed instance.
+                 */
+                $term_count_query = apply_filters('pp_multiple_authors_get_all_authors_term_count_query', $term_count_query, $args, $instance);
+
                 $term_counts = $wpdb->get_var($term_count_query);
             }
 
@@ -361,6 +387,15 @@ if (!function_exists('multiple_authors_get_all_authors')) {
             if ($paged) {
                 $term_query .= " LIMIT {$offset}, {$per_page}";
             }
+
+            /**
+             * Filter author terms query
+             * 
+             * @param array $term_query.
+             * @param array $args Original passed args.
+             * @param array $instance Original passed instance.
+             */
+            $term_query = apply_filters('pp_multiple_authors_get_all_authors_term_query', $term_query, $args, $instance);
 
             $terms = $wpdb->get_results($term_query);// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         } else {
@@ -454,6 +489,15 @@ if (!function_exists('multiple_authors_get_all_authors')) {
             }
         }
 
+        /**
+         * Arguments for changing author result
+         *
+         * @param array $author Result author list.
+         * @param array $args Original passed args.
+         * @param array $instance Original passed instance.
+         */
+        $authors = apply_filters('pp_multiple_authors_get_all_authors_result', $authors, $args, $instance);
+        
         //Return more data for paginated result to enable pagination handler
         if ($paged) {
             return [
