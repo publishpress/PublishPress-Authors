@@ -1490,6 +1490,7 @@ class Plugin
             'generate_author_slug_nonce'    => wp_create_nonce("generate_author_slug_nonce"),
             'term_author_link'              => esc_url_raw($term_author_link),
             'view_text'                     => esc_html__('View', 'publishpress-authors'),
+            'name_label'                    => esc_html__('Display Name', 'publishpress-authors'),
         ];
 
         wp_localize_script(

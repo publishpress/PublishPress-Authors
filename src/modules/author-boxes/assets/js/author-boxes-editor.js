@@ -172,7 +172,7 @@
         /**
          * editor live changes
          */
-        $(document).on('change input keyup', '.ppma-author-box-editor-fields .input input, .ppma-author-box-editor-fields .input textarea, .ppma-author-box-editor-fields .input select', function () {
+        $(document).on('change input keyup', '.ppma-author-box-editor-fields .input input, .ppma-author-box-editor-fields .input textarea, .ppma-author-box-editor-fields .input select, .editor-preview-author-users select', function () {
             var current_field = $(this);
             var current_field_name = current_field.attr('name');
 
@@ -182,7 +182,13 @@
             $('.pp-multiple-authors-boxes-wrapper').attr('class', prev_layout_wrapper_classes + box_wrapper_class);
 
             var title_html_tag = $('#title_html_tag').val();
-            var title_text = $('#title_text').val();
+            var title_text = '';
+            var author_slugs = $('.editor-preview-author-users select').val();
+            if (author_slugs.length > 1) {
+                title_text = $('#title_text_plural').val();
+            } else {
+                title_text = $('#title_text').val();
+            }
 
             //update title based on show/hide title
             if (current_field_name === 'show_title') {
@@ -199,7 +205,7 @@
             }
 
             //update title / title html tag
-            if (current_field_name === 'title_html_tag' || current_field_name === 'title_text') {
+            if (current_field_name === 'title_html_tag' || current_field_name === 'title_text' || current_field_name === 'title_text_plural') {
                 //remove previous title with tag if exist
                 $('.pp-multiple-authors-boxes-wrapper .box-header-title').remove();
                 //create new one with updated data
@@ -295,7 +301,7 @@
             }
 
             var force_refresh = false;
-            if (post_refresh_trigger.includes(current_field_name) || bio_refresh_trigger.includes(current_field_name) || avatar_refresh_trigger.includes(current_field_name) || meta_refresh_trigger.includes(current_field_name) || profile_refresh_trigger.includes(current_field_name)) {
+            if (post_refresh_trigger.includes(current_field_name) || bio_refresh_trigger.includes(current_field_name) || avatar_refresh_trigger.includes(current_field_name) || meta_refresh_trigger.includes(current_field_name) || profile_refresh_trigger.includes(current_field_name) || current_field_name === 'preview_author_names[]') {
                 force_refresh = true;
             }
 
@@ -334,6 +340,7 @@
                     action: "author_boxes_editor_get_preview",
                     editor_data: $.extend({}, editor_values),
                     author_term_id: authorBoxesEditor.author_term_id,
+                    preview_author_slugs: $('.editor-preview-author-users select').val(),
                     post_id: authorBoxesEditor.post_id,
                     nonce: authorBoxesEditor.nonce,
                 };

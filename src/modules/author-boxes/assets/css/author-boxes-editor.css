@@ -169,6 +169,28 @@
     resize: none;
     width: 100%;
 }
+.editor-preview-author {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.editor-preview-author .editor-preview-author-label {
+    margin-right: 7px;
+}
+
+.editor-preview-author-users .ppma_select2-container {
+    width: max-content !important;
+    min-width: 100px;
+    max-width: 700px;
+}
+
+.editor-preview-author-users .ppma_select2-container--default .ppma_select2-selection--multiple {
+    height: 0 !important;
+}
+
+.editor-preview-author-users .ppma_select2-container--default .ppma_select2-selection--multiple .ppma_select2-selection__clear {
+    display: none;
+}
 
 @media screen and (max-width: 768px) {
     .publishpress-author-box-editor {

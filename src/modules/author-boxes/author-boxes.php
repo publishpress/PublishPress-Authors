@@ -203,6 +203,7 @@ class MA_Author_Boxes extends Module
         $fields = apply_filters('multiple_authors_author_boxes_fields', self::get_fields($post), $post);
         $excluded_input = ['template_action', 'import_action'];
         $meta_data = [];
+        $preview_author_names = (isset($_POST['preview_author_names']) && is_array($_POST['preview_author_names'])) ? array_map('sanitize_text_field', $_POST['preview_author_names']) : [];
         foreach ($fields as $key => $args) {
             if (!isset($_POST[$key]) || in_array($key, $excluded_input)) {
                 continue;
@@ -218,6 +219,7 @@ class MA_Author_Boxes extends Module
                 $meta_data[$key] = (isset($_POST[$key]) && $_POST[$key] !== '') ? $sanitize($_POST[$key]) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
             }
         }
+        update_post_meta($post_id, self::META_PREFIX . 'layout_preview_authors', $preview_author_names);
         update_post_meta($post_id, self::META_PREFIX . 'layout_meta_value', $meta_data);
     }
 
@@ -383,7 +385,7 @@ class MA_Author_Boxes extends Module
             'locked' => sprintf(
                 _n(
                     '%1$s %2$s not updated, somebody is editing it.',
-                    '%1$s %3$s updated, somebody is editing them.',
+                    '%1$s %3$s not updated, somebody is editing them.',
                     $countsLocked
                 ),
                 $countsLocked,
@@ -840,13 +842,26 @@ class MA_Author_Boxes extends Module
         } else {
             $editor_data = (array) get_post_meta($post->ID, self::META_PREFIX . 'layout_meta_value', true);
         }
+
+        $layout_preview_authors = get_post_meta($post->ID, self::META_PREFIX . 'layout_preview_authors', true);
+        if (is_array($layout_preview_authors) && !empty($layout_preview_authors)) {
+            $preview_authors = [];
+            foreach ($layout_preview_authors as $preview_author_slug) {
+                $userAuthor = Author::get_by_term_slug($preview_author_slug);
+                if (!$userAuthor) {
+                    $userAuthor = get_user_by('slug', $preview_author_slug);
+                }
+                $preview_authors[] = $userAuthor;
+            }
+        } else {
+            $preview_authors = [Author::get_by_user_id(get_current_user_id())];
+        }
         
         /**
          * Render fields
          */
         $preview_args = [];
-        //set current user as author
-        $preview_args['authors'] = [Author::get_by_user_id(get_current_user_id())];
+        $preview_args['authors'] = $preview_authors;
         $preview_args['post_id'] = $post->ID;
         $preview_args['admin_preview'] = true;
         foreach ($fields as $key => $args) {
@@ -984,6 +999,26 @@ class MA_Author_Boxes extends Module
         <div class="preview-container">
             <div class="live-preview">
                 <div class="live-preview-box">
+                    <div class="editor-preview-author">
+                        <div class="editor-preview-author-label">
+                            <?php echo esc_html__('Preview as:', 'publishpress-authors'); ?>
+                        </div>
+                        <div class="editor-preview-author-users">
+                            <select data-nonce="<?php
+                                echo esc_attr(wp_create_nonce('authors-user-search')); ?>"
+                                    class="authors-select2 authors-user-slug-search"
+                                    data-placeholder="<?php
+                                    esc_attr_e('Select Authors', 'publishpress-authors'); ?>"
+                                    name="preview_author_names[]"
+                                    multiple>
+                                    <?php foreach ($authors as $author) : ?>
+                                        <option value="<?php echo esc_attr($author->slug); ?>" selected>
+                                            <?php echo esc_html($author->display_name); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
         <?php endif; ?>
                     <!--begin code -->
                     <div class="pp-multiple-authors-boxes-wrapper pp-multiple-authors-wrapper <?php echo esc_attr($args['box_tab_custom_wrapper_class']['value']); ?> box-post-id-<?php echo esc_attr($args['post_id']); ?>"
@@ -1349,7 +1384,7 @@ class MA_Author_Boxes extends Module
                         <p><?php
                             printf(
                                 esc_html__('You can read more information on the %s.'),
-                                '<a href="#">' . esc_html__(
+                                '<a href="https://publishpress.com/knowledge-base/author-boxes-theme-templates/">' . esc_html__(
                                     'documentation page',
                                     'publishpress-authors'
                                 ) . '</a>'

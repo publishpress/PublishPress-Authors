@@ -268,6 +268,25 @@ class Authors_Widget extends WP_Widget
                 }';
                 wp_add_inline_style('multiple-authors-widget-css', $inline_style);
             }
+            
+            if (isset($instance['layout_columns']) && (int)$instance['layout_columns'] > 1) {
+                $column_child = ((int)$instance['layout_columns']);
+                $column_width = ((100)/(int)$instance['layout_columns']);
+                $inline_style = '@media (min-width: 768px) {
+                    .pp-multiple-authors-wrapper ul {
+                        display: flex;
+                        flex-wrap: wrap;
+                    }
+                    .pp-multiple-authors-wrapper ul li {
+                        margin-right: 15px;
+                        width: '.$column_width.'%;
+                    }
+                    .pp-multiple-authors-wrapper ul li:nth-child('.$column_child.'n) {
+                        flex: 1;
+                    }
+                }';
+                wp_add_inline_style('multiple-authors-widget-css', $inline_style);
+            }
 
             //load font awesome assets if enable
             $load_font_awesome = isset($legacyPlugin->modules->multiple_authors->options->load_font_awesome)

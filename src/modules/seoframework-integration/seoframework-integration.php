@@ -91,10 +91,12 @@ if (!class_exists('MA_Seoframework_Integration')) {
 
         public function setArchiveTitle($title, $term)
         {
-            $author = Author::get_by_term_id($term->term_id);
+            if (is_tax('author')) {
+                $author = Author::get_by_term_id($term->term_id);
 
-            if (is_a($author, Author::class) && $author->is_guest()) {
-                $title = $author->display_name;
+                if (is_a($author, Author::class) && $author->is_guest()) {
+                    $title = $author->display_name;
+                }
             }
 
             return $title;
