@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 7.2.5
 Tested up to: 6.1
-Stable tag: 3.30.0
+Stable tag: 3.30.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -223,6 +223,24 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [3.30.1] - 03 Nov 2022 =
+
+* Update: Added last_article_date to publishpress_authors_list shortcode [publishpress_authors_list last_article_date="1 year ago"]
+* Update: Allow to set Author Boxes previewing authors, #913
+* Update: Added group by field name to authors_index [publishpress_authors_list layout="authors_index" group_by="last_name"], #977
+* Update: Allow Author list to have 2 columns for custom layout [publishpress_authors_list layout="boxed" layout_columns="2"], #996
+* Fixed: Issue with Translatepress + WPUlike, #962
+* Update: Make new "Boxed" the default layout, #980
+* Fixed: Authors causing custom post type and taxonomy archives SEO title to be untitled, #1013
+* Fixed: Authors_Iterator call in Author_box.php assumes that $post global is populated (which it isn't sometimes) #999
+* Update: Change author 'Name' label to 'Display Name', #991
+* Update: Remove the "All dates" feature in Author Boxes, #990
+* Fixed: An incongruence in the line 170 between singular and plural, #982
+* Update: Change name of Settings to PublishPress Authors, #981
+* Fixed: Documentation link missing for Author boxes generate template, #978
+* Update: Authors_ES-IT_Translation_Update-19-October 2022, #979
+* Update: FRENCH_Translation Update_Authors 20 October2022, #984
 
 = [3.30.0] - 18 Oct 2022 =
 
