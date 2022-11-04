@@ -1430,7 +1430,8 @@ class MA_Author_Boxes extends Module
                         ><?php echo esc_html($args['value']); ?></textarea>
                 <?php
                 elseif ('profile_header' === $args['type']) :
-                    $additional_class = (int)$args['index'] === 1 ? 'opened' : 'closed';
+                    $additional_class = 'closed';
+                    //$additional_class .= (int)$args['index'] === 1 ? 'opened' : 'closed';
                     $additional_class .= ' profile-header-' .$args['tab_name'];
                     ?>
                 <div class="ppma-editor-profile-header-title <?php echo esc_attr($additional_class); ?>"
