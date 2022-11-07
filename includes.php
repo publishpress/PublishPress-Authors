@@ -16,10 +16,8 @@ defined('ABSPATH') or die('No direct script access allowed.');
 if (!defined('PP_AUTHORS_LOADED')) {
     require_once __DIR__ . '/defines.php';
 
-    if (file_exists(PP_AUTHORS_VENDOR_PATH . 'cmb2/cmb2/init.php')) {
-        require_once PP_AUTHORS_VENDOR_PATH . 'cmb2/cmb2/init.php';
-    } elseif (defined('PP_AUTHORS_PRO_BASE_PATH') && file_exists(PP_AUTHORS_PRO_BASE_PATH . '/vendor/cmb2/cmb2/init.php')) {
-        require_once PP_AUTHORS_PRO_BASE_PATH . '/vendor/cmb2/cmb2/init.php';
+    if (file_exists(__DIR__ . '/vendor/cmb2/cmb2/init.php')) {
+        require_once __DIR__ . '/vendor/cmb2/cmb2/init.php';
     }
     
     if (!class_exists(PP_AUTHORS_AUTOLOAD_CLASS_NAME) && !class_exists('MultipleAuthors\\Plugin')) {
