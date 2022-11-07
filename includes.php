@@ -16,7 +16,7 @@ defined('ABSPATH') or die('No direct script access allowed.');
 if (!defined('PP_AUTHORS_LOADED')) {
     require_once __DIR__ . '/defines.php';
 
-    require __DIR__ . '/vendor/cmb2/cmb2/init.php';
+    require PP_AUTHORS_VENDOR_PATH . 'cmb2/cmb2/init.php';
 
     if (!class_exists(PP_AUTHORS_AUTOLOAD_CLASS_NAME) && !class_exists('MultipleAuthors\\Plugin')) {
         $autoloadPath = PP_AUTHORS_VENDOR_PATH . 'autoload.php';
