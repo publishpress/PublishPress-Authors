@@ -1878,6 +1878,7 @@ class Plugin
             [
                 'ppma_manage_authors',
                 'ppma_manage_layouts',
+                'ppma_manage_custom_fields',
                 'ppma_edit_post_authors',
                 'ppma_edit_own_profile',
             ]

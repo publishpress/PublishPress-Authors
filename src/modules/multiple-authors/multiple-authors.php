@@ -438,13 +438,6 @@ if (!class_exists('MA_Multiple_Authors')) {
                     unset($currentSubmenu[$itemsToSort['edit.php?post_type=ppmacf_layout']]);
                 }
 
-                // Fields - Pro Placeholders
-                if (isset($itemsToSort['admin.php?page=ppma-pro-placeholders-fields'])) {
-                    $newSubmenu[] = $currentSubmenu[$itemsToSort['admin.php?page=ppma-pro-placeholders-fields']];
-
-                    unset($currentSubmenu[$itemsToSort['admin.php?page=ppma-pro-placeholders-fields']]);
-                }
-
                 // Check if we have other menu items, except settings. They will be added to the end.
                 if (count($currentSubmenu) >= 1) {
                     $itemsToIgnore = [
