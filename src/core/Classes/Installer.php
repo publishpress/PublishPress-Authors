@@ -48,6 +48,7 @@ class Installer
         self::addManageLayoutsCapabilitiesToRoles();
         self::flushRewriteRules();
         self::createDefaultAuthorBoxes();
+        self::addManageFieldsCapabilitiesToRoles();
 
         /**
          * @param string $currentVersion
@@ -77,6 +78,10 @@ class Installer
         if (version_compare($currentVersions, '3.30.0', '<')) {
             self::addManageLayoutsCapabilitiesToRoles();
             self::createDefaultAuthorBoxes();
+        }
+
+        if (version_compare($currentVersions, '3.40.0', '<')) {
+            self::addManageFieldsCapabilitiesToRoles();
         }
 
         /**
@@ -378,5 +383,11 @@ class Installer
     {
         $adminRole = get_role('administrator');
         $adminRole->add_cap('ppma_manage_layouts');
+    }
+
+    private static function addManageFieldsCapabilitiesToRoles()
+    {
+        $adminRole = get_role('administrator');
+        $adminRole->add_cap('ppma_manage_custom_fields');
     }
 }

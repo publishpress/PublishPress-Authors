@@ -996,4 +996,16 @@ class Utils
         </html>
         <?php
     }
+
+    /**
+     * Check if Author's pro is active
+     */
+    public static function isAuthorsProActive()
+    {
+        if (class_exists('PPAuthorsPro\\Plugin')) {
+            return true;
+        }
+
+        return false;
+    }
 }
