@@ -733,7 +733,7 @@ class MA_Author_Boxes extends Module
                 'icon'  => 'dashicons dashicons-forms',
             ],
             'profile_fields'  => [
-                'label' => __('Profile Fields', 'publishpress-authors'),
+                'label' => __('Author Fields', 'publishpress-authors'),
                 'icon'  => 'dashicons dashicons-groups',
             ],
             'author_recent_posts'  => [
