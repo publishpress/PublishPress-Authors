@@ -46,4 +46,21 @@ final class CustomFieldsModel
 
         return $fieldTypes;
     }
+    /**
+     * Retrieve all supported field status.
+     *
+     * @return  array
+     * @since   3.40.0
+     * @static
+     *
+     */
+    public static function getFieldStatus()
+    {
+        $fieldStatus = [
+            'on'   => __('Active', 'publishpress-authors'),
+            'off'  => __('Disabled', 'publishpress-authors'),
+        ];
+
+        return $fieldStatus;
+    }
 }
