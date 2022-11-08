@@ -120,7 +120,7 @@ class MA_Author_Custom_Fields extends Module
             2
         );
         add_filter('wp_unique_post_slug', [$this, 'fixPostSlug'], 10, 4);
-        add_action('admin_head', [$this, 'add_inline_scripts']);
+        add_action('admin_head', [$this, 'addInlineScripts']);
 
         $this->registerPostType();
     }
@@ -310,14 +310,21 @@ class MA_Author_Custom_Fields extends Module
             ]
         );
 
-        $fieldTypes = CustomFieldsModel::getFieldTypes();
-
         $metabox->add_field(
             [
                 'name' => __('Field Type', 'publishpress-authors'),
                 'id' => self::META_PREFIX . 'type',
                 'type' => 'select',
-                'options' => $fieldTypes,
+                'options' => CustomFieldsModel::getFieldTypes(),
+            ]
+        );
+
+        $metabox->add_field(
+            [
+                'name' => __('Field Status', 'publishpress-authors'),
+                'id' => self::META_PREFIX . 'field_status',
+                'type' => 'select',
+                'options' => CustomFieldsModel::getFieldStatus(),
             ]
         );
 
@@ -361,12 +368,15 @@ class MA_Author_Custom_Fields extends Module
 
         if (! empty($posts)) {
             foreach ($posts as $post) {
-                $fields[$post->post_name] = [
+                if ($this->getFieldMeta($post->ID, 'field_status') !== 'off') {
+                    $fields[$post->post_name] = [
                     'name' => $post->post_name,
                     'label' => $post->post_title,
                     'type' => $this->getFieldMeta($post->ID, 'type'),
+                    'field_status' => $this->getFieldMeta($post->ID, 'field_status'),
                     'description' => $this->getFieldMeta($post->ID, 'description'),
                 ];
+                }
             }
         }
 
@@ -562,6 +572,7 @@ class MA_Author_Custom_Fields extends Module
         $newColumns = [
             'cb' => $columns['cb'],
             'title' => $columns['title'],
+            'field_status' => __('Status', 'publishpress-authors'),
             'slug' => __('Slug', 'publishpress-authors'),
         ];
 
@@ -581,10 +592,21 @@ class MA_Author_Custom_Fields extends Module
      */
     public function manageFieldColumns($column, $postId)
     {
+        global $post;
         if ($column === 'slug') {
-            global $post;
-
             echo esc_html($post->post_name);
+        } elseif ($column === 'field_status') {
+            if ($this->getFieldMeta($post->ID, 'field_status') !== 'off') {
+                ?>
+                <div style="color: green;">
+                    <?php echo esc_html_e('Active', 'publishpress-authors'); ?>
+                </div>
+            <?php } else { ?>
+                <div style="color: red;">
+                    <?php echo esc_html_e('Disabled', 'publishpress-authors'); ?>
+                </div>
+            <?php
+            }
         }
     }
 
@@ -612,7 +634,7 @@ class MA_Author_Custom_Fields extends Module
      *
      * @return void
      */
-    public function add_inline_scripts() 
+    public function addInlineScripts() 
     {
         if (!Utils::isAuthorsProActive()) {
             $custom_field_page = (isset($_GET['post_type']) && $_GET['post_type'] === self::POST_TYPE_CUSTOM_FIELDS) ? true : false;
