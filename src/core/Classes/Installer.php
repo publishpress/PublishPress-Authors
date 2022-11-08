@@ -25,6 +25,7 @@ namespace MultipleAuthors\Classes;
 
 use MultipleAuthors\Capability;
 use MultipleAuthors\Classes\Objects\Author;
+use MA_Author_Custom_Fields;
 use MA_Author_Boxes;
 use WP_Role;
 
@@ -49,6 +50,7 @@ class Installer
         self::flushRewriteRules();
         self::createDefaultAuthorBoxes();
         self::addManageFieldsCapabilitiesToRoles();
+        self::createDefaultCustomFields();
 
         /**
          * @param string $currentVersion
@@ -82,6 +84,7 @@ class Installer
 
         if (version_compare($currentVersions, '3.40.0', '<')) {
             self::addManageFieldsCapabilitiesToRoles();
+            self::createDefaultCustomFields();
         }
 
         /**
@@ -389,5 +392,13 @@ class Installer
     {
         $adminRole = get_role('administrator');
         $adminRole->add_cap('ppma_manage_custom_fields');
+    }
+
+    /**
+     * Create the default custom boxes.
+     */
+    private static function createDefaultCustomFields()
+    {
+        MA_Author_Custom_Fields::createDefaultCustomFields();
     }
 }

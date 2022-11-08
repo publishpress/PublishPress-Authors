@@ -630,6 +630,83 @@ class MA_Author_Custom_Fields extends Module
     }
 
     /**
+     * Create default custom fields.
+     */
+    public static function createDefaultCustomFields()
+    {
+        $defaultCustomFields = array_reverse(self::getDefaultCustomFields());
+
+        foreach ($defaultCustomFields as $name => $data) {
+            self::creatCustomFieldsPost($name, $data);
+            sleep(2);
+        }
+    }
+
+    /**
+     * Create default custom fields.
+     *
+     * @param string $name
+     * @param string $title
+     */
+    protected static function creatCustomFieldsPost($name, $data)
+    {
+        // Check if we already have the layout based on the slug.
+        $existingCustomField = get_page_by_title($data['post_title'], OBJECT, self::POST_TYPE_CUSTOM_FIELDS);
+        if ($existingCustomField && $existingCustomField->post_status === 'publish') {
+            return;
+        }
+
+        $post_id = wp_insert_post(
+            [
+                'post_type' => self::POST_TYPE_CUSTOM_FIELDS,
+                'post_title' => $data['post_title'],
+                'post_content' => $data['post_title'],
+                'post_status' => 'publish',
+                'post_name' => $data['post_name'],
+            ]
+        );
+        update_post_meta($post_id, self::META_PREFIX . 'slug', $data['post_name']);
+        update_post_meta($post_id, self::META_PREFIX . 'type', $data['type']);
+        update_post_meta($post_id, self::META_PREFIX . 'field_status', $data['field_status']);
+        update_post_meta($post_id, self::META_PREFIX . 'description', $data['description']);
+        update_post_meta($post_id, self::META_PREFIX . 'inbuilt', 1);
+    }
+
+    /**
+     * Get default custom fields.
+     */
+    public static function getDefaultCustomFields()
+    {
+        $defaultCustomFields = [];
+        //add first name
+        $defaultCustomFields['first_name'] = [
+            'post_title'   => __('First Name', 'publishpress-authors'),
+            'post_name'    => 'first_name',
+            'type'         => 'text',
+            'field_status'  => 'on',
+            'description'  => '',
+        ];
+        //add first name
+        $defaultCustomFields['last_name'] = [
+            'post_title'   => __('Last Name', 'publishpress-authors'),
+            'post_name'    => 'last_name',
+            'type'         => 'text',
+            'field_status'  => 'on',
+            'description'  => '',
+        ];
+        //add first name
+        $defaultCustomFields['user_email'] = [
+            'post_title'   => __('Email', 'publishpress-authors'),
+            'post_name'    => 'user_email',
+            'type'         => 'email',
+            'field_status'  => 'on',
+            'description'  => '',
+        ];
+
+        return $defaultCustomFields;
+    }
+
+    /**
      * Add inline script
      *
      * @return void
