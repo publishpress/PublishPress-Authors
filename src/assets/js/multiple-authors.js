@@ -193,6 +193,31 @@ jQuery(document).ready(function ($) {
 
         }
     }
+    
+    if ($("body").hasClass("post-php") || $("body").hasClass("post-new-php")  || $("body").hasClass("edit-php")) {
+        //prevent deletion of default field
+            var default_fields = ['first_name', 'last_name', 'user_email'];
+        if ($('input[name="ppmacf_slug"]').length > 0) {
+            if (default_fields.includes($('input[name="ppmacf_slug"]').val())) {
+                $('input[name="ppmacf_slug"]').attr('readonly', true);
+                $('select[name="ppmacf_field_status"] option:not(:selected)').attr('disabled',true);
+                $('select[name="ppmacf_type"] option:not(:selected)').attr('disabled', true);
+                $('#submitdiv .edit-post-status').hide();
+                $('#submitdiv .edit-visibility').hide();
+                $('#submitdiv .edit-timestamp').hide();
+                $('#major-publishing-actions #delete-action').hide();
+            }
+        }
+        if ($('body.edit-php.post-type-ppmacf_field table.wp-list-table tbody tr').length > 0) {
+            $('body.edit-php.post-type-ppmacf_field table.wp-list-table tbody tr').each(function () {
+                var current_slug = $(this).find('td.column-slug').html();
+                if (default_fields.includes(current_slug)) {
+                    $(this).find('.check-column input').attr('disabled', true);
+                    $(this).find('.column-primary .row-actions span.trash').hide();
+                }
+            });
+        }
+    }
 
     if ($("body").hasClass("edit-php")) {
         authorsUserSlugSelect2($('.authors-user-slug-search'));
