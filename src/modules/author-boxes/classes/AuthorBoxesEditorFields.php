@@ -591,9 +591,16 @@ class AuthorBoxesEditorFields
                     'tab_name'    => $key,
                     'tab'         => 'profile_fields',
                 ];
+
+                if (in_array(strtolower($key), ['facebook', 'twitter', 'instagram', 'linkedin', 'youtube'])) {
+                    $field_description = '<a href="#" class="ppma-add-social-icon" data-social="'. esc_attr(strtolower($key)).'">' .sprintf(esc_html__('Click here to insert %1s icon', 'publishpress-authors'), $data['label']) . '</a>';
+                } else {
+                    $field_description = esc_html__('Example, <span class="dashicons dashicons-admin-links"></span>', 'publishpress-authors');
+                }
+
                 $fields['profile_fields_' . $key . '_display_icon'] = [
                     'label'       => sprintf(esc_html__('%1s Display Icon', 'publishpress-authors'), $data['label']),
-                    'description' => esc_html__('Example, <span class="dashicons dashicons-admin-links"></span>', 'publishpress-authors'),
+                    'description' => $field_description,
                     'type'        => 'text',
                     'sanitize'    => ['stripslashes_deep', 'htmlspecialchars'],
                     'tabbed'      => 1,

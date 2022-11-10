@@ -22,24 +22,37 @@
                     }, 100);
                 },
             });
-
-            /**
-             * Profile fields title toggle
-             */
-            $(document).on('click', '.ppma-editor-profile-header-title', function (event) {
-                event.preventDefault();
-                var current_header = $(this);
-                var current_name   = current_header.attr('data-fields_name');
-                
-                if (current_header.hasClass('opened')) {
-                    current_header.removeClass('opened').addClass('closed');
-                    $('.tabbed-content-' + current_name).hide();
-                } else {
-                    current_header.removeClass('closed').addClass('opened');
-                    $('.tabbed-content-' + current_name).show();
-                }
-            });
         }
+
+        /**
+         * Populate social icon on button click
+         */
+        $(document).on('click', '.ppma-add-social-icon', function (event) {
+            event.preventDefault();
+            var field_icon = $(this).attr('data-social');
+            $('#profile_fields_' + field_icon + '_display_icon').val('<span class="dashicons dashicons-' + field_icon + '"></span>');
+
+            if ($('#profile_fields_show_' + field_icon + '').is(':checked')) {
+                generateEditorPreview(getAllEditorFieldsValues(), true);
+            }
+        });
+
+        /**
+         * Profile fields title toggle
+         */
+        $(document).on('click', '.ppma-editor-profile-header-title', function (event) {
+            event.preventDefault();
+            var current_header = $(this);
+            var current_name   = current_header.attr('data-fields_name');
+            
+            if (current_header.hasClass('opened')) {
+                current_header.removeClass('opened').addClass('closed');
+                $('.tabbed-content-' + current_name).hide();
+            } else {
+                current_header.removeClass('closed').addClass('opened');
+                $('.tabbed-content-' + current_name).show();
+            }
+        });
 
         /**
          * boxes editor tab switch
