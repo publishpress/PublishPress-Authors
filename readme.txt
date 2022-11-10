@@ -224,6 +224,21 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [3.40.0] - 10 Nov 2022 =
+
+* Update: Add Authors Fields to free version, #1027
+* Update: Add enable/disable options to Author Fields, #1028
+* Update: Add First Name, Last Name and Email to the "Author Fields" #1025
+* Update: Add profile field position to Author Boxes Profile Fields, #933
+* Update: Include default social Author Fields(Facebook, Twitter, Instagram, LinkedIn, YouTube, Tiktok) for pro users #1029
+* Update: Add insert icon button for Author Boxes social fields, #1011
+* Update: Update description for Author Fields, #1010
+* Update: Change 'Fields" menu name to "Author Fields" #1021
+* Update: Change "Profile Fields" to "Author Fields", #1024
+* Update: Authors-FREE-Translation Updates_FR-IT_November3_2022, #1026
+* Update: Collapse Author Boxes First Name field by default, #1012
+* Update: Authors-PRO_ES-FR-IT_Translations_Update_November2022, #1032
+
 = [3.30.1] - 03 Nov 2022 =
 
 * Update: Added last_article_date to publishpress_authors_list shortcode [publishpress_authors_list last_article_date="1 year ago"]
