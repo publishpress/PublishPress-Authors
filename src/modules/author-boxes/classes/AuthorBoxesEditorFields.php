@@ -529,6 +529,19 @@ class AuthorBoxesEditorFields
                     'tab_name'    => $key,
                     'tab'         => 'profile_fields',
                 ];
+                $fields['profile_fields_' . $key . '_display_position'] = [
+                    'label'       => sprintf(esc_html__('Show %1s after', 'publishpress-authors'), $data['label']),
+                    'type'        => 'select',
+                    'sanitize'    => 'sanitize_text_field',
+                    'tabbed'      => 1,
+                    'tab_name'    => $key,
+                    'options'  => [
+                        'meta'  => esc_html__('Meta Row', 'publishpress-authors'),
+                        'name' => esc_html__('Name Row', 'publishpress-authors'),
+                        'bio'    => esc_html__('Bio Row', 'publishpress-authors')
+                    ],
+                    'tab'         => 'profile_fields',
+                ];
                 $fields['profile_fields_' . $key . '_html_tag'] = [
                     'label'    => esc_html__('HTML Tag', 'publishpress-authors'),
                     'description' => esc_html__('\'span\' will display as an inline element and \'div\' will display as a block element. To make this display into a link, select \'link\' and enter the first part of the URL into the \'Prefix\' field.', 'publishpress-authors'),
