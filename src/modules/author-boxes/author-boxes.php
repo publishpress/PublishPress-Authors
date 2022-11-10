@@ -1046,6 +1046,92 @@ class MA_Author_Boxes extends Module
                                         else :
                                             $author_recent_posts = [];
                                         endif;
+
+                                        //author fields item position
+                                        $name_row_extra = '';
+                                        $bio_row_extra  = '';
+                                        $meta_row_extra = '';
+
+                                        foreach ($profile_fields as $key => $data) {
+                                            if (!in_array($key, self::AUTHOR_BOXES_EXCLUDED_FIELDS)) {
+                                                $profile_show_field = $args['profile_fields_show_' . $key]['value'] ? true : false;
+
+                                                $profile_html_tag  = !empty($args['profile_fields_' . $key . '_html_tag']['value']) 
+                                                    ? $args['profile_fields_' . $key . '_html_tag']['value'] : 'span';
+
+                                                $profile_display  = !empty($args['profile_fields_' . $key . '_display']['value']) 
+                                                    ? $args['profile_fields_' . $key . '_display']['value'] : 'icon_prefix_value_suffix';
+
+                                                $profile_value_prefix      = $args['profile_fields_' . $key . '_value_prefix']['value'];
+                                                $profile_display_prefix    = $args['profile_fields_' . $key . '_display_prefix']['value'];
+                                                $profile_display_suffix    = $args['profile_fields_' . $key . '_display_suffix']['value'];
+                                                $profile_display_icon     = $args['profile_fields_' . $key . '_display_icon']['value'];
+                                                $profile_display_position = $args['profile_fields_' . $key . '_display_position']['value'];
+                                                if (empty(trim($profile_display_position))) {
+                                                    $profile_display_position = 'meta';
+                                                }
+
+                                                $field_value = $author->$key;
+
+                                                $display_field_value = '';
+                                                if ($profile_display === 'icon_prefix_value_suffix') {
+                                                    if (!empty($profile_display_icon)) {
+                                                        $display_field_value .= html_entity_decode($profile_display_icon) . ' ';
+                                                    }
+                                                    if (!empty($profile_display_prefix)) {
+                                                        $display_field_value .= esc_html($profile_display_prefix) . ' ';
+                                                    }
+                                                    if (!empty($field_value)) {
+                                                        $display_field_value .= esc_html($field_value) . ' ';
+                                                    }
+                                                    if (!empty($profile_display_suffix)) {
+                                                        $display_field_value .= esc_html($profile_display_suffix);
+                                                    }
+                                                } elseif ($profile_display === 'value') {
+                                                    $display_field_value .= esc_html($field_value);
+                                                } elseif ($profile_display === 'prefix') {
+                                                    $display_field_value .= esc_html($profile_display_prefix);
+                                                } elseif ($profile_display === 'suffix') {
+                                                    $display_field_value .= esc_html($profile_display_suffix);
+                                                } elseif ($profile_display === 'icon') {
+                                                    $display_field_value .= html_entity_decode($profile_display_icon) . ' ';
+                                                } elseif ($profile_display === 'prefix_value_suffix') {
+                                                    if (!empty($profile_display_prefix)) {
+                                                        $display_field_value .= esc_html($profile_display_prefix) . ' ';
+                                                    }
+                                                    if (!empty($field_value)) {
+                                                        $display_field_value .= esc_html($field_value) . ' ';
+                                                    }
+                                                    if (!empty($profile_display_suffix)) {
+                                                        $display_field_value .= esc_html($profile_display_suffix);
+                                                    }
+                                                }
+
+                                                if ($profile_show_field || $admin_preview) : ?>
+                                                    <?php 
+                                                    $profile_field_html = '<'. esc_html($profile_html_tag) .'';
+                                                    $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data"';
+                                                    if ($profile_html_tag === 'a') {
+                                                        $profile_field_html .= ' href="'. $profile_value_prefix.$field_value .'';
+                                                    }
+                                                    $profile_field_html .= '>';
+                                                    if ($profile_show_field) {
+                                                        $profile_field_html .= $display_field_value;
+                                                    }
+                                                    $profile_field_html .= '</'. esc_html($profile_html_tag) .'>';
+                                                    ?>
+                                                    <?php 
+                                                    if ($profile_display_position === 'name') {
+                                                        $name_row_extra .= $profile_field_html;
+                                                    } elseif ($profile_display_position === 'bio') {
+                                                        $bio_row_extra  .= $profile_field_html;
+                                                    } elseif ($profile_display_position === 'meta') {
+                                                        $meta_row_extra .= $profile_field_html;
+                                                    }
+                                                    ?>
+                                                <?php endif;
+                                            }
+                                        }
                                         ?>
                                         <li class="pp-multiple-authors-boxes-li author_index_<?php echo esc_attr($index); ?> author_<?php echo esc_attr($author->slug); ?> <?php echo ($args['avatar_show']['value']) ? 'has-avatar' : 'no-avatar'; ?>">
 
@@ -1068,11 +1154,13 @@ class MA_Author_Boxes extends Module
                                                         <?php echo esc_html($author->display_name); ?>
                                                     </a>
                                                 </<?php echo esc_html($args['name_html_tag']['value']); ?>>
+                                                <?php echo $name_row_extra ; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                                                 <?php if ($args['author_bio_show']['value']) : ?>
                                                     <<?php echo esc_html($args['author_bio_html_tag']['value']); ?> class="pp-author-boxes-description multiple-authors-description">
                                                         <?php echo esc_html($author->get_description($args['author_bio_limit']['value'])); ?>
                                                     </<?php echo esc_html($args['author_bio_html_tag']['value']); ?>>
                                                 <?php endif; ?>
+                                                <?php echo $bio_row_extra ; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
                                                 <?php if ($args['meta_show']['value']) : ?>
                                                     <<?php echo esc_html($args['meta_html_tag']['value']); ?> class="pp-author-boxes-meta multiple-authors-links">
@@ -1093,76 +1181,7 @@ class MA_Author_Boxes extends Module
                                                         <?php endif; ?>
                                                     </<?php echo esc_html($args['meta_html_tag']['value']); ?>>
                                                 <?php endif; ?>
-                                                
-                                                <div class="pp-author-boxes-profile-fields">
-                                                    <?php 
-                                                    foreach ($profile_fields as $key => $data) {
-                                                        if (!in_array($key, self::AUTHOR_BOXES_EXCLUDED_FIELDS)) {
-                                                            $profile_show_field = $args['profile_fields_show_' . $key]['value'] ? true : false;
-
-                                                            $profile_html_tag  = !empty($args['profile_fields_' . $key . '_html_tag']['value']) 
-                                                                ? $args['profile_fields_' . $key . '_html_tag']['value'] : 'span';
-
-                                                            $profile_display  = !empty($args['profile_fields_' . $key . '_display']['value']) 
-                                                                ? $args['profile_fields_' . $key . '_display']['value'] : 'icon_prefix_value_suffix';
-
-                                                            $profile_value_prefix   = $args['profile_fields_' . $key . '_value_prefix']['value'];
-                                                            $profile_display_prefix = $args['profile_fields_' . $key . '_display_prefix']['value'];
-                                                            $profile_display_suffix = $args['profile_fields_' . $key . '_display_suffix']['value'];
-                                                            $profile_display_icon  = $args['profile_fields_' . $key . '_display_icon']['value'];
-
-                                                            $field_value = $author->$key;
-
-                                                            $display_field_value = '';
-                                                            if ($profile_display === 'icon_prefix_value_suffix') {
-                                                                if (!empty($profile_display_icon)) {
-                                                                    $display_field_value .= html_entity_decode($profile_display_icon) . ' ';
-                                                                }
-                                                                if (!empty($profile_display_prefix)) {
-                                                                    $display_field_value .= esc_html($profile_display_prefix) . ' ';
-                                                                }
-                                                                if (!empty($field_value)) {
-                                                                    $display_field_value .= esc_html($field_value) . ' ';
-                                                                }
-                                                                if (!empty($profile_display_suffix)) {
-                                                                    $display_field_value .= esc_html($profile_display_suffix);
-                                                                }
-                                                            } elseif ($profile_display === 'value') {
-                                                                $display_field_value .= esc_html($field_value);
-                                                            } elseif ($profile_display === 'prefix') {
-                                                                $display_field_value .= esc_html($profile_display_prefix);
-                                                            } elseif ($profile_display === 'suffix') {
-                                                                $display_field_value .= esc_html($profile_display_suffix);
-                                                            } elseif ($profile_display === 'icon') {
-                                                                $display_field_value .= html_entity_decode($profile_display_icon) . ' ';
-                                                            } elseif ($profile_display === 'prefix_value_suffix') {
-                                                                if (!empty($profile_display_prefix)) {
-                                                                    $display_field_value .= esc_html($profile_display_prefix) . ' ';
-                                                                }
-                                                                if (!empty($field_value)) {
-                                                                    $display_field_value .= esc_html($field_value) . ' ';
-                                                                }
-                                                                if (!empty($profile_display_suffix)) {
-                                                                    $display_field_value .= esc_html($profile_display_suffix);
-                                                                }
-                                                            }
-
-                                                            if ($profile_show_field || $admin_preview) : ?>
-                                                            <<?php echo esc_html($profile_html_tag); ?> 
-                                                            class="ppma-author-<?php echo esc_attr($key); ?>-profile-data"
-                                                            <?php if ($profile_html_tag === 'a') : ?>
-                                                                href="<?php echo $profile_value_prefix.$field_value; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>"
-                                                            <?php endif; ?>
-                                                            >
-                                                                <?php if ($profile_show_field) : ?>
-                                                                    <?php echo $display_field_value; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-                                                                <?php endif; ?>
-                                                            </<?php echo esc_html($profile_html_tag); ?>>
-                                                            <?php endif;
-                                                        }
-                                                    }
-                                                    ?>
-                                                </div>
+                                                <?php echo $meta_row_extra ; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
                                                 <?php if ($args['author_recent_posts_show']['value']) : ?>
                                                     <div class="pp-author-boxes-recent-posts">

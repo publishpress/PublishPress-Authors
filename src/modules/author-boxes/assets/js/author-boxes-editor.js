@@ -251,6 +251,18 @@
                 return;
             }
 
+            //update bio html tag
+            if (current_field_name === 'meta_html_tag') {
+                //this only matter if bio is displayed
+                if ($('#meta_show').is(':checked')) {
+                    var meta_html_tag = $('#meta_html_tag').val();
+                    $(".pp-author-boxes-meta").replaceWith(function () {
+                        return "<" + meta_html_tag + " class='pp-author-boxes-meta multiple-authors-links'>" + this.innerHTML + "</" + meta_html_tag + ">";
+                    });
+                }
+                return;
+            }
+
             //update recent posts html tag
             if (current_field_name === 'author_recent_posts_html_tag') {
                 //this only matter if recent posts is displayed
@@ -311,6 +323,7 @@
                 profile_refresh_trigger.push('profile_fields_' + field_name + '_display_prefix');
                 profile_refresh_trigger.push('profile_fields_' + field_name + '_display_suffix');
                 profile_refresh_trigger.push('profile_fields_' + field_name + '_display_icon');
+                profile_refresh_trigger.push('profile_fields_' + field_name + '_display_position');
             }
 
             var force_refresh = false;
