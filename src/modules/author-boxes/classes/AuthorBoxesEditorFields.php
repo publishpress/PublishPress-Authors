@@ -365,13 +365,13 @@ class AuthorBoxesEditorFields
             'tab'         => 'meta',
         ];
         $fields['meta_email_show'] = [
-            'label'       => esc_html__('Show email link', 'publishpress-authors'),
+            'label'       => esc_html__('Show Email field', 'publishpress-authors'),
             'type'        => 'checkbox',
             'sanitize'    => 'absint',
             'tab'         => 'meta',
         ];
         $fields['meta_site_link_show'] = [
-            'label'    => esc_html__('Show site link', 'publishpress-authors'),
+            'label'    => esc_html__('Show Website field', 'publishpress-authors'),
             'type'     => 'checkbox',
             'sanitize' => 'absint',
             'tab'      => 'meta',
