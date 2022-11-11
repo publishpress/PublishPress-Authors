@@ -251,9 +251,9 @@
                 return;
             }
 
-            //update bio html tag
+            //update meta html tag
             if (current_field_name === 'meta_html_tag') {
-                //this only matter if bio is displayed
+                //this only matter if meta is displayed
                 if ($('#meta_show').is(':checked')) {
                     var meta_html_tag = $('#meta_html_tag').val();
                     $(".pp-author-boxes-meta").replaceWith(function () {
