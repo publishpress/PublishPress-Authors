@@ -307,7 +307,7 @@ class Author_Editor
                 'label'    => __('General', 'publishpress-authors'),
             ],
             'image'  => [
-                'label' => __('Image', 'publishpress-authors'),
+                'label' => __('Avatar', 'publishpress-authors'),
             ],
         ];
 
