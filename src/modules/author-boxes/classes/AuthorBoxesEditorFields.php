@@ -508,7 +508,7 @@ class AuthorBoxesEditorFields
     {
         $profile_fields   = Author_Editor::get_fields(false);
         $profile_fields   = apply_filters('multiple_authors_author_fields', $profile_fields, false);
-        
+
         $index = 0;
         foreach ($profile_fields as $key => $data) {
             if (!in_array($key, MA_Author_Boxes::AUTHOR_BOXES_EXCLUDED_FIELDS)) {
