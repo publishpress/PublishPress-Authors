@@ -413,6 +413,11 @@ form#edittag tr.form-field #slug {
     display: none;
 }
 
+body.edit-php.post-type-ppmacf_field .row-actions .inline,
+body.edit-php.post-type-ppma_boxes .row-actions .inline {
+    display: none;
+}
+
 @media screen and (max-width: 768px) {
     .post-type-ppma_boxes .shortcode.column-shortcode input[type=text] {
         min-width: 90%;
