@@ -725,7 +725,7 @@ class MA_Author_Boxes extends Module
                 'icon'  => 'dashicons dashicons-editor-spellcheck',
             ],
             'author_bio'  => [
-                'label' => __('Author Bio', 'publishpress-authors'),
+                'label' => __('Biographical Info', 'publishpress-authors'),
                 'icon'  => 'dashicons dashicons-welcome-write-blog',
             ],
             'meta'  => [
