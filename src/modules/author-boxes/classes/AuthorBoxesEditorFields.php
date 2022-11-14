@@ -538,7 +538,7 @@ class AuthorBoxesEditorFields
                     'options'  => [
                         'meta'  => esc_html__('Meta Row', 'publishpress-authors'),
                         'name' => esc_html__('Name Row', 'publishpress-authors'),
-                        'bio'    => esc_html__('Bio Row', 'publishpress-authors')
+                        'bio'    => esc_html__('Biographical Info Row', 'publishpress-authors')
                     ],
                     'tab'         => 'profile_fields',
                 ];
@@ -740,7 +740,7 @@ class AuthorBoxesEditorFields
     public static function getBioFields($fields, $post) 
     {
         $fields['author_bio_show'] = [
-            'label'       => esc_html__('Show Author Bio', 'publishpress-authors'),
+            'label'       => esc_html__('Show Biographical Info', 'publishpress-authors'),
             'type'        => 'checkbox',
             'sanitize'    => 'absint',
             'tab'         => 'author_bio',
