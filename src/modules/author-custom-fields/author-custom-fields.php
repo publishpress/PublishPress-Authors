@@ -702,6 +702,14 @@ class MA_Author_Custom_Fields extends Module
             'field_status'  => 'on',
             'description'  => '',
         ];
+        //add user url
+        $defaultCustomFields['user_url'] = [
+            'post_title'   => __('Website', 'publishpress-authors'),
+            'post_name'    => 'user_url',
+            'type'         => 'url',
+            'field_status'  => 'on',
+            'description'  => '',
+        ];
 
         return $defaultCustomFields;
     }
