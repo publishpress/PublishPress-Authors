@@ -196,11 +196,10 @@ jQuery(document).ready(function ($) {
     
     if ($("body").hasClass("post-php") || $("body").hasClass("post-new-php")  || $("body").hasClass("edit-php")) {
         //prevent deletion of default field
-            var default_fields = ['first_name', 'last_name', 'user_email'];
+            var default_fields = ['first_name', 'last_name', 'user_email', 'user_url'];
         if ($('input[name="ppmacf_slug"]').length > 0) {
             if (default_fields.includes($('input[name="ppmacf_slug"]').val())) {
                 $('input[name="ppmacf_slug"]').attr('readonly', true);
-                $('select[name="ppmacf_field_status"] option:not(:selected)').attr('disabled',true);
                 $('select[name="ppmacf_type"] option:not(:selected)').attr('disabled', true);
                 $('#submitdiv .edit-post-status').hide();
                 $('#submitdiv .edit-visibility').hide();

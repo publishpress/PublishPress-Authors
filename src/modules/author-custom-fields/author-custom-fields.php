@@ -349,12 +349,17 @@ class MA_Author_Custom_Fields extends Module
      */
     public function filterAuthorFields($fields, $author)
     {
-        $customFields = $this->getAuthorCustomFields();
+        $customFields = $this->getAuthorCustomFields(true);
+        foreach ($fields as $field_key => $field_data) {
+            if (isset($customFields[$field_key]) && $this->getFieldMeta($customFields[$field_key]['post_id'], 'field_status') === 'off') {
+                unset($fields[$field_key]);
+            }
+        }
 
-        return array_merge($fields, $customFields);
+        return array_merge($fields, $this->getAuthorCustomFields());
     }
 
-    public function getAuthorCustomFields()
+    public function getAuthorCustomFields($include_disabled = false)
     {
         $posts = get_posts(
             [
@@ -368,13 +373,14 @@ class MA_Author_Custom_Fields extends Module
 
         if (! empty($posts)) {
             foreach ($posts as $post) {
-                if ($this->getFieldMeta($post->ID, 'field_status') !== 'off') {
+                if ($include_disabled || $this->getFieldMeta($post->ID, 'field_status') !== 'off') {
                     $fields[$post->post_name] = [
-                    'name' => $post->post_name,
-                    'label' => $post->post_title,
-                    'type' => $this->getFieldMeta($post->ID, 'type'),
+                    'name'        => $post->post_name,
+                    'label'       => $post->post_title,
+                    'type'        => $this->getFieldMeta($post->ID, 'type'),
                     'field_status' => $this->getFieldMeta($post->ID, 'field_status'),
                     'description' => $this->getFieldMeta($post->ID, 'description'),
+                    'post_id'     => $post->ID,
                 ];
                 }
             }
@@ -652,7 +658,7 @@ class MA_Author_Custom_Fields extends Module
     {
         // Check if we already have the layout based on the slug.
         $existingCustomField = get_page_by_title($data['post_title'], OBJECT, self::POST_TYPE_CUSTOM_FIELDS);
-        if ($existingCustomField && $existingCustomField->post_status === 'publish') {
+        if ($existingCustomField) {
             return;
         }
 
