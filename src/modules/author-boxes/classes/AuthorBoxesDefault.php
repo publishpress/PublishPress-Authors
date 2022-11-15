@@ -84,6 +84,7 @@ class AuthorBoxesDefault
         $editor_data['avatar_size'] = 80;
         $editor_data['avatar_border_radius'] = 50;
         //name default
+        $editor_data['name_show'] = 1;
         $editor_data['name_html_tag'] = 'div';
         //bio default
         $editor_data['author_bio_show'] = 1;
@@ -135,6 +136,7 @@ class AuthorBoxesDefault
         $editor_data['avatar_size'] = 80;
         $editor_data['avatar_border_radius'] = 50;
         //name default
+        $editor_data['name_show'] = 1;
         $editor_data['name_html_tag'] = 'div';
         //bio default
         $editor_data['author_bio_show'] = 1;
@@ -185,6 +187,7 @@ class AuthorBoxesDefault
         $editor_data['avatar_size'] = 80;
         $editor_data['avatar_border_radius'] = 50;
         //name default
+        $editor_data['name_show'] = 1;
         $editor_data['name_html_tag'] = 'div';
         //bio default
         $editor_data['author_bio_html_tag'] = 'p';
@@ -250,6 +253,7 @@ class AuthorBoxesDefault
         $editor_data['avatar_size'] = 30;
         $editor_data['avatar_border_radius'] = 0;
         //name default
+        $editor_data['name_show'] = 1;
         $editor_data['name_html_tag'] = 'div';
         //bio default
         $editor_data['author_bio_html_tag'] = 'p';
@@ -319,6 +323,7 @@ class AuthorBoxesDefault
         $editor_data['avatar_size'] = 35;
         $editor_data['avatar_border_radius'] = 0;
         //name default
+        $editor_data['name_show'] = 1;
         $editor_data['name_html_tag'] = 'div';
         //bio default
         $editor_data['author_bio_html_tag'] = 'p';

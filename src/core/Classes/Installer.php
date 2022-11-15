@@ -85,6 +85,7 @@ class Installer
         if (version_compare($currentVersions, '3.40.0', '<')) {
             self::addManageFieldsCapabilitiesToRoles();
             self::createDefaultCustomFields();
+            self::updateAuthorBoxesFieldValue(['name_show' => 1]);
         }
 
         /**
@@ -401,4 +402,16 @@ class Installer
     {
         MA_Author_Custom_Fields::createDefaultCustomFields();
     }
+
+    /**
+     * Update author boxes field value.
+     *
+     * @param array $fields_data
+     * @return void
+     */
+    private static function updateAuthorBoxesFieldValue($fields_data)
+    {
+        MA_Author_Boxes::updateAuthorBoxesFieldValue($fields_data);
+    }
+
 }
