@@ -338,6 +338,12 @@ class Author_Editor
                 'sanitize' => 'intval',
                 'tab'      => 'general',
             ],
+            'description' => [
+                'label'    => esc_html__('Biographical Info', 'publishpress-authors'),
+                'type'     => 'textarea',
+                'sanitize' => 'wp_kses_post',
+                'tab'      => 'general',
+            ],
             'first_name'  => [
                 'label' => esc_html__('First Name', 'publishpress-authors'),
                 'type'  => 'text',
@@ -378,12 +384,6 @@ class Author_Editor
                 'label'    => esc_html__('Website', 'publishpress-authors'),
                 'type'     => 'url',
                 'sanitize' => 'esc_url_raw',
-                'tab'      => 'general',
-            ],
-            'description' => [
-                'label'    => esc_html__('Biographical Info', 'publishpress-authors'),
-                'type'     => 'textarea',
-                'sanitize' => 'wp_kses_post',
                 'tab'      => 'general',
             ],
         ];
