@@ -234,6 +234,12 @@ class AuthorBoxesEditorFields
      */
     public static function getNameFields($fields, $post) 
     {
+        $fields['name_show'] = [
+            'label'       => esc_html__('Show Display Name', 'publishpress-authors'),
+            'type'        => 'checkbox',
+            'sanitize'    => 'absint',
+            'tab'         => 'name',
+        ];
         $fields['name_size'] = [
             'label'    => esc_html__('Size', 'publishpress-authors'),
             'type'     => 'number',

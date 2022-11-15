@@ -74,6 +74,10 @@
             if (clicked_tab === 'export') {
                 generateEditorExportData();
             }
+            //clear previously generated template to allow new changes
+            if (clicked_tab === 'generate_template') {
+                $('#template_action').val('');
+            }
             //show this current tab contents
             $('.ppma-' + clicked_tab + '-tab').show();
             //only show active tab content if it's profile tab
@@ -232,10 +236,13 @@
 
             //update name html tag
             if (current_field_name === 'name_html_tag') {
-                var name_html_tag = $('#name_html_tag').val();
-                $(".pp-author-boxes-name").replaceWith(function () {
-                    return "<" + name_html_tag + " class='pp-author-boxes-name multiple-authors-name'>" + this.innerHTML + "</" + name_html_tag + ">";
-                });
+                //this only matter if name is displayed
+                if ($('#name_show').is(':checked')) {
+                    var name_html_tag = $('#name_html_tag').val();
+                    $(".pp-author-boxes-name").replaceWith(function () {
+                        return "<" + name_html_tag + " class='pp-author-boxes-name multiple-authors-name'>" + this.innerHTML + "</" + name_html_tag + ">";
+                    });
+                }
                 return;
             }
 
@@ -296,6 +303,9 @@
                 'author_recent_posts_orderby',
                 'author_recent_posts_order'
             ];
+            var name_refresh_trigger = [
+                'name_show'
+            ];
             var bio_refresh_trigger = [
                 'author_bio_show',
                 'author_bio_limit'
@@ -327,7 +337,7 @@
             }
 
             var force_refresh = false;
-            if (post_refresh_trigger.includes(current_field_name) || bio_refresh_trigger.includes(current_field_name) || avatar_refresh_trigger.includes(current_field_name) || meta_refresh_trigger.includes(current_field_name) || profile_refresh_trigger.includes(current_field_name) || current_field_name === 'preview_author_names[]') {
+            if (post_refresh_trigger.includes(current_field_name) || bio_refresh_trigger.includes(current_field_name) || avatar_refresh_trigger.includes(current_field_name) || meta_refresh_trigger.includes(current_field_name) || profile_refresh_trigger.includes(current_field_name) || name_refresh_trigger.includes(current_field_name) || current_field_name === 'preview_author_names[]') {
                 force_refresh = true;
             }
 

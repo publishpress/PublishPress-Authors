@@ -255,11 +255,13 @@ $custom_styles = '.pp-multiple-authors-layout-boxed ul li > div:nth-child(1) {fl
 <?php endif; ?>
 
                     <div>
+<?php if ($args['name_show']['value']) : ?>
                         <<?php echo esc_html($args['name_html_tag']['value']); ?> class="pp-author-boxes-name multiple-authors-name">
                             <a href="</?php echo esc_url($author->link); ?>" rel="author" title="</?php echo esc_attr($author->display_name); ?>" class="author url fn">
                                 </?php echo esc_html($author->display_name); ?>
                             </a>
                         </<?php echo esc_html($args['name_html_tag']['value']); ?>>
+<?php endif; ?>
                         <?php echo $name_row_extra ; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
 <?php if ($args['author_bio_show']['value']) : ?>

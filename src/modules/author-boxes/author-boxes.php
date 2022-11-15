@@ -237,6 +237,30 @@ class MA_Author_Boxes extends Module
     }
 
     /**
+     * Update author boxes field value.
+     *
+     * @param array $fields_data
+     * @return void
+     */
+    public static function updateAuthorBoxesFieldValue($fields_data)
+    {
+        $author_boxes = self::getAuthorBoxes();
+
+        if (!empty($author_boxes)) {
+            foreach (array_keys($author_boxes) as $author_box) {
+                $post_id = preg_replace("/[^0-9]/", "", $author_box);
+                $editor_data = get_post_meta($post_id, self::META_PREFIX . 'layout_meta_value', true);
+                if ($editor_data && is_array($editor_data)) {
+                    foreach ($fields_data as $field_name => $field_value) {
+                        $editor_data[$field_name] = $field_value;
+                    }
+                    update_post_meta($post_id, self::META_PREFIX . 'layout_meta_value', $editor_data);
+                }
+            }
+        }
+    }
+
+    /**
      * Create the layout based on a twig file with the same name.
      *
      * @param string $name
@@ -721,7 +745,7 @@ class MA_Author_Boxes extends Module
                 'icon'  => 'dashicons dashicons-format-image',
             ],
             'name'  => [
-                'label' => __('Name', 'publishpress-authors'),
+                'label' => __('Display Name', 'publishpress-authors'),
                 'icon'  => 'dashicons dashicons-editor-spellcheck',
             ],
             'author_bio'  => [
@@ -1149,11 +1173,13 @@ class MA_Author_Boxes extends Module
                                             <?php endif; ?>
 
                                             <div class="pp-author-boxes-avatar-details">
-                                                <<?php echo esc_html($args['name_html_tag']['value']); ?> class="pp-author-boxes-name multiple-authors-name">
-                                                    <a href="<?php echo esc_url($author->link); ?>" rel="author" title="<?php echo esc_attr($author->display_name); ?>" class="author url fn">
-                                                        <?php echo esc_html($author->display_name); ?>
-                                                    </a>
-                                                </<?php echo esc_html($args['name_html_tag']['value']); ?>>
+                                            <?php if ($args['name_show']['value']) : ?>
+                                                    <<?php echo esc_html($args['name_html_tag']['value']); ?> class="pp-author-boxes-name multiple-authors-name">
+                                                        <a href="<?php echo esc_url($author->link); ?>" rel="author" title="<?php echo esc_attr($author->display_name); ?>" class="author url fn">
+                                                            <?php echo esc_html($author->display_name); ?>
+                                                        </a>
+                                                    </<?php echo esc_html($args['name_html_tag']['value']); ?>>
+                                                <?php endif; ?>
                                                 <?php echo $name_row_extra ; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                                                 <?php if ($args['author_bio_show']['value']) : ?>
                                                     <<?php echo esc_html($args['author_bio_html_tag']['value']); ?> class="pp-author-boxes-description multiple-authors-description">
