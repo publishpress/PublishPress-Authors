@@ -844,7 +844,7 @@ class MA_Author_Boxes extends Module
         $layout_slug = self::POST_TYPE_BOXES . '_' . $post->ID;
     ?>
         <textarea readonly>[publishpress_authors_box layout="<?php echo esc_attr($layout_slug); ?>"]</textarea>
-        <p class="description"><?php esc_html_e('Shortcode will only render for saved author box.', 'publishpress-authors'); ?></p>
+        <p class="description"><a href="https://publishpress.com/knowledge-base/shortcodes/" target="blank"><?php esc_html_e('Shortcode documentation.', 'publishpress-authors'); ?></a></p>
     <?php
     }
 
