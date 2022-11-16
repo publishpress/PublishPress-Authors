@@ -616,6 +616,7 @@ class AuthorBoxesEditorFields
                 } else {
                     $field_description = esc_html__('Example, <span class="dashicons dashicons-admin-links"></span>', 'publishpress-authors');
                 }
+                $field_description .= '. ' . sprintf(esc_html__('More icon can be found in %1s Dashicons %2s and %3s Fontawesome %4s icon pages', 'publishpress-authors'), '<a href="https://developer.wordpress.org/resource/dashicons/" target="blank">', '</a>', '<a href="https://fontawesome.com/v5/search?o=r&m=free" target="blank">', '</a>');
 
                 $fields['profile_fields_' . $key . '_display_icon'] = [
                     'label'       => sprintf(esc_html__('%1s Display Icon', 'publishpress-authors'), $data['label']),

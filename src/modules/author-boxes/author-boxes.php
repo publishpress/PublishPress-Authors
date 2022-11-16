@@ -209,18 +209,33 @@ class MA_Author_Boxes extends Module
                 continue;
             }
             if (isset($args['sanitize']) && is_array($args['sanitize']) && $_POST[$key] !== '') {
-                $value = $_POST[$key]; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+                $value = $this->stripOutUnwantedHtml($_POST[$key]); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
                 foreach ($args['sanitize'] as $sanitize) {
                     $value = $sanitize($value);
                 }
                 $meta_data[$key] = $value;
             } else {
                 $sanitize = isset($args['sanitize']) ? $args['sanitize'] : 'sanitize_text_field';
-                $meta_data[$key] = (isset($_POST[$key]) && $_POST[$key] !== '') ? $sanitize($_POST[$key]) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+                $meta_data[$key] = (isset($_POST[$key]) && $_POST[$key] !== '') ? $sanitize($this->stripOutUnwantedHtml($_POST[$key])) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
             }
         }
         update_post_meta($post_id, self::META_PREFIX . 'layout_preview_authors', $preview_author_names);
         update_post_meta($post_id, self::META_PREFIX . 'layout_meta_value', $meta_data);
+    }
+
+    /**
+     * Strip out unwanted html
+     *
+     * @param string $string
+     * @return string
+     */
+    public function stripOutUnwantedHtml($string) {
+
+        $allowed_tags = '<span><i>';
+
+        $string = strip_tags($string, $allowed_tags);
+
+        return $string;
     }
 
     /**
