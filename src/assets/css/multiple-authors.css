@@ -418,6 +418,14 @@ body.edit-php.post-type-ppma_boxes .row-actions .inline {
     display: none;
 }
 
+.ppma-tab-content span.required {
+    color: red;
+}
+
+.ppma-tab-content.form-required.form-invalid td:after {
+    display: none;
+}
+
 .ppma-thickbox-modal-content {
     text-align: center;
     padding: 20px;

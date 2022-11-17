@@ -46,6 +46,7 @@ final class CustomFieldsModel
 
         return $fieldTypes;
     }
+
     /**
      * Retrieve all supported field status.
      *
@@ -59,6 +60,24 @@ final class CustomFieldsModel
         $fieldStatus = [
             'on'   => __('Active', 'publishpress-authors'),
             'off'  => __('Disabled', 'publishpress-authors'),
+        ];
+
+        return $fieldStatus;
+    }
+
+    /**
+     * Retrieve all supported field requirement.
+     *
+     * @return  array
+     * @since   3.40.0
+     * @static
+     *
+     */
+    public static function getFieldRequirment()
+    {
+        $fieldStatus = [
+            ''          => __('Optional', 'publishpress-authors'),
+            'required'  => __('Required', 'publishpress-authors'),
         ];
 
         return $fieldStatus;

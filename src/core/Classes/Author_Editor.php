@@ -289,6 +289,8 @@ class Author_Editor
             $args['value'] = $author->$key;
             echo self::get_rendered_author_partial($args); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         }
+        //add validation modal
+        Utils::loadThickBoxModal('ppma-required-field-thickbox-botton', 500, 150);
 
         wp_nonce_field('author-edit', 'author-edit-nonce');
     }
@@ -412,12 +414,19 @@ class Author_Editor
             'options'     => [],
             'value'       => '',
             'label'       => '',
+            'requirement' => '',
             'description' => '',
         ];
         $args      = array_merge($defaults, $args);
         $key       = 'authors-' . $args['key'];
         $tab_class = 'ppma-tab-content ppma-' . $args['tab'] . '-tab';
         $tab_style = ($args['tab'] === self::AUTHOR_EDITOR_DEFAULT_TAB) ? '' : 'display:none;';
+        if ($args['requirement'] === 'required') {
+            $required  = true;
+            $tab_class .= ' required-tab form-required';
+        } else {
+            $required  = false;
+        }
         ob_start();
         ?>
         <tr 
@@ -428,6 +437,9 @@ class Author_Editor
             <th scope="row">
                 <?php if (!empty($args['label'])) : ?>
                     <label for="<?php echo esc_attr($key); ?>"><?php echo esc_html($args['label']); ?></label>
+                    <?php if ($required) : ?>
+                        <span class="required">*</span>
+                    <?php endif; ?>
                 <?php endif; ?>
             </th>
             <td>
