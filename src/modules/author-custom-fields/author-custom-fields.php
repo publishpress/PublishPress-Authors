@@ -330,6 +330,15 @@ class MA_Author_Custom_Fields extends Module
 
         $metabox->add_field(
             [
+                'name' => __('Requirement', 'publishpress-authors'),
+                'id' => self::META_PREFIX . 'requirement',
+                'type' => 'select',
+                'options' => CustomFieldsModel::getFieldRequirment(),
+            ]
+        );
+
+        $metabox->add_field(
+            [
                 'name' => __('Description', 'publishpress-authors'),
                 'desc' => __(
                     'This description appears under the fields and helps users understand their choice.',
@@ -379,6 +388,7 @@ class MA_Author_Custom_Fields extends Module
                     'label'       => $post->post_title,
                     'type'        => $this->getFieldMeta($post->ID, 'type'),
                     'field_status' => $this->getFieldMeta($post->ID, 'field_status'),
+                    'requirement' => $this->getFieldMeta($post->ID, 'requirement'),
                     'description' => $this->getFieldMeta($post->ID, 'description'),
                     'post_id'     => $post->ID,
                 ];
@@ -579,6 +589,7 @@ class MA_Author_Custom_Fields extends Module
             'cb' => $columns['cb'],
             'title' => $columns['title'],
             'field_status' => __('Status', 'publishpress-authors'),
+            'requirement' => __('Requirement', 'publishpress-authors'),
             'slug' => __('Slug', 'publishpress-authors'),
         ];
 
@@ -611,6 +622,14 @@ class MA_Author_Custom_Fields extends Module
                 <div style="color: red;">
                     <?php echo esc_html_e('Disabled', 'publishpress-authors'); ?>
                 </div>
+            <?php
+            }
+        } elseif ($column === 'requirement') {
+            if ($this->getFieldMeta($post->ID, 'requirement') !== 'required') {
+                ?>
+                <?php echo esc_html_e('Optional', 'publishpress-authors'); ?>
+            <?php } else { ?>
+                <?php echo esc_html_e('Required', 'publishpress-authors'); ?>
             <?php
             }
         }
@@ -674,6 +693,7 @@ class MA_Author_Custom_Fields extends Module
         update_post_meta($post_id, self::META_PREFIX . 'slug', $data['post_name']);
         update_post_meta($post_id, self::META_PREFIX . 'type', $data['type']);
         update_post_meta($post_id, self::META_PREFIX . 'field_status', $data['field_status']);
+        update_post_meta($post_id, self::META_PREFIX . 'requirement', isset($data['requirement']) ? $data['requirement'] : '' );
         update_post_meta($post_id, self::META_PREFIX . 'description', $data['description']);
         update_post_meta($post_id, self::META_PREFIX . 'inbuilt', 1);
     }

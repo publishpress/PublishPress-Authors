@@ -575,6 +575,12 @@ jQuery(document).ready(function ($) {
          * Update name field
          */
         $('form#edittag tr.form-field.term-name-wrap th label').html(MultipleAuthorsStrings.name_label);
+
+        /**
+         * Add required to display name field
+         */
+        $('form#edittag tr.form-field.term-name-wrap').addClass('required-tab');
+        $('form#edittag tr.form-field.term-name-wrap th label').after(' <span class="required">*</span>');
     }
 
     /**
@@ -636,8 +642,31 @@ jQuery(document).ready(function ($) {
         var $form = $(this);
 
         $('.author-response-notice').remove();
+        $('form#edittag tr.form-field').removeClass('form-invalid');
 
         event.preventDefault();
+
+        //validate required fields
+        var field_label,
+        field_object,
+        field_error_count = 0,
+        field_error_message = '<div style="color:red;">' + MultipleAuthorsStrings.isRequiredWarning + '</div><ul>';
+        
+        $.each($('form#edittag tr.form-field.required-tab'), function (i, field) {
+            field_object = $(this).find('td input');
+            if (isEmptyOrSpaces(field_object.val())) {
+                field_label = field_object.closest('tr').addClass('form-invalid').find('label').html();
+                field_error_count = 1;
+                field_error_message += '<li>' + field_label + ' ' + MultipleAuthorsStrings.isRequired + ' <span class="required">*</span></li>';
+            }
+        });
+        field_error_message += '</ul>';
+
+        if (field_error_count > 0) {
+            $('.ppma-thickbox-modal-content').html(field_error_message);
+            $('.ppma-required-field-thickbox-botton').trigger('click');
+          return;
+        }
 
         //prepare ajax data
         var data = {
@@ -765,6 +794,10 @@ jQuery(document).ready(function ($) {
             .removeClass('wp-not-current-submenu')
             .addClass('current');
              
+    }
+
+    function isEmptyOrSpaces(str) {
+      return str == '' || str === null || str.match(/^ *$/) !== null;
     }
 
 });
