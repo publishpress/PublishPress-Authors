@@ -418,6 +418,35 @@ body.edit-php.post-type-ppma_boxes .row-actions .inline {
     display: none;
 }
 
+.ppma-thickbox-modal-content {
+    text-align: center;
+    padding: 20px;
+}
+
+.ppma-thickbox-modal-content p {
+    line-height: 1.4em;
+    font-size: 16px;
+    margin-bottom: 20px;
+    margin-top: 0;
+    padding: 0;
+}
+
+.ppma-thickbox-modal-content .upgrade-link {
+    font-size: 17px;
+    background: #FCB223;
+    color: #000;
+    font-weight: normal;
+    text-decoration: none;
+    padding: 9px 12px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    border: 1px solid #fca871;
+    break-inside: avoid;
+    white-space: nowrap;
+  }
+
 @media screen and (max-width: 768px) {
     .post-type-ppma_boxes .shortcode.column-shortcode input[type=text] {
         min-width: 90%;
