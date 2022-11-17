@@ -747,6 +747,8 @@ class MA_Author_Custom_Fields extends Module
      */
     public function addInlineScripts() 
     {
+        global $pagenow, $current_screen;
+
         if (!Utils::isAuthorsProActive()) {
             $custom_field_page = (isset($_GET['post_type']) && $_GET['post_type'] === self::POST_TYPE_CUSTOM_FIELDS) ? true : false;
             if ($custom_field_page) {
@@ -768,6 +770,15 @@ class MA_Author_Custom_Fields extends Module
                 </script>
             <?php
             }
+        }
+
+        if (in_array($pagenow, ['post.php']) 
+            && $current_screen 
+            && !empty($current_screen->post_type)
+            && $current_screen->post_type === 'ppmacf_field'
+        ) {
+            //add validation modal
+            Utils::loadThickBoxModal('ppma-general-thickbox-botton', 500, 150);
         }
     }
 }
