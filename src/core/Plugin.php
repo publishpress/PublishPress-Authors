@@ -1493,6 +1493,7 @@ class Plugin
             'name_label'                    => esc_html__('Display Name', 'publishpress-authors'),
             'isRequired'                    => esc_html__('is required', 'publishpress-authors'),
             'isRequiredWarning'             => esc_html__('Please complete the following required fields to save your changes:', 'publishpress-authors'),
+            'fieldTitleRequired'             => esc_html__('Field title is required', 'publishpress-authors'),
         ];
 
         wp_localize_script(

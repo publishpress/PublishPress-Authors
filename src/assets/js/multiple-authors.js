@@ -694,6 +694,21 @@ jQuery(document).ready(function ($) {
 
     });
 
+    //prevent custon field submission if title is empty.
+    $('body.post-type-ppmacf_field form#post').submit(function (event) {
+
+        if (isEmptyOrSpaces($('input[name="post_title"]').val())) {
+            event.preventDefault();
+            var field_error_message = '<div style="color:red;">' + MultipleAuthorsStrings.isRequiredWarning + '</div><ul>';
+            field_error_message += '<li>' + MultipleAuthorsStrings.fieldTitleRequired + ' <span class="required">*</span></li>';
+            field_error_message += '</ul>';
+            $('.ppma-thickbox-modal-content').html(field_error_message);
+            $('.ppma-general-thickbox-botton').trigger('click');
+          return;
+        }
+
+    });
+
     //change submit button to enable slug generation on custom button click
     if ($('body.taxonomy-author form#addtag #submit').length > 0) {
         var buttonTimeoutFn = setTimeout(function () {

@@ -94,6 +94,7 @@ class MA_Author_Custom_Fields extends Module
      */
     public function init()
     {
+        add_action('add_meta_boxes', [$this, 'addBannerMetabox']);
         add_action('multiple_authors_admin_submenu', [$this, 'adminSubmenu'], 50);
         add_filter('post_updated_messages', [$this, 'setPostUpdateMessages']);
         add_filter('bulk_post_updated_messages', [$this, 'setPostBulkUpdateMessages'], 10, 2);
@@ -578,6 +579,36 @@ class MA_Author_Custom_Fields extends Module
     }
 
     /**
+     * Add banner metabox
+     *
+     * @return void
+     */
+    public function addBannerMetabox()
+    {
+        if (!Utils::isAuthorsProActive()) {
+            add_meta_box(
+                self::META_PREFIX . 'banner',
+                __('Banner', 'publishpress-authors'),
+                [$this, 'renderBannerMetabox'],
+                self::POST_TYPE_CUSTOM_FIELDS,
+                'side',
+                'high'
+            );
+        }
+    }
+
+    /**
+     * Render box metaboxes
+     *
+     * @param \WP_Post $post
+     * @return void
+     */
+    public function renderBannerMetabox(\WP_Post $post)
+    { 
+        Utils::ppma_pro_sidebar();
+    }
+
+    /**
      * @param $columns
      *
      * @return array
@@ -747,6 +778,8 @@ class MA_Author_Custom_Fields extends Module
      */
     public function addInlineScripts() 
     {
+        global $pagenow, $current_screen;
+
         if (!Utils::isAuthorsProActive()) {
             $custom_field_page = (isset($_GET['post_type']) && $_GET['post_type'] === self::POST_TYPE_CUSTOM_FIELDS) ? true : false;
             if ($custom_field_page) {
@@ -778,6 +811,15 @@ class MA_Author_Custom_Fields extends Module
                 </script>
             <?php
             }
+        }
+
+        if (in_array($pagenow, ['post.php']) 
+            && $current_screen 
+            && !empty($current_screen->post_type)
+            && $current_screen->post_type === 'ppmacf_field'
+        ) {
+            //add validation modal
+            Utils::loadThickBoxModal('ppma-general-thickbox-botton', 500, 150);
         }
     }
 }
