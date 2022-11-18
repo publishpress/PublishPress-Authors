@@ -576,7 +576,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 ),
                 [$this, 'settings_username_in_search_field'],
                 $this->module->options_group_name,
-                $this->module->options_group_name . '_general'
+                $this->module->options_group_name . '_advanced'
             );
 
             add_settings_field(
@@ -587,7 +587,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 ),
                 [$this, 'settings_default_author_for_new_posts'],
                 $this->module->options_group_name,
-                $this->module->options_group_name . '_general'
+                $this->module->options_group_name . '_advanced'
             );
 
             add_settings_field(
@@ -598,7 +598,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 ),
                 [$this, 'settings_fallback_user_for_guest_post'],
                 $this->module->options_group_name,
-                $this->module->options_group_name . '_general'
+                $this->module->options_group_name . '_advanced'
             );
 
             add_settings_field(
@@ -609,7 +609,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 ),
                 [$this, 'settings_remove_single_user_map_restriction'],
                 $this->module->options_group_name,
-                $this->module->options_group_name . '_general'
+                $this->module->options_group_name . '_advanced'
             );
 
             do_action('publishpress_authors_register_settings_after');
@@ -638,7 +638,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 __('Disable the "Authors" box when using "Quick Edit":', 'publishpress-authors'),
                 [$this, 'settings_disable_quick_edit_author_box_option'],
                 $this->module->options_group_name,
-                $this->module->options_group_name . '_general'
+                $this->module->options_group_name . '_advanced'
             );
 
             add_settings_field(
@@ -933,6 +933,17 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $this->module->options_group_name . '_maintenance'
             );
 
+            /**
+             * Advanced
+             */
+
+            add_settings_section(
+                $this->module->options_group_name . '_advanced',
+                __return_false(),
+                [$this, 'settings_section_advanced'],
+                $this->module->options_group_name
+            );
+
             do_action('pp_authors_register_settings');
         }
 
@@ -949,6 +960,11 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function settings_section_author_pages()
         {
             echo '<input type="hidden" id="ppma-tab-author-pages" />';
+        }
+
+        public function settings_section_advanced()
+        {
+            echo '<input type="hidden" id="ppma-tab-advanced" />';
         }
 
         public function settings_section_shortcodes()
@@ -2361,6 +2377,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     '#ppma-tab-author-pages' => esc_html__('Author Pages', 'publishpress-authors'),
                     '#ppma-tab-shortcodes'  => esc_html__('Shortcodes', 'publishpress-authors'),
                     '#ppma-tab-maintenance' => esc_html__('Maintenance', 'publishpress-authors'),
+                    '#ppma-tab-advanced' => esc_html__('Advanced', 'publishpress-authors'),
                 ]
             );
 
