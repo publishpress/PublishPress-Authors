@@ -116,11 +116,11 @@ class MA_Author_Boxes extends Module
         add_action('multiple_authors_admin_submenu', [$this, 'adminSubmenu'], 50);
         add_filter('post_updated_messages', [$this, 'setPostUpdateMessages']);
         add_filter('bulk_post_updated_messages', [$this, 'setPostBulkUpdateMessages'], 10, 2);
-        add_action('add_meta_boxes', [$this, 'addBannerMetabox']);
         add_action('add_meta_boxes', [$this, 'addPreviewMetabox']);
         add_action('add_meta_boxes', [$this, 'addEditorMetabox']);
         add_action('add_meta_boxes', [$this, 'addLayoutSlugMetabox']);
         add_action('add_meta_boxes', [$this, 'addShortcodeMetabox']);
+        add_action('add_meta_boxes', [$this, 'addBannerMetabox']);
         add_action('admin_enqueue_scripts', [$this, 'enqueueAdminScripts']);
         add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getTitleFields'], 10, 2);
         add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getAvatarFields'], 10, 2);
@@ -757,7 +757,7 @@ class MA_Author_Boxes extends Module
                 [$this, 'renderBannerMetabox'],
                 self::POST_TYPE_BOXES,
                 'side',
-                'high'
+                'low'
             );
         }
     }
