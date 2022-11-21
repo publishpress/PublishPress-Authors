@@ -783,18 +783,28 @@ class MA_Author_Custom_Fields extends Module
         if (!Utils::isAuthorsProActive()) {
             $custom_field_page = (isset($_GET['post_type']) && $_GET['post_type'] === self::POST_TYPE_CUSTOM_FIELDS) ? true : false;
             if ($custom_field_page) {
+                $modal_content = '';
+                $modal_content .= '<div class="new-cf-upgrade-notice">';
+                $modal_content .= '<p>';
+                $modal_content .= __('PublishPress Authors Pro is required to add new Custom Field.', 'publishpress-authors');
+                $modal_content .= '</p>';
+                $modal_content .= '<p>';
+                $modal_content .= '<a class="upgrade-link" href="https://publishpress.com/links/authors-banner" target="_blank">'. __('Upgrade to Pro', 'publishpress-authors') .'</a>';
+                $modal_content .= '</p>';
+                $modal_content .= '</div>';
+                Utils::loadThickBoxModal('ppma-new-cf-thickbox-botton', 500, 150, $modal_content);
                 ?>
                 <style>
                     .post-new-php.post-type-ppmacf_field { display: none !important; }
                 </style>
-
                 <script>
                 jQuery(document).ready(function ($) {
-                    $(".page-title-action").attr('disabled', 'disabled').attr('href', '#');
+                    $(".page-title-action")
+                        .attr('href', '#');
                     $(".post-new-php.post-type-ppmacf_field #poststuff").remove();
                     $(document).on('click', '.page-title-action', function (e) {
                         e.preventDefault();
-                        alert('<?php esc_html_e('PublishPress Authors Pro is required to add new Custom Field.', 'publishpress-authors'); ?>');
+                        $('.ppma-new-cf-thickbox-botton').trigger('click');
                         return;
                     });
                 });
