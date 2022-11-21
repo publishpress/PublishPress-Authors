@@ -786,7 +786,7 @@ class MA_Author_Custom_Fields extends Module
                 $modal_content = '';
                 $modal_content .= '<div class="new-cf-upgrade-notice">';
                 $modal_content .= '<p>';
-                $modal_content .= __('PublishPress Authors Pro is required to add new Custom Field.', 'publishpress-authors');
+                $modal_content .= __('PublishPress Authors Pro is required to add a new Custom Field.', 'publishpress-authors');
                 $modal_content .= '</p>';
                 $modal_content .= '<p>';
                 $modal_content .= '<a class="upgrade-link" href="https://publishpress.com/links/authors-banner" target="_blank">'. __('Upgrade to Pro', 'publishpress-authors') .'</a>';
