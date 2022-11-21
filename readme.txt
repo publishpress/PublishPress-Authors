@@ -240,7 +240,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: An incongruence in the line 170 between singular and plural, #982
 * Update: Change name of Settings to PublishPress Authors, #981
 * Fixed: Documentation link missing for Author boxes generate template, #978
-* Update: Remove Legacy "Layouts" menu, #960
+* Update: Remove Legacy options and "Layouts" menu, #960
 * Update: Add a Pro sidebar, #1050
 * Update: New "Advanced" tab in settings, #1020
 * Update: Add Dashicons and Fontawesome icon pages link to Author Boxes profile icon field, #1064
