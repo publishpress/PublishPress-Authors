@@ -51,7 +51,7 @@ final class CustomFieldsModel
      * Retrieve all supported field status.
      *
      * @return  array
-     * @since   3.40.0
+     * @since   4.0.0
      * @static
      *
      */
@@ -69,7 +69,7 @@ final class CustomFieldsModel
      * Retrieve all supported field requirement.
      *
      * @return  array
-     * @since   3.40.0
+     * @since   4.0.0
      * @static
      *
      */

@@ -82,7 +82,7 @@ class Installer
             self::createDefaultAuthorBoxes();
         }
 
-        if (version_compare($currentVersions, '3.40.0', '<')) {
+        if (version_compare($currentVersions, '4.0.0', '<')) {
             self::addManageFieldsCapabilitiesToRoles();
             self::createDefaultCustomFields();
             self::updateAuthorBoxesFieldValue(['name_show' => 1]);
