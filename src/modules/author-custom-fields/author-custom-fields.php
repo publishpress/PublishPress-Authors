@@ -795,7 +795,11 @@ class MA_Author_Custom_Fields extends Module
                 Utils::loadThickBoxModal('ppma-new-cf-thickbox-botton', 500, 150, $modal_content);
                 ?>
                 <style>
-                    .post-new-php.post-type-ppmacf_field { display: none !important; }
+                    .post-new-php.post-type-ppmacf_field,
+                    body.edit-php.post-type-ppmacf_field .tablenav .alignleft.actions,
+                    body.edit-php.post-type-ppmacf_field table.wp-list-table .check-column { 
+                        display: none !important; 
+                    }
                 </style>
                 <script>
                 jQuery(document).ready(function ($) {

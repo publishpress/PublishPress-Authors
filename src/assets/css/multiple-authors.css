@@ -414,7 +414,8 @@ form#edittag tr.form-field #slug {
 }
 
 body.edit-php.post-type-ppmacf_field .row-actions .inline,
-body.edit-php.post-type-ppma_boxes .row-actions .inline {
+body.edit-php.post-type-ppma_boxes .row-actions .inline,
+body.edit-php.post-type-ppmacf_field .tablenav.top .alignleft.actions:not(.bulkactions) {
     display: none;
 }
 

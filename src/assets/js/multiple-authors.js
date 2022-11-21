@@ -212,7 +212,7 @@ jQuery(document).ready(function ($) {
                 var current_slug = $(this).find('td.column-slug').html();
                 if (default_fields.includes(current_slug)) {
                     $(this).find('.check-column input').attr('disabled', true);
-                    $(this).find('.column-primary .row-actions span.trash').hide();
+                    $(this).find('.column-primary .row-actions').hide();
                 }
             });
         }
