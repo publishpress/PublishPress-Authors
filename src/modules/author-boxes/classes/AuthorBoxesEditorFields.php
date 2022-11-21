@@ -612,11 +612,12 @@ class AuthorBoxesEditorFields
                 ];
 
                 if (in_array(strtolower($key), ['facebook', 'twitter', 'instagram', 'linkedin', 'youtube'])) {
-                    $field_description = '<a href="#" class="ppma-add-social-icon" data-social="'. esc_attr(strtolower($key)).'">' .sprintf(esc_html__('Click here to insert %1s icon', 'publishpress-authors'), $data['label']) . '</a>';
+                    $field_description = '<a href="#" class="ppma-add-social-icon" data-social="'. esc_attr(strtolower($key)).'">' .sprintf(esc_html__('Click here to insert the %1s icon', 'publishpress-authors'), $data['label']) . '</a>';
+                    $field_description .= '<br />';
                 } else {
-                    $field_description = esc_html__('Example, <span class="dashicons dashicons-admin-links"></span>', 'publishpress-authors');
+                    $field_description = esc_html__('Example, <span class="dashicons dashicons-admin-links"></span>', 'publishpress-authors'). '. ';
                 }
-                $field_description .= '. ' . sprintf(esc_html__('More icon can be found in %1s Dashicons %2s and %3s Fontawesome %4s icon pages', 'publishpress-authors'), '<a href="https://developer.wordpress.org/resource/dashicons/" target="blank">', '</a>', '<a href="https://fontawesome.com/v5/search?o=r&m=free" target="blank">', '</a>');
+                $field_description .= sprintf(esc_html__('More icons can are available from Dashicons and Fontawesome. %1s %2s Click here for documentation %3s .', 'publishpress-authors'), '<br />', '<a href="https://publishpress.com/knowledge-base/author-fields-icons/" target="blank">', '</a>');
 
                 $fields['profile_fields_' . $key . '_display_icon'] = [
                     'label'       => sprintf(esc_html__('%1s Display Icon', 'publishpress-authors'), $data['label']),
