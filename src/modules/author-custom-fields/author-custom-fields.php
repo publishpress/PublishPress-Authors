@@ -624,7 +624,7 @@ class MA_Author_Custom_Fields extends Module
             'slug' => __('Slug', 'publishpress-authors'),
         ];
 
-        unset($columns['cb'], $columns['title']);
+        unset($columns['cb'], $columns['title'], $columns['date']);
 
         // Add the remaining columns.
         $newColumns = array_merge($newColumns, $columns);
