@@ -115,7 +115,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'default_author_for_new_posts' => null,
                     'fallback_user_for_guest_post' => function_exists('get_current_user_id') ? get_current_user_id() : 0,
                     'author_page_post_types'       => [],
-                    'disable_quick_edit_author_box' => 'no'
+                    'disable_quick_edit_author_box' => 'no',
+                    'enable_legacy_layout'         => 'no'
                 ],
                 'options_page'         => false,
                 'autoload'             => true,
@@ -566,6 +567,17 @@ if (!class_exists('MA_Multiple_Authors')) {
                 [$this, 'settings_author_for_new_users_option'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_general'
+            );
+
+            add_settings_field(
+                'enable_legacy_layout',
+                __(
+                    'Enable legacy "Layouts" feature:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_enable_legacy_layout'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_advanced'
             );
 
             add_settings_field(
@@ -1838,6 +1850,30 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          * @param array $args
          */
+        public function settings_enable_legacy_layout($args = [])
+        {
+            $id    = $this->module->options_group_name . '_enable_legacy_layout';
+            $value = isset($this->module->options->enable_legacy_layout) ? $this->module->options->enable_legacy_layout : '';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[enable_legacy_layout]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
+
+            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
+                . esc_html__(
+                    'This will enable legacy layout options.',
+                    'publishpress-authors'
+                )
+                . '</span>';
+
+
+            echo '</label>';
+        }
+
+
+        /**
+         * @param array $args
+         */
         public function settings_show_author_post_authors($args = [])
         {
             $id    = $this->module->options_group_name . '_show_author_post_authors';
@@ -2304,6 +2340,10 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             if (!isset($new_options['remove_single_user_map_restriction'])) {
                 $new_options['remove_single_user_map_restriction'] = 'no';
+            }
+
+            if (!isset($new_options['enable_legacy_layout'])) {
+                $new_options['enable_legacy_layout'] = 'no';
             }
 
             if (!isset($new_options['show_author_post_authors'])) {

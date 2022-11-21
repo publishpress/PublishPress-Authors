@@ -24,6 +24,7 @@
 namespace MultipleAuthors\Classes;
 
 use MultipleAuthors\Capability;
+use MultipleAuthors\Factory;
 use MultipleAuthors\Classes\Objects\Author;
 use MA_Author_Custom_Fields;
 use MA_Author_Boxes;
@@ -65,6 +66,8 @@ class Installer
      */
     public static function runUpgradeTasks($currentVersions)
     {
+        $legacyPlugin = Factory::getLegacyPlugin();
+        
         if (version_compare($currentVersions, '2.0.2', '<')) {
             // Do not execute the post_author migration to post terms if Co-Authors Plus is activated.
             if (!isset($GLOBALS['coauthors_plus']) || empty($GLOBALS['coauthors_plus'])) {
@@ -86,6 +89,7 @@ class Installer
             self::addManageFieldsCapabilitiesToRoles();
             self::createDefaultCustomFields();
             self::updateAuthorBoxesFieldValue(['name_show' => 1]);
+            $legacyPlugin->update_module_option('multiple_authors', 'enable_legacy_layout', 'yes');
         }
 
         /**

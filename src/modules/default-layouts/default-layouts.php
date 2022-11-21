@@ -160,6 +160,13 @@ if (!class_exists('MA_Default_Layouts')) {
          */
         public function getListOfLayouts($layouts)
         {
+            $legacyPlugin = Factory::getLegacyPlugin();
+            $enable_legacy_layout = $legacyPlugin->modules->multiple_authors->options->enable_legacy_layout === 'yes';
+            
+            if (!$enable_legacy_layout) {
+                return $layouts;
+            }
+                
             $new_layout = [
                 'boxed'          => __('Boxed (Legacy)', 'publishpress-authors'),
                 'centered'       => __('Centered (Legacy)', 'publishpress-authors'),
