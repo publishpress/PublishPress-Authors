@@ -226,6 +226,9 @@ class AuthorBoxesStyles
                 if ($args['profile_fields_' . $key . '_size']['value']) {
                     $custom_styles .= '.pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].' .ppma-author-'. $key .'-profile-data { font-size: '. $args['profile_fields_' . $key . '_size']['value'] .'px !important; } ';
                 }
+                if ($args['profile_fields_' . $key . '_display_icon_size']['value']) {
+                    $custom_styles .= '.pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].' .ppma-author-'. $key .'-profile-data span, .pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].' .ppma-author-'. $key .'-profile-data i { font-size: '. $args['profile_fields_' . $key . '_display_icon_size']['value'] .'px !important; } ';
+                }
                 if ($args['profile_fields_' . $key . '_line_height']['value']) {
                     $custom_styles .= '.pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].' .ppma-author-'. $key .'-profile-data { line-height: '. $args['profile_fields_' . $key . '_line_height']['value'] .'px !important; } ';
                 }

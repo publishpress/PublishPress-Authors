@@ -192,7 +192,7 @@ foreach ($profile_fields as $key => $data) {
     if ($profile_show_field) : ?>
                                 <?php 
                                 $profile_field_html = '<'. esc_html($profile_html_tag) .'';
-                                $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data"';
+                                $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data ppma-author-field-meta"';
                                 if ($profile_html_tag === 'a') {
                                     $profile_field_html .= ' href="</?php echo $author->$key; ?>"';
                                 }

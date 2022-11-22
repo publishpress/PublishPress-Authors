@@ -930,6 +930,13 @@ class MA_Author_Boxes extends Module
             if (isset($editor_data['profile_fields_'.$social_field.'_display']) && $editor_data['profile_fields_'.$social_field.'_display'] === 'icon' ) {
                 $editor_data['profile_fields_'.$social_field.'_html_tag'] = 'a';
             }
+
+            //set social_field profile display icon size
+            if (!isset($editor_data['profile_fields_'.$social_field.'_display_icon_size']) 
+                || (isset($editor_data['profile_fields_'.$social_field.'_display_icon_size']) && empty($editor_data['profile_fields_'.$social_field.'_display_icon_size']))
+            ) {
+                $editor_data['profile_fields_'.$social_field.'_display_icon_size'] = '16';
+            }
             
         }
 
@@ -1219,7 +1226,7 @@ class MA_Author_Boxes extends Module
                                                 if ($profile_show_field || $admin_preview) : ?>
                                                     <?php 
                                                     $profile_field_html = '<'. esc_html($profile_html_tag) .'';
-                                                    $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data"';
+                                                    $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data ppma-author-field-meta"';
                                                     if ($profile_html_tag === 'a') {
                                                         $profile_field_html .= ' href="'. $profile_value_prefix.$field_value .'"';
                                                     }
