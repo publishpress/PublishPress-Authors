@@ -897,6 +897,7 @@ class MA_Author_Boxes extends Module
 
     /**
      * Get Author boxes meta value
+     * TODO: Most of options here will be migrated via installer in the next release when deprecating meta
      *
      * @param integer $post_id
      * @param boolean $use_default
@@ -936,6 +937,16 @@ class MA_Author_Boxes extends Module
                 || (isset($editor_data['profile_fields_'.$social_field.'_display_icon_size']) && empty($editor_data['profile_fields_'.$social_field.'_display_icon_size']))
             ) {
                 $editor_data['profile_fields_'.$social_field.'_display_icon_size'] = '16';
+            }
+
+            //set social_field profile display icon background color
+            if (!isset($editor_data['profile_fields_'.$social_field.'_display_icon_background_color'])) {
+                $editor_data['profile_fields_'.$social_field.'_display_icon_background_color'] = '#655997';
+            }
+
+            //set social_field profile display icon border radius
+            if (!isset($editor_data['profile_fields_'.$social_field.'_display_icon_border_radius'])) {
+                $editor_data['profile_fields_'.$social_field.'_display_icon_border_radius'] = '50';
             }
             
         }

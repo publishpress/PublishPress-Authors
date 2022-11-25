@@ -69,7 +69,8 @@
 }
 
 .pp-multiple-authors-layout-boxed .multiple-authors-links a,
-.pp-multiple-authors-layout-centered .multiple-authors-links a {
+.pp-multiple-authors-layout-centered .multiple-authors-links a,
+a.ppma-author-field-meta {
     border-radius: 20px;
     background: var(--ppa-color-scheme);
     min-width: 30px;
@@ -87,13 +88,15 @@
 .pp-multiple-authors-layout-boxed .multiple-authors-links a:active,
 .pp-multiple-authors-layout-centered .multiple-authors-links a:hover,
 .pp-multiple-authors-layout-centered .multiple-authors-links a:focus,
-.pp-multiple-authors-layout-centered .multiple-authors-links a:active {
+.pp-multiple-authors-layout-centered .multiple-authors-links a:active,
+a.ppma-author-field-meta {
     background: var(--ppa-color-scheme-active);
     color: #fff;
 }
 
 .pp-multiple-authors-layout-boxed .multiple-authors-links a span,
-.pp-multiple-authors-layout-centered .multiple-authors-links a span {
+.pp-multiple-authors-layout-centered .multiple-authors-links a span,
+a.ppma-author-field-meta span {
     min-width: 30px;
     height: 30px;
     line-height: 30px;

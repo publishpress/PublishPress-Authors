@@ -636,6 +636,26 @@ class AuthorBoxesEditorFields
                     'tab_name' => $key,
                     'tab'      => 'profile_fields',
                 ];
+
+                $fields['profile_fields_' . $key . '_display_icon_background_color'] = [
+                    'label'    => sprintf(esc_html__('%1s Display Icon Background Color', 'publishpress-authors'), $data['label']),
+                    'type'     => 'color',
+                    'sanitize' => 'sanitize_text_field',
+                    'tabbed'   => 1,
+                    'tab_name' => $key,
+                    'tab'      => 'profile_fields',
+                ];
+                $fields['profile_fields_' . $key . '_display_icon_border_radius'] = [
+                    'label'      => sprintf(esc_html__('%1s Display Icon Border Radius %2s', 'publishpress-authors'), $data['label'], '(%)'),
+                    'type'       => 'number',
+                    'min'        => '0',
+                    'max'        => '100',
+                    'sanitize'   => 'intval',
+                    'tabbed'     => 1,
+                    'tab_name'   => $key,
+                    'tab'        => 'profile_fields',
+                ];
+
                 $fields['profile_fields_' . $key . '_size'] = [
                     'label'    => esc_html__('Size', 'publishpress-authors'),
                     'type'     => 'number',
