@@ -224,7 +224,7 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= [4.0.0] - 22 Nov 2022 =
+= [4.0.0] - 28 Nov 2022 =
 
 * Update: Added last_article_date to publishpress_authors_list shortcode [publishpress_authors_list last_article_date="1 year ago"]
 * Update: Allow to set Author Boxes previewing authors, #913
