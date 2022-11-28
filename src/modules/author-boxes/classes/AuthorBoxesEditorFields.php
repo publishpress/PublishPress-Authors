@@ -611,13 +611,7 @@ class AuthorBoxesEditorFields
                     'tab'         => 'profile_fields',
                 ];
 
-                if (in_array(strtolower($key), ['facebook', 'twitter', 'instagram', 'linkedin', 'youtube'])) {
-                    $field_description = '<a href="#" class="ppma-add-social-icon" data-social="'. esc_attr(strtolower($key)).'">' .sprintf(esc_html__('Click here to insert the %1s icon', 'publishpress-authors'), $data['label']) . '</a>.';
-                    $field_description .= '<br />';
-                } else {
-                    $field_description = esc_html__('Example, <span class="dashicons dashicons-admin-links"></span>', 'publishpress-authors'). '. ';
-                }
-                $field_description .= sprintf(esc_html__('More icons can are available from Dashicons and Fontawesome. %1s %2sClick here for documentation%3s.', 'publishpress-authors'), '<br />', '<a href="https://publishpress.com/knowledge-base/author-fields-icons/" target="blank">', '</a>');
+                $field_description = sprintf(esc_html__('You can use icons from Dashicons and Font Awesome. %1s %2sClick here for documentation%3s.', 'publishpress-authors'), '<br />', '<a href="https://publishpress.com/knowledge-base/author-fields-icons/" target="blank">', '</a>');
 
                 $fields['profile_fields_' . $key . '_display_icon'] = [
                     'label'       => sprintf(esc_html__('%1s Display Icon', 'publishpress-authors'), $data['label']),
