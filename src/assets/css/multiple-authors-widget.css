@@ -108,6 +108,10 @@ a.ppma-author-field-meta span {
     padding: 0 14px;
 }
 
+a.ppma-author-field-meta {
+    margin-right: 3px;
+}
+
 .pp-author-boxes-recent-posts {
     margin-top: 10px;
 }
