@@ -398,7 +398,12 @@ class Utils
         $legacyPlugin = Factory::getLegacyPlugin();
 
         if (empty(self::$enabledPostTypes)) {
-            self::$enabledPostTypes = Util::get_post_types_for_module($legacyPlugin->modules->multiple_authors);
+            if (isset($legacyPlugin->modules->multiple_authors)) {
+                $post_types = Util::get_post_types_for_module($legacyPlugin->modules->multiple_authors);
+            } else {
+                $post_types = [];
+            }
+            self::$enabledPostTypes = $post_types;
         }
 
         return self::$enabledPostTypes;
