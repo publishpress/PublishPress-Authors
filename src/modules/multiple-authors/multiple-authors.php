@@ -116,7 +116,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'fallback_user_for_guest_post' => function_exists('get_current_user_id') ? get_current_user_id() : 0,
                     'author_page_post_types'       => [],
                     'disable_quick_edit_author_box' => 'no',
-                    'enable_legacy_layout'         => 'no'
+                    'enable_legacy_layout'         => 'no',
+                    'load_font_awesome'            => 'no'
                 ],
                 'options_page'         => false,
                 'autoload'             => true,
@@ -699,7 +700,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 __('Layout icons:', 'publishpress-authors'),
                 [$this, 'settings_load_font_awesome_option'],
                 $this->module->options_group_name,
-                $this->module->options_group_name . '_display'
+                $this->module->options_group_name . '_advanced'
             );
 
             /**
