@@ -13,23 +13,31 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 PublishPress Authors is the best plugin for adding co-authors, multiple authors and guest authors to WordPress posts.
 
-
 == Description ==
 
 [PublishPress Authors](https://publishpress.com/authors/) allows you to show an author box at the end of your posts. This author box can display one author, coauthors, multiple authors or even guest authors. This box has the author’s name, avatar, description and more. You can also place the author box in widgets, shortcodes and Gutenberg blocks.
 
-Here are the three most important features of PublishPress Authors:
+Here are the some most important features of PublishPress Authors:
 
 * **Author Box**. As soon as you install PublishPress Authors, you’ll see an author box under every post. You can add all the profile details you need for each author.
 * **Multiple Authors**. By default, WordPress only allows one author per post. PublishPress Authors allows you to add an unlimited number of authors to each post. This is very useful if you have a busy site and need to manage and give credit to coauthors.
 * **Guest Authors**. You can create Guest Authors who don’t have an account on your site. This is important because not all writers need a username and password.
+* **Author Pages**. PublishPress Authors allows you to showcase the work of each individual author with customizable author pages where you decide which post information is displayed. 
 
 ## PublishPress Authors Pro ##
 
 > <strong>Upgrade to Authors Pro</strong><br />
 > This plugin is the free version of the PublishPress Authors plugin. The Pro version comes with all the features you need to create beautiful and useful author profiles. <a href="https://publishpress.com/authors"  title="Authors Pro">Click here to purchase the best premium WordPress author box plugin now!</a>
 
-## Add Multiple Authors and Co-Authors to Your Posts ##
+## Author Boxes ##
+
+PublishPress Authors gives you multiple ways to show author profiles. You can display authors under your content, in a widget, using shortcodes and more.
+
+The Author Boxes feature in PublishPress Authors provides five default layouts. You can use these layouts, customize them or click “New Author Box” and create your own layouts.
+
+[Click here to see how to customize author boxes](https://publishpress.com/knowledge-base/customize-author-boxes/).
+
+## Multiple Authors ##
 
 With PublishPress Authors, you can set multiple authors for each post. When you write a post, you’ll see a box in the right sidebar. Here you can choose from all the users on your site, and assign them as coauthors.
 
@@ -43,7 +51,7 @@ On the frontend of your site. PublishPress Authors gives you several different o
 
 [Click here to read about displaying authors](https://publishpress.com/knowledge-base/display-multiple-authors/).
 
-## Add Guest Authors With No WordPress Account ##
+## Guest Authors ##
 
 Using PublishPress Authors, you can create Guest Authors who don’t need an account on your site. PublishPress will treat Guest Authors identically to Authors who are linked users.
 
@@ -51,29 +59,19 @@ You will be able to select and display Guest Authors in exactly the same way as 
 
 [Click here to see how to create Guest Authors](https://publishpress.com/knowledge-base/add-guest-authors-wordpress/).
 
-## Multiple Layout Options for Author Bio Profiles ##
+## Author Pages ##
 
-PublishPress Authors provides five default ways to display the author profiles on your site. In the PublishPress Authors settings you can choose from these layouts:
+PublishPress Authors can replace the default WordPress author pages. The URLs of the pages will not change, but you can customize the pages using the settings on this screen.
 
-* Simple list
-* Boxed
-* Centered
-* Inline
-* Inline with Avatars
+Your author page will appear with an author box on the top of the screen and the author's posts underneath. You can choose a “List” or a "Grid" option and you're also free to create your own layouts.
 
-[Click here to see details on all the layout options](https://publishpress.com/knowledge-base/layout/).
+[Click here to see how to use Author Pages](https://publishpress.com/knowledge-base/author-pages/).
 
 ## Custom Fields for Author Profiles (Pro version) ##
 
 PublishPress Authors Pro enables you to create author fields and enhance your author profiles. You can add Text, WYSIWYG, Link and email address fields. Then you can place those author fields in author bio profiles using custom layouts.
 
 [Click here to see how to use Custom Fields](https://publishpress.com/knowledge-base/custom-fields/).
-
-## Custom Layouts for Author Profiles (Pro version) ##
-
-PublishPress Authors enables you to build custom layouts for your author bio profiles. Using all your author information and custom fields, you can design beautiful layouts for your authors. Each layout is editable using HTML and PHP. You can add many different types of author information to these layouts including custom fields.
-
-[Click here to see how to customize author layouts](https://publishpress.com/knowledge-base/custom-layouts/).
 
 ## Join PublishPress and get the Pro plugins ##
 
@@ -107,7 +105,7 @@ This plugin is partly based on Co-Authors Plus, which includes the work of batmo
 2. Show your author profiles: PublishPress Authors gives you multiple ways to show author profiles. You can display authors under your content, in a widget, using shortcodes and more.
 3. Add guest authors: Using PublishPress Authors, you can create Guest Authors who don’t need an account on your site.
 4. Custom fields for author profiles: PublishPress Authors Pro enables you to create custom fields for your author profiles.
-5.  Custom layouts for author profiles: PublishPress Authors Pro enables you to build custom layouts for authors.
+5. Custom layouts for author profiles: PublishPress Authors Pro enables you to build custom layouts for authors.
 
 
 == Frequently Asked Questions ==
@@ -152,14 +150,6 @@ The “Post Author” widget will display a list of authors for the current post
 The “Authors List” widget will display a list of all the authors on your site. If you want to show the authors of the post being viewed, try the Post Author widget. In your WordPress site, go to Appearance > Widgets. Look for the “Authors List” widget.
 
 [Click here to see how to use the Authors List widget](https://publishpress.com/knowledge-base/authors-list-widget/).
-
-= How can I create layouts for Author bio profiles? =
-
-PublishPress Authors provides five default ways to display the author profiles on your site. The Free version allows you to choose any of these layout options. The Pro version allows to modify these defaults and also create new layouts.
-
-In the PublishPress Authors Pro admin area, ggo to Authors > Layouts and you will see all five default layouts: Simple List, Inline with Avatars, Inline, Centered, Boxed. Click “Edit” for any layout and you'll see an editing screen. Each layout is editable using Twig. You can add many different types of author information to these layouts including custom fields.
-
-[Click here to see how to create author layouts](https://publishpress.com/knowledge-base/custom-layouts/).
 
 = Can I use PublishPress Authors with Elementor? =
 
@@ -249,6 +239,24 @@ There are two ways to install the PublishPress Authors plugin:
 * Update: Rename and add option to hide Author Box Display Name, #1057
 * Update: Rename Author Boxes "Author Bio" to "Biographical Info", #1056
 * Update: Use "Avatar" on Profile tab, #1060
+* Update: Authors_ES-IT_Translation_Update-19-October 2022, #979
+* Update: FRENCH_Translation Update_Authors 20 October2022, #984
+
+= [3.30.1] - 02 Nov 2022 =
+
+* Update: Added last_article_date to publishpress_authors_list shortcode [publishpress_authors_list last_article_date="1 year ago"]
+* Update: Allow to set Author Boxes previewing authors, #913
+* Update: Added group by field name to authors_index [publishpress_authors_list layout="authors_index" group_by="last_name"], #977
+* Update: Allow Author list to have 2 columns for custom layout [publishpress_authors_list layout="boxed" layout_columns="2"], #996
+* Fixed: Issue with Translatepress + WPUlike, #962
+* Update: Make new "Boxed" the default layout, #980
+* Fixed: Authors causing custom post type and taxonomy archives SEO title to be untitled, #1013
+* Fixed: Authors_Iterator call in Author_box.php assumes that $post global is populated (which it isn't sometimes) #999
+* Update: Change author 'Name' label to 'Display Name', #991
+* Update: Remove the "All dates" feature in Author Boxes, #990
+* Fixed: An incongruence in the line 170 between singular and plural, #982
+* Update: Change name of Settings to PublishPress Authors, #981
+* Fixed: Documentation link missing for Author boxes generate template, #978
 * Update: Authors_ES-IT_Translation_Update-19-October 2022, #979
 * Update: FRENCH_Translation Update_Authors 20 October2022, #984
 
