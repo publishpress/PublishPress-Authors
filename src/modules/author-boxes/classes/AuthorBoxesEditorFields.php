@@ -611,12 +611,7 @@ class AuthorBoxesEditorFields
                     'tab'         => 'profile_fields',
                 ];
 
-                if (in_array(strtolower($key), ['facebook', 'twitter', 'instagram', 'linkedin', 'youtube'])) {
-                    $field_description = '<a href="#" class="ppma-add-social-icon" data-social="'. esc_attr(strtolower($key)).'">' .sprintf(esc_html__('Click here to insert %1s icon', 'publishpress-authors'), $data['label']) . '</a>';
-                } else {
-                    $field_description = esc_html__('Example, <span class="dashicons dashicons-admin-links"></span>', 'publishpress-authors');
-                }
-                $field_description .= '. ' . sprintf(esc_html__('More icon can be found in %1s Dashicons %2s and %3s Fontawesome %4s icon pages', 'publishpress-authors'), '<a href="https://developer.wordpress.org/resource/dashicons/" target="blank">', '</a>', '<a href="https://fontawesome.com/v5/search?o=r&m=free" target="blank">', '</a>');
+                $field_description = sprintf(esc_html__('You can use icons from Dashicons and Font Awesome. %1s %2sClick here for documentation%3s.', 'publishpress-authors'), '<br />', '<a href="https://publishpress.com/knowledge-base/author-fields-icons/" target="blank">', '</a>');
 
                 $fields['profile_fields_' . $key . '_display_icon'] = [
                     'label'       => sprintf(esc_html__('%1s Display Icon', 'publishpress-authors'), $data['label']),
@@ -627,6 +622,34 @@ class AuthorBoxesEditorFields
                     'tab_name'    => $key,
                     'tab'         => 'profile_fields',
                 ];
+                $fields['profile_fields_' . $key . '_display_icon_size'] = [
+                    'label'    => sprintf(esc_html__('%1s Display Icon Size', 'publishpress-authors'), $data['label']),
+                    'type'     => 'number',
+                    'sanitize' => 'intval',
+                    'tabbed'   => 1,
+                    'tab_name' => $key,
+                    'tab'      => 'profile_fields',
+                ];
+
+                $fields['profile_fields_' . $key . '_display_icon_background_color'] = [
+                    'label'    => sprintf(esc_html__('%1s Display Icon Background Color', 'publishpress-authors'), $data['label']),
+                    'type'     => 'color',
+                    'sanitize' => 'sanitize_text_field',
+                    'tabbed'   => 1,
+                    'tab_name' => $key,
+                    'tab'      => 'profile_fields',
+                ];
+                $fields['profile_fields_' . $key . '_display_icon_border_radius'] = [
+                    'label'      => sprintf(esc_html__('%1s Display Icon Border Radius %2s', 'publishpress-authors'), $data['label'], '(%)'),
+                    'type'       => 'number',
+                    'min'        => '0',
+                    'max'        => '100',
+                    'sanitize'   => 'intval',
+                    'tabbed'     => 1,
+                    'tab_name'   => $key,
+                    'tab'        => 'profile_fields',
+                ];
+
                 $fields['profile_fields_' . $key . '_size'] = [
                     'label'    => esc_html__('Size', 'publishpress-authors'),
                     'type'     => 'number',

@@ -449,6 +449,15 @@
                 if (editor_values['profile_fields_' + field_name + '_size']) {
                     editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + ' .ppma-author-' + field_name + '-profile-data { font-size: ' + editor_values['profile_fields_' + field_name + '_size'] + 'px !important; } ';
                 }
+                if (editor_values['profile_fields_' + field_name + '_display_icon_size']) {
+                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + ' .ppma-author-' + field_name + '-profile-data span, .pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + ' .ppma-author-' + field_name + '-profile-data i { font-size: ' + editor_values['profile_fields_' + field_name + '_display_icon_size'] + 'px !important; } ';
+                }
+                if (editor_values['profile_fields_' + field_name + '_display_icon_background_color']) {
+                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + ' .ppma-author-' + field_name + '-profile-data { background-color: ' + editor_values['profile_fields_' + field_name + '_display_icon_background_color'] + ' !important; } ';
+                }
+                if (editor_values['profile_fields_' + field_name + '_display_icon_border_radius']) {
+                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + ' .ppma-author-' + field_name + '-profile-data { border-radius: ' + editor_values['profile_fields_' + field_name + '_display_icon_border_radius'] + '% !important; } ';
+                }
                 if (editor_values['profile_fields_' + field_name + '_line_height']) {
                     editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + ' .ppma-author-' + field_name + '-profile-data { line-height: ' + editor_values['profile_fields_' + field_name + '_line_height'] + 'px !important; } ';
                 }

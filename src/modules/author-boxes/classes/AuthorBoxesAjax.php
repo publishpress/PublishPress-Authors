@@ -192,9 +192,9 @@ foreach ($profile_fields as $key => $data) {
     if ($profile_show_field) : ?>
                                 <?php 
                                 $profile_field_html = '<'. esc_html($profile_html_tag) .'';
-                                $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data"';
+                                $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data ppma-author-field-meta"';
                                 if ($profile_html_tag === 'a') {
-                                    $profile_field_html .= ' href="</?php echo $author->$key; ?>';
+                                    $profile_field_html .= ' href="</?php echo $author->$key; ?>"';
                                 }
                                 $profile_field_html .= '>';
                                 ?>
@@ -243,7 +243,7 @@ foreach ($profile_fields as $key => $data) {
 
 <?php if ($args['avatar_show']['value']) : ?>
                     <div class="pp-author-boxes-avatar">
-                        </?php if ($author->get_avatar) : ?>
+                        </?php if ($author->get_avatar()) : ?>
                             </?php echo $author->get_avatar('<?php echo esc_html($args['avatar_size']['value']); ?>'); ?>
                         </?php else : ?>
                             </?php echo get_avatar($author->user_email, '<?php echo esc_html($args['avatar_size']['value']); ?>'); ?>

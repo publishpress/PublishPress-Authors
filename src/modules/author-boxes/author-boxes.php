@@ -116,11 +116,11 @@ class MA_Author_Boxes extends Module
         add_action('multiple_authors_admin_submenu', [$this, 'adminSubmenu'], 50);
         add_filter('post_updated_messages', [$this, 'setPostUpdateMessages']);
         add_filter('bulk_post_updated_messages', [$this, 'setPostBulkUpdateMessages'], 10, 2);
-        add_action('add_meta_boxes', [$this, 'addBannerMetabox']);
         add_action('add_meta_boxes', [$this, 'addPreviewMetabox']);
         add_action('add_meta_boxes', [$this, 'addEditorMetabox']);
         add_action('add_meta_boxes', [$this, 'addLayoutSlugMetabox']);
         add_action('add_meta_boxes', [$this, 'addShortcodeMetabox']);
+        add_action('add_meta_boxes', [$this, 'addBannerMetabox']);
         add_action('admin_enqueue_scripts', [$this, 'enqueueAdminScripts']);
         add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getTitleFields'], 10, 2);
         add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getAvatarFields'], 10, 2);
@@ -639,7 +639,7 @@ class MA_Author_Boxes extends Module
             return $html;
         }
 
-        $editor_data = get_post_meta($author_box_id, self::META_PREFIX . 'layout_meta_value', true);
+        $editor_data = $this->get_author_boxes_layout_meta_values($author_box_id);
 
         if (!is_array($editor_data)) {
             if (defined('WP_DEBUG') && WP_DEBUG) {
@@ -757,7 +757,7 @@ class MA_Author_Boxes extends Module
                 [$this, 'renderBannerMetabox'],
                 self::POST_TYPE_BOXES,
                 'side',
-                'high'
+                'low'
             );
         }
     }
@@ -896,6 +896,66 @@ class MA_Author_Boxes extends Module
     }
 
     /**
+     * Get Author boxes meta value
+     * TODO: Most of options here will be migrated via installer in the next release when deprecating meta
+     *
+     * @param integer $post_id
+     * @param boolean $use_default
+     * @return array $editor_data
+     */
+    public function get_author_boxes_layout_meta_values($post_id, $use_default = false) {
+
+        if ($use_default || empty(get_post_meta($post_id, self::META_PREFIX . 'layout_meta_value', true))) {
+            $editor_data = AuthorBoxesDefault::getAuthorBoxesDefaultData('author_boxes_boxed');
+        } else {
+            $editor_data = (array) get_post_meta($post_id, self::META_PREFIX . 'layout_meta_value', true);
+        }
+
+        //set social profile defaults
+        $social_fields = ['facebook', 'twitter', 'instagram', 'linkedin', 'youtube'];
+        foreach ($social_fields as $social_field) {
+            //set default display to icon
+            if (!isset($editor_data['profile_fields_'.$social_field.'_display']) 
+                || (isset($editor_data['profile_fields_'.$social_field.'_display']) && empty($editor_data['profile_fields_'.$social_field.'_display']))
+            ) {
+                $editor_data['profile_fields_'.$social_field.'_display'] = 'icon';
+            }
+            //set default ucon value
+            if (!isset($editor_data['profile_fields_'.$social_field.'_display_icon']) 
+                || (isset($editor_data['profile_fields_'.$social_field.'_display_icon']) && empty($editor_data['profile_fields_'.$social_field.'_display_icon']))
+            ) {
+                $editor_data['profile_fields_'.$social_field.'_display_icon'] = '<span class="dashicons dashicons-'.$social_field.'"></span>';
+            }
+
+            //set social_field profile html tag to 'a' if icon is select
+            if (isset($editor_data['profile_fields_'.$social_field.'_display']) && $editor_data['profile_fields_'.$social_field.'_display'] === 'icon' ) {
+                $editor_data['profile_fields_'.$social_field.'_html_tag'] = 'a';
+            }
+
+            //set social_field profile display icon size
+            if (!isset($editor_data['profile_fields_'.$social_field.'_display_icon_size']) 
+                || (isset($editor_data['profile_fields_'.$social_field.'_display_icon_size']) && empty($editor_data['profile_fields_'.$social_field.'_display_icon_size']))
+            ) {
+                $editor_data['profile_fields_'.$social_field.'_display_icon_size'] = '16';
+            }
+
+            //set social_field profile display icon background color
+            if (!isset($editor_data['profile_fields_'.$social_field.'_display_icon_background_color'])) {
+                $editor_data['profile_fields_'.$social_field.'_display_icon_background_color'] = '#655997';
+            }
+
+            //set social_field profile display icon border radius
+            if (!isset($editor_data['profile_fields_'.$social_field.'_display_icon_border_radius'])) {
+                $editor_data['profile_fields_'.$social_field.'_display_icon_border_radius'] = '50';
+            }
+            
+        }
+
+
+        return apply_filters('multiple_authors_get_author_boxes_layout_meta_values', $editor_data, $post_id, $use_default);
+    }
+
+    /**
      * Render preview metabox
      *
      * @param \WP_Post $post
@@ -906,12 +966,10 @@ class MA_Author_Boxes extends Module
     {
         $fields = apply_filters('multiple_authors_author_boxes_fields', self::get_fields($post), $post);
 
-        if ($post->post_status === 'auto-draft'
-            || empty(get_post_meta($post->ID, self::META_PREFIX . 'layout_meta_value', true))
-        ) {
-            $editor_data = AuthorBoxesDefault::getAuthorBoxesDefaultData('author_boxes_boxed');
+        if ($post->post_status === 'auto-draft') {
+            $editor_data = $this->get_author_boxes_layout_meta_values($post->ID, true);
         } else {
-            $editor_data = (array) get_post_meta($post->ID, self::META_PREFIX . 'layout_meta_value', true);
+            $editor_data = $this->get_author_boxes_layout_meta_values($post->ID);
         }
 
         $layout_preview_authors = get_post_meta($post->ID, self::META_PREFIX . 'layout_preview_authors', true);
@@ -939,7 +997,7 @@ class MA_Author_Boxes extends Module
             $args['key']   = $key;
             $args['value'] = isset($editor_data[$key]) ? $editor_data[$key] : '';
             $preview_args[$key] = $args;
-        } 
+        }
         
         ?>
         <div class="pressshack-admin-wrapper publishpress-author-box-editor">
@@ -1012,12 +1070,10 @@ class MA_Author_Boxes extends Module
                 <table class="form-table ppma-author-boxes-editor-table" role="presentation">
                     <tbody>
                         <?php 
-                        if ($post->post_status === 'auto-draft'
-                            || empty(get_post_meta($post->ID, self::META_PREFIX . 'layout_meta_value', true))
-                        ) {
-                            $editor_data = AuthorBoxesDefault::getAuthorBoxesDefaultData('author_boxes_boxed');
+                        if ($post->post_status === 'auto-draft') {
+                            $editor_data = $this->get_author_boxes_layout_meta_values($post->ID, true);
                         } else {
-                            $editor_data = (array) get_post_meta($post->ID, self::META_PREFIX . 'layout_meta_value', true);
+                            $editor_data = $this->get_author_boxes_layout_meta_values($post->ID);
                         }
 
                         /**
@@ -1045,6 +1101,8 @@ class MA_Author_Boxes extends Module
      */
     public static function get_rendered_author_boxes_editor_preview($args) {
         ob_start();
+        
+        $legacyPlugin = Factory::getLegacyPlugin();
 
         //custom styles
         $custom_styles = '';
@@ -1181,9 +1239,9 @@ class MA_Author_Boxes extends Module
                                                 if ($profile_show_field || $admin_preview) : ?>
                                                     <?php 
                                                     $profile_field_html = '<'. esc_html($profile_html_tag) .'';
-                                                    $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data"';
+                                                    $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data ppma-author-field-meta"';
                                                     if ($profile_html_tag === 'a') {
-                                                        $profile_field_html .= ' href="'. $profile_value_prefix.$field_value .'';
+                                                        $profile_field_html .= ' href="'. $profile_value_prefix.$field_value .'"';
                                                     }
                                                     $profile_field_html .= '>';
                                                     if ($profile_show_field) {
@@ -1208,7 +1266,7 @@ class MA_Author_Boxes extends Module
 
                                             <?php if ($args['avatar_show']['value']) : ?>
                                                 <div class="pp-author-boxes-avatar">
-                                                    <?php if ($author->get_avatar) : ?>
+                                                    <?php if ($author->get_avatar()) : ?>
                                                         <?php echo $author->get_avatar($args['avatar_size']['value']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                                                     <?php else : ?>
                                                         <?php echo get_avatar($author->user_email, $args['avatar_size']['value']); ?>
@@ -1295,14 +1353,9 @@ class MA_Author_Boxes extends Module
         </div>
         <?php endif; ?>
 
+        <?php Utils::loadLayoutFrontCss(); ?>
+
         <?php if ($admin_preview || is_admin()) : ?>
-            <?php wp_enqueue_style(
-                'multiple-authors-widget-css',
-                PP_AUTHORS_ASSETS_URL . 'css/multiple-authors-widget.css',
-                false,
-                PP_AUTHORS_VERSION,
-                'all'
-            ); ?>
             <div class="pp-author-boxes-editor-preview-styles">
                 <style>
                     <?php echo $custom_styles; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>

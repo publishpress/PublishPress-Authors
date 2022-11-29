@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 7.2.5
 Tested up to: 6.1
-Stable tag: 3.30.1
+Stable tag: 4.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -224,7 +224,7 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= [3.30.1] - 03 Nov 2022 =
+= [4.0.0] - 29 Nov 2022 =
 
 * Update: Added last_article_date to publishpress_authors_list shortcode [publishpress_authors_list last_article_date="1 year ago"]
 * Update: Allow to set Author Boxes previewing authors, #913
@@ -236,9 +236,19 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: Authors_Iterator call in Author_box.php assumes that $post global is populated (which it isn't sometimes) #999
 * Update: Change author 'Name' label to 'Display Name', #991
 * Update: Remove the "All dates" feature in Author Boxes, #990
+* Update: Add Required / Optional settings to Author fields, #1066
 * Fixed: An incongruence in the line 170 between singular and plural, #982
 * Update: Change name of Settings to PublishPress Authors, #981
 * Fixed: Documentation link missing for Author boxes generate template, #978
+* Update: Remove Legacy options and "Layouts" menu, #960
+* Update: Add a Pro sidebar, #1050
+* Update: New "Advanced" tab in settings, #1020
+* Update: Add Dashicons and Fontawesome icon pages link to Author Boxes profile icon field, #1064
+* Update: Move Author Bio up the "Author Profile" screen, #1058
+* Update: Display Pro banner on Boxes and Fields screen, #1052
+* Update: Rename and add option to hide Author Box Display Name, #1057
+* Update: Rename Author Boxes "Author Bio" to "Biographical Info", #1056
+* Update: Use "Avatar" on Profile tab, #1060
 * Update: Authors_ES-IT_Translation_Update-19-October 2022, #979
 * Update: FRENCH_Translation Update_Authors 20 October2022, #984
 

@@ -409,12 +409,10 @@ form#edittag tr.form-field #slug {
     min-width: 400px;
 }
 
-.post-type-ppma_boxes .tablenav.top .alignleft.actions:nth-of-type(1) {
-    display: none;
-}
-
 body.edit-php.post-type-ppmacf_field .row-actions .inline,
-body.edit-php.post-type-ppma_boxes .row-actions .inline {
+body.edit-php.post-type-ppma_boxes .row-actions .inline,
+body.edit-php.post-type-ppmacf_field .tablenav.top .alignleft.actions:not(.bulkactions),
+body.edit-php.post-type-ppma_boxes .tablenav.top .alignleft.actions:not(.bulkactions) {
     display: none;
 }
 

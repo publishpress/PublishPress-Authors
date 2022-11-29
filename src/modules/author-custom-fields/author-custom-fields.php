@@ -624,7 +624,7 @@ class MA_Author_Custom_Fields extends Module
             'slug' => __('Slug', 'publishpress-authors'),
         ];
 
-        unset($columns['cb'], $columns['title']);
+        unset($columns['cb'], $columns['title'], $columns['date']);
 
         // Add the remaining columns.
         $newColumns = array_merge($newColumns, $columns);
@@ -786,7 +786,7 @@ class MA_Author_Custom_Fields extends Module
                 $modal_content = '';
                 $modal_content .= '<div class="new-cf-upgrade-notice">';
                 $modal_content .= '<p>';
-                $modal_content .= __('PublishPress Authors Pro is required to add new Custom Field.', 'publishpress-authors');
+                $modal_content .= __('PublishPress Authors Pro is required to add a new Custom Field.', 'publishpress-authors');
                 $modal_content .= '</p>';
                 $modal_content .= '<p>';
                 $modal_content .= '<a class="upgrade-link" href="https://publishpress.com/links/authors-banner" target="_blank">'. __('Upgrade to Pro', 'publishpress-authors') .'</a>';
@@ -795,7 +795,11 @@ class MA_Author_Custom_Fields extends Module
                 Utils::loadThickBoxModal('ppma-new-cf-thickbox-botton', 500, 150, $modal_content);
                 ?>
                 <style>
-                    .post-new-php.post-type-ppmacf_field { display: none !important; }
+                    .post-new-php.post-type-ppmacf_field,
+                    body.edit-php.post-type-ppmacf_field .tablenav .alignleft.actions,
+                    body.edit-php.post-type-ppmacf_field table.wp-list-table .check-column { 
+                        display: none !important; 
+                    }
                 </style>
                 <script>
                 jQuery(document).ready(function ($) {
