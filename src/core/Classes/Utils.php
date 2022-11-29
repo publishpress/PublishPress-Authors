@@ -1099,4 +1099,33 @@ class Utils
         </div>
         <?php
     }
+
+    /**
+     * Load layout frontend css
+     */
+    public static function loadLayoutFrontCss()
+    { 
+        $legacyPlugin = Factory::getLegacyPlugin();
+        $load_font_awesome = isset($legacyPlugin->modules->multiple_authors->options->load_font_awesome)
+        ? 'yes' === $legacyPlugin->modules->multiple_authors->options->load_font_awesome : true;
+
+        wp_enqueue_style('dashicons');
+        wp_enqueue_style(
+            'multiple-authors-widget-css',
+            PP_AUTHORS_ASSETS_URL . 'css/multiple-authors-widget.css',
+            false,
+            PP_AUTHORS_VERSION,
+            'all'
+        );
+
+        if ($load_font_awesome) {
+            wp_enqueue_style(
+                'multiple-authors-fontawesome',
+                'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css',
+                false,
+                PP_AUTHORS_VERSION,
+                'all'
+            );
+        }
+    }
 }

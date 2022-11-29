@@ -94,9 +94,28 @@ a.ppma-author-field-meta {
     color: #fff;
 }
 
+a.ppma-author-field-meta i {
+    display: inline-block;
+    line-height: 1;
+    font-style: normal;
+    speak: never;
+    text-decoration: inherit;
+    text-transform: none;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    vertical-align: top;
+    text-align: center;
+    transition: color .1s ease-in;
+}
+
 .pp-multiple-authors-layout-boxed .multiple-authors-links a span,
 .pp-multiple-authors-layout-centered .multiple-authors-links a span,
-a.ppma-author-field-meta span {
+a.ppma-author-field-meta span,
+a.ppma-author-field-meta i {
     min-width: 30px;
     height: 30px;
     line-height: 30px;

@@ -1353,14 +1353,9 @@ class MA_Author_Boxes extends Module
         </div>
         <?php endif; ?>
 
+        <?php Utils::loadLayoutFrontCss(); ?>
+
         <?php if ($admin_preview || is_admin()) : ?>
-            <?php wp_enqueue_style(
-                'multiple-authors-widget-css',
-                PP_AUTHORS_ASSETS_URL . 'css/multiple-authors-widget.css',
-                false,
-                PP_AUTHORS_VERSION,
-                'all'
-            ); ?>
             <div class="pp-author-boxes-editor-preview-styles">
                 <style>
                     <?php echo $custom_styles; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
@@ -1373,30 +1368,6 @@ class MA_Author_Boxes extends Module
             );
             ?>
         <?php endif; ?>
-        <?php 
-
-
-            //load font awesome assets if enable
-            $load_font_awesome = isset($legacyPlugin->modules->multiple_authors->options->load_font_awesome)
-            ? 'yes' === $legacyPlugin->modules->multiple_authors->options->load_font_awesome : true;
-
-            if ($load_font_awesome) {
-                wp_enqueue_style(
-                    'multiple-authors-fontawesome',
-                    PP_AUTHORS_ASSETS_URL . 'lib/fontawesome/css/fontawesome.min.css',
-                    false,
-                    PP_AUTHORS_VERSION,
-                    'all'
-                );
-    
-                wp_enqueue_script(
-                    'multiple-authors-fontawesome',
-                    PP_AUTHORS_ASSETS_URL . 'lib/fontawesome/js/fontawesome.min.js',
-                    ['jquery'],
-                    PP_AUTHORS_VERSION
-                );
-            }
-        ?>
         
         <?php
         return ob_get_clean();
