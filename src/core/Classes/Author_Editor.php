@@ -289,6 +289,8 @@ class Author_Editor
             $args['value'] = $author->$key;
             echo self::get_rendered_author_partial($args); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         }
+        //add validation modal
+        Utils::loadThickBoxModal('ppma-required-field-thickbox-botton', 500, 150);
 
         wp_nonce_field('author-edit', 'author-edit-nonce');
     }
@@ -307,7 +309,7 @@ class Author_Editor
                 'label'    => __('General', 'publishpress-authors'),
             ],
             'image'  => [
-                'label' => __('Image', 'publishpress-authors'),
+                'label' => __('Avatar', 'publishpress-authors'),
             ],
         ];
 
@@ -338,6 +340,12 @@ class Author_Editor
                 'sanitize' => 'intval',
                 'tab'      => 'general',
             ],
+            'description' => [
+                'label'    => esc_html__('Biographical Info', 'publishpress-authors'),
+                'type'     => 'textarea',
+                'sanitize' => 'wp_kses_post',
+                'tab'      => 'general',
+            ],
             'first_name'  => [
                 'label' => esc_html__('First Name', 'publishpress-authors'),
                 'type'  => 'text',
@@ -363,7 +371,7 @@ class Author_Editor
                         'label'         => __('Gravatar', 'publishpress-authors'),
                         'description'   => sprintf(
                                             esc_html__(
-                                                '(Uses the %sauthor e-mail%s as Gravatar account)',
+                                                '(Uses the %s Email field %s to find the Gravatar account)',
                                                 'publishpress-authors'
                                             ), 
                                             '<a href="#" class="ppma-image-general-author-focus">', '</a>'
@@ -378,12 +386,6 @@ class Author_Editor
                 'label'    => esc_html__('Website', 'publishpress-authors'),
                 'type'     => 'url',
                 'sanitize' => 'esc_url_raw',
-                'tab'      => 'general',
-            ],
-            'description' => [
-                'label'    => esc_html__('Biographical Info', 'publishpress-authors'),
-                'type'     => 'textarea',
-                'sanitize' => 'wp_kses_post',
                 'tab'      => 'general',
             ],
         ];
@@ -412,12 +414,19 @@ class Author_Editor
             'options'     => [],
             'value'       => '',
             'label'       => '',
+            'requirement' => '',
             'description' => '',
         ];
         $args      = array_merge($defaults, $args);
         $key       = 'authors-' . $args['key'];
         $tab_class = 'ppma-tab-content ppma-' . $args['tab'] . '-tab';
         $tab_style = ($args['tab'] === self::AUTHOR_EDITOR_DEFAULT_TAB) ? '' : 'display:none;';
+        if ($args['requirement'] === 'required') {
+            $required  = true;
+            $tab_class .= ' required-tab form-required';
+        } else {
+            $required  = false;
+        }
         ob_start();
         ?>
         <tr 
@@ -428,6 +437,9 @@ class Author_Editor
             <th scope="row">
                 <?php if (!empty($args['label'])) : ?>
                     <label for="<?php echo esc_attr($key); ?>"><?php echo esc_html($args['label']); ?></label>
+                    <?php if ($required) : ?>
+                        <span class="required">*</span>
+                    <?php endif; ?>
                 <?php endif; ?>
             </th>
             <td>

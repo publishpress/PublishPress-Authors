@@ -115,7 +115,9 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'default_author_for_new_posts' => null,
                     'fallback_user_for_guest_post' => function_exists('get_current_user_id') ? get_current_user_id() : 0,
                     'author_page_post_types'       => [],
-                    'disable_quick_edit_author_box' => 'no'
+                    'disable_quick_edit_author_box' => 'no',
+                    'enable_legacy_layout'         => 'no',
+                    'load_font_awesome'            => 'no'
                 ],
                 'options_page'         => false,
                 'autoload'             => true,
@@ -438,13 +440,6 @@ if (!class_exists('MA_Multiple_Authors')) {
                     unset($currentSubmenu[$itemsToSort['edit.php?post_type=ppmacf_layout']]);
                 }
 
-                // Fields - Pro Placeholders
-                if (isset($itemsToSort['admin.php?page=ppma-pro-placeholders-fields'])) {
-                    $newSubmenu[] = $currentSubmenu[$itemsToSort['admin.php?page=ppma-pro-placeholders-fields']];
-
-                    unset($currentSubmenu[$itemsToSort['admin.php?page=ppma-pro-placeholders-fields']]);
-                }
-
                 // Check if we have other menu items, except settings. They will be added to the end.
                 if (count($currentSubmenu) >= 1) {
                     $itemsToIgnore = [
@@ -576,6 +571,17 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
 
             add_settings_field(
+                'enable_legacy_layout',
+                __(
+                    'Enable legacy "Layouts" feature:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_enable_legacy_layout'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_advanced'
+            );
+
+            add_settings_field(
                 'username_in_search_field',
                 __(
                     'Show username in the search field:',
@@ -583,7 +589,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 ),
                 [$this, 'settings_username_in_search_field'],
                 $this->module->options_group_name,
-                $this->module->options_group_name . '_general'
+                $this->module->options_group_name . '_advanced'
             );
 
             add_settings_field(
@@ -594,7 +600,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 ),
                 [$this, 'settings_default_author_for_new_posts'],
                 $this->module->options_group_name,
-                $this->module->options_group_name . '_general'
+                $this->module->options_group_name . '_advanced'
             );
 
             add_settings_field(
@@ -605,7 +611,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 ),
                 [$this, 'settings_fallback_user_for_guest_post'],
                 $this->module->options_group_name,
-                $this->module->options_group_name . '_general'
+                $this->module->options_group_name . '_advanced'
             );
 
             add_settings_field(
@@ -616,7 +622,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 ),
                 [$this, 'settings_remove_single_user_map_restriction'],
                 $this->module->options_group_name,
-                $this->module->options_group_name . '_general'
+                $this->module->options_group_name . '_advanced'
             );
 
             do_action('publishpress_authors_register_settings_after');
@@ -645,7 +651,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 __('Disable the "Authors" box when using "Quick Edit":', 'publishpress-authors'),
                 [$this, 'settings_disable_quick_edit_author_box_option'],
                 $this->module->options_group_name,
-                $this->module->options_group_name . '_general'
+                $this->module->options_group_name . '_advanced'
             );
 
             add_settings_field(
@@ -694,7 +700,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 __('Layout icons:', 'publishpress-authors'),
                 [$this, 'settings_load_font_awesome_option'],
                 $this->module->options_group_name,
-                $this->module->options_group_name . '_display'
+                $this->module->options_group_name . '_advanced'
             );
 
             /**
@@ -940,6 +946,17 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $this->module->options_group_name . '_maintenance'
             );
 
+            /**
+             * Advanced
+             */
+
+            add_settings_section(
+                $this->module->options_group_name . '_advanced',
+                __return_false(),
+                [$this, 'settings_section_advanced'],
+                $this->module->options_group_name
+            );
+
             do_action('pp_authors_register_settings');
         }
 
@@ -956,6 +973,11 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function settings_section_author_pages()
         {
             echo '<input type="hidden" id="ppma-tab-author-pages" />';
+        }
+
+        public function settings_section_advanced()
+        {
+            echo '<input type="hidden" id="ppma-tab-advanced" />';
         }
 
         public function settings_section_shortcodes()
@@ -1829,6 +1851,30 @@ if (!class_exists('MA_Multiple_Authors')) {
         /**
          * @param array $args
          */
+        public function settings_enable_legacy_layout($args = [])
+        {
+            $id    = $this->module->options_group_name . '_enable_legacy_layout';
+            $value = isset($this->module->options->enable_legacy_layout) ? $this->module->options->enable_legacy_layout : '';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[enable_legacy_layout]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
+
+            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
+                . esc_html__(
+                    'This will enable legacy layout options.',
+                    'publishpress-authors'
+                )
+                . '</span>';
+
+
+            echo '</label>';
+        }
+
+
+        /**
+         * @param array $args
+         */
         public function settings_show_author_post_authors($args = [])
         {
             $id    = $this->module->options_group_name . '_show_author_post_authors';
@@ -2297,6 +2343,10 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $new_options['remove_single_user_map_restriction'] = 'no';
             }
 
+            if (!isset($new_options['enable_legacy_layout'])) {
+                $new_options['enable_legacy_layout'] = 'no';
+            }
+
             if (!isset($new_options['show_author_post_authors'])) {
                 $new_options['show_author_post_authors'] = 'no';
             }
@@ -2368,6 +2418,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     '#ppma-tab-author-pages' => esc_html__('Author Pages', 'publishpress-authors'),
                     '#ppma-tab-shortcodes'  => esc_html__('Shortcodes', 'publishpress-authors'),
                     '#ppma-tab-maintenance' => esc_html__('Maintenance', 'publishpress-authors'),
+                    '#ppma-tab-advanced' => esc_html__('Advanced', 'publishpress-authors'),
                 ]
             );
 

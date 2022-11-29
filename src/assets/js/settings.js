@@ -132,13 +132,11 @@ jQuery(document).ready(function ($) {
             $('tr.ppauthors-color-scheme-field').show();
             $('#multiple_authors_multiple_authors_options_show_email_link').closest('tr').show();
             $('#multiple_authors_multiple_authors_options_show_site_link').closest('tr').show();
-            $('#multiple_authors_multiple_authors_options_load_font_awesome').closest('tr').show();
         } else {
             $('#multiple_authors_multiple_authors_options_title_appended_to_content').closest('tr').hide();
             $('tr.ppauthors-color-scheme-field').hide();
             $('#multiple_authors_multiple_authors_options_show_email_link').closest('tr').hide();
             $('#multiple_authors_multiple_authors_options_show_site_link').closest('tr').hide();
-            $('#multiple_authors_multiple_authors_options_load_font_awesome').closest('tr').hide();
         }
     }
 

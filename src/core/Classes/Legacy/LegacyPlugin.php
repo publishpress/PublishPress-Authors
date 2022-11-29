@@ -156,11 +156,11 @@ class LegacyPlugin
         $defaultDirs = [
             'modules-settings'     => PP_AUTHORS_MODULES_PATH,
             'author-boxes'         => PP_AUTHORS_MODULES_PATH,
+            'author-custom-fields'  => PP_AUTHORS_MODULES_PATH,
             'settings'             => PP_AUTHORS_MODULES_PATH,
             'multiple-authors'     => PP_AUTHORS_MODULES_PATH,
             'default-layouts'      => PP_AUTHORS_MODULES_PATH,
             'rest-api'             => PP_AUTHORS_MODULES_PATH,
-            'pro-placeholders'     => PP_AUTHORS_MODULES_PATH,
             'polylang-integration' => PP_AUTHORS_MODULES_PATH,
             'reviews'              => PP_AUTHORS_MODULES_PATH,
         ];

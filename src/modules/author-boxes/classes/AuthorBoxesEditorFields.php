@@ -234,6 +234,12 @@ class AuthorBoxesEditorFields
      */
     public static function getNameFields($fields, $post) 
     {
+        $fields['name_show'] = [
+            'label'       => esc_html__('Show Display Name', 'publishpress-authors'),
+            'type'        => 'checkbox',
+            'sanitize'    => 'absint',
+            'tab'         => 'name',
+        ];
         $fields['name_size'] = [
             'label'    => esc_html__('Size', 'publishpress-authors'),
             'type'     => 'number',
@@ -365,13 +371,13 @@ class AuthorBoxesEditorFields
             'tab'         => 'meta',
         ];
         $fields['meta_email_show'] = [
-            'label'       => esc_html__('Show email link', 'publishpress-authors'),
+            'label'       => esc_html__('Show Email field', 'publishpress-authors'),
             'type'        => 'checkbox',
             'sanitize'    => 'absint',
             'tab'         => 'meta',
         ];
         $fields['meta_site_link_show'] = [
-            'label'    => esc_html__('Show site link', 'publishpress-authors'),
+            'label'    => esc_html__('Show Website field', 'publishpress-authors'),
             'type'     => 'checkbox',
             'sanitize' => 'absint',
             'tab'      => 'meta',
@@ -508,7 +514,7 @@ class AuthorBoxesEditorFields
     {
         $profile_fields   = Author_Editor::get_fields(false);
         $profile_fields   = apply_filters('multiple_authors_author_fields', $profile_fields, false);
-        
+
         $index = 0;
         foreach ($profile_fields as $key => $data) {
             if (!in_array($key, MA_Author_Boxes::AUTHOR_BOXES_EXCLUDED_FIELDS)) {
@@ -527,6 +533,19 @@ class AuthorBoxesEditorFields
                     'sanitize'    => 'absint',
                     'tabbed'      => 1,
                     'tab_name'    => $key,
+                    'tab'         => 'profile_fields',
+                ];
+                $fields['profile_fields_' . $key . '_display_position'] = [
+                    'label'       => sprintf(esc_html__('Show %1s after', 'publishpress-authors'), $data['label']),
+                    'type'        => 'select',
+                    'sanitize'    => 'sanitize_text_field',
+                    'tabbed'      => 1,
+                    'tab_name'    => $key,
+                    'options'  => [
+                        'meta'  => esc_html__('Meta Row', 'publishpress-authors'),
+                        'name' => esc_html__('Name Row', 'publishpress-authors'),
+                        'bio'    => esc_html__('Biographical Info Row', 'publishpress-authors')
+                    ],
                     'tab'         => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_html_tag'] = [
@@ -591,15 +610,46 @@ class AuthorBoxesEditorFields
                     'tab_name'    => $key,
                     'tab'         => 'profile_fields',
                 ];
+
+                $field_description = sprintf(esc_html__('You can use icons from Dashicons and Font Awesome. %1s %2sClick here for documentation%3s.', 'publishpress-authors'), '<br />', '<a href="https://publishpress.com/knowledge-base/author-fields-icons/" target="blank">', '</a>');
+
                 $fields['profile_fields_' . $key . '_display_icon'] = [
                     'label'       => sprintf(esc_html__('%1s Display Icon', 'publishpress-authors'), $data['label']),
-                    'description' => esc_html__('Example, <span class="dashicons dashicons-admin-links"></span>', 'publishpress-authors'),
+                    'description' => $field_description,
                     'type'        => 'text',
                     'sanitize'    => ['stripslashes_deep', 'htmlspecialchars'],
                     'tabbed'      => 1,
                     'tab_name'    => $key,
                     'tab'         => 'profile_fields',
                 ];
+                $fields['profile_fields_' . $key . '_display_icon_size'] = [
+                    'label'    => sprintf(esc_html__('%1s Display Icon Size', 'publishpress-authors'), $data['label']),
+                    'type'     => 'number',
+                    'sanitize' => 'intval',
+                    'tabbed'   => 1,
+                    'tab_name' => $key,
+                    'tab'      => 'profile_fields',
+                ];
+
+                $fields['profile_fields_' . $key . '_display_icon_background_color'] = [
+                    'label'    => sprintf(esc_html__('%1s Display Icon Background Color', 'publishpress-authors'), $data['label']),
+                    'type'     => 'color',
+                    'sanitize' => 'sanitize_text_field',
+                    'tabbed'   => 1,
+                    'tab_name' => $key,
+                    'tab'      => 'profile_fields',
+                ];
+                $fields['profile_fields_' . $key . '_display_icon_border_radius'] = [
+                    'label'      => sprintf(esc_html__('%1s Display Icon Border Radius %2s', 'publishpress-authors'), $data['label'], '(%)'),
+                    'type'       => 'number',
+                    'min'        => '0',
+                    'max'        => '100',
+                    'sanitize'   => 'intval',
+                    'tabbed'     => 1,
+                    'tab_name'   => $key,
+                    'tab'        => 'profile_fields',
+                ];
+
                 $fields['profile_fields_' . $key . '_size'] = [
                     'label'    => esc_html__('Size', 'publishpress-authors'),
                     'type'     => 'number',
@@ -720,7 +770,7 @@ class AuthorBoxesEditorFields
     public static function getBioFields($fields, $post) 
     {
         $fields['author_bio_show'] = [
-            'label'       => esc_html__('Show Author Bio', 'publishpress-authors'),
+            'label'       => esc_html__('Show Biographical Info', 'publishpress-authors'),
             'type'        => 'checkbox',
             'sanitize'    => 'absint',
             'tab'         => 'author_bio',

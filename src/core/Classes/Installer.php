@@ -24,7 +24,9 @@
 namespace MultipleAuthors\Classes;
 
 use MultipleAuthors\Capability;
+use MultipleAuthors\Factory;
 use MultipleAuthors\Classes\Objects\Author;
+use MA_Author_Custom_Fields;
 use MA_Author_Boxes;
 use WP_Role;
 
@@ -48,6 +50,8 @@ class Installer
         self::addManageLayoutsCapabilitiesToRoles();
         self::flushRewriteRules();
         self::createDefaultAuthorBoxes();
+        self::addManageFieldsCapabilitiesToRoles();
+        self::createDefaultCustomFields();
 
         /**
          * @param string $currentVersion
@@ -62,6 +66,8 @@ class Installer
      */
     public static function runUpgradeTasks($currentVersions)
     {
+        $legacyPlugin = Factory::getLegacyPlugin();
+        
         if (version_compare($currentVersions, '2.0.2', '<')) {
             // Do not execute the post_author migration to post terms if Co-Authors Plus is activated.
             if (!isset($GLOBALS['coauthors_plus']) || empty($GLOBALS['coauthors_plus'])) {
@@ -77,6 +83,13 @@ class Installer
         if (version_compare($currentVersions, '3.30.0', '<')) {
             self::addManageLayoutsCapabilitiesToRoles();
             self::createDefaultAuthorBoxes();
+        }
+
+        if (version_compare($currentVersions, '4.0.0', '<')) {
+            self::addManageFieldsCapabilitiesToRoles();
+            self::createDefaultCustomFields();
+            self::updateAuthorBoxesFieldValue(['name_show' => 1]);
+            $legacyPlugin->update_module_option('multiple_authors', 'enable_legacy_layout', 'yes');
         }
 
         /**
@@ -379,4 +392,30 @@ class Installer
         $adminRole = get_role('administrator');
         $adminRole->add_cap('ppma_manage_layouts');
     }
+
+    private static function addManageFieldsCapabilitiesToRoles()
+    {
+        $adminRole = get_role('administrator');
+        $adminRole->add_cap('ppma_manage_custom_fields');
+    }
+
+    /**
+     * Create the default custom boxes.
+     */
+    private static function createDefaultCustomFields()
+    {
+        MA_Author_Custom_Fields::createDefaultCustomFields();
+    }
+
+    /**
+     * Update author boxes field value.
+     *
+     * @param array $fields_data
+     * @return void
+     */
+    private static function updateAuthorBoxesFieldValue($fields_data)
+    {
+        MA_Author_Boxes::updateAuthorBoxesFieldValue($fields_data);
+    }
+
 }

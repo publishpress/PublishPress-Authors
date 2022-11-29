@@ -16,6 +16,10 @@ defined('ABSPATH') or die('No direct script access allowed.');
 if (!defined('PP_AUTHORS_LOADED')) {
     require_once __DIR__ . '/defines.php';
 
+    if (file_exists(__DIR__ . '/vendor/cmb2/cmb2/init.php')) {
+        require_once __DIR__ . '/vendor/cmb2/cmb2/init.php';
+    }
+    
     if (!class_exists(PP_AUTHORS_AUTOLOAD_CLASS_NAME) && !class_exists('MultipleAuthors\\Plugin')) {
         $autoloadPath = PP_AUTHORS_VENDOR_PATH . 'autoload.php';
         if (file_exists($autoloadPath)) {
@@ -52,6 +56,10 @@ if (!defined('PP_AUTHORS_LOADED')) {
                                 'screens' => [
                                     ['base' => 'edit-tags', 'id' => 'edit-author', 'taxonomy' => 'author'],
                                     ['base' => 'term', 'id' => 'edit-author', 'taxonomy' => 'author'],
+                                    ['base' => 'edit', 'id' => 'edit-ppma_boxes', 'post_type' => 'ppma_boxes'],
+                                    ['base' => 'post', 'id' => 'ppma_boxes', 'post_type' => 'ppma_boxes'],
+                                    ['base' => 'edit', 'id' => 'edit-ppmacf_field', 'post_type' => 'ppmacf_field'],
+                                    ['base' => 'post', 'id' => 'ppmacf_field', 'post_type' => 'ppmacf_field'],
                                     [
                                         'base' => 'authors_page_ppma-modules-settings',
                                         'id'   => 'authors_page_ppma-modules-settings'

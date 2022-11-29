@@ -398,7 +398,12 @@ class Utils
         $legacyPlugin = Factory::getLegacyPlugin();
 
         if (empty(self::$enabledPostTypes)) {
-            self::$enabledPostTypes = Util::get_post_types_for_module($legacyPlugin->modules->multiple_authors);
+            if (isset($legacyPlugin->modules->multiple_authors)) {
+                $post_types = Util::get_post_types_for_module($legacyPlugin->modules->multiple_authors);
+            } else {
+                $post_types = [];
+            }
+            self::$enabledPostTypes = $post_types;
         }
 
         return self::$enabledPostTypes;
@@ -995,5 +1000,132 @@ class Utils
             </body>
         </html>
         <?php
+    }
+
+    /**
+     * Check if Author's pro is active
+     */
+    public static function isAuthorsProActive()
+    {
+        if (class_exists('PPAuthorsPro\\Plugin')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Load thickbox modal
+     *
+     * @param string $button_class
+     * @param string $width
+     * @param string $height
+     * @param string $modal_content
+     * @return void
+     */
+    public static function loadThickBoxModal($button_class = 'ppma-thickbox-botton', $width = '600', $height = '550', $modal_content = '')
+    {
+        add_thickbox();
+        ?>
+        <div id="ppma-thickbox-content" style="display:none;">
+            <div class="ppma-thickbox-modal-content"><?php echo $modal_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
+        </div>
+        <a
+            href="#TB_inline?&width=<?php echo esc_attr($width); ?>&height=<?php echo esc_attr($height); ?>&inlineId=ppma-thickbox-content" 
+            class="<?php echo esc_attr($button_class); ?> thickbox">
+        </a>
+        <?php
+    }
+
+    /**
+     * Load pro sidebar
+     */
+    public static function ppma_pro_sidebar()
+    {
+        ?>
+        <div class="ppma-advertisement-right-sidebar">
+            <div class="advertisement-box-content postbox ppma-advert">
+                <div class="postbox-header ppma-advert">
+                    <h3 class="advertisement-box-header hndle is-non-sortable">
+                        <span><?php echo esc_html__('Upgrade to PublishPress Authors Pro', 'publishpress-authors'); ?></span>
+                    </h3>
+                </div>
+
+                <div class="inside ppma-advert">
+                    <p><?php echo esc_html__('Enhance the power of PublishPress Authors with the Pro version:', 'publishpress-authors'); ?>
+                    </p>
+                    <ul>
+                        <li><?php echo esc_html__('Add new custom fields', 'publishpress-authors'); ?></li>
+                        <li><?php echo esc_html__('Add fields for social networks', 'publishpress-authors'); ?></li>
+                        <li><?php echo esc_html__('Remove PublishPress ads and branding', 'publishpress-authors'); ?></li>
+                        <li><?php echo esc_html__('Fast, professional support', 'publishpress-authors'); ?></li>
+                    </ul>
+                    <div class="upgrade-btn">
+                        <a href="https://publishpress.com/links/authors-menu" target="__blank"><?php echo esc_html__('Upgrade to Pro', 'publishpress-authors'); ?></a>
+                    </div>
+                </div>
+            </div>
+            <div class="advertisement-box-content postbox ppma-advert">
+                <div class="postbox-header">
+                    <h3 class="advertisement-box-header hndle is-non-sortable">
+                        <span><?php echo esc_html__('Need PublishPress Authors Support?', 'publishpress-authors'); ?></span>
+                    </h3>
+                </div>
+
+                <div class="inside ppma-advert">
+                    <p><?php echo esc_html__('If you need help or have a new feature request, let us know.', 'publishpress-authors'); ?>
+                        <a class="advert-link" href="https://wordpress.org/plugins/publishpress-authors/" target="_blank">
+                        <?php echo esc_html__('Request Support', 'publishpress-authors'); ?> 
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="linkIcon">
+                                <path
+                                    d="M18.2 17c0 .7-.6 1.2-1.2 1.2H7c-.7 0-1.2-.6-1.2-1.2V7c0-.7.6-1.2 1.2-1.2h3.2V4.2H7C5.5 4.2 4.2 5.5 4.2 7v10c0 1.5 1.2 2.8 2.8 2.8h10c1.5 0 2.8-1.2 2.8-2.8v-3.6h-1.5V17zM14.9 3v1.5h3.7l-6.4 6.4 1.1 1.1 6.4-6.4v3.7h1.5V3h-6.3z"
+                                ></path>
+                            </svg>
+                        </a>
+                    </p>
+                    <p>
+                    <?php echo esc_html__('Detailed documentation is also available on the plugin website.', 'publishpress-authors'); ?> 
+                        <a class="advert-link" href="https://publishpress.com/knowledge-base/getting-started-ma/" target="_blank">
+                        <?php echo esc_html__('View Knowledge Base', 'publishpress-authors'); ?> 
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="linkIcon">
+                                <path
+                                    d="M18.2 17c0 .7-.6 1.2-1.2 1.2H7c-.7 0-1.2-.6-1.2-1.2V7c0-.7.6-1.2 1.2-1.2h3.2V4.2H7C5.5 4.2 4.2 5.5 4.2 7v10c0 1.5 1.2 2.8 2.8 2.8h10c1.5 0 2.8-1.2 2.8-2.8v-3.6h-1.5V17zM14.9 3v1.5h3.7l-6.4 6.4 1.1 1.1 6.4-6.4v3.7h1.5V3h-6.3z"
+                                ></path>
+                            </svg>
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <?php
+    }
+
+    /**
+     * Load layout frontend css
+     */
+    public static function loadLayoutFrontCss()
+    { 
+        $legacyPlugin = Factory::getLegacyPlugin();
+        $load_font_awesome = isset($legacyPlugin->modules->multiple_authors->options->load_font_awesome)
+        ? 'yes' === $legacyPlugin->modules->multiple_authors->options->load_font_awesome : true;
+
+        wp_enqueue_style('dashicons');
+        wp_enqueue_style(
+            'multiple-authors-widget-css',
+            PP_AUTHORS_ASSETS_URL . 'css/multiple-authors-widget.css',
+            false,
+            PP_AUTHORS_VERSION,
+            'all'
+        );
+
+        if ($load_font_awesome) {
+            wp_enqueue_style(
+                'multiple-authors-fontawesome',
+                'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css',
+                false,
+                PP_AUTHORS_VERSION,
+                'all'
+            );
+        }
     }
 }

@@ -1491,6 +1491,9 @@ class Plugin
             'term_author_link'              => esc_url_raw($term_author_link),
             'view_text'                     => esc_html__('View', 'publishpress-authors'),
             'name_label'                    => esc_html__('Display Name', 'publishpress-authors'),
+            'isRequired'                    => esc_html__('is required', 'publishpress-authors'),
+            'isRequiredWarning'             => esc_html__('Please complete the following required fields to save your changes:', 'publishpress-authors'),
+            'fieldTitleRequired'             => esc_html__('Field title is required', 'publishpress-authors'),
         ];
 
         wp_localize_script(
@@ -1877,6 +1880,8 @@ class Plugin
             $capabilities,
             [
                 'ppma_manage_authors',
+                'ppma_manage_layouts',
+                'ppma_manage_custom_fields',
                 'ppma_edit_post_authors',
                 'ppma_edit_own_profile',
             ]

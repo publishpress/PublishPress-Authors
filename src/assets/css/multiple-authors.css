@@ -409,8 +409,179 @@ form#edittag tr.form-field #slug {
     min-width: 400px;
 }
 
-.post-type-ppma_boxes .tablenav.top .alignleft.actions:nth-of-type(1) {
+body.edit-php.post-type-ppmacf_field .row-actions .inline,
+body.edit-php.post-type-ppma_boxes .row-actions .inline,
+body.edit-php.post-type-ppmacf_field .tablenav.top .alignleft.actions:not(.bulkactions),
+body.edit-php.post-type-ppma_boxes .tablenav.top .alignleft.actions:not(.bulkactions) {
     display: none;
+}
+
+.ppma-tab-content span.required {
+    color: red;
+}
+
+.ppma-tab-content.form-required.form-invalid td:after {
+    display: none;
+}
+
+.ppma-thickbox-modal-content {
+    text-align: center;
+    padding: 20px;
+}
+
+.ppma-thickbox-modal-content p {
+    line-height: 1.4em;
+    font-size: 16px;
+    margin-bottom: 20px;
+    margin-top: 0;
+    padding: 0;
+}
+
+.ppma-thickbox-modal-content .upgrade-link {
+    font-size: 17px;
+    background: #FCB223;
+    color: #000;
+    font-weight: normal;
+    text-decoration: none;
+    padding: 9px 12px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    border: 1px solid #fca871;
+    break-inside: avoid;
+    white-space: nowrap;
+}
+
+.ppma-advertisement-right-sidebar .upgrade-btn a {
+    background: #FCB223;
+    color: #000 !important;
+    font-weight: normal;
+    text-decoration: none;
+    padding: 9px 12px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    border: 1px solid #fca871;
+    break-inside: avoid;
+    white-space: nowrap;
+}
+
+.ppma-advertisement-right-sidebar .upgrade-btn a:hover {
+    background: #fcca46;
+    color: #000 !important;
+}
+
+.ppma-advertisement-right-sidebar h3.hndle {
+    font-size: 14px;
+    padding: 8px 12px;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.ppseries-token-right-sidebar h3.hndle {
+    font-size: 14px;
+    padding: 8px 12px;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.ppma-advertisement-right-sidebar h3.hndle {
+    font-size: 14px;
+    padding: 8px 12px;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.ppma-advertisement-right-sidebar .inside ul {
+    margin-bottom: 20px;
+}
+
+.ppma-advertisement-right-sidebar .inside ul li {
+    position: relative;
+    padding-left: 22px;
+    font-weight: 600;
+    font-size: .9em;
+}
+
+.ppma-advertisement-right-sidebar .inside ul li:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+    background-color: #3C50FF;
+    mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z'/></svg>");
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z'/></svg>");
+    mask-size: 16px;
+    -webkit-mask-size: 16px;
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+    mask-position: left;
+    -webkit-mask-position: left;
+}
+
+.ppma-advertisement-right-sidebar a.advert-link {
+    display: block;
+    margin-top: 10px;
+    font-size: 1em;
+}
+
+.ppma-advertisement-right-sidebar .advertisement-box-header {
+    background: #655897;
+    color: #ffffff;
+}
+
+.ppma-advertisement-right-sidebar .advertisement-box-content {
+    border: 1px solid #655897;
+}
+
+#screen-options-wrap label[for^="ppma_boxes_banner-hide"],
+#ppma_boxes_banner .postbox-header:not(.ppma-advert),
+#screen-options-wrap label[for^="ppmacf_banner-hide"],
+#ppmacf_banner .postbox-header:not(.ppma-advert) {
+    display: none !important;
+}
+
+#ppma_boxes_banner,
+#ppmacf_banner {
+    background: unset !important;
+    border: none !important;
+    margin-bottom: 0 !important;
+}
+
+#ppma_boxes_banner .inside:not(.ppma-advert),
+#ppmacf_banner .inside:not(.ppma-advert) {
+    padding: 0 !important;
+}
+
+@media only screen and (min-width: 1075px) {
+    .ppma-advertisement-right-sidebar-message,
+    .upgrade-btn {
+        display: inline-block;
+    }
+
+    .ppma-advertisement-right-sidebar-message {
+        margin-right: 25px;
+    }
+}
+
+@media only screen and (max-width: 1074px) {
+    .ppma-advertisement-right-sidebar-message,
+    .upgrade-btn {
+        display: block;
+    }
+
+    .upgrade-btn {
+        margin-top: 20px;
+    }
+
+    .upgrade-btn a {
+        max-width: 170px;
+    }
 }
 
 @media screen and (max-width: 768px) {

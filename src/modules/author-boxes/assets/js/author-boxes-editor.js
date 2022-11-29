@@ -22,24 +22,37 @@
                     }, 100);
                 },
             });
-
-            /**
-             * Profile fields title toggle
-             */
-            $(document).on('click', '.ppma-editor-profile-header-title', function (event) {
-                event.preventDefault();
-                var current_header = $(this);
-                var current_name   = current_header.attr('data-fields_name');
-                
-                if (current_header.hasClass('opened')) {
-                    current_header.removeClass('opened').addClass('closed');
-                    $('.tabbed-content-' + current_name).hide();
-                } else {
-                    current_header.removeClass('closed').addClass('opened');
-                    $('.tabbed-content-' + current_name).show();
-                }
-            });
         }
+
+        /**
+         * Populate social icon on button click
+         */
+        $(document).on('click', '.ppma-add-social-icon', function (event) {
+            event.preventDefault();
+            var field_icon = $(this).attr('data-social');
+            $('#profile_fields_' + field_icon + '_display_icon').val('<span class="dashicons dashicons-' + field_icon + '"></span>');
+
+            if ($('#profile_fields_show_' + field_icon + '').is(':checked')) {
+                generateEditorPreview(getAllEditorFieldsValues(), true);
+            }
+        });
+
+        /**
+         * Profile fields title toggle
+         */
+        $(document).on('click', '.ppma-editor-profile-header-title', function (event) {
+            event.preventDefault();
+            var current_header = $(this);
+            var current_name   = current_header.attr('data-fields_name');
+            
+            if (current_header.hasClass('opened')) {
+                current_header.removeClass('opened').addClass('closed');
+                $('.tabbed-content-' + current_name).hide();
+            } else {
+                current_header.removeClass('closed').addClass('opened');
+                $('.tabbed-content-' + current_name).show();
+            }
+        });
 
         /**
          * boxes editor tab switch
@@ -60,6 +73,10 @@
             //generate export data if it's export tab
             if (clicked_tab === 'export') {
                 generateEditorExportData();
+            }
+            //clear previously generated template to allow new changes
+            if (clicked_tab === 'generate_template') {
+                $('#template_action').val('');
             }
             //show this current tab contents
             $('.ppma-' + clicked_tab + '-tab').show();
@@ -219,10 +236,13 @@
 
             //update name html tag
             if (current_field_name === 'name_html_tag') {
-                var name_html_tag = $('#name_html_tag').val();
-                $(".pp-author-boxes-name").replaceWith(function () {
-                    return "<" + name_html_tag + " class='pp-author-boxes-name multiple-authors-name'>" + this.innerHTML + "</" + name_html_tag + ">";
-                });
+                //this only matter if name is displayed
+                if ($('#name_show').is(':checked')) {
+                    var name_html_tag = $('#name_html_tag').val();
+                    $(".pp-author-boxes-name").replaceWith(function () {
+                        return "<" + name_html_tag + " class='pp-author-boxes-name multiple-authors-name'>" + this.innerHTML + "</" + name_html_tag + ">";
+                    });
+                }
                 return;
             }
 
@@ -233,6 +253,18 @@
                     var author_bio_html_tag = $('#author_bio_html_tag').val();
                     $(".pp-author-boxes-description").replaceWith(function () {
                         return "<" + author_bio_html_tag + " class='pp-author-boxes-description multiple-authors-description'>" + this.innerHTML + "</" + author_bio_html_tag + ">";
+                    });
+                }
+                return;
+            }
+
+            //update meta html tag
+            if (current_field_name === 'meta_html_tag') {
+                //this only matter if meta is displayed
+                if ($('#meta_show').is(':checked')) {
+                    var meta_html_tag = $('#meta_html_tag').val();
+                    $(".pp-author-boxes-meta").replaceWith(function () {
+                        return "<" + meta_html_tag + " class='pp-author-boxes-meta multiple-authors-links'>" + this.innerHTML + "</" + meta_html_tag + ">";
                     });
                 }
                 return;
@@ -271,6 +303,9 @@
                 'author_recent_posts_orderby',
                 'author_recent_posts_order'
             ];
+            var name_refresh_trigger = [
+                'name_show'
+            ];
             var bio_refresh_trigger = [
                 'author_bio_show',
                 'author_bio_limit'
@@ -298,10 +333,11 @@
                 profile_refresh_trigger.push('profile_fields_' + field_name + '_display_prefix');
                 profile_refresh_trigger.push('profile_fields_' + field_name + '_display_suffix');
                 profile_refresh_trigger.push('profile_fields_' + field_name + '_display_icon');
+                profile_refresh_trigger.push('profile_fields_' + field_name + '_display_position');
             }
 
             var force_refresh = false;
-            if (post_refresh_trigger.includes(current_field_name) || bio_refresh_trigger.includes(current_field_name) || avatar_refresh_trigger.includes(current_field_name) || meta_refresh_trigger.includes(current_field_name) || profile_refresh_trigger.includes(current_field_name) || current_field_name === 'preview_author_names[]') {
+            if (post_refresh_trigger.includes(current_field_name) || bio_refresh_trigger.includes(current_field_name) || avatar_refresh_trigger.includes(current_field_name) || meta_refresh_trigger.includes(current_field_name) || profile_refresh_trigger.includes(current_field_name) || name_refresh_trigger.includes(current_field_name) || current_field_name === 'preview_author_names[]') {
                 force_refresh = true;
             }
 
@@ -412,6 +448,15 @@
                 var field_name = profile_fields[field_key];
                 if (editor_values['profile_fields_' + field_name + '_size']) {
                     editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + ' .ppma-author-' + field_name + '-profile-data { font-size: ' + editor_values['profile_fields_' + field_name + '_size'] + 'px !important; } ';
+                }
+                if (editor_values['profile_fields_' + field_name + '_display_icon_size']) {
+                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + ' .ppma-author-' + field_name + '-profile-data span, .pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + ' .ppma-author-' + field_name + '-profile-data i { font-size: ' + editor_values['profile_fields_' + field_name + '_display_icon_size'] + 'px !important; } ';
+                }
+                if (editor_values['profile_fields_' + field_name + '_display_icon_background_color']) {
+                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + ' .ppma-author-' + field_name + '-profile-data { background-color: ' + editor_values['profile_fields_' + field_name + '_display_icon_background_color'] + ' !important; } ';
+                }
+                if (editor_values['profile_fields_' + field_name + '_display_icon_border_radius']) {
+                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + ' .ppma-author-' + field_name + '-profile-data { border-radius: ' + editor_values['profile_fields_' + field_name + '_display_icon_border_radius'] + '% !important; } ';
                 }
                 if (editor_values['profile_fields_' + field_name + '_line_height']) {
                     editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + ' .ppma-author-' + field_name + '-profile-data { line-height: ' + editor_values['profile_fields_' + field_name + '_line_height'] + 'px !important; } ';

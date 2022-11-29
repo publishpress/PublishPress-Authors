@@ -193,6 +193,30 @@ jQuery(document).ready(function ($) {
 
         }
     }
+    
+    if ($("body").hasClass("post-php") || $("body").hasClass("post-new-php")  || $("body").hasClass("edit-php")) {
+        //prevent deletion of default field
+            var default_fields = ['first_name', 'last_name', 'user_email', 'user_url'];
+        if ($('input[name="ppmacf_slug"]').length > 0) {
+            if (default_fields.includes($('input[name="ppmacf_slug"]').val())) {
+                $('input[name="ppmacf_slug"]').attr('readonly', true);
+                $('select[name="ppmacf_type"] option:not(:selected)').attr('disabled', true);
+                $('#submitdiv .edit-post-status').hide();
+                $('#submitdiv .edit-visibility').hide();
+                $('#submitdiv .edit-timestamp').hide();
+                $('#major-publishing-actions #delete-action').hide();
+            }
+        }
+        if ($('body.edit-php.post-type-ppmacf_field table.wp-list-table tbody tr').length > 0) {
+            $('body.edit-php.post-type-ppmacf_field table.wp-list-table tbody tr').each(function () {
+                var current_slug = $(this).find('td.column-slug').html();
+                if (default_fields.includes(current_slug)) {
+                    $(this).find('.check-column input').attr('disabled', true);
+                    $(this).find('.column-primary .row-actions').hide();
+                }
+            });
+        }
+    }
 
     if ($("body").hasClass("edit-php")) {
         authorsUserSlugSelect2($('.authors-user-slug-search'));
@@ -551,6 +575,12 @@ jQuery(document).ready(function ($) {
          * Update name field
          */
         $('form#edittag tr.form-field.term-name-wrap th label').html(MultipleAuthorsStrings.name_label);
+
+        /**
+         * Add required to display name field
+         */
+        $('form#edittag tr.form-field.term-name-wrap').addClass('required-tab');
+        $('form#edittag tr.form-field.term-name-wrap th label').after(' <span class="required">*</span>');
     }
 
     /**
@@ -612,8 +642,31 @@ jQuery(document).ready(function ($) {
         var $form = $(this);
 
         $('.author-response-notice').remove();
+        $('form#edittag tr.form-field').removeClass('form-invalid');
 
         event.preventDefault();
+
+        //validate required fields
+        var field_label,
+        field_object,
+        field_error_count = 0,
+        field_error_message = '<div style="color:red;">' + MultipleAuthorsStrings.isRequiredWarning + '</div><ul>';
+        
+        $.each($('form#edittag tr.form-field.required-tab'), function (i, field) {
+            field_object = $(this).find('td input');
+            if (isEmptyOrSpaces(field_object.val())) {
+                field_label = field_object.closest('tr').addClass('form-invalid').find('label').html();
+                field_error_count = 1;
+                field_error_message += '<li>' + field_label + ' ' + MultipleAuthorsStrings.isRequired + ' <span class="required">*</span></li>';
+            }
+        });
+        field_error_message += '</ul>';
+
+        if (field_error_count > 0) {
+            $('.ppma-thickbox-modal-content').html(field_error_message);
+            $('.ppma-required-field-thickbox-botton').trigger('click');
+          return;
+        }
 
         //prepare ajax data
         var data = {
@@ -638,6 +691,21 @@ jQuery(document).ready(function ($) {
                 $form.unbind('submit').submit();
             }
         });
+
+    });
+
+    //prevent custon field submission if title is empty.
+    $('body.post-type-ppmacf_field form#post').submit(function (event) {
+
+        if (isEmptyOrSpaces($('input[name="post_title"]').val())) {
+            event.preventDefault();
+            var field_error_message = '<div style="color:red;">' + MultipleAuthorsStrings.isRequiredWarning + '</div><ul>';
+            field_error_message += '<li>' + MultipleAuthorsStrings.fieldTitleRequired + ' <span class="required">*</span></li>';
+            field_error_message += '</ul>';
+            $('.ppma-thickbox-modal-content').html(field_error_message);
+            $('.ppma-general-thickbox-botton').trigger('click');
+          return;
+        }
 
     });
 
@@ -741,6 +809,10 @@ jQuery(document).ready(function ($) {
             .removeClass('wp-not-current-submenu')
             .addClass('current');
              
+    }
+
+    function isEmptyOrSpaces(str) {
+      return str == '' || str === null || str.match(/^ *$/) !== null;
     }
 
 });

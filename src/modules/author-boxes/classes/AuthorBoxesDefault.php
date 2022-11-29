@@ -43,7 +43,7 @@ class AuthorBoxesDefault
      * @param string $default_slug
      * @return array
      */
-    public static function getAuthorBoxesDefaultData($default_slug) 
+    public static function getAuthorBoxesDefaultData($default_slug)
     {
         $editor_datas = [];
 
@@ -70,7 +70,7 @@ class AuthorBoxesDefault
      *
      * @return array
      */
-    public static function getAuthorBoxesBoxedEditorData() 
+    public static function getAuthorBoxesBoxedEditorData()
     {
         $editor_data = [];
         //title default
@@ -84,6 +84,7 @@ class AuthorBoxesDefault
         $editor_data['avatar_size'] = 80;
         $editor_data['avatar_border_radius'] = 50;
         //name default
+        $editor_data['name_show'] = 1;
         $editor_data['name_html_tag'] = 'div';
         //bio default
         $editor_data['author_bio_show'] = 1;
@@ -121,7 +122,7 @@ class AuthorBoxesDefault
      *
      * @return array
      */
-    public static function getAuthorBoxesCenteredEditorData() 
+    public static function getAuthorBoxesCenteredEditorData()
     {
         $editor_data = [];
         //title default
@@ -135,6 +136,7 @@ class AuthorBoxesDefault
         $editor_data['avatar_size'] = 80;
         $editor_data['avatar_border_radius'] = 50;
         //name default
+        $editor_data['name_show'] = 1;
         $editor_data['name_html_tag'] = 'div';
         //bio default
         $editor_data['author_bio_show'] = 1;
@@ -173,7 +175,7 @@ class AuthorBoxesDefault
      *
      * @return array
      */
-    public static function getAuthorBoxesInlineEditorData() 
+    public static function getAuthorBoxesInlineEditorData()
     {
         $editor_data = [];
         //title default
@@ -185,6 +187,7 @@ class AuthorBoxesDefault
         $editor_data['avatar_size'] = 80;
         $editor_data['avatar_border_radius'] = 50;
         //name default
+        $editor_data['name_show'] = 1;
         $editor_data['name_html_tag'] = 'div';
         //bio default
         $editor_data['author_bio_html_tag'] = 'p';
@@ -216,15 +219,15 @@ class AuthorBoxesDefault
         $editor_data['box_tab_custom_css'] = '.pp-multiple-authors-layout-inline ul.pp-multiple-authors-boxes-ul {
             display: flex;
         }
-        
+
         .pp-multiple-authors-layout-inline ul.pp-multiple-authors-boxes-ul li {
             margin-right: 10px
         }
-        
+
         .pp-multiple-authors-layout-inline .pp-author-boxes-name::after{
             content: ",";
         }
-        
+
         .pp-multiple-authors-layout-inline .pp-multiple-authors-boxes-ul .pp-multiple-authors-boxes-li:last-of-type .pp-author-boxes-name::after{
             content: "";
         }';
@@ -237,7 +240,7 @@ class AuthorBoxesDefault
      *
      * @return array
      */
-    public static function getAuthorBoxesInlineAvatarEditorData() 
+    public static function getAuthorBoxesInlineAvatarEditorData()
     {
         $editor_data = [];
         //title default
@@ -250,6 +253,7 @@ class AuthorBoxesDefault
         $editor_data['avatar_size'] = 30;
         $editor_data['avatar_border_radius'] = 0;
         //name default
+        $editor_data['name_show'] = 1;
         $editor_data['name_html_tag'] = 'div';
         //bio default
         $editor_data['author_bio_html_tag'] = 'p';
@@ -281,24 +285,21 @@ class AuthorBoxesDefault
         $editor_data['box_tab_custom_css'] = '.pp-multiple-authors-layout-inline ul.pp-multiple-authors-boxes-ul {
             display: flex;
         }
-        
+
         .pp-multiple-authors-layout-inline ul.pp-multiple-authors-boxes-ul li {
             margin-right: 10px
         }
-        
+
         .pp-multiple-authors-layout-inline .pp-author-boxes-name::after{
             content: ",";
         }
-        
+
         .pp-multiple-authors-layout-inline .pp-multiple-authors-boxes-ul .pp-multiple-authors-boxes-li:last-of-type .pp-author-boxes-name::after{
             content: "";
         }
         .pp-multiple-authors-layout-inline ul.pp-multiple-authors-boxes-ul li.has-avatar .pp-author-boxes-avatar,
         .pp-multiple-authors-layout-inline ul.pp-multiple-authors-boxes-ul li.has-avatar .pp-author-boxes-avatar-details {
             display: inline-block;
-        }
-        .pp-multiple-authors-layout-inline .pp-multiple-authors-boxes-ul .pp-author-boxes-profile-fields {
-            display:none;
         }';
 
         return $editor_data;
@@ -309,7 +310,7 @@ class AuthorBoxesDefault
      *
      * @return array
      */
-    public static function getAuthorBoxesSimpleListEditorData() 
+    public static function getAuthorBoxesSimpleListEditorData()
     {
         $editor_data = [];
         //title default
@@ -322,6 +323,7 @@ class AuthorBoxesDefault
         $editor_data['avatar_size'] = 35;
         $editor_data['avatar_border_radius'] = 0;
         //name default
+        $editor_data['name_show'] = 1;
         $editor_data['name_html_tag'] = 'div';
         //bio default
         $editor_data['author_bio_html_tag'] = 'p';
