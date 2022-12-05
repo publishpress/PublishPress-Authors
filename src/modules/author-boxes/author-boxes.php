@@ -1206,6 +1206,10 @@ class MA_Author_Boxes extends Module
                                                     $field_value = esc_html($author->$key);
                                                 }
 
+                                                if (empty(trim($field_value))) {
+                                                    continue;
+                                                }
+
                                                 $display_field_value = '';
                                                 if ($profile_display === 'icon_prefix_value_suffix') {
                                                     if (!empty($profile_display_icon)) {
