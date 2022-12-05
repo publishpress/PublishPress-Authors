@@ -191,7 +191,11 @@ foreach ($profile_fields as $key => $data) {
                                     
     if ($profile_show_field) : ?>
                                 <?php 
-                                $profile_field_html = '<'. esc_html($profile_html_tag) .'';
+                                $profile_field_html = '
+                                
+                                </?php if (!empty(trim($author->$key))) : ?>
+                                    ';
+                                $profile_field_html .= '<'. esc_html($profile_html_tag) .'';
                                 $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data ppma-author-field-meta"';
                                 if ($profile_html_tag === 'a') {
                                     $profile_field_html .= ' href="</?php echo $author->$key; ?>"';
@@ -228,6 +232,9 @@ foreach ($profile_fields as $key => $data) {
     }
     ?>
     <?php $profile_field_html .= '</'. esc_html($profile_html_tag) .'>'; ?>
+    <?php 
+                                $profile_field_html .= '
+                                </?php endif; ?>'; ?>
     <?php 
     if ($profile_display_position === 'name') {
         $name_row_extra .= $profile_field_html;
