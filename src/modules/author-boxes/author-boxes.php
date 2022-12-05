@@ -1200,7 +1200,11 @@ class MA_Author_Boxes extends Module
                                                     $profile_display_position = 'meta';
                                                 }
 
-                                                $field_value = $author->$key;
+                                                if ($data['type'] === 'wysiwyg') {
+                                                    $field_value = $author->$key;
+                                                } else {
+                                                    $field_value = esc_html($author->$key);
+                                                }
 
                                                 $display_field_value = '';
                                                 if ($profile_display === 'icon_prefix_value_suffix') {
@@ -1211,13 +1215,13 @@ class MA_Author_Boxes extends Module
                                                         $display_field_value .= esc_html($profile_display_prefix) . ' ';
                                                     }
                                                     if (!empty($field_value)) {
-                                                        $display_field_value .= esc_html($field_value) . ' ';
+                                                        $display_field_value .= $field_value . ' ';
                                                     }
                                                     if (!empty($profile_display_suffix)) {
                                                         $display_field_value .= esc_html($profile_display_suffix);
                                                     }
                                                 } elseif ($profile_display === 'value') {
-                                                    $display_field_value .= esc_html($field_value);
+                                                    $display_field_value .= $field_value;
                                                 } elseif ($profile_display === 'prefix') {
                                                     $display_field_value .= esc_html($profile_display_prefix);
                                                 } elseif ($profile_display === 'suffix') {
@@ -1229,7 +1233,7 @@ class MA_Author_Boxes extends Module
                                                         $display_field_value .= esc_html($profile_display_prefix) . ' ';
                                                     }
                                                     if (!empty($field_value)) {
-                                                        $display_field_value .= esc_html($field_value) . ' ';
+                                                        $display_field_value .= $field_value . ' ';
                                                     }
                                                     if (!empty($profile_display_suffix)) {
                                                         $display_field_value .= esc_html($profile_display_suffix);
