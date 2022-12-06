@@ -129,7 +129,7 @@ if ($author_post_custom_height > 0) {
                                 </header><!-- .article-header -->
                                 <?php if ($show_post_excerpt ) : ?>
                                     <div class="article-entry-excerpt post-entry-excerpt entry-excerpt excerpt">
-                                        <?php Utils::ppma_article_excerpt(160, 'content', true, $show_post_readmore ); ?>
+                                        <?php Utils::ppma_article_excerpt(160, 'excerpt', true, $show_post_readmore ); ?>
                                     </div>
                                 <?php endif; ?>
                                 <footer class="article-footer entry-footer post-footer">

@@ -880,7 +880,10 @@ class Utils
     public static function ppma_article_excerpt($limit, $source = null, $echo = false, $read_more_link = false) 
     {
 
-        $excerpt = $source == "content" ? get_the_content() : get_the_excerpt();
+        $excerpt = ($source === "content") ? get_the_content() : get_the_excerpt();
+        if (empty(trim($excerpt))) {
+            $excerpt = get_the_content();
+        }
         $excerpt = preg_replace(" (\[.*?\])",'',$excerpt);
         $excerpt = strip_shortcodes($excerpt);
         $excerpt = wp_strip_all_tags($excerpt);
