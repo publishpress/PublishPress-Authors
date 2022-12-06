@@ -1244,7 +1244,7 @@ class MA_Author_Boxes extends Module
                                                     }
                                                 }
 
-                                                if ($profile_show_field || $admin_preview) : ?>
+                                                if ($profile_show_field) : ?>
                                                     <?php 
                                                     $profile_field_html = '<'. esc_html($profile_html_tag) .'';
                                                     $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data ppma-author-field-meta"';
