@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 7.2.5
 Tested up to: 6.1
-Stable tag: 4.0.0
+Stable tag: 4.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -213,6 +213,14 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [4.0.1] - 06 Dec 2022 =
+
+* Fixed: Icon does not hide when there is no value, #1103
+* Fixed: Author pages pulling excerpts from content, #1112
+* Update: Allow to set author's page post limit, #1108
+* Fixed: Author Field Link is not Active link, #1105
+* Fixed: Link does not rendered on WYSIWYG field, #1101
 
 = [4.0.0] - 29 Nov 2022 =
 
