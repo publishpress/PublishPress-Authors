@@ -697,7 +697,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             add_settings_field(
                 'load_font_awesome',
-                __('Layout icons:', 'publishpress-authors'),
+                __('Font Awesome icons:', 'publishpress-authors'),
                 [$this, 'settings_load_font_awesome_option'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_advanced'
@@ -2138,7 +2138,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '<input type="checkbox" value="yes" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[load_font_awesome]" '
                 . checked($value, 'yes', false) . ' />';
             echo '&nbsp;&nbsp;&nbsp; <span class="ppma_settings_field_description">' . esc_html__(
-                    'This will load Font Awesome icons for use in layouts.',
+                    'This will load Font Awesome icons for use in Author Boxes.',
                     'publishpress-authors'
                 ) . '</span>';
             echo '</label>';
