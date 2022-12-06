@@ -280,11 +280,16 @@ trait Author_box
 
         if (!$user_objects) {
             if (!empty($authors)) {
+                $profile_fields   = apply_filters('multiple_authors_author_fields', [], false);
                 foreach ($authors as $author) {
                     if ($field === 'avatar') {
                         $output[] = $author->get_avatar_url();
                     } else {
-                        $output[] = isset($author->$field) ? $author->$field : $author->display_name;
+                        $field_output = isset($author->$field) ? $author->$field : $author->display_name;
+                        if (isset($profile_fields[$field]) && $profile_fields[$field]['type'] === 'url') {
+                            $field_output = '<a href="'. esc_url($field_output).'"> '. esc_html($field_output) .'</a>';
+                        }
+                        $output[] = $field_output;
                     }
                 }
             }

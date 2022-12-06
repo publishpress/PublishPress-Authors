@@ -879,17 +879,23 @@ class Utils
      */
     public static function ppma_article_excerpt($limit, $source = null, $echo = false, $read_more_link = false) 
     {
-
-        $excerpt = $source == "content" ? get_the_content() : get_the_excerpt();
+        $excerpt = ($source === "content") ? get_the_content() : get_the_excerpt();
+        if (empty(trim($excerpt))) {
+            $excerpt = get_the_content();
+        }
         $excerpt = preg_replace(" (\[.*?\])",'',$excerpt);
         $excerpt = strip_shortcodes($excerpt);
         $excerpt = wp_strip_all_tags($excerpt);
-        $excerpt = substr($excerpt, 0, $limit);
-        $excerpt = substr($excerpt, 0, strripos($excerpt, " "));
-        $excerpt = trim(preg_replace('/\s+/', ' ', $excerpt));
+
+        if (strlen($excerpt) > $limit) {
+            // truncate excerpt
+            $excerpt = substr($excerpt, 0, $limit);
+        }
+        
         if (!empty(trim($excerpt))) {
             $excerpt .= '... ';
         }
+
         if ($read_more_link) {
             $excerpt .= '<a class="read-more" href="'. esc_url(get_permalink()) .'" title="'. esc_attr__('Read more.', 'publishpress-authors') .'">'. esc_html__('Read more.', 'publishpress-authors') .'</a>';
         }
