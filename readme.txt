@@ -11,11 +11,11 @@ Stable tag: 4.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-PublishPress Authors is the best plugin for adding co-authors, multiple authors and guest authors to WordPress posts.
+PublishPress Authors is the best plugin for adding authors, co-authors, multiple authors and guest authors to WordPress posts.
 
 == Description ==
 
-[PublishPress Authors](https://publishpress.com/authors/) allows you to show an author box at the end of your posts. This author box can display one author, coauthors, multiple authors or even guest authors. This box has the author’s name, avatar, description and more. You can also place the author box in widgets, shortcodes and Gutenberg blocks.
+[PublishPress Authors](https://publishpress.com/authors/) allows you to create, manage and display authors for all your WordPress content. The plugin provides author boxes that can display one author, coauthors, multiple authors or even guest authors. The boxes have the author’s name, avatar, description and more. You can also place the author boxes in widgets, shortcodes and Gutenberg blocks.
 
 Here are the some most important features of PublishPress Authors:
 
@@ -37,10 +37,6 @@ The Author Boxes feature in PublishPress Authors provides five default layouts. 
 
 [Click here to see how to customize author boxes](https://publishpress.com/knowledge-base/customize-author-boxes/).
 
-## Multiple Authors ##
-
-With PublishPress Authors, you can set multiple authors for each post. When you write a post, you’ll see a box in the right sidebar. Here you can choose from all the users on your site, and assign them as coauthors.
-
 On the frontend of your site. PublishPress Authors gives you several different options to display the authors’ box:
 
 * Replacing the default author display.
@@ -50,6 +46,10 @@ On the frontend of your site. PublishPress Authors gives you several different o
 * Adding filters and actions in your template files.
 
 [Click here to read about displaying authors](https://publishpress.com/knowledge-base/display-multiple-authors/).
+
+## Multiple Authors ##
+
+With PublishPress Authors, you can set multiple authors for each post. When you write a post, you’ll see a box in the right sidebar. Here you can choose from all the users on your site, and assign them as coauthors.
 
 ## Guest Authors ##
 
@@ -69,7 +69,7 @@ Your author page will appear with an author box on the top of the screen and the
 
 ## Custom Fields for Author Profiles (Pro version) ##
 
-PublishPress Authors Pro enables you to create author fields and enhance your author profiles. You can add Text, WYSIWYG, Link and email address fields. Then you can place those author fields in author bio profiles using custom layouts.
+PublishPress Authors Pro enables you to create author fields and enhance your author profiles. You can add Text, WYSIWYG, Link and email address fields. Then you can place those author fields in author bio profiles using custom layouts. The Pro version of Authors supports Facebook, Twitter, Instagram, Linkedin, YouTube, TikTok and more.
 
 [Click here to see how to use Custom Fields](https://publishpress.com/knowledge-base/custom-fields/).
 
