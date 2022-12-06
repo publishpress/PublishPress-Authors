@@ -214,6 +214,14 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [4.0.1] - 06 Dec 2022 =
+
+* Fixed: Icon does not hide when there is no value, #1103
+* Fixed: Author pages pulling excerpts from content, #1112
+* Update: Allow to set author's page post limit, #1108
+* Fixed: Author Field Link is not Active link, #1105
+* Fixed: Link does not rendered on WYSIWYG field, #1101
+
 = [4.0.0] - 29 Nov 2022 =
 
 * Update: Added last_article_date to publishpress_authors_list shortcode [publishpress_authors_list last_article_date="1 year ago"]
