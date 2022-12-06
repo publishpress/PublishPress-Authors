@@ -114,6 +114,8 @@ class AuthorBoxesDefault
         $editor_data['box_layout_shadow_speed'] = 0;
         $editor_data['box_layout_color'] = '#3c434a';
 
+        $editor_data = self::addEditorDataDefaultValues($editor_data);
+
         return $editor_data;
     }
 
@@ -166,6 +168,8 @@ class AuthorBoxesDefault
         $editor_data['box_layout_shadow_blur'] = 0;
         $editor_data['box_layout_shadow_speed'] = 0;
         $editor_data['box_layout_color'] = '#3c434a';
+
+        $editor_data = self::addEditorDataDefaultValues($editor_data);
 
         return $editor_data;
     }
@@ -231,6 +235,8 @@ class AuthorBoxesDefault
         .pp-multiple-authors-layout-inline .pp-multiple-authors-boxes-ul .pp-multiple-authors-boxes-li:last-of-type .pp-author-boxes-name::after{
             content: "";
         }';
+
+        $editor_data = self::addEditorDataDefaultValues($editor_data);
 
         return $editor_data;
     }
@@ -302,6 +308,8 @@ class AuthorBoxesDefault
             display: inline-block;
         }';
 
+        $editor_data = self::addEditorDataDefaultValues($editor_data);
+
         return $editor_data;
     }
 
@@ -358,6 +366,28 @@ class AuthorBoxesDefault
             border-right: none !important;
         }';
 
+        $editor_data = self::addEditorDataDefaultValues($editor_data);
+
+        return $editor_data;
+    }
+
+    /**
+     * Add editor data default values 
+     *
+     * @param array $editor_data
+     * @return void
+     */
+    public static function addEditorDataDefaultValues($editor_data) {
+        $profile_fields   = apply_filters('multiple_authors_author_fields', [], false);
+        $social_fields   = ['facebook', 'twitter', 'instagram', 'linkedin', 'youtube'];
+
+        foreach ($profile_fields as $key => $data) {
+            if ($data['type'] === 'url' && !in_array($key, $social_fields)) {
+                $editor_data['profile_fields_' . $key . '_html_tag'] = 'a';
+                $editor_data['profile_fields_' . $key . '_display']  = 'value';
+                $editor_data['profile_fields_' . $key . '_color']    = '#655997';
+            }
+        }
         return $editor_data;
     }
 }
