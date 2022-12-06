@@ -112,6 +112,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'author_post_title_header'     => 'h2',
                     'author_post_custom_width'     => '',
                     'author_post_custom_height'    => '',
+                    'author_pages_posts_limit'     => '10',
                     'default_author_for_new_posts' => null,
                     'fallback_user_for_guest_post' => function_exists('get_current_user_id') ? get_current_user_id() : 0,
                     'author_page_post_types'       => [],
@@ -290,6 +291,9 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             //author redirect
             add_action('template_redirect', [$this, 'authors_template_redirect']);
+
+            //add authors page post limit
+            add_filter('pre_get_posts', [$this, 'authors_taxonomy_post_limit']);
         }
 
         /**
@@ -721,6 +725,17 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'publishpress-authors'
                 ),
                 [$this, 'settings_enable_plugin_author_pages'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_author_pages'
+            );
+
+            add_settings_field(
+                'author_pages_posts_limit',
+                __(
+                    'Author pages posts limit:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_author_pages_posts_limit'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_author_pages'
             );
@@ -1663,6 +1678,22 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '<label for="' . esc_attr($id) . '">';
 
             echo '<input type="number" min="1" step="1" class="small-text" value="' . esc_attr($value) . '" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_pages_grid_layout_column]">';
+            echo '</label>';
+
+        }
+
+        /**
+         * @param array $args
+         */
+        public function settings_author_pages_posts_limit($args = [])
+        {
+            $id    = $this->module->options_group_name . '_author_pages_posts_limit';
+            $value = isset($this->module->options->author_pages_posts_limit) ? $this->module->options->author_pages_posts_limit : '';
+
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="number" step="1" class="small-text" value="' . esc_attr($value) . '" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_pages_posts_limit]">';
             echo '</label>';
 
         }
@@ -4207,6 +4238,21 @@ if (!class_exists('MA_Multiple_Authors')) {
             }
 
             return $classes;
+        }
+
+        /**
+         * Add authors page post limit
+         *
+         * @param object $wp_query
+         * @return void
+         */
+        public function authors_taxonomy_post_limit( $wp_query ) {
+            if(!is_admin() && $wp_query->is_tax('author') && $wp_query->is_main_query() ) {
+                $legacyPlugin             = Factory::getLegacyPlugin();
+                $author_pages_posts_limit = (int) $legacyPlugin->modules->multiple_authors->options->author_pages_posts_limit;
+                $author_pages_posts_limit = ($author_pages_posts_limit === 0) ? 10 : $author_pages_posts_limit;
+                $wp_query->set('posts_per_page', $author_pages_posts_limit);
+            }
         }
     
         /**
