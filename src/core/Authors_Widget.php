@@ -290,7 +290,7 @@ class Authors_Widget extends WP_Widget
             PP_AUTHORS_VERSION
         );
 
-        if (!function_exists('multiple_authors')) {
+        if (!function_exists('multiple_authors_get_all_authors')) {
             require_once PP_AUTHORS_BASE_PATH . 'functions/template-tags.php';
         }
 

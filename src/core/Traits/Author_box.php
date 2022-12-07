@@ -115,7 +115,7 @@ trait Author_box
             Utils::loadLayoutFrontCss();
         }
 
-        if (!function_exists('multiple_authors')) {
+        if (!function_exists('get_post_authors') || !function_exists('get_archive_author')) {
             require_once PP_AUTHORS_BASE_PATH . 'src/functions/template-tags.php';
         }
 
@@ -258,7 +258,7 @@ trait Author_box
 
         $output = [];
 
-        if (!function_exists('multiple_authors')) {
+        if (!function_exists('get_post_authors')) {
             require_once PP_AUTHORS_BASE_PATH . 'src/functions/template-tags.php';
         }
 
