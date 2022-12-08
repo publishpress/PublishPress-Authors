@@ -1134,4 +1134,9 @@ class Utils
             );
         }
     }
+
+    public static function isGeneratepressInstalled()
+    {
+        return defined('GENERATE_VERSION');
+    }
 }
