@@ -248,9 +248,6 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_filter('publishpress_content_overview_author_column', [$this, 'publishpressContentOverviewAuthorColumn'], 10, 2);
             add_filter('pp_calendar_posts_query_args', [$this, 'publishpressPostQueryArgs']);
 
-            // Add compatibility with GeneratePress theme.
-            add_filter('generate_post_author_output', [$this, 'generatepress_author_output']);
-
             add_filter('the_author_posts_link', [$this, 'theAuthorPostsLink']);
 
             // Fix authors metadata.
@@ -3436,29 +3433,6 @@ if (!class_exists('MA_Multiple_Authors')) {
                     update_option('publishpress_multiple_authors_settings_migrated_3_15_0', 1);
                }
             }
-        }
-
-        /**
-         * Customize/fix the author byline output for the GeneratePress theme.
-         *
-         * @todo: Move this method to a new module: generatepress-integration
-         *
-         * @param $output
-         *
-         * @return false|string
-         */
-        public function generatepress_author_output($output)
-        {
-            global $post;
-
-            $layout = apply_filters('pp_multiple_authors_generatepress_box_layout', 'inline');
-
-            ob_start();
-            do_action('pp_multiple_authors_show_author_box', false, $layout, false, true, $post->ID);
-
-            $output = ob_get_clean();
-
-            return $output;
         }
 
         private function getTotalOfNotMigratedCoAuthors()
