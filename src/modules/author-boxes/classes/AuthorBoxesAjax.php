@@ -185,6 +185,10 @@ foreach ($profile_fields as $key => $data) {
                                     $profile_display_suffix    = $args['profile_fields_' . $key . '_display_suffix']['value'];
                                     $profile_display_icon     = $args['profile_fields_' . $key . '_display_icon']['value'];
                                     $profile_display_position = $args['profile_fields_' . $key . '_display_position']['value'];
+
+                                    $profile_before_display_prefix = $args['profile_fields_' . $key . '_before_display_prefix']['value'];
+                                    $profile_after_display_suffix  = $args['profile_fields_' . $key . '_after_display_suffix']['value'];
+
                                     if (empty(trim($profile_display_position))) {
                                         $profile_display_position = 'meta';
                                     }
@@ -195,6 +199,9 @@ foreach ($profile_fields as $key => $data) {
                                 
                                 </?php if (!empty(trim($author->$key))) : ?>
                                     ';
+    if (!empty(trim($profile_before_display_prefix))) {
+                                $profile_field_html  .= '<span class="ppma-author-field-meta-prefix"> '. $profile_before_display_prefix .' </span>';
+    }
                                 $profile_field_html .= '<'. esc_html($profile_html_tag) .'';
                                 $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data ppma-author-field-meta"';
                                 if ($profile_html_tag === 'a') {
@@ -233,6 +240,9 @@ foreach ($profile_fields as $key => $data) {
     ?>
     <?php $profile_field_html .= '</'. esc_html($profile_html_tag) .'>'; ?>
     <?php 
+    if (!empty(trim($profile_after_display_suffix))) {
+        $profile_field_html  .= '<span class="ppma-author-field-meta-suffix"> '. $profile_after_display_suffix .' </span>';
+    }
                                 $profile_field_html .= '
                                 </?php endif; ?>'; ?>
     <?php 
