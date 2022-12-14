@@ -156,9 +156,6 @@ class Widget extends WP_Widget {
 	 */
 	public function update($new_instance, $old_instance)
 	{
-        if (! isset($new_instance['nonce']) || ! wp_verify_nonce($new_instance['nonce'], 'pp_multiple_authors_widget_form')) {
-            return $old_instance;
-        }
 
 		$legacyPlugin = Factory::getLegacyPlugin();
 

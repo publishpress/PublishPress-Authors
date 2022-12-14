@@ -1251,7 +1251,7 @@ class MA_Author_Boxes extends Module
                                                 if ($profile_show_field) : ?>
                                                     <?php 
                                                     $profile_field_html  = '';
-                                                    write_log($profile_before_display_prefix);
+                                                    
                                                     if (!empty(trim($profile_before_display_prefix))) {
                                                         $profile_field_html  .= '<span class="ppma-author-field-meta-prefix"> '. $profile_before_display_prefix .' </span>';
                                                     }
