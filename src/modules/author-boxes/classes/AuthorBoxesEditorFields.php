@@ -610,6 +610,22 @@ class AuthorBoxesEditorFields
                     'tab_name'    => $key,
                     'tab'         => 'profile_fields',
                 ];
+                $fields['profile_fields_' . $key . '_before_display_prefix'] = [
+                    'label'       => sprintf(esc_html__('Before %1s Display Prefix', 'publishpress-authors'), $data['label']),
+                    'type'        => 'text',
+                    'sanitize'    => 'sanitize_text_field',
+                    'tabbed'      => 1,
+                    'tab_name'    => $key,
+                    'tab'         => 'profile_fields',
+                ];
+                $fields['profile_fields_' . $key . '_after_display_suffix'] = [
+                    'label'       => sprintf(esc_html__('After %1s Display Suffix', 'publishpress-authors'), $data['label']),
+                    'type'        => 'text',
+                    'sanitize'    => 'sanitize_text_field',
+                    'tabbed'      => 1,
+                    'tab_name'    => $key,
+                    'tab'         => 'profile_fields',
+                ];
 
                 $field_description = sprintf(esc_html__('You can use icons from Dashicons and Font Awesome. %1s %2sClick here for documentation%3s.', 'publishpress-authors'), '<br />', '<a href="https://publishpress.com/knowledge-base/author-fields-icons/" target="blank">', '</a>');
 
