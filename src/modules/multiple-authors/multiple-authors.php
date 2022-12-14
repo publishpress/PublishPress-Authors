@@ -112,6 +112,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'author_post_title_header'     => 'h2',
                     'author_post_custom_width'     => '',
                     'author_post_custom_height'    => '',
+                    'author_post_excerpt_ellipsis' => '...',
                     'author_pages_posts_limit'     => '10',
                     'default_author_for_new_posts' => null,
                     'fallback_user_for_guest_post' => function_exists('get_current_user_id') ? get_current_user_id() : 0,
@@ -785,6 +786,17 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'publishpress-authors'
                 ),
                 [$this, 'settings_show_author_page_title'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_author_pages'
+            );
+
+            add_settings_field(
+                'author_post_excerpt_ellipsis',
+                __(
+                    'Author pages excerpt ellipsis:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_author_post_excerpt_ellipsis'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_author_pages'
             );
@@ -1723,6 +1735,22 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '<label for="' . esc_attr($id) . '">';
 
             echo '<input type="number" min="1" step="1" class="small-text" value="' . esc_attr($value) . '" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_post_custom_height]">';
+            echo '</label>';
+
+        }
+
+        /**
+         * @param array $args
+         */
+        public function settings_author_post_excerpt_ellipsis($args = [])
+        {
+            $id    = $this->module->options_group_name . '_author_post_excerpt_ellipsis';
+            $value = isset($this->module->options->author_post_excerpt_ellipsis) ? $this->module->options->author_post_excerpt_ellipsis : '';
+
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="text" class="small-text" value="' . esc_attr($value) . '" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_post_excerpt_ellipsis]">';
             echo '</label>';
 
         }
