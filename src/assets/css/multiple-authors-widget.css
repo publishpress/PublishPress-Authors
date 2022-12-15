@@ -88,10 +88,13 @@ a.ppma-author-field-meta {
 .pp-multiple-authors-layout-boxed .multiple-authors-links a:active,
 .pp-multiple-authors-layout-centered .multiple-authors-links a:hover,
 .pp-multiple-authors-layout-centered .multiple-authors-links a:focus,
-.pp-multiple-authors-layout-centered .multiple-authors-links a:active,
-a.ppma-author-field-meta {
+.pp-multiple-authors-layout-centered .multiple-authors-links a:active {
     background: var(--ppa-color-scheme-active);
     color: #fff;
+}
+
+a.ppma-author-field-meta {
+    background: transparent;
 }
 
 a.ppma-author-field-meta i {

@@ -229,11 +229,13 @@ class AuthorBoxesStyles
                 if ($args['profile_fields_' . $key . '_display_icon_size']['value']) {
                     $custom_styles .= '.pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].' .ppma-author-'. $key .'-profile-data span, .pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].' .ppma-author-'. $key .'-profile-data i { font-size: '. $args['profile_fields_' . $key . '_display_icon_size']['value'] .'px !important; } ';
                 }
-                if ($args['profile_fields_' . $key . '_display_icon_background_color']['value']) {
-                    $custom_styles .= '.pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].' .ppma-author-'. $key .'-profile-data { background-color: '. $args['profile_fields_' . $key . '_display_icon_background_color']['value'] .' !important; } ';
-                }
-                if ($args['profile_fields_' . $key . '_display_icon_border_radius']['value']) {
-                    $custom_styles .= '.pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].' .ppma-author-'. $key .'-profile-data { border-radius: '. $args['profile_fields_' . $key . '_display_icon_border_radius']['value'] .'% !important; } ';
+                if ($args['profile_fields_' . $key . '_display_icon']['value'] && !empty($args['profile_fields_' . $key . '_display_icon']['value'])) {
+                    if ($args['profile_fields_' . $key . '_display_icon_background_color']['value']) {
+                        $custom_styles .= '.pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].' .ppma-author-'. $key .'-profile-data { background-color: '. $args['profile_fields_' . $key . '_display_icon_background_color']['value'] .' !important; } ';
+                    }
+                    if ($args['profile_fields_' . $key . '_display_icon_border_radius']['value']) {
+                        $custom_styles .= '.pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].' .ppma-author-'. $key .'-profile-data { border-radius: '. $args['profile_fields_' . $key . '_display_icon_border_radius']['value'] .'% !important; } ';
+                    }
                 }
                 if ($args['profile_fields_' . $key . '_line_height']['value']) {
                     $custom_styles .= '.pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].' .ppma-author-'. $key .'-profile-data { line-height: '. $args['profile_fields_' . $key . '_line_height']['value'] .'px !important; } ';
