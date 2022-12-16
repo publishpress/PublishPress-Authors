@@ -31,7 +31,7 @@ if (!function_exists('the_bylines')) {
      */
     function the_bylines()
     {
-        return the_authors();
+        return publishpress_authors_the_authors();
     }
 }
 
@@ -45,7 +45,7 @@ if (!function_exists('get_the_bylines')) {
      */
     function get_the_bylines()
     {
-        return get_the_authors();
+        return publishpress_authors_get_the_authors();
     }
 }
 
@@ -59,7 +59,7 @@ if (!function_exists('the_bylines_posts_links')) {
      */
     function the_bylines_posts_links()
     {
-        return the_authors_posts_links();
+        return publishpress_authors_the_authors_posts_links();
     }
 }
 
@@ -71,7 +71,7 @@ if (!function_exists('get_the_bylines_posts_links')) {
      */
     function get_the_bylines_posts_links()
     {
-        return get_the_authors_posts_links();
+        return publishpress_authors_get_the_authors_posts_links();
     }
 }
 
@@ -85,7 +85,7 @@ if (!function_exists('the_bylines_links')) {
      */
     function the_bylines_links()
     {
-        return the_authors_links();
+        return publishpress_authors_the_authors_links();
     }
 }
 
@@ -97,7 +97,7 @@ if (!function_exists('get_the_bylines_links')) {
      */
     function get_the_bylines_links()
     {
-        return get_the_authors_links();
+        return publishpress_authors_get_the_authors_links();
     }
 }
 
@@ -113,6 +113,6 @@ if (!function_exists('bylines_render')) {
      */
     function bylines_render($bylines, $render_callback, $args = [])
     {
-        return authors_render($bylines, $render_callback, $args);
+        return publishpress_authors_render($bylines, $render_callback, $args);
     }
 }
