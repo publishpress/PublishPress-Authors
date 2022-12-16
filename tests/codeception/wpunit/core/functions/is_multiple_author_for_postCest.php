@@ -14,7 +14,7 @@ class is_multiple_author_for_postCest
             ['post_type' => 'post', 'post_author' => $userId]
         );
 
-        $isAuthor = is_multiple_author_for_post($userId, $postId);
+        $isAuthor = publishpress_authors_is_author_for_post($userId, $postId);
 
         $I->assertTrue($isAuthor);
     }
@@ -33,8 +33,8 @@ class is_multiple_author_for_postCest
 
         wp_set_post_terms($postId, [$author0->term_id, $author1->term_id], 'author');
 
-        $I->assertTrue(is_multiple_author_for_post($userId0, $postId));
-        $I->assertTrue(is_multiple_author_for_post($userId1, $postId));
+        $I->assertTrue(publishpress_authors_is_author_for_post($userId0, $postId));
+        $I->assertTrue(publishpress_authors_is_author_for_post($userId1, $postId));
     }
 
     public function testIsMultipleAuthorForPost_ForAUserThatIsNotTheAuthor_ShouldReturnFalse(WpunitTester $I)
@@ -53,6 +53,6 @@ class is_multiple_author_for_postCest
 
         wp_set_post_terms($postId, [$author0->term_id], 'author');
 
-        $I->assertFalse(is_multiple_author_for_post($userId1, $postId));
+        $I->assertFalse(publishpress_authors_is_author_for_post($userId1, $postId));
     }
 }

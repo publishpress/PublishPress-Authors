@@ -40,7 +40,7 @@ class get_multiple_authorsCest
 
         wp_set_post_terms($postId, [$author0->term_id, $author1->term_id, $author2->term_id], 'author');
 
-        $authorsList = get_multiple_authors($post, false, false);
+        $authorsList = publishpress_authors_get_post_authors($post, false, false);
 
         $I->assertIsArray($authorsList);
         $I->assertCount(3, $authorsList);
@@ -66,9 +66,9 @@ class get_multiple_authorsCest
 
         wp_set_post_terms($postId, [$author0->term_id, $author1->term_id, $author2->term_id], 'author');
 
-        $authorsList = get_multiple_authors($postId, false, false);
-        get_multiple_authors($postId, false, false);
-        get_multiple_authors($postId, false, false);
+        $authorsList = publishpress_authors_get_post_authors($postId, false, false);
+        publishpress_authors_get_post_authors($postId, false, false);
+        publishpress_authors_get_post_authors($postId, false, false);
 
         $cacheKey   = $postId;
         $cachedList = wp_cache_get($cacheKey, 'get_post_authors:authors');
@@ -99,7 +99,7 @@ class get_multiple_authorsCest
 
         wp_set_post_terms($postId, [$author0->term_id, $author1->term_id, $author2->term_id], 'author');
 
-        $authorsList = get_multiple_authors($postId, false, false);
+        $authorsList = publishpress_authors_get_post_authors($postId, false, false);
 
         $I->assertIsArray($authorsList);
         $I->assertCount(3, $authorsList);
@@ -125,7 +125,7 @@ class get_multiple_authorsCest
 
         wp_set_post_terms($postId, [$author0->term_id, $author1->term_id, $author2->term_id], 'author');
 
-        $authorsList = get_multiple_authors("$postId", false, false);
+        $authorsList = publishpress_authors_get_post_authors("$postId", false, false);
 
         $I->assertIsArray($authorsList);
         $I->assertCount(3, $authorsList);
@@ -160,7 +160,7 @@ class get_multiple_authorsCest
 
         $GLOBALS['post'] = $post;
 
-        $authorsList = get_multiple_authors($example[0], false, false);
+        $authorsList = publishpress_authors_get_post_authors($example[0], false, false);
 
         $I->assertIsArray($authorsList);
         $I->assertCount(3, $authorsList);
@@ -182,7 +182,7 @@ class get_multiple_authorsCest
         $wp_query->is_author = true;
         set_query_var('author_name', $author0->slug);
 
-        $authorsList = get_multiple_authors(0, false, true);
+        $authorsList = publishpress_authors_get_post_authors(0, false, true);
 
         $I->assertIsArray($authorsList);
         $I->assertCount(1, $authorsList);
@@ -214,17 +214,17 @@ class get_multiple_authorsCest
         wp_set_post_terms($postId2, [$author0->term_id, $author1->term_id], 'author');
 
         $GLOBALS['post'] = $post0;
-        $authors         = get_multiple_authors();
+        $authors         = publishpress_authors_get_post_authors();
 
         $I->assertCount(3, $authors);
 
         $GLOBALS['post'] = $post1;
-        $authors         = get_multiple_authors();
+        $authors         = publishpress_authors_get_post_authors();
 
         $I->assertCount(1, $authors);
 
         $GLOBALS['post'] = $post2;
-        $authors         = get_multiple_authors();
+        $authors         = publishpress_authors_get_post_authors();
 
         $I->assertCount(2, $authors);
     }
@@ -245,7 +245,7 @@ class get_multiple_authorsCest
         // Force to remove the author term relationship to the post.
         wp_remove_object_terms($postId, [$author->term_id], 'author');
 
-        $authors = get_multiple_authors($postId);
+        $authors = publishpress_authors_get_post_authors($postId);
 
         $I->assertInstanceOf('MultipleAuthors\\Classes\\Objects\\Author', $authors[0]);
     }
@@ -335,7 +335,7 @@ class get_multiple_authorsCest
 
         $I->assertEquals(0, $post->post_author);
 
-        $authors = get_multiple_authors($postId);
+        $authors = publishpress_authors_get_post_authors($postId);
 
         $I->assertIsArray($authors);
         $I->assertEmpty($authors);
@@ -343,7 +343,7 @@ class get_multiple_authorsCest
 
     /**
      * Test for checking regression on the fixed issue #593, that happened
-     * when calling the get_multiple_authors function with the $archive param
+     * when calling the publishpress_authors_get_post_authors function with the $archive param
      * as true to retrieve the current author in the author archive page. The
      * first post, if having more than one author, had the secondary authors
      * removed, remaining only the first author.
@@ -374,13 +374,13 @@ class get_multiple_authorsCest
         $wp_query->is_author = true;
         set_query_var('author_name', $author0->slug);
 
-        // We call the get_multiple_authors function with the archive argument to force the reported bug.
-        $archiveAuthor = get_multiple_authors(0, false, true);
+        // We call the publishpress_authors_get_post_authors function with the archive argument to force the reported bug.
+        $archiveAuthor = publishpress_authors_get_post_authors(0, false, true);
 
         $I->assertCount(1, $archiveAuthor);
 
         // We check the post, has it's authors set changed?
-        $postAuthors = get_multiple_authors($postId0);
+        $postAuthors = publishpress_authors_get_post_authors($postId0);
 
         $I->assertCount(3, $postAuthors);
     }

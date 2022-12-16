@@ -153,7 +153,7 @@ if (!function_exists('get_post_authors')) {
     }
 }
 
-if (!function_exists('get_multiple_authors')) {
+if (!function_exists('publishpress_authors_get_post_authors')) {
     /**
      * Get all authors for a post.
      *
@@ -168,7 +168,7 @@ if (!function_exists('get_multiple_authors')) {
      * @deprecated Use get_post_authors instead.
      * @return array Array of Author objects, a single WP_User object, or empty.
      */
-    function get_multiple_authors($post = 0, $filter_the_author_deprecated = false, $archive_deprecated = false, $ignoreCache = false)
+    function publishpress_authors_get_post_authors($post = 0, $filter_the_author_deprecated = false, $archive_deprecated = false, $ignoreCache = false)
     {
         if ($archive_deprecated) {
             $archiveAuthor = get_archive_author();
@@ -231,14 +231,14 @@ if (!function_exists('multiple_authors_get_author_recent_posts')) {
 }
 
 
-if (!function_exists('multiple_authors_get_all_authors')) {
+if (!function_exists('publishpress_authors_get_all_authors')) {
     /**
      * @param array $args
      * @param array $instance The widget  call object instance.
      *
      * @return array|int|WP_Error
      */
-    function multiple_authors_get_all_authors($args = [], $instance = [])
+    function publishpress_authors_get_all_authors($args = [], $instance = [])
     {
 
         //determine result type
@@ -513,14 +513,14 @@ if (!function_exists('multiple_authors_get_all_authors')) {
     }
 }
 
-if (!function_exists('is_multiple_author_for_post')) {
+if (!function_exists('publishpress_authors_is_author_for_post')) {
     /**
      * Checks to see if the the specified user is author of the current global post or post (if specified)
      *
      * @param object|int $user
      * @param int $post_id
      */
-    function is_multiple_author_for_post($user, $post_id = 0)
+    function publishpress_authors_is_author_for_post($user, $post_id = 0)
     {
         global $post;
         global $postAuthorsCache;
@@ -608,9 +608,9 @@ if (!function_exists('is_multiple_author_for_post')) {
     }
 }
 
-if (!function_exists('multiple_authors__echo')) {
+if (!function_exists('publishpress_authors_echo')) {
     //Helper function for the following new template tags
-    function multiple_authors__echo($tag, $type = 'tag', $separators = [], $tag_args = null, $echo = true)
+    function publishpress_authors_echo($tag, $type = 'tag', $separators = [], $tag_args = null, $echo = true)
     {
         // Define the standard output separator. Constant support is for backwards compat.
         $default_before       = (defined('COAUTHORS_DEFAULT_BEFORE')) ? COAUTHORS_DEFAULT_BEFORE : '';
@@ -680,7 +680,7 @@ if (!function_exists('multiple_authors__echo')) {
     }
 }
 
-if (!function_exists('multiple_authors')) {
+if (!function_exists('publishpress_authors_the_author')) {
     /**
      * Outputs the co-authors display names, without links to their posts.
      * PublishPress Authors equivalent of the_author() template tag.
@@ -691,9 +691,9 @@ if (!function_exists('multiple_authors')) {
      * @param string $after What should appear after the presentation of co-authors
      * @param bool $echo Whether the co-authors should be echoed or returned. Defaults to true.
      */
-    function multiple_authors($between = null, $betweenLast = null, $before = null, $after = null, $echo = true)
+    function publishpress_authors_the_author($between = null, $betweenLast = null, $before = null, $after = null, $echo = true)
     {
-        return multiple_authors__echo(
+        return publishpress_authors_echo(
             'display_name',
             'field',
             [
@@ -708,7 +708,7 @@ if (!function_exists('multiple_authors')) {
     }
 }
 
-if (!function_exists('multiple_authors_posts_links')) {
+if (!function_exists('publishpress_authors_posts_links')) {
     /**
      * Outputs the co-authors display names, with links to their posts.
      * PublishPress Authors equivalent of the_author_posts_link() template tag.
@@ -719,15 +719,15 @@ if (!function_exists('multiple_authors_posts_links')) {
      * @param string $after What should appear after the presentation of co-authors
      * @param bool $echo Whether the co-authors should be echoed or returned. Defaults to true.
      */
-    function multiple_authors_posts_links(
+    function publishpress_authors_posts_links(
         $between = null,
         $betweenLast = null,
         $before = null,
         $after = null,
         $echo = true
     ) {
-        return multiple_authors__echo(
-            'multiple_authors_posts_links_single',
+        return publishpress_authors_echo(
+            'publishpress_authors_posts_links_single',
             'callback',
             [
                 'between'     => $between,
@@ -741,7 +741,7 @@ if (!function_exists('multiple_authors_posts_links')) {
     }
 }
 
-if (!function_exists('multiple_authors_posts_links_single')) {
+if (!function_exists('publishpress_authors_posts_links_single')) {
     /**
      * Outputs a single co-author linked to their post archive.
      *
@@ -749,12 +749,12 @@ if (!function_exists('multiple_authors_posts_links_single')) {
      *
      * @return string
      */
-    function multiple_authors_posts_links_single($author)
+    function publishpress_authors_posts_links_single($author)
     {
         // Return if the fields we are trying to use are not sent
         if (!isset($author->display_name)) {
             _doing_it_wrong(
-                'multiple_authors_posts_links_single',
+                'publishpress_authors_posts_links_single',
                 'Invalid author object used',
                 '3.2'
             );
@@ -786,7 +786,7 @@ if (!function_exists('multiple_authors_posts_links_single')) {
     }
 }
 
-if (!function_exists('multiple_authors_firstnames')) {
+if (!function_exists('publishpress_authors_firstnames')) {
     /**
      * Outputs the co-authors first names, without links to their posts.
      *
@@ -796,14 +796,14 @@ if (!function_exists('multiple_authors_firstnames')) {
      * @param string $after What should appear after the presentation of co-authors
      * @param bool $echo Whether the co-authors should be echoed or returned. Defaults to true.
      */
-    function multiple_authors_firstnames(
+    function publishpress_authors_firstnames(
         $between = null,
         $betweenLast = null,
         $before = null,
         $after = null,
         $echo = true
     ) {
-        return multiple_authors__echo(
+        return publishpress_authors_echo(
             'get_the_author_meta',
             'tag',
             [
@@ -818,7 +818,7 @@ if (!function_exists('multiple_authors_firstnames')) {
     }
 }
 
-if (!function_exists('multiple_authors_lastnames')) {
+if (!function_exists('publishpress_authors_lastnames')) {
     /**
      * Outputs the co-authors last names, without links to their posts.
      *
@@ -828,14 +828,14 @@ if (!function_exists('multiple_authors_lastnames')) {
      * @param string $after What should appear after the presentation of co-authors
      * @param bool $echo Whether the co-authors should be echoed or returned. Defaults to true.
      */
-    function multiple_authors_lastnames(
+    function publishpress_authors_lastnames(
         $between = null,
         $betweenLast = null,
         $before = null,
         $after = null,
         $echo = true
     ) {
-        return multiple_authors__echo(
+        return publishpress_authors_echo(
             'get_the_author_meta',
             'tag',
             [
@@ -850,7 +850,7 @@ if (!function_exists('multiple_authors_lastnames')) {
     }
 }
 
-if (!function_exists('multiple_authors_nicknames')) {
+if (!function_exists('publishpress_authors_nicknames')) {
     /**
      * Outputs the co-authors nicknames, without links to their posts.
      *
@@ -860,14 +860,14 @@ if (!function_exists('multiple_authors_nicknames')) {
      * @param string $after What should appear after the presentation of co-authors
      * @param bool $echo Whether the co-authors should be echoed or returned. Defaults to true.
      */
-    function multiple_authors_nicknames(
+    function publishpress_authors_nicknames(
         $between = null,
         $betweenLast = null,
         $before = null,
         $after = null,
         $echo = true
     ) {
-        return multiple_authors__echo(
+        return publishpress_authors_echo(
             'get_the_author_meta',
             'tag',
             [
@@ -882,7 +882,7 @@ if (!function_exists('multiple_authors_nicknames')) {
     }
 }
 
-if (!function_exists('multiple_authors_links')) {
+if (!function_exists('publishpress_authors_links')) {
     /**
      * Outputs the co-authors display names, with links to their websites if they've provided them.
      *
@@ -892,10 +892,10 @@ if (!function_exists('multiple_authors_links')) {
      * @param string $after What should appear after the presentation of co-authors
      * @param bool $echo Whether the co-authors should be echoed or returned. Defaults to true.
      */
-    function multiple_authors_links($between = null, $betweenLast = null, $before = null, $after = null, $echo = true)
+    function publishpress_authors_links($between = null, $betweenLast = null, $before = null, $after = null, $echo = true)
     {
-        return multiple_authors__echo(
-            'multiple_authors_links_single',
+        return publishpress_authors_echo(
+            'publishpress_authors_links_single',
             'callback',
             [
                 'between'     => $between,
@@ -909,7 +909,7 @@ if (!function_exists('multiple_authors_links')) {
     }
 }
 
-if (!function_exists('multiple_authors_emails')) {
+if (!function_exists('publishpress_authors_emails')) {
     /**
      * Outputs the co-authors email addresses
      *
@@ -919,9 +919,9 @@ if (!function_exists('multiple_authors_emails')) {
      * @param string $after What should appear after the presentation of email addresses
      * @param bool $echo Whether the co-authors should be echoed or returned. Defaults to true.
      */
-    function multiple_authors_emails($between = null, $betweenLast = null, $before = null, $after = null, $echo = true)
+    function publishpress_authors_emails($between = null, $betweenLast = null, $before = null, $after = null, $echo = true)
     {
-        return multiple_authors__echo(
+        return publishpress_authors_echo(
             'get_the_author_meta',
             'tag',
             [
@@ -936,7 +936,7 @@ if (!function_exists('multiple_authors_emails')) {
     }
 }
 
-if (!function_exists('multiple_authors_links_single')) {
+if (!function_exists('publishpress_authors_links_single')) {
     /**
      * Outputs a single co-author, linked to their website if they've provided one.
      *
@@ -944,7 +944,7 @@ if (!function_exists('multiple_authors_links_single')) {
      *
      * @return string
      */
-    function multiple_authors_links_single($author)
+    function publishpress_authors_links_single($author)
     {
         if (get_the_author_meta('url')) {
             return sprintf(
@@ -959,7 +959,7 @@ if (!function_exists('multiple_authors_links_single')) {
     }
 }
 
-if (!function_exists('multiple_authors_ids')) {
+if (!function_exists('publishpress_authors_ids')) {
     /**
      * Outputs the co-authors IDs
      *
@@ -969,9 +969,9 @@ if (!function_exists('multiple_authors_ids')) {
      * @param string $after What should appear after the presentation of co-authors
      * @param bool $echo Whether the co-authors should be echoed or returned. Defaults to true.
      */
-    function multiple_authors_ids($between = null, $betweenLast = null, $before = null, $after = null, $echo = true)
+    function publishpress_authors_ids($between = null, $betweenLast = null, $before = null, $after = null, $echo = true)
     {
-        return multiple_authors__echo(
+        return publishpress_authors_echo(
             'ID',
             'field',
             [
@@ -986,8 +986,8 @@ if (!function_exists('multiple_authors_ids')) {
     }
 }
 
-if (!function_exists('get_the_multiple_author_meta')) {
-    function get_the_multiple_author_meta($field)
+if (!function_exists('get_the_publishpress_author_meta')) {
+    function get_the_publishpress_author_meta($field)
     {
         $authors = get_post_authors();
         $meta    = [];
@@ -1000,15 +1000,15 @@ if (!function_exists('get_the_multiple_author_meta')) {
     }
 }
 
-if (!function_exists('the_multiple_author_meta')) {
-    function the_multiple_author_meta($field, $user_id = 0)
+if (!function_exists('the_publishpress_author_meta')) {
+    function the_publishpress_author_meta($field, $user_id = 0)
     {
         // TODO: need before after options
-        echo get_the_multiple_author_meta($field, $user_id);  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        echo get_the_publishpress_author_meta($field, $user_id);  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
 }
 
-if (!function_exists('multiple_authors_wp_list_authors')) {
+if (!function_exists('publishpress_authors_wp_list_authors')) {
     /**
      * List all the *co-authors* of the blog, with several options available.
      * optioncount (boolean) (false): Show the count in parenthesis next to the author's name.
@@ -1022,7 +1022,7 @@ if (!function_exists('multiple_authors_wp_list_authors')) {
      *
      * @return null|string The output, if echo is set to false.
      */
-    function multiple_authors_wp_list_authors($args = [])
+    function publishpress_authors_wp_list_authors($args = [])
     {
         $defaults = [
             'optioncount'   => false,
@@ -1038,7 +1038,7 @@ if (!function_exists('multiple_authors_wp_list_authors')) {
         ];
 
         $args   = wp_parse_args($args, $defaults);
-        $return = get_the_authors();
+        $return = publishpress_authors_get_the_authors();
 
         if (!$args['echo']) {
             return $return;
@@ -1048,7 +1048,7 @@ if (!function_exists('multiple_authors_wp_list_authors')) {
     }
 }
 
-if (!function_exists('multiple_authors_get_avatar')) {
+if (!function_exists('publishpress_authors_get_avatar')) {
     /**
      * Retrieve a Co-Author's Avatar.
      *
@@ -1063,7 +1063,7 @@ if (!function_exists('multiple_authors_get_avatar')) {
      *
      * @return string             The image tag for the avatar, or an empty string if none could be determined
      */
-    function multiple_authors_get_avatar($coauthor, $size = 32, $default = '', $alt = false)
+    function publishpress_authors_get_avatar($coauthor, $size = 32, $default = '', $alt = false)
     {
         global $multiple_authors_addon;
 
@@ -1094,27 +1094,27 @@ if (!function_exists('multiple_authors_get_avatar')) {
  * Utility functions for use by themes.
  */
 
-if (!function_exists('the_authors')) {
+if (!function_exists('publishpress_authors_the_authors')) {
     /**
      * Renders the authors display names, without links to their posts.
      *
      * Equivalent to the_author() template tag.
      */
-    function the_authors()
+    function publishpress_authors_the_authors()
     {
-        echo get_the_authors();  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        echo publishpress_authors_get_the_authors();  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
 }
 
-if (!function_exists('get_the_authors')) {
+if (!function_exists('publishpress_authors_get_the_authors')) {
     /**
      * Gets the authors display names, without links to their posts.
      *
      * Equivalent to get_the_author() template tag.
      */
-    function get_the_authors()
+    function publishpress_authors_get_the_authors()
     {
-        return authors_render(
+        return publishpress_authors_render(
             get_post_authors(),
             function ($author) {
                 return $author->display_name;
@@ -1123,25 +1123,25 @@ if (!function_exists('get_the_authors')) {
     }
 }
 
-if (!function_exists('the_authors_posts_links')) {
+if (!function_exists('publishpress_authors_the_authors_posts_links')) {
     /**
      * Renders the authors display names, with links to their posts.
      *
      * Equivalent to the_author_posts_link() template tag.
      */
-    function the_authors_posts_links()
+    function publishpress_authors_the_authors_posts_links()
     {
-        echo get_the_authors_posts_links();  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        echo publishpress_authors_get_the_authors_posts_links();  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
 }
 
-if (!function_exists('get_the_authors_posts_links')) {
+if (!function_exists('publishpress_authors_get_the_authors_posts_links')) {
     /**
      * Renders the authors display names, with links to their posts.
      */
-    function get_the_authors_posts_links()
+    function publishpress_authors_get_the_authors_posts_links()
     {
-        return authors_render(
+        return publishpress_authors_render(
             get_post_authors(),
             function ($author) {
                 $link = is_a($author, 'WP_User') ? get_author_posts_url($author->ID) : $author->link;
@@ -1180,25 +1180,25 @@ if (!function_exists('get_the_authors_posts_links')) {
     }
 }
 
-if (!function_exists('the_authors_links')) {
+if (!function_exists('publishpress_authors_the_authors_links')) {
     /**
      * Renders the authors display names, with their website link if it exists.
      *
      * Equivalent to the_author_link() template tag.
      */
-    function the_authors_links()
+    function publishpress_authors_the_authors_links()
     {
-        echo get_the_authors_links();  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        echo publishpress_authors_get_the_authors_links();  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
 }
 
-if (!function_exists('get_the_authors_links')) {
+if (!function_exists('publishpress_authors_get_the_authors_links')) {
     /**
      * Renders the authors display names, with their website link if it exists.
      */
-    function get_the_authors_links()
+    function publishpress_authors_get_the_authors_links()
     {
-        return authors_render(
+        return publishpress_authors_render(
             get_post_authors(),
             function ($author) {
                 if ($author->user_url) {
@@ -1217,7 +1217,7 @@ if (!function_exists('get_the_authors_links')) {
     }
 }
 
-if (!function_exists('authors_render')) {
+if (!function_exists('publishpress_authors_render')) {
     /**
      * Display one or more authors, according to arguments provided.
      *
@@ -1225,7 +1225,7 @@ if (!function_exists('authors_render')) {
      * @param callable $render_callback Callback to return rendered author.
      * @param array $args Arguments to affect display.
      */
-    function authors_render($authors, $render_callback, $args = [])
+    function publishpress_authors_render($authors, $render_callback, $args = [])
     {
         if (
             empty($authors)
@@ -1270,4 +1270,8 @@ if (PUBLISHPRESS_AUTHORS_LOAD_COAUTHORS_FUNCTIONS) {
 
 if (PUBLISHPRESS_AUTHORS_LOAD_BYLINES_FUNCTIONS) {
     require_once 'bylines-functions.php';
+}
+
+if (PUBLISHPRESS_AUTHORS_LOAD_DEPRECATED_LEGACY_CODE) {
+    require_once 'legacy-functions.php';
 }
