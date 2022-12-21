@@ -1144,4 +1144,9 @@ class Utils
     {
         return defined('GENERATE_VERSION');
     }
+
+    public static function isRankMathSeoInstalled()
+    {
+        return defined('RANK_MATH_VERSION') || defined('RANK_MATH_PRO_VERSION');
+    }
 }
