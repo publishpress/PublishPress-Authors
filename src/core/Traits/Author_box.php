@@ -252,7 +252,8 @@ trait Author_box
         $field = 'display_name',
         $separator = ',',
         $user_objects = false,
-        $term_id = false
+        $term_id = false,
+        $archive = false
     ) {
         global $post;
 
@@ -275,7 +276,11 @@ trait Author_box
                 $authors[] = $term_author;
             }
         } else {
-            $authors = get_post_authors($post_id, true, false);
+            if ($archive) {
+                $authors = [get_archive_author()];
+            } else {
+                $authors = get_post_authors($post_id, true, $archive);
+            }
         }
 
         if (!$user_objects) {
