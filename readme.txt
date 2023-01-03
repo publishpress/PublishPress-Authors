@@ -214,6 +214,21 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [4.1.0] - 03 Jan 2023 =
+
+* Update: Integrate PublishPress Authors with Yoast, #1102
+* Update: Add support for structured data for authors for RankMath SEO Plugin, #391
+* Fixed: Post Author widget not updating, #1122
+* Update: Accessibility improvements for links, #1138
+* Update: Add "archive" parameter to [publishpress_authors_data] shortcode, #1136
+* Update: Rename public methods for better clarity and avoiding name conflicts, #520 https://publishpress.com/knowledge-base/deprecated-functions/
+* Fixed: Issue with author boxes profile field background color, #1128
+* Update: Add author pages excerpt ellipsis in settings, #1124
+* Update: Add new before and after prefix or suffix for author boxes profile fields, #1119
+* Update: Move function generatepress_author_output to a new module, #587
+* Fixed: Code looking for wrong function before getting multiple authors in the author box, #571
+* Update: Italian Translation Update December 2022, #1145
+
 = [4.0.1] - 06 Dec 2022 =
 
 * Fixed: Icon does not hide when there is no value, #1103
