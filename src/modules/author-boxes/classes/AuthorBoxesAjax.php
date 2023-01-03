@@ -203,7 +203,7 @@ foreach ($profile_fields as $key => $data) {
                                 $profile_field_html  .= '<span class="ppma-author-field-meta-prefix"> '. $profile_before_display_prefix .' </span>';
     }
                                 $profile_field_html .= '<'. esc_html($profile_html_tag) .'';
-                                $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data ppma-author-field-meta"';
+                                $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data ppma-author-field-meta" aria-label="'. esc_attr(($data['label'])) .'"';
                                 if ($profile_html_tag === 'a') {
                                     $profile_field_html .= ' href="</?php echo $author->$key; ?>"';
                                 }
@@ -297,14 +297,14 @@ $custom_styles = '.pp-multiple-authors-layout-boxed ul li > div:nth-child(1) {fl
 <?php endif; ?>
 <?php if ($args['meta_email_show']['value']) : ?>
                             </?php if ($author->user_email) : ?>
-                                <a href="</?php echo esc_url('mailto:'.$author->user_email); ?>" target="_blank">
+                                <a href="</?php echo esc_url('mailto:'.$author->user_email); ?>" target="_blank" aria-label="<?php echo esc_attr__('Email', 'publishpress-authors'); ?>">
                                     <span class="dashicons dashicons-email-alt"></span>
                                 </a>
                             </?php endif; ?>
 <?php endif; ?>
 <?php if ($args['meta_site_link_show']['value']) : ?>
                             </?php if ($author->user_email) : ?>
-                                <a href="</?php echo esc_url($author->user_url); ?>" target="_blank">
+                                <a href="</?php echo esc_url($author->user_url); ?>" target="_blank" aria-label="<?php echo esc_attr__('Website', 'publishpress-authors'); ?>">
                                     <span class="dashicons dashicons-admin-links"></span>
                                 </a>
                             </?php endif; ?>
