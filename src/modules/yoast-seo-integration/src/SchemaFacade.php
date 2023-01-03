@@ -35,9 +35,9 @@ class SchemaFacade
 {
     public function addSupportForMultipleAuthors()
     {
-        add_filter('wpseo_schema_graph', [ __CLASS__, 'filter_graph' ], 11, 2);
-        add_filter('wpseo_schema_author', [ __CLASS__, 'filter_author_graph' ], 11, 4);
-        add_filter('wpseo_meta_author', [ __CLASS__, 'filter_author_meta' ], 11, 2);
+        add_filter('wpseo_schema_graph', [$this, 'filter_graph' ], 11, 2);
+        add_filter('wpseo_schema_author', [$this, 'filter_author_graph' ], 11, 4);
+        add_filter('wpseo_meta_author', [$this, 'filter_author_meta' ], 11, 2);
         add_filter('wpseo_opengraph_title', [$this, 'handleAuthorWpseoTitle']);
         add_filter('wpseo_title', [$this, 'handleAuthorWpseoTitle']);
     }
