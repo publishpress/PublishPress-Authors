@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PublishPress - PublishPress Authors\n"
 "POT-Creation-Date: 2021-11-04 15:04-0300\n"
-"PO-Revision-Date: 2021-11-04 15:08-0300\n"
+"PO-Revision-Date: 2023-01-04 11:37+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -12,48 +12,47 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.1.1\n"
 
 #: publishpress-authors.php:110
 #, php-format
 msgid "New comment on your post \"%s\""
-msgstr ""
+msgstr "Neuer Kommentar zu Ihrem Beitrag \"%s\""
 
 #: publishpress-authors.php:113
 #, php-format
 msgid "Author : %1$s (IP: %2$s , %3$s)"
-msgstr ""
+msgstr "Autor : %1$s (IP: %2$s , %3$s)"
 
 #: publishpress-authors.php:118
-#, fuzzy, php-format
-#| msgid "Email"
+#, php-format
 msgid "E-mail : %s"
-msgstr "E-Mail"
+msgstr "E-Mail : %s"
 
 #: publishpress-authors.php:119 publishpress-authors.php:137
 #: publishpress-authors.php:151
 #, php-format
 msgid "URL    : %s"
-msgstr ""
+msgstr "URL    : %s"
 
 #: publishpress-authors.php:121
 #, php-format
 msgid "Whois  : http://whois.arin.net/rest/ip/%s"
-msgstr ""
+msgstr "Whois  : http://whois.arin.net/rest/ip/%s"
 
 #: publishpress-authors.php:124
 msgid "Comment: "
-msgstr ""
+msgstr "Kommentar: "
 
 #: publishpress-authors.php:125
 msgid "You can see all comments on this post here: "
-msgstr ""
+msgstr "Sie können sich alle Kommentare zu Ihrem Post hier ansehen: "
 
 #. translators: 1: blog name, 2: post title
 #: publishpress-authors.php:127
 #, php-format
 msgid "[%1$s] Comment: \"%2$s\""
-msgstr ""
+msgstr "[%1$s] Kommentar: \"%2$s\""
 
 #: publishpress-authors.php:129
 #, php-format
@@ -63,11 +62,11 @@ msgstr ""
 #: publishpress-authors.php:132 publishpress-authors.php:146
 #, php-format
 msgid "Website: %1$s (IP: %2$s , %3$s)"
-msgstr ""
+msgstr "Webseite: %1$s (IP: %2$s , %3$s)"
 
 #: publishpress-authors.php:138 publishpress-authors.php:152
 msgid "Excerpt: "
-msgstr ""
+msgstr "Ausschnitt: "
 
 #: publishpress-authors.php:139
 msgid "You can see all trackbacks on this post here: "
@@ -97,35 +96,30 @@ msgstr ""
 #: publishpress-authors.php:162
 #, php-format
 msgid "Permalink: %s"
-msgstr ""
+msgstr "Permalink: %s"
 
 #: publishpress-authors.php:167
 #, php-format
 msgid "Trash it: %s"
-msgstr ""
+msgstr "In den Papierkorb verschieben: %s"
 
 #: publishpress-authors.php:172
-#, fuzzy, php-format
-#| msgid "Delete Guest Authors"
+#, php-format
 msgid "Delete it: %s"
-msgstr "Löschen von Gastautoren"
+msgstr "Löschen: %s"
 
 #: publishpress-authors.php:177
 #, php-format
 msgid "Spam it: %s"
-msgstr ""
+msgstr "Als Spam markieren: %s"
 
 #: src/core/Authors_Widget.php:22
-#, fuzzy
-#| msgid "Authors"
 msgid "Authors List"
-msgstr "Autoren"
+msgstr "Autorenliste"
 
 #: src/core/Authors_Widget.php:29
-#, fuzzy
-#| msgid "Popular authors"
 msgid "Display authors list."
-msgstr "Beliebte Autoren"
+msgstr "Autorenliste anzeigen."
 
 #: src/core/Authors_Widget.php:107
 msgid "Title"
@@ -138,6 +132,8 @@ msgstr "Layout"
 #: src/core/Authors_Widget.php:110
 msgid "Display All Authors (including those who have not written any posts)"
 msgstr ""
+"Alle Autoren anzeigen (auch solche, die bisher keine Beiträge geschrieben "
+"haben)"
 
 #: src/core/Classes/Author_Editor.php:43
 msgid "Name"
@@ -157,7 +153,7 @@ msgstr "Beiträge"
 #: src/core/Classes/Author_Editor.php:55 src/core/Plugin.php:685
 #, php-format
 msgid "Published posts of the following post types: %s"
-msgstr ""
+msgstr "Veröffentlichte Beiträge der folgenden Beitragstypen: %s"
 
 #: src/core/Classes/Author_Editor.php:93
 msgid "User"
@@ -175,13 +171,11 @@ msgstr "Benutzer bearbeiten"
 #: src/core/Classes/Author_Editor.php:154
 #: src/core/Classes/Author_Editor.php:201
 msgid "Edit Author Profile"
-msgstr "Author-Profil bearbeiten"
+msgstr "Autoren-Profil bearbeiten"
 
 #: src/core/Classes/Author_Editor.php:168
-#, fuzzy
-#| msgid "Edit Author Profile"
 msgid "Create Author Profile"
-msgstr "Author-Profil bearbeiten"
+msgstr "Autoren-Profil erstellen"
 
 #: src/core/Classes/Author_Editor.php:268
 msgid "Mapped User"
@@ -250,10 +244,8 @@ msgid "Convert into guest author"
 msgstr "Konvertieren in Gastautor"
 
 #: src/core/Classes/Author_Editor.php:556
-#, fuzzy
-#| msgid "Update author"
 msgid "Update post count"
-msgstr "Update-Autor"
+msgstr "Update Beitragszählung"
 
 #: src/core/Classes/Author_Editor.php:620
 msgid "No authors were updated"
@@ -283,10 +275,8 @@ msgid "%d/%d: Inspecting the user %d"
 msgstr ""
 
 #: src/core/Classes/Installer.php:179
-#, fuzzy
-#| msgid "No authors were updated"
 msgid "All is set. No author need to be updated"
-msgstr "Keine Autoren wurden aktualisiert"
+msgstr "Alles ist bereits eingerichtet. Keine Autoren wurden aktualisiert"
 
 #: src/core/Classes/Installer.php:260
 #, php-format
@@ -340,16 +330,12 @@ msgid "Post does not exist"
 msgstr "Artikel gibt es nicht"
 
 #: src/core/Classes/Legacy/Module.php:102
-#, fuzzy
-#| msgid "Posts"
 msgid "Post"
-msgstr "Beiträge"
+msgstr "Beitrag"
 
 #: src/core/Classes/Legacy/Module.php:103
-#, fuzzy
-#| msgid "Pages"
 msgid "Page"
-msgstr "Seiten"
+msgstr "Seite"
 
 #: src/core/Classes/Post_Editor.php:89 src/core/Classes/Post_Editor.php:192
 #: src/core/Plugin.php:762 src/core/Traits/Author_box.php:150
@@ -363,10 +349,8 @@ msgid "Authors"
 msgstr "Autoren"
 
 #: src/core/Classes/Post_Editor.php:156
-#, fuzzy
-#| msgid "No author"
 msgid "No author term"
-msgstr "Kein Benutzer"
+msgstr "Kein Autor"
 
 #: src/core/Classes/Post_Editor.php:164
 msgid "\"post_author\" is empty"
@@ -385,10 +369,8 @@ msgid ""
 msgstr ""
 
 #: src/core/Classes/Post_Editor.php:293
-#, fuzzy
-#| msgid "Search for an author"
 msgid "Search for an user"
-msgstr "Suche nach Autor"
+msgstr "Suche nach Nutzer"
 
 #: src/core/Classes/Term_Editor.php:56
 #: src/modules/multiple-authors/multiple-authors.php:1172
@@ -485,8 +467,8 @@ msgstr "Wenn du %s magst, hinterlasse uns bitte eine %s Bewertung. Danke!"
 #, php-format
 msgid "%s post by this author"
 msgid_plural "%s posts by this author"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s Beitrag von diesem Autor"
+msgstr[1] "%s Beiträge von diesem Autor"
 
 #: src/core/Plugin.php:766
 msgid "Click on an author to change them. Drag to change their order."
@@ -543,20 +525,14 @@ msgstr ""
 "erstellen?"
 
 #: src/core/Plugin.php:1364
-#, fuzzy
-#| msgid ""
-#| "Are you sure you want to create author profiles for the missed post "
-#| "authors?"
 msgid "Are you sure you want to update the author column for all the posts?"
 msgstr ""
-"Möchten Sie wirklich Autorenprofile für die verpassten Beitragsautoren "
-"erstellen?"
+"Möchten Sie wirklich die Autoren-Spalte für alle Beiträge aktualisieren?"
 
 #: src/core/Plugin.php:1368
-#, fuzzy
-#| msgid "Are you sure you want to create authors for the selected roles?"
 msgid "Are you sure you want to update the author slug for all the users?"
-msgstr "Möchten Sie wirklich Autoren für die ausgewählten Rollen erstellen?"
+msgstr ""
+"Möchten Sie wirklich die Autoren-Titelform für alle Nutzer aktualisieren?"
 
 #: src/core/Plugin.php:1372
 msgid "Are you sure you want to create authors for the selected roles?"
@@ -584,10 +560,8 @@ msgid "%d posts were found without author terms"
 msgstr ""
 
 #: src/core/Widget.php:42
-#, fuzzy
-#| msgid "Guest Author"
 msgid "Post Author"
-msgstr "Gastautor"
+msgstr "Beitragsautor"
 
 #: src/core/Widget.php:49
 msgid "Display a list of authors for the current post."
@@ -652,17 +626,15 @@ msgstr "Bylines-Daten kopieren"
 
 #: src/modules/debug/debug.php:53
 msgid "Debug"
-msgstr ""
+msgstr "Fehlerbehebung"
 
 #: src/modules/debug/debug.php:54
 msgid "Add debug information for the plugin"
 msgstr ""
 
 #: src/modules/debug/debug.php:97
-#, fuzzy
-#| msgid "Authors"
 msgid "Authors Debug"
-msgstr "Autoren"
+msgstr "Autoren debuggen"
 
 #: src/modules/default-layouts/default-layouts.php:54
 msgid "Default Layouts"
@@ -670,7 +642,7 @@ msgstr "Layout verwalten"
 
 #: src/modules/default-layouts/default-layouts.php:129
 msgid "View all posts"
-msgstr ""
+msgstr "Alle Beiträge ansehen"
 
 #: src/modules/default-layouts/default-layouts.php:149
 msgid "Boxed"
@@ -701,34 +673,24 @@ msgid "Add compatibility with the Divi Theme Builder"
 msgstr "Kompatibilität mit dem Divi Theme Builder hinzufügen"
 
 #: src/modules/editflow-integration/editflow-integration.php:51
-#, fuzzy
-#| msgid "Elementor Integration"
 msgid "Edit Flow Integration"
-msgstr "Elementar-Integration"
+msgstr "Edit Flow-Integration"
 
 #: src/modules/editflow-integration/editflow-integration.php:53
-#, fuzzy
-#| msgid "Add compatibility with the Yoast SEO plugin"
 msgid "Add compatibility with the Edit Flow plugin"
-msgstr "Kompatibilität mit dem Yoast SEO Plugin hinzufügen"
+msgstr "Kompatibilität mit dem Edit Flow Plugin hinzufügen"
 
 #: src/modules/elementor-integration/Modules/Posts/Skins/PostsSkinCards.php:38
-#, fuzzy
-#| msgid "PublishPress Authors"
 msgid "Cards - PublishPress Authors"
-msgstr "PublishPress Authors"
+msgstr "Cards - PublishPress Authors"
 
 #: src/modules/elementor-integration/Modules/Posts/Skins/PostsSkinClassic.php:38
-#, fuzzy
-#| msgid "PublishPress Authors"
 msgid "Classic - PublishPress Authors"
-msgstr "PublishPress Authors"
+msgstr "Classic - PublishPress Authors"
 
 #: src/modules/elementor-integration/Modules/Posts/Skins/PostsSkinFullContent.php:36
-#, fuzzy
-#| msgid "PublishPress Authors"
 msgid "Full Content - PublishPress Authors"
-msgstr "PublishPress Authors"
+msgstr "Full Content - PublishPress Authors"
 
 #: src/modules/elementor-integration/elementor-integration.php:57
 msgid "Elementor Integration"
@@ -896,10 +858,8 @@ msgid "Create missed authors from role"
 msgstr "Erstellen von verpassten Autoren aus der Rolle"
 
 #: src/modules/multiple-authors/multiple-authors.php:915
-#, fuzzy
-#| msgid "Update author"
 msgid "Update author field on posts"
-msgstr "Update-Autor"
+msgstr "Update der Autorenfelder der Beiträge"
 
 #: src/modules/multiple-authors/multiple-authors.php:922
 msgid "Synchronize Author slugs to User logins"
@@ -993,10 +953,8 @@ msgstr ""
 #: src/modules/polylang-integration/polylang-integration.php:55
 #: src/modules/polylang-integration/polylang-integration.php:56
 #: src/modules/polylang-integration/polylang-integration.php:57
-#, fuzzy
-#| msgid "Elementor Integration"
 msgid "Polylang Integration"
-msgstr "Elementar-Integration"
+msgstr "Polylang-Integration"
 
 #: src/modules/pro-placeholders/pro-placeholders.php:56
 #: src/modules/pro-placeholders/pro-placeholders.php:57
@@ -1011,22 +969,16 @@ msgstr ""
 
 #: src/modules/pro-placeholders/pro-placeholders.php:105
 #: src/modules/pro-placeholders/pro-placeholders.php:106
-#, fuzzy
-#| msgid "Layout"
 msgid "Layouts"
-msgstr "Layout"
+msgstr "Layouts"
 
 #: src/modules/pro-placeholders/views/fields-placeholder.php:2
-#, fuzzy
-#| msgid "Authors"
 msgid "Author Fields"
-msgstr "Autoren"
+msgstr "Autoren-Felder"
 
 #: src/modules/pro-placeholders/views/fields-placeholder.php:2
-#, fuzzy
-#| msgid "New author"
 msgid "New Author Field"
-msgstr "Neuer Autor"
+msgstr "Neues Autoren-Feld"
 
 #: src/modules/pro-placeholders/views/fields-placeholder.php:11
 msgid ""
@@ -1040,16 +992,12 @@ msgid "Upgrade to Pro"
 msgstr ""
 
 #: src/modules/pro-placeholders/views/layouts-placeholder.php:2
-#, fuzzy
-#| msgid "Default Layouts"
 msgid "Author Layouts"
-msgstr "Layout verwalten"
+msgstr "Autoren-Layouts"
 
 #: src/modules/pro-placeholders/views/layouts-placeholder.php:2
-#, fuzzy
-#| msgid "New author"
 msgid "New Author Layout"
-msgstr "Neuer Autor"
+msgstr "Neues Autoren-Layout"
 
 #: src/modules/pro-placeholders/views/layouts-placeholder.php:11
 msgid ""
@@ -1059,33 +1007,27 @@ msgstr ""
 
 #: src/modules/rest-api/rest-api.php:56
 msgid "Rest API"
-msgstr ""
+msgstr "Rest API"
 
 #: src/modules/rest-api/rest-api.php:57 src/modules/rest-api/rest-api.php:58
 msgid "Rest API support"
-msgstr ""
+msgstr "Rest API Unterstützen"
 
 #: src/modules/rest-api/rest-api.php:95
-#, fuzzy
-#| msgid "Authors"
 msgid "Authors."
-msgstr "Autoren"
+msgstr "Autoren."
 
 #: src/modules/reviews/reviews.php:74
 msgid "Reviews"
-msgstr ""
+msgstr "Bewertungen"
 
 #: src/modules/seoframework-integration/seoframework-integration.php:58
-#, fuzzy
-#| msgid "Elementor Integration"
 msgid "The SEO Framework Integration"
-msgstr "Elementar-Integration"
+msgstr "The SEO Framework-Integration"
 
 #: src/modules/seoframework-integration/seoframework-integration.php:60
-#, fuzzy
-#| msgid "Add compatibility with the Yoast SEO plugin"
 msgid "Add compatibility with The SEO Framework plugin."
-msgstr "Kompatibilität mit dem Yoast SEO Plugin hinzufügen"
+msgstr "Kompatibilität mit dem The SEO Framework Plugin hinzufügen."
 
 #: src/modules/settings/settings.php:102
 msgid "Multiple Authors Settings"
@@ -1100,28 +1042,20 @@ msgid "There are no PublishPress modules registered"
 msgstr "Es sind keine PublishPress-Module registriert"
 
 #: src/modules/ultimatemember-integration/ultimatemember-integration.php:53
-#, fuzzy
-#| msgid "Elementor Integration"
 msgid "Ultimate Member Integration"
-msgstr "Elementar-Integration"
+msgstr "Ultimate Member-Integration"
 
 #: src/modules/ultimatemember-integration/ultimatemember-integration.php:54
-#, fuzzy
-#| msgid "Add compatibility with the Yoast SEO plugin"
 msgid "Add compatibility with the Ultimate Member plugin"
-msgstr "Kompatibilität mit dem Yoast SEO Plugin hinzufügen"
+msgstr "Kompatibilität mit dem Ultimate Member Plugin hinzufügen"
 
 #: src/modules/wpengine-integration/wpengine-integration.php:51
-#, fuzzy
-#| msgid "Divi Integration"
 msgid "WPEngine Integration"
-msgstr "Divi Integration"
+msgstr "WPEngine Integration"
 
 #: src/modules/wpengine-integration/wpengine-integration.php:53
-#, fuzzy
-#| msgid "Add compatibility with the Genesis framework"
 msgid "Add compatibility with the WPEngine object cache."
-msgstr "Hinzufügen der Kompatibilität mit dem Genesis-Framework"
+msgstr "Hinzufügen der Kompatibilität mit dem WPEngine object cache."
 
 #: src/modules/yoast-seo-integration/yoast-seo-integration.php:52
 msgid "Yoast SEO Integration"
@@ -1133,7 +1067,7 @@ msgstr "Kompatibilität mit dem Yoast SEO Plugin hinzufügen"
 
 #. Plugin URI of the plugin/theme
 msgid "https://wordpress.org/plugins/publishpress-authors/"
-msgstr ""
+msgstr "https://wordpress.org/plugins/publishpress-authors/"
 
 #. Author of the plugin/theme
 msgid "PublishPress"
