@@ -214,7 +214,7 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= [4.1.0] - 03 Jan 2023 =
+= [4.1.0] - 04 Jan 2023 =
 
 * Update: Integrate PublishPress Authors with Yoast, #1102
 * Update: Add support for structured data for authors for RankMath SEO Plugin, #391
