@@ -23,8 +23,11 @@
 
 namespace PPAuthors\YoastSEO;
 
-use MultipleAuthors\Classes\Authors_Iterator;
-use Yoast\WP\SEO\Config\Schema_IDs;
+use MultipleAuthors\Classes\Utils;
+use PPAuthors\YoastSEO\YoastAuthor;
+use Yoast\WP\SEO\Context\Meta_Tags_Context;
+use Yoast\WP\SEO\Generators\Schema\Abstract_Schema_Piece;
+use WP_User;
 
 use function wp_hash;
 
@@ -32,73 +35,126 @@ class SchemaFacade
 {
     public function addSupportForMultipleAuthors()
     {
-        add_filter('wpseo_schema_webpage', [$this, 'handleSchemaArticle'], 10, 2);
-        add_filter('wpseo_schema_author', [$this, 'handleSchemaAuthor'], 10, 2);
-        add_filter('wpseo_schema_article', [$this, 'handleSchemaArticle'], 10, 2);
+        add_filter('wpseo_schema_graph', [$this, 'filter_graph' ], 11, 2);
+        add_filter('wpseo_schema_author', [$this, 'filter_author_graph' ], 11, 4);
+        add_filter('wpseo_meta_author', [$this, 'filter_author_meta' ], 11, 2);
         add_filter('wpseo_opengraph_title', [$this, 'handleAuthorWpseoTitle']);
         add_filter('wpseo_title', [$this, 'handleAuthorWpseoTitle']);
     }
 
-    public function handleSchemaAuthor($graphPiece, $context)
+    /**
+     * Filters the graph output to add authors.
+     *
+     * @param array                   $data                   The schema graph.
+     * @param Meta_Tags_Context       $context                The context object.
+     * @param Abstract_Schema_Piece   $graph_piece_generator  The graph piece generator.
+     * @param Abstract_Schema_Piece[] $graph_piece_generators The graph piece generators.
+     *
+     * @return array The (potentially altered) schema graph.
+     */
+    public function filter_author_graph($data, $context, $graph_piece_generator, $graph_piece_generators)
     {
-        $author = $this->getAuthorFromContext($context);
-
-        if (!is_object($author)) {
-            return $graphPiece;
+        if (! isset($data['image']['url'])) {
+            return $data;
         }
 
-        $graphPiece['@id']              = $this->getAuthorSchemaId($author, $context);
-        $graphPiece['name']             = $author->display_name;
-        $graphPiece['image']['caption'] = $graphPiece['name'];
+        if (isset($data['image']['@id'])) {
+            $data['image']['@id'] .= md5($data['image']['url']);
+        }
 
-        if (method_exists($author, 'get_avatar_url')) {
-            $avatarUrl = $author->get_avatar_url(256);
+        if (isset($data['logo']['@id'])) {
+            $data['logo']['@id'] .= md5($data['image']['url']);
+        }
 
-            if (isset($avatarUrl['url'])) {
-                $graphPiece['image']['url'] = $avatarUrl['url'];
-                $graphPiece['image']['contentUrl'] = $avatarUrl['url'];
+        return $data;
+    }
+
+    /**
+     * Filters the graph output to add authors.
+     *
+     * @param array             $data    The schema graph.
+     * @param Meta_Tags_Context $context Context object.
+     *
+     * @return array The (potentially altered) schema graph.
+     */
+    public function filter_graph($data, $context)
+    {
+        if (! is_singular(Utils::get_enabled_post_types())) {
+            return $data;
+        }
+
+        if (!function_exists('publishpress_authors_get_post_authors')) {
+            require_once PP_AUTHORS_BASE_PATH . 'functions/template-tags.php';
+        }
+        
+        $author_objects = get_post_authors($context->post->ID, false, false);
+
+        $ids     = [];
+        $authors = [];
+
+        // Add the authors to the schema.
+        foreach ($author_objects as $author) {
+            $author_generator          = new YoastAuthor();
+            $author_generator->context = $context;
+            $author_generator->helpers = YoastSEO()->helpers;
+
+            if ($author->ID > 0) {
+                $author_data = $author_generator->generate_from_user_id($author->ID);
+            } else {
+                $author_data = $author_generator->generate_from_guest_author($author);
+            }
+
+            if (! empty($author_data)) {
+                $ids[]     = [ '@id' => $author_data['@id'] ];
+                $authors[] = $author_data;
             }
         }
 
-        if (isset($author->link)) {
-            $graphPiece['url'] = $author->link;
+        if (count($author_objects) === 1) {
+            $authors = $ids[0];
         }
 
-        return $graphPiece;
-    }
-
-    public function handleSchemaArticle($graphPiece, $context)
-    {
-        if (isset($graphPiece['author'])) {
-            $author = $this->getAuthorFromContext($context);
-
-            if (!is_object($author)) {
-                return $graphPiece;
+        foreach ($data as $key => $piece) {
+            if (isset($piece['author'])) {
+                $data[$key]['author'] = $authors;
             }
-
-            $graphPiece['author']['@id'] = $this->getAuthorSchemaId($author, $context);
+            if (count($author_objects) === 1 && $piece['@type'] === 'Person') {
+                $data[$key] = $author_data;
+            }
         }
 
-        return $graphPiece;
+        return $data;
     }
 
-    private function getAuthorFromContext($context)
+    /**
+     * Filters the author meta tag
+     *
+     * @param string                 $author_name  The article author's display name. Return empty to disable the tag.
+     * @param Indexable_Presentation $presentation The presentation of an indexable.
+     * @return string
+     */
+    public function filter_author_meta($author_name, $presentation)
     {
-        if (!isset($context->post) || !is_object($context->post) || is_wp_error($context->post)) {
-            return null;
+
+        if (!function_exists('publishpress_authors_get_post_authors')) {
+            require_once PP_AUTHORS_BASE_PATH . 'functions/template-tags.php';
+        }
+        
+        $author_objects = get_post_authors($presentation->context->post->id, false, false);
+
+        // Fallback in case of error.
+        if (empty($author_objects)) {
+            return $author_name;
         }
 
-        $authorsIterator = new Authors_Iterator($context->post->ID);
-        $authorsIterator->iterate();
-
-        return $authorsIterator->current_author;
-    }
-
-    private function getAuthorSchemaId($author, $context)
-    {
-        return $context->site_url . Schema_IDs::PERSON_HASH . wp_hash(
-                $author->slug . $author->ID
-            );
+        $output = '';
+        foreach ($author_objects as $i => $author) {
+            $output .= $author->display_name;
+            if ($i <= (count($author_objects) - 2)) {
+                $output .= ', ';
+            }
+        }
+        return $output;
     }
 
     /**

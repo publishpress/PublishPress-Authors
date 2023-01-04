@@ -245,7 +245,7 @@ class Authors_Widget extends WP_Widget
         $legacyPlugin = Factory::getLegacyPlugin();
 
         if (apply_filters('publishpress_authors_load_style_in_frontend', PUBLISHPRESS_AUTHORS_LOAD_STYLE_IN_FRONTEND)) {
-            
+
             Utils::loadLayoutFrontCss();
 
             if (isset($instance['authors_recent_col']) && (int)$instance['authors_recent_col'] > 0) {
@@ -262,7 +262,7 @@ class Authors_Widget extends WP_Widget
                 }';
                 wp_add_inline_style('multiple-authors-widget-css', $inline_style);
             }
-            
+
             if (isset($instance['layout_columns']) && (int)$instance['layout_columns'] > 1) {
                 $column_child = ((int)$instance['layout_columns']);
                 $column_width = ((100)/(int)$instance['layout_columns']);
@@ -282,7 +282,7 @@ class Authors_Widget extends WP_Widget
                 wp_add_inline_style('multiple-authors-widget-css', $inline_style);
             }
         }
-    
+
         wp_enqueue_script(
             'multiple-authors-widget',
             PP_AUTHORS_ASSETS_URL . 'js/multiple-authors-widget.js',
@@ -290,7 +290,7 @@ class Authors_Widget extends WP_Widget
             PP_AUTHORS_VERSION
         );
 
-        if (!function_exists('multiple_authors')) {
+        if (!function_exists('publishpress_authors_get_all_authors')) {
             require_once PP_AUTHORS_BASE_PATH . 'functions/template-tags.php';
         }
 
@@ -328,7 +328,7 @@ class Authors_Widget extends WP_Widget
             $instance['page'] = (get_query_var('paged')) ? get_query_var('paged') : 1;
         }
 
-        $author_results   = multiple_authors_get_all_authors(array('hide_empty' => !$showEmpty), $instance);
+        $author_results   = publishpress_authors_get_all_authors(array('hide_empty' => !$showEmpty), $instance);
         if (isset($author_results['page'])) {
             $authors     = $author_results['authors'];
             $total_terms = $author_results['total'];

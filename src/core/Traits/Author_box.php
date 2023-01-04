@@ -115,7 +115,7 @@ trait Author_box
             Utils::loadLayoutFrontCss();
         }
 
-        if (!function_exists('multiple_authors')) {
+        if (!function_exists('get_post_authors') || !function_exists('get_archive_author')) {
             require_once PP_AUTHORS_BASE_PATH . 'src/functions/template-tags.php';
         }
 
@@ -252,13 +252,14 @@ trait Author_box
         $field = 'display_name',
         $separator = ',',
         $user_objects = false,
-        $term_id = false
+        $term_id = false,
+        $archive = false
     ) {
         global $post;
 
         $output = [];
 
-        if (!function_exists('multiple_authors')) {
+        if (!function_exists('get_post_authors')) {
             require_once PP_AUTHORS_BASE_PATH . 'src/functions/template-tags.php';
         }
 
@@ -275,7 +276,11 @@ trait Author_box
                 $authors[] = $term_author;
             }
         } else {
-            $authors = get_post_authors($post_id, true, false);
+            if ($archive) {
+                $authors = [get_archive_author()];
+            } else {
+                $authors = get_post_authors($post_id, true, $archive);
+            }
         }
 
         if (!$user_objects) {

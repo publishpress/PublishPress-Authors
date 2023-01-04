@@ -334,6 +334,8 @@
                 profile_refresh_trigger.push('profile_fields_' + field_name + '_display_suffix');
                 profile_refresh_trigger.push('profile_fields_' + field_name + '_display_icon');
                 profile_refresh_trigger.push('profile_fields_' + field_name + '_display_position');
+                profile_refresh_trigger.push('profile_fields_' + field_name + '_before_display_prefix');
+                profile_refresh_trigger.push('profile_fields_' + field_name + '_after_display_suffix');
             }
 
             var force_refresh = false;

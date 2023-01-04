@@ -1196,6 +1196,10 @@ class MA_Author_Boxes extends Module
                                                 $profile_display_suffix    = $args['profile_fields_' . $key . '_display_suffix']['value'];
                                                 $profile_display_icon     = $args['profile_fields_' . $key . '_display_icon']['value'];
                                                 $profile_display_position = $args['profile_fields_' . $key . '_display_position']['value'];
+
+                                                $profile_before_display_prefix = $args['profile_fields_' . $key . '_before_display_prefix']['value'];
+                                                $profile_after_display_suffix  = $args['profile_fields_' . $key . '_after_display_suffix']['value'];
+
                                                 if (empty(trim($profile_display_position))) {
                                                     $profile_display_position = 'meta';
                                                 }
@@ -1246,8 +1250,13 @@ class MA_Author_Boxes extends Module
 
                                                 if ($profile_show_field) : ?>
                                                     <?php 
-                                                    $profile_field_html = '<'. esc_html($profile_html_tag) .'';
-                                                    $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data ppma-author-field-meta"';
+                                                    $profile_field_html  = '';
+                                                    
+                                                    if (!empty(trim($profile_before_display_prefix))) {
+                                                        $profile_field_html  .= '<span class="ppma-author-field-meta-prefix"> '. $profile_before_display_prefix .' </span>';
+                                                    }
+                                                    $profile_field_html .= '<'. esc_html($profile_html_tag) .'';
+                                                    $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data ppma-author-field-meta" aria-label="'. esc_attr(($data['label'])) .'"';
                                                     if ($profile_html_tag === 'a') {
                                                         $profile_field_html .= ' href="'. $profile_value_prefix.$field_value .'"';
                                                     }
@@ -1256,6 +1265,9 @@ class MA_Author_Boxes extends Module
                                                         $profile_field_html .= $display_field_value;
                                                     }
                                                     $profile_field_html .= '</'. esc_html($profile_html_tag) .'>';
+                                                    if (!empty(trim($profile_after_display_suffix))) {
+                                                        $profile_field_html  .= '<span class="ppma-author-field-meta-suffix"> '. $profile_after_display_suffix .' </span>';
+                                                    }
                                                     ?>
                                                     <?php 
                                                     if ($profile_display_position === 'name') {
@@ -1309,12 +1321,12 @@ class MA_Author_Boxes extends Module
                                                             </a>
                                                         <?php endif; ?>
                                                         <?php if ($args['meta_email_show']['value'] && $author->user_email) : ?>
-                                                            <a href="<?php echo esc_url('mailto:'.$author->user_email); ?>" target="_blank">
+                                                            <a href="<?php echo esc_url('mailto:'.$author->user_email); ?>" target="_blank" aria-label="<?php echo esc_attr__('Email', 'publishpress-authors'); ?>">
                                                                 <span class="dashicons dashicons-email-alt"></span>
                                                             </a>
                                                         <?php endif; ?>
                                                         <?php if ($args['meta_site_link_show']['value'] && $author->user_url) : ?>
-                                                            <a href="<?php echo esc_url($author->user_url); ?>" target="_blank">
+                                                            <a href="<?php echo esc_url($author->user_url); ?>" target="_blank" aria-label="<?php echo esc_attr__('Website', 'publishpress-authors'); ?>">
                                                                 <span class="dashicons dashicons-admin-links"></span>
                                                             </a>
                                                         <?php endif; ?>

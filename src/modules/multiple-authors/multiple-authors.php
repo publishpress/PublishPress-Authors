@@ -112,6 +112,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'author_post_title_header'     => 'h2',
                     'author_post_custom_width'     => '',
                     'author_post_custom_height'    => '',
+                    'author_post_excerpt_ellipsis' => '...',
                     'author_pages_posts_limit'     => '10',
                     'default_author_for_new_posts' => null,
                     'fallback_user_for_guest_post' => function_exists('get_current_user_id') ? get_current_user_id() : 0,
@@ -248,9 +249,6 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_filter('publishpress_content_overview_author_column', [$this, 'publishpressContentOverviewAuthorColumn'], 10, 2);
             add_filter('pp_calendar_posts_query_args', [$this, 'publishpressPostQueryArgs']);
 
-            // Add compatibility with GeneratePress theme.
-            add_filter('generate_post_author_output', [$this, 'generatepress_author_output']);
-
             add_filter('the_author_posts_link', [$this, 'theAuthorPostsLink']);
 
             // Fix authors metadata.
@@ -312,8 +310,8 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
 
             $current_author = Author::get_by_user_id(get_current_user_id());
-            if ($current_author 
-                && is_object($current_author) 
+            if ($current_author
+                && is_object($current_author)
                 && isset($current_author->term_id)
                 ) {
                 add_menu_page(
@@ -365,10 +363,10 @@ if (!class_exists('MA_Multiple_Authors')) {
          *
          * @param array $links
          * @param string $file
-         * 
+         *
          * @return array
          */
-        public function add_plugin_meta($links, $file) 
+        public function add_plugin_meta($links, $file)
         {
             if ($file == plugin_basename(PP_AUTHORS_FILE)) {
                 $links[] = '<a href="'. esc_url(admin_url('edit-tags.php?taxonomy=author')) .'">' . esc_html__('Authors', 'publishpress-authors') . '</a>';
@@ -793,6 +791,17 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
 
             add_settings_field(
+                'author_post_excerpt_ellipsis',
+                __(
+                    'Author pages excerpt ellipsis:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_author_post_excerpt_ellipsis'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_author_pages'
+            );
+
+            add_settings_field(
                 'author_pages_title_header',
                 __('Author pages title header:', 'publishpress-authors'),
                 [$this, 'settings_author_pages_title_header'],
@@ -1122,11 +1131,11 @@ if (!class_exists('MA_Multiple_Authors')) {
          * PublishPress Authors Shortcodes
          *
          * @param array $shortcodes
-         * 
+         *
          * @return array
          */
         private function settings_ppma_shortcodes($shortcodes = []) {
-    
+
             //add author box shortcode
             $shortcodes['publishpress_authors_box'] = [
                 'label'         => esc_html__('Authors Box', 'publishpress-authors'),
@@ -1434,7 +1443,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                             <?php echo $option['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                         </div>
                     <?php endif; ?>
-                    <input 
+                    <input
                         class="shortcode-field"
                         type="text"
                         value="<?php echo esc_attr($option['shortcode']); ?>"
@@ -1448,7 +1457,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     </span>
                     </div>
             <?php endforeach; ?>
-            
+
             <?php
         }
 
@@ -1587,7 +1596,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             $author_pages_layouts = apply_filters(
                 'pp_multiple_authors_pages_layout',
                 [
-                    'list' => esc_html__('List', 'publishpress-authors'), 
+                    'list' => esc_html__('List', 'publishpress-authors'),
                     'grid' => esc_html__('Grid', 'publishpress-authors')
                 ]
             );
@@ -1616,11 +1625,11 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '<select id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_pages_title_header]">';
 
             $author_pages_title_headers = [
-                'h1' => esc_html__('H1', 'publishpress-authors'), 
-                'h2' => esc_html__('H2', 'publishpress-authors'), 
-                'h3' => esc_html__('H3', 'publishpress-authors'), 
-                'h4' => esc_html__('H4', 'publishpress-authors'), 
-                'h5' => esc_html__('H5', 'publishpress-authors'), 
+                'h1' => esc_html__('H1', 'publishpress-authors'),
+                'h2' => esc_html__('H2', 'publishpress-authors'),
+                'h3' => esc_html__('H3', 'publishpress-authors'),
+                'h4' => esc_html__('H4', 'publishpress-authors'),
+                'h5' => esc_html__('H5', 'publishpress-authors'),
                 'h6' => esc_html__('H6', 'publishpress-authors')
             ];
 
@@ -1648,11 +1657,11 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '<select id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_post_title_header]">';
 
             $author_post_title_headers = [
-                'h1' => esc_html__('H1', 'publishpress-authors'), 
-                'h2' => esc_html__('H2', 'publishpress-authors'), 
-                'h3' => esc_html__('H3', 'publishpress-authors'), 
-                'h4' => esc_html__('H4', 'publishpress-authors'), 
-                'h5' => esc_html__('H5', 'publishpress-authors'), 
+                'h1' => esc_html__('H1', 'publishpress-authors'),
+                'h2' => esc_html__('H2', 'publishpress-authors'),
+                'h3' => esc_html__('H3', 'publishpress-authors'),
+                'h4' => esc_html__('H4', 'publishpress-authors'),
+                'h5' => esc_html__('H5', 'publishpress-authors'),
                 'h6' => esc_html__('H6', 'publishpress-authors')
             ];
 
@@ -1730,6 +1739,22 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         }
 
+        /**
+         * @param array $args
+         */
+        public function settings_author_post_excerpt_ellipsis($args = [])
+        {
+            $id    = $this->module->options_group_name . '_author_post_excerpt_ellipsis';
+            $value = isset($this->module->options->author_post_excerpt_ellipsis) ? $this->module->options->author_post_excerpt_ellipsis : '';
+
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="text" class="small-text" value="' . esc_attr($value) . '" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_post_excerpt_ellipsis]">';
+            echo '</label>';
+
+        }
+
 
         /**
          * @param array $args
@@ -1760,8 +1785,8 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function settings_author_pages_bio_layout($args = [])
         {
             $id    = $this->module->options_group_name . '_author_pages_bio_layout';
-            $value = isset($this->module->options->author_pages_bio_layout) 
-                ? $this->module->options->author_pages_bio_layout 
+            $value = isset($this->module->options->author_pages_bio_layout)
+                ? $this->module->options->author_pages_bio_layout
                 : Utils::getDefaultLayout();
 
             echo '<label for="' . esc_attr($id) . '">';
@@ -2405,7 +2430,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             if (!isset($new_options['show_author_page_title'])) {
                 $new_options['show_author_page_title'] = 'no';
             }
-            
+
             if (isset($new_options['layout'])) {
                 /**
                  * Filter the list of available layouts.
@@ -2487,7 +2512,7 @@ if (!class_exists('MA_Multiple_Authors')) {
          */
         public function filter_workflow_receiver_post_authors($receivers, $workflowPostID, $args)
         {
-            if (!function_exists('get_multiple_authors')) {
+            if (!function_exists('get_post_authors')) {
                 include_once PP_AUTHORS_SRC_PATH . 'functions/template-tags.php';
             }
 
@@ -2576,7 +2601,7 @@ if (!class_exists('MA_Multiple_Authors')) {
          * @return mixed
          */
         public function filterCommentClass($classes, $class, $commentID, $comment, $postID) {
-            if (!function_exists('get_multiple_authors')) {
+            if (!function_exists('get_post_authors')) {
                 return $classes;
             }
 
@@ -3247,7 +3272,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     // Check if the user is an author for the current post
                     if ($post_id > 0) {
                         remove_filter('map_meta_cap', [$this, 'filter_map_meta_cap'], 10);
-                        if (is_multiple_author_for_post($user_id, $post_id)) {
+                        if (publishpress_authors_is_author_for_post($user_id, $post_id)) {
                             foreach ($caps as &$item) {
                                 // If he is an author for this post we should only check edit_posts.
                                 if ($item === 'edit_others_posts') {
@@ -3423,7 +3448,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
                 update_option('publishpress_multiple_authors_settings_migrated_3_0_0', 1);
             }
-            
+
             if (!get_option('publishpress_multiple_authors_settings_migrated_3_15_0')) {
                if (function_exists('get_role')) {
                    $capability_roles = ['administrator', 'editor', 'author'];
@@ -3436,29 +3461,6 @@ if (!class_exists('MA_Multiple_Authors')) {
                     update_option('publishpress_multiple_authors_settings_migrated_3_15_0', 1);
                }
             }
-        }
-
-        /**
-         * Customize/fix the author byline output for the GeneratePress theme.
-         *
-         * @todo: Move this method to a new module: generatepress-integration
-         *
-         * @param $output
-         *
-         * @return false|string
-         */
-        public function generatepress_author_output($output)
-        {
-            global $post;
-
-            $layout = apply_filters('pp_multiple_authors_generatepress_box_layout', 'inline');
-
-            ob_start();
-            do_action('pp_multiple_authors_show_author_box', false, $layout, false, true, $post->ID);
-
-            $output = ob_get_clean();
-
-            return $output;
         }
 
         private function getTotalOfNotMigratedCoAuthors()
@@ -4182,7 +4184,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     $term_id = (int)$_POST['tag_ID'];
                 }
                 $current_author = Author::get_by_user_id(get_current_user_id());
-            
+
                 //allow user to edit own profile.
                 if (
                     $term_id > 0 &&
@@ -4205,13 +4207,13 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         /**
          * Author profile edit body class
-         * 
+         *
          * @param string $class
          *
          * @return string
          */
         public function filter_admin_body_class($classes) {
-            
+
             if (!function_exists('get_current_screen')) {
                 return $classes;
             }
@@ -4224,9 +4226,9 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $current_author = Author::get_by_user_id(get_current_user_id());
 
             if (
-                $current_author && 
-                is_object($current_author) && 
-                isset($current_author->term_id) && 
+                $current_author &&
+                is_object($current_author) &&
+                isset($current_author->term_id) &&
                 (int) $current_author->term_id === $current_tag_id
                 ) {
                     $classes .= ' own-profile-edit ';
@@ -4254,7 +4256,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $wp_query->set('posts_per_page', $author_pages_posts_limit);
             }
         }
-    
+
         /**
          * Add authors template
          *
@@ -4272,7 +4274,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 }
                 $author_pages_bio_layout  = (int) $legacyPlugin->modules->multiple_authors->options->author_pages_grid_layout_column;
                 $author_pages_bio_layout  = $author_pages_bio_layout === 0 ? 4 : $author_pages_bio_layout;
-                
+
                 //get inline style for grid column
                 $inline_style = '';
                 for ( $i=1; $i<=$author_pages_bio_layout; $i++ ) {
@@ -4295,10 +4297,10 @@ if (!class_exists('MA_Multiple_Authors')) {
                 );
                 wp_add_inline_style('multiple-authors-page-css', $inline_style);
             }
-            
+
             return $taxonomy_template;
         }
-    
+
         /**
          * Redirect to author's page
          *

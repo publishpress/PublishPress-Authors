@@ -1236,7 +1236,7 @@ class Plugin
 
     public function filter_the_author($authorDisplayName)
     {
-        if (!function_exists('get_multiple_authors')) {
+        if (!function_exists('get_post_authors')) {
             return $authorDisplayName;
         }
 
@@ -1519,7 +1519,7 @@ class Plugin
         if (isset($_GET['action']) && $_GET['action'] === 'edit') {
             return;
         }
-        
+
         $screen               = get_current_screen();
         $supported_post_types = Utils::get_enabled_post_types();
         if (in_array($screen->post_type, $supported_post_types)) {
@@ -1603,7 +1603,7 @@ class Plugin
             return $allcaps;
         }
 
-        $allowEdit = is_multiple_author_for_post($user->ID, $post_id);
+        $allowEdit = publishpress_authors_is_author_for_post($user->ID, $post_id);
 
         if ($allowEdit) {
             $post_status = get_post_status($post_id);
@@ -1817,10 +1817,15 @@ class Plugin
         $separator    = ',';
         $user_objects = false;
         $term_id      = false;
+        $archive    = false;
 
 
         if (isset($attributes['post_id'])) {
             $post_id = $attributes['post_id'];
+        }
+
+        if (isset($attributes['archive'])) {
+            $archive = $attributes['archive'] === 'true' || (int)$attributes['archive'] === 1;
         }
 
         if (isset($attributes['separator'])) {
@@ -1841,7 +1846,7 @@ class Plugin
             $term_id = $attributes['term_id'];
         }
 
-        return $this->get_authors_data($post_id, $field, $separator, $user_objects, $term_id);
+        return $this->get_authors_data($post_id, $field, $separator, $user_objects, $term_id, $archive);
     }
 
     /**

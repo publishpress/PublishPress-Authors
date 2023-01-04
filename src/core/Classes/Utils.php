@@ -879,7 +879,12 @@ class Utils
      */
     public static function ppma_article_excerpt($limit, $source = null, $echo = false, $read_more_link = false) 
     {
+        $legacyPlugin = Factory::getLegacyPlugin();
+
         $excerpt = ($source === "content") ? get_the_content() : get_the_excerpt();
+
+        $author_post_excerpt_ellipsis  = $legacyPlugin->modules->multiple_authors->options->author_post_excerpt_ellipsis;
+        
         if (empty(trim($excerpt))) {
             $excerpt = get_the_content();
         }
@@ -892,12 +897,12 @@ class Utils
             $excerpt = substr($excerpt, 0, $limit);
         }
         
-        if (!empty(trim($excerpt))) {
-            $excerpt .= '... ';
+        if (!empty($author_post_excerpt_ellipsis) && !empty(trim($excerpt))) {
+            $excerpt .= $author_post_excerpt_ellipsis;
         }
 
         if ($read_more_link) {
-            $excerpt .= '<a class="read-more" href="'. esc_url(get_permalink()) .'" title="'. esc_attr__('Read more.', 'publishpress-authors') .'">'. esc_html__('Read more.', 'publishpress-authors') .'</a>';
+            $excerpt .= ' <a class="read-more" href="'. esc_url(get_permalink()) .'" title="'. esc_attr__('Read more.', 'publishpress-authors') .'">'. esc_html__('Read more.', 'publishpress-authors') .'</a>';
         }
 
         if ($echo) {
@@ -1133,5 +1138,15 @@ class Utils
                 'all'
             );
         }
+    }
+
+    public static function isGeneratepressInstalled()
+    {
+        return defined('GENERATE_VERSION');
+    }
+
+    public static function isRankMathSeoInstalled()
+    {
+        return defined('RANK_MATH_VERSION') || defined('RANK_MATH_PRO_VERSION');
     }
 }

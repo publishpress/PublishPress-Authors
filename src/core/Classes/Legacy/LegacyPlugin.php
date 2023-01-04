@@ -213,6 +213,14 @@ class LegacyPlugin
             $defaultDirs['seoframework-integration'] = PP_AUTHORS_MODULES_PATH;
         }
 
+        if (Utils::isGeneratepressInstalled()) {
+            $defaultDirs['generatepress-integration'] = PP_AUTHORS_MODULES_PATH;
+        }
+
+        if (Utils::isRankMathSeoInstalled()) {
+            $defaultDirs['rank-math-seo-integration'] = PP_AUTHORS_MODULES_PATH;
+        }
+
         return apply_filters('ppma_module_dirs', $defaultDirs);
     }
 

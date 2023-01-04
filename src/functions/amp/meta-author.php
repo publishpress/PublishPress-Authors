@@ -1,4 +1,4 @@
 <?php $coauthors = get_post_authors($this->get('post_id')); ?>
 <li class="amp-wp-byline">
-    <?php multiple_authors(); ?>
+    <?php publishpress_authors_the_author(); ?>
 </li>
