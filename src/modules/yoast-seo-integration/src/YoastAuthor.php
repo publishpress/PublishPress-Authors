@@ -24,6 +24,7 @@ namespace PPAuthors\YoastSEO;
 
 use Yoast\WP\SEO\Config\Schema_IDs;
 use Yoast\WP\SEO\Generators\Schema\Author;
+use MultipleAuthors\Classes\Objects\Author as PPAuthor;
 
 class YoastAuthor extends Author
 {
@@ -56,8 +57,13 @@ class YoastAuthor extends Author
         if (! $user_id) {
             return false;
         }
-
-        $data = $this->build_person_data($user_id, true);
+        $author_data    = PPAuthor::get_by_user_id($user_id);
+        $data           = $this->build_person_data($user_id, true);
+        $data['name']   = $author_data->display_name;
+        if (isset($data['image']['caption'])) {
+            $data['image']['caption']   = $author_data->display_name;
+        }
+        $data['name']   = $author_data->display_name;
 
         $data['@type'] = 'Person';
         unset($data['logo']);

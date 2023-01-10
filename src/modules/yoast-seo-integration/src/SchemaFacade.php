@@ -105,6 +105,13 @@ class SchemaFacade
             }
 
             if (! empty($author_data)) {
+                if (isset($author_data['image']['caption'])) {
+                    $author_data['image']['caption']   = $author->display_name;
+                }
+                if (isset($author_data['name'])) {
+                    $author_data['name']   = $author->display_name;
+                }
+
                 $ids[]     = [ '@id' => $author_data['@id'] ];
                 $authors[] = $author_data;
             }
