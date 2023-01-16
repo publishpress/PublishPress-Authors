@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PublishPress Authors\n"
-"POT-Creation-Date: 2023-01-03 09:06+0000\n"
+"POT-Creation-Date: 2023-01-16 10:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Anderson Grudtner Martins <anderson@publishpress.com>\n"
 "Language-Team: Anderson Grudtner Martins <anderson@publishpress.com>\n"
@@ -129,7 +129,7 @@ msgstr ""
 
 #: src/core/Classes/Author_Editor.php:373
 #, php-format
-msgid "(Uses the %s Email field %s to find the Gravatar account)"
+msgid "(Uses the %1s Email field %2s to find the Gravatar account)"
 msgstr ""
 
 #: src/functions/template-tags.php:1240
@@ -2468,14 +2468,16 @@ msgid ""
 "changed."
 msgstr ""
 
-#: src/core/Plugin.php:509
-msgid "This is the name that will show on the site."
-msgstr ""
-
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:574
 msgid ""
 "This is useful when linking to an email, URL, or phone number. For example, "
 "'mailto:', 'https://' or 'tel:' can be added as the prefix."
+msgstr ""
+
+#: src/core/Plugin.php:509
+msgid ""
+"This name is used in several default displays and some search engine "
+"integrations."
 msgstr ""
 
 #: src/core/Classes/Post_Editor.php:342
