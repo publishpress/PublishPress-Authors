@@ -214,6 +214,13 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [4.1.1] - 16 Jan 2023 =
+
+* Update: Update Author Pages Schema to Person Schema type, #1163
+* Fixed: Incorrect display name is being used for schema, #1160
+* Update: Extra text for "Display Name" field, #1161
+* Update: ES-FR-IT Translations Updates January 2023, #1177
+
 = [4.1.0] - 04 Jan 2023 =
 
 * Update: Integrate PublishPress Authors with Yoast, #1102
