@@ -507,7 +507,7 @@ class Plugin
         }
 
         $labels->name_field_description = esc_html__(
-            'This is the name that will show on the site.',
+            'This name is used in several default displays and some search engine integrations.',
             'publishpress-authors'
         );
 

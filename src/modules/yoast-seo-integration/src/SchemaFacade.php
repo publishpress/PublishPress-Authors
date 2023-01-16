@@ -26,6 +26,7 @@ namespace PPAuthors\YoastSEO;
 use MultipleAuthors\Classes\Utils;
 use PPAuthors\YoastSEO\YoastAuthor;
 use Yoast\WP\SEO\Context\Meta_Tags_Context;
+use MultipleAuthors\Classes\Objects\Author as PPAuthor;
 use Yoast\WP\SEO\Generators\Schema\Abstract_Schema_Piece;
 use WP_User;
 
@@ -36,6 +37,7 @@ class SchemaFacade
     public function addSupportForMultipleAuthors()
     {
         add_filter('wpseo_schema_graph', [$this, 'filter_graph' ], 11, 2);
+        add_filter('wpseo_schema_graph', [$this, 'filter_author_term_graph' ], 11, 2);
         add_filter('wpseo_schema_author', [$this, 'filter_author_graph' ], 11, 4);
         add_filter('wpseo_meta_author', [$this, 'filter_author_meta' ], 11, 2);
         add_filter('wpseo_opengraph_title', [$this, 'handleAuthorWpseoTitle']);
@@ -64,6 +66,59 @@ class SchemaFacade
 
         if (isset($data['logo']['@id'])) {
             $data['logo']['@id'] .= md5($data['image']['url']);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Filters author term graph output.
+     *
+     * @param array             $data    The schema graph.
+     * @param Meta_Tags_Context $context Context object.
+     *
+     * @return array The (potentially altered) schema graph.
+     */
+    public function filter_author_term_graph($data, $context)
+    {
+        if (! is_tax('author')) {
+            return $data;
+        }
+
+        $author    = PPAuthor::get_by_term_id($context->indexable->object_id);
+
+        $author_generator          = new YoastAuthor();
+        $author_generator->context = $context;
+        $author_generator->helpers = YoastSEO()->helpers;
+
+        if ($author->ID > 0) {
+            $author_data = $author_generator->generate_from_user_id($author->ID);
+        } else {
+            $author_data = $author_generator->generate_from_guest_author($author);
+        }
+
+        if (! empty($author_data)) {
+            if (isset($author_data['image']['caption'])) {
+                $author_data['image']['caption']   = $author->display_name;
+            }
+            if (isset($author_data['name'])) {
+                $author_data['name']   = $author->display_name;
+            }
+            $author_data['mainEntityOfPage'] = ['@id' => $author_data['url']];
+
+            $data[] = $author_data;
+        }
+
+        if (! empty($author_data)) {
+            foreach ($data as $key => $piece) {
+                if ($piece['@type'] === 'CollectionPage') {
+                    $data[$key]['@type'] = 'ProfilePage';
+                    $data[$key]['potentialAction'][] = [
+                        '@type' => 'ReadAction',
+                        'target' => [$author_data['url']]
+                    ];
+                }
+            }
         }
 
         return $data;
@@ -105,6 +160,13 @@ class SchemaFacade
             }
 
             if (! empty($author_data)) {
+                if (isset($author_data['image']['caption'])) {
+                    $author_data['image']['caption']   = $author->display_name;
+                }
+                if (isset($author_data['name'])) {
+                    $author_data['name']   = $author->display_name;
+                }
+
                 $ids[]     = [ '@id' => $author_data['@id'] ];
                 $authors[] = $author_data;
             }

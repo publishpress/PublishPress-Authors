@@ -81,6 +81,7 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
         {
             // Add support for structured data for authors in Rank Math Seo plugin.
             add_filter('rank_math/json_ld', [$this, 'rank_math_seo_json_ld'], 99, 2);
+            add_filter('rank_math/json_ld', [$this, 'rank_math_author_term_seo_json_ld'], 99, 2);
         }
 
         /**
@@ -114,6 +115,32 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
             }
 
             return $author_profile_schema;
+        }
+
+        /**
+         * Add support for structured data for author terms 
+         * in Rank Math Seo plugin.
+         *
+         * @param $output
+         *
+         * @return false|string
+         */
+        public function rank_math_author_term_seo_json_ld($data, $jsonld)
+        {
+            if (is_tax('author')) {
+
+                if (!function_exists('get_archive_author')) {
+                    require_once PP_AUTHORS_BASE_PATH . 'src/functions/template-tags.php';
+                }
+
+                $page_author         = get_archive_author();
+                $author_profile_data  = $this->generate_author_schema($page_author);
+
+                $data['WebPage']['@type']  = 'ProfilePage';
+                $data['ProfilePage']        = $author_profile_data;
+            }
+
+            return $data;
         }
 
         /**

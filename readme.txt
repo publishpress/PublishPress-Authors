@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 7.2.5
 Tested up to: 6.1
-Stable tag: 4.1.0
+Stable tag: 4.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -213,6 +213,13 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [4.1.1] - 16 Jan 2023 =
+
+* Update: Update Author Pages Schema to Person Schema type, #1163
+* Fixed: Incorrect display name is being used for schema, #1160
+* Update: Extra text for "Display Name" field, #1161
+* Update: ES-FR-IT Translations Updates January 2023, #1177
 
 = [4.1.0] - 04 Jan 2023 =
 
