@@ -140,6 +140,8 @@ class MA_Author_Boxes extends Module
         add_filter('pp_multiple_authors_author_layouts', [$this, 'filterAuthorLayouts'], 9);
         add_filter('pp_multiple_authors_author_box_html', [$this, 'filterAuthorBoxHtml'], 9, 2);
         add_filter('pp_multiple_authors_authors_list_box_html', [$this, 'filterAuthorBoxHtml'], 9, 2);
+        add_filter('bulk_actions-edit-' . self::POST_TYPE_BOXES . '', [$this, 'removeBulkActionEdit'], 11);
+
 
         add_action(
             'wp_ajax_author_boxes_editor_get_preview', 
@@ -454,6 +456,23 @@ class MA_Author_Boxes extends Module
         ];
 
         return $messages;
+    }
+
+    /**
+     * Remove "Edit" from bulk action
+     *
+     * @param array $actions
+     * 
+     * @return array
+     */
+    public function removeBulkActionEdit($actions) 
+    {
+    
+        if (isset($actions['edit'])) {
+            unset($actions['edit']);
+        }
+    
+        return $actions;
     }
 
     /**
