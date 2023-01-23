@@ -1327,7 +1327,7 @@ class MA_Author_Boxes extends Module
                                                 <?php echo $name_row_extra ; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                                                 <?php if ($args['author_bio_show']['value']) : ?>
                                                     <<?php echo esc_html($args['author_bio_html_tag']['value']); ?> class="pp-author-boxes-description multiple-authors-description">
-                                                        <?php echo esc_html($author->get_description($args['author_bio_limit']['value'])); ?>
+                                                        <?php echo $author->get_description($args['author_bio_limit']['value']);  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                                                     </<?php echo esc_html($args['author_bio_html_tag']['value']); ?>>
                                                 <?php endif; ?>
                                                 <?php echo $bio_row_extra ; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
