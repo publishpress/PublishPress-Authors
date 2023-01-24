@@ -33,6 +33,7 @@
 
 .publishpress-author-box-editor {
     display: flex;
+    background: #fff;
 }
 
 .publishpress-author-box-editor .ppma-author-box-editor-tabs {
@@ -50,7 +51,6 @@
     width: 100%;
     min-width: 320px;
     padding: 10px;
-    background: #fff;
     margin-top: 0;
     padding-top: 0;
 }
@@ -190,6 +190,36 @@
 
 .editor-preview-author-users .ppma_select2-container--default .ppma_select2-selection--multiple .ppma_select2-selection__clear {
     display: none;
+}
+
+
+@media only screen and (max-width: 1270px) {
+    .ppma-author-boxes-editor-table input[type=text],
+    .ppma-author-boxes-editor-table input[type=number],
+    .ppma-author-boxes-editor-table select{
+        width: 200px;
+    }
+    .ppma-author-box-editor-fields {
+        min-width: unset;
+    }
+}
+
+
+@media only screen and (max-width: 1100px) {
+    .ppma-author-box-editor-fields {
+        min-width: unset;
+    }
+    .ppma-author-boxes-editor-table input[type=text],
+    .ppma-author-boxes-editor-table input[type=number],
+    .ppma-author-boxes-editor-table select,
+    .ppma-author-boxes-editor-table textarea,
+    .ppma-boxes-editor-tab-content.ppma-profile_fields-tab.profile_header .input {
+        max-width: 95% !important;
+        width: 95% !important;
+    }
+    .publishpress-author-box-editor {
+        display: block;
+     }
 }
 
 @media screen and (max-width: 768px) {
