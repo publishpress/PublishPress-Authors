@@ -290,8 +290,8 @@ trait Author_box
                     if ($field === 'avatar') {
                         $output[] = $author->get_avatar_url();
                     } else {
-                        $field_output = isset($author->$field) ? $author->$field : $author->display_name;
-                        if (isset($profile_fields[$field]) && $profile_fields[$field]['type'] === 'url') {
+                        $field_output = (isset($author->$field) && !empty(trim($author->$field))) ? $author->$field : $author->display_name;
+                        if (isset($profile_fields[$field]) && $profile_fields[$field]['type'] === 'url' && !empty(trim($author->$field))) {
                             $field_output = '<a href="'. esc_url($field_output).'"> '. esc_html($field_output) .'</a>';
                         }
                         $output[] = $field_output;
