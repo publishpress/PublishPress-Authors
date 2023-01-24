@@ -97,6 +97,10 @@ class SchemaFacade
             $author_data = $author_generator->generate_from_guest_author($author);
         }
 
+        if (!is_array($author_data) || !isset($author_data['url'])) {
+            return $data;
+        }
+
         if (! empty($author_data)) {
             if (isset($author_data['image']['caption'])) {
                 $author_data['image']['caption']   = $author->display_name;
