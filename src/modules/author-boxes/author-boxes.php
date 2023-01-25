@@ -1119,7 +1119,16 @@ class MA_Author_Boxes extends Module
      * @param array $args Arguments to render the preview.
      */
     public static function get_rendered_author_boxes_editor_preview($args) {
+        global $ppma_instance_id;
         ob_start();
+
+        if (!$ppma_instance_id) {
+            $ppma_instance_id = 1;
+        } else {
+            $ppma_instance_id += 1;
+        }
+
+        $args['instance_id'] = $ppma_instance_id;
         
         $legacyPlugin = Factory::getLegacyPlugin();
 
@@ -1169,8 +1178,10 @@ class MA_Author_Boxes extends Module
                     </div>
         <?php endif; ?>
                     <!--begin code -->
-                    <div class="pp-multiple-authors-boxes-wrapper pp-multiple-authors-wrapper <?php echo esc_attr($args['box_tab_custom_wrapper_class']['value']); ?> box-post-id-<?php echo esc_attr($args['post_id']); ?>"
-                    data-original_class="pp-multiple-authors-boxes-wrapper pp-multiple-authors-wrapper box-post-id-<?php echo esc_attr($args['post_id']); ?>">
+                    <div class="pp-multiple-authors-boxes-wrapper pp-multiple-authors-wrapper <?php echo esc_attr($args['box_tab_custom_wrapper_class']['value']); ?> box-post-id-<?php echo esc_attr($args['post_id']); ?> box-instance-id-<?php echo esc_attr($args['instance_id']); ?>"
+                    data-post_id="<?php echo esc_attr($args['post_id']); ?>"
+                    data-instance_id="<?php echo esc_attr($args['instance_id']); ?>"
+                    data-original_class="pp-multiple-authors-boxes-wrapper pp-multiple-authors-wrapper box-post-id-<?php echo esc_attr($args['post_id']); ?> box-instance-id-<?php echo esc_attr($args['instance_id']); ?>">
                         <?php if ($args['show_title']['value']) : ?>
                             <?php if (count($authors) > 1) : ?>
                                 <<?php echo esc_html($args['title_html_tag']['value']); ?> class="widget-title box-header-title"><?php echo esc_html($args['title_text_plural']['value']); ?></<?php echo esc_html($args['title_html_tag']['value']); ?>>
