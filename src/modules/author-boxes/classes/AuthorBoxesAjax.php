@@ -326,7 +326,7 @@ $custom_styles = '.pp-multiple-authors-layout-boxed ul li > div:nth-child(1) {fl
 
                             </?php if (!empty($author_recent_posts)) : ?>
                                 <div class="pp-author-boxes-recent-posts-title">
-                                    </?php echo esc_html__('Recent Posts', 'publishpress-authors'); ?>
+                                    </?php echo esc_html__('Recent Posts'); ?>
                                 </div>
                                 <div class="pp-author-boxes-recent-posts-items">
                                     </?php foreach($author_recent_posts as $recent_post_id) : ?>

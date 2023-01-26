@@ -1368,7 +1368,7 @@ class MA_Author_Boxes extends Module
                                                     <div class="pp-author-boxes-recent-posts">
                                                         <?php if ($args['author_recent_posts_title_show']['value'] && (!empty($author_recent_posts) || $args['author_recent_posts_empty_show']['value'])) : ?>
                                                             <div class="pp-author-boxes-recent-posts-title">
-                                                                <?php echo esc_html__('Recent Posts', 'publishpress-authors'); ?>
+                                                                <?php echo esc_html__('Recent Posts'); ?>
                                                             </div>
                                                         <?php endif; ?>
                                                         <?php if (!empty($author_recent_posts)) : ?>
