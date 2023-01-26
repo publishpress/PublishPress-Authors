@@ -159,8 +159,7 @@ trait Author_box
         if ($this->authorsCount === 1) {
             $title = isset($legacyPlugin->modules->multiple_authors->options->title_appended_to_content)
                 ? $legacyPlugin->modules->multiple_authors->options->title_appended_to_content : esc_html__(
-                    'Author',
-                    'publishpress-authors'
+                    'Author'
                 );
         } else {
             $title = isset($legacyPlugin->modules->multiple_authors->options->title_appended_to_content_plural)
