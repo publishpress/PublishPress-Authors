@@ -582,7 +582,7 @@ if (!function_exists('publishpress_authors_is_author_for_post')) {
         }
 
         if (empty($user_term) || is_wp_error($user_term)) {
-            $post = get_post($post_id);
+            $post_author = get_post_field('post_author', $post_id);
 
             if (is_numeric($user)) {
                 $userId = $user;
@@ -590,7 +590,7 @@ if (!function_exists('publishpress_authors_is_author_for_post')) {
                 $userId = $user->ID;
             }
 
-            return (int)$post->post_author === (int)$userId;
+            return (int)$post_author === (int)$userId;
         }
 
         foreach ($coauthors as $coauthor) {
