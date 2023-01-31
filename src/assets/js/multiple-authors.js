@@ -810,6 +810,26 @@ jQuery(document).ready(function ($) {
             .addClass('current');
              
     }
+    
+    if ($("body").hasClass("post-type-ppmacf_field") && $("#ppmacf_type").length > 0) {
+        showHideSocialProfileField();
+    }
+
+    /**
+     * Show or Hide profile field on profile type change
+     */
+    $(document).on('change', '#ppmacf_type', function () {
+        showHideSocialProfileField();
+    });
+
+    function showHideSocialProfileField() {
+        var selectedType = $("#ppmacf_type").val();
+        if (selectedType === 'url') {
+            $('.cmb2-id-ppmacf-social-profile').show();
+        } else {
+            $('.cmb2-id-ppmacf-social-profile').hide();
+        }
+    }
 
     function isEmptyOrSpaces(str) {
       return str == '' || str === null || str.match(/^ *$/) !== null;

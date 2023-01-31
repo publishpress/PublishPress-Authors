@@ -92,6 +92,10 @@ class Installer
             $legacyPlugin->update_module_option('multiple_authors', 'enable_legacy_layout', 'yes');
         }
 
+        if (version_compare($currentVersions, '4.1.2', '<')) {
+            self::updateUrlProfileField();
+        }
+
         /**
          * @param string $previousVersion
          */
@@ -416,6 +420,36 @@ class Installer
     private static function updateAuthorBoxesFieldValue($fields_data)
     {
         MA_Author_Boxes::updateAuthorBoxesFieldValue($fields_data);
+    }
+
+    /**
+     * Update url profile fields.
+     *
+     * @param array $fields_data
+     * @return void
+     */
+    private static function updateUrlProfileField()
+    {
+        $author_fields = get_posts(
+            [
+                'post_type' => MA_Author_Custom_Fields::POST_TYPE_CUSTOM_FIELDS,
+                'posts_per_page' => 100,
+                'post_status' => 'publish',
+                'meta_query'  => [
+                    'relation' => 'AND',
+                    [
+                        'key'   => 'ppmacf_type',
+                        'value' => 'url',
+                        'compare' => '='
+                    ]
+                ],
+            ]
+        );
+        if (!empty($author_fields)) {
+            foreach ($author_fields as $author_field) {
+                update_post_meta($author_field->ID, MA_Author_Custom_Fields::META_PREFIX . 'social_profile', 1);
+            }
+        }
     }
 
 }

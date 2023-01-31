@@ -24,6 +24,7 @@
 use MultipleAuthors\Classes\Legacy\Module;
 use MultipleAuthors\Classes\Utils;
 use MultipleAuthors\Factory;
+use MA_Author_Custom_Fields as PPAuthorFields;
 
 if (!class_exists('MA_Rank_Math_Seo_Integration')) {
     /**
@@ -110,9 +111,8 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
                     '@inLanguage' => apply_filters('rank_math/schema/language', get_bloginfo('language'))
                 ]
             ];
-            if (!empty($author->user_url)) {
-                $author_profile_schema['sameAs'] = [$author->user_url];
-            }
+
+            $author_profile_schema = $this->add_author_same_as_urls($author_profile_schema, $author);
 
             return $author_profile_schema;
         }
@@ -175,6 +175,63 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
                 $data['ProfilePage']            = $author_profile_data;
             }
 
+            return $data;
+        }
+
+        /**
+         * Builds our SameAs array.
+         *
+         * @param array   $data         The Person schema data.
+         * @param WP_User $author The user data object.
+         *
+         * @return array The Person schema data.
+         */
+        protected function add_author_same_as_urls($data, $author)
+        {
+    
+            $author_fields = get_posts(
+                [
+                    'post_type' => PPAuthorFields::POST_TYPE_CUSTOM_FIELDS,
+                    'posts_per_page' => 100,
+                    'post_status' => 'publish',
+                    'meta_query'  => [
+                        'relation' => 'AND',
+                        [
+                            'key'   => 'ppmacf_social_profile',
+                            'value' => 1,
+                            'type'  => 'NUMERIC',
+                            'compare' => '='
+                        ],
+                        [
+                            'key'   => 'ppmacf_type',
+                            'value' => 'url',
+                            'compare' => '='
+                        ]
+                    ],
+                ]
+            );
+    
+            $same_as_urls = [];
+    
+            if (! empty($author->user_url)) {
+                $same_as_urls[] = $author->user_url;
+            }
+    
+            if (!empty($author_fields)) {
+                foreach ($author_fields as $author_field) {
+                    $field_value = isset($author->{$author_field->post_name}) ? $author->{$author_field->post_name} : '';
+                    if (! empty(trim($field_value))) {
+                        $same_as_urls[] = $field_value;
+                    }
+                }
+            }
+    
+            // When CAP adds it, add the social profiles here.
+            if (! empty($same_as_urls)) {
+                $same_as_urls   = \array_values(\array_unique($same_as_urls));
+                $data['sameAs'] = $same_as_urls;
+            }
+    
             return $data;
         }
     }

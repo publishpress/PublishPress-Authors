@@ -322,6 +322,19 @@ class MA_Author_Custom_Fields extends Module
 
         $metabox->add_field(
             [
+                'name' => __('Social Profile?', 'publishpress-authors'),
+                'id' => self::META_PREFIX . 'social_profile',
+                'type' => 'select',
+                'options' => CustomFieldsModel::getFieldSocialProfile(),
+                'desc' => __(
+                    'This feature will add the SameAs property to this link so that search engines realize that the social profile is connected to this author.',
+                    'publishpress-authors'
+                ),
+            ]
+        );
+
+        $metabox->add_field(
+            [
                 'name' => __('Field Status', 'publishpress-authors'),
                 'id' => self::META_PREFIX . 'field_status',
                 'type' => 'select',
@@ -388,6 +401,7 @@ class MA_Author_Custom_Fields extends Module
                     'name'        => $post->post_name,
                     'label'       => $post->post_title,
                     'type'        => $this->getFieldMeta($post->ID, 'type'),
+                    'social_profile' => $this->getFieldMeta($post->ID, 'social_profile'),
                     'field_status' => $this->getFieldMeta($post->ID, 'field_status'),
                     'requirement' => $this->getFieldMeta($post->ID, 'requirement'),
                     'description' => $this->getFieldMeta($post->ID, 'description'),
@@ -725,6 +739,7 @@ class MA_Author_Custom_Fields extends Module
         update_post_meta($post_id, self::META_PREFIX . 'type', $data['type']);
         update_post_meta($post_id, self::META_PREFIX . 'field_status', $data['field_status']);
         update_post_meta($post_id, self::META_PREFIX . 'requirement', isset($data['requirement']) ? $data['requirement'] : '' );
+        update_post_meta($post_id, self::META_PREFIX . 'social_profile', isset($data['social_profile']) ? $data['social_profile'] : '' );
         update_post_meta($post_id, self::META_PREFIX . 'description', $data['description']);
         update_post_meta($post_id, self::META_PREFIX . 'inbuilt', 1);
     }
