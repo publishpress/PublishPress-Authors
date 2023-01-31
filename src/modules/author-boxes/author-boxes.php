@@ -140,6 +140,8 @@ class MA_Author_Boxes extends Module
         add_filter('pp_multiple_authors_author_layouts', [$this, 'filterAuthorLayouts'], 9);
         add_filter('pp_multiple_authors_author_box_html', [$this, 'filterAuthorBoxHtml'], 9, 2);
         add_filter('pp_multiple_authors_authors_list_box_html', [$this, 'filterAuthorBoxHtml'], 9, 2);
+        add_filter('bulk_actions-edit-' . self::POST_TYPE_BOXES . '', [$this, 'removeBulkActionEdit'], 11);
+
 
         add_action(
             'wp_ajax_author_boxes_editor_get_preview', 
@@ -454,6 +456,23 @@ class MA_Author_Boxes extends Module
         ];
 
         return $messages;
+    }
+
+    /**
+     * Remove "Edit" from bulk action
+     *
+     * @param array $actions
+     * 
+     * @return array
+     */
+    public function removeBulkActionEdit($actions) 
+    {
+    
+        if (isset($actions['edit'])) {
+            unset($actions['edit']);
+        }
+    
+        return $actions;
     }
 
     /**
@@ -1100,7 +1119,16 @@ class MA_Author_Boxes extends Module
      * @param array $args Arguments to render the preview.
      */
     public static function get_rendered_author_boxes_editor_preview($args) {
+        global $ppma_instance_id;
         ob_start();
+
+        if (!$ppma_instance_id) {
+            $ppma_instance_id = 1;
+        } else {
+            $ppma_instance_id += 1;
+        }
+
+        $args['instance_id'] = $ppma_instance_id;
         
         $legacyPlugin = Factory::getLegacyPlugin();
 
@@ -1150,8 +1178,10 @@ class MA_Author_Boxes extends Module
                     </div>
         <?php endif; ?>
                     <!--begin code -->
-                    <div class="pp-multiple-authors-boxes-wrapper pp-multiple-authors-wrapper <?php echo esc_attr($args['box_tab_custom_wrapper_class']['value']); ?> box-post-id-<?php echo esc_attr($args['post_id']); ?>"
-                    data-original_class="pp-multiple-authors-boxes-wrapper pp-multiple-authors-wrapper box-post-id-<?php echo esc_attr($args['post_id']); ?>">
+                    <div class="pp-multiple-authors-boxes-wrapper pp-multiple-authors-wrapper <?php echo esc_attr($args['box_tab_custom_wrapper_class']['value']); ?> box-post-id-<?php echo esc_attr($args['post_id']); ?> box-instance-id-<?php echo esc_attr($args['instance_id']); ?>"
+                    data-post_id="<?php echo esc_attr($args['post_id']); ?>"
+                    data-instance_id="<?php echo esc_attr($args['instance_id']); ?>"
+                    data-original_class="pp-multiple-authors-boxes-wrapper pp-multiple-authors-wrapper box-post-id-<?php echo esc_attr($args['post_id']); ?> box-instance-id-<?php echo esc_attr($args['instance_id']); ?>">
                         <?php if ($args['show_title']['value']) : ?>
                             <?php if (count($authors) > 1) : ?>
                                 <<?php echo esc_html($args['title_html_tag']['value']); ?> class="widget-title box-header-title"><?php echo esc_html($args['title_text_plural']['value']); ?></<?php echo esc_html($args['title_html_tag']['value']); ?>>
@@ -1308,7 +1338,7 @@ class MA_Author_Boxes extends Module
                                                 <?php echo $name_row_extra ; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                                                 <?php if ($args['author_bio_show']['value']) : ?>
                                                     <<?php echo esc_html($args['author_bio_html_tag']['value']); ?> class="pp-author-boxes-description multiple-authors-description">
-                                                        <?php echo esc_html($author->get_description($args['author_bio_limit']['value'])); ?>
+                                                        <?php echo $author->get_description($args['author_bio_limit']['value']);  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                                                     </<?php echo esc_html($args['author_bio_html_tag']['value']); ?>>
                                                 <?php endif; ?>
                                                 <?php echo $bio_row_extra ; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
@@ -1338,7 +1368,7 @@ class MA_Author_Boxes extends Module
                                                     <div class="pp-author-boxes-recent-posts">
                                                         <?php if ($args['author_recent_posts_title_show']['value'] && (!empty($author_recent_posts) || $args['author_recent_posts_empty_show']['value'])) : ?>
                                                             <div class="pp-author-boxes-recent-posts-title">
-                                                                <?php echo esc_html__('Recent Posts', 'publishpress-authors'); ?>
+                                                                <?php echo esc_html__('Recent Posts'); ?>
                                                             </div>
                                                         <?php endif; ?>
                                                         <?php if (!empty($author_recent_posts)) : ?>

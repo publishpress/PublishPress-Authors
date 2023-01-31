@@ -138,12 +138,20 @@ class AuthorBoxesAjax
  * This sometimes may be different from global $post as user can  get authors 
  * for specific post.
  */
-global $ppma_template_authors, $ppma_template_authors_post, $post;
+global $ppma_template_authors, $ppma_template_authors_post, $post, $ppma_instance_id;
 
 $authors = $ppma_template_authors;
 $post_id = isset($ppma_template_authors_post->ID) ? $ppma_template_authors_post->ID : $post->ID
+
+if (!$ppma_instance_id) {
+    $ppma_instance_id = 1;
+} else {
+    $ppma_instance_id += 1;
+}
+
+$instance_id = $ppma_instance_id;
 ?>
-<div class="pp-multiple-authors-boxes-wrapper pp-multiple-authors-wrapper <?php echo esc_attr($args['box_tab_custom_wrapper_class']['value']); ?> box-post-id-</?php echo esc_attr($post_id); ?>"">
+<div class="pp-multiple-authors-boxes-wrapper pp-multiple-authors-wrapper <?php echo esc_attr($args['box_tab_custom_wrapper_class']['value']); ?> box-post-id-</?php echo esc_attr($post_id); ?> box-instance-id-</?php echo esc_attr($instance_id); ?>"">
 <?php if ($args['show_title']['value']) : ?>
     <<?php echo esc_html($args['title_html_tag']['value']); ?> class="widget-title box-header-title">
         </?php if (count($authors) > 1) : ?>
@@ -318,7 +326,7 @@ $custom_styles = '.pp-multiple-authors-layout-boxed ul li > div:nth-child(1) {fl
 
                             </?php if (!empty($author_recent_posts)) : ?>
                                 <div class="pp-author-boxes-recent-posts-title">
-                                    </?php echo esc_html__('Recent Posts', 'publishpress-authors'); ?>
+                                    </?php echo esc_html__('Recent Posts'); ?>
                                 </div>
                                 <div class="pp-author-boxes-recent-posts-items">
                                     </?php foreach($author_recent_posts as $recent_post_id) : ?>

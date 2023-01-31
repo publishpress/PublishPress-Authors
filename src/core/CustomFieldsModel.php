@@ -82,4 +82,22 @@ final class CustomFieldsModel
 
         return $fieldStatus;
     }
+
+    /**
+     * Retrieve all supported field social profile.
+     *
+     * @return  array
+     * @since   4.1.2
+     * @static
+     *
+     */
+    public static function getFieldSocialProfile()
+    {
+        $fieldStatus = [
+            0   => __('No', 'publishpress-authors'),
+            1   => __('Yes, this is a Social Profile', 'publishpress-authors'),
+        ];
+
+        return $fieldStatus;
+    }
 }

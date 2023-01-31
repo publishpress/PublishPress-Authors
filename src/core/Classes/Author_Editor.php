@@ -341,7 +341,7 @@ class Author_Editor
                 'tab'      => 'general',
             ],
             'description' => [
-                'label'    => esc_html__('Biographical Info', 'publishpress-authors'),
+                'label'    => esc_html__('Author Bio', 'publishpress-authors'),
                 'type'     => 'textarea',
                 'sanitize' => 'wp_kses_post',
                 'tab'      => 'general',

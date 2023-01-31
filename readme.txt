@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 7.2.5
 Tested up to: 6.1
-Stable tag: 4.1.1
+Stable tag: 4.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -213,6 +213,20 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [4.1.2] - 31 Jan 2023 =
+
+* Update: Add "SameAs" schema option to links, #1189
+* Fixed: Compability Issue with beaver builder, #1227
+* Update: Remove domain translation from "Recent Posts" and "Author" in favour of WordPress translation, #1194
+* Fixed: Issue with author box styles when multiple author box is on the same page, #1208
+* Update: Add fallback field for [publishpress_authors_data] shortcode, #1150
+* Update: Make Author Box edit page responsive, #1172
+* Fixed: PHP Warning – Undefined array key “url”, #1190
+* Fixed: Can't use HTML in Author Boxes Bio, #1175
+* Update: Remove Edit bulk action Author Box screen, #1173
+* Update: Replace "Biographical Info" with "Author Bio", #1176
+* Update: ES-FR-IT Translations Updates January 2023, #1177
 
 = [4.1.1] - 16 Jan 2023 =
 
