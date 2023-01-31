@@ -25,6 +25,7 @@ namespace PPAuthors\YoastSEO;
 use Yoast\WP\SEO\Config\Schema_IDs;
 use Yoast\WP\SEO\Generators\Schema\Author;
 use MultipleAuthors\Classes\Objects\Author as PPAuthor;
+use MA_Author_Custom_Fields as PPAuthorFields;
 
 class YoastAuthor extends Author
 {
@@ -72,6 +73,8 @@ class YoastAuthor extends Author
         if ($this->helpers->options->get('disable-author') !== true) {
             $data['url'] = $this->helpers->user->get_the_author_posts_url($user_id);
         }
+
+        $data = $this->add_author_same_as_urls($data, $author_data);
 
         return $data;
     }
@@ -158,7 +161,7 @@ class YoastAuthor extends Author
             $data['description'] = $this->helpers->schema->html->smart_strip_tags($guest_author->description);
         }
 
-        $data = $this->add_guest_author_same_as_urls($data, $guest_author);
+        $data = $this->add_author_same_as_urls($data, $guest_author);
 
         return $data;
     }
@@ -167,20 +170,51 @@ class YoastAuthor extends Author
      * Builds our SameAs array.
      *
      * @param array   $data         The Person schema data.
-     * @param WP_User $guest_author The user data object.
+     * @param WP_User $author The user data object.
      *
      * @return array The Person schema data.
      */
-    protected function add_guest_author_same_as_urls($data, $guest_author)
+    protected function add_author_same_as_urls($data, $author)
     {
+
+        $author_fields = get_posts(
+            [
+                'post_type' => PPAuthorFields::POST_TYPE_CUSTOM_FIELDS,
+                'posts_per_page' => 100,
+                'post_status' => 'publish',
+                'meta_query'  => [
+                    'relation' => 'AND',
+                    [
+                        'key'   => 'ppmacf_social_profile',
+                        'value' => 1,
+                        'type'  => 'NUMERIC',
+                        'compare' => '='
+                    ],
+                    [
+                        'key'   => 'ppmacf_type',
+                        'value' => 'url',
+                        'compare' => '='
+                    ]
+                ],
+            ]
+        );
+
         $same_as_urls = [];
 
-        if (! empty($guest_author->user_url)) {
-            $same_as_urls[] = $guest_author->user_url;
+        if (! empty($author->user_url)) {
+            $same_as_urls[] = $author->user_url;
+        }
+
+        if (!empty($author_fields)) {
+            foreach ($author_fields as $author_field) {
+                $field_value = isset($author->{$author_field->post_name}) ? $author->{$author_field->post_name} : '';
+                if (! empty(trim($field_value))) {
+                    $same_as_urls[] = $field_value;
+                }
+            }
         }
 
         // When CAP adds it, add the social profiles here.
-
         if (! empty($same_as_urls)) {
             $same_as_urls   = \array_values(\array_unique($same_as_urls));
             $data['sameAs'] = $same_as_urls;
