@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Plugins - Co-Authors, Multiple Authors and Guest Authors "
 "in an Author Box with PublishPress Authors - Stable (latest release)\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2023-01-31 15:26+0000\n"
+"PO-Revision-Date: 2023-02-10 15:12+0000\n"
 "Last-Translator: \n"
 "Language-Team: Spanish (Spain)\n"
 "Language: es_ES\n"
@@ -102,11 +102,10 @@ msgstr ""
 "introduce la primera parte de la URL en el campo «Prefijo»."
 
 #: src/core/Classes/Author_Editor.php:373
-#, fuzzy
 #| msgid "(Uses the %s Email field %s to find the Gravatar account)"
 msgid "(Uses the %1s Email field %2s to find the Gravatar account)"
 msgstr ""
-"(Utiliza el campo %s Correo electrónico %s para encontrar la cuenta de "
+"(Utiliza el campo %1s Correo electrónico %2s para encontrar la cuenta de "
 "Gravatar)"
 
 #: src/functions/template-tags.php:1240
