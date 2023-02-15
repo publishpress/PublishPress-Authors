@@ -654,6 +654,12 @@ jQuery(document).ready(function ($) {
         
         $.each($('form#edittag tr.form-field.required-tab'), function (i, field) {
             field_object = $(this).find('td input');
+            if (field_object.length === 0) {
+                field_object = $(this).find('td select');
+            }
+            if (field_object.length === 0) {
+                field_object = $(this).find('td textarea');
+            }
             if (isEmptyOrSpaces(field_object.val())) {
                 field_label = field_object.closest('tr').addClass('form-invalid').find('label').html();
                 field_error_count = 1;
