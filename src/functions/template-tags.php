@@ -489,6 +489,10 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
             }
         }
 
+        if ($result_type === 'grouped') {
+            ksort($authors);
+        }
+
         /**
          * Arguments for changing author result
          *
