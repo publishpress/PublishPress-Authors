@@ -4085,7 +4085,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                     $args['tax_query']['relation'] = 'AND';
                 }
 
-                $authorId = abs($args['author']);
+                $authorId = abs((int)$args['author']);
+                
                 unset($args['author']);
 
                 $args['tax_query'][] = [
