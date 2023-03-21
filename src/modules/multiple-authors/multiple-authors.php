@@ -4086,6 +4086,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 }
 
                 $authorId = abs((int)$args['author']);
+                
                 unset($args['author']);
 
                 $args['tax_query'][] = [
