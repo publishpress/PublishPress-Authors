@@ -135,6 +135,9 @@ class YoastAuthor extends Author
      */
     protected function build_person_data_for_guest_author($guest_author, $add_hash = false)
     {
+        if (!is_object($guest_author)) {
+            return [];
+        }
         $schema_id = $this->context->site_url . Schema_IDs::PERSON_LOGO_HASH;
         $data      = [
             '@type' => $this->type,

@@ -153,26 +153,28 @@ class SchemaFacade
 
         // Add the authors to the schema.
         foreach ($author_objects as $author) {
-            $author_generator          = new YoastAuthor();
-            $author_generator->context = $context;
-            $author_generator->helpers = YoastSEO()->helpers;
+            if (is_object($author) && isset($author->ID)) {
+                $author_generator          = new YoastAuthor();
+                $author_generator->context = $context;
+                $author_generator->helpers = YoastSEO()->helpers;
 
-            if ($author->ID > 0) {
-                $author_data = $author_generator->generate_from_user_id($author->ID);
-            } else {
-                $author_data = $author_generator->generate_from_guest_author($author);
-            }
-
-            if (! empty($author_data)) {
-                if (isset($author_data['image']['caption'])) {
-                    $author_data['image']['caption']   = $author->display_name;
-                }
-                if (isset($author_data['name'])) {
-                    $author_data['name']   = $author->display_name;
+                if ($author->ID > 0) {
+                    $author_data = $author_generator->generate_from_user_id($author->ID);
+                } else {
+                    $author_data = $author_generator->generate_from_guest_author($author);
                 }
 
-                $ids[]     = [ '@id' => $author_data['@id'] ];
-                $authors[] = $author_data;
+                if (! empty($author_data)) {
+                    if (isset($author_data['image']['caption'])) {
+                        $author_data['image']['caption']   = $author->display_name;
+                    }
+                    if (isset($author_data['name'])) {
+                        $author_data['name']   = $author->display_name;
+                    }
+
+                    $ids[]     = [ '@id' => $author_data['@id'] ];
+                    $authors[] = $author_data;
+                }
             }
         }
 
