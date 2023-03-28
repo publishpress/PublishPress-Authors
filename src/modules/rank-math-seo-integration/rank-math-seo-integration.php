@@ -93,6 +93,10 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
          */
         private function generate_author_schema($author) {
 
+            if (!is_object($author)) {
+                return [];
+            }
+
             $author_avatar = $author->get_avatar_url();
             if (is_array($author_avatar)) {
                 $author_avatar = $author_avatar['url'];
