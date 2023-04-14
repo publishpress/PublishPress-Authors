@@ -440,6 +440,7 @@
             var field_key = '';
             var post_id = authorBoxesEditor.post_id;
             var instance_id = $('.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id).attr('data-instance_id');
+            var additional_class = $('.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id).attr('data-additional_class');
 
             if (Number(editor_values.avatar_show) === 0) {
                 editor_preview_styles += '.pp-multiple-authors-layout-boxed ul li > div:nth-child(1) {flex: 1 !important;}';
@@ -450,37 +451,37 @@
             for (field_key in profile_fields) {
                 var field_name = profile_fields[field_key];
                 if (editor_values['profile_fields_' + field_name + '_size']) {
-                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .ppma-author-' + field_name + '-profile-data { font-size: ' + editor_values['profile_fields_' + field_name + '_size'] + 'px !important; } ';
+                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .ppma-author-' + field_name + '-profile-data { font-size: ' + editor_values['profile_fields_' + field_name + '_size'] + 'px !important; } ';
                 }
                 if (editor_values['profile_fields_' + field_name + '_display_icon_size']) {
-                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .ppma-author-' + field_name + '-profile-data span, .pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .ppma-author-' + field_name + '-profile-data i { font-size: ' + editor_values['profile_fields_' + field_name + '_display_icon_size'] + 'px !important; } ';
+                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .ppma-author-' + field_name + '-profile-data span, .pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .ppma-author-' + field_name + '-profile-data i { font-size: ' + editor_values['profile_fields_' + field_name + '_display_icon_size'] + 'px !important; } ';
                 }
                 if (editor_values['profile_fields_' + field_name + '_display_icon_background_color']) {
-                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .ppma-author-' + field_name + '-profile-data { background-color: ' + editor_values['profile_fields_' + field_name + '_display_icon_background_color'] + ' !important; } ';
+                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .ppma-author-' + field_name + '-profile-data { background-color: ' + editor_values['profile_fields_' + field_name + '_display_icon_background_color'] + ' !important; } ';
                 }
                 if (editor_values['profile_fields_' + field_name + '_display_icon_border_radius']) {
-                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .ppma-author-' + field_name + '-profile-data { border-radius: ' + editor_values['profile_fields_' + field_name + '_display_icon_border_radius'] + '% !important; } ';
+                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .ppma-author-' + field_name + '-profile-data { border-radius: ' + editor_values['profile_fields_' + field_name + '_display_icon_border_radius'] + '% !important; } ';
                 }
                 if (editor_values['profile_fields_' + field_name + '_line_height']) {
-                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .ppma-author-' + field_name + '-profile-data { line-height: ' + editor_values['profile_fields_' + field_name + '_line_height'] + 'px !important; } ';
+                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .ppma-author-' + field_name + '-profile-data { line-height: ' + editor_values['profile_fields_' + field_name + '_line_height'] + 'px !important; } ';
                 }
                 if (editor_values['profile_fields_' + field_name + '_weight']) {
-                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .ppma-author-' + field_name + '-profile-data { font-weight: ' + editor_values['profile_fields_' + field_name + '_weight'] + ' !important; } ';
+                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .ppma-author-' + field_name + '-profile-data { font-weight: ' + editor_values['profile_fields_' + field_name + '_weight'] + ' !important; } ';
                 }
                 if (editor_values['profile_fields_' + field_name + '_transform']) {
-                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .ppma-author-' + field_name + '-profile-data { text-transform: ' + editor_values['profile_fields_' + field_name + '_transform'] + ' !important; } ';
+                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .ppma-author-' + field_name + '-profile-data { text-transform: ' + editor_values['profile_fields_' + field_name + '_transform'] + ' !important; } ';
                 }
                 if (editor_values['profile_fields_' + field_name + '_style']) {
-                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .ppma-author-' + field_name + '-profile-data { font-style: ' + editor_values['profile_fields_' + field_name + '_style'] + ' !important; } ';
+                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .ppma-author-' + field_name + '-profile-data { font-style: ' + editor_values['profile_fields_' + field_name + '_style'] + ' !important; } ';
                 }
                 if (editor_values['profile_fields_' + field_name + '_decoration']) {
-                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .ppma-author-' + field_name + '-profile-data { text-decoration: ' + editor_values['profile_fields_' + field_name + '_decoration'] + ' !important; } ';
+                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .ppma-author-' + field_name + '-profile-data { text-decoration: ' + editor_values['profile_fields_' + field_name + '_decoration'] + ' !important; } ';
                 }
                 if (editor_values['profile_fields_' + field_name + '_alignment']) {
-                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .ppma-author-' + field_name + '-profile-data { text-align: ' + editor_values['profile_fields_' + field_name + '_alignment'] + ' !important; } ';
+                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .ppma-author-' + field_name + '-profile-data { text-align: ' + editor_values['profile_fields_' + field_name + '_alignment'] + ' !important; } ';
                 }
                 if (editor_values['profile_fields_' + field_name + '_color']) {
-                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .ppma-author-' + field_name + '-profile-data { color: ' + editor_values['profile_fields_' + field_name + '_color'] + ' !important; } ';
+                    editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .ppma-author-' + field_name + '-profile-data { color: ' + editor_values['profile_fields_' + field_name + '_color'] + ' !important; } ';
                 }
             }
 
@@ -490,342 +491,342 @@
                     //title styles
                     case 'title_bottom_space':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .box-header-title { margin-bottom: ' + value + 'px !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .box-header-title { margin-bottom: ' + value + 'px !important; } ';
                         }
                       break;
                     case 'title_size':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .box-header-title { font-size: ' + value + 'px !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .box-header-title { font-size: ' + value + 'px !important; } ';
                         }
                       break;
                     case 'title_line_height':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .box-header-title { line-height: ' + value + 'px !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .box-header-title { line-height: ' + value + 'px !important; } ';
                         }
                       break;
                     case 'title_weight':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .box-header-title { font-weight: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .box-header-title { font-weight: ' + value + ' !important; } ';
                         }
                       break;
                     case 'title_transform':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .box-header-title { text-transform: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .box-header-title { text-transform: ' + value + ' !important; } ';
                         }
                       break;
                     case 'title_style':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .box-header-title { font-style: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .box-header-title { font-style: ' + value + ' !important; } ';
                         }
                     case 'title_decoration':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .box-header-title { text-decoration: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .box-header-title { text-decoration: ' + value + ' !important; } ';
                         }
                       break;
                     case 'title_alignment':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .box-header-title { text-align: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .box-header-title { text-align: ' + value + ' !important; } ';
                         }
                       break;
                     case 'title_color':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .box-header-title { color: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .box-header-title { color: ' + value + ' !important; } ';
                         }
                       break;
                     //avatar styles
                     case 'avatar_size':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-avatar img { width: ' + value + 'px !important; height: ' + value + 'px !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-avatar img { width: ' + value + 'px !important; height: ' + value + 'px !important; } ';
                         }
                       break;
                     case 'avatar_border_style':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-avatar img { border-style: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-avatar img { border-style: ' + value + ' !important; } ';
                         }
                       break;
                     case 'avatar_border_width':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-avatar img { border-width: ' + value + 'px !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-avatar img { border-width: ' + value + 'px !important; } ';
                         }
                       break;
                     case 'avatar_border_color':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-avatar img { border-color: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-avatar img { border-color: ' + value + ' !important; } ';
                         }
                       break;
                     case 'avatar_border_radius':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-avatar img { border-radius: ' + value + '% !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-avatar img { border-radius: ' + value + '% !important; } ';
                         }
                       break;
                     //name styles
                     case 'name_size':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-name a { font-size: ' + value + 'px !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-name a { font-size: ' + value + 'px !important; } ';
                         }
                       break;
                     case 'name_line_height':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-name a { line-height: ' + value + 'px !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-name a { line-height: ' + value + 'px !important; } ';
                         }
                       break;
                     case 'name_weight':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-name a { font-weight: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-name a { font-weight: ' + value + ' !important; } ';
                         }
                       break;
                     case 'name_transform':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-name a { text-transform: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-name a { text-transform: ' + value + ' !important; } ';
                         }
                       break;
                     case 'name_style':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-name a { font-style: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-name a { font-style: ' + value + ' !important; } ';
                         }
                       break;
                     case 'name_decoration':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-name a { text-decoration: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-name a { text-decoration: ' + value + ' !important; } ';
                         }
                       break;
                     case 'name_alignment':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-name { text-align: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-name { text-align: ' + value + ' !important; } ';
                         }
                       break;
                     case 'name_color':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-name a { color: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-name a { color: ' + value + ' !important; } ';
                         }
                       break;
                     //bio styles
                     case 'author_bio_size':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-description { font-size: ' + value + 'px !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-description { font-size: ' + value + 'px !important; } ';
                         }
                       break;
                     case 'author_bio_line_height':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-description { line-height: ' + value + 'px !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-description { line-height: ' + value + 'px !important; } ';
                         }
                       break;
                     case 'author_bio_weight':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-description { font-weight: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-description { font-weight: ' + value + ' !important; } ';
                         }
                       break;
                     case 'author_bio_transform':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-description { text-transform: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-description { text-transform: ' + value + ' !important; } ';
                         }
                       break;
                     case 'author_bio_style':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-description { font-style: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-description { font-style: ' + value + ' !important; } ';
                         }
                       break;
                     case 'author_bio_decoration':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-description { text-decoration: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-description { text-decoration: ' + value + ' !important; } ';
                         }
                       break;
                     case 'author_bio_alignment':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-description { text-align: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-description { text-align: ' + value + ' !important; } ';
                         }
                       break;
                     case 'author_bio_color':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-description { color: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-description { color: ' + value + ' !important; } ';
                         }
                       break;
                     //meta styles
                     case 'meta_size':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-meta a span { font-size: ' + value + 'px !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-meta a span { font-size: ' + value + 'px !important; } ';
                         }
                       break;
                     case 'meta_line_height':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-meta a span { line-height: ' + value + 'px !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-meta a span { line-height: ' + value + 'px !important; } ';
                         }
                       break;
                     case 'meta_weight':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-meta a span { font-weight: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-meta a span { font-weight: ' + value + ' !important; } ';
                         }
                       break;
                     case 'meta_transform':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-meta a span { text-transform: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-meta a span { text-transform: ' + value + ' !important; } ';
                         }
                       break;
                     case 'meta_style':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-meta a span { font-style: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-meta a span { font-style: ' + value + ' !important; } ';
                         }
                       break;
                     case 'meta_decoration':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-meta a span { text-decoration: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-meta a span { text-decoration: ' + value + ' !important; } ';
                         }
                       break;
                     case 'meta_alignment':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-meta { text-align: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-meta { text-align: ' + value + ' !important; } ';
                         }
                       break;
                     case 'meta_background_color':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-meta a { background-color: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-meta a { background-color: ' + value + ' !important; } ';
                         }
                       break;
                     case 'meta_color':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-meta a { color: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-meta a { color: ' + value + ' !important; } ';
                         }
                       break;
                     case 'meta_link_hover_color':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-meta a:hover { color: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-meta a:hover { color: ' + value + ' !important; } ';
                         }
                       break;
                     //recent posts styles
                     case 'author_recent_posts_title_color':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-recent-posts-title { color: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-title { color: ' + value + ' !important; } ';
                         }
                       break;
                     case 'author_recent_posts_title_border_bottom_style':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-recent-posts-title { border-bottom-style: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-title { border-bottom-style: ' + value + ' !important; } ';
                         }
                       break;
                     case 'author_recent_posts_title_border_width':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-recent-posts-title { border-width: ' + value + 'px !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-title { border-width: ' + value + 'px !important; } ';
                         }
                       break;
                     case 'author_recent_posts_title_border_color':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-recent-posts-title { border-color: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-title { border-color: ' + value + ' !important; } ';
                         }
                       break;
                     case 'author_recent_posts_size':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-recent-posts-item a { font-size: ' + value + 'px !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-item a { font-size: ' + value + 'px !important; } ';
                         }
                       break;
                     case 'author_recent_posts_line_height':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-recent-posts-item a { line-height: ' + value + 'px !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-item a { line-height: ' + value + 'px !important; } ';
                         }
                       break;
                     case 'author_recent_posts_weight':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-recent-posts-item a { font-weight: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-item a { font-weight: ' + value + ' !important; } ';
                         }
                       break;
                     case 'author_recent_posts_transform':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-recent-posts-item a { text-transform: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-item a { text-transform: ' + value + ' !important; } ';
                         }
                       break;
                     case 'author_recent_posts_style':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-recent-posts-item a { font-style: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-item a { font-style: ' + value + ' !important; } ';
                         }
                       break;
                     case 'author_recent_posts_decoration':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-recent-posts-item a { text-decoration: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-item a { text-decoration: ' + value + ' !important; } ';
                         }
                       break;
                     case 'author_recent_posts_alignment':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-recent-posts-item { text-align: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-item { text-align: ' + value + ' !important; } ';
                         }
                       break;
                     case 'author_recent_posts_color':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-recent-posts-item a { color: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-item a { color: ' + value + ' !important; } ';
                         }
                       break;
                     case 'author_recent_posts_icon_color':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-author-boxes-recent-posts-item span.dashicons { color: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-item span.dashicons { color: ' + value + ' !important; } ';
                         }
                       break;
                     //box layout styles
                     case 'box_layout_margin_top':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-multiple-authors-boxes-li { margin-top: ' + value + 'px !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { margin-top: ' + value + 'px !important; } ';
                         }
                       break;
                     case 'box_layout_margin_bottom':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-multiple-authors-boxes-li { margin-bottom: ' + value + 'px !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { margin-bottom: ' + value + 'px !important; } ';
                         }
                       break;
                     case 'box_layout_margin_left':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-multiple-authors-boxes-li { margin-left: ' + value + 'px !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { margin-left: ' + value + 'px !important; } ';
                         }
                       break;
                     case 'box_layout_margin_right':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-multiple-authors-boxes-li { margin-right: ' + value + 'px !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { margin-right: ' + value + 'px !important; } ';
                         }
                       break;
                     case 'box_layout_padding_top':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-multiple-authors-boxes-li { padding-top: ' + value + 'px !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { padding-top: ' + value + 'px !important; } ';
                         }
                       break;
                     case 'box_layout_padding_bottom':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-multiple-authors-boxes-li { padding-bottom: ' + value + 'px !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { padding-bottom: ' + value + 'px !important; } ';
                         }
                       break;
                     case 'box_layout_padding_left':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-multiple-authors-boxes-li { padding-left: ' + value + 'px !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { padding-left: ' + value + 'px !important; } ';
                         }
                       break;
                     case 'box_layout_padding_right':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-multiple-authors-boxes-li { padding-right: ' + value + 'px !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { padding-right: ' + value + 'px !important; } ';
                         }
                       break;
                     case 'box_layout_border_style':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-multiple-authors-boxes-li { border-style: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { border-style: ' + value + ' !important; } ';
                         }
                       break;
                     case 'box_layout_border_width':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-multiple-authors-boxes-li { border-width: ' + value + 'px !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { border-width: ' + value + 'px !important; } ';
                         }
                       break;
                     case 'box_layout_border_color':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-multiple-authors-boxes-li { border-color: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { border-color: ' + value + ' !important; } ';
                         }
                       break;
                     case 'box_layout_box_width':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-multiple-authors-boxes-li { width: ' + value + '% !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { width: ' + value + '% !important; } ';
                         }
                       break;
                     case 'box_layout_background_color':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-multiple-authors-boxes-li { background-color: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { background-color: ' + value + ' !important; } ';
                         }
                       break;
                     case 'box_layout_color':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-multiple-authors-boxes-li { color: ' + value + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { color: ' + value + ' !important; } ';
                         }
                       break;
                     case 'box_layout_shadow_color':
@@ -839,12 +840,12 @@
                         var shadow_speed = editor_values['box_layout_shadow_speed'];
                         shadow_speed = shadow_speed ? shadow_speed : 0;
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-multiple-authors-boxes-li { box-shadow: ' + shadow_horizontal_offset + 'px ' + shadow_vertical_offset + 'px ' + shadow_blur + 'px ' + shadow_speed + 'px ' + shadow_color + ' !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { box-shadow: ' + shadow_horizontal_offset + 'px ' + shadow_vertical_offset + 'px ' + shadow_blur + 'px ' + shadow_speed + 'px ' + shadow_color + ' !important; } ';
                         }
                       break;
                     case 'box_layout_border_radius':
                         if (value) {
-                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '  .pp-multiple-authors-boxes-li { border-radius: ' + value + 'px !important; } ';
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { border-radius: ' + value + 'px !important; } ';
                         }
                       break;
                     // custom css style

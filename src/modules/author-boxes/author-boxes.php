@@ -1128,7 +1128,14 @@ class MA_Author_Boxes extends Module
             $ppma_instance_id += 1;
         }
 
-        $args['instance_id'] = $ppma_instance_id;
+        /**
+         * I'm leaving this as 1 as it's not working when generating css, 
+         * only one instance is added. Instead, I'll be adding the box additional class
+         * to prevent boxes styles from classing.
+         */
+        $args['instance_id'] = 1;
+
+        $args['additional_class'] = str_replace(' ', '.', trim($args['box_tab_custom_wrapper_class']['value']));
         
         $legacyPlugin = Factory::getLegacyPlugin();
 
@@ -1181,6 +1188,7 @@ class MA_Author_Boxes extends Module
                     <div class="pp-multiple-authors-boxes-wrapper pp-multiple-authors-wrapper <?php echo esc_attr($args['box_tab_custom_wrapper_class']['value']); ?> box-post-id-<?php echo esc_attr($args['post_id']); ?> box-instance-id-<?php echo esc_attr($args['instance_id']); ?>"
                     data-post_id="<?php echo esc_attr($args['post_id']); ?>"
                     data-instance_id="<?php echo esc_attr($args['instance_id']); ?>"
+                    data-additional_class="<?php echo esc_attr($args['additional_class']); ?>"
                     data-original_class="pp-multiple-authors-boxes-wrapper pp-multiple-authors-wrapper box-post-id-<?php echo esc_attr($args['post_id']); ?> box-instance-id-<?php echo esc_attr($args['instance_id']); ?>">
                         <?php if ($args['show_title']['value']) : ?>
                             <?php if (count($authors) > 1) : ?>
