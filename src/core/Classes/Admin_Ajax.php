@@ -102,7 +102,7 @@ class Admin_Ajax
         $term_args = [
             'taxonomy'   => 'author',
             'hide_empty' => false,
-            'number'     => 20,
+            'number'     => apply_filters('ppma_authors_editor_user_result_limit', 20),
             'order_by'   => 'name',
         ];
 
@@ -174,7 +174,7 @@ class Admin_Ajax
         }
 
         $user_args = [
-            'number' => 20,
+            'number' => apply_filters('ppma_authors_editor_user_result_limit', 20),
             'capability' => 'edit_posts',
         ];
         if (!empty($_GET['q'])) {
