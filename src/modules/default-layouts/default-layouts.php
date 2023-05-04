@@ -100,55 +100,14 @@ if (!class_exists('MA_Default_Layouts')) {
             if (!isset($args['layout'])) {
                 $args['layout'] = Utils::getDefaultLayout();
             }
-
-            // Check if the layout exists
-            $twigFile = 'author_layout/' . $args['layout'] . '.twig';
-            
-            $theme_layout = locate_template(['publishpress-authors/twig/' . $args['layout'] . '.twig']);
-
-            if ($theme_layout) {
-                $twigFile       = $args['layout'] . '.twig';
-            } else {
-                if (!file_exists(PP_AUTHORS_TWIG_PATH . $twigFile)) {
-                    if (defined('WP_DEBUG') && WP_DEBUG) {
-                        error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-                        sprintf(
-                            '[PublishPress Authors] Twig file not found for the layout: %s. Falling back to "%s"',
-                            $args['layout'],
-                            Utils::getDefaultLayout()
-                        )
-                        );
-                    }
-
-                    $args['layout'] = Utils::getDefaultLayout();
-                    $twigFile       = 'author_layout/' . $args['layout'] . '.twig';
-                }
-
-                if (!file_exists(PP_AUTHORS_TWIG_PATH . $twigFile)) {
-                    if (defined('WP_DEBUG') && WP_DEBUG) {
-                        error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-                        sprintf(
-                            '[PublishPress Authors] Twig file not found for the layout: %s.',
-                            $args['layout']
-                        )
-                        );
-                    }
-                }
-            }
-
             $args['strings'] = [
                 'view_all' => __('View all posts', 'publishpress-authors'),
             ];
 
             $container = Factory::get_container();
-
-            if ($theme_layout) {
-                $theme_path = substr($theme_layout, 0, strrpos($theme_layout, '/'));
-                $container['twig_loader'] = new Twig_Loader_Filesystem($theme_path);
-            }
             
-            $twig      = $container['twig'];
-            $html = $twig->render($twigFile, $args);
+            $view      = $container['view'];
+            $html = $view->render($args['layout'], $args);
 
             return $html;
         }
@@ -160,21 +119,10 @@ if (!class_exists('MA_Default_Layouts')) {
          */
         public function getListOfLayouts($layouts)
         {
-            $legacyPlugin = Factory::getLegacyPlugin();
-            $enable_legacy_layout = $legacyPlugin->modules->multiple_authors->options->enable_legacy_layout === 'yes';
-            
-            if (!$enable_legacy_layout) {
-                return $layouts;
-            }
                 
             $new_layout = [
-                'boxed'          => __('Boxed (Legacy)', 'publishpress-authors'),
-                'centered'       => __('Centered (Legacy)', 'publishpress-authors'),
-                'inline'         => __('Inline (Legacy)', 'publishpress-authors'),
-                'inline_avatar'  => __('Inline with avatar (Legacy)', 'publishpress-authors'),
-                'simple_list'    => __('Simple list (Legacy)', 'publishpress-authors'),
-                'authors_index'  => __('Authors index (Legacy)', 'publishpress-authors'),
-                'authors_recent' => __('Authors recent (Legacy)', 'publishpress-authors'),
+                'authors_index'  => __('Authors index', 'publishpress-authors'),
+                'authors_recent' => __('Authors recent', 'publishpress-authors'),
             ];
             $layouts = array_merge($layouts, $new_layout);
 

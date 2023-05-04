@@ -686,10 +686,10 @@ class Plugin
 
         if ($showFooter) {
             $container = Factory::get_container();
-            $twig      = $container['twig'];
+            $view      = $container['view'];
 
-            $html = $twig->render(
-                'footer-base.twig',
+            $html = $view->render(
+                'footer-base',
                 [
                     'current_module' => $current_module,
                     'plugin_name'    => __('PublishPress Authors', 'publishpress-authors'),

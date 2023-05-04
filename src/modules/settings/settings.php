@@ -51,7 +51,7 @@ if (!class_exists('MA_Settings')) {
          */
         public function __construct()
         {
-            $this->twigPath = __DIR__ . '/twig';
+            $this->viewsPath = __DIR__ . '/views';
 
             parent::__construct();
 
@@ -216,8 +216,8 @@ if (!class_exists('MA_Settings')) {
                             $url = $mod_data->page_link;
                         }
 
-                        echo $this->twig->render( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-                            'module.twig',
+                        echo $this->view->render( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                            'module',
                             [
                                 'has_config_link' => isset($mod_data->configure_page_cb) && !empty($mod_data->configure_page_cb),
                                 'slug'            => esc_html($mod_data->slug),
@@ -226,7 +226,8 @@ if (!class_exists('MA_Settings')) {
                                 'title'           => esc_html($mod_data->title),
                                 'description'     => wp_kses($mod_data->short_description, 'a'),
                                 'url'             => esc_url($url),
-                            ]
+                            ],
+                            $this->viewsPath
                         );
                     }
                 }
@@ -391,8 +392,8 @@ if (!class_exists('MA_Settings')) {
                 }
             }
 
-            echo $this->twig->render( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-                'settings.twig',
+            echo $this->view->render( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                'settings',
                 [
                     'modules'        => (array)$legacyPlugin->modules, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     'settings_slug'  => esc_html($module_settings_slug),
@@ -402,7 +403,8 @@ if (!class_exists('MA_Settings')) {
                     'text'           => esc_html($display_text),
                     'show_sidebar'   => false,
                     'show_tabs'      => $show_tabs, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-                ]
+                ],
+                $this->viewsPath
             );
         }
     }

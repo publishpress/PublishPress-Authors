@@ -10,9 +10,6 @@
 namespace MultipleAuthors\Classes\Legacy;
 
 use MultipleAuthors\Factory;
-use Twig_Environment;
-use Twig_Extension_Debug;
-use Twig_Loader_Filesystem;
 
 /**
  * Module
@@ -25,22 +22,15 @@ class Module
         // 'future',
         'private',
     ];
-    protected $twig;
+    protected $view;
     protected $debug              = false;
-    protected $twigPath;
+    protected $viewsPath;
 
     public function __construct()
     {
-        if (!empty($this->twigPath)) {
-            $loader     = new Twig_Loader_Filesystem($this->twigPath);
-            $this->twig = new Twig_Environment(
-                $loader, [
-                           'debug' => $this->debug,
-                       ]
-            );
-
-            if ($this->debug) {
-                $this->twig->addExtension(new Twig_Extension_Debug());
+        if (!empty($this->viewsPath)) {
+            if (!empty($this->viewsPath)) {
+                $this->view = new \MultipleAuthors\View();
             }
         }
     }

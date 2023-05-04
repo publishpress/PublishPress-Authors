@@ -48,7 +48,6 @@
   "require": {
     "php": ">=7.2.5",
     "pimple/pimple": "3.2.3",
-    "twig/twig": "1.44.7",
     "symfony/polyfill-ctype": "1.19.0",
     "cmb2/cmb2": "^2.6",
     "psr/container": "1.0.0",

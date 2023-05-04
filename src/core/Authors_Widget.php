@@ -149,6 +149,7 @@ class Authors_Widget extends WP_Widget
                 'limit_per_page' => esc_html($this->get_field_id('limit_per_page')),
                 'authors'        => esc_html($this->get_field_id('authors')),
                 'order'          => esc_html($this->get_field_id('order')),
+				'nonce'          => esc_html($this->get_field_id( 'nonce' )),
                 'orderby'        => esc_html($this->get_field_id('orderby'))
             ),
             'names'   => array(
@@ -160,6 +161,7 @@ class Authors_Widget extends WP_Widget
                 'limit_per_page' => esc_html($this->get_field_name('limit_per_page')),
                 'authors'        => esc_html($this->get_field_name('authors')),
                 'order'          => esc_html($this->get_field_name('order')),
+				'nonce'          => esc_html($this->get_field_name( 'nonce' )),
                 'orderby'        => esc_html($this->get_field_name('orderby'))
             ),
             'values'  => array(
@@ -171,6 +173,7 @@ class Authors_Widget extends WP_Widget
                 'limit_per_page' => $limitPerPage,
                 'authors'        => $authors,
                 'order'          => $order,
+                'nonce'          => wp_create_nonce('pp_multiple_authors_widget_form'),
                 'orderby'        => $orderBy
             ),
             'options'  => array(
@@ -195,7 +198,7 @@ class Authors_Widget extends WP_Widget
 
         $container = Factory::get_container();
 
-        echo $container['twig']->render('authors-list-widget-form.twig', $context); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        echo $container['view']->render('authors-list-widget-form', $context); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
 
     /**
