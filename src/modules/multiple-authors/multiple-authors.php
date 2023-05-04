@@ -118,7 +118,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'fallback_user_for_guest_post' => function_exists('get_current_user_id') ? get_current_user_id() : 0,
                     'author_page_post_types'       => [],
                     'disable_quick_edit_author_box' => 'no',
-                    'load_font_awesome'            => 'no'
+                    'load_font_awesome'            => 'no',
+                    'enable_guest_author_user'     => 'yes',
                 ],
                 'options_page'         => false,
                 'autoload'             => true,
@@ -961,6 +962,28 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $this->module->options_group_name
             );
 
+            /**
+             * Guest Authors
+             */
+
+            add_settings_section(
+                $this->module->options_group_name . '_guest_authors',
+                __return_false(),
+                [$this, 'settings_section_guest_authors'],
+                $this->module->options_group_name
+            );
+
+            add_settings_field(
+                'enable_guest_author_user',
+                __(
+                    'Enable Guest Authors:',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_enable_guest_author_user'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_guest_authors'
+            );
+
             do_action('pp_authors_register_settings');
         }
 
@@ -992,6 +1015,11 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function settings_section_maintenance()
         {
             echo '<input type="hidden" id="ppma-tab-maintenance" />';
+        }
+
+        public function settings_section_guest_authors()
+        {
+            echo '<input type="hidden" id="ppma-guest-author" />';
         }
 
         /**
@@ -1528,6 +1556,29 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
                     'If the Author is mapped to a WordPress user, this will display the authors\' "Display name" and their "Username". The default is to show only the "Display name". Showing the "Username" is useful if you have several authors with similar names.',
+                    'publishpress-authors'
+                )
+                . '</span>';
+
+
+            echo '</label>';
+        }
+
+        /**
+         * @param array $args
+         */
+        public function settings_enable_guest_author_user($args = [])
+        {
+            $id    = $this->module->options_group_name . '_enable_guest_author_user';
+            $value = isset($this->module->options->enable_guest_author_user) ? $this->module->options->enable_guest_author_user : '';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[enable_guest_author_user]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
+
+            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
+                . esc_html__(
+                    'Allow authors to be created without a mapped user.',
                     'publishpress-authors'
                 )
                 . '</span>';
@@ -2355,6 +2406,10 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $new_options['remove_single_user_map_restriction'] = 'no';
             }
 
+            if (!isset($new_options['enable_guest_author_user'])) {
+                $new_options['enable_guest_author_user'] = 'no';
+            }
+
             if (!isset($new_options['show_author_post_authors'])) {
                 $new_options['show_author_post_authors'] = 'no';
             }
@@ -2423,6 +2478,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 [
                     '#ppma-tab-general'     => esc_html__('General', 'publishpress-authors'),
                     '#ppma-tab-display'     => esc_html__('Author Boxes', 'publishpress-authors'),
+                    '#ppma-tab-guest-author' => esc_html__('Guest Authors', 'publishpress-authors'),
                     '#ppma-tab-author-pages' => esc_html__('Author Pages', 'publishpress-authors'),
                     '#ppma-tab-shortcodes'  => esc_html__('Shortcodes', 'publishpress-authors'),
                     '#ppma-tab-maintenance' => esc_html__('Maintenance', 'publishpress-authors'),
