@@ -280,7 +280,7 @@ class MA_Author_Boxes extends Module
     }
 
     /**
-     * Create the layout based on a twig file with the same name.
+     * Create the layout based on name and title
      *
      * @param string $name
      * @param string $title

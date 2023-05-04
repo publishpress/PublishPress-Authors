@@ -89,7 +89,6 @@ class Installer
             self::addManageFieldsCapabilitiesToRoles();
             self::createDefaultCustomFields();
             self::updateAuthorBoxesFieldValue(['name_show' => 1]);
-            $legacyPlugin->update_module_option('multiple_authors', 'enable_legacy_layout', 'yes');
         }
 
         if (version_compare($currentVersions, '4.1.2', '<')) {

@@ -1,3 +1,6 @@
+<?php 
+write_log($url);
+?>
 {% if url %}
 <a href="{{ url }}">
     {% endif %}
