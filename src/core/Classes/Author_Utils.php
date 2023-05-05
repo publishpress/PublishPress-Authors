@@ -9,6 +9,8 @@
 
 namespace MultipleAuthors\Classes;
 
+use MultipleAuthors\Factory;
+
 /**
  * Utility methods for managing authors
  *
@@ -60,7 +62,13 @@ abstract class Author_Utils
 
     public static function author_has_custom_avatar($termId)
     {
+        $legacyPlugin = Factory::getLegacyPlugin();
+
         $avatarAttachmentId = (int)get_term_meta($termId, 'avatar', true);
+
+        if ($avatarAttachmentId === 0) {
+            $avatarAttachmentId = (int)isset($legacyPlugin->modules->multiple_authors->options->default_avatar) ? $legacyPlugin->modules->multiple_authors->options->default_avatar : 0;
+        }
 
         return !empty($avatarAttachmentId);
     }
@@ -84,10 +92,16 @@ abstract class Author_Utils
 
     public static function get_avatar_url($termId, $size = 96)
     {
+        $legacyPlugin = Factory::getLegacyPlugin();
+
         $url = false;
 
         if (self::author_has_custom_avatar($termId)) {
             $avatar_attachment_id = (int)self::get_author_meta($termId, 'avatar');
+
+        if ($avatar_attachment_id === 0) {
+            $avatar_attachment_id = (int)isset($legacyPlugin->modules->multiple_authors->options->default_avatar) ? $legacyPlugin->modules->multiple_authors->options->default_avatar : 0;
+        }
 
             if (!empty($avatar_attachment_id)) {
                 $url = wp_get_attachment_image_url($avatar_attachment_id, $size);

@@ -10,6 +10,7 @@
 namespace MultipleAuthors\Classes\Objects;
 
 use MultipleAuthors\Classes\Author_Utils;
+use MultipleAuthors\Factory;
 use WP_Error;
 use WP_User;
 
@@ -601,8 +602,14 @@ class Author
      */
     protected function get_custom_avatar_url($size = 96)
     {
+        $legacyPlugin = Factory::getLegacyPlugin();
+
         if (is_null($this->customAvatarUrl)) {
             $avatar_attachment_id = get_term_meta($this->term_id, 'avatar', true);
+
+            if ( (int) $avatar_attachment_id === 0) {
+                $avatar_attachment_id = (int)isset($legacyPlugin->modules->multiple_authors->options->default_avatar) ? $legacyPlugin->modules->multiple_authors->options->default_avatar : 0;
+            }
 
             // Get the avatar from the attachments.
             $url   = '';
@@ -624,6 +631,7 @@ class Author
                 'url2x' => $url2x,
             ];
         }
+
 
         return $this->customAvatarUrl;
     }

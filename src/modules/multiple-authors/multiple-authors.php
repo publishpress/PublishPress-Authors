@@ -120,6 +120,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'disable_quick_edit_author_box' => 'no',
                     'load_font_awesome'            => 'no',
                     'enable_guest_author_user'     => 'yes',
+                    'default_avatar'               => '',
                 ],
                 'options_page'         => false,
                 'autoload'             => true,
@@ -533,6 +534,17 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             do_action(
                 'publishpress_authors_register_settings_before',
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_general'
+            );
+
+            add_settings_field(
+                'default_avatar',
+                __(
+                    'Default Avatar',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_default_avatar'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_general'
             );
@@ -976,7 +988,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_settings_field(
                 'enable_guest_author_user',
                 __(
-                    'Enable Guest Authors:',
+                    'Enable Guest Authors',
                     'publishpress-authors'
                 ),
                 [$this, 'settings_enable_guest_author_user'],
@@ -1783,6 +1795,47 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '<input type="text" class="small-text" value="' . esc_attr($value) . '" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_post_excerpt_ellipsis]">';
             echo '</label>';
+
+        }
+
+        /**
+         * @param array $args
+         */
+        public function settings_default_avatar($args = [])
+        {
+            $id    = $this->module->options_group_name . '_default_avatar';
+            $value = isset($this->module->options->default_avatar) ? $this->module->options->default_avatar : '';
+            $default_image = '';
+            if ($value) {
+                $default_image = wp_get_attachment_image_url($value, 'thumbnail');
+            }
+            ?>
+            <div class="author-image-field-wrapper">
+                <div class="author-image-field-container">
+                    <?php if ($default_image) : ?>
+                        <img src="<?php echo esc_url($default_image); ?>" alt=""/>
+                    <?php endif; ?>
+                </div>
+                <p class="hide-if-no-js">
+                    <a class="select-author-image-field <?php echo $default_image ? 'hidden' : ''; ?>" href="#">
+                        <?php esc_html_e('Select image', 'publishpress-authors'); ?>
+                    </a>
+                    <a class="delete-author-image-field <?php echo !$default_image ? 'hidden' : ''; ?>"
+                       href="#">
+                        <?php esc_html_e('Remove this image', 'publishpress-authors'); ?>
+                    </a>
+                </p>
+                <input name="<?php echo esc_attr($this->module->options_group_name); ?>[default_avatar]" class="author-image-field-id" type="hidden"
+                       value="<?php echo esc_attr($value); ?>"/>
+            </div>
+            <?php
+
+echo '<span class="ppma_settings_field_description">'
+    . esc_html__(
+        'This avatar will be used as default avatar instead of gravatar where no custom avatar is added to profile.',
+        'publishpress-authors'
+    )
+    . '</span>';
 
         }
 
