@@ -1031,7 +1031,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         public function settings_section_guest_authors()
         {
-            echo '<input type="hidden" id="ppma-guest-author" />';
+            echo '<input type="hidden" id="ppma-tab-guest-author" />';
         }
 
         /**
