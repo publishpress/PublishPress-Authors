@@ -539,17 +539,6 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
 
             add_settings_field(
-                'default_avatar',
-                __(
-                    'Default Avatar',
-                    'publishpress-authors'
-                ),
-                [$this, 'settings_default_avatar'],
-                $this->module->options_group_name,
-                $this->module->options_group_name . '_general'
-            );
-
-            add_settings_field(
                 'post_types',
                 __('Enable PublishPress Authors for these post types:', 'publishpress-authors'),
                 [$this, 'settings_post_types_option'],
@@ -618,6 +607,17 @@ if (!class_exists('MA_Multiple_Authors')) {
                 [$this, 'settings_remove_single_user_map_restriction'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_advanced'
+            );
+
+            add_settings_field(
+                'default_avatar',
+                __(
+                    'Default Avatar',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_default_avatar'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_general'
             );
 
             do_action('publishpress_authors_register_settings_after');
