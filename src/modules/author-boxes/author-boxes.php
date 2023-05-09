@@ -288,7 +288,7 @@ class MA_Author_Boxes extends Module
     protected static function createLayoutPost($name, $title)
     {
         // Check if we already have the layout based on the slug.
-        $existingAuthorBox = get_page_by_title($title, OBJECT, self::POST_TYPE_BOXES);
+        $existingAuthorBox = Utils::get_page_by_title($title, self::POST_TYPE_BOXES);
         if ($existingAuthorBox && $existingAuthorBox->post_status === 'publish') {
             return;
         }
