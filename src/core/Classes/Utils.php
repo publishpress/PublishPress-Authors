@@ -1077,7 +1077,7 @@ class Utils
                 </div>
             </div>
             <div class="advertisement-box-content postbox ppma-advert">
-                <div class="postbox-header">
+                <div class="postbox-header ppma-advert">
                     <h3 class="advertisement-box-header hndle is-non-sortable">
                         <span><?php echo esc_html__('Need PublishPress Authors Support?', 'publishpress-authors'); ?></span>
                     </h3>
