@@ -102,7 +102,7 @@ class Admin_Ajax
         $term_args = [
             'taxonomy'   => 'author',
             'hide_empty' => false,
-            'number'     => 20,
+            'number'     => apply_filters('ppma_authors_editor_user_result_limit', 20),
             'order_by'   => 'name',
         ];
 
@@ -174,7 +174,7 @@ class Admin_Ajax
         }
 
         $user_args = [
-            'number' => 20,
+            'number' => apply_filters('ppma_authors_editor_user_result_limit', 20),
             'capability' => 'edit_posts',
         ];
         if (!empty($_GET['q'])) {
@@ -277,6 +277,7 @@ class Admin_Ajax
             $term_id     = !empty($_POST['term_id']) ? (int) $_POST['term_id'] : 0;
             $legacyPlugin = Factory::getLegacyPlugin();
             $remove_single_user_map_restriction = $legacyPlugin->modules->multiple_authors->options->remove_single_user_map_restriction === 'yes';
+            $enable_guest_author_user = $legacyPlugin->modules->multiple_authors->options->enable_guest_author_user === 'yes';
 
             if (!$remove_single_user_map_restriction && $author_id > 0) {
                 $author = Author::get_by_user_id($author_id);
@@ -287,8 +288,20 @@ class Admin_Ajax
                             'This user is already mapped to another author.', 
                             'publishpress-authors'
                         );
+                        wp_send_json($response);
+                        exit;
                     }
                 }
+            }
+            
+            if (!$enable_guest_author_user && $author_id === 0) {
+                $response['status']  = 'error';
+                $response['content'] = esc_html__(
+                    'Mapped user is required.',
+                    'publishpress-authors'
+                );
+                wp_send_json($response);
+                exit;
             }
 
             if (empty($author_slug)) {
@@ -310,6 +323,8 @@ class Admin_Ajax
                             'Another user with Author URL already exists.', 
                             'publishpress-authors'
                         );
+                        wp_send_json($response);
+                        exit;
                     }
                 }
             }

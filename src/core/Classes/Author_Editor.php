@@ -333,12 +333,16 @@ class Author_Editor
      */
     public static function get_fields($author)
     {
+        $legacyPlugin = Factory::getLegacyPlugin();
+        $enable_guest_author_user = $legacyPlugin->modules->multiple_authors->options->enable_guest_author_user === 'yes';
+
         $fields = [
             'user_id'     => [
                 'label'    => esc_html__('Mapped User', 'publishpress-authors'),
                 'type'     => 'ajax_user_select',
                 'sanitize' => 'intval',
                 'tab'      => 'general',
+                'requirement' => !$enable_guest_author_user ? 'required' : ''
             ],
             'description' => [
                 'label'    => esc_html__('Author Bio', 'publishpress-authors'),
@@ -368,10 +372,10 @@ class Author_Editor
                 'tab'         => 'image',
                 'options'     => [
                     'gravatar'     => [
-                        'label'         => __('Gravatar', 'publishpress-authors'),
+                        'label'         => __('Default Avatar', 'publishpress-authors'),
                         'description'   => sprintf(
                                             esc_html__(
-                                                '(Uses the %1s Email field %2s to find the Gravatar account)',
+                                                '(Uses the %1s Email field %2s to find the Gravatar account if default avatar is not uploaded in Authors Settings)',
                                                 'publishpress-authors'
                                             ), 
                                             '<a href="#" class="ppma-image-general-author-focus">', '</a>'
@@ -638,22 +642,25 @@ class Author_Editor
 
     public static function action_new_form_tag()
     {
+        $legacyPlugin = Factory::getLegacyPlugin();
+        $enable_guest_author_user = $legacyPlugin->modules->multiple_authors->options->enable_guest_author_user === 'yes';
+
         // Close the form tag.
         echo '>';
 
         ?>
         <div class="form-field term-user_id-wrap">
-        <label for="tag-user-id"><?php echo esc_html__('Mapped User (optional)', 'publishpress-authors'); ?></label>
+        <label for="tag-user-id"><?php echo esc_html__('Mapped User', 'publishpress-authors'); ?></label>
         <?php
         echo static::get_rendered_author_partial( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             [
                 'type'        => 'ajax_user_select',
                 'value'       => '',
                 'key'         => 'new',
-                'description' => esc_html__(
-                    'You don’t have to choose a Mapped User. Leave this choice blank and you can create a Guest Author with no WordPress account.',
+                'description' => ($enable_guest_author_user) ? esc_html__(
+                    'You don\'t have to choose a Mapped User. Leave this choice blank and you can create a Guest Author with no WordPress account.',
                     'publishpress-authors'
-                ),
+                ) : '',
             ]
         );
 
@@ -805,15 +812,16 @@ class Author_Editor
     public static function filter_pre_insert_term($term, $taxonomy)
     {
         if ($taxonomy === 'author' && !empty($_POST)) {
+            $legacyPlugin = Factory::getLegacyPlugin();
+            $author_id = (int)$_POST['authors-new'];
+            $enable_guest_author_user = $legacyPlugin->modules->multiple_authors->options->enable_guest_author_user === 'yes';
             /**
              * Check if term with this user exist
              */
             if (isset($_POST['authors-new'])
                 && (int)$_POST['authors-new'] > 0
             ) {
-                $author_id = (int)$_POST['authors-new'];
                 $author    = Author::get_by_user_id($author_id);
-                $legacyPlugin = Factory::getLegacyPlugin();
                 $remove_single_user_map_restriction = $legacyPlugin->modules->multiple_authors->options->remove_single_user_map_restriction === 'yes';
                 
                 if (!$remove_single_user_map_restriction
@@ -830,6 +838,16 @@ class Author_Editor
                         )
                     );
                 }
+            }
+            
+            if (!$enable_guest_author_user && $author_id === 0) {
+                return new WP_Error(
+                    'publishpress_authors_mapped_user_required',
+                    esc_html__(
+                        'Mapped user is required.',
+                        'publishpress-authors'
+                    )
+                );
             }
 
             /**

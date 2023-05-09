@@ -93,6 +93,10 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
          */
         private function generate_author_schema($author) {
 
+            if (!is_object($author)) {
+                return [];
+            }
+
             $author_avatar = $author->get_avatar_url();
             if (is_array($author_avatar)) {
                 $author_avatar = $author_avatar['url'];
@@ -134,10 +138,12 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
                 }
 
                 $page_author         = get_archive_author();
-                $author_profile_data  = $this->generate_author_schema($page_author);
+                if (is_object($page_author) && isset($page_author->display_name)) {
+                    $author_profile_data  = $this->generate_author_schema($page_author);
 
-                $data['WebPage']['@type']  = 'ProfilePage';
-                $data['ProfilePage']        = $author_profile_data;
+                    $data['WebPage']['@type']  = 'ProfilePage';
+                    $data['ProfilePage']        = $author_profile_data;
+                }
             }
 
             return $data;
@@ -161,18 +167,43 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
 
                 $post_authors        = publishpress_authors_get_post_authors();
                 $post_author         = $post_authors[0];
-                $author_profile_data  = $this->generate_author_schema($post_author);
 
-                if (count($post_authors) === 1) {
-                    $profile_page_authors = ['@id' => $post_author->link];
-                } else {
-                    $profile_page_authors = [];
-                    foreach ($post_authors as $key => $post_author) {
-                        $profile_page_authors[] = $this->generate_author_schema($post_author);
+                if (is_object($post_author) && isset($post_author->display_name)) {
+                    $author_profile_data  = $this->generate_author_schema($post_author);
+
+                    if (count($post_authors) === 1) {
+                        $profile_page_authors = ['@id' => $post_author->link];
+                        $publisher_profile_page_authors = ['@id' => $post_author->link, 'name' => $post_author->display_name];
+                    } else {
+                        $profile_page_authors = [];
+                        $publisher_profile_page_authors = [];
+                        foreach ($post_authors as $key => $post_author) {
+                            if (is_object($post_author) && isset($post_author->display_name)) {
+                                $profile_page_authors[] = $this->generate_author_schema($post_author);
+                                $publisher_profile_page_authors[] = $this->generate_author_schema($post_author);
+                            }
+                        }
+                    }
+                    $data['richSnippet']['author'] = $profile_page_authors;
+                    $data['ProfilePage']            = $author_profile_data;
+
+                    if (isset($data['publisher'])) {
+                        $data_publisher = $data['publisher'];
+                        $data_publisher['[@type'] = $author_profile_data['@type'];
+                        $data_publisher['name'] = $author_profile_data['@name'];
+                        $data_publisher['sameAs'] = $author_profile_data['sameAs'];
+                        $data_publisher['logo'] = $author_profile_data['@image'];
+                        $data_publisher['image'] = $author_profile_data['@image'];
+                        $data['publisher']       = $data_publisher;
+                    }
+
+                    //replace author at every possible location
+                    foreach ($data as $index => $details) {
+                        if (isset($details['author'])) {
+                            $data[$index]['author'] = $publisher_profile_page_authors;
+                        }
                     }
                 }
-                $data['richSnippet']['author'] = $profile_page_authors;
-                $data['ProfilePage']            = $author_profile_data;
             }
 
             return $data;

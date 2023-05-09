@@ -12,15 +12,15 @@
 defined('ABSPATH') or die('No direct script access allowed.');
 
 if (!defined('PP_AUTHORS_LOADED')) {
-    define('PP_AUTHORS_VERSION', '4.1.2');
+    define('PP_AUTHORS_VERSION', '4.1.3');
     define('PP_AUTHORS_FILE', 'publishpress-authors/publishpress-authors.php');
     define('PP_AUTHORS_BASE_PATH', plugin_dir_path(__DIR__ . '/publishpress-authors.php'));
     define('PP_AUTHORS_MODULES_PATH', PP_AUTHORS_BASE_PATH . 'src/modules/');
-    define('PP_AUTHORS_TWIG_PATH', PP_AUTHORS_BASE_PATH . 'src/twig/');
     define('PP_AUTHORS_VENDOR_PATH', PP_AUTHORS_BASE_PATH . 'vendor/');
     define('PP_AUTHORS_URL', rtrim(plugins_url('/', PP_AUTHORS_BASE_PATH . 'publishpress-authors.php'), '/') . '/');
     define('PP_AUTHORS_ASSETS_URL', PP_AUTHORS_URL . 'src/assets/');
     define('PP_AUTHORS_AUTOLOAD_CLASS_NAME', 'ComposerStaticInit92fc51e620da052063312bd38c6157a4');
+    define('PP_AUTHORS_VIEWS_PATH', PP_AUTHORS_BASE_PATH . 'src/views');
 
     if (!defined('PUBLISHPRESS_AUTHORS_LOAD_DEPRECATED_LEGACY_CODE')) {
         define('PUBLISHPRESS_AUTHORS_LOAD_DEPRECATED_LEGACY_CODE', true);

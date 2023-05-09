@@ -170,10 +170,7 @@ body.wp-admin.term-php.taxonomy-author #wpcontent,
 body.wp-admin.edit-tags-php.taxonomy-author #wpcontent,
 body.wp-admin.post-new-php.post-type-ppmacf_field #wpcontent,
 body.wp-admin.edit-php.post-type-ppmacf_field #wpcontent,
-body.wp-admin.post-php.post-type-ppmacf_field #wpcontent,
-body.wp-admin.post-new-php.post-type-ppmacf_layout #wpcontent,
-body.wp-admin.edit-php.post-type-ppmacf_layout #wpcontent,
-body.wp-admin.post-php.post-type-ppmacf_layout #wpcontent {
+body.wp-admin.post-php.post-type-ppmacf_field #wpcontent {
     margin-bottom: 150px;
 }
 
@@ -186,10 +183,7 @@ body.wp-admin.term-php.taxonomy-author #wpwrap,
 body.wp-admin.edit-tags-php.taxonomy-author #wpwrap,
 body.wp-admin.post-new-php.post-type-ppmacf_field #wpwrap,
 body.wp-admin.edit-php.post-type-ppmacf_field #wpwrap,
-body.wp-admin.post-php.post-type-ppmacf_field #wpwrap,
-body.wp-admin.post-new-php.post-type-ppmacf_layout #wpwrap,
-body.wp-admin.edit-php.post-type-ppmacf_layout #wpwrap,
-body.wp-admin.post-php.post-type-ppmacf_layout #wpwrap {
+body.wp-admin.post-php.post-type-ppmacf_field #wpwrap {
     display: inline-block;
 }
 

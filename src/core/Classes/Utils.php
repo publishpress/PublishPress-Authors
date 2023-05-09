@@ -1077,7 +1077,7 @@ class Utils
                 </div>
             </div>
             <div class="advertisement-box-content postbox ppma-advert">
-                <div class="postbox-header">
+                <div class="postbox-header ppma-advert">
                     <h3 class="advertisement-box-header hndle is-non-sortable">
                         <span><?php echo esc_html__('Need PublishPress Authors Support?', 'publishpress-authors'); ?></span>
                     </h3>
@@ -1148,5 +1148,33 @@ class Utils
     public static function isRankMathSeoInstalled()
     {
         return defined('RANK_MATH_VERSION') || defined('RANK_MATH_PRO_VERSION');
+    }
+
+    /**
+     * Wrapper function replacement for get_page_by_title() that's deprecated in wordpress
+     * 6.2 https://make.wordpress.org/core/2023/03/06/get_page_by_title-deprecated/
+     */
+    public static function get_page_by_title($page_title, $post_type = 'page')
+    {
+        $posts = get_posts(
+            [
+                'post_type'              => $post_type,
+                'title'                  => $page_title,
+                'post_status'            => 'all',
+                'numberposts'            => 1,
+                'update_post_term_cache' => false,
+                'update_post_meta_cache' => false,           
+                'orderby'                => 'post_date ID',
+                'order'                  => 'ASC',
+            ]
+        );
+         
+        if (!empty($posts)) {
+            $page_got_by_title = $posts[0];
+        } else {
+            $page_got_by_title = null;
+        }
+
+        return $page_got_by_title;
     }
 }

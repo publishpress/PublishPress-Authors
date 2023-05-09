@@ -118,8 +118,9 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'fallback_user_for_guest_post' => function_exists('get_current_user_id') ? get_current_user_id() : 0,
                     'author_page_post_types'       => [],
                     'disable_quick_edit_author_box' => 'no',
-                    'enable_legacy_layout'         => 'no',
-                    'load_font_awesome'            => 'no'
+                    'load_font_awesome'            => 'no',
+                    'enable_guest_author_user'     => 'yes',
+                    'default_avatar'               => '',
                 ],
                 'options_page'         => false,
                 'autoload'             => true,
@@ -395,7 +396,6 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'edit.php?post_type=ppma_boxes'    => null,
                     'edit-tags.php?taxonomy=author'    => null,
                     'edit.php?post_type=ppmacf_field'  => null,
-                    'edit.php?post_type=ppmacf_layout' => null,
                     'ppma-modules-settings'            => null,
                 ];
 
@@ -433,13 +433,6 @@ if (!class_exists('MA_Multiple_Authors')) {
                     $newSubmenu[] = $currentSubmenu[$itemsToSort['edit.php?post_type=ppmacf_field']];
 
                     unset($currentSubmenu[$itemsToSort['edit.php?post_type=ppmacf_field']]);
-                }
-
-                // Layouts
-                if (isset($itemsToSort['edit.php?post_type=ppmacf_layout'])) {
-                    $newSubmenu[] = $currentSubmenu[$itemsToSort['edit.php?post_type=ppmacf_layout']];
-
-                    unset($currentSubmenu[$itemsToSort['edit.php?post_type=ppmacf_layout']]);
                 }
 
                 // Check if we have other menu items, except settings. They will be added to the end.
@@ -492,10 +485,10 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function print_configure_view()
         {
             $container = Factory::get_container();
-            $twig      = $container['twig'];
+            $view      = $container['view'];
 
-            echo $twig->render( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-                'settings-tab.twig',
+            echo $view->render( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                'settings-tab',
                 [
                     'form_action'        => esc_url(menu_page_url($this->module->settings_slug, false)),
                     'options_group_name' => esc_html($this->module->options_group_name),
@@ -573,17 +566,6 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
 
             add_settings_field(
-                'enable_legacy_layout',
-                __(
-                    'Enable legacy "Layouts" feature:',
-                    'publishpress-authors'
-                ),
-                [$this, 'settings_enable_legacy_layout'],
-                $this->module->options_group_name,
-                $this->module->options_group_name . '_advanced'
-            );
-
-            add_settings_field(
                 'username_in_search_field',
                 __(
                     'Show username in the search field:',
@@ -625,6 +607,17 @@ if (!class_exists('MA_Multiple_Authors')) {
                 [$this, 'settings_remove_single_user_map_restriction'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_advanced'
+            );
+
+            add_settings_field(
+                'default_avatar',
+                __(
+                    'Default Avatar',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_default_avatar'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_general'
             );
 
             do_action('publishpress_authors_register_settings_after');
@@ -981,6 +974,28 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $this->module->options_group_name
             );
 
+            /**
+             * Guest Authors
+             */
+
+            add_settings_section(
+                $this->module->options_group_name . '_guest_authors',
+                __return_false(),
+                [$this, 'settings_section_guest_authors'],
+                $this->module->options_group_name
+            );
+
+            add_settings_field(
+                'enable_guest_author_user',
+                __(
+                    'Enable Guest Authors',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_enable_guest_author_user'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_guest_authors'
+            );
+
             do_action('pp_authors_register_settings');
         }
 
@@ -1012,6 +1027,11 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function settings_section_maintenance()
         {
             echo '<input type="hidden" id="ppma-tab-maintenance" />';
+        }
+
+        public function settings_section_guest_authors()
+        {
+            echo '<input type="hidden" id="ppma-tab-guest-author" />';
         }
 
         /**
@@ -1556,6 +1576,29 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '</label>';
         }
 
+        /**
+         * @param array $args
+         */
+        public function settings_enable_guest_author_user($args = [])
+        {
+            $id    = $this->module->options_group_name . '_enable_guest_author_user';
+            $value = isset($this->module->options->enable_guest_author_user) ? $this->module->options->enable_guest_author_user : '';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[enable_guest_author_user]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
+
+            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
+                . esc_html__(
+                    'Allow authors to be created without a mapped user.',
+                    'publishpress-authors'
+                )
+                . '</span>';
+
+
+            echo '</label>';
+        }
+
 
         /**
          * @param array $args
@@ -1755,6 +1798,47 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         }
 
+        /**
+         * @param array $args
+         */
+        public function settings_default_avatar($args = [])
+        {
+            $id    = $this->module->options_group_name . '_default_avatar';
+            $value = isset($this->module->options->default_avatar) ? $this->module->options->default_avatar : '';
+            $default_image = '';
+            if ($value) {
+                $default_image = wp_get_attachment_image_url($value, 'thumbnail');
+            }
+            ?>
+            <div class="author-image-field-wrapper">
+                <div class="author-image-field-container">
+                    <?php if ($default_image) : ?>
+                        <img src="<?php echo esc_url($default_image); ?>" alt=""/>
+                    <?php endif; ?>
+                </div>
+                <p class="hide-if-no-js">
+                    <a class="select-author-image-field <?php echo $default_image ? 'hidden' : ''; ?>" href="#">
+                        <?php esc_html_e('Select image', 'publishpress-authors'); ?>
+                    </a>
+                    <a class="delete-author-image-field <?php echo !$default_image ? 'hidden' : ''; ?>"
+                       href="#">
+                        <?php esc_html_e('Remove this image', 'publishpress-authors'); ?>
+                    </a>
+                </p>
+                <input name="<?php echo esc_attr($this->module->options_group_name); ?>[default_avatar]" class="author-image-field-id" type="hidden"
+                       value="<?php echo esc_attr($value); ?>"/>
+            </div>
+            <?php
+
+echo '<span class="ppma_settings_field_description">'
+    . esc_html__(
+        'This avatar will be used as default avatar instead of gravatar where no custom avatar is added to profile.',
+        'publishpress-authors'
+    )
+    . '</span>';
+
+        }
+
 
         /**
          * @param array $args
@@ -1895,30 +1979,6 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
                     'This will allows you map a WordPress user to more than one author. Don\'t use this feature unless requested to do so by the PublishPress team. This plugin works better when authors and users are paired one-to-one.',
-                    'publishpress-authors'
-                )
-                . '</span>';
-
-
-            echo '</label>';
-        }
-
-
-        /**
-         * @param array $args
-         */
-        public function settings_enable_legacy_layout($args = [])
-        {
-            $id    = $this->module->options_group_name . '_enable_legacy_layout';
-            $value = isset($this->module->options->enable_legacy_layout) ? $this->module->options->enable_legacy_layout : '';
-
-            echo '<label for="' . esc_attr($id) . '">';
-
-            echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[enable_legacy_layout]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
-
-            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
-                . esc_html__(
-                    'This will enable legacy layout options.',
                     'publishpress-authors'
                 )
                 . '</span>';
@@ -2399,8 +2459,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $new_options['remove_single_user_map_restriction'] = 'no';
             }
 
-            if (!isset($new_options['enable_legacy_layout'])) {
-                $new_options['enable_legacy_layout'] = 'no';
+            if (!isset($new_options['enable_guest_author_user'])) {
+                $new_options['enable_guest_author_user'] = 'no';
             }
 
             if (!isset($new_options['show_author_post_authors'])) {
@@ -2471,6 +2531,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 [
                     '#ppma-tab-general'     => esc_html__('General', 'publishpress-authors'),
                     '#ppma-tab-display'     => esc_html__('Author Boxes', 'publishpress-authors'),
+                    '#ppma-tab-guest-author' => esc_html__('Guest Authors', 'publishpress-authors'),
                     '#ppma-tab-author-pages' => esc_html__('Author Pages', 'publishpress-authors'),
                     '#ppma-tab-shortcodes'  => esc_html__('Shortcodes', 'publishpress-authors'),
                     '#ppma-tab-maintenance' => esc_html__('Maintenance', 'publishpress-authors'),
@@ -4085,7 +4146,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                     $args['tax_query']['relation'] = 'AND';
                 }
 
-                $authorId = abs($args['author']);
+                $authorId = abs((int)$args['author']);
+                
                 unset($args['author']);
 
                 $args['tax_query'][] = [

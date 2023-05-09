@@ -686,10 +686,10 @@ class Plugin
 
         if ($showFooter) {
             $container = Factory::get_container();
-            $twig      = $container['twig'];
+            $view      = $container['view'];
 
-            $html = $twig->render(
-                'footer-base.twig',
+            $html = $view->render(
+                'footer-base',
                 [
                     'current_module' => $current_module,
                     'plugin_name'    => __('PublishPress Authors', 'publishpress-authors'),
@@ -1236,6 +1236,8 @@ class Plugin
 
     public function filter_the_author($authorDisplayName)
     {
+        global $authordata;
+
         if (!function_exists('get_post_authors')) {
             return $authorDisplayName;
         }
@@ -1244,7 +1246,13 @@ class Plugin
             ! defined('PUBLISHPRESS_AUTHORS_DISABLE_FILTER_THE_AUTHOR')
             || PUBLISHPRESS_AUTHORS_DISABLE_FILTER_THE_AUTHOR !== true
         ) {
-            $authors = get_post_authors(get_post());
+            if (defined('TIELABS_THEME_SLUG')) {
+                //Jannah theme support multiple author but with global $authordata been set by the theme
+                $authors = [$authordata];
+            } else {
+                $authors = get_post_authors(get_post());
+            }
+
             if (! empty($authors) && isset($authors[0]) && isset($authors[0]->display_name)) {
                 return $authors[0]->display_name;
             }

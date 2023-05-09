@@ -287,7 +287,11 @@ trait Author_box
                 $profile_fields   = apply_filters('multiple_authors_author_fields', [], false);
                 foreach ($authors as $author) {
                     if ($field === 'avatar') {
-                        $output[] = $author->get_avatar_url();
+                        $avatar_url = $author->get_avatar_url();
+                        if (is_array($avatar_url) && isset($avatar_url['url'])) {
+                            $avatar_url = $avatar_url['url'];
+                        }
+                        $output[] = $avatar_url;
                     } else {
                         $field_output = (isset($author->$field) && !empty(trim($author->$field))) ? $author->$field : $author->display_name;
                         if (isset($profile_fields[$field]) && $profile_fields[$field]['type'] === 'url' && !empty(trim($author->$field))) {

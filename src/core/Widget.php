@@ -145,7 +145,7 @@ class Widget extends WP_Widget {
 
 		$container = Factory::get_container();
 
-		echo $container['twig']->render( 'widget-form.twig', $context );  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $container['view']->render( 'widget-form', $context );  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**

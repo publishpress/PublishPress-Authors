@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 7.2.5
 Tested up to: 6.1
-Stable tag: 4.1.2
+Stable tag: 4.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -213,6 +213,24 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [4.1.3] - 9 May 2023 =
+
+* Update: Remove support for legacy layouts and twig dependency, #1204
+* Feature: Allow users to choose a default avatar, #1301
+* Fixed: get_page_by_title Depreciated in WordPress 6.2, #1324
+* Feature: Allow users to disable the Guest Authors feature, #1310
+* Feature: Filter to override limit number of author in search, #1294
+* Fixed: Jannah theme multiple author support, #1306
+* Fixed: Problem with multiple author boxes instance, #1304
+* Fixed: Issue with italian translation, #1253
+* Fixed: Avatar data shortcode shows array, #1302
+* Fixed: Fatal error: Uncaught Error: Call to a member function get_avatar_url() yoast seo, #1297
+* Fixed: Fatal error: Uncaught Error: Call to a member function get_avatar_url() in rankmath, #1273
+* Fixed: PHP Fatal error: Uncaught TypeError: abs(), #1291
+* Fixed: Schema not getting right Author for Publisher schema, #1271
+* Fixed: Authors not in alphabetical order for authors_index layout, #1267
+* Fixed: Problem with select required field when updating authors, #1257
 
 = [4.1.2] - 31 Jan 2023 =
 
