@@ -642,6 +642,9 @@ class Author_Editor
 
     public static function action_new_form_tag()
     {
+        $legacyPlugin = Factory::getLegacyPlugin();
+        $enable_guest_author_user = $legacyPlugin->modules->multiple_authors->options->enable_guest_author_user === 'yes';
+
         // Close the form tag.
         echo '>';
 
@@ -654,7 +657,10 @@ class Author_Editor
                 'type'        => 'ajax_user_select',
                 'value'       => '',
                 'key'         => 'new',
-                'description' => '',
+                'description' => ($enable_guest_author_user) ? esc_html__(
+                    'You don\'t have to choose a Mapped User. Leave this choice blank and you can create a Guest Author with no WordPress account.',
+                    'publishpress-authors'
+                ) : '',
             ]
         );
 
