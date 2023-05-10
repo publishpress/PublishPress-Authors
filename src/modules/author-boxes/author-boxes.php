@@ -639,6 +639,8 @@ class MA_Author_Boxes extends Module
         $author_box_id = false;
         if (substr($layoutName, 0, 10) === self::POST_TYPE_BOXES) {
             $author_box_id = preg_replace("/[^0-9]/", "", $layoutName );
+        } elseif(in_array($layoutName, ['simple_list', 'centered', 'boxed', 'inline', 'inline_avatar'])) {
+            $author_box_id = $this->getLegacyLayoutAuthorBoxId($layoutName);
         } else {
             //check in theme boxes template
             $theme_boxes = self::getThemeAuthorBoxes();
@@ -694,6 +696,32 @@ class MA_Author_Boxes extends Module
         $html = self::get_rendered_author_boxes_editor_preview($preview_args);
 
         return $html;
+    }
+
+    /**
+     * Get legacy layout author box ID
+     */
+    public function getLegacyLayoutAuthorBoxId($layout)
+    {
+
+        $args = [
+            'name'           => 'author_boxes_' . $layout,
+            'post_type'      => MA_Author_Boxes::POST_TYPE_BOXES,
+            'post_status'    => 'publish',
+            'posts_per_page' => 1
+        ];
+        $layout_post = get_posts($args);
+        if (empty($layout_post)) {
+            //recreate default
+            MA_Author_Boxes::createDefaultAuthorBoxes();
+            $layout_post = get_posts($args);
+        }
+        
+        if (!empty($layout_post)) {
+            return $layout_post[0]->ID;
+        }
+
+        return 0;
     }
 
     /**
