@@ -721,7 +721,7 @@ class MA_Author_Custom_Fields extends Module
     protected static function creatCustomFieldsPost($name, $data)
     {
         // Check if we already have the layout based on the slug.
-        $existingCustomField = Utils::get_page_by_title($data['post_title'], self::POST_TYPE_CUSTOM_FIELDS);
+        $existingCustomField = Utils::get_page_by_title($data['post_title'], OBJECT, self::POST_TYPE_CUSTOM_FIELDS);
         if ($existingCustomField) {
             return;
         }
