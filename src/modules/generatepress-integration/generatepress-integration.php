@@ -92,8 +92,9 @@ if (!class_exists('MA_Generatepress_Integration')) {
          */
         public function generatepress_author_output($output)
         {
-            global $post;
+            global $post, $auto_list_prefix;
 
+            $auto_list_prefix = __('by', 'publishpress-authors');
             $layout = apply_filters('pp_multiple_authors_generatepress_box_layout', 'inline');
 
             ob_start();

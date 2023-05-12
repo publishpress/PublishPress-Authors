@@ -1150,7 +1150,7 @@ class MA_Author_Boxes extends Module
      * @param array $args Arguments to render the preview.
      */
     public static function get_rendered_author_boxes_editor_preview($args) {
-        global $ppma_instance_id;
+        global $ppma_instance_id, $auto_list_prefix;
         ob_start();
 
         if (!$ppma_instance_id) {
@@ -1244,6 +1244,7 @@ class MA_Author_Boxes extends Module
                             <ul class="pp-multiple-authors-boxes-ul">
                         <?php endif; ?>
                             <?php if (!empty($authors)) : ?>
+                                <?php echo esc_html($auto_list_prefix); ?>
                                 <?php foreach ($authors as $index => $author) : ?>
                                     <?php if ($author && is_object($author) && isset($author->term_id)) : ?>
                                         <?php 
@@ -1482,6 +1483,8 @@ class MA_Author_Boxes extends Module
         <?php endif; ?>
         
         <?php
+        $auto_list_prefix = '';//reset show by
+
         return ob_get_clean();
     }
 
