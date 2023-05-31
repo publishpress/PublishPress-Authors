@@ -562,13 +562,32 @@ class Author_Editor
             return;
         }
         $author = Author::get_by_term_id($term_id);
+        $updated_args = [];
+
+        $user_id = false;
+        $user    = false;
+        if (isset($_POST['authors-user_id']) && !empty($_POST['authors-user_id'])) {
+            $user_id = (int)$_POST['authors-user_id'];
+            $user = get_user_by('id', $user_id);
+            if (!is_a($user, 'WP_User')) {
+                $user = false;
+                $user_id = false;
+            } else {
+                $updated_args['ID'] = $user_id;
+            }
+        }
 
         foreach (self::get_fields($author) as $key => $args) {
             if (!isset($_POST['authors-' . $key])) {
                 continue;
             }
             $sanitize = isset($args['sanitize']) ? $args['sanitize'] : 'sanitize_text_field';
-            update_term_meta($term_id, $key, $sanitize($_POST['authors-' . $key])); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+            $field_value = $sanitize($_POST['authors-' . $key]); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+            update_term_meta($term_id, $key, $field_value);
+            if ($user_id) {
+                update_user_meta($user_id, $key, $field_value);
+                $updated_args[$key] = $field_value;
+            }
 
             if (in_array($args['type'], ['text', 'textarea'])) {
                 /**
@@ -579,13 +598,13 @@ class Author_Editor
         }
 
         // If there is a mapped user, make sure the author url (slug) is the same of the user.
-        if (isset($_POST['authors-user_id']) && !empty($_POST['authors-user_id'])) {
-            $user_id = (int)$_POST['authors-user_id'];
+        if ($user) {
 
-            $user = get_user_by('id', $user_id);
-
-            if (!is_a($user, 'WP_User')) {
-                return;
+            if (count($updated_args) > 1) {
+                if (isset($_POST['name'])) {
+                    $updated_args['display_name'] = sanitize_text_field($_POST['name']);
+                }
+                wp_update_user($updated_args);
             }
 
             // Do they have the same slug and nicename?
