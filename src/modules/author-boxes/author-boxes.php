@@ -287,8 +287,9 @@ class MA_Author_Boxes extends Module
      */
     protected static function createLayoutPost($name, $title)
     {
+
         // Check if we already have the layout based on the slug.
-        $existingAuthorBox = Utils::get_page_by_title($title, self::POST_TYPE_BOXES);
+        $existingAuthorBox = Utils::get_page_by_title($title, OBJECT, self::POST_TYPE_BOXES);
         if ($existingAuthorBox && $existingAuthorBox->post_status === 'publish') {
             return;
         }
@@ -675,7 +676,7 @@ class MA_Author_Boxes extends Module
             return $html;
         }
 
-        $post_id = (isset($args['post']) && isset($args['post']->ID)) ? $args['post']->ID : 0;
+        $post_id = $editor_data['post_id'];
         $fields   = apply_filters('multiple_authors_author_boxes_fields', self::get_fields(get_post($post_id)), get_post($post_id));
 
         $preview_args = [];
@@ -958,6 +959,8 @@ class MA_Author_Boxes extends Module
             $editor_data = (array) get_post_meta($post_id, self::META_PREFIX . 'layout_meta_value', true);
         }
 
+        $editor_data['post_id'] = $post_id;
+
         //set social profile defaults
         $social_fields = ['facebook', 'twitter', 'instagram', 'linkedin', 'youtube'];
         foreach ($social_fields as $social_field) {
@@ -1038,7 +1041,7 @@ class MA_Author_Boxes extends Module
          */
         $preview_args = [];
         $preview_args['authors'] = $preview_authors;
-        $preview_args['post_id'] = $post->ID;
+        $preview_args['post_id'] = $editor_data['post_id'];
         $preview_args['admin_preview'] = true;
         foreach ($fields as $key => $args) {
             $args['key']   = $key;
@@ -1147,7 +1150,7 @@ class MA_Author_Boxes extends Module
      * @param array $args Arguments to render the preview.
      */
     public static function get_rendered_author_boxes_editor_preview($args) {
-        global $ppma_instance_id;
+        global $ppma_instance_id, $auto_list_prefix;
         ob_start();
 
         if (!$ppma_instance_id) {
@@ -1185,6 +1188,18 @@ class MA_Author_Boxes extends Module
         $profile_fields   = apply_filters('multiple_authors_author_fields', $profile_fields, false);
 
         $authors = (isset($args['authors']) && is_array($args['authors']) && !empty($args['authors'])) ? $args['authors'] : [];
+
+        $box_post = get_post($args['post_id']);
+        $box_post_id = (is_object($box_post) && isset($box_post->ID)) ? $box_post->ID : '1';
+        $li_style         = true;
+        $author_separator = ", ";
+        $author_counts    = count($authors);
+        $body_class       = 'pp-multiple-authors-boxes-wrapper pp-multiple-authors-wrapper '. esc_attr($args['box_tab_custom_wrapper_class']['value']) .' box-post-id-'. esc_attr($args['post_id']) .' box-instance-id-'. esc_attr($args['instance_id']) .' ppma_boxes_' . esc_attr($box_post_id);
+
+        if (is_object($box_post) && isset($box_post->post_name) && $box_post->post_name === 'author_boxes_inline') {
+            $li_style = false;
+            $args['name_html_tag']['value'] = 'span';
+        }
         ?>
 
         <?php if ($admin_preview) : ?>
@@ -1213,20 +1228,23 @@ class MA_Author_Boxes extends Module
                     </div>
         <?php endif; ?>
                     <!--begin code -->
-                    <div class="pp-multiple-authors-boxes-wrapper pp-multiple-authors-wrapper <?php echo esc_attr($args['box_tab_custom_wrapper_class']['value']); ?> box-post-id-<?php echo esc_attr($args['post_id']); ?> box-instance-id-<?php echo esc_attr($args['instance_id']); ?>"
+                    <<?php echo ($li_style ? 'div' : 'span'); ?> class="<?php echo esc_attr($body_class); ?>"
                     data-post_id="<?php echo esc_attr($args['post_id']); ?>"
                     data-instance_id="<?php echo esc_attr($args['instance_id']); ?>"
                     data-additional_class="<?php echo esc_attr($args['additional_class']); ?>"
                     data-original_class="pp-multiple-authors-boxes-wrapper pp-multiple-authors-wrapper box-post-id-<?php echo esc_attr($args['post_id']); ?> box-instance-id-<?php echo esc_attr($args['instance_id']); ?>">
                         <?php if ($args['show_title']['value']) : ?>
-                            <?php if (count($authors) > 1) : ?>
+                            <?php if ($author_counts > 1) : ?>
                                 <<?php echo esc_html($args['title_html_tag']['value']); ?> class="widget-title box-header-title"><?php echo esc_html($args['title_text_plural']['value']); ?></<?php echo esc_html($args['title_html_tag']['value']); ?>>
                             <?php else : ?>
                                 <<?php echo esc_html($args['title_html_tag']['value']); ?> class="widget-title box-header-title"><?php echo esc_html($args['title_text']['value']); ?></<?php echo esc_html($args['title_html_tag']['value']); ?>>
                             <?php endif; ?>
                         <?php endif; ?>
-                        <ul class="pp-multiple-authors-boxes-ul">
+                        <?php if ($li_style) : ?>
+                            <ul class="pp-multiple-authors-boxes-ul">
+                        <?php endif; ?>
                             <?php if (!empty($authors)) : ?>
+                                <?php echo esc_html($auto_list_prefix); ?>
                                 <?php foreach ($authors as $index => $author) : ?>
                                     <?php if ($author && is_object($author) && isset($author->term_id)) : ?>
                                         <?php 
@@ -1348,7 +1366,9 @@ class MA_Author_Boxes extends Module
                                             }
                                         }
                                         ?>
-                                        <li class="pp-multiple-authors-boxes-li author_index_<?php echo esc_attr($index); ?> author_<?php echo esc_attr($author->slug); ?> <?php echo ($args['avatar_show']['value']) ? 'has-avatar' : 'no-avatar'; ?>">
+                                        <?php if ($li_style) : ?>
+                                            <li class="pp-multiple-authors-boxes-li author_index_<?php echo esc_attr($index); ?> author_<?php echo esc_attr($author->slug); ?> <?php echo ($args['avatar_show']['value']) ? 'has-avatar' : 'no-avatar'; ?>">
+                                        <?php endif; ?>
 
                                             <?php if ($args['avatar_show']['value']) : ?>
                                                 <div class="pp-author-boxes-avatar">
@@ -1359,16 +1379,16 @@ class MA_Author_Boxes extends Module
                                                     <?php endif; ?>
                                                 </div>
                                             <?php else : 
-                                                $custom_styles .= '.pp-multiple-authors-layout-boxed ul li > div:nth-child(1) {flex: 1 !important;}';
+                                                $custom_styles .= '.' . str_replace(' ', '.', trim($body_class)) . ' ul li > div:nth-child(1) {flex: 1 !important;}';
                                             ?>
                                             <?php endif; ?>
 
-                                            <div class="pp-author-boxes-avatar-details">
+                                            <<?php echo ($li_style ? 'div' : 'span'); ?> class="pp-author-boxes-avatar-details">
                                             <?php if ($args['name_show']['value']) : ?>
                                                     <<?php echo esc_html($args['name_html_tag']['value']); ?> class="pp-author-boxes-name multiple-authors-name">
-                                                        <a href="<?php echo esc_url($author->link); ?>" rel="author" title="<?php echo esc_attr($author->display_name); ?>" class="author url fn">
-                                                            <?php echo esc_html($author->display_name); ?>
-                                                        </a>
+                                                        <a href="<?php echo esc_url($author->link); ?>" rel="author" title="<?php echo esc_attr($author->display_name); ?>" class="author url fn"><?php echo esc_html($author->display_name); ?></a><?php if (!$li_style && $author_counts > 1 && $index !== $author_counts - 1) {
+                                                            echo esc_html($author_separator);
+                                                        } ?>
                                                     </<?php echo esc_html($args['name_html_tag']['value']); ?>>
                                                 <?php endif; ?>
                                                 <?php echo $name_row_extra ; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
@@ -1425,13 +1445,17 @@ class MA_Author_Boxes extends Module
                                                         <?php endif; ?>
                                                     </div>
                                                 <?php endif; ?>
-                                            </div>
-                                        </li>
+                                            </<?php echo ($li_style ? 'div' : 'span'); ?>>
+                                        <?php if ($li_style) : ?>
+                                            </li>
+                                        <?php endif; ?>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
                             <?php endif; ?>
-                        </ul>
-                    </div>
+                        <?php if ($li_style) : ?>
+                            </ul>
+                        <?php endif; ?>
+                    </<?php echo ($li_style ? 'div' : 'span'); ?>>
                     <!--end code -->
                     <?php if ($admin_preview) : ?>
                 </div>
@@ -1448,14 +1472,19 @@ class MA_Author_Boxes extends Module
                 </style>
             </div>
         <?php else : ?>
-            <?php wp_add_inline_style(
+            <?php /*wp_add_inline_style(
                 'multiple-authors-widget-css',
                 $custom_styles
-            );
+            );*/
             ?>
+            <style>
+                <?php echo $custom_styles; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+            </style>
         <?php endif; ?>
         
         <?php
+        $auto_list_prefix = '';//reset show by
+
         return ob_get_clean();
     }
 

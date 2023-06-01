@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Plugins - Co-Authors, Multiple Authors and Guest Authors "
 "in an Author Box with PublishPress Authors - Stable (latest release)\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2023-05-09 13:37+0000\n"
+"PO-Revision-Date: 2023-05-19 12:26+0200\n"
 "Last-Translator: \n"
 "Language-Team: French (France)\n"
 "Language: fr_FR\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Loco https://localise.biz/"
+"X-Generator: Poedit 3.3\n"
 
 #: src/functions/template-tags.php:622 src/functions/template-tags.php:1243
 msgid " and "
@@ -111,6 +111,8 @@ msgid ""
 "(Uses the %1s Email field %2s to find the Gravatar account if default avatar "
 "is not uploaded in Authors Settings)"
 msgstr ""
+"(Utilise le champ %1s E-mail %2s pour trouver le compte Gravatar si l’avatar "
+"par défaut n’est pas téléchargé dans les réglages des auteurs/autrices)"
 
 #: src/functions/template-tags.php:1244
 msgid ", and "
@@ -331,7 +333,7 @@ msgstr "Tout est réglé. Aucun publication ne doit être mise à jour"
 
 #: src/modules/multiple-authors/multiple-authors.php:1592
 msgid "Allow authors to be created without a mapped user."
-msgstr ""
+msgstr "Vous permet de créer des auteurs sans utilisateur/utilisatrice mappé."
 
 #: src/core/Classes/Author_Editor.php:872
 msgid "An author with the name provided already exists."
@@ -404,7 +406,7 @@ msgstr "Auteur/Autrice"
 
 #: src/core/Classes/Author_Editor.php:348
 msgid "Author Bio"
-msgstr ""
+msgstr "Biographie de l’auteur ou autrice"
 
 #: src/modules/multiple-authors/multiple-authors.php:769
 msgid "Author bio layout:"
@@ -569,7 +571,7 @@ msgstr "Débogage des auteurs ou autrices"
 
 #: src/modules/default-layouts/default-layouts.php:124
 msgid "Authors index"
-msgstr ""
+msgstr "Index des auteurs et autrices"
 
 #: src/core/Authors_Widget.php:23
 #: src/modules/multiple-authors/multiple-authors.php:1288
@@ -578,7 +580,7 @@ msgstr "Liste des auteurs/autrices"
 
 #: src/modules/default-layouts/default-layouts.php:125
 msgid "Authors recent"
-msgstr ""
+msgstr "Auteurs et autrices récents"
 
 #: src/modules/modules-settings/modules-settings.php:54
 msgid "Authors Settings"
@@ -826,8 +828,8 @@ msgstr "Copier dans le presse-papiers"
 
 #: src/modules/author-boxes/author-boxes.php:1583
 msgid ""
-"Create an empty php template file with your desired file slug in the %1s "
-"/publishpress-authors/author-boxes/ %2s folder of your theme. %3s For "
+"Create an empty php template file with your desired file slug in the %1s /"
+"publishpress-authors/author-boxes/ %2s folder of your theme. %3s For "
 "example, the file can be located here: %4s /wp-content/themes/%5syour-theme-"
 "name%6s/publishpress-authors/author-boxes/my-first-custom-author-template."
 "php %7s ."
@@ -973,7 +975,7 @@ msgstr "Auteur ou autrice par défaut pour les nouvelles publications :"
 #: src/core/Classes/Author_Editor.php:375
 #: src/modules/multiple-authors/multiple-authors.php:614
 msgid "Default Avatar"
-msgstr ""
+msgstr "Avatar par défaut"
 
 #: src/modules/default-layouts/default-layouts.php:54
 msgid "Default Layouts"
@@ -1156,7 +1158,7 @@ msgstr "Activer la boîte de recherche de l’auteur et autrice"
 
 #: src/modules/multiple-authors/multiple-authors.php:990
 msgid "Enable Guest Authors"
-msgstr ""
+msgstr "Activer les auteurs et autrices invitées"
 
 #: src/modules/multiple-authors/multiple-authors.php:543
 msgid "Enable PublishPress Authors for these post types:"
@@ -1512,8 +1514,8 @@ msgstr "Biseau interne"
 #: src/modules/modules-settings/modules-settings.php:287
 msgid "Install this plugin to showcase content by your Authors."
 msgstr ""
-"Installez cette extension pour mettre en valeur le contenu de vos "
-"auteurs/autrices."
+"Installez cette extension pour mettre en valeur le contenu de vos auteurs/"
+"autrices."
 
 #: src/modules/author-boxes/author-boxes.php:1569
 msgid "Invalid data"
@@ -1641,7 +1643,7 @@ msgstr "Utilisateur/utilisatrice mappé"
 
 #: src/core/Classes/Author_Editor.php:846 src/core/Classes/Admin_Ajax.php:299
 msgid "Mapped user is required."
-msgstr ""
+msgstr "Utilisateur/utilisatrice mappé est obligatoire."
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1134
 msgid "Margin Bottom"
@@ -1739,7 +1741,7 @@ msgstr "Suivant"
 
 #: src/core/CustomFieldsModel.php:97
 msgid "No"
-msgstr ""
+msgstr "Non"
 
 #: src/modules/author-boxes/author-boxes.php:333
 #: src/modules/author-custom-fields/author-custom-fields.php:151
@@ -1772,8 +1774,9 @@ msgid ""
 "No post ID provided for Authors_Iterator constructor. Are you not in a loop "
 "or is $post not set?"
 msgstr ""
-"Aucun ID de publication n’est fourni pour le constructeur d’Authors_Iterator."
-" N’êtes-vous pas dans une boucle ou $post n’est-il pas défini ?"
+"Aucun ID de publication n’est fourni pour le constructeur "
+"d’Authors_Iterator. N’êtes-vous pas dans une boucle ou $post n’est-il pas "
+"défini ?"
 
 #: src/core/WP_Cli.php:56
 msgid "No posts without author terms were found"
@@ -2418,7 +2421,7 @@ msgstr "Slug"
 
 #: src/modules/author-custom-fields/author-custom-fields.php:325
 msgid "Social Profile?"
-msgstr ""
+msgstr "Est-ce un profil social ?"
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:196
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:952
@@ -2516,16 +2519,18 @@ msgid ""
 msgstr ""
 "Il y a une dernière option à mentionner. Elle est surtout utile si vous "
 "utilisez un thème ou un constructeur de pages pour personnaliser les pages "
-"de profil d’auteur/autrice que vous trouvez à des URL telles que "
-"/author/username/. Vous pouvez utiliser le code court suivant sur la page "
-"des auteurs/autrices pour afficher le profil de l’auteur/autrice actuel. Il "
-"vous suffit d’ajouter le paramètre %s."
+"de profil d’auteur/autrice que vous trouvez à des URL telles que /author/"
+"username/. Vous pouvez utiliser le code court suivant sur la page des "
+"auteurs/autrices pour afficher le profil de l’auteur/autrice actuel. Il vous "
+"suffit d’ajouter le paramètre %s."
 
 #: src/modules/multiple-authors/multiple-authors.php:1834
 msgid ""
 "This avatar will be used as default avatar instead of gravatar where no "
 "custom avatar is added to profile."
 msgstr ""
+"Cet avatar sera utilisé comme avatar par défaut au lieu de gravatar où aucun "
+"avatar personnalisé n’est ajouté au profil."
 
 #: src/modules/author-custom-fields/author-custom-fields.php:357
 msgid ""
@@ -2540,6 +2545,9 @@ msgid ""
 "This feature will add the SameAs property to this link so that search "
 "engines realize that the social profile is connected to this author."
 msgstr ""
+"Cette fonctionnalité ajoutera la propriété SameAs à ce lien afin que les "
+"moteurs de recherche réalisent que le profil social est lié à cet auteur/"
+"autrice."
 
 #: src/core/Plugin.php:514
 msgid ""
@@ -2566,6 +2574,8 @@ msgid ""
 "This name is used in several default displays and some search engine "
 "integrations."
 msgstr ""
+"Ce nom est utilisé dans plusieurs affichages par défaut et dans certaines "
+"intégrations de moteurs de recherche."
 
 #: src/core/Classes/Post_Editor.php:342
 msgid ""
@@ -2621,8 +2631,8 @@ msgstr ""
 #: src/modules/multiple-authors/multiple-authors.php:2216
 msgid "This will display the authors email in the author box."
 msgstr ""
-"Cela affichera l’e-mail de l’auteur/autrice dans la boîte de "
-"l’auteur/autrice."
+"Cela affichera l’e-mail de l’auteur/autrice dans la boîte de l’auteur/"
+"autrice."
 
 #: src/modules/multiple-authors/multiple-authors.php:2236
 msgid "This will display the authors site in the author box."
@@ -2864,7 +2874,7 @@ msgstr "Éditeur WYSIWYG"
 
 #: src/core/CustomFieldsModel.php:98
 msgid "Yes, this is a Social Profile"
-msgstr ""
+msgstr "Oui, il est un profil social"
 
 #: src/modules/yoast-seo-integration/yoast-seo-integration.php:52
 msgid "Yoast SEO Integration"
@@ -3021,10 +3031,6 @@ msgid "You do not have necessary permissions to complete this action."
 msgstr "Vous n’avez pas les droits nécessaires pour effectuer cette action."
 
 #: src/core/Classes/Author_Editor.php:660
-#, fuzzy
-#| msgid ""
-#| "You don’t have to choose a Mapped User. Leave this choice blank and you "
-#| "can create a Guest Author with no WordPress account."
 msgid ""
 "You don't have to choose a Mapped User. Leave this choice blank and you can "
 "create a Guest Author with no WordPress account."

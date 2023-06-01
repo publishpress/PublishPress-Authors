@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Plugins - Co-Authors, Multiple Authors and Guest Authors "
 "in an Author Box with PublishPress Authors - Stable (latest release)\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2023-05-09 13:37+0000\n"
+"PO-Revision-Date: 2023-05-12 12:36+0200\n"
 "Last-Translator: \n"
 "Language-Team: Italian\n"
 "Language: it_IT\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Loco https://localise.biz/"
+"X-Generator: Poedit 3.3\n"
 
 #: src/functions/template-tags.php:622 src/functions/template-tags.php:1243
 msgid " and "
@@ -107,6 +107,8 @@ msgid ""
 "(Uses the %1s Email field %2s to find the Gravatar account if default avatar "
 "is not uploaded in Authors Settings)"
 msgstr ""
+"(Utilizza il campo %1s Email %2s per trovare l'account Gravatar se l'avatar "
+"predefinito non è stato caricato nelle impostazioni degli autori)"
 
 #: src/functions/template-tags.php:1244
 msgid ", and "
@@ -324,7 +326,7 @@ msgstr "Tutto è a posto. Nessun articolo deve essere aggiornato"
 
 #: src/modules/multiple-authors/multiple-authors.php:1592
 msgid "Allow authors to be created without a mapped user."
-msgstr ""
+msgstr "Ti consente di creare autori senza un utente mappato."
 
 #: src/core/Classes/Author_Editor.php:872
 msgid "An author with the name provided already exists."
@@ -391,7 +393,7 @@ msgstr "Autore"
 
 #: src/core/Classes/Author_Editor.php:348
 msgid "Author Bio"
-msgstr ""
+msgstr "Biografia autore"
 
 #: src/modules/multiple-authors/multiple-authors.php:769
 msgid "Author bio layout:"
@@ -555,7 +557,7 @@ msgstr "Debug PublishPress Authors"
 
 #: src/modules/default-layouts/default-layouts.php:124
 msgid "Authors index"
-msgstr ""
+msgstr "Indice degli autori"
 
 #: src/core/Authors_Widget.php:23
 #: src/modules/multiple-authors/multiple-authors.php:1288
@@ -564,7 +566,7 @@ msgstr "Lista autori"
 
 #: src/modules/default-layouts/default-layouts.php:125
 msgid "Authors recent"
-msgstr ""
+msgstr "Autori recenti"
 
 #: src/modules/modules-settings/modules-settings.php:54
 msgid "Authors Settings"
@@ -811,8 +813,8 @@ msgstr "Copia negli appunti"
 
 #: src/modules/author-boxes/author-boxes.php:1583
 msgid ""
-"Create an empty php template file with your desired file slug in the %1s "
-"/publishpress-authors/author-boxes/ %2s folder of your theme. %3s For "
+"Create an empty php template file with your desired file slug in the %1s /"
+"publishpress-authors/author-boxes/ %2s folder of your theme. %3s For "
 "example, the file can be located here: %4s /wp-content/themes/%5syour-theme-"
 "name%6s/publishpress-authors/author-boxes/my-first-custom-author-template."
 "php %7s ."
@@ -958,7 +960,7 @@ msgstr "Autore predefinito per i nuovi articoli:"
 #: src/core/Classes/Author_Editor.php:375
 #: src/modules/multiple-authors/multiple-authors.php:614
 msgid "Default Avatar"
-msgstr ""
+msgstr "Avatar predefinito"
 
 #: src/modules/default-layouts/default-layouts.php:54
 msgid "Default Layouts"
@@ -1132,7 +1134,7 @@ msgstr "Abilita la casella di ricerca dell'autore"
 
 #: src/modules/multiple-authors/multiple-authors.php:990
 msgid "Enable Guest Authors"
-msgstr ""
+msgstr "Abilita autori ospiti"
 
 #: src/modules/multiple-authors/multiple-authors.php:543
 msgid "Enable PublishPress Authors for these post types:"
@@ -1606,7 +1608,7 @@ msgstr "Utente mappato"
 
 #: src/core/Classes/Author_Editor.php:846 src/core/Classes/Admin_Ajax.php:299
 msgid "Mapped user is required."
-msgstr ""
+msgstr "L'utente mappato è obbligatorio."
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1134
 msgid "Margin Bottom"
@@ -1701,7 +1703,7 @@ msgstr "Successivo"
 
 #: src/core/CustomFieldsModel.php:97
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #: src/modules/author-boxes/author-boxes.php:333
 #: src/modules/author-custom-fields/author-custom-fields.php:151
@@ -2368,7 +2370,7 @@ msgstr "Slug"
 
 #: src/modules/author-custom-fields/author-custom-fields.php:325
 msgid "Social Profile?"
-msgstr ""
+msgstr "Profilo social?"
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:196
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:952
@@ -2472,6 +2474,8 @@ msgid ""
 "This avatar will be used as default avatar instead of gravatar where no "
 "custom avatar is added to profile."
 msgstr ""
+"Questo avatar è utilizzato come avatar predefinito al posto di Gravatar, "
+"quando non viene aggiunto un avatar personalizzato al profilo."
 
 #: src/modules/author-custom-fields/author-custom-fields.php:357
 msgid ""
@@ -2486,6 +2490,9 @@ msgid ""
 "This feature will add the SameAs property to this link so that search "
 "engines realize that the social profile is connected to this author."
 msgstr ""
+"Questa funzionalità aggiungerà la proprietà SameAs a questo link, in modo "
+"che i motori di ricerca capiscano che il profilo social è collegato a questo "
+"autore."
 
 #: src/core/Plugin.php:514
 msgid ""
@@ -2511,6 +2518,8 @@ msgid ""
 "This name is used in several default displays and some search engine "
 "integrations."
 msgstr ""
+"Questo nome è utilizzato in diverse visualizzazioni predefinite e in alcune "
+"integrazioni dei motori di ricerca."
 
 #: src/core/Classes/Post_Editor.php:342
 msgid ""
@@ -2802,7 +2811,7 @@ msgstr "Editor WYSIWYG"
 
 #: src/core/CustomFieldsModel.php:98
 msgid "Yes, this is a Social Profile"
-msgstr ""
+msgstr "Sì, questo è un profilo social"
 
 #: src/modules/yoast-seo-integration/yoast-seo-integration.php:52
 msgid "Yoast SEO Integration"
@@ -2850,8 +2859,8 @@ msgid ""
 "can see full details of each layout option %6s in this guide %7s. %8s %9s "
 "This shortcode also provides two custom layouts: %10s %11s."
 msgstr ""
-"È possibile scegliere tra i seguenti layout predefiniti: %1s %2s %3s %4s %5s."
-" È possibile vedere tutti i dettagli di ogni opzione del layout %6s in "
+"È possibile scegliere tra i seguenti layout predefiniti: %1s %2s %3s %4s "
+"%5s. È possibile vedere tutti i dettagli di ogni opzione del layout %6s in "
 "questa guida %7s. %8s %9s Questo shortcode offre anche due layout "
 "personalizzati: %10s %11s."
 
@@ -2954,10 +2963,6 @@ msgid "You do not have necessary permissions to complete this action."
 msgstr "Non hai le autorizzazioni necessarie per completare questa azione."
 
 #: src/core/Classes/Author_Editor.php:660
-#, fuzzy
-#| msgid ""
-#| "You don’t have to choose a Mapped User. Leave this choice blank and you "
-#| "can create a Guest Author with no WordPress account."
 msgid ""
 "You don't have to choose a Mapped User. Leave this choice blank and you can "
 "create a Guest Author with no WordPress account."

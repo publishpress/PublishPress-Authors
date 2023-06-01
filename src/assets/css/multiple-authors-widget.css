@@ -482,6 +482,10 @@ body:not(.theme-twentytwenty):not(.theme-twentytwentyone) .pp-multiple-authors-r
     margin-bottom: 20px;
 }
 
+.pp-multiple-authors-layout-inline .pp-author-boxes-name::after {
+    display: none !important;
+}
+
 @media (min-width: 576px) {
     .pp-multiple-authors-recent .ppma-col-sm-4 {
         -webkit-box-flex: 0;

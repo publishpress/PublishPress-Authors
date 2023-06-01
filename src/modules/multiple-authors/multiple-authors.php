@@ -4141,20 +4141,22 @@ echo '<span class="ppma_settings_field_description">'
             // Add support for guest authors in the post query
             $selectedPostTypes = array_values(Util::get_post_types_for_module($this->module));
 
-            if (isset($args['author']) && $args['author'] < 0) {
-                if (isset($args['tax_query'])) {
-                    $args['tax_query']['relation'] = 'AND';
-                }
-
+            if (isset($args['author']) && $args['author'] !== '' && $args['author'] < 0) {
                 $authorId = abs((int)$args['author']);
-                
-                unset($args['author']);
 
-                $args['tax_query'][] = [
-                    'taxonomy' => 'author',
-                    'field' => 'id',
-                    'terms' => [$authorId],
-                ];
+                if ($authorId > 0) {
+                    if (isset($args['tax_query'])) {
+                        $args['tax_query']['relation'] = 'AND';
+                    }
+                    
+                    unset($args['author']);
+
+                    $args['tax_query'][] = [
+                        'taxonomy' => 'author',
+                        'field' => 'id',
+                        'terms' => [$authorId],
+                    ];
+                }
             }
 
             return $args;

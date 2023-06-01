@@ -1154,27 +1154,57 @@ class Utils
      * Wrapper function replacement for get_page_by_title() that's deprecated in wordpress
      * 6.2 https://make.wordpress.org/core/2023/03/06/get_page_by_title-deprecated/
      */
-    public static function get_page_by_title($page_title, $post_type = 'page')
+    public static function get_page_by_title( $page_title, $output = OBJECT, $post_type = 'page' )
     {
-        $posts = get_posts(
-            [
-                'post_type'              => $post_type,
-                'title'                  => $page_title,
-                'post_status'            => 'all',
-                'numberposts'            => 1,
-                'update_post_term_cache' => false,
-                'update_post_meta_cache' => false,           
-                'orderby'                => 'post_date ID',
-                'order'                  => 'ASC',
-            ]
-        );
-         
-        if (!empty($posts)) {
-            $page_got_by_title = $posts[0];
+        global $wpdb;
+    
+        if ( is_array( $post_type ) ) {
+            $post_type           = esc_sql( $post_type );
+            $post_type_in_string = "'" . implode( "','", $post_type ) . "'";
+            $sql                 = $wpdb->prepare(
+                "
+                SELECT ID
+                FROM $wpdb->posts
+                WHERE post_title = %s
+                AND post_type IN ($post_type_in_string)
+            ",
+                $page_title
+            );
         } else {
-            $page_got_by_title = null;
+            $sql = $wpdb->prepare(
+                "
+                SELECT ID
+                FROM $wpdb->posts
+                WHERE post_title = %s
+                AND post_type = %s
+            ",
+                $page_title,
+                $post_type
+            );
         }
+    
+        $page = $wpdb->get_var( $sql );
+    
+        if ( $page ) {
+            return get_post( $page, $output );
+        }
+    
+        return null;
+    }
 
-        return $page_got_by_title;
+
+    /**
+     * Register and add inline styles.
+     *
+     * @param string $custom_css
+     * @param string $handle
+     *
+     * @return void
+     */
+    public static function add_dummy_inline_style($custom_css, $handle = 'pma-dummy-css-handle')
+    {
+        wp_register_style(esc_attr($handle), false);
+        wp_enqueue_style(esc_attr($handle));
+        wp_add_inline_style(esc_attr($handle), $custom_css);
     }
 }
