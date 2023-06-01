@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 7.2.5
 Tested up to: 6.1
-Stable tag: 4.1.4
+Stable tag: 4.1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -214,10 +214,6 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= [4.1.4] - 10 May 2023 =
-
-* Update: Add support legacy layout slug in author boxes, #1334
-
 = [4.1.5] - 1 Jun 2023 =
 
 * Fixed: Author boxes styles not working after migration from legacy layout, #1341
@@ -228,6 +224,10 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: PublishPress Authors query issue conflict with Planner Content Overview Filter, #1350
 * Fixed: Authors FREE ES-IT Translation Updates May 12, 2023, #1343
 * Fixed: French translation update for Authors FREE May 2023, #1347
+
+= [4.1.4] - 10 May 2023 =
+
+* Update: Add support legacy layout slug in author boxes, #1334
 
 = [4.1.3] - 9 May 2023 =
 
