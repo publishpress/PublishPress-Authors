@@ -119,6 +119,8 @@ class AuthorBoxesAjax
                 $field_args['value'] = isset($editor_data[$key]) ? $editor_data[$key] : '';
                 $args[$key] = $field_args;
             }
+            $args['instance_id'] = 1;
+            $args['additional_class'] = str_replace(' ', '.', trim($args['box_tab_custom_wrapper_class']['value']));
 
             $custom_styles = '';
             ?>
@@ -141,7 +143,7 @@ class AuthorBoxesAjax
 global $ppma_template_authors, $ppma_template_authors_post, $post, $ppma_instance_id;
 
 $authors = $ppma_template_authors;
-$post_id = isset($ppma_template_authors_post->ID) ? $ppma_template_authors_post->ID : $post->ID
+$post_id = isset($ppma_template_authors_post->ID) ? $ppma_template_authors_post->ID : $post->ID;
 
 if (!$ppma_instance_id) {
     $ppma_instance_id = 1;
