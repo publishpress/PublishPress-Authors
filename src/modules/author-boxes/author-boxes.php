@@ -1190,11 +1190,11 @@ class MA_Author_Boxes extends Module
         $authors = (isset($args['authors']) && is_array($args['authors']) && !empty($args['authors'])) ? $args['authors'] : [];
 
         $box_post = get_post($args['post_id']);
-
+        $box_post_id = (is_object($box_post) && isset($box_post->ID)) ? $box_post->ID : '1';
         $li_style         = true;
         $author_separator = ", ";
         $author_counts    = count($authors);
-        $body_class       = 'pp-multiple-authors-boxes-wrapper pp-multiple-authors-wrapper '. esc_attr($args['box_tab_custom_wrapper_class']['value']) .' box-post-id-'. esc_attr($args['post_id']) .' box-instance-id-'. esc_attr($args['instance_id']) .'';
+        $body_class       = 'pp-multiple-authors-boxes-wrapper pp-multiple-authors-wrapper '. esc_attr($args['box_tab_custom_wrapper_class']['value']) .' box-post-id-'. esc_attr($args['post_id']) .' box-instance-id-'. esc_attr($args['instance_id']) .' ppma_boxes_' . esc_attr($box_post_id);
 
         if (is_object($box_post) && isset($box_post->post_name) && $box_post->post_name === 'author_boxes_inline') {
             $li_style = false;

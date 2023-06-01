@@ -1191,4 +1191,20 @@ class Utils
     
         return null;
     }
+
+
+    /**
+     * Register and add inline styles.
+     *
+     * @param string $custom_css
+     * @param string $handle
+     *
+     * @return void
+     */
+    public static function add_dummy_inline_style($custom_css, $handle = 'pma-dummy-css-handle')
+    {
+        wp_register_style(esc_attr($handle), false);
+        wp_enqueue_style(esc_attr($handle));
+        wp_add_inline_style(esc_attr($handle), $custom_css);
+    }
 }
