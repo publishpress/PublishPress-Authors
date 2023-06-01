@@ -247,13 +247,16 @@ class Authors_Widget extends WP_Widget
 
         $legacyPlugin = Factory::getLegacyPlugin();
 
+        $layout = isset($instance['layout']) ? $instance['layout'] : null;
+
         if (apply_filters('publishpress_authors_load_style_in_frontend', PUBLISHPRESS_AUTHORS_LOAD_STYLE_IN_FRONTEND)) {
 
             Utils::loadLayoutFrontCss();
 
+            $inline_style = '';
             if (isset($instance['authors_recent_col']) && (int)$instance['authors_recent_col'] > 0) {
                 $column_width = ((100-8)/(int)$instance['authors_recent_col']);
-                $inline_style = '@media (min-width: 768px) {
+                $inline_style .= '@media (min-width: 768px) {
                     .pp-multiple-authors-recent .ppma-col-md-3 {
                         -webkit-box-flex: 0;
                         -webkit-flex: 0 0 '.$column_width.'%;
@@ -263,26 +266,30 @@ class Authors_Widget extends WP_Widget
                         max-width: '.$column_width.'%;
                     }
                 }';
-                wp_add_inline_style('multiple-authors-widget-css', $inline_style);
             }
 
             if (isset($instance['layout_columns']) && (int)$instance['layout_columns'] > 1) {
                 $column_child = ((int)$instance['layout_columns']);
                 $column_width = ((100)/(int)$instance['layout_columns']);
-                $inline_style = '@media (min-width: 768px) {
-                    .pp-multiple-authors-wrapper ul {
+                $wrapper_class_selector = '';
+                if (!is_null($layout)) {
+                    $wrapper_class_selector = '.' . $layout;
+                }
+                $inline_style .= '@media (min-width: 768px) {
+                    .pp-multiple-authors-wrapper'. $wrapper_class_selector .' ul {
                         display: flex;
                         flex-wrap: wrap;
                     }
-                    .pp-multiple-authors-wrapper ul li {
+                    .pp-multiple-authors-wrapper'. $wrapper_class_selector .' ul li {
                         margin-right: 15px;
-                        width: '.$column_width.'%;
-                    }
-                    .pp-multiple-authors-wrapper ul li:nth-child('.$column_child.'n) {
-                        flex: 1;
+                        width: calc('.$column_width.'% - 20px);
                     }
                 }';
-                wp_add_inline_style('multiple-authors-widget-css', $inline_style);
+            }
+
+            if (!empty($inline_style)) {
+                $style_suffix = isset($instance['layout']) ? $instance['layout'] : '1';
+                Utils::add_dummy_inline_style($inline_style, 'multiple-authors-widget-css-', $style_suffix);
             }
         }
 
