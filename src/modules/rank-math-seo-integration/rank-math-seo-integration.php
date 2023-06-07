@@ -189,7 +189,7 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
 
                     if (isset($data['publisher'])) {
                         $data_publisher = $data['publisher'];
-                        $data_publisher['[@type'] = $author_profile_data['@type'];
+                        $data_publisher['@type'] = $author_profile_data['@type'];
                         $data_publisher['name'] = $author_profile_data['@name'];
                         $data_publisher['sameAs'] = $author_profile_data['sameAs'];
                         $data_publisher['logo'] = $author_profile_data['@image'];
