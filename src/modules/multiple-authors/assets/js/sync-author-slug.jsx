@@ -12,7 +12,7 @@ jQuery(function () {
                           actionGetInitialData={'get_sync_author_slug_data'}
                           actionMigrationStep={'sync_author_slug'}
                           actionFinishProcess={'finish_sync_author_slug'}
-                          buttonLabel={__('Sync Author slugs to User logins', 'publishpress-authors')}
+                          buttonLabel={__('Sync author and user URLs', 'publishpress-authors')}
                           messageCollectingData={__('Collecting data...', 'publishpress-authors')}
                           messageEndingProcess={__('Finishing the process...', 'publishpress-authors')}
                           messageDone={__('Done! %d authors were updated.', 'publishpress-authors')}

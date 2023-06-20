@@ -2309,8 +2309,8 @@ echo '<span class="ppma_settings_field_description">'
                 ],
 
                 'sync_author_slug' => [
-                    'title'       => esc_html__('Synchronize Author slugs to User logins', 'publishpress-authors'),
-                    'description' => 'For compatibility with PublishPress Permissions, each Author\'s slug needs to match their User login.',
+                    'title'       => esc_html__('Synchronize the author and user URLs', 'publishpress-authors'),
+                    'description' => 'This will update all the Author URLs in PublishPress Authors to match the default WordPress URLs for each user. <br /> <a href="https://publishpress.com/knowledge-base/authors-maintenance" target="_blank">Click here for documentation</a>.',
                     'button_link' => '',
                     'after'       => '<div id="publishpress-authors-sync-author-slug"></div>',
                 ],
@@ -2366,7 +2366,8 @@ echo '<span class="ppma_settings_field_description">'
 
                 echo '<div class="ppma_maintenance_action_wrapper">';
                 echo '<h4>' . esc_html($actionInfo['title']) . '</h4>';
-                echo '<p class="ppma_settings_field_description">' . esc_html($actionInfo['description']) . '</p>';
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                echo '<p class="ppma_settings_field_description">' . $actionInfo['description'] . ' </p>';
 
                 if (!empty($link)) {
                     echo '<a href="' . esc_url($link) . '" class="button - secondary button - danger ppma_maintenance_button" id="' . esc_attr($actionName) . '">';
