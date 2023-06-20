@@ -167,7 +167,7 @@ if (!class_exists('MA_Modules_Settings')) {
             $legacyPlugin = Factory::getLegacyPlugin();
             ?>
 
-            <div class="pp-columns-wrapper<?php echo (apply_filters('publishpress_authors_show_blocks_recommendation_banner', ! PP_AUTHORS_BLOCKS_INSTALLED) || !Utils::isAuthorsProActive()) ? ' pp-enable-sidebar' : '' ?>">
+            <div class="pp-columns-wrapper<?php echo (!Utils::isAuthorsProActive()) ? ' pp-enable-sidebar' : '' ?>">
                 <div class="pp-column-left">
                     <form class="basic-settings"
                           action="<?php echo esc_url(menu_page_url($this->module->settings_slug, false)); ?>" method="post">
@@ -274,10 +274,11 @@ if (!class_exists('MA_Modules_Settings')) {
                         submit_button(null, 'primary', 'submit', false); ?>
                     </form>
                 </div><!-- .pp-column-left -->
-                <?php if (apply_filters('publishpress_authors_show_blocks_recommendation_banner', ! PP_AUTHORS_BLOCKS_INSTALLED) || !Utils::isAuthorsProActive()) { ?>
+                <?php if (!Utils::isAuthorsProActive()) { ?>
                     <div class="pp-column-right">
+                        <?php Utils::ppma_pro_sidebar(); ?>
+                        <div style="display: none;">
                         <?php
-                        Utils::ppma_pro_sidebar();
                         $banners = new BannersMain;
                         $banners->pp_display_banner(
                             esc_html__( 'Recommendations for you', 'publishpress-authors' ),
@@ -293,9 +294,10 @@ if (!class_exists('MA_Modules_Settings')) {
                             'install-blocks.jpg'
                         );
                         ?>
-                        </div><!-- .pp-column-right -->
-                        <?php } ?>
-                    </div><!-- .pp-columns-wrapper -->
+                    </div>
+                    </div><!-- .pp-column-right -->
+                <?php } ?>
+            </div><!-- .pp-columns-wrapper -->
             <?php
         }
     }
