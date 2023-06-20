@@ -12,7 +12,7 @@ jQuery(function () {
                           actionGetInitialData={'get_sync_post_author_data'}
                           actionMigrationStep={'sync_post_author'}
                           actionFinishProcess={'finish_sync_post_author'}
-                          buttonLabel={__('Update author field on posts', 'publishpress-authors')}
+                          buttonLabel={__('Sync author and user fields', 'publishpress-authors')}
                           messageCollectingData={__('Collecting data...', 'publishpress-authors')}
                           messageEndingProcess={__('Finishing the process...', 'publishpress-authors')}
                           messageDone={__('Done! %d posts were updated.', 'publishpress-authors')}
@@ -23,4 +23,3 @@ jQuery(function () {
         document.getElementById('publishpress-authors-sync-post-authors')
     );
 });
-
