@@ -2296,9 +2296,9 @@ echo '<span class="ppma_settings_field_description">'
                 ],
 
                 'create_role_authors' => [
-                    'title'        => esc_html__('Create missed authors from role', 'publishpress-authors'),
-                    'description'  => 'This action is very helpful if you\'re installing PublishPress Authors on an existing WordPress site. This action finds all the users in a role and creates author profiles for them. You can choose the roles using the "Automatically create author profiles" setting.',
-                    'button_label' => esc_html__('Create missed authors from role', 'publishpress-authors'),
+                    'title'        => esc_html__('Create PublishPress Authors profiles for all users in a role', 'publishpress-authors'),
+                    'description'  => 'This will find all the users in a role and creates author profiles for them. You can choose the roles using the "Automatically create author profiles" setting. <a href="https://publishpress.com/knowledge-base/authors-maintenance" target="_blank">Click here for documentation</a>.',
+                    'button_label' => esc_html__('Create PublishPress Authors profiles', 'publishpress-authors'),
                 ],
 
                 'sync_post_author' => [
