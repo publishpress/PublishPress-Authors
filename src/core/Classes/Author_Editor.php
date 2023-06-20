@@ -736,7 +736,7 @@ class Author_Editor
     public static function filter_author_bulk_actions($bulk_actions)
     {
         $bulk_actions['update_mapped_author_data'] = __(
-            'Update data from mapped user',
+            'Sync author and user fields',
             'publishpress-authors'
         );
         $bulk_actions['convert_into_guest_author'] = __(
