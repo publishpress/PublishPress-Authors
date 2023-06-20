@@ -2302,8 +2302,8 @@ echo '<span class="ppma_settings_field_description">'
                 ],
 
                 'sync_post_author' => [
-                    'title'       => esc_html__('Update author field on posts', 'publishpress-authors'),
-                    'description' => 'This action is useful if you\'re updating PublishPress Authors from versions lower or equals than 3.7.4. This action can help compatibility with some 3rd party themes and plugins.',
+                    'title'       => esc_html__('Synchronize the author and user profile fields', 'publishpress-authors'),
+                    'description' => 'Description: This will update all the author profile in PublishPress Authors to match the default WordPress fields for each user. <a href="https://publishpress.com/knowledge-base/authors-maintenance" target="_blank">Click here for documentation</a>.',
                     'button_link' => '',
                     'after'       => '<div id="publishpress-authors-sync-post-authors"></div>',
                 ],
