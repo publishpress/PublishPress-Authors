@@ -2290,9 +2290,9 @@ echo '<span class="ppma_settings_field_description">'
 
             $actions = [
                 'create_post_authors' => [
-                    'title'        => esc_html__('Create missed post authors', 'publishpress-authors'),
-                    'description'  => 'This action is very helpful if you\'re installing PublishPress Authors on an existing WordPress site. This action analyzes all the posts on your site. If the action finds a WordPress user is set as an author, it will automatically share that data with PublishPress Authors.',
-                    'button_label' => esc_html__('Create missed post authors', 'publishpress-authors'),
+                    'title'        => esc_html__('Create PublishPress Authors profiles for all authors', 'publishpress-authors'),
+                    'description'  => 'If a WordPress user is the author of a post, but does not have a PublishPress Authors profile, this will automatically create a profile for them. <a href="https://publishpress.com/knowledge-base/authors-maintenance" target="_blank">Click here for documentation</a>.',
+                    'button_label' => esc_html__('Create missing PublishPress Authors profiles', 'publishpress-authors'),
                 ],
 
                 'create_role_authors' => [
