@@ -64,6 +64,7 @@ class MA_Author_Boxes extends Module
      * @var stdClass
      */
     public $module;
+    public $module_url;
 
     /**
      * @var array

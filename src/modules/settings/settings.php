@@ -45,6 +45,7 @@ if (!class_exists('MA_Settings')) {
         const MENU_SLUG = 'ppma-modules-settings';
 
         public $module;
+        public $module_url;
 
         /**
          * Register the module with PublishPress but don't do anything else

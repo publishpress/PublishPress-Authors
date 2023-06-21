@@ -21,6 +21,23 @@ class LegacyPlugin
      * @var stdClass
      */
     public $modules;
+    public $modules_settings;
+    public $loadedModules;
+    public $author_boxes;
+    public $author_custom_fields;
+    public $multiple_authors;
+    public $default_layouts;
+    public $polylang_integration;
+    public $reviews;
+    public $prosettings;
+    public $settings;
+    public $rest_api;
+    public $automap_author;
+    public $module_url;
+    public $reviews_pro;
+    public $helpers;
+    public $class_names;
+    public $shortcode_authors_list;
 
     private $options_group = 'multiple_authors_';
 

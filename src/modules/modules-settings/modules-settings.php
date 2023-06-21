@@ -46,6 +46,9 @@ if (!class_exists('MA_Modules_Settings')) {
 
         protected $options_group_name = 'modules_settings';
 
+        public $module_url;
+        public $module;
+
         public function __construct()
         {
             $this->module_url = $this->get_module_url(__FILE__);

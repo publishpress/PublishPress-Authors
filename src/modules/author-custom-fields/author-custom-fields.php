@@ -50,6 +50,7 @@ class MA_Author_Custom_Fields extends Module
      * @var stdClass
      */
     public $module;
+    public $module_url;
 
     /**
      * Construct the MA_Multiple_Authors class

@@ -60,6 +60,7 @@ if (!class_exists('MA_Multiple_Authors')) {
          * @var stdClass
          */
         public $module;
+        public $module_url;
 
         /**
          * Construct the MA_Multiple_Authors class
