@@ -44,6 +44,7 @@ if (!class_exists('MA_REST_API')) {
          * @var stdClass
          */
         public $module;
+        public $module_url;
 
 
         /**

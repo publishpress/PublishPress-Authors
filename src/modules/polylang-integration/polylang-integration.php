@@ -41,6 +41,7 @@ if (!class_exists('MA_Polylang_Integration')) {
          * @var stdClass
          */
         public $module;
+        public $module_url;
 
 
         /**

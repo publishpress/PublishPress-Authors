@@ -41,6 +41,7 @@ if (!class_exists('MA_Default_Layouts')) {
          * @var stdClass
          */
         public $module;
+        public $module_url;
 
         /**
          * Construct the MA_Default_Layouts class
