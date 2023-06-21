@@ -138,7 +138,7 @@ class SchemaFacade
      */
     public function filter_graph($data, $context)
     {
-        if (! is_singular(Utils::get_enabled_post_types())) {
+        if (!is_singular(Utils::get_enabled_post_types()) || !$context->post) {
             return $data;
         }
 
