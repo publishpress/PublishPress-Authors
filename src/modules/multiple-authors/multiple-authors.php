@@ -194,7 +194,6 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_action('multiple_authors_create_post_authors', [$this, 'action_create_post_authors']);
             add_action('multiple_authors_create_role_authors', [$this, 'action_create_role_authors']);
             add_action('multiple_authors_copy_coauthor_plus_data', [$this, 'action_copy_coauthor_plus_data']);
-            add_action('multiple_authors_create_default_author_boxes', [$this, 'action_create_default_author_boxes']);
 
             add_action('deleted_user', [$this, 'handle_deleted_user']);
 
@@ -2314,12 +2313,6 @@ echo '<span class="ppma_settings_field_description">'
                     'button_link' => '',
                     'after'       => '<div id="publishpress-authors-sync-author-slug"></div>',
                 ],
-
-                'create_default_author_boxes' => [
-                    'title'       => esc_html__('Create default Author Boxes', 'publishpress-authors'),
-                    'description' => 'This action creates the default author boxes if they don\'t exist or were accidentally deleted.',
-                    'button_label' => __('Create default Author Boxes', 'publishpress-authors'),
-                ],
             ];
 
             /**
@@ -3110,8 +3103,7 @@ echo '<span class="ppma_settings_field_description">'
                 'create_role_authors',
                 'copy_coauthor_plus_data',
                 'sync_post_author',
-                'sync_author_slug',
-                'create_default_author_boxes'
+                'sync_author_slug'
             ];
 
             if (! isset($_GET['ppma_action']) || isset($_GET['author_term_reset_notice'])
@@ -3237,12 +3229,6 @@ echo '<span class="ppma_settings_field_description">'
                     }
                 }
             }
-        }
-
-
-        public function action_create_default_author_boxes()
-        {
-            MA_Author_Boxes::createDefaultAuthorBoxes();
         }
 
         public function action_copy_coauthor_plus_data()
