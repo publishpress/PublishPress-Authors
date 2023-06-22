@@ -163,7 +163,7 @@ $instance_id = $ppma_instance_id;
         </?php endif; ?>
     </<?php echo esc_html($args['title_html_tag']['value']); ?>>
 <?php endif; ?>
-
+<span class="ppma-layout-prefix"><?php echo html_entity_decode($args['box_tab_layout_prefix']['value']);  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
     <ul class="pp-multiple-authors-boxes-ul">
         </?php foreach ($authors as $index => $author) : ?>
 
@@ -354,6 +354,7 @@ $custom_styles = '.pp-multiple-authors-layout-boxed ul li > div:nth-child(1) {fl
 
         </?php endforeach; ?>
     </ul>
+<span class="ppma-layout-suffix"><?php echo html_entity_decode($args['box_tab_layout_suffix']['value']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 </div>
 
 <?php 

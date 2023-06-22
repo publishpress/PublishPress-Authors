@@ -282,6 +282,18 @@
                 return;
             }
 
+            //update layout prefix value
+            if (current_field_name === 'box_tab_layout_prefix') {
+                $(".ppma-layout-prefix").html($('#box_tab_layout_prefix').val());
+                return;
+            }
+
+            //update layout suffix value
+            if (current_field_name === 'box_tab_layout_suffix') {
+                $(".ppma-layout-suffix").html($('#box_tab_layout_suffix').val());
+                return;
+            }
+
             //get editor field values
             var editor_values = getAllEditorFieldsValues();
 

@@ -214,14 +214,14 @@ class MA_Author_Boxes extends Module
                 continue;
             }
             if (isset($args['sanitize']) && is_array($args['sanitize']) && $_POST[$key] !== '') {
-                $value = $this->stripOutUnwantedHtml($_POST[$key]); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+                $value = $_POST[$key]; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
                 foreach ($args['sanitize'] as $sanitize) {
                     $value = $sanitize($value);
                 }
                 $meta_data[$key] = $value;
             } else {
                 $sanitize = isset($args['sanitize']) ? $args['sanitize'] : 'sanitize_text_field';
-                $meta_data[$key] = (isset($_POST[$key]) && $_POST[$key] !== '') ? $sanitize($this->stripOutUnwantedHtml($_POST[$key])) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+                $meta_data[$key] = (isset($_POST[$key]) && $_POST[$key] !== '') ? $sanitize($_POST[$key]) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
             }
         }
         update_post_meta($post_id, self::META_PREFIX . 'layout_preview_authors', $preview_author_names);
@@ -1241,6 +1241,7 @@ class MA_Author_Boxes extends Module
                                 <<?php echo esc_html($args['title_html_tag']['value']); ?> class="widget-title box-header-title"><?php echo esc_html($args['title_text']['value']); ?></<?php echo esc_html($args['title_html_tag']['value']); ?>>
                             <?php endif; ?>
                         <?php endif; ?>
+                        <span class="ppma-layout-prefix"><?php echo html_entity_decode($args['box_tab_layout_prefix']['value']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
                         <?php if ($li_style) : ?>
                             <ul class="pp-multiple-authors-boxes-ul">
                         <?php endif; ?>
@@ -1456,6 +1457,7 @@ class MA_Author_Boxes extends Module
                         <?php if ($li_style) : ?>
                             </ul>
                         <?php endif; ?>
+                    <span class="ppma-layout-suffix"><?php echo html_entity_decode($args['box_tab_layout_suffix']['value']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
                     </<?php echo ($li_style ? 'div' : 'span'); ?>>
                     <!--end code -->
                     <?php if ($admin_preview) : ?>
