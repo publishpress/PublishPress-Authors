@@ -1141,6 +1141,14 @@ class AuthorBoxesEditorFields
             'sanitize' => ['stripslashes_deep', 'wp_kses_post'],
             'tab'      => 'box_layout',
         ];
+        $fields['box_tab_layout_author_separator'] = [
+            'label'       => esc_html__('Author Separator', 'publishpress-authors'),
+            'description' => esc_html__('You can specify separator like \',\' to separate authors. This field accept basics html like <hr /> <br /> <div> <span> etc. for better customization.', 'publishpress-authors'),
+            'placeholder' => '',
+            'type'     => 'text',
+            'sanitize' => ['stripslashes_deep', 'wp_kses_post'],
+            'tab'      => 'box_layout',
+        ];
         $fields['box_layout_margin_top'] = [
             'label'    => esc_html__('Margin Top', 'publishpress-authors'),
             'type'     => 'number',

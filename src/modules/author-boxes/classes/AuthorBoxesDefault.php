@@ -213,6 +213,7 @@ class AuthorBoxesDefault
         $editor_data['author_recent_posts_title_border_bottom_style'] = 'dotted';
         $editor_data['author_recent_posts_alignment'] = 'left';
         //box layout default
+        $editor_data['box_tab_layout_author_separator'] = ', ';
         $editor_data['box_layout_border_style'] = 'none';
         $editor_data['box_layout_shadow_horizontal_offset'] = 10;
         $editor_data['box_layout_shadow_vertical_offset'] = 10;
@@ -226,14 +227,6 @@ class AuthorBoxesDefault
 
         .pp-multiple-authors-layout-inline ul.pp-multiple-authors-boxes-ul li {
             margin-right: 10px
-        }
-
-        .pp-multiple-authors-layout-inline .pp-author-boxes-name::after{
-            content: ",";
-        }
-
-        .pp-multiple-authors-layout-inline .pp-multiple-authors-boxes-ul .pp-multiple-authors-boxes-li:last-of-type .pp-author-boxes-name::after{
-            content: "";
         }';
 
         $editor_data = self::addEditorDataDefaultValues($editor_data);
@@ -281,6 +274,7 @@ class AuthorBoxesDefault
         $editor_data['author_recent_posts_title_border_bottom_style'] = 'dotted';
         $editor_data['author_recent_posts_alignment'] = 'left';
         //box layout default
+        $editor_data['box_tab_layout_author_separator'] = ', ';
         $editor_data['box_layout_border_style'] = 'none';
         $editor_data['box_layout_shadow_horizontal_offset'] = 10;
         $editor_data['box_layout_shadow_vertical_offset'] = 10;
@@ -294,14 +288,6 @@ class AuthorBoxesDefault
 
         .pp-multiple-authors-layout-inline ul.pp-multiple-authors-boxes-ul li {
             margin-right: 10px
-        }
-
-        .pp-multiple-authors-layout-inline .pp-author-boxes-name::after{
-            content: ",";
-        }
-
-        .pp-multiple-authors-layout-inline .pp-multiple-authors-boxes-ul .pp-multiple-authors-boxes-li:last-of-type .pp-author-boxes-name::after{
-            content: "";
         }
         .pp-multiple-authors-layout-inline ul.pp-multiple-authors-boxes-ul li.has-avatar .pp-author-boxes-avatar,
         .pp-multiple-authors-layout-inline ul.pp-multiple-authors-boxes-ul li.has-avatar .pp-author-boxes-avatar-details {
