@@ -345,7 +345,7 @@ class Author_Editor
                 'requirement' => !$enable_guest_author_user ? 'required' : ''
             ],
             'description' => [
-                'label'    => esc_html__('Author Bio', 'publishpress-authors'),
+                'label'    => esc_html__('Biographical Info', 'publishpress-authors'),
                 'type'     => 'textarea',
                 'sanitize' => 'wp_kses_post',
                 'tab'      => 'general',

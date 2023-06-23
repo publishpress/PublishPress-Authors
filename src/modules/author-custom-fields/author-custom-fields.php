@@ -380,7 +380,18 @@ class MA_Author_Custom_Fields extends Module
             }
         }
 
-        return array_merge($fields, $this->getAuthorCustomFields());
+        $author_fields = array_merge($fields, $this->getAuthorCustomFields());
+
+        //Move Biographical Info to the bottom
+        if (isset($author_fields['description'])) {
+            $description_field = [
+                'description' => $author_fields['description']
+            ];
+            unset($author_fields['description']);
+            $author_fields = array_merge($author_fields, $description_field);
+        }
+
+        return $author_fields;
     }
 
     public function getAuthorCustomFields($include_disabled = false)
