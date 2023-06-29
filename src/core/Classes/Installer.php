@@ -386,8 +386,8 @@ class Installer
             'contributor',
         ];
 
-        foreach ($roles as $roleNmae) {
-            $role = get_role($roleNmae);
+        foreach ($roles as $roleName) {
+            $role = get_role($roleName);
             if ($role instanceof WP_Role) {
                 $role->add_cap($cap);
             }
