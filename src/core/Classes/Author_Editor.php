@@ -538,7 +538,7 @@ class Author_Editor
                     <?php wp_editor($args['value'], $key, []); ?>
                 <?php else : ?>
                     <input name="<?php echo esc_attr($key); ?>" type="<?php echo esc_attr($args['type']); ?>"
-                           value="<?php echo esc_attr($args['value']); ?>"/>
+                           id="<?php echo esc_attr($key); ?>" value="<?php echo esc_attr($args['value']); ?>"/>
                 <?php endif; ?>
 
                 <?php if (isset($args['description'])) : ?>

@@ -1434,6 +1434,8 @@ class Plugin
         $legacyPlugin = Factory::getLegacyPlugin();
 
         $term_author_link = '';
+        $author_details   = [];
+        $author_display_name_html   = '';
 
         if (
             is_admin()
@@ -1445,6 +1447,15 @@ class Plugin
 
             if (is_object($author) && !is_wp_error($author) && isset($author->link)) {
                 $term_author_link = $author->link;
+                $author_display_name_html   = Utils::get_author_display_name_select($author->ID);
+                $author_details = [
+                    'display_name' => $author->display_name,
+                    'nickname' => $author->nickname,
+                    'user_login' => $author->user_login,
+                    'first_name' => $author->first_name,
+                    'last_name' => $author->last_name,
+                    'ID' => $author->ID,
+                ];
             }
         }
 
@@ -1498,10 +1509,12 @@ class Plugin
             'generate_author_slug_nonce'    => wp_create_nonce("generate_author_slug_nonce"),
             'term_author_link'              => esc_url_raw($term_author_link),
             'view_text'                     => esc_html__('View', 'publishpress-authors'),
-            'name_label'                    => esc_html__('Display Name', 'publishpress-authors'),
+            'name_label'                    => esc_html__('Display name publicly as'),
             'isRequired'                    => esc_html__('is required', 'publishpress-authors'),
             'isRequiredWarning'             => esc_html__('Please complete the following required fields to save your changes:', 'publishpress-authors'),
             'fieldTitleRequired'             => esc_html__('Field title is required', 'publishpress-authors'),
+            'display_name_html'             => $author_display_name_html,
+            'author_details'                => $author_details,
         ];
 
         wp_localize_script(
