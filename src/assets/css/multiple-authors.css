@@ -218,7 +218,8 @@ body.taxonomy-author .form-field.term-description-wrap {
 
 /* Fix the width of the Mapped user field in the New Author form */
 .edit-tags-php.taxonomy-author .authors-select2-user-select,
-.term-php.taxonomy-author .authors-select2-user-select {
+.term-php.taxonomy-author .authors-select2-user-select,
+.term-php.taxonomy-author .form-field select {
     width: 95%;
 }
 

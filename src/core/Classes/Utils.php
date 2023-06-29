@@ -1207,4 +1207,54 @@ class Utils
         wp_enqueue_style(esc_attr($handle));
         wp_add_inline_style(esc_attr($handle), $custom_css);
     }
+
+    /**
+     * Get Author display name option like wordpress
+     * 
+     * @param integer $user_id
+     * 
+     * @return string $output
+     */
+    public static function get_author_display_name_select($user_id = 0) 
+    {
+        if ($user_id === 0) {
+            $user_id = get_current_user_id();
+        }
+        
+        $profile_user = Author::get_by_user_id($user_id);
+        $public_display                     = array();
+        $public_display['display_nickname'] = $profile_user->nickname;
+        $public_display['display_username'] = $profile_user->user_login;
+
+        if ( ! empty( $profile_user->first_name ) ) {
+            $public_display['display_firstname'] = $profile_user->first_name;
+        }
+
+        if ( ! empty( $profile_user->last_name ) ) {
+            $public_display['display_lastname'] = $profile_user->last_name;
+        }
+
+        if ( ! empty( $profile_user->first_name ) && ! empty( $profile_user->last_name ) ) {
+            $public_display['display_firstlast'] = $profile_user->first_name . ' ' . $profile_user->last_name;
+            $public_display['display_lastfirst'] = $profile_user->last_name . ' ' . $profile_user->first_name;
+        }
+
+        if ( ! in_array( $profile_user->display_name, $public_display, true ) ) { // Only add this if it isn't duplicated elsewhere.
+            $public_display = array( 'display_displayname' => $profile_user->display_name ) + $public_display;
+        }
+
+        $public_display = array_map( 'trim', $public_display );
+        $public_display = array_unique( $public_display );
+        ob_start();
+        ?>
+        <select name="name" id="name" aria-required="true" aria-describedby="name-description">
+            <?php foreach ( $public_display as $id => $item ) : ?>
+                <option <?php selected( $profile_user->display_name, $item ); ?>><?php echo $item; ?></option>
+            <?php endforeach; ?>
+        </select>
+        <?php
+        $output = ob_get_clean();
+
+        return $output;
+    }
 }

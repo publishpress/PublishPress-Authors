@@ -577,10 +577,56 @@ jQuery(document).ready(function ($) {
         $('form#edittag tr.form-field.term-name-wrap th label').html(MultipleAuthorsStrings.name_label);
 
         /**
+         * Update name input to select
+         */
+        $('form#edittag tr.form-field.term-name-wrap td input#name').replaceWith(MultipleAuthorsStrings.display_name_html);
+
+        /**
          * Add required to display name field
          */
         $('form#edittag tr.form-field.term-name-wrap').addClass('required-tab');
         $('form#edittag tr.form-field.term-name-wrap th label').after(' <span class="required">*</span>');
+
+        /**
+         * Update display name options on input changed
+         */
+        var display_name_select       = $( '#name' );
+        if ( display_name_select.length ) {
+            $('#authors-first_name, #authors-last_name, #authors-nickname').on( 'change', function() {
+                var dub = [],
+                    inputs = {
+                        display_nickname  : MultipleAuthorsStrings.author_details.nickname || '',
+                        display_username  : MultipleAuthorsStrings.author_details.user_login || '',
+                        display_firstname : $('#authors-first_name').val() || '',
+                        display_lastname  : $('#authors-last_name').val() || ''
+                    };
+
+                if ( inputs.display_firstname && inputs.display_lastname ) {
+                    inputs.display_firstlast = inputs.display_firstname + ' ' + inputs.display_lastname;
+                    inputs.display_lastfirst = inputs.display_lastname + ' ' + inputs.display_firstname;
+                }
+
+                $.each( $('option', display_name_select), function( i, el ){
+                    dub.push( el.value );
+                });
+
+                $.each(inputs, function( id, value ) {
+                    if ( ! value ) {
+                        return;
+                    }
+
+                    var val = value.replace(/<\/?[a-z][^>]*>/gi, '');
+
+                    if ( inputs[id].length && $.inArray( val, dub ) === -1 ) {
+                        dub.push(val);
+                        $('<option />', {
+                            'text': val
+                        }).appendTo( display_name_select );
+                    }
+                });
+            });
+        }
+
     }
 
     /**
