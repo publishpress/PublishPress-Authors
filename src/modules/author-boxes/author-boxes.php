@@ -1488,7 +1488,13 @@ class MA_Author_Boxes extends Module
             </div>
         </div>
         <?php endif; ?>
-
+        <?php if (isset($args['short_code_args']) && isset($args['short_code_args']['pagination']) && !empty($args['short_code_args']['pagination'])) : ?>
+            <nav class="footer-navigation navigation pagination">
+                <div class="nav-links">
+                    <?php echo $args['short_code_args']['pagination']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                </div>
+            </nav>
+        <?php endif; ?>
         <?php Utils::loadLayoutFrontCss(); ?>
 
         <?php if ($admin_preview || is_admin()) : ?>
