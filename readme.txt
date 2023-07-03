@@ -221,17 +221,16 @@ There are two ways to install the PublishPress Authors plugin:
 * Fixed: Conflict with the Advanced Ads plugins, #1398
 * Update: Extended Pagination to other layouts shortcode [publishpress_authors_list layout="boxed" limit_per_page="20"], #1381
 * Update: Update Display Name field to match WordPress style, #1373
-* Fixed: Spelling typo of roleName in Installer, #1400
+* Update: Spelling typo of roleName in Installer, #1400
 * Fixed: Rankmath "The property @type is not recognized by the schema", #1399
-* Fixed: Authordffddf
 * Update: Move "Author Bio" to the bottom of the "Edit My Author Profile" screen, #1372
-* Fixed: Update shortcodes tab for new author boxes, #1336
+* Update: Update shortcodes tab for new author boxes, #1336
 * Fixed: 8.2 deprecations warning, #1330
-* Fixed: Remove "Create default Author Boxes" maintenance button, #1371
+* Update: Remove "Create default Author Boxes" maintenance button, #1371
 * Fixed: Conflict with Pattern Manager plugin, #1378
 * Update: Small text update: Update data from mapped user, #1374
 * Update: Small text update for Maintenance, #1370
-* Fixed: Drop the ad for Blocks, #1317
+* Update: Drop the ad for Blocks, #1317
 * Fixed: Issues with Divi WordPress Theme, #1383
 
 = [4.1.5] - 1 Jun 2023 =
