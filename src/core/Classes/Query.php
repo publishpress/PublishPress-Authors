@@ -161,7 +161,9 @@ class Query
         $query->authors_having_terms = ' ' . $wpdb->term_taxonomy . '.term_id = \'' . (int)$term->term_id . '\' ';
 
         /**
-         * Private post author regex
+         * Regex for Post Author + Post Status solution for private and custom post status
+         * (wp_term_taxonomy.term_id = 2 AND wp_posts.post_status = 'private')
+         * https://github.com/publishpress/PublishPress-Authors/issues/1398
          */
         $current_user_id   = get_current_user_id();
         $current_author    = Author::get_by_user_id($current_user_id);
@@ -175,8 +177,8 @@ class Query
             $current_user_term_id = 0;
         }
         $where = preg_replace(
-            '/\(?\b(?:' . $wpdb->posts . '\.)?post_author\s*(?:=|IN)\s*\(?(\d+)\)? AND (?:' . $wpdb->posts . '\.)?post_status = \'private\'/',
-            '(' . $maybe_both_query . ' ' . ' ' . $wpdb->term_taxonomy . '.term_id = \'' . (int)$current_user_term_id . '\' ' . ' AND ' . $wpdb->posts . '.post_status = \'private\'',
+            '/\(?\b(?:' . $wpdb->posts . '\.)?post_author\s*(?:=|IN)\s*\(?(\d+)\)? AND (?:' . $wpdb->posts . '\.)?post_status = \'(\w+)\'/',
+            '(' . $maybe_both_query . ' ' . $wpdb->term_taxonomy . '.term_id = \'' . (int)$current_user_term_id . '\' AND ' . $wpdb->posts . '.post_status = \'$2\'',
             $where,
             -1
         );
@@ -298,7 +300,9 @@ class Query
         $terms_implode = '(' . $wpdb->term_taxonomy . '.term_id = \'' . (int)$author->getTerm()->term_id . '\') ';
 
         /**
-         * Private post author regex
+         * Regex for Post Author + Post Status solution for private and custom post status
+         * (wp_term_taxonomy.term_id = 2 AND wp_posts.post_status = 'private')
+         * https://github.com/publishpress/PublishPress-Authors/issues/1398
          */
         $current_user_id   = get_current_user_id();
         $current_author    = Author::get_by_user_id($current_user_id);
@@ -312,8 +316,8 @@ class Query
             $current_user_term_id = 0;
         }
         $where = preg_replace(
-            '/\(?\b(?:' . $wpdb->posts . '\.)?post_author\s*(?:=|IN)\s*\(?(\d+)\)? AND (?:' . $wpdb->posts . '\.)?post_status = \'private\'/',
-            '(' . '' . $wpdb->term_taxonomy . '.term_id = \'' . (int)$current_user_term_id . '\' ' . ' AND ' . $wpdb->posts . '.post_status = \'private\'',
+            '/\(?\b(?:' . $wpdb->posts . '\.)?post_author\s*(?:=|IN)\s*\(?(\d+)\)? AND (?:' . $wpdb->posts . '\.)?post_status = \'(\w+)\'/',
+            '(' . $wpdb->term_taxonomy . '.term_id = \'' . (int)$current_user_term_id . '\' AND ' . $wpdb->posts . '.post_status = \'$2\'',
             $where,
             -1
         );
