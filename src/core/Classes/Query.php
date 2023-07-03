@@ -324,6 +324,13 @@ class Query
             $where,
             -1
         );
+        
+        /**
+         * This is a temporarily fix for Conflict with the Advanced Ads plugins #1398.
+         * This fix needed a rigous test or a better solution
+         */
+        $where = str_replace('))))', ')))', $where);
+
 
         return apply_filters('publishpress_authors_filter_posts_list_where', $where, $query, $author);
     }
