@@ -214,7 +214,7 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= [4.1.6] - 3 Jul 2023 =
+= [4.1.6] - 4 Jul 2023 =
 
 * Feature: Added author boxes author separator field, #1379
 * Feature: Added Prefix and suffix fields for author box row #1382
