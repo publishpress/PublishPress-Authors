@@ -190,6 +190,10 @@
          * editor live changes
          */
         $(document).on('change input keyup', '.ppma-author-box-editor-fields .input input, .ppma-author-box-editor-fields .input textarea, .ppma-author-box-editor-fields .input select, .editor-preview-author-users select', function () {
+            //get current width and add at as custom height to prevent box from moving
+            var box_editor_wrapper = $('.publishpress-author-box-editor .preview-section').closest('.publishpress-author-box-editor');
+            box_editor_wrapper.css('min-height', box_editor_wrapper.height());
+
             var current_field = $(this);
             var current_field_name = current_field.attr('name');
 
@@ -282,6 +286,18 @@
                 return;
             }
 
+            //update layout prefix value
+            if (current_field_name === 'box_tab_layout_prefix') {
+                $(".ppma-layout-prefix").html($('#box_tab_layout_prefix').val());
+                return;
+            }
+
+            //update layout suffix value
+            if (current_field_name === 'box_tab_layout_suffix') {
+                $(".ppma-layout-suffix").html($('#box_tab_layout_suffix').val());
+                return;
+            }
+
             //get editor field values
             var editor_values = getAllEditorFieldsValues();
 
@@ -319,7 +335,11 @@
                 'meta_email_show',
                 'meta_site_link_show'
             ];
+            var layout_refresh_trigger = [
+                'box_tab_layout_author_separator'
+            ];
 
+            let all_refresh_trigger = post_refresh_trigger.concat(bio_refresh_trigger, avatar_refresh_trigger, meta_refresh_trigger, profile_refresh_trigger, name_refresh_trigger, layout_refresh_trigger);
 
             var profile_fields = JSON.parse(authorBoxesEditor.profileFields);
             var field_key = '';
@@ -339,7 +359,7 @@
             }
 
             var force_refresh = false;
-            if (post_refresh_trigger.includes(current_field_name) || bio_refresh_trigger.includes(current_field_name) || avatar_refresh_trigger.includes(current_field_name) || meta_refresh_trigger.includes(current_field_name) || profile_refresh_trigger.includes(current_field_name) || name_refresh_trigger.includes(current_field_name) || current_field_name === 'preview_author_names[]') {
+            if (all_refresh_trigger.includes(current_field_name) || current_field_name === 'preview_author_names[]') {
                 force_refresh = true;
             }
 
@@ -385,6 +405,9 @@
                 $.post(ajaxurl, data, function (response) {
                     $('.pp-author-boxes-editor-preview-styles').remove();
                     $('.pp-multiple-authors-boxes-wrapper').replaceWith(response.content);
+                    //get current width and reset it as custom height incase height increases
+                    var box_editor_wrapper = $('.publishpress-author-box-editor .preview-section').closest('.publishpress-author-box-editor');
+                    box_editor_wrapper.css('min-height', box_editor_wrapper.height());
                     generateEditorPreviewStyles(editor_values);
                 });
             }

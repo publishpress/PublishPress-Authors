@@ -64,6 +64,7 @@ class MA_Author_Boxes extends Module
      * @var stdClass
      */
     public $module;
+    public $module_url;
 
     /**
      * @var array
@@ -213,14 +214,14 @@ class MA_Author_Boxes extends Module
                 continue;
             }
             if (isset($args['sanitize']) && is_array($args['sanitize']) && $_POST[$key] !== '') {
-                $value = $this->stripOutUnwantedHtml($_POST[$key]); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+                $value = $_POST[$key]; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
                 foreach ($args['sanitize'] as $sanitize) {
                     $value = $sanitize($value);
                 }
                 $meta_data[$key] = $value;
             } else {
                 $sanitize = isset($args['sanitize']) ? $args['sanitize'] : 'sanitize_text_field';
-                $meta_data[$key] = (isset($_POST[$key]) && $_POST[$key] !== '') ? $sanitize($this->stripOutUnwantedHtml($_POST[$key])) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+                $meta_data[$key] = (isset($_POST[$key]) && $_POST[$key] !== '') ? $sanitize($_POST[$key]) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
             }
         }
         update_post_meta($post_id, self::META_PREFIX . 'layout_preview_authors', $preview_author_names);
@@ -261,21 +262,41 @@ class MA_Author_Boxes extends Module
      * @param array $fields_data
      * @return void
      */
-    public static function updateAuthorBoxesFieldValue($fields_data)
+    public static function updateAuthorBoxesFieldValue($fields_data, $layout_slugs = false)
     {
-        $author_boxes = self::getAuthorBoxes();
-
-        if (!empty($author_boxes)) {
-            foreach (array_keys($author_boxes) as $author_box) {
-                $post_id = preg_replace("/[^0-9]/", "", $author_box);
-                $editor_data = get_post_meta($post_id, self::META_PREFIX . 'layout_meta_value', true);
-                if ($editor_data && is_array($editor_data)) {
-                    foreach ($fields_data as $field_name => $field_value) {
-                        $editor_data[$field_name] = $field_value;
-                    }
-                    update_post_meta($post_id, self::META_PREFIX . 'layout_meta_value', $editor_data);
+        if ($layout_slugs && is_array($layout_slugs)) {
+            foreach ($layout_slugs as $layout_slug) {
+                $layout_post = get_page_by_path($layout_slug, OBJECT, self::POST_TYPE_BOXES);
+                if ($layout_post && $layout_post->post_status === 'publish') {
+                    $post_id = $layout_post->ID;
+                    self::updateAuthorBoxesIdFieldValues($post_id, $fields_data);
                 }
             }
+        } else {
+            $author_boxes = self::getAuthorBoxes();
+            if (!empty($author_boxes)) {
+                foreach (array_keys($author_boxes) as $author_box) {
+                    $post_id = preg_replace("/[^0-9]/", "", $author_box);
+                    self::updateAuthorBoxesIdFieldValues($post_id, $fields_data);
+                }
+            }
+        }
+    }
+
+    /**
+     * Update author boxes field value by ID.
+     *
+     * @param integer $post_id
+     * @param array $fields_data
+     * @return void
+     */
+    public static function updateAuthorBoxesIdFieldValues($post_id, $fields_data) {
+        $editor_data = get_post_meta($post_id, self::META_PREFIX . 'layout_meta_value', true);
+        if ($editor_data && is_array($editor_data)) {
+            foreach ($fields_data as $field_name => $field_value) {
+                $editor_data[$field_name] = $field_value;
+            }
+            update_post_meta($post_id, self::META_PREFIX . 'layout_meta_value', $editor_data);
         }
     }
 
@@ -1192,7 +1213,7 @@ class MA_Author_Boxes extends Module
         $box_post = get_post($args['post_id']);
         $box_post_id = (is_object($box_post) && isset($box_post->ID)) ? $box_post->ID : '1';
         $li_style         = true;
-        $author_separator = ", ";
+        $author_separator = $args['box_tab_layout_author_separator']['value']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped;
         $author_counts    = count($authors);
         $body_class       = 'pp-multiple-authors-boxes-wrapper pp-multiple-authors-wrapper '. esc_attr($args['box_tab_custom_wrapper_class']['value']) .' box-post-id-'. esc_attr($args['post_id']) .' box-instance-id-'. esc_attr($args['instance_id']) .' ppma_boxes_' . esc_attr($box_post_id);
 
@@ -1240,6 +1261,7 @@ class MA_Author_Boxes extends Module
                                 <<?php echo esc_html($args['title_html_tag']['value']); ?> class="widget-title box-header-title"><?php echo esc_html($args['title_text']['value']); ?></<?php echo esc_html($args['title_html_tag']['value']); ?>>
                             <?php endif; ?>
                         <?php endif; ?>
+                        <span class="ppma-layout-prefix"><?php echo html_entity_decode($args['box_tab_layout_prefix']['value']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
                         <?php if ($li_style) : ?>
                             <ul class="pp-multiple-authors-boxes-ul">
                         <?php endif; ?>
@@ -1387,7 +1409,7 @@ class MA_Author_Boxes extends Module
                                             <?php if ($args['name_show']['value']) : ?>
                                                     <<?php echo esc_html($args['name_html_tag']['value']); ?> class="pp-author-boxes-name multiple-authors-name">
                                                         <a href="<?php echo esc_url($author->link); ?>" rel="author" title="<?php echo esc_attr($author->display_name); ?>" class="author url fn"><?php echo esc_html($author->display_name); ?></a><?php if (!$li_style && $author_counts > 1 && $index !== $author_counts - 1) {
-                                                            echo esc_html($author_separator);
+                                                            echo html_entity_decode($author_separator); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                                                         } ?>
                                                     </<?php echo esc_html($args['name_html_tag']['value']); ?>>
                                                 <?php endif; ?>
@@ -1449,12 +1471,16 @@ class MA_Author_Boxes extends Module
                                         <?php if ($li_style) : ?>
                                             </li>
                                         <?php endif; ?>
+                                        <?php if ($li_style && $author_counts > 1 && $index !== $author_counts - 1) {
+                                            echo html_entity_decode($author_separator); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                                        } ?>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         <?php if ($li_style) : ?>
                             </ul>
                         <?php endif; ?>
+                    <span class="ppma-layout-suffix"><?php echo html_entity_decode($args['box_tab_layout_suffix']['value']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
                     </<?php echo ($li_style ? 'div' : 'span'); ?>>
                     <!--end code -->
                     <?php if ($admin_preview) : ?>
@@ -1462,7 +1488,13 @@ class MA_Author_Boxes extends Module
             </div>
         </div>
         <?php endif; ?>
-
+        <?php if (isset($args['short_code_args']) && isset($args['short_code_args']['pagination']) && !empty($args['short_code_args']['pagination'])) : ?>
+            <nav class="footer-navigation navigation pagination">
+                <div class="nav-links">
+                    <?php echo $args['short_code_args']['pagination']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                </div>
+            </nav>
+        <?php endif; ?>
         <?php Utils::loadLayoutFrontCss(); ?>
 
         <?php if ($admin_preview || is_admin()) : ?>

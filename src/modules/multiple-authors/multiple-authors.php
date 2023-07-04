@@ -60,6 +60,7 @@ if (!class_exists('MA_Multiple_Authors')) {
          * @var stdClass
          */
         public $module;
+        public $module_url;
 
         /**
          * Construct the MA_Multiple_Authors class
@@ -194,7 +195,6 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_action('multiple_authors_create_post_authors', [$this, 'action_create_post_authors']);
             add_action('multiple_authors_create_role_authors', [$this, 'action_create_role_authors']);
             add_action('multiple_authors_copy_coauthor_plus_data', [$this, 'action_copy_coauthor_plus_data']);
-            add_action('multiple_authors_create_default_author_boxes', [$this, 'action_create_default_author_boxes']);
 
             add_action('deleted_user', [$this, 'handle_deleted_user']);
 
@@ -1156,6 +1156,8 @@ if (!class_exists('MA_Multiple_Authors')) {
          */
         private function settings_ppma_shortcodes($shortcodes = []) {
 
+            $default_layout = Utils::getDefaultLayout(); 
+
             //add author box shortcode
             $shortcodes['publishpress_authors_box'] = [
                 'label'         => esc_html__('Authors Box', 'publishpress-authors'),
@@ -1165,26 +1167,21 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'shortcode' => '[publishpress_authors_box]'
                     ],
                     'option_2' => [
-                        'shortcode'   => '[publishpress_authors_box layout="boxed"]',
+                        'shortcode'   => '[publishpress_authors_box layout="'. $default_layout .'"]',
                         'description' => sprintf(
                             esc_html__(
-                                'You can choose from the following layouts: %1s %2s %3s %4s %5s. You can see full details of each layout option %6s in this guide %7s.',
+                                'You can specify layout by using author boxes layout slug. You can see full details of each layout option %1$s in this guide %2$s.',
                                 'publishpress-authors'
                             ),
-                            '<code>simple_list</code>',
-                            '<code>centered</code>',
-                            '<code>boxed</code>',
-                            '<code>inline</code>',
-                            '<code>inline_avatar</code>',
                             '<a href="https://publishpress.com/knowledge-base/layout/">',
                             '</a>'
                         ),
                     ],
                     'option_3' => [
-                        'shortcode'   => '[publishpress_authors_box layout="boxed" show_title="true"]',
+                        'shortcode'   => '[publishpress_authors_box layout="'. $default_layout .'" show_title="true"]',
                         'description' => sprintf(
                             esc_html__(
-                                'You can also decide whether or not to show the main title, using %1s or %2s .',
+                                'You can also decide whether or not to show the main title, using %1$s or %2$s .',
                                 'publishpress-authors'
                             ),
                             '<code class="color-red">show_title="true"</code>',
@@ -1192,14 +1189,14 @@ if (!class_exists('MA_Multiple_Authors')) {
                         ),
                     ],
                     'option_4' => [
-                        'shortcode'   => '[publishpress_authors_box layout="boxed" post_id="32"]',
+                        'shortcode'   => '[publishpress_authors_box layout="'. $default_layout .'" post_id="32"]',
                         'description' => esc_html__(
                             'You can load the authors for a specific post, even if you are not in that post currently. For example, this shortcode will load the authors for the post with the ID of 32',
                             'publishpress-authors'
                         ),
                     ],
                     'option_5' => [
-                        'shortcode'   => '[publishpress_authors_box layout="author_box" archive="1"]',
+                        'shortcode'   => '[publishpress_authors_box layout="'. $default_layout .'" archive="1"]',
                         'description' => sprintf(
                             esc_html__(
                                 'If you are having problems showing PublishPress Authors on author profile pages, you can use this shortcode below. The argument %s forces the plugin to retrieve the Author from the profile page and not any other posts on the same screen.',
@@ -1209,7 +1206,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         ),
                     ],
                     'option_6' => [
-                        'shortcode'   => '[publishpress_authors_box layout="boxed" archive="true"]',
+                        'shortcode'   => '[publishpress_authors_box layout="'. $default_layout .'" archive="true"]',
                         'description' => sprintf(
                             esc_html__(
                                 'There is one final option to mention. This is mostly useful if you\'re using a theme or page builder to customize the Author profile pages you find at URLs such as /author/username/. You can use the following shortcode on the authors page to display the profile of the current author. You just need to add the parameter %s.',
@@ -1233,7 +1230,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'shortcode'   => '[publishpress_authors_data field="display_name"]',
                         'description' => sprintf(
                             esc_html__(
-                                'The authors data shortcode accepts field parameter such as: %1s %2s %3s %4s %5s %6s %7s. You can see full details and parameters %8s in this guide %9s.',
+                                'The authors data shortcode accepts field parameter such as: %1$s %2$s %3$s %4$s %5$s %6$s %7$s. You can see full details and parameters %8s in this guide %9s.',
                                 'publishpress-authors'
                             ),
                             '<code>display_name</code>',
@@ -1272,7 +1269,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'shortcode'   => '[publishpress_authors_data user_objects="true"]',
                         'description' => sprintf(
                             esc_html__(
-                                'You can also decide to return array lists of authors for custom use or formatting by using %1s which will return all authors object data as array. You can check full details and sample usage %2s in this guide %3s',
+                                'You can also decide to return array lists of authors for custom use or formatting by using %1$s which will return all authors object data as array. You can check full details and sample usage %2$s in this guide %3$s',
                                 'publishpress-authors'
                             ),
                             '<code class="color-red">user_objects="true"</code>',
@@ -1292,17 +1289,12 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'shortcode' => '[publishpress_authors_list]'
                     ],
                     'option_2' => [
-                        'shortcode'   => '[publishpress_authors_list layout="boxed"]',
+                        'shortcode'   => '[publishpress_authors_list layout="'. $default_layout .'"]',
                         'description' => sprintf(
                             esc_html__(
-                                'You can choose from the following default layouts: %1s %2s %3s %4s %5s. You can see full details of each layout option %6s in this guide %7s. %8s %9s This shortcode also provides two custom layouts: %10s %11s.',
+                                'You can specify layout by using author boxes layout slug. You can see full details of each layout option %1$s in this guide %2$s. %3$s %4$s This shortcode also provides two custom layouts: %5$s %6$s.',
                                 'publishpress-authors'
                             ),
-                            '<code>simple_list</code>',
-                            '<code>centered</code>',
-                            '<code>boxed</code>',
-                            '<code>inline</code>',
-                            '<code>inline_avatar</code>',
                             '<a href="https://publishpress.com/knowledge-base/layout/">',
                             '</a>',
                             '<br />',
@@ -1312,10 +1304,10 @@ if (!class_exists('MA_Multiple_Authors')) {
                         ),
                     ],
                     'option_3' => [
-                        'shortcode'   => '[publishpress_authors_list layout="boxed" layout_columns="2"]',
+                        'shortcode'   => '[publishpress_authors_list layout="'. $default_layout .'" layout_columns="2"]',
                         'description' => sprintf(
                             esc_html__(
-                                'You can define the number of layout columns by using %1s to show authors in 2 column.',
+                                'You can define the number of layout columns by using %1$s to show authors in 2 column.',
                                 'publishpress-authors'
                             ),
                             '<code class="color-red">layout_columns="2"</code>'
@@ -1325,7 +1317,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'shortcode'   => '[publishpress_authors_list layout="authors_recent" limit_per_page="12"]',
                         'description' => sprintf(
                             esc_html__(
-                                'You can choose the number of authors per page using %1s . %2s Pagination will be automatically added if required.',
+                                'You can choose the number of authors per page using %1$s . %2$s Pagination will be automatically added if required.',
                                 'publishpress-authors'
                             ),
                             '<code class="color-red">limit_per_page="12"</code>',
@@ -1336,7 +1328,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'shortcode'   => '[publishpress_authors_list layout="authors_recent" show_empty="1"]',
                         'description' => sprintf(
                             esc_html__(
-                                'You can limit the result to only authors who are assigned to posts by using %1s . %2s Alternatively, use %3s to show all authors, including those without any posts.',
+                                'You can limit the result to only authors who are assigned to posts by using %1$s . %2$s Alternatively, use %3$s to show all authors, including those without any posts.',
                                 'publishpress-authors'
                             ),
                             '<code class="color-red">show_empty="0"</code>',
@@ -1348,7 +1340,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'shortcode'   => '[publishpress_authors_list layout="authors_recent" authors="guests"]',
                         'description' => sprintf(
                             esc_html__(
-                                'You can limit the result to only guest authors by using %1s . %2s Alternatively, %3s will show only authors with a WordPress account.',
+                                'You can limit the result to only guest authors by using %1$s . %2$s Alternatively, %3$s will show only authors with a WordPress account.',
                                 'publishpress-authors'
                             ),
                             '<code class="color-red">authors="guests"</code>',
@@ -1360,7 +1352,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'shortcode'   => '[publishpress_authors_list layout="authors_recent" authors_recent_col="4"]',
                         'description' => sprintf(
                             esc_html__(
-                                'If you are using the authors_recent layout, you can define the number of columns by using %1s .',
+                                'If you are using the authors_recent layout, you can define the number of columns by using %1$s .',
                                 'publishpress-authors'
                             ),
                             '<code class="color-red">authors_recent_col="4"</code>'
@@ -1370,7 +1362,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'shortcode'   => '[publishpress_authors_list layout="authors_index" group_by="last_name"]',
                         'description' => sprintf(
                             esc_html__(
-                                'For authors_index layout, you can group user by profile field by using %1s .',
+                                'For authors_index layout, you can group user by profile field by using %1$s .',
                                 'publishpress-authors'
                             ),
                             '<code class="color-red">group_by="last_name"</code>'
@@ -1380,7 +1372,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'shortcode'   => '[publishpress_authors_list orderby="count"]',
                         'description' => sprintf(
                             esc_html__(
-                                'To order the results based on post count, use %1s . To order the results by name, use %2s . Alternatively, you can order by profile fields like %3s, %4s etc',
+                                'To order the results based on post count, use %1$s . To order the results by name, use %2$s . Alternatively, you can order by profile fields like %3$s, %4$s etc',
                                 'publishpress-authors'
                             ),
                             '<code class="color-red">orderby="count"</code>',
@@ -1393,7 +1385,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'shortcode'   => '[publishpress_authors_list orderby="name" order="asc"]',
                         'description' => sprintf(
                             esc_html__(
-                                'To further customize the order of results, use %1s or %2s .',
+                                'To further customize the order of results, use %1$s or %2$s .',
                                 'publishpress-authors'
                             ),
                             '<code class="color-red">order="asc"</code>',
@@ -1404,7 +1396,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'shortcode'   => '[publishpress_authors_list layout="authors_recent" search_box="true"]',
                         'description' => sprintf(
                             esc_html__(
-                                'To display a search box for authors, use %1s .',
+                                'To display a search box for authors, use %1$s .',
                                 'publishpress-authors'
                             ),
                             '<code class="color-red">search_box="true"</code>'
@@ -1414,7 +1406,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'shortcode'   => '[publishpress_authors_list search_box="true" search_field="first_name,last_name" layout="authors_recent"]',
                         'description' => sprintf(
                             esc_html__(
-                                'You can also show a dropdown menu that allows users to search on specific author fields. You can add fields to the dropdown using %1s . This requires the search box to be active.',
+                                'You can also show a dropdown menu that allows users to search on specific author fields. You can add fields to the dropdown using %1$s . This requires the search box to be active.',
                                 'publishpress-authors'
                             ),
                             '<code class="color-red">search_field="first_name,last_name"</code>'
@@ -1424,7 +1416,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'shortcode'   => '[publishpress_authors_list last_article_date="1 year ago"]',
                         'description' => sprintf(
                             esc_html__(
-                                'You can limit the author list to users with a published post within a specific period using %1s . This accept english date value like 1 week ago, 1 month ago, 6 months ago, 1 year ago etc.',
+                                'You can limit the author list to users with a published post within a specific period using %1$s . This accept english date value like 1 week ago, 1 month ago, 6 months ago, 1 year ago etc.',
                                 'publishpress-authors'
                             ),
                             '<code class="color-red">last_article_date="1 year ago"</code>'
@@ -2290,35 +2282,29 @@ echo '<span class="ppma_settings_field_description">'
 
             $actions = [
                 'create_post_authors' => [
-                    'title'        => esc_html__('Create missed post authors', 'publishpress-authors'),
-                    'description'  => 'This action is very helpful if you\'re installing PublishPress Authors on an existing WordPress site. This action analyzes all the posts on your site. If the action finds a WordPress user is set as an author, it will automatically share that data with PublishPress Authors.',
-                    'button_label' => esc_html__('Create missed post authors', 'publishpress-authors'),
+                    'title'        => esc_html__('Create PublishPress Authors profiles for all authors', 'publishpress-authors'),
+                    'description'  => 'If a WordPress user is the author of a post, but does not have a PublishPress Authors profile, this will automatically create a profile for them. <a href="https://publishpress.com/knowledge-base/authors-maintenance" target="_blank">Click here for documentation</a>.',
+                    'button_label' => esc_html__('Create missing PublishPress Authors profiles', 'publishpress-authors'),
                 ],
 
                 'create_role_authors' => [
-                    'title'        => esc_html__('Create missed authors from role', 'publishpress-authors'),
-                    'description'  => 'This action is very helpful if you\'re installing PublishPress Authors on an existing WordPress site. This action finds all the users in a role and creates author profiles for them. You can choose the roles using the "Automatically create author profiles" setting.',
-                    'button_label' => esc_html__('Create missed authors from role', 'publishpress-authors'),
+                    'title'        => esc_html__('Create PublishPress Authors profiles for all users in a role', 'publishpress-authors'),
+                    'description'  => 'This will find all the users in a role and creates author profiles for them. You can choose the roles using the "Automatically create author profiles" setting. <a href="https://publishpress.com/knowledge-base/authors-maintenance" target="_blank">Click here for documentation</a>.',
+                    'button_label' => esc_html__('Create PublishPress Authors profiles', 'publishpress-authors'),
                 ],
 
                 'sync_post_author' => [
-                    'title'       => esc_html__('Update author field on posts', 'publishpress-authors'),
-                    'description' => 'This action is useful if you\'re updating PublishPress Authors from versions lower or equals than 3.7.4. This action can help compatibility with some 3rd party themes and plugins.',
+                    'title'       => esc_html__('Synchronize the author and user profile fields', 'publishpress-authors'),
+                    'description' => 'Description: This will update all the author profile in PublishPress Authors to match the default WordPress fields for each user. <a href="https://publishpress.com/knowledge-base/authors-maintenance" target="_blank">Click here for documentation</a>.',
                     'button_link' => '',
                     'after'       => '<div id="publishpress-authors-sync-post-authors"></div>',
                 ],
 
                 'sync_author_slug' => [
-                    'title'       => esc_html__('Synchronize Author slugs to User logins', 'publishpress-authors'),
-                    'description' => 'For compatibility with PublishPress Permissions, each Author\'s slug needs to match their User login.',
+                    'title'       => esc_html__('Synchronize the author and user URLs', 'publishpress-authors'),
+                    'description' => 'This will update all the Author URLs in PublishPress Authors to match the default WordPress URLs for each user. <br /> <a href="https://publishpress.com/knowledge-base/authors-maintenance" target="_blank">Click here for documentation</a>.',
                     'button_link' => '',
                     'after'       => '<div id="publishpress-authors-sync-author-slug"></div>',
-                ],
-
-                'create_default_author_boxes' => [
-                    'title'       => esc_html__('Create default Author Boxes', 'publishpress-authors'),
-                    'description' => 'This action creates the default author boxes if they don\'t exist or were accidentally deleted.',
-                    'button_label' => __('Create default Author Boxes', 'publishpress-authors'),
                 ],
             ];
 
@@ -2366,7 +2352,8 @@ echo '<span class="ppma_settings_field_description">'
 
                 echo '<div class="ppma_maintenance_action_wrapper">';
                 echo '<h4>' . esc_html($actionInfo['title']) . '</h4>';
-                echo '<p class="ppma_settings_field_description">' . esc_html($actionInfo['description']) . '</p>';
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                echo '<p class="ppma_settings_field_description">' . $actionInfo['description'] . ' </p>';
 
                 if (!empty($link)) {
                     echo '<a href="' . esc_url($link) . '" class="button - secondary button - danger ppma_maintenance_button" id="' . esc_attr($actionName) . '">';
@@ -3109,8 +3096,7 @@ echo '<span class="ppma_settings_field_description">'
                 'create_role_authors',
                 'copy_coauthor_plus_data',
                 'sync_post_author',
-                'sync_author_slug',
-                'create_default_author_boxes'
+                'sync_author_slug'
             ];
 
             if (! isset($_GET['ppma_action']) || isset($_GET['author_term_reset_notice'])
@@ -3236,12 +3222,6 @@ echo '<span class="ppma_settings_field_description">'
                     }
                 }
             }
-        }
-
-
-        public function action_create_default_author_boxes()
-        {
-            MA_Author_Boxes::createDefaultAuthorBoxes();
         }
 
         public function action_copy_coauthor_plus_data()

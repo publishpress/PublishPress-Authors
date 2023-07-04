@@ -47,10 +47,10 @@
   ],
   "require": {
     "php": ">=7.2.5",
-    "pimple/pimple": "3.2.3",
+    "pimple/pimple": "3.5.0.*",
     "symfony/polyfill-ctype": "1.19.0",
     "cmb2/cmb2": "^2.6",
-    "psr/container": "1.0.0",
+    "psr/container": "1.1.1",
     "publishpress/wordpress-version-notices": "^1",
     "publishpress/wordpress-reviews":  "^1.1",
     "publishpress/wordpress-banners": "^1.2",
@@ -78,10 +78,13 @@
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2"
   },
   "scripts": {
+    "build": "/project/dev-workspace/docker/scripts/ppbuild build",
+    "build:dir": "/project/dev-workspace/docker/scripts/ppbuild build-dir",
+    "build:clean": "/project/dev-workspace/docker/scripts/ppbuild clean",
+    "get-version": "/project/dev-workspace/docker/scripts/ppbuild version",
     "cs-check": "vendor/bin/phpcs --standard=PSR12 ./src/ publishpress-authors.php --colors",
     "cs-fix": "vendor/bin/phpcbf .src/ publishpress-authors.php --colors",
-    "build": "builder/docker/scripts/build build",
-    "build-unpacked": "builder/docker/scripts/build build-dir",
+    "lint-check": "vendor/bin/phplint ./src",
     "mess-check": "vendor/bin/phpmd ./src ansi phpmd-ruleset.xml",
     "copy-check": "vendor/bin/phpcpd --fuzzy ./src",
     "start-chromedriver": "chromedriver --url-base=wd/hub"

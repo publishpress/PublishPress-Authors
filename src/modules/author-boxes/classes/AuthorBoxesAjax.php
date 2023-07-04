@@ -45,11 +45,7 @@ class AuthorBoxesAjax
             $post_data = $_POST['editor_data'];// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
             $editor_data = [];
             foreach ($post_data as $key => $value) {
-                if (substr($key, -13) === '_display_icon') {
-                    $editor_data[$key] = htmlspecialchars(stripslashes_deep($value));
-                } else {
-                    $editor_data[$key] = sanitize_text_field($value);
-                }
+                $editor_data[$key] = htmlspecialchars(stripslashes_deep(wp_kses_post($value)));// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
             }
 
             $author_term_id = !empty($_POST['author_term_id']) ? (int) $_POST['author_term_id'] : 0;
@@ -163,7 +159,7 @@ $instance_id = $ppma_instance_id;
         </?php endif; ?>
     </<?php echo esc_html($args['title_html_tag']['value']); ?>>
 <?php endif; ?>
-
+<span class="ppma-layout-prefix"><?php echo html_entity_decode($args['box_tab_layout_prefix']['value']);  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
     <ul class="pp-multiple-authors-boxes-ul">
         </?php foreach ($authors as $index => $author) : ?>
 
@@ -348,12 +344,13 @@ $custom_styles = '.pp-multiple-authors-layout-boxed ul li > div:nth-child(1) {fl
 
                         </div>
 <?php endif; ?>
-                     </div>                 
+                     </div>             
                 </li>
             </?php endif; ?>
 
         </?php endforeach; ?>
     </ul>
+<span class="ppma-layout-suffix"><?php echo html_entity_decode($args['box_tab_layout_suffix']['value']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 </div>
 
 <?php 

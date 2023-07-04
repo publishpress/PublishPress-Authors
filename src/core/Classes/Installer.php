@@ -95,6 +95,10 @@ class Installer
             self::updateUrlProfileField();
         }
 
+        if (version_compare($currentVersions, '4.1.6', '<')) {
+            self::updateAuthorBoxesFieldValue(['box_tab_layout_author_separator' => ', '], ['author_boxes_inline', 'author_boxes_inline_avatar']);
+        }
+
         /**
          * @param string $previousVersion
          */
@@ -382,8 +386,8 @@ class Installer
             'contributor',
         ];
 
-        foreach ($roles as $roleNmae) {
-            $role = get_role($roleNmae);
+        foreach ($roles as $roleName) {
+            $role = get_role($roleName);
             if ($role instanceof WP_Role) {
                 $role->add_cap($cap);
             }
@@ -416,9 +420,9 @@ class Installer
      * @param array $fields_data
      * @return void
      */
-    private static function updateAuthorBoxesFieldValue($fields_data)
+    private static function updateAuthorBoxesFieldValue($fields_data, $layout_slugs = [])
     {
-        MA_Author_Boxes::updateAuthorBoxesFieldValue($fields_data);
+        MA_Author_Boxes::updateAuthorBoxesFieldValue($fields_data, $layout_slugs);
     }
 
     /**

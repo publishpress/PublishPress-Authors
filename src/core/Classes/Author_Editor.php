@@ -345,7 +345,7 @@ class Author_Editor
                 'requirement' => !$enable_guest_author_user ? 'required' : ''
             ],
             'description' => [
-                'label'    => esc_html__('Author Bio', 'publishpress-authors'),
+                'label'    => esc_html__('Biographical Info', 'publishpress-authors'),
                 'type'     => 'textarea',
                 'sanitize' => 'wp_kses_post',
                 'tab'      => 'general',
@@ -538,7 +538,7 @@ class Author_Editor
                     <?php wp_editor($args['value'], $key, []); ?>
                 <?php else : ?>
                     <input name="<?php echo esc_attr($key); ?>" type="<?php echo esc_attr($args['type']); ?>"
-                           value="<?php echo esc_attr($args['value']); ?>"/>
+                           id="<?php echo esc_attr($key); ?>" value="<?php echo esc_attr($args['value']); ?>"/>
                 <?php endif; ?>
 
                 <?php if (isset($args['description'])) : ?>
@@ -736,7 +736,7 @@ class Author_Editor
     public static function filter_author_bulk_actions($bulk_actions)
     {
         $bulk_actions['update_mapped_author_data'] = __(
-            'Update data from mapped user',
+            'Sync author and user fields',
             'publishpress-authors'
         );
         $bulk_actions['convert_into_guest_author'] = __(

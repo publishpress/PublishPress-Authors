@@ -116,9 +116,15 @@ if (!class_exists('MA_Divi_Integration')) {
                 if ($author instanceof WP_User) {
                     $author = Author::get_by_user_id($author->ID);
                 }
-            } elseif ($post) {
-                $author = get_post_authors($post_id);
-                $author = $author[0];
+            } elseif ($post && is_object($post) && isset($post->ID)) {
+                $author = get_post_authors($post->ID);
+                if (is_array($author) && isset($author[0])) {
+                    $author = $author[0];
+                } elseif (is_object($author) && isset($author->display_name)) {
+                    $author = $author;
+                } else {
+                    $author            = null;
+                }
             }
 
             switch ($name) {

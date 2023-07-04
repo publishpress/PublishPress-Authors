@@ -633,7 +633,7 @@ class AuthorBoxesEditorFields
                     'label'       => sprintf(esc_html__('%1s Display Icon', 'publishpress-authors'), $data['label']),
                     'description' => $field_description,
                     'type'        => 'text',
-                    'sanitize'    => ['stripslashes_deep', 'htmlspecialchars'],
+                    'sanitize'    => ['stripslashes_deep', 'wp_kses_post'],
                     'tabbed'      => 1,
                     'tab_name'    => $key,
                     'tab'         => 'profile_fields',
@@ -1124,6 +1124,31 @@ class AuthorBoxesEditorFields
      */
     public static function getBoxLayoutFields($fields, $post) 
     {
+
+        $fields['box_tab_layout_prefix'] = [
+            'label'       => esc_html__('Row Prefix', 'publishpress-authors'),
+            'description' => esc_html__('Enter the text that should be added before authors. This field accepts basic HTML.', 'publishpress-authors'),
+            'placeholder' => '',
+            'type'     => 'text',
+            'sanitize' => ['stripslashes_deep', 'wp_kses_post'],
+            'tab'      => 'box_layout',
+        ];
+        $fields['box_tab_layout_suffix'] = [
+            'label'       => esc_html__('Row Suffix', 'publishpress-authors'),
+            'description' => esc_html__('Enter the text that should be added after authors. This field accepts basic HTML.', 'publishpress-authors'),
+            'placeholder' => '',
+            'type'     => 'text',
+            'sanitize' => ['stripslashes_deep', 'wp_kses_post'],
+            'tab'      => 'box_layout',
+        ];
+        $fields['box_tab_layout_author_separator'] = [
+            'label'       => esc_html__('Author Separator', 'publishpress-authors'),
+            'description' => esc_html__('You can specify a separator such as \',\' to separate authors. This field accepts basic HTML.', 'publishpress-authors'),
+            'placeholder' => '',
+            'type'     => 'text',
+            'sanitize' => ['stripslashes_deep', 'wp_kses_post'],
+            'tab'      => 'box_layout',
+        ];
         $fields['box_layout_margin_top'] = [
             'label'    => esc_html__('Margin Top', 'publishpress-authors'),
             'type'     => 'number',

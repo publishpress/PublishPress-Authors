@@ -41,6 +41,7 @@ if (!class_exists('MA_Default_Layouts')) {
          * @var stdClass
          */
         public $module;
+        public $module_url;
 
         /**
          * Construct the MA_Default_Layouts class
@@ -150,7 +151,7 @@ if (!class_exists('MA_Default_Layouts')) {
             // convert to decimal and change luminosity
             for ($i = 0; $i < 3; $i++) {
             	$dec        = hexdec(substr($color, $i*2, 2));
-            	$dec        = min(max(0, $dec + $dec * $percent), 255);
+            	$dec        = min(max(0, round($dec + $dec * $percent)), 255);
             	$new_color .= str_pad(dechex($dec), 2, 0, STR_PAD_LEFT);
             }
 
