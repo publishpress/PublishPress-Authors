@@ -1127,7 +1127,7 @@ class AuthorBoxesEditorFields
 
         $fields['box_tab_layout_prefix'] = [
             'label'       => esc_html__('Row Prefix', 'publishpress-authors'),
-            'description' => esc_html__('Enter the text that should be added before author lists. This field accept basics html like <hr /> <br /> <div> <span> etc. for better customization of row prefix.', 'publishpress-authors'),
+            'description' => esc_html__('Enter the text that should be added before authors. This field accepts basic HTML.', 'publishpress-authors'),
             'placeholder' => '',
             'type'     => 'text',
             'sanitize' => ['stripslashes_deep', 'wp_kses_post'],
@@ -1135,7 +1135,7 @@ class AuthorBoxesEditorFields
         ];
         $fields['box_tab_layout_suffix'] = [
             'label'       => esc_html__('Row Suffix', 'publishpress-authors'),
-            'description' => esc_html__('Enter the text that should be added after author lists. This field accept basics html like <hr /> <br /> <div> <span> etc. for better customization of row suffix.', 'publishpress-authors'),
+            'description' => esc_html__('Enter the text that should be added after authors. This field accepts basic HTML.', 'publishpress-authors'),
             'placeholder' => '',
             'type'     => 'text',
             'sanitize' => ['stripslashes_deep', 'wp_kses_post'],
@@ -1143,7 +1143,7 @@ class AuthorBoxesEditorFields
         ];
         $fields['box_tab_layout_author_separator'] = [
             'label'       => esc_html__('Author Separator', 'publishpress-authors'),
-            'description' => esc_html__('You can specify separator like \',\' to separate authors. This field accept basics html like <hr /> <br /> <div> <span> etc. for better customization.', 'publishpress-authors'),
+            'description' => esc_html__('You can specify a separator such as \',\' to separate authors. This field accepts basic HTML.', 'publishpress-authors'),
             'placeholder' => '',
             'type'     => 'text',
             'sanitize' => ['stripslashes_deep', 'wp_kses_post'],
