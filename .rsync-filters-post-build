@@ -26,3 +26,8 @@
 - /vendor/twig/twig/composer.json
 - /vendor/twig/twig/doc
 - /vendor/pimple/pimple/.github
+- /vendor/cmb2/cmb2/CONTRIBUTING.md
+- /vendor/cmb2/cmb2/package-lock.json
+- /vendor/psr/container/README.md
+- /vendor/publishpress/wordpress-version-notices/.env.testing.dist
+- /vendor/symfony/polyfill-ctype/README.md
