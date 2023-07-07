@@ -1447,7 +1447,7 @@ class Plugin
 
             if (is_object($author) && !is_wp_error($author) && isset($author->link)) {
                 $term_author_link = $author->link;
-                $author_display_name_html   = Utils::get_author_display_name_select($author->ID);
+                $author_display_name_html   = Utils::get_author_display_name_select($author->term_id);
                 $author_details = [
                     'display_name' => $author->display_name,
                     'nickname' => $author->nickname,

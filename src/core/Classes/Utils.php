@@ -1211,17 +1211,14 @@ class Utils
     /**
      * Get Author display name option like wordpress
      * 
-     * @param integer $user_id
+     * @param integer $term_id
      * 
      * @return string $output
      */
-    public static function get_author_display_name_select($user_id = 0) 
+    public static function get_author_display_name_select($term_id = 0) 
     {
-        if ($user_id === 0) {
-            $user_id = get_current_user_id();
-        }
         
-        $profile_user = Author::get_by_user_id($user_id);
+        $profile_user = Author::get_by_term_id($term_id);
         $public_display                     = array();
         $public_display['display_nickname'] = $profile_user->nickname;
         $public_display['display_username'] = $profile_user->user_login;
@@ -1249,7 +1246,9 @@ class Utils
         ?>
         <select name="name" id="name" aria-required="true" aria-describedby="name-description">
             <?php foreach ( $public_display as $id => $item ) : ?>
-                <option <?php selected( $profile_user->display_name, $item ); ?>><?php echo $item; ?></option>
+                <?php if (!empty($item )) : ?>
+                    <option <?php selected( $profile_user->display_name, $item ); ?>><?php echo $item; ?></option>
+                <?php endif; ?>
             <?php endforeach; ?>
         </select>
         <?php
