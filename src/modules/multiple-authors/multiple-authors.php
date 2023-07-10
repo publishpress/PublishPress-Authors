@@ -122,6 +122,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'load_font_awesome'            => 'no',
                     'enable_guest_author_user'     => 'yes',
                     'default_avatar'               => '',
+                    'display_name_format'          => 'custom',
                 ],
                 'options_page'         => false,
                 'autoload'             => true,
@@ -609,17 +610,6 @@ if (!class_exists('MA_Multiple_Authors')) {
                 $this->module->options_group_name . '_advanced'
             );
 
-            add_settings_field(
-                'default_avatar',
-                __(
-                    'Default Avatar',
-                    'publishpress-authors'
-                ),
-                [$this, 'settings_default_avatar'],
-                $this->module->options_group_name,
-                $this->module->options_group_name . '_general'
-            );
-
             do_action('publishpress_authors_register_settings_after');
 
             /**
@@ -992,6 +982,28 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'publishpress-authors'
                 ),
                 [$this, 'settings_enable_guest_author_user'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_guest_authors'
+            );
+
+            add_settings_field(
+                'display_name_format',
+                __(
+                    'Display Name',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_display_name_format'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_guest_authors'
+            );
+
+            add_settings_field(
+                'default_avatar',
+                __(
+                    'Default Avatar',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_default_avatar'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_guest_authors'
             );
@@ -1790,6 +1802,37 @@ if (!class_exists('MA_Multiple_Authors')) {
 
         }
 
+
+        /**
+         * @param array $args
+         */
+        public function settings_display_name_format($args = [])
+        {
+            $id    = $this->module->options_group_name . '_display_name_format';
+            $value = isset($this->module->options->display_name_format) ? $this->module->options->display_name_format : 'custom';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<select id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[display_name_format]">';
+
+            $display_name_formats = [
+                'custom' => esc_html__('Allow User to Choose', 'publishpress-authors'),
+                'first_name_last_name' => esc_html__('First Name Last Name', 'publishpress-authors'),
+                'last_name_first_name' => esc_html__('Last Name First Name', 'publishpress-authors'),
+                'first_name' => esc_html__('First Name', 'publishpress-authors'),
+                'last_name' => esc_html__('Last Name', 'publishpress-authors')
+            ];
+
+            foreach ($display_name_formats as $key => $label) {
+                $selected = $value === $key ? 'selected="selected"' : '';
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                echo '<option value="' . esc_attr($key) . '" ' . $selected . '>' . esc_html($label) . '</option>';
+            }
+
+            echo '</select>';
+            echo '</label>';
+        }
+
         /**
          * @param array $args
          */
@@ -2518,7 +2561,7 @@ echo '<span class="ppma_settings_field_description">'
                 [
                     '#ppma-tab-general'     => esc_html__('General', 'publishpress-authors'),
                     '#ppma-tab-display'     => esc_html__('Author Boxes', 'publishpress-authors'),
-                    '#ppma-tab-guest-author' => esc_html__('Guest Authors', 'publishpress-authors'),
+                    '#ppma-tab-guest-author' => esc_html__('Author Profiles', 'publishpress-authors'),
                     '#ppma-tab-author-pages' => esc_html__('Author Pages', 'publishpress-authors'),
                     '#ppma-tab-shortcodes'  => esc_html__('Shortcodes', 'publishpress-authors'),
                     '#ppma-tab-maintenance' => esc_html__('Maintenance', 'publishpress-authors'),

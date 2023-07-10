@@ -1434,6 +1434,8 @@ class Plugin
         $legacyPlugin = Factory::getLegacyPlugin();
 
         $term_author_link = '';
+        $display_name_format   = '';
+        $author_user_login   = '';
         $author_details   = [];
         $author_display_name_html   = '';
 
@@ -1447,7 +1449,9 @@ class Plugin
 
             if (is_object($author) && !is_wp_error($author) && isset($author->link)) {
                 $term_author_link = $author->link;
-                $author_display_name_html   = Utils::get_author_display_name_select($author->ID);
+                $display_name_format  = $legacyPlugin->modules->multiple_authors->options->display_name_format;
+                $author_user_login   = $author->user_login;
+                $author_display_name_html   = Utils::get_author_display_name_select($author->term_id);
                 $author_details = [
                     'display_name' => $author->display_name,
                     'nickname' => $author->nickname,
@@ -1513,6 +1517,8 @@ class Plugin
             'isRequired'                    => esc_html__('is required', 'publishpress-authors'),
             'isRequiredWarning'             => esc_html__('Please complete the following required fields to save your changes:', 'publishpress-authors'),
             'fieldTitleRequired'             => esc_html__('Field title is required', 'publishpress-authors'),
+            'display_name_format'           => $display_name_format,
+            'author_user_login'             => $author_user_login,
             'display_name_html'             => $author_display_name_html,
             'author_details'                => $author_details,
         ];

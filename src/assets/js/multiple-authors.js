@@ -577,11 +577,6 @@ jQuery(document).ready(function ($) {
         $('form#edittag tr.form-field.term-name-wrap th label').html(MultipleAuthorsStrings.name_label);
 
         /**
-         * Update name input to select
-         */
-        $('form#edittag tr.form-field.term-name-wrap td input#name').replaceWith(MultipleAuthorsStrings.display_name_html);
-
-        /**
          * Add required to display name field
          */
         $('form#edittag tr.form-field.term-name-wrap').addClass('required-tab');
@@ -589,42 +584,99 @@ jQuery(document).ready(function ($) {
 
         /**
          * Update display name options on input changed
+         * if display name format is set by admin
          */
-        var display_name_select       = $( '#name' );
-        if ( display_name_select.length ) {
-            $('#authors-first_name, #authors-last_name, #authors-nickname').on( 'change', function() {
-                var dub = [],
-                    inputs = {
-                        display_nickname  : MultipleAuthorsStrings.author_details.nickname || '',
-                        display_username  : MultipleAuthorsStrings.author_details.user_login || '',
-                        display_firstname : $('#authors-first_name').val() || '',
-                        display_lastname  : $('#authors-last_name').val() || ''
-                    };
+        var display_name_format = MultipleAuthorsStrings.display_name_format;
+        var custom_display_name = false;
+        if (display_name_format == 'custom') {
+            custom_display_name = true;
+        } else {
+            var display_name_input       = $( '#name' );
+            var first_name_input          = $( '#authors-first_name' );
+            var last_name_input          = $( '#authors-last_name' );
+            if ( display_name_input.length 
+                && (
+                    display_name_format === 'first_name_last_name' && first_name_input.length && last_name_input.length
+                    || display_name_format === 'last_name_first_name' && first_name_input.length && last_name_input.length
+                    || display_name_format === 'first_name' && first_name_input.length
+                    || display_name_format === 'last_name' && last_name_input.length
+                    )
+                ) {
+                display_name_input.addClass('ppma-display-name-fields');
+                var new_display_name_field    = display_name_input.clone(true);
+                new_display_name_field.insertAfter('#slug');
+                display_name_input.removeAttr('name id').prop('disabled', true);
+                $( '#name' ).hide();
 
-                if ( inputs.display_firstname && inputs.display_lastname ) {
-                    inputs.display_firstlast = inputs.display_firstname + ' ' + inputs.display_lastname;
-                    inputs.display_lastfirst = inputs.display_lastname + ' ' + inputs.display_firstname;
-                }
+                $('#authors-first_name, #authors-last_name ').on( 'input', function() {
+                    var display_name_value = '';
 
-                $.each( $('option', display_name_select), function( i, el ){
-                    dub.push( el.value );
-                });
-
-                $.each(inputs, function( id, value ) {
-                    if ( ! value ) {
-                        return;
+                    if (display_name_format === 'first_name_last_name') {
+                        display_name_value = first_name_input.val() + ' ' + last_name_input.val();
+                    } else if (display_name_format === 'last_name_first_name') {
+                        display_name_value = last_name_input.val() + ' ' + first_name_input.val();
+                    } else if (display_name_format === 'first_name') {
+                        display_name_value = first_name_input.val();
+                    } else if (display_name_format === 'last_name') {
+                        display_name_value = last_name_input.val();
                     }
 
-                    var val = value.replace(/<\/?[a-z][^>]*>/gi, '');
-
-                    if ( inputs[id].length && $.inArray( val, dub ) === -1 ) {
-                        dub.push(val);
-                        $('<option />', {
-                            'text': val
-                        }).appendTo( display_name_select );
+                    if (isEmptyOrSpaces(display_name_value)) {
+                        display_name_value = MultipleAuthorsStrings.author_user_login;
                     }
+                    $('.ppma-display-name-fields').val(display_name_value);
                 });
-            });
+                $('#authors-first_name, #authors-last_name ').trigger("input");
+            } else {
+                custom_display_name = true;
+            }
+        }
+
+        if (custom_display_name) {
+            /**
+             * Update name input to select
+             */
+            $('form#edittag tr.form-field.term-name-wrap td input#name').replaceWith(MultipleAuthorsStrings.display_name_html);
+
+            /**
+             * Update display name options on input changed
+             */
+            var display_name_select       = $( '#name' );
+            if ( display_name_select.length ) {
+                $('#authors-first_name, #authors-last_name, #authors-nickname').on( 'change', function() {
+                    var dub = [],
+                        inputs = {
+                            display_nickname  : MultipleAuthorsStrings.author_details.nickname || '',
+                            display_username  : MultipleAuthorsStrings.author_details.user_login || '',
+                            display_firstname : $('#authors-first_name').val() || '',
+                            display_lastname  : $('#authors-last_name').val() || ''
+                        };
+    
+                    if ( inputs.display_firstname && inputs.display_lastname ) {
+                        inputs.display_firstlast = inputs.display_firstname + ' ' + inputs.display_lastname;
+                        inputs.display_lastfirst = inputs.display_lastname + ' ' + inputs.display_firstname;
+                    }
+    
+                    $.each( $('option', display_name_select), function( i, el ){
+                        dub.push( el.value );
+                    });
+    
+                    $.each(inputs, function( id, value ) {
+                        if ( ! value ) {
+                            return;
+                        }
+    
+                        var val = value.replace(/<\/?[a-z][^>]*>/gi, '');
+    
+                        if ( inputs[id].length && $.inArray( val, dub ) === -1 ) {
+                            dub.push(val);
+                            $('<option />', {
+                                'text': val
+                            }).appendTo( display_name_select );
+                        }
+                    });
+                });
+            }
         }
 
     }
