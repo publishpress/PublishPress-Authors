@@ -6,8 +6,8 @@ Author URI: https://publishpress.com
 Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 4.7
 Requires PHP: 7.2.5
-Tested up to: 6.1
-Stable tag: 4.1.6
+Tested up to: 6.2
+Stable tag: 4.1.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -213,6 +213,12 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [4.1.7] - 10 Jul 2023 =
+
+* Feature: New "Display Name" setting, #1407
+* Fixed: Improve "display name as publicly” field, #1409
+* Fixed: Warning: Attempt to read property "display_name" when editing guest author, #1410
 
 = [4.1.6] - 4 Jul 2023 =
 
