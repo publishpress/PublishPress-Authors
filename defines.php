@@ -50,5 +50,9 @@ if (!defined('PP_AUTHORS_LOADED')) {
         define('PUBLISHPRESS_AUTHORS_LOAD_STYLE_IN_FRONTEND', true);
     }
 
+    if (!defined('PUBLISHPRESS_AUTHORS_FLUSH_REWRITE_RULES')) {
+        define('PUBLISHPRESS_AUTHORS_FLUSH_REWRITE_RULES', true);
+    }
+
     define('PP_AUTHORS_LOADED', true);
 }

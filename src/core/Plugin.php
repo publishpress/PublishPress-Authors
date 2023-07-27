@@ -600,8 +600,14 @@ class Plugin
         $supported_post_types = Utils::get_enabled_post_types();
         register_taxonomy($this->coauthor_taxonomy, $supported_post_types, $args);
 
-        if (delete_transient('ppma_flush_rewrite_rules')) {
-            flush_rewrite_rules(true);
+        if (apply_filters('publishpress_authors_flush_rewrite_rules', PUBLISHPRESS_AUTHORS_FLUSH_REWRITE_RULES)) {
+            /**
+             * Flush rewrite rules to enable permalink update
+             * for when author profile is enabled/disabled
+             */
+            if (delete_transient('ppma_flush_rewrite_rules')) {
+                flush_rewrite_rules(true);
+            }
         }
     }
 
