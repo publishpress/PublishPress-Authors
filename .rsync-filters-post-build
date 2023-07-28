@@ -1,6 +1,5 @@
 - composer.json
 - composer.lock
-- .gitattributes
 - /vendor/pimple/pimple/.gitignore
 - /vendor/pimple/pimple/.php_cs.dist
 - /vendor/psr/container/.gitignore
