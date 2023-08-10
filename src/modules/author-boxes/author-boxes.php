@@ -598,7 +598,6 @@ class MA_Author_Boxes extends Module
             $files = array();
                 
             if (is_dir($folder)) {
-                write_log($folder);
                 $dir = @opendir($folder);
                 while (($file = readdir($dir)) !== false) {
                     // Skip current and parent folder links.
