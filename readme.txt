@@ -4,10 +4,10 @@ Contributors: publishpress, kevinB, stevejburge, andergmartins, ojopaul
 Author: PublishPress
 Author URI: https://publishpress.com
 Tags: multiple authors, authors, guest authors, author fields, author layouts
-Requires at least: 4.7
+Requires at least: 5.5
 Requires PHP: 7.2.5
 Tested up to: 6.3
-Stable tag: 4.1.7
+Stable tag: 4.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -213,6 +213,15 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [4.2.0] - [UNRELEASED] =
+
+* Changed: Replaced Pimple library with a prefixed version of the library to avoid conflicts with other plugins;
+* Changed: Replaced Psr/Container library with a prefixed version of the library to avoid conflicts with other plugins;
+* Changed: Change min PHP version to 7.2.5. If not compatible, the plugin will not execute;
+* Changed: Change min WP version to 5.5. If not compatible, the plugin will not execute;
+* Changed: Updated internal libraries to latest versions;
+* Changed: Refactor some occurrences of "plugins_loaded" replacing it by a new action: "plublishpress_<name>_loaded" which runs after the requirements and libraries are loaded, but before the plugin is initialized;
 
 = [4.1.7] - 10 Jul 2023 =
 

@@ -34,3 +34,5 @@ node_modules
 .env.testing
 builder.yml
 *.code-workspace
+
+/lib/**/.git

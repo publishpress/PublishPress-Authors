@@ -16,15 +16,8 @@ defined('ABSPATH') or die('No direct script access allowed.');
 if (!defined('PP_AUTHORS_LOADED')) {
     require_once __DIR__ . '/defines.php';
 
-    if (file_exists(__DIR__ . '/vendor/cmb2/cmb2/init.php')) {
-        require_once __DIR__ . '/vendor/cmb2/cmb2/init.php';
-    }
-    
-    if (!class_exists(PP_AUTHORS_AUTOLOAD_CLASS_NAME) && !class_exists('MultipleAuthors\\Plugin')) {
-        $autoloadPath = PP_AUTHORS_VENDOR_PATH . 'autoload.php';
-        if (file_exists($autoloadPath)) {
-            require_once $autoloadPath;
-        }
+    if (file_exists(PP_AUTHORS_LIB_VENDOR_PATH . '/cmb2/cmb2/init.php')) {
+        require_once PP_AUTHORS_LIB_VENDOR_PATH . '/cmb2/cmb2/init.php';
     }
 
     if (PUBLISHPRESS_AUTHORS_LOAD_DEPRECATED_LEGACY_CODE) {
@@ -35,16 +28,8 @@ if (!defined('PP_AUTHORS_LOADED')) {
     require_once PP_AUTHORS_BASE_PATH . 'src/functions/amp.php';
 
     if (is_admin() && !defined('PUBLISHPRESS_AUTHORS_SKIP_VERSION_NOTICES')) {
-        if (!defined('PP_VERSION_NOTICES_LOADED')) {
-            $includesPath = PP_AUTHORS_VENDOR_PATH . 'publishpress/wordpress-version-notices/includes.php';
-
-            if (file_exists($includesPath)) {
-                require_once $includesPath;
-            }
-        }
-
         add_action(
-            'plugins_loaded',
+            'plublishpress_authors_loaded',
             function () {
                 if (current_user_can('install_plugins')) {
                     add_filter(

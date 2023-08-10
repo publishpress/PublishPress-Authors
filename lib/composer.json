@@ -1,0 +1,31 @@
+{
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "config": {
+    "vendor-dir": "vendor",
+    "preferred-install": {
+      "*": "dist"
+    },
+    "platform-check": false,
+    "autoloader-suffix": "PPAuthors"
+  },
+  "require": {
+    "php": ">=7.2.5",
+    "publishpress/psr-container": "^2.0",
+    "publishpress/pimple-pimple": "^3.5",
+    "publishpress/wordpress-version-notices": "^2.1",
+    "publishpress/wordpress-reviews": "^1.1",
+    "publishpress/wordpress-banners": "^1.2",
+    "publishpress/instance-protection": "^1.0",
+    "cmb2/cmb2": "^2.6"
+  },
+  "scripts": {
+  },
+  "autoload": {
+    "psr-4": {
+      "MultipleAuthors\\": "../src/core/",
+      "MultipleAuthorBoxes\\": "../src/modules/author-boxes/classes/",
+      "PPAuthors\\YoastSEO\\": "../src/modules/yoast-seo-integration/src/"
+    }
+  }
+}
