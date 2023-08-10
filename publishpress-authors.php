@@ -120,7 +120,7 @@ if (! defined('PP_AUTHORS_LOADED')) {
         );
 
         include_once __DIR__ . '/src/functions/notify.php';
-        
+
         do_action('plublishpress_authors_loaded');
     }, -10);
 }
