@@ -73,5 +73,10 @@
     "check:copy": "phpcpd --fuzzy ./src",
     "fix:phpcs": "phpcbf .src/ publishpress-authors.php --colors",
     "chromedriver": "chromedriver --url-base=wd/hub"
+  },
+  "extra": {
+    "plugin-name": "publishpress-authors",
+    "plugin-slug": "publishpress-authors",
+    "plugin-folder": "publishpress-authors"
   }
 }
