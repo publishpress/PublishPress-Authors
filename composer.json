@@ -63,6 +63,10 @@
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2"
   },
   "scripts": {
+    "build": "ppbuild build",
+    "build:dir": "ppbuild build-dir",
+    "build:clean": "ppbuild clean",
+    "get:version": "ppbuild version",
     "check:phpcs": "phpcs --standard=PSR12 ./src/ publishpress-authors.php --colors",
     "check:lint": "phplint ./src",
     "check:mess": "phpmd ./src ansi phpmd-ruleset.xml",
