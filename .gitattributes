@@ -22,8 +22,6 @@ bin export-ignore
 builder export-ignore
 builder.yml export-ignore
 codeception.dist.yml export-ignore
-composer.json export-ignore
-composer.lock export-ignore
 cs export-ignore
 dev-workspace export-ignore
 dist export-ignore
