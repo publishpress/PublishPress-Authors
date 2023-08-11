@@ -23,8 +23,8 @@ builder export-ignore
 builder.yml export-ignore
 codeception.dist.yml export-ignore
 cs export-ignore
-dev-workspace export-ignore
-dist export-ignore
+/dev-workspace export-ignore
+/dist export-ignore
 jsconfig.json export-ignore
 legacy-tests export-ignore
 node_modules export-ignore
