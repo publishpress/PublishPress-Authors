@@ -214,7 +214,7 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= [4.2.0] - [UNRELEASED] =
+= [4.2.0] - 15 Aug 2023 =
 
 * Changed: Replaced Pimple library with a prefixed version of the library to avoid conflicts with other plugins;
 * Changed: Replaced Psr/Container library with a prefixed version of the library to avoid conflicts with other plugins;
