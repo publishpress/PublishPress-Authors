@@ -3,7 +3,6 @@
 .env.testing.linux.dist export-ignore
 .env.testing.mac.dist export-ignore
 .gitattributes export-ignore
-.gitattributes export-ignore
 .github export-ignore
 .gitignore export-ignore
 .ide.php export-ignore
@@ -11,8 +10,7 @@
 .phpcs.xml export-ignore
 .phplint-cache export-ignore
 .phplint.yml export-ignore
-.phplint.yml export-ignore
-.rsync-filters-post-build export-ignore
+.rsync-filters-pre-build export-ignore
 .rsync-filters-post-build export-ignore
 .vscode export-ignore
 Gruntfile.js export-ignore
@@ -22,11 +20,9 @@ bin export-ignore
 builder export-ignore
 builder.yml export-ignore
 codeception.dist.yml export-ignore
-composer.json export-ignore
-composer.lock export-ignore
 cs export-ignore
-dev-workspace export-ignore
-dist export-ignore
+/dev-workspace export-ignore
+/dist export-ignore
 jsconfig.json export-ignore
 legacy-tests export-ignore
 node_modules export-ignore
@@ -40,3 +36,4 @@ ray.php export-ignore
 screenshot-*.png export-ignore
 tests export-ignore
 webpack.config.js export-ignore
+/assets_wp export-ignore

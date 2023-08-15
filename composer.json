@@ -27,13 +27,6 @@
       "dealerdirect/phpcodesniffer-composer-installer": true
     }
   },
-  "autoload": {
-    "psr-4": {
-      "MultipleAuthors\\": "src/core/",
-      "MultipleAuthorBoxes\\": "src/modules/author-boxes/classes/",
-      "PPAuthors\\YoastSEO\\": "src/modules/yoast-seo-integration/src/"
-    }
-  },
   "minimum-stability": "stable",
   "repositories": [
     {
@@ -46,15 +39,7 @@
     }
   ],
   "require": {
-    "php": ">=7.2.5",
-    "pimple/pimple": "3.5.0.*",
-    "symfony/polyfill-ctype": "1.19.0",
-    "cmb2/cmb2": "^2.6",
-    "psr/container": "1.1.1",
-    "publishpress/wordpress-version-notices": "^1",
-    "publishpress/wordpress-reviews":  "^1.1",
-    "publishpress/wordpress-banners": "^1.2",
-    "publishpress/publishpress-instance-protection": "^1.0"
+    "php": ">=7.2.5"
   },
   "require-dev": {
     "lucatume/wp-browser": "^3",
@@ -82,6 +67,10 @@
     "build:dir": "ppbuild build-dir",
     "build:clean": "ppbuild clean",
     "get:version": "ppbuild version",
+    "check:longpath": "longpath .",
+    "pre-autoload-dump": "composer dumpautoload --working-dir=./lib",
+    "pre-update-cmd": "composer update --working-dir=./lib",
+    "pre-install-cmd": "composer install --working-dir=./lib",
     "check:phpcs": "phpcs --standard=PSR12 ./src/ publishpress-authors.php --colors",
     "check:lint": "phplint ./src",
     "check:mess": "phpmd ./src ansi phpmd-ruleset.xml",

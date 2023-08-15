@@ -11,8 +11,8 @@ namespace MultipleAuthors;
 
 use Allex\Core;
 use MultipleAuthors\Classes\Legacy\LegacyPlugin;
-use Pimple\Container as Pimple;
-use Pimple\ServiceProviderInterface;
+use PublishPress\Pimple\Container as Pimple;
+use PublishPress\Pimple\ServiceProviderInterface;
 use MultipleAuthors\View;
 
 defined('ABSPATH') or die('No direct script access allowed.');
