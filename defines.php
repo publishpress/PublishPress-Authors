@@ -12,11 +12,18 @@
 defined('ABSPATH') or die('No direct script access allowed.');
 
 if (!defined('PP_AUTHORS_LOADED')) {
-    define('PP_AUTHORS_VERSION', '4.1.7');
+    define('PP_AUTHORS_VERSION', '4.2.0');
     define('PP_AUTHORS_FILE', 'publishpress-authors/publishpress-authors.php');
     define('PP_AUTHORS_BASE_PATH', plugin_dir_path(__DIR__ . '/publishpress-authors.php'));
     define('PP_AUTHORS_MODULES_PATH', PP_AUTHORS_BASE_PATH . 'src/modules/');
-    define('PP_AUTHORS_VENDOR_PATH', PP_AUTHORS_BASE_PATH . 'vendor/');
+
+    if (! defined('PP_AUTHORS_VENDOR_PATH')) {
+        /**
+         * @deprecated 4.2.0 Use PP_AUTHORS_LIB_VENDOR_PATH instead.
+         */
+        define('PP_AUTHORS_VENDOR_PATH', PP_AUTHORS_LIB_VENDOR_PATH);
+    }
+    
     define('PP_AUTHORS_URL', rtrim(plugins_url('/', PP_AUTHORS_BASE_PATH . 'publishpress-authors.php'), '/') . '/');
     define('PP_AUTHORS_ASSETS_URL', PP_AUTHORS_URL . 'src/assets/');
     define('PP_AUTHORS_AUTOLOAD_CLASS_NAME', 'ComposerStaticInit92fc51e620da052063312bd38c6157a4');
@@ -48,6 +55,10 @@ if (!defined('PP_AUTHORS_LOADED')) {
 
     if (!defined('PUBLISHPRESS_AUTHORS_LOAD_STYLE_IN_FRONTEND')) {
         define('PUBLISHPRESS_AUTHORS_LOAD_STYLE_IN_FRONTEND', true);
+    }
+
+    if (!defined('PUBLISHPRESS_AUTHORS_FLUSH_REWRITE_RULES')) {
+        define('PUBLISHPRESS_AUTHORS_FLUSH_REWRITE_RULES', true);
     }
 
     define('PP_AUTHORS_LOADED', true);

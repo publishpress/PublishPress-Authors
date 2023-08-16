@@ -5,8 +5,11 @@
  * Description: PublishPress Authors allows you to add multiple authors and guest authors to WordPress posts
  * Author:      PublishPress
  * Author URI:  https://publishpress.com
- * Version: 4.1.7
+ * Version: 4.2.0
  * Text Domain: publishpress-authors
+ * Domain Path: /languages
+ * Requires at least: 5.5
+ * Requires PHP: 7.2.5
  *
  * ------------------------------------------------------------------------------
  * Based on Co-Authors Plus.
@@ -40,72 +43,86 @@
 use MultipleAuthors\Factory;
 use MultipleAuthors\Plugin;
 
-$includeFilebRelativePath = '/publishpress/publishpress-instance-protection/include.php';
-if (file_exists(__DIR__ . '/vendor' . $includeFilebRelativePath)) {
-    require_once __DIR__ . '/vendor' . $includeFilebRelativePath;
-} else if (defined('PP_AUTHORS_VENDOR_PATH') && file_exists(PP_AUTHORS_VENDOR_PATH . $includeFilebRelativePath)) {
-    require_once PP_AUTHORS_VENDOR_PATH . $includeFilebRelativePath;
-}
+global $wp_version;
 
-if (class_exists('PublishPressInstanceProtection\\Config')) {
-    $pluginCheckerConfig = new PublishPressInstanceProtection\Config();
-    $pluginCheckerConfig->pluginSlug = 'publishpress-authors';
-    $pluginCheckerConfig->pluginName = 'PublishPress Authors';
+$min_php_version = '7.2.5';
+$min_wp_version  = '5.5';
 
-    $pluginChecker = new PublishPressInstanceProtection\InstanceChecker($pluginCheckerConfig);
-}
+// If the PHP or WP version is not compatible, terminate the plugin execution.
+$invalid_php_version = version_compare(phpversion(), $min_php_version, '<');
+$invalid_wp_version = version_compare($wp_version, $min_wp_version, '<');
 
-if (defined('PP_AUTHORS_PRO_LOADED')) {
-    add_filter(
-        'plugin_row_meta',
-        function ($links, $file) {
-            if ($file == plugin_basename(__FILE__)) {
-                $links[]= '<strong>' . esc_html__('This plugin can be deleted.', 'publishpress-authors') . '</strong>';
-            }
-
-            return $links;
-        },
-        10,
-        2
-    );
+if ($invalid_php_version || $invalid_wp_version) {
+    return;
 }
 
 if (! defined('PP_AUTHORS_LOADED')) {
 
-    // Check required PHP version.
-    if ( version_compare(PHP_VERSION, '7.2.5', '<') ) {
-        // Send an armin warning
-        add_action('admin_notices', function() {
-            $data = get_plugin_data(__FILE__);
-
-            echo '<div class="error"><p><strong>' . esc_html__('Warning:', ' publishpress-authors') . '</strong> '
-                . sprintf(esc_html__('The active plugin %s is not compatible with your PHP version.', ' publishpress-authors') .'</p><p>',
-                    '&laquo;' . esc_html($data['Name']) . ' ' . esc_html($data['Version']) . '&raquo;')
-                . sprintf(esc_html__('%s is the minimum version required for this plugin.', ' publishpress-authors'), 'PHP 7.2.5 ')
-                . '</p></div>';
-        });
-        return;
+    if (! defined('PP_AUTHORS_LIB_VENDOR_PATH')) {
+        define('PP_AUTHORS_LIB_VENDOR_PATH', __DIR__ . '/lib/vendor');
     }
 
-    require_once __DIR__ . '/includes.php';
-
-    global $multiple_authors_addon;
-
-    if (defined('WP_CLI') && WP_CLI) {
-        WP_CLI::add_command('publishpress-authors', 'MultipleAuthors\\WP_Cli');
+    $instanceProtectionIncPath = PP_AUTHORS_LIB_VENDOR_PATH . '/publishpress/instance-protection/include.php';
+    if (is_file($instanceProtectionIncPath) && is_readable($instanceProtectionIncPath)) {
+        require_once $instanceProtectionIncPath;
     }
 
-    // Init the legacy plugin instance
-    $legacyPlugin = Factory::getLegacyPlugin();
+    if (class_exists('PublishPressInstanceProtection\\Config')) {
+        $pluginCheckerConfig = new PublishPressInstanceProtection\Config();
+        $pluginCheckerConfig->pluginSlug = 'publishpress-authors';
+        $pluginCheckerConfig->pluginName = 'PublishPress Authors';
 
-    $multiple_authors_addon = new Plugin();
+        $pluginChecker = new PublishPressInstanceProtection\InstanceChecker($pluginCheckerConfig);
+    }
 
-    register_activation_hook(
-        PP_AUTHORS_FILE,
-        function () {
-            require_once PP_AUTHORS_BASE_PATH . 'activation.php';
+    if (! defined('PP_AUTHORS_PRO_LIB_VENDOR_PATH')) {
+        $autoloadFilePath = PP_AUTHORS_LIB_VENDOR_PATH . '/autoload.php';
+        if (! class_exists('ComposerAutoloaderInitPPAuthors')
+            && is_file($autoloadFilePath)
+            && is_readable($autoloadFilePath)
+        ) {
+            require_once $autoloadFilePath;
         }
-    );
+    }
 
-    include_once __DIR__ . '/src/functions/notify.php';
+    if (defined('PP_AUTHORS_PRO_LIB_VENDOR_PATH')) {
+        add_filter(
+            'plugin_row_meta',
+            function ($links, $file) {
+                if ($file == plugin_basename(__FILE__)) {
+                    $links[]= '<strong>' . esc_html__('This plugin can be deleted.', 'publishpress-authors') . '</strong>';
+                }
+
+                return $links;
+            },
+            10,
+            2
+        );
+    }
+
+    add_action('plugins_loaded', function () {
+        require_once __DIR__ . '/includes.php';
+
+        global $multiple_authors_addon;
+
+        if (defined('WP_CLI') && WP_CLI) {
+            WP_CLI::add_command('publishpress-authors', 'MultipleAuthors\\WP_Cli');
+        }
+
+        // Init the legacy plugin instance
+        $legacyPlugin = Factory::getLegacyPlugin();
+
+        $multiple_authors_addon = new Plugin();
+
+        register_activation_hook(
+            PP_AUTHORS_FILE,
+            function () {
+                require_once PP_AUTHORS_BASE_PATH . 'activation.php';
+            }
+        );
+
+        include_once __DIR__ . '/src/functions/notify.php';
+
+        do_action('plublishpress_authors_loaded');
+    }, -10);
 }

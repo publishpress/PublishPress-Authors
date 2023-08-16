@@ -28,9 +28,9 @@ node_modules
 
 /.properties.ini
 
-/vendor
-.idea
 /dist
 .env.testing
 builder.yml
 *.code-workspace
+
+/lib/**/.git

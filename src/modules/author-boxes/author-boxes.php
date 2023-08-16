@@ -582,7 +582,7 @@ class MA_Author_Boxes extends Module
      */
     public static function authorboxesListDirectoryFiles($folder = '', $levels = 100, $exclusions = array()) {
 
-        if (function_exists('list_files')) {
+        if (function_exists('ppma_list_files')) {// wordpress is currently generating error with native list_files. So, we may not use it
             return list_files($folder, $levels);
         } else {
             if (empty($folder)) {
@@ -597,9 +597,8 @@ class MA_Author_Boxes extends Module
                 
             $files = array();
                 
-            $dir = @opendir($folder);
-                
-            if ($dir) {
+            if (is_dir($folder)) {
+                $dir = @opendir($folder);
                 while (($file = readdir($dir)) !== false) {
                     // Skip current and parent folder links.
                     if (in_array($file, array( '.', '..' ), true)) {
@@ -611,14 +610,7 @@ class MA_Author_Boxes extends Module
                         continue;
                     }
                 
-                    if (is_dir($folder . $file)) {
-                        /*$files2 = self::authorboxesListDirectoryFiles($folder . $file, $levels - 1);
-                        if ($files2) {
-                            $files = array_merge($files, $files2);
-                        } else {
-                            $files[] = $folder . $file . '/';
-                        }*/
-                    } else {
+                    if (!is_dir($folder . $file)) {
                         $files[] = $folder . $file;
                     }
                 }
