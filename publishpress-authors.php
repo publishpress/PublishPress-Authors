@@ -61,29 +61,31 @@ if (! defined('PP_AUTHORS_LOADED')) {
     if (! defined('PP_AUTHORS_LIB_VENDOR_PATH')) {
         define('PP_AUTHORS_LIB_VENDOR_PATH', __DIR__ . '/lib/vendor');
     }
-    
+
     $instanceProtectionIncPath = PP_AUTHORS_LIB_VENDOR_PATH . '/publishpress/instance-protection/include.php';
     if (is_file($instanceProtectionIncPath) && is_readable($instanceProtectionIncPath)) {
         require_once $instanceProtectionIncPath;
     }
-    
+
     if (class_exists('PublishPressInstanceProtection\\Config')) {
         $pluginCheckerConfig = new PublishPressInstanceProtection\Config();
         $pluginCheckerConfig->pluginSlug = 'publishpress-authors';
         $pluginCheckerConfig->pluginName = 'PublishPress Authors';
-    
+
         $pluginChecker = new PublishPressInstanceProtection\InstanceChecker($pluginCheckerConfig);
     }
 
-    $autoloadFilePath = PP_AUTHORS_LIB_VENDOR_PATH . '/autoload.php';
-    if (! class_exists('ComposerAutoloaderInitPPAuthors')
-        && is_file($autoloadFilePath)
-        && is_readable($autoloadFilePath)
-    ) {
-        require_once $autoloadFilePath;
+    if (! defined('PP_AUTHORS_PRO_LIB_VENDOR_PATH')) {
+        $autoloadFilePath = PP_AUTHORS_LIB_VENDOR_PATH . '/autoload.php';
+        if (! class_exists('ComposerAutoloaderInitPPAuthors')
+            && is_file($autoloadFilePath)
+            && is_readable($autoloadFilePath)
+        ) {
+            require_once $autoloadFilePath;
+        }
     }
 
-    if (defined('PP_AUTHORS_PRO_LOADED')) {
+    if (defined('PP_AUTHORS_PRO_LIB_VENDOR_PATH')) {
         add_filter(
             'plugin_row_meta',
             function ($links, $file) {

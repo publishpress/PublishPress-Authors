@@ -12,44 +12,40 @@
  * Just ignore the warning.
  */
 
-// Class aliases for backward compatibility
-use MultipleAuthors\Classes\Authors_Iterator;
-
-class_alias(MultipleAuthors\Plugin::class, PP_Multiple_authors_plugin::class);
-class_alias(MultipleAuthors\Container::class, PublishPress\Addon\Multiple_authors\Container::class);
-class_alias(MultipleAuthors\Factory::class, PublishPress\Addon\Multiple_authors\Factory::class);
-class_alias(MultipleAuthors\Services::class, PublishPress\Addon\Multiple_authors\Services::class);
-class_alias(MultipleAuthors\Widget::class, PublishPress\Addon\Multiple_authors\Widget::class);
-//class_alias(MultipleAuthors\WP_Cli::class, PublishPress\Addon\Multiple_authors\WP_Cli::class);
-class_alias(MultipleAuthors\Classes\Admin_Ajax::class, PublishPress\Addon\Multiple_authors\Classes\Admin_Ajax::class);
+class_alias('MultipleAuthors\\Plugin', 'PP_Multiple_authors_plugin');
+class_alias('MultipleAuthors\\Container', 'PublishPress\\Addon\\Multiple_authors\\Container');
+class_alias('MultipleAuthors\\Factory', 'PublishPress\Addon\Multiple_authors\Factory');
+class_alias('MultipleAuthors\\Services', 'PublishPress\Addon\Multiple_authors\Services');
+class_alias('MultipleAuthors\\Widget', 'PublishPress\Addon\Multiple_authors\Widget');
+class_alias('MultipleAuthors\\Classes\\Admin_Ajax', 'PublishPress\\Addon\\Multiple_authors\\Classes\\Admin_Ajax');
 class_alias(
-    MultipleAuthors\Classes\Author_Editor::class,
-    PublishPress\Addon\Multiple_authors\Classes\Author_Editor::class
+    'MultipleAuthors\\Classes\\Author_Editor',
+    'PublishPress\\Addon\\Multiple_authors\\Classes\\Author_Editor'
 );
 class_alias(
-    MultipleAuthors\Classes\Authors_Iterator::class,
-    PublishPress\Addon\Multiple_authors\Classes\Authors_Iterator::class
+    'MultipleAuthors\\Classes\\Authors_Iterator',
+    'PublishPress\\Addon\\Multiple_authors\\Classes\\Authors_Iterator'
 );
 class_alias(
-    Authors_Iterator::class,
+    'MultipleAuthors\\Classes\\Authors_Iterator',
     'Multiple_authors_iterator'
 );
-class_alias(MultipleAuthors\Classes\CLI::class, PublishPress\Addon\Multiple_authors\Classes\CLI::class);
+class_alias('MultipleAuthors\\Classes\\CLI', 'PublishPress\\Addon\\Multiple_authors\\Classes\\CLI');
 class_alias(
-    MultipleAuthors\Classes\Content_Model::class,
-    PublishPress\Addon\Multiple_authors\Classes\Content_Model::class
+    'MultipleAuthors\\Classes\\Content_Model',
+    'PublishPress\\Addon\\Multiple_authors\\Classes\\Content_Model'
 );
-class_alias(MultipleAuthors\Classes\Installer::class, PublishPress\Addon\Multiple_authors\Classes\Installer::class);
-class_alias(MultipleAuthors\Classes\Post_Editor::class, PublishPress\Addon\Multiple_authors\Classes\Post_Editor::class);
-class_alias(MultipleAuthors\Classes\Query::class, PublishPress\Addon\Multiple_authors\Classes\Query::class);
-class_alias(MultipleAuthors\Classes\Utils::class, PublishPress\Addon\Multiple_authors\Classes\Utils::class);
+class_alias('MultipleAuthors\\Classes\\Installer', 'PublishPress\\Addon\\Multiple_authors\\Classes\\Installer');
+class_alias('MultipleAuthors\\Classes\\Post_Editor', 'PublishPress\\Addon\\Multiple_authors\\Classes\\Post_Editor');
+class_alias('MultipleAuthors\\Classes\\Query', 'PublishPress\\Addon\\Multiple_authors\\Classes\\Query');
+class_alias('MultipleAuthors\\Classes\\Utils', 'PublishPress\\Addon\\Multiple_authors\\Classes\\Utils');
 class_alias(
-    MultipleAuthors\Classes\Objects\Author::class,
-    PublishPress\Addon\Multiple_authors\Classes\Objects\Author::class
+    'MultipleAuthors\\Classes\\Objects\\Author',
+    'PublishPress\\Addon\\Multiple_authors\\Classes\\Objects\\Author'
 );
 class_alias(
-    MultipleAuthors\Classes\Integrations\Theme::class,
-    PublishPress\Addon\Multiple_authors\Classes\Integrations\Theme::class
+    'MultipleAuthors\\Classes\\Integrations\\Theme',
+    'PublishPress\\Addon\\Multiple_authors\\Classes\\Integrations\\Theme'
 );
 
 if (!defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION')) {
