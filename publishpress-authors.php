@@ -75,12 +75,14 @@ if (! defined('PP_AUTHORS_LOADED')) {
         $pluginChecker = new PublishPressInstanceProtection\InstanceChecker($pluginCheckerConfig);
     }
 
-    $autoloadFilePath = PP_AUTHORS_LIB_VENDOR_PATH . '/autoload.php';
-    if (! class_exists('ComposerAutoloaderInitPPAuthors')
-        && is_file($autoloadFilePath)
-        && is_readable($autoloadFilePath)
-    ) {
-        require_once $autoloadFilePath;
+    if (! defined('PP_AUTHORS_PRO_LIB_VENDOR_PATH')) {
+        $autoloadFilePath = PP_AUTHORS_LIB_VENDOR_PATH . '/autoload.php';
+        if (! class_exists('ComposerAutoloaderInitPPAuthors')
+            && is_file($autoloadFilePath)
+            && is_readable($autoloadFilePath)
+        ) {
+            require_once $autoloadFilePath;
+        }
     }
 
     if (defined('PP_AUTHORS_PRO_LOADED')) {
