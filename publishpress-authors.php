@@ -85,7 +85,7 @@ if (! defined('PP_AUTHORS_LOADED')) {
         }
     }
 
-    if (defined('PP_AUTHORS_PRO_LOADED')) {
+    if (defined('PP_AUTHORS_PRO_LIB_VENDOR_PATH')) {
         add_filter(
             'plugin_row_meta',
             function ($links, $file) {
