@@ -1847,7 +1847,7 @@ class Plugin
     {
         $field         = 'display_name';
         $post_id      = false;
-        $separator    = ',';
+        $separator    = ', ';
         $user_objects = false;
         $term_id      = false;
         $archive    = false;
