@@ -1527,6 +1527,7 @@ class Plugin
             'author_user_login'             => $author_user_login,
             'display_name_html'             => $author_display_name_html,
             'author_details'                => $author_details,
+            'author_menu_link'              => esc_url(admin_url('edit-tags.php?taxonomy=author')),
         ];
 
         wp_localize_script(

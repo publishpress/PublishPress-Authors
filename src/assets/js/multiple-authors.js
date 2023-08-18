@@ -920,6 +920,16 @@ jQuery(document).ready(function ($) {
     }
 
     /**
+     * Fix Authors menu and admin menu conflict
+     */
+    if ($('#adminmenu a[href="ppma-authors"]').length > 0) {
+        // change menu link
+        $('#adminmenu a[href="ppma-authors"]').attr('href', MultipleAuthorsStrings.author_menu_link);
+        // remove duplicate authors
+        $('#adminmenu ul.wp-submenu a[href="edit-tags.php?taxonomy=author"]').closest('li').remove();
+    }
+
+    /**
      * Show or Hide profile field on profile type change
      */
     $(document).on('change', '#ppmacf_type', function () {
