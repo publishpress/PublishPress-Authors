@@ -130,8 +130,9 @@ a.ppma-author-field-meta i {
     padding: 0 14px;
 }
 
-a.ppma-author-field-meta {
-    margin-right: 3px;
+.ppma-author-field-meta {
+    margin-right: 5px;
+    overflow-wrap: anywhere;
 }
 
 .ppma-author-field-type-wysiwyg {
