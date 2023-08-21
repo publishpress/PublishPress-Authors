@@ -209,7 +209,7 @@ foreach ($profile_fields as $key => $data) {
                                 $profile_field_html  .= '<span class="ppma-author-field-meta-prefix"> '. $profile_before_display_prefix .' </span>';
     }
                                 $profile_field_html .= '<'. esc_html($profile_html_tag) .'';
-                                $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data ppma-author-field-meta" aria-label="'. esc_attr(($data['label'])) .'"';
+                                $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data ppma-author-field-meta  '. esc_attr('ppma-author-field-type-' . $data['type']) .'" aria-label="'. esc_attr(($data['label'])) .'"';
                                 if ($profile_html_tag === 'a') {
                                     $profile_field_html .= ' href="</?php echo $author->$key; ?>"';
                                 }
