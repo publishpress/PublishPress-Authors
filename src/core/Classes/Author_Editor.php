@@ -852,7 +852,7 @@ class Author_Editor
                     return new WP_Error(
                         'publishpress_authors_duplicate_mapped_user',
                         esc_html__(
-                            'This user is already mapped to another author.',
+                            'Sorry, this WordPress user is already mapped to another Author. By default, each user can only be connected to one Author profile.',
                             'publishpress-authors'
                         )
                     );
