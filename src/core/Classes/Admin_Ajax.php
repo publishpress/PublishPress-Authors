@@ -285,7 +285,7 @@ class Admin_Ajax
                     if ((int)$author->term_id !== (int)$term_id) {
                         $response['status']  = 'error';
                         $response['content'] = esc_html__(
-                            'This user is already mapped to another author.', 
+                            'Sorry, this WordPress user is already mapped to another Author. By default, each user can only be connected to one Author profile.', 
                             'publishpress-authors'
                         );
                         wp_send_json($response);
