@@ -134,6 +134,10 @@ a.ppma-author-field-meta {
     margin-right: 3px;
 }
 
+.ppma-author-field-type-wysiwyg {
+    white-space: pre-line;
+}
+
 .pp-author-boxes-recent-posts {
     margin-top: 10px;
 }
