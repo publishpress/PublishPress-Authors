@@ -339,8 +339,6 @@
                 'box_tab_layout_author_separator'
             ];
 
-            let all_refresh_trigger = post_refresh_trigger.concat(bio_refresh_trigger, avatar_refresh_trigger, meta_refresh_trigger, profile_refresh_trigger, name_refresh_trigger, layout_refresh_trigger);
-
             var profile_fields = JSON.parse(authorBoxesEditor.profileFields);
             var field_key = '';
             var profile_refresh_trigger = [];
@@ -357,6 +355,8 @@
                 profile_refresh_trigger.push('profile_fields_' + field_name + '_before_display_prefix');
                 profile_refresh_trigger.push('profile_fields_' + field_name + '_after_display_suffix');
             }
+
+            let all_refresh_trigger = post_refresh_trigger.concat(bio_refresh_trigger, avatar_refresh_trigger, meta_refresh_trigger, profile_refresh_trigger, name_refresh_trigger, layout_refresh_trigger);
 
             var force_refresh = false;
             if (all_refresh_trigger.includes(current_field_name) || current_field_name === 'preview_author_names[]') {
