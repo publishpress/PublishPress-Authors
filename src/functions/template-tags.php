@@ -434,19 +434,6 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
                 $authors[strtolower($grouped_name[0])][]  = $author;
             } elseif ($result_type === 'recent') {
                 //query recent post by authors
-                $author_recent_args = [
-                    'orderby'        => 'post_date',
-                    'order'          => 'DESC',
-                    'fields'          => 'ids',
-                    'posts_per_page' => 5,
-                    'tax_query' => array(
-                        array(
-                            'taxonomy' => 'author',
-                            'terms'    => $author->term_id,
-                            'field'     => 'term_id'
-                        )
-                    )
-                ];
                 $author_recent_posts = multiple_authors_get_author_recent_posts($author);
 
                 //add recent posts
