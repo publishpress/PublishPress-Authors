@@ -1240,7 +1240,7 @@ class MA_Author_Boxes extends Module
         <?php endif; ?> 
 
                     <!--begin code -->
-                    
+
                     <?php if (isset($args['short_code_args']) && isset($args['short_code_args']['search_box_html']) && !empty($args['short_code_args']['search_box_html'])) : ?>
                         <?php echo $args['short_code_args']['search_box_html']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                     <?php endif; ?>
@@ -1360,7 +1360,7 @@ class MA_Author_Boxes extends Module
                                                     $profile_field_html .= '<'. esc_html($profile_html_tag) .'';
                                                     $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data ppma-author-field-meta '. esc_attr('ppma-author-field-type-' . $data['type']) .'" aria-label="'. esc_attr(($data['label'])) .'"';
                                                     if ($profile_html_tag === 'a') {
-                                                        $profile_field_html .= ' href="'. $profile_value_prefix.$field_value .'"';
+                                                        $profile_field_html .= ' href="'. $profile_value_prefix.$field_value .'" rel="nofollow"';
                                                     }
                                                     $profile_field_html .= '>';
                                                     if ($profile_show_field) {
@@ -1425,12 +1425,12 @@ class MA_Author_Boxes extends Module
                                                             </a>
                                                         <?php endif; ?>
                                                         <?php if ($args['meta_email_show']['value'] && $author->user_email) : ?>
-                                                            <a href="<?php echo esc_url('mailto:'.$author->user_email); ?>" target="_blank" aria-label="<?php echo esc_attr__('Email', 'publishpress-authors'); ?>">
+                                                            <a href="<?php echo esc_url('mailto:'.$author->user_email); ?>" target="_blank" aria-label="<?php echo esc_attr__('Email', 'publishpress-authors'); ?>" rel="nofollow">
                                                                 <span class="dashicons dashicons-email-alt"></span>
                                                             </a>
                                                         <?php endif; ?>
                                                         <?php if ($args['meta_site_link_show']['value'] && $author->user_url) : ?>
-                                                            <a href="<?php echo esc_url($author->user_url); ?>" target="_blank" aria-label="<?php echo esc_attr__('Website', 'publishpress-authors'); ?>">
+                                                            <a href="<?php echo esc_url($author->user_url); ?>" target="_blank" aria-label="<?php echo esc_attr__('Website', 'publishpress-authors'); ?>" rel="nofollow">
                                                                 <span class="dashicons dashicons-admin-links"></span>
                                                             </a>
                                                         <?php endif; ?>
