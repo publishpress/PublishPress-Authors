@@ -1180,8 +1180,6 @@ class MA_Author_Boxes extends Module
         $args['instance_id'] = 1;
 
         $args['additional_class'] = str_replace(' ', '.', trim($args['box_tab_custom_wrapper_class']['value']));
-        
-        $legacyPlugin = Factory::getLegacyPlugin();
 
         //custom styles
         $custom_styles = '';
@@ -1239,8 +1237,14 @@ class MA_Author_Boxes extends Module
                             </select>
                         </div>
                     </div>
-        <?php endif; ?>
+        <?php endif; ?> 
+
                     <!--begin code -->
+                    
+                    <?php if (isset($args['short_code_args']) && isset($args['short_code_args']['search_box_html']) && !empty($args['short_code_args']['search_box_html'])) : ?>
+                        <?php echo $args['short_code_args']['search_box_html']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                    <?php endif; ?>
+
                     <<?php echo ($li_style ? 'div' : 'span'); ?> class="<?php echo esc_attr($body_class); ?>"
                     data-post_id="<?php echo esc_attr($args['post_id']); ?>"
                     data-instance_id="<?php echo esc_attr($args['instance_id']); ?>"
@@ -1480,6 +1484,7 @@ class MA_Author_Boxes extends Module
             </div>
         </div>
         <?php endif; ?>
+
         <?php if (isset($args['short_code_args']) && isset($args['short_code_args']['pagination']) && !empty($args['short_code_args']['pagination'])) : ?>
             <nav class="footer-navigation navigation pagination">
                 <div class="nav-links">

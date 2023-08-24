@@ -357,6 +357,7 @@ class Authors_Widget extends WP_Widget
             $pagination = false;
         }
 
+        // search options
         $filter_fields = false;
         if (isset($instance['search_field']) && !empty($instance['search_field'])) {
             $valid_fields = Author_Editor::get_fields(false);
@@ -374,6 +375,29 @@ class Authors_Widget extends WP_Widget
 
         }
 
+        $search_placeholder = esc_html__('Search Box', 'publishpress-authors');
+        $search_query       = isset($_GET['seach_query']) ? sanitize_text_field($_GET['seach_query']) : '';
+        $selected_option    = isset($_GET['search_field']) ? sanitize_text_field($_GET['search_field']) : '';
+        $search_submit      = esc_html__('Search', 'publishpress-authors');
+
+        // search box
+        $search_box_html = '';
+        if (isset($instance['search_box']) && $instance['search_box']) {
+            $search_box_html .= '<div class="pp-multiple-authors-searchbox searchbox">';
+            $search_box_html .= '<form action="" method="GET">';
+            $search_box_html .= '<input class="widefat" id="authors-search-input" name="seach_query" type="search" value="'. esc_attr($search_query) .'" placeholder="'. esc_attr($search_placeholder) .'">';
+            if ($filter_fields) {
+                $search_box_html .= '<select id="authors-search-filter" name="search_field">';
+                foreach ($filter_fields as $option => $label) :
+                    $search_box_html .= '<option value="'. esc_attr($option) .'" '. selected($option, $selected_option, false) .'> '. esc_html($label) .' </option>';
+                endforeach;
+                $search_box_html .= '</select>';
+            }
+            $search_box_html .= '<input type="submit" class="button search-submit" id="" name="submit" value="'. esc_attr($search_submit) .'"/>';
+            $search_box_html .= '</form>';
+            $search_box_html .= '</div>';
+        }
+
         $args = [
             'show_title'   => false,
             'css_class'    => esc_attr($css_class),
@@ -381,6 +405,7 @@ class Authors_Widget extends WP_Widget
             'authors'      => $authors,
             'results'      => $authors,
             'pagination'   => $pagination,
+            'search_box_html' => $search_box_html,
             'all_text'     => esc_html__('All Authors', 'publishpress-authors'),
             'no_post_text' => esc_html__('No recent posts from this author', 'publishpress-authors'),
             'target'       => $target,
@@ -392,10 +417,10 @@ class Authors_Widget extends WP_Widget
             'shortcode'    => $instance,
             'template_options' => [
                 'filter_fields'        => $filter_fields,
-                'search_placeholder' => esc_html__('Search Box', 'publishpress-authors'),
-                'search_query'       => isset($_GET['seach_query']) ? esc_attr($_GET['seach_query']) : '',
-                'selected_option'    => isset($_GET['search_field']) ? esc_attr($_GET['search_field']) : '',
-                'search_submit'      => esc_html__('Search', 'publishpress-authors')
+                'search_placeholder' => $search_placeholder,
+                'search_query'       => $search_query,
+                'selected_option'    => $selected_option,
+                'search_submit'      => $search_submit
             ]
         ];
 
