@@ -1200,8 +1200,8 @@ class MA_Author_Boxes extends Module
 
         $authors = (isset($args['authors']) && is_array($args['authors']) && !empty($args['authors'])) ? $args['authors'] : [];
 
-        $box_post = get_post($args['post_id']);
-        $box_post_id = (is_object($box_post) && isset($box_post->ID)) ? $box_post->ID : '1';
+        $box_post         = get_post($args['post_id']);
+        $box_post_id      = (is_object($box_post) && isset($box_post->ID)) ? $box_post->ID : '1';
         $li_style         = true;
         $author_separator = $args['box_tab_layout_author_separator']['value']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped;
         $author_counts    = count($authors);
