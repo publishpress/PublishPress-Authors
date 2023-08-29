@@ -37,7 +37,7 @@ class Theme
         /* translators: Author archive title. 1: Author name */
 
         return sprintf(
-            __('Author: %s', 'publishpress-authors'),
+            __('Author: %s'),
             '<span class="vcard">' . get_queried_object()->display_name . '</span>'
         );
     }

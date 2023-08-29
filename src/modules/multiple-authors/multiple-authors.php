@@ -1133,10 +1133,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function settings_title_appended_to_content_option($args = [])
         {
             $idSingle    = $this->module->options_group_name . '_title_appended_to_content';
-            $singleValue = isset($this->module->options->title_appended_to_content) ? $this->module->options->title_appended_to_content : esc_html__(
-                'Author',
-                'publishpress-authors'
-            );
+            $singleValue = isset($this->module->options->title_appended_to_content) ? $this->module->options->title_appended_to_content : esc_html__('Author');
 
             $idPlural    = $this->module->options_group_name . '_title_appended_to_content_plural';
             $pluralValue = isset($this->module->options->title_appended_to_content_plural) ? $this->module->options->title_appended_to_content_plural : esc_html__(
