@@ -3532,19 +3532,6 @@ echo '<span class="ppma_settings_field_description">'
 
                 update_option('publishpress_multiple_authors_settings_migrated_3_0_0', 1);
             }
-
-            if (!get_option('publishpress_multiple_authors_settings_migrated_3_15_0')) {
-               if (function_exists('get_role')) {
-                   $capability_roles = ['administrator', 'editor', 'author'];
-                   foreach ($capability_roles as $capability_role) {
-                        $role = get_role($capability_role);
-                        if (is_object($role) && !is_wp_error($role)) {
-                            $role->add_cap('ppma_edit_own_profile');
-                        }
-                    }
-                    update_option('publishpress_multiple_authors_settings_migrated_3_15_0', 1);
-               }
-            }
         }
 
         private function getTotalOfNotMigratedCoAuthors()

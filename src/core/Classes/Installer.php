@@ -52,6 +52,7 @@ class Installer
         self::createDefaultAuthorBoxes();
         self::addManageFieldsCapabilitiesToRoles();
         self::createDefaultCustomFields();
+        self::addNewAuthorCapabilitiesToRoles();
 
         /**
          * @param string $currentVersion
@@ -97,6 +98,9 @@ class Installer
 
         if (version_compare($currentVersions, '4.1.6', '<')) {
             self::updateAuthorBoxesFieldValue(['box_tab_layout_author_separator' => ', '], ['author_boxes_inline', 'author_boxes_inline_avatar']);
+        }
+        if (version_compare($currentVersions, '4.2.1', '<')) {
+            self::addNewAuthorCapabilitiesToRoles();
         }
 
         /**
@@ -392,6 +396,18 @@ class Installer
                 $role->add_cap($cap);
             }
         }
+    }
+
+    private static function addNewAuthorCapabilitiesToRoles()
+    {
+
+        $capability_roles = ['administrator', 'editor', 'author', 'contributor'];
+        foreach ($capability_roles as $capability_role) {
+             $role = get_role($capability_role);
+             if ($role instanceof WP_Role) {
+                 $role->add_cap('ppma_edit_own_profile');
+             }
+         }
     }
 
     private static function addManageLayoutsCapabilitiesToRoles()
