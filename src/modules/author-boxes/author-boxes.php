@@ -26,8 +26,6 @@ use MultipleAuthors\Classes\Legacy\Module;
 use MultipleAuthorBoxes\AuthorBoxesDefault;
 use MultipleAuthors\Classes\Author_Editor;
 use MultipleAuthorBoxes\AuthorBoxesStyles;
-use MultipleAuthorBoxes\AuthorBoxesAjax;
-use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Classes\Utils;
 use MultipleAuthors\Factory;
 
@@ -144,20 +142,9 @@ class MA_Author_Boxes extends Module
         add_filter('bulk_actions-edit-' . self::POST_TYPE_BOXES . '', [$this, 'removeBulkActionEdit'], 11);
 
 
-        add_action(
-            'wp_ajax_author_boxes_editor_get_preview', 
-            [
-                'MultipleAuthorBoxes\AuthorBoxesAjax', 
-                'handle_author_boxes_editor_get_preview'
-            ]
-        );
-        add_action(
-            'wp_ajax_author_boxes_editor_get_template', 
-            [
-                'MultipleAuthorBoxes\AuthorBoxesAjax', 
-                'handle_author_boxes_editor_get_template'
-            ]
-        );
+        add_action('wp_ajax_author_boxes_editor_get_preview', ['MultipleAuthorBoxes\AuthorBoxesAjax', 'handle_author_boxes_editor_get_preview']);
+        add_action('wp_ajax_author_boxes_editor_get_template', ['MultipleAuthorBoxes\AuthorBoxesAjax', 'handle_author_boxes_editor_get_template']);
+        add_action('wp_ajax_author_boxes_editor_save_fields_order', ['MultipleAuthorBoxes\AuthorBoxesAjax', 'handle_author_boxes_fields_order']);
 
         $this->registerPostType();
     }
@@ -513,17 +500,23 @@ class MA_Author_Boxes extends Module
     }
 
     /**
+     * @param boolean $ids_only
      * @return array
      */
-    public static function getAuthorBoxes()
+    public static function getAuthorBoxes($ids_only = false)
     {
-        $posts = get_posts(
-            [
-                'post_type' => self::POST_TYPE_BOXES,
-                'posts_per_page' => -1,
-                'post_status' => 'publish',
-            ]
-        );
+        $post_args = [
+            'post_type' => self::POST_TYPE_BOXES,
+            'posts_per_page' => -1,
+            'post_status' => 'publish',
+        ];
+
+        if ($ids_only) {
+            $post_args['fields'] = 'ids';
+            return get_posts($post_args);
+        }
+
+        $posts = get_posts($post_args);
 
         $author_boxes = [];
 
@@ -1723,6 +1716,45 @@ class MA_Author_Boxes extends Module
                     //$additional_class .= (int)$args['index'] === 1 ? 'opened' : 'closed';
                     $additional_class .= ' profile-header-' .$args['tab_name'];
                     ?>
+                    <?php if ((int)$args['index'] === 1) : ?>
+                        <div class="ppma-editor-field-reorder-btn">
+                            <span class="dashicons dashicons-admin-generic"></span> 
+                            <?php esc_html_e('Re-order Fields', 'publishpress-authors'); ?>
+                        </div>
+                        <?php 
+
+                        $profile_fields   = Author_Editor::get_fields(false);
+                        $profile_fields   = apply_filters('multiple_authors_author_fields', $profile_fields, false);
+                        $modal_content = '';
+                        $modal_content .= '<div class="ppma-editor-order-form">';
+                        $modal_content .= '<p class="description">';
+                        $modal_content .= __('Re-order Field position by dragging the fields to your preferred order and save changes.', 'publishpress-authors');
+                        $modal_content .= '</p>';
+                        $modal_content .= '<div class="ppma-re-order-lists">';
+                        foreach ($profile_fields as $key => $data) {
+                            if (!in_array($key, MA_Author_Boxes::AUTHOR_BOXES_EXCLUDED_FIELDS)) {
+                                $modal_content .= '<div class="field-sort-item"><h2>';
+                                $modal_content .= $data['label'];
+                                $modal_content .= '<input type="hidden" class="sort-field-names" value="'. esc_attr($key) .'">';
+                                $modal_content .= '</h2></div>';
+                            }
+                        }
+                        $modal_content .= '</div>';
+                        $modal_content .= '<div class="submit-wrapper">';
+                        $modal_content .= '<button class="button button-primary update-order" data-save="current">';
+                        $modal_content .= __('Save for Current Author Box', 'publishpress-authors');
+                        $modal_content .= '<div class="spinner"></div>';
+                        $modal_content .= '</button>';
+                        $modal_content .= '<button class="button button-secondary update-order" data-save="all">';
+                        $modal_content .= __('Save for All Author Boxes', 'publishpress-authors');
+                        $modal_content .= '<div class="spinner"></div>';
+                        $modal_content .= '</button>';
+                        $modal_content .= '</div>';
+                        $modal_content .= '<div class="ppma-order-response-message"></div>';
+                        $modal_content .= '</div>';
+                        Utils::loadThickBoxModal('ppma-field-reorder-thickbox-btn', 'initial', 'initial', $modal_content);
+                        ?>
+                    <?php endif; ?>
                 <div class="ppma-editor-profile-header-title <?php echo esc_attr($additional_class); ?>"
                     data-fields_name="<?php echo esc_attr($args['tab_name']); ?>">
                     <h2 class="title-text">
@@ -1783,6 +1815,7 @@ class MA_Author_Boxes extends Module
             [
                 'jquery',
                 'wp-color-picker',
+                'jquery-ui-sortable'
             ],
             PP_AUTHORS_VERSION
         );

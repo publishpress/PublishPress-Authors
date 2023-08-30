@@ -22,6 +22,16 @@
                     }, 100);
                 },
             });
+
+            /**
+             * Author field re-order action
+             */
+            $(document).on('click', '.ppma-editor-field-reorder-btn', function (e) {
+                e.preventDefault();
+                $('.ppma-field-reorder-thickbox-btn').trigger('click');
+                return;
+            });
+            $(".ppma-re-order-lists").sortable();
         }
 
         /**
@@ -182,6 +192,43 @@
                 } else {
                     $('.ppma-editor-template-generated').css('color', 'red').html(content).show().delay(2000).fadeOut('slow');
                 }
+            });
+
+        });
+
+        /**
+         * Save author box order
+         */
+        $(document).on('click', '.ppma-editor-order-form button.update-order', function (event) {
+            event.preventDefault();
+            var button = $(this);
+            var buttons = $('.ppma-editor-order-form button.update-order');
+            buttons.prop('disabled', true);
+            button.find('.spinner').addClass('is-active');
+            $('.ppma-editor-generate-template').attr('disabled', true);
+
+            var save_for = button.attr('data-save');
+            var field_orders = [];
+            $("input.sort-field-names").each(function () {
+                if ($(this).val() !== '') {
+                    field_orders.push($(this).val().toLowerCase());
+                }
+            });
+
+            //prepare ajax data
+            var data = {
+                action: "author_boxes_editor_save_fields_order",
+                save_for: save_for,
+                field_orders: field_orders,
+                post_id: authorBoxesEditor.post_id,
+                nonce: authorBoxesEditor.nonce,
+            };
+            $.post(ajaxurl, data, function (response) {
+                var status          = response.status;
+                var status_message  = response.content;
+                $('.ppma-order-response-message').html('<span class="' + status + '"> ' + status_message + ' </span>');
+                buttons.prop('disabled', false);
+                button.find('.spinner').removeClass('is-active');
             });
 
         });
