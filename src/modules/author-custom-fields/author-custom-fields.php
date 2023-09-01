@@ -123,6 +123,9 @@ class MA_Author_Custom_Fields extends Module
         );
         add_filter('wp_unique_post_slug', [$this, 'fixPostSlug'], 10, 4);
         add_action('admin_head', [$this, 'addInlineScripts']);
+        add_action('admin_enqueue_scripts', [$this, 'enqueueAdminScripts']);
+        add_action('wp_ajax_author_custom_fields_save_order', [$this, 'handle_ajax_update_field_order']);
+        add_action('pre_get_posts', [$this, 'author_custom_fields_default_sort']);
 
         $this->registerPostType();
     }
@@ -195,6 +198,49 @@ class MA_Author_Custom_Fields extends Module
             esc_html__('Author Fields', 'publishpress-authors'),
             apply_filters('pp_multiple_authors_manage_custom_fields_cap', 'ppma_manage_custom_fields'),
             'edit.php?post_type=' . self::POST_TYPE_CUSTOM_FIELDS
+        );
+    }
+
+    /**
+     * Enqueue Admin Scripts
+     *
+     * @return void
+     */
+    public function enqueueAdminScripts()
+    {
+        global $pagenow, $post_type;
+
+        if (! in_array($pagenow, ['edit.php'])
+            || $post_type !== self::POST_TYPE_CUSTOM_FIELDS
+        ) {
+            return;
+        }
+
+        $moduleAssetsUrl = PP_AUTHORS_URL . 'src/modules/author-custom-fields/assets';
+
+        wp_enqueue_script('jquery-ui-sortable');  
+
+        wp_enqueue_script(
+            'author-custom-fields-js',
+            $moduleAssetsUrl . '/js/author-custom-fields.js',
+            [
+                'jquery',
+                'jquery-ui-sortable'
+            ],
+            PP_AUTHORS_VERSION
+        );
+
+        $localized_data = [
+            'nonce'     => wp_create_nonce('author-custom-fields-request-nonce')
+        ];
+
+        wp_localize_script('author-custom-fields-js', 'authorCustomFields', $localized_data);
+
+        wp_enqueue_style(
+            'author-custom-fields-css',
+            $moduleAssetsUrl . '/css/author-custom-fields.css',
+            [],
+            PP_AUTHORS_VERSION
         );
     }
 
@@ -375,7 +421,7 @@ class MA_Author_Custom_Fields extends Module
     {
         $customFields = $this->getAuthorCustomFields(true);
         foreach ($fields as $field_key => $field_data) {
-            if (isset($customFields[$field_key]) && $this->getFieldMeta($customFields[$field_key]['post_id'], 'field_status') === 'off') {
+            if (isset($customFields[$field_key])) {
                 unset($fields[$field_key]);
             }
         }
@@ -401,6 +447,8 @@ class MA_Author_Custom_Fields extends Module
                 'post_type' => self::POST_TYPE_CUSTOM_FIELDS,
                 'posts_per_page' => 100,
                 'post_status' => 'publish',
+                'orderby' => 'menu_order',
+                'order' => 'ASC',
             ]
         );
 
@@ -410,15 +458,15 @@ class MA_Author_Custom_Fields extends Module
             foreach ($posts as $post) {
                 if ($include_disabled || $this->getFieldMeta($post->ID, 'field_status') !== 'off') {
                     $fields[$post->post_name] = [
-                    'name'        => $post->post_name,
-                    'label'       => $post->post_title,
-                    'type'        => $this->getFieldMeta($post->ID, 'type'),
-                    'social_profile' => $this->getFieldMeta($post->ID, 'social_profile'),
-                    'field_status' => $this->getFieldMeta($post->ID, 'field_status'),
-                    'requirement' => $this->getFieldMeta($post->ID, 'requirement'),
-                    'description' => $this->getFieldMeta($post->ID, 'description'),
-                    'post_id'     => $post->ID,
-                ];
+                        'name'        => $post->post_name,
+                        'label'       => $post->post_title,
+                        'type'        => $this->getFieldMeta($post->ID, 'type'),
+                        'social_profile' => $this->getFieldMeta($post->ID, 'social_profile'),
+                        'field_status' => $this->getFieldMeta($post->ID, 'field_status'),
+                        'requirement' => $this->getFieldMeta($post->ID, 'requirement'),
+                        'description' => $this->getFieldMeta($post->ID, 'description'),
+                        'post_id'     => $post->ID,
+                    ];
                 }
             }
         }
@@ -847,10 +895,74 @@ class MA_Author_Custom_Fields extends Module
         if (in_array($pagenow, ['post.php']) 
             && $current_screen 
             && !empty($current_screen->post_type)
-            && $current_screen->post_type === 'ppmacf_field'
+            && $current_screen->post_type === self::POST_TYPE_CUSTOM_FIELDS
         ) {
             //add validation modal
             Utils::loadThickBoxModal('ppma-general-thickbox-botton', 500, 150);
+        }
+    }
+
+
+
+    /**
+     * Handle a request to update author fields order.
+     */
+    public function handle_ajax_update_field_order()
+    {
+
+        $response['status']  = 'error';
+        $response['content'] = esc_html__('An error occured.', 'publishpress-authors');
+
+        //do not process request if nonce validation failed
+        if (empty($_POST['nonce']) 
+            || !wp_verify_nonce(sanitize_key($_POST['nonce']), 'author-custom-fields-request-nonce')
+        ) {
+            $response['status']  = 'error';
+            $response['content'] = esc_html__(
+                'Security error. Kindly reload this page and try again', 
+                'publishpress-authors'
+            );
+        } elseif (!current_user_can(apply_filters('pp_multiple_authors_manage_custom_fields_cap', 'ppma_manage_custom_fields'))) {
+            $response['status']  = 'error';
+            $response['content'] = esc_html__(
+                'You do not have permission to perform this action', 
+                'publishpress-authors'
+            );
+        } else {
+
+            $posts_order = (!empty($_POST['posts_order']) && is_array($_POST['posts_order'])) ? array_map('sanitize_text_field', $_POST['posts_order']) : false;
+
+            if ($posts_order) {
+
+                foreach ($posts_order as $position =>  $post_order) {
+                    $post_id = intval(preg_replace('/[^0-9]/', '', $post_order));
+                    wp_update_post(array(
+                        'ID' => $post_id,
+                        'menu_order' => $position,
+                    ));
+                }
+                $response['status']  = 'success';
+                $response['content'] = esc_html__('Field Order updated.', 'publishpress-authors');
+            }
+        }
+
+        wp_send_json($response);
+        exit;
+    }
+
+    /**
+     * Sort custom fields by order
+     *
+     * @param object $query
+     * @return void
+     */
+    public function author_custom_fields_default_sort($query) {
+
+        if (is_admin() && $query->is_main_query() && $query->get('post_type') === self::POST_TYPE_CUSTOM_FIELDS) {
+            if (!$query->get('orderby')) {
+                $query->set('orderby', 'menu_order');
+                $query->set('order', 'ASC');
+            }
         }
     }
 }
