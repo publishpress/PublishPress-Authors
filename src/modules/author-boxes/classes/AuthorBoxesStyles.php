@@ -218,8 +218,7 @@ class AuthorBoxesStyles
      */
     public static function getRProfileFieldStyles($args, $custom_styles) {
 
-        $profile_fields   = Author_Editor::get_fields(false);
-        $profile_fields   = apply_filters('multiple_authors_author_fields', $profile_fields, false);
+        $profile_fields   = MA_Author_Boxes::get_profile_fields($args['post_id']);
 
         foreach ($profile_fields as $key => $data) {
             if (!in_array($key, MA_Author_Boxes::AUTHOR_BOXES_EXCLUDED_FIELDS)) {

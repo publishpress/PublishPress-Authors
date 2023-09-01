@@ -1136,8 +1136,9 @@ class MA_Author_Boxes extends Module
                          * Render fields
                          */
                         foreach ($fields as $key => $args) {
-                            $args['key']   = $key;
-                            $args['value'] = isset($editor_data[$key]) ? $editor_data[$key] : '';
+                            $args['key']       = $key;
+                            $args['value']     = isset($editor_data[$key]) ? $editor_data[$key] : '';
+                            $args['post_id']   = $post->ID;
                             echo self::get_rendered_author_boxes_editor_partial($args); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                         }
 
@@ -1188,8 +1189,7 @@ class MA_Author_Boxes extends Module
 
         $admin_preview = (isset($args['admin_preview']) && $args['admin_preview']) ? true : false;
 
-        $profile_fields   = Author_Editor::get_fields(false);
-        $profile_fields   = apply_filters('multiple_authors_author_fields', $profile_fields, false);
+        $profile_fields   = self::get_profile_fields($args['post_id']);
 
         $authors = (isset($args['authors']) && is_array($args['authors']) && !empty($args['authors'])) ? $args['authors'] : [];
 
@@ -1532,7 +1532,9 @@ class MA_Author_Boxes extends Module
             'tabbed'      => 0,
             'tab_name'    => '',
             'show_input'  => false,
+            'post_id'     => false,
         ];
+
         $args      = array_merge($defaults, $args);
         $key       = $args['key'];
         $tab_class = 'ppma-boxes-editor-tab-content ppma-' . $args['tab'] . '-tab ' . $args['type'] . ' ppma-editor-'.$key;
@@ -1723,8 +1725,7 @@ class MA_Author_Boxes extends Module
                         </div>
                         <?php 
 
-                        $profile_fields   = Author_Editor::get_fields(false);
-                        $profile_fields   = apply_filters('multiple_authors_author_fields', $profile_fields, false);
+                        $profile_fields   = self::get_profile_fields($args['post_id']);
                         $modal_content = '';
                         $modal_content .= '<div class="ppma-editor-order-form">';
                         $modal_content .= '<p class="description">';
@@ -1825,8 +1826,7 @@ class MA_Author_Boxes extends Module
             'author_term_id'   => $author->term_id,
             'nonce'     => wp_create_nonce('author-boxes-request-nonce')
         ];
-        $profile_fields   = Author_Editor::get_fields(false);
-        $profile_fields   = apply_filters('multiple_authors_author_fields', $profile_fields, false);
+        $profile_fields   = self::get_profile_fields($post->ID);
         $profile_fields_keys = [];
         foreach ($profile_fields as $key => $data) {
             if (!in_array($key, self::AUTHOR_BOXES_EXCLUDED_FIELDS)) {
@@ -1848,5 +1848,37 @@ class MA_Author_Boxes extends Module
             [],
             PP_AUTHORS_VERSION
         );
+    }
+
+    /**
+     * Get author box profile fields sorted by box author field order
+     *
+     * @param mixed $author_box
+     * @param mixed $author
+     * 
+     * @return array
+     */
+    public static function get_profile_fields($author_box = false, $author = false) {
+        
+        $profile_fields   = Author_Editor::get_fields($author);
+        $profile_fields   = apply_filters('multiple_authors_author_fields', $profile_fields, false);
+
+        if ($author_box && (int)$author_box > 0) {
+            $author_fields_order = get_post_meta($author_box, self::META_PREFIX . 'author_fields_order', true);
+            $profile_fields_keys  = array_keys($profile_fields);
+            if (!empty($author_fields_order) && is_array($author_fields_order)) {
+                $possible_new_fields  = array_diff($profile_fields_keys, $author_fields_order);
+                $current_field_sort = array_merge($possible_new_fields, $author_fields_order);
+                $ordered_fields = [];
+                foreach ($current_field_sort as $field_key) {
+                    if (isset($profile_fields[$field_key])) {
+                        $ordered_fields[$field_key] = $profile_fields[$field_key];
+                    }
+                }
+                $profile_fields = $ordered_fields;
+            }
+        }
+
+        return $profile_fields;
     }
 }

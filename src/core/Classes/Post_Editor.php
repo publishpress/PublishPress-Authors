@@ -192,7 +192,7 @@ class Post_Editor
             remove_meta_box('authordiv', $post_type, 'normal');
             // @todo only register meta box when user can assign authors
             add_meta_box(
-                'authors',
+                'ppma_authorsdiv',
                 __('Authors', 'publishpress-authors'),
                 [__CLASS__, 'render_authors_metabox'],
                 $post_type,
