@@ -245,9 +245,12 @@
     color: green;
 }
 
-
 .ppma-order-response-message .error {
     color: red;
+}
+
+.ppma-editor-order-form .spinner:not(.is-active) {
+    display: none;
 }
 
 @media only screen and (max-width: 1270px) {
