@@ -1721,7 +1721,7 @@ class MA_Author_Boxes extends Module
                     <?php if ((int)$args['index'] === 1) : ?>
                         <div class="ppma-editor-field-reorder-btn">
                             <span class="dashicons dashicons-admin-generic"></span> 
-                            <?php esc_html_e('Re-order Fields', 'publishpress-authors'); ?>
+                            <?php esc_html_e('Reorder Fields', 'publishpress-authors'); ?>
                         </div>
                         <?php 
 
@@ -1729,7 +1729,7 @@ class MA_Author_Boxes extends Module
                         $modal_content = '';
                         $modal_content .= '<div class="ppma-editor-order-form">';
                         $modal_content .= '<p class="description">';
-                        $modal_content .= __('Re-order Field position by dragging the fields to your preferred order and save changes.', 'publishpress-authors');
+                        $modal_content .= __('Reorder the fields by dragging them to the correct position and saving your changes.', 'publishpress-authors');
                         $modal_content .= '</p>';
                         $modal_content .= '<div class="ppma-re-order-lists">';
                         foreach ($profile_fields as $key => $data) {
