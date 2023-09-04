@@ -1133,10 +1133,7 @@ if (!class_exists('MA_Multiple_Authors')) {
         public function settings_title_appended_to_content_option($args = [])
         {
             $idSingle    = $this->module->options_group_name . '_title_appended_to_content';
-            $singleValue = isset($this->module->options->title_appended_to_content) ? $this->module->options->title_appended_to_content : esc_html__(
-                'Author',
-                'publishpress-authors'
-            );
+            $singleValue = isset($this->module->options->title_appended_to_content) ? $this->module->options->title_appended_to_content : esc_html__('Author');
 
             $idPlural    = $this->module->options_group_name . '_title_appended_to_content_plural';
             $pluralValue = isset($this->module->options->title_appended_to_content_plural) ? $this->module->options->title_appended_to_content_plural : esc_html__(
@@ -3532,19 +3529,6 @@ echo '<span class="ppma_settings_field_description">'
 
                 update_option('publishpress_multiple_authors_settings_migrated_3_0_0', 1);
             }
-
-            if (!get_option('publishpress_multiple_authors_settings_migrated_3_15_0')) {
-               if (function_exists('get_role')) {
-                   $capability_roles = ['administrator', 'editor', 'author'];
-                   foreach ($capability_roles as $capability_role) {
-                        $role = get_role($capability_role);
-                        if (is_object($role) && !is_wp_error($role)) {
-                            $role->add_cap('ppma_edit_own_profile');
-                        }
-                    }
-                    update_option('publishpress_multiple_authors_settings_migrated_3_15_0', 1);
-               }
-            }
         }
 
         private function getTotalOfNotMigratedCoAuthors()
@@ -4131,7 +4115,7 @@ echo '<span class="ppma_settings_field_description">'
             if (!empty($validPostAuthors)) {
                 Utils::set_post_authors($postId, $validPostAuthors);
 
-                do_action('publishpress_authors_flush_cache');
+                do_action('publishpress_authors_flush_cache', $postId);
             }
 
             return $postId;
@@ -4208,7 +4192,7 @@ echo '<span class="ppma_settings_field_description">'
         {
             Utils::set_post_authors($postId, $authors);
 
-            do_action('publishpress_authors_flush_cache');
+            do_action('publishpress_authors_flush_cache', $postId);
         }
 
         public function userProfileUpdate($userId, $oldUserData)

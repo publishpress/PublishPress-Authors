@@ -24,6 +24,54 @@ class AuthorBoxesAjax
 {
 
     /**
+     * Handle a request to update author boxes fields order.
+     */
+    public static function handle_author_boxes_fields_order()
+    {
+
+        $response['status']  = 'error';
+        $response['content'] = esc_html__('An error occured.', 'publishpress-authors');
+
+        //do not process request if nonce validation failed
+        if (empty($_POST['nonce']) 
+            || !wp_verify_nonce(sanitize_key($_POST['nonce']), 'author-boxes-request-nonce')
+        ) {
+            $response['status']  = 'error';
+            $response['content'] = esc_html__(
+                'Security error. Kindly reload this page and try again', 
+                'publishpress-authors'
+            );
+        } elseif (!current_user_can(apply_filters('pp_multiple_authors_manage_layouts_cap', 'ppma_manage_layouts'))) {
+            $response['status']  = 'error';
+            $response['content'] = esc_html__(
+                'You do not have permission to perform this action', 
+                'publishpress-authors'
+            );
+        } else {
+
+            $field_orders = (!empty($_POST['field_orders']) && is_array($_POST['field_orders'])) ? array_map('sanitize_text_field', $_POST['field_orders']) : false;
+            $post_id = isset($_POST['post_id']) ? sanitize_text_field($_POST['post_id']) : false;
+            $save_for = isset($_POST['save_for']) ? sanitize_text_field($_POST['save_for']) : 'current';
+
+            if ($field_orders && $post_id) {
+                if ($save_for === 'current') {
+                    $post_ids = [$post_id];
+                } else {
+                    $post_ids = MA_Author_Boxes::getAuthorBoxes(true);
+                }
+                foreach ($post_ids as $author_box) {
+                    update_post_meta($author_box, MA_Author_Boxes::META_PREFIX . 'author_fields_order', $field_orders);
+                }
+                $response['status']  = 'success';
+                $response['content'] = sprintf(esc_html__('Field Order updated. %1sClick here%2s to reload this page to see new order changes.', 'publishpress-authors'), '<a href="'. esc_url(admin_url('post.php?post='. $post_id .'&action=edit')) .'">', '</a>');
+            }
+        }
+
+        wp_send_json($response);
+        exit;
+    }
+
+    /**
      * Handle a request to generate author boxes preview.
      */
     public static function handle_author_boxes_editor_get_preview()
@@ -209,7 +257,7 @@ foreach ($profile_fields as $key => $data) {
                                 $profile_field_html  .= '<span class="ppma-author-field-meta-prefix"> '. $profile_before_display_prefix .' </span>';
     }
                                 $profile_field_html .= '<'. esc_html($profile_html_tag) .'';
-                                $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data ppma-author-field-meta" aria-label="'. esc_attr(($data['label'])) .'"';
+                                $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data ppma-author-field-meta  '. esc_attr('ppma-author-field-type-' . $data['type']) .'" aria-label="'. esc_attr(($data['label'])) .'"';
                                 if ($profile_html_tag === 'a') {
                                     $profile_field_html .= ' href="</?php echo $author->$key; ?>"';
                                 }

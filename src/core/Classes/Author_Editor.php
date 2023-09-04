@@ -852,7 +852,7 @@ class Author_Editor
                     return new WP_Error(
                         'publishpress_authors_duplicate_mapped_user',
                         esc_html__(
-                            'This user is already mapped to another author.',
+                            'Sorry, this WordPress user is already mapped to another Author. By default, each user can only be connected to one Author profile.',
                             'publishpress-authors'
                         )
                     );
@@ -869,15 +869,14 @@ class Author_Editor
                 );
             }
 
-            /**
-             * Check if user with term slug already exists
-             */
             if (empty($_POST['slug'])) {
                 $slug = sanitize_title($_POST['tag-name']);
             } else {
                 $slug = sanitize_title($_POST['slug']);
             }
-
+            /**
+             * Check if user with term slug already exists
+             */
             $author_slug_user = get_user_by('slug', $slug);
             if ($author_slug_user
                 && is_object($author_slug_user)
@@ -894,6 +893,23 @@ class Author_Editor
                         )
                     );
                 }
+            }
+
+            /**
+             * Check if author with term slug already exists
+             */
+            $author_slug_term = get_term_by('slug', $slug, $taxonomy);
+            if (isset($_POST['authors-new'])
+                && is_object($author_slug_term)
+                && isset($author_slug_term->term_id)
+            ) {
+                return new WP_Error(
+                    'publishpress_authors_slug_exists',
+                    esc_html__(
+                        'An author with the name provided already exists.',
+                        'publishpress-authors'
+                    )
+                );
             }
         }
 

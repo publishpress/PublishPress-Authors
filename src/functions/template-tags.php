@@ -194,9 +194,9 @@ if (!function_exists('multiple_authors_get_author_recent_posts')) {
      */
     function multiple_authors_get_author_recent_posts(
         $author = false,
-        $id_only = true, 
-        $limit = 5, 
-        $orderby = 'post_date', 
+        $id_only = true,
+        $limit = 5,
+        $orderby = 'post_date',
         $order = 'DESC'
     ) {
         if (!$author) {
@@ -206,7 +206,7 @@ if (!function_exists('multiple_authors_get_author_recent_posts')) {
         if ((int)$limit === 0) {
             $limit = 5;
         }
-        
+
         $author_recent_args = [
             'orderby'        => $orderby,
             'order'          => $order,
@@ -240,6 +240,7 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
      */
     function publishpress_authors_get_all_authors($args = [], $instance = [])
     {
+        global $wpdb;
 
         //determine result type
         if (isset($instance['layout']) && $instance['layout'] === 'authors_index') {
@@ -282,17 +283,17 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
             $args['offset'] = $offset;
         }
 
-        $search_instance = (isset($instance['search_box']) && ($instance['search_box'] === true || $instance['search_box'] === 'true')) ? true : false;
+        $search_instance = isset($instance['search_box']) && ($instance['search_box'] === true || $instance['search_box'] === 'true');
 
         $search_text = false;
         $search_field = false;
         if ($search_instance && !empty($_GET['seach_query'])) {
-            $search_text = !empty($_GET['seach_query']) ? sanitize_text_field($_GET['seach_query']) : '';
+            $search_text =  sanitize_text_field($_GET['seach_query']);
             $search_field = !empty($_GET['search_field']) ? sanitize_text_field($_GET['search_field']) : false;
         }
 
         //other query limit condition
-        $last_article_date  = (isset($instance['last_article_date']) && !empty($instance['last_article_date'])) 
+        $last_article_date  = (!empty($instance['last_article_date']))
             ? sanitize_text_field($instance['last_article_date']) : false;
 
         $defaults = [
@@ -305,29 +306,26 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
 
         /**
          * Filter author query args
-         * 
+         *
          * @param array $args Original passed args.
          * @param array $instance Original passed instance.
          */
         $args = apply_filters('pp_multiple_authors_get_all_authors_args', $args, $instance);
 
-        if (isset($args['orderby']) && !empty($args['orderby']) && !in_array($args['orderby'], ['name', 'count'])) {
+        if (!empty($args['orderby']) && !in_array($args['orderby'], ['name', 'count'])) {
             $meta_order = true;
         } else {
             $meta_order = false;
         }
 
         if (true === $args['hide_empty'] || $search_text || $meta_order || $last_article_date) {
-            global $wpdb;
-
             $postTypes = Utils::get_enabled_post_types();
             $postTypes = array_map(function($item) {
                 return '"' . $item . '"';
             }, $postTypes);
             $postTypes = implode(', ', $postTypes);
 
-            $term_query = "";
-            $term_query .= "SELECT t.term_id as `term_id` ";
+            $term_query = "SELECT t.term_id as `term_id` ";
             $term_query .= "FROM {$wpdb->terms} AS t ";
             $term_query .= "INNER JOIN {$wpdb->term_taxonomy} AS tt ON (tt.term_id = t.term_id) ";
             if (true === $args['hide_empty']) {
@@ -341,29 +339,37 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
             if (true === $args['hide_empty'] || $last_article_date) {
                 $term_query .= "AND p.post_status IN ('publish') ";
                 $term_query .= "AND p.post_type IN ({$postTypes}) ";
+
                 if ($last_article_date) {
                     $last_article_date = str_replace(' ago', '', $last_article_date);
                     $term_query .= 'AND p.post_date > "' . date('Y-m-d H:i:s', strtotime("-{$last_article_date}")) . '" ';
                 }
             }
             if ($search_text && !$search_field) {
-                $term_query .= "AND (t.name LIKE '%" . $wpdb->esc_like($search_text) . "%' OR t.slug LIKE '%" . $wpdb->esc_like($search_text) . "%') ";
+                $term_query .= $wpdb->prepare(
+                    "AND (t.name LIKE '%%%s%%' OR t.slug LIKE '%%%s%%')",
+                    $search_text,
+                    $search_text
+                );
             } elseif ($search_text && $search_field) {
-                $term_query .= "AND (tm.meta_key = '{$search_field}'
-                AND tm.meta_value LIKE '%" . $wpdb->esc_like($search_text) . "%') ";
+                $term_query .= $wpdb->prepare(
+                    "AND (tm.meta_key = '%s' AND tm.meta_value LIKE '%%%s%%') ",
+                    $search_field,
+                    $search_text
+                );
             }
 
             if ($meta_order) {
                 $term_query .= "AND (tm.meta_key = '{$args['orderby']}') ";
             }
 
-            //get term count before before limit and group by incase it's paginated query
+            //get term count before before limit and group by in case it's paginated query
             if ($paged) {
                 $term_count_query = str_replace("SELECT t.term_id as `term_id`", "SELECT COUNT(DISTINCT t.term_id)", $term_query);
-            
+
                 /**
                  * Filter author terms query
-                 * 
+                 *
                  * @param array $term_count_query.
                  * @param array $args Original passed args.
                  * @param array $instance Original passed instance.
@@ -390,7 +396,7 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
 
             /**
              * Filter author terms query
-             * 
+             *
              * @param array $term_query.
              * @param array $args Original passed args.
              * @param array $instance Original passed instance.
@@ -424,23 +430,10 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
             if ($result_type === 'grouped') {
                 //group authors by first letter of their name
                 $group_by     = isset($instance['group_by']) ? $instance['group_by'] : 'display_name';
-                $grouped_name = (isset($author->$group_by) && !empty($author->$group_by)) ? $author->$group_by : $author->display_name;
+                $grouped_name = (!empty($author->$group_by)) ? $author->$group_by : $author->display_name;
                 $authors[strtolower($grouped_name[0])][]  = $author;
             } elseif ($result_type === 'recent') {
                 //query recent post by authors
-                $author_recent_args = [
-                    'orderby'        => 'post_date',
-                    'order'          => 'DESC',
-                    'fields'          => 'ids',
-                    'posts_per_page' => 5,
-                    'tax_query' => array(
-                        array(
-                            'taxonomy' => 'author',
-                            'terms'    => $author->term_id,
-                            'field'     => 'term_id'
-                        )
-                    )
-                ];
                 $author_recent_posts = multiple_authors_get_author_recent_posts($author);
 
                 //add recent posts
@@ -501,7 +494,7 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
          * @param array $instance Original passed instance.
          */
         $authors = apply_filters('pp_multiple_authors_get_all_authors_result', $authors, $args, $instance);
-        
+
         //Return more data for paginated result to enable pagination handler
         if ($paged) {
             return [

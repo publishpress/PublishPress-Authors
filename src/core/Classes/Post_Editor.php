@@ -45,6 +45,7 @@ class Post_Editor
         add_action('bulk_edit_custom_box', [__CLASS__, 'add_author_bulk_quick_edit_custom_box'], 10, 2);
         add_action('quick_edit_custom_box', [__CLASS__, 'add_author_bulk_quick_edit_custom_box'], 10, 2);
         add_action('wp_ajax_save_bulk_edit_authors', [__CLASS__, 'save_bulk_edit_authors'], 10, 2);
+        add_action('publishpress_authors_flush_cache', [__CLASS__, 'flush_cache'], 15);
     }
 
     /**
@@ -192,7 +193,7 @@ class Post_Editor
             remove_meta_box('authordiv', $post_type, 'normal');
             // @todo only register meta box when user can assign authors
             add_meta_box(
-                'authors',
+                'ppma_authorsdiv',
                 __('Authors', 'publishpress-authors'),
                 [__CLASS__, 'render_authors_metabox'],
                 $post_type,
@@ -234,7 +235,7 @@ class Post_Editor
             return;
         }
 
-        $authors = get_post_authors();
+        $authors = get_post_authors(0, true);
 
         echo self::get_rendered_authors_selection($authors, false);  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
@@ -472,7 +473,7 @@ class Post_Editor
                 Utils::set_post_authors($post_id, $authors, true, $fallbackUserId);
             }
 
-            do_action('publishpress_authors_flush_cache');
+            do_action('publishpress_authors_flush_cache', $post_ids);
         }
 
         wp_send_json_success(true, 200);
@@ -513,7 +514,7 @@ class Post_Editor
             update_post_meta($post_id, 'ppma_disable_author_box', $disableAuthorBox);
         }
 
-        do_action('publishpress_authors_flush_cache');
+        do_action('publishpress_authors_flush_cache', $post_id);
     }
 
     /**
@@ -599,7 +600,7 @@ class Post_Editor
 
         Utils::set_post_authors($post_id, [$defaultAuthor]);
 
-        do_action('publishpress_authors_flush_cache');
+        do_action('publishpress_authors_flush_cache', $post_id);
     }
 
     public static function remove_core_author_field()
@@ -634,5 +635,16 @@ class Post_Editor
         }
 
         return $response;
+    }
+
+    public static function flush_cache($post_id)
+    {
+        if (empty($post_id)) {
+            wp_cache_flush_group('get_post_authors');
+
+            return;
+        }
+
+        wp_cache_delete($post_id, 'get_post_authors:authors');
     }
 }

@@ -10,6 +10,7 @@
 namespace MultipleAuthors\Classes;
 
 use MultipleAuthors\Classes\Objects\Author;
+use MultipleAuthors\Plugin;
 
 /**
  * Class Term_Editor
@@ -25,6 +26,28 @@ class Term_Editor
     {
         add_filter("manage_author_custom_column", [__CLASS__, 'filter_manage_custom_column'], 10, 3);
         add_filter('manage_edit-author_columns', [__CLASS__, 'filter_columns']);
+        add_filter('term_updated_messages', [__CLASS__, 'filter_author_updated_messages']);
+    }
+
+    /**
+     * Modify author updated messages
+     *
+     * @param array $messages
+     * @return array
+     */
+    public static function filter_author_updated_messages($messages) {
+
+        $messages[Plugin::$coauthor_taxonomy] = array(
+            0 => '',
+            1 => __( 'New author added.', 'publishpress-authors' ),
+            2 => __( 'Author profile deleted.', 'publishpress-authors' ),
+            3 => __( 'Author profile updated.', 'publishpress-authors' ),
+            4 => __( 'Error adding author account.', 'publishpress-authors' ),
+            5 => __( 'Error updating author profile.', 'publishpress-authors' ),
+            6 => __( 'Authors deleted.', 'publishpress-authors' ),
+        );
+    
+        return $messages;
     }
 
     /**

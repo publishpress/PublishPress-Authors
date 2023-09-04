@@ -512,9 +512,7 @@ class AuthorBoxesEditorFields
      */
     public static function getProfileFields($fields, $post) 
     {
-        $profile_fields   = Author_Editor::get_fields(false);
-        $profile_fields   = apply_filters('multiple_authors_author_fields', $profile_fields, false);
-
+        $profile_fields   = MA_Author_Boxes::get_profile_fields($post->ID);
         $index = 0;
         foreach ($profile_fields as $key => $data) {
             if (!in_array($key, MA_Author_Boxes::AUTHOR_BOXES_EXCLUDED_FIELDS)) {
@@ -536,7 +534,7 @@ class AuthorBoxesEditorFields
                     'tab'         => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_display_position'] = [
-                    'label'       => sprintf(esc_html__('Show %1s after', 'publishpress-authors'), $data['label']),
+                    'label'       => esc_html__('Show After', 'publishpress-authors'),
                     'type'        => 'select',
                     'sanitize'    => 'sanitize_text_field',
                     'tabbed'      => 1,
@@ -570,7 +568,7 @@ class AuthorBoxesEditorFields
                     'tab'      => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_value_prefix'] = [
-                    'label'       => sprintf(esc_html__('%1s Value Prefix', 'publishpress-authors'), $data['label']),
+                    'label'       => esc_html__('Value Prefix', 'publishpress-authors'),
                     'description' => esc_html__('This is useful when linking to an email, URL, or phone number. For example, \'mailto:\', \'https://\' or \'tel:\' can be added as the prefix.', 'publishpress-authors'),
                     'type'        => 'text',
                     'sanitize'    => 'sanitize_text_field',
@@ -579,7 +577,7 @@ class AuthorBoxesEditorFields
                     'tab'         => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_display'] = [
-                    'label'    => sprintf(esc_html__('%1s Display', 'publishpress-authors'), $data['label']),
+                    'label'    => esc_html__('Display', 'publishpress-authors'),
                     'type'     => 'select',
                     'sanitize' => 'sanitize_text_field',
                     'tabbed'      => 1,
@@ -595,7 +593,7 @@ class AuthorBoxesEditorFields
                     'tab'      => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_display_prefix'] = [
-                    'label'       => sprintf(esc_html__('%1s Display Prefix', 'publishpress-authors'), $data['label']),
+                    'label'       => esc_html__('Display Prefix', 'publishpress-authors'),
                     'type'        => 'text',
                     'sanitize'    => 'sanitize_text_field',
                     'tabbed'      => 1,
@@ -603,7 +601,7 @@ class AuthorBoxesEditorFields
                     'tab'         => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_display_suffix'] = [
-                    'label'       => sprintf(esc_html__('%1s Display Suffix', 'publishpress-authors'), $data['label']),
+                    'label'       => esc_html__('Display Suffix', 'publishpress-authors'),
                     'type'        => 'text',
                     'sanitize'    => 'sanitize_text_field',
                     'tabbed'      => 1,
@@ -611,7 +609,7 @@ class AuthorBoxesEditorFields
                     'tab'         => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_before_display_prefix'] = [
-                    'label'       => sprintf(esc_html__('Before %1s Display Prefix', 'publishpress-authors'), $data['label']),
+                    'label'       => esc_html__('Before Display Prefix', 'publishpress-authors'),
                     'type'        => 'text',
                     'sanitize'    => 'sanitize_text_field',
                     'tabbed'      => 1,
@@ -619,7 +617,7 @@ class AuthorBoxesEditorFields
                     'tab'         => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_after_display_suffix'] = [
-                    'label'       => sprintf(esc_html__('After %1s Display Suffix', 'publishpress-authors'), $data['label']),
+                    'label'       => esc_html__('After Display Suffix', 'publishpress-authors'),
                     'type'        => 'text',
                     'sanitize'    => 'sanitize_text_field',
                     'tabbed'      => 1,
@@ -630,7 +628,7 @@ class AuthorBoxesEditorFields
                 $field_description = sprintf(esc_html__('You can use icons from Dashicons and Font Awesome. %1s %2sClick here for documentation%3s.', 'publishpress-authors'), '<br />', '<a href="https://publishpress.com/knowledge-base/author-fields-icons/" target="blank">', '</a>');
 
                 $fields['profile_fields_' . $key . '_display_icon'] = [
-                    'label'       => sprintf(esc_html__('%1s Display Icon', 'publishpress-authors'), $data['label']),
+                    'label'       => esc_html__('Display Icon', 'publishpress-authors'),
                     'description' => $field_description,
                     'type'        => 'text',
                     'sanitize'    => ['stripslashes_deep', 'wp_kses_post'],
@@ -639,7 +637,7 @@ class AuthorBoxesEditorFields
                     'tab'         => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_display_icon_size'] = [
-                    'label'    => sprintf(esc_html__('%1s Display Icon Size', 'publishpress-authors'), $data['label']),
+                    'label'    => esc_html__('Display Icon Size', 'publishpress-authors'),
                     'type'     => 'number',
                     'sanitize' => 'intval',
                     'tabbed'   => 1,
@@ -648,7 +646,7 @@ class AuthorBoxesEditorFields
                 ];
 
                 $fields['profile_fields_' . $key . '_display_icon_background_color'] = [
-                    'label'    => sprintf(esc_html__('%1s Display Icon Background Color', 'publishpress-authors'), $data['label']),
+                    'label'    => esc_html__('Display Icon Background Color', 'publishpress-authors'),
                     'type'     => 'color',
                     'sanitize' => 'sanitize_text_field',
                     'tabbed'   => 1,
@@ -656,7 +654,7 @@ class AuthorBoxesEditorFields
                     'tab'      => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_display_icon_border_radius'] = [
-                    'label'      => sprintf(esc_html__('%1s Display Icon Border Radius %2s', 'publishpress-authors'), $data['label'], '(%)'),
+                    'label'      => esc_html__('Display Icon Border Radius (%)', 'publishpress-authors'),
                     'type'       => 'number',
                     'min'        => '0',
                     'max'        => '100',

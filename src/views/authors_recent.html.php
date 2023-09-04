@@ -1,21 +1,6 @@
 <div class="pp-multiple-authors-wrapper pp-multiple-authors-recent alignwide <?php esc_attr_e($context['css_class']); ?> pp-multiple-authors-layout-<?php esc_attr_e($context['layout']); ?>">
-    <?php if (isset($context['shortcode']['search_box'])) : ?>
-        <div class="pp-multiple-authors-searchbox searchbox">
-            <form action="" method="GET">
-                <input class="widefat" id="authors-search-input" name="seach_query" type="search"
-                    value="<?php esc_attr_e($context['template_options']['search_query']); ?>" placeholder="<?php esc_attr_e($context['template_options']['search_placeholder']); ?>">
-                <?php if ($context['template_options']['filter_fields']) : ?>
-                    <select id="authors-search-filter" name="search_field">
-                        <?php foreach (($context['template_options']['filter_fields']) as $option => $label) : ?>
-                            <option value="<?php esc_attr_e($option); ?>"
-                            <?php selected($option, $context['template_options']['selected_option']); ?>
-                            ><?php esc_html_e($label); ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                <?php endif; ?>
-                <input type="submit" class="button search-submit" id="" name="submit" value="<?php esc_attr_e($context['template_options']['search_submit']); ?>"/>
-            </form>
-        </div>
+    <?php if (!empty($context['search_box_html'])) : ?>
+        <?php echo $context['search_box_html']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
     <?php endif; ?>
     <div class="ppma-row">
         <?php foreach ($context['results'] as $index => $result) :

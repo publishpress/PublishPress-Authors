@@ -189,11 +189,19 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
 
                     if (isset($data['publisher'])) {
                         $data_publisher = $data['publisher'];
-                        $data_publisher['@type'] = $author_profile_data['@type'];
-                        $data_publisher['name'] = $author_profile_data['@name'];
-                        $data_publisher['sameAs'] = $author_profile_data['sameAs'];
-                        $data_publisher['logo'] = $author_profile_data['@image'];
-                        $data_publisher['image'] = $author_profile_data['@image'];
+                        if (isset($author_profile_data['@type'])) {
+                            $data_publisher['@type'] = $author_profile_data['@type'];
+                        }
+                        if (isset($author_profile_data['@name'])) {
+                            $data_publisher['name'] = $author_profile_data['@name'];
+                        }
+                        if (isset($author_profile_data['sameAs'])) {
+                            $data_publisher['sameAs'] = $author_profile_data['sameAs'];
+                        }
+                        if (isset($author_profile_data['@image'])) {
+                            $data_publisher['logo'] = $author_profile_data['@image'];
+                            $data_publisher['image'] = $author_profile_data['@image'];
+                        }
                         $data['publisher']       = $data_publisher;
                     }
 

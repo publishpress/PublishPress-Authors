@@ -85,7 +85,7 @@ class AuthorBoxesStyles
         if (!empty($args['avatar_border_color']['value'])) {
             $custom_styles .= '.pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].'.'.$args['additional_class'].'.box-instance-id-'.$args['instance_id'].' .pp-author-boxes-avatar img { border-color: '. $args['avatar_border_color']['value'] .' !important; } ';
         }
-        if ($args['avatar_border_radius']['value']) {
+        if (isset($args['avatar_border_radius']['value']) && $args['avatar_border_radius']['value'] >= 0) {
             $custom_styles .= '.pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].'.'.$args['additional_class'].'.box-instance-id-'.$args['instance_id'].' .pp-author-boxes-avatar img { border-radius: '. $args['avatar_border_radius']['value'] .'% !important; } ';
         }
 
@@ -218,8 +218,7 @@ class AuthorBoxesStyles
      */
     public static function getRProfileFieldStyles($args, $custom_styles) {
 
-        $profile_fields   = Author_Editor::get_fields(false);
-        $profile_fields   = apply_filters('multiple_authors_author_fields', $profile_fields, false);
+        $profile_fields   = MA_Author_Boxes::get_profile_fields($args['post_id']);
 
         foreach ($profile_fields as $key => $data) {
             if (!in_array($key, MA_Author_Boxes::AUTHOR_BOXES_EXCLUDED_FIELDS)) {
@@ -233,7 +232,7 @@ class AuthorBoxesStyles
                     if ($args['profile_fields_' . $key . '_display_icon_background_color']['value']) {
                         $custom_styles .= '.pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].'.'.$args['additional_class'].'.box-instance-id-'.$args['instance_id'].' .ppma-author-'. $key .'-profile-data { background-color: '. $args['profile_fields_' . $key . '_display_icon_background_color']['value'] .' !important; } ';
                     }
-                    if ($args['profile_fields_' . $key . '_display_icon_border_radius']['value']) {
+                    if (isset($args['profile_fields_' . $key . '_display_icon_border_radius']['value']) && $args['profile_fields_' . $key . '_display_icon_border_radius']['value'] >= 0) {
                         $custom_styles .= '.pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].'.'.$args['additional_class'].'.box-instance-id-'.$args['instance_id'].' .ppma-author-'. $key .'-profile-data { border-radius: '. $args['profile_fields_' . $key . '_display_icon_border_radius']['value'] .'% !important; } ';
                     }
                 }
@@ -371,7 +370,7 @@ class AuthorBoxesStyles
         if (!empty($args['box_layout_shadow_color']['value']) && $args['box_layout_shadow_horizontal_offset']['value'] && $args['box_layout_shadow_vertical_offset']['value'] && $args['box_layout_shadow_blur']['value']) {
             $custom_styles .= '.pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].'.'.$args['additional_class'].'.box-instance-id-'.$args['instance_id'].' .pp-multiple-authors-boxes-li { box-shadow: '. $args['box_layout_shadow_horizontal_offset']['value'] .'px '. $args['box_layout_shadow_vertical_offset']['value'] .'px '. $args['box_layout_shadow_blur']['value'] .'px '. $args['box_layout_shadow_speed']['value'] .'px '. $args['box_layout_shadow_color']['value'] .' !important; } ';
         }
-        if ($args['box_layout_border_radius']['value']) {
+        if (isset($args['box_layout_border_radius']['value']) && $args['box_layout_border_radius']['value'] >= 0) {
             $custom_styles .= '.pp-multiple-authors-boxes-wrapper.box-post-id-'.$args['post_id'].'.'.$args['additional_class'].'.box-instance-id-'.$args['instance_id'].' .pp-multiple-authors-boxes-li { border-radius: '. $args['box_layout_border_radius']['value'] .'px !important; } ';
         }
 

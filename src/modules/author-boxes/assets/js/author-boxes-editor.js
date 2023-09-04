@@ -22,6 +22,16 @@
                     }, 100);
                 },
             });
+
+            /**
+             * Author field re-order action
+             */
+            $(document).on('click', '.ppma-editor-field-reorder-btn', function (e) {
+                e.preventDefault();
+                $('.ppma-field-reorder-thickbox-btn').trigger('click');
+                return;
+            });
+            $(".ppma-re-order-lists").sortable();
         }
 
         /**
@@ -187,6 +197,43 @@
         });
 
         /**
+         * Save author box order
+         */
+        $(document).on('click', '.ppma-editor-order-form button.update-order', function (event) {
+            event.preventDefault();
+            var button = $(this);
+            var buttons = $('.ppma-editor-order-form button.update-order');
+            buttons.prop('disabled', true);
+            button.find('.spinner').addClass('is-active');
+            $('.ppma-editor-generate-template').attr('disabled', true);
+
+            var save_for = button.attr('data-save');
+            var field_orders = [];
+            $("input.sort-field-names").each(function () {
+                if ($(this).val() !== '') {
+                    field_orders.push($(this).val().toLowerCase());
+                }
+            });
+
+            //prepare ajax data
+            var data = {
+                action: "author_boxes_editor_save_fields_order",
+                save_for: save_for,
+                field_orders: field_orders,
+                post_id: authorBoxesEditor.post_id,
+                nonce: authorBoxesEditor.nonce,
+            };
+            $.post(ajaxurl, data, function (response) {
+                var status          = response.status;
+                var status_message  = response.content;
+                $('.ppma-order-response-message').html('<span class="' + status + '"> ' + status_message + ' </span>');
+                buttons.prop('disabled', false);
+                button.find('.spinner').removeClass('is-active');
+            });
+
+        });
+
+        /**
          * editor live changes
          */
         $(document).on('change input keyup', '.ppma-author-box-editor-fields .input input, .ppma-author-box-editor-fields .input textarea, .ppma-author-box-editor-fields .input select, .editor-preview-author-users select', function () {
@@ -339,8 +386,6 @@
                 'box_tab_layout_author_separator'
             ];
 
-            let all_refresh_trigger = post_refresh_trigger.concat(bio_refresh_trigger, avatar_refresh_trigger, meta_refresh_trigger, profile_refresh_trigger, name_refresh_trigger, layout_refresh_trigger);
-
             var profile_fields = JSON.parse(authorBoxesEditor.profileFields);
             var field_key = '';
             var profile_refresh_trigger = [];
@@ -357,6 +402,8 @@
                 profile_refresh_trigger.push('profile_fields_' + field_name + '_before_display_prefix');
                 profile_refresh_trigger.push('profile_fields_' + field_name + '_after_display_suffix');
             }
+
+            let all_refresh_trigger = post_refresh_trigger.concat(bio_refresh_trigger, avatar_refresh_trigger, meta_refresh_trigger, profile_refresh_trigger, name_refresh_trigger, layout_refresh_trigger);
 
             var force_refresh = false;
             if (all_refresh_trigger.includes(current_field_name) || current_field_name === 'preview_author_names[]') {

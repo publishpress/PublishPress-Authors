@@ -26,8 +26,6 @@ use MultipleAuthors\Classes\Legacy\Module;
 use MultipleAuthorBoxes\AuthorBoxesDefault;
 use MultipleAuthors\Classes\Author_Editor;
 use MultipleAuthorBoxes\AuthorBoxesStyles;
-use MultipleAuthorBoxes\AuthorBoxesAjax;
-use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Classes\Utils;
 use MultipleAuthors\Factory;
 
@@ -144,20 +142,9 @@ class MA_Author_Boxes extends Module
         add_filter('bulk_actions-edit-' . self::POST_TYPE_BOXES . '', [$this, 'removeBulkActionEdit'], 11);
 
 
-        add_action(
-            'wp_ajax_author_boxes_editor_get_preview', 
-            [
-                'MultipleAuthorBoxes\AuthorBoxesAjax', 
-                'handle_author_boxes_editor_get_preview'
-            ]
-        );
-        add_action(
-            'wp_ajax_author_boxes_editor_get_template', 
-            [
-                'MultipleAuthorBoxes\AuthorBoxesAjax', 
-                'handle_author_boxes_editor_get_template'
-            ]
-        );
+        add_action('wp_ajax_author_boxes_editor_get_preview', ['MultipleAuthorBoxes\AuthorBoxesAjax', 'handle_author_boxes_editor_get_preview']);
+        add_action('wp_ajax_author_boxes_editor_get_template', ['MultipleAuthorBoxes\AuthorBoxesAjax', 'handle_author_boxes_editor_get_template']);
+        add_action('wp_ajax_author_boxes_editor_save_fields_order', ['MultipleAuthorBoxes\AuthorBoxesAjax', 'handle_author_boxes_fields_order']);
 
         $this->registerPostType();
     }
@@ -513,17 +500,23 @@ class MA_Author_Boxes extends Module
     }
 
     /**
+     * @param boolean $ids_only
      * @return array
      */
-    public static function getAuthorBoxes()
+    public static function getAuthorBoxes($ids_only = false)
     {
-        $posts = get_posts(
-            [
-                'post_type' => self::POST_TYPE_BOXES,
-                'posts_per_page' => -1,
-                'post_status' => 'publish',
-            ]
-        );
+        $post_args = [
+            'post_type' => self::POST_TYPE_BOXES,
+            'posts_per_page' => -1,
+            'post_status' => 'publish',
+        ];
+
+        if ($ids_only) {
+            $post_args['fields'] = 'ids';
+            return get_posts($post_args);
+        }
+
+        $posts = get_posts($post_args);
 
         $author_boxes = [];
 
@@ -1143,8 +1136,9 @@ class MA_Author_Boxes extends Module
                          * Render fields
                          */
                         foreach ($fields as $key => $args) {
-                            $args['key']   = $key;
-                            $args['value'] = isset($editor_data[$key]) ? $editor_data[$key] : '';
+                            $args['key']       = $key;
+                            $args['value']     = isset($editor_data[$key]) ? $editor_data[$key] : '';
+                            $args['post_id']   = $post->ID;
                             echo self::get_rendered_author_boxes_editor_partial($args); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                         }
 
@@ -1180,8 +1174,6 @@ class MA_Author_Boxes extends Module
         $args['instance_id'] = 1;
 
         $args['additional_class'] = str_replace(' ', '.', trim($args['box_tab_custom_wrapper_class']['value']));
-        
-        $legacyPlugin = Factory::getLegacyPlugin();
 
         //custom styles
         $custom_styles = '';
@@ -1197,13 +1189,12 @@ class MA_Author_Boxes extends Module
 
         $admin_preview = (isset($args['admin_preview']) && $args['admin_preview']) ? true : false;
 
-        $profile_fields   = Author_Editor::get_fields(false);
-        $profile_fields   = apply_filters('multiple_authors_author_fields', $profile_fields, false);
+        $profile_fields   = self::get_profile_fields($args['post_id']);
 
         $authors = (isset($args['authors']) && is_array($args['authors']) && !empty($args['authors'])) ? $args['authors'] : [];
 
-        $box_post = get_post($args['post_id']);
-        $box_post_id = (is_object($box_post) && isset($box_post->ID)) ? $box_post->ID : '1';
+        $box_post         = get_post($args['post_id']);
+        $box_post_id      = (is_object($box_post) && isset($box_post->ID)) ? $box_post->ID : '1';
         $li_style         = true;
         $author_separator = $args['box_tab_layout_author_separator']['value']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped;
         $author_counts    = count($authors);
@@ -1239,8 +1230,14 @@ class MA_Author_Boxes extends Module
                             </select>
                         </div>
                     </div>
-        <?php endif; ?>
+        <?php endif; ?> 
+
                     <!--begin code -->
+
+                    <?php if (isset($args['short_code_args']) && isset($args['short_code_args']['search_box_html']) && !empty($args['short_code_args']['search_box_html'])) : ?>
+                        <?php echo $args['short_code_args']['search_box_html']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                    <?php endif; ?>
+
                     <<?php echo ($li_style ? 'div' : 'span'); ?> class="<?php echo esc_attr($body_class); ?>"
                     data-post_id="<?php echo esc_attr($args['post_id']); ?>"
                     data-instance_id="<?php echo esc_attr($args['instance_id']); ?>"
@@ -1354,9 +1351,9 @@ class MA_Author_Boxes extends Module
                                                         $profile_field_html  .= '<span class="ppma-author-field-meta-prefix"> '. $profile_before_display_prefix .' </span>';
                                                     }
                                                     $profile_field_html .= '<'. esc_html($profile_html_tag) .'';
-                                                    $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data ppma-author-field-meta" aria-label="'. esc_attr(($data['label'])) .'"';
+                                                    $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data ppma-author-field-meta '. esc_attr('ppma-author-field-type-' . $data['type']) .'" aria-label="'. esc_attr(($data['label'])) .'"';
                                                     if ($profile_html_tag === 'a') {
-                                                        $profile_field_html .= ' href="'. $profile_value_prefix.$field_value .'"';
+                                                        $profile_field_html .= ' href="'. $profile_value_prefix.$field_value .'" rel="nofollow"';
                                                     }
                                                     $profile_field_html .= '>';
                                                     if ($profile_show_field) {
@@ -1421,12 +1418,12 @@ class MA_Author_Boxes extends Module
                                                             </a>
                                                         <?php endif; ?>
                                                         <?php if ($args['meta_email_show']['value'] && $author->user_email) : ?>
-                                                            <a href="<?php echo esc_url('mailto:'.$author->user_email); ?>" target="_blank" aria-label="<?php echo esc_attr__('Email', 'publishpress-authors'); ?>">
+                                                            <a href="<?php echo esc_url('mailto:'.$author->user_email); ?>" target="_blank" aria-label="<?php echo esc_attr__('Email', 'publishpress-authors'); ?>" rel="nofollow">
                                                                 <span class="dashicons dashicons-email-alt"></span>
                                                             </a>
                                                         <?php endif; ?>
                                                         <?php if ($args['meta_site_link_show']['value'] && $author->user_url) : ?>
-                                                            <a href="<?php echo esc_url($author->user_url); ?>" target="_blank" aria-label="<?php echo esc_attr__('Website', 'publishpress-authors'); ?>">
+                                                            <a href="<?php echo esc_url($author->user_url); ?>" target="_blank" aria-label="<?php echo esc_attr__('Website', 'publishpress-authors'); ?>" rel="nofollow">
                                                                 <span class="dashicons dashicons-admin-links"></span>
                                                             </a>
                                                         <?php endif; ?>
@@ -1480,6 +1477,7 @@ class MA_Author_Boxes extends Module
             </div>
         </div>
         <?php endif; ?>
+
         <?php if (isset($args['short_code_args']) && isset($args['short_code_args']['pagination']) && !empty($args['short_code_args']['pagination'])) : ?>
             <nav class="footer-navigation navigation pagination">
                 <div class="nav-links">
@@ -1534,7 +1532,9 @@ class MA_Author_Boxes extends Module
             'tabbed'      => 0,
             'tab_name'    => '',
             'show_input'  => false,
+            'post_id'     => false,
         ];
+
         $args      = array_merge($defaults, $args);
         $key       = $args['key'];
         $tab_class = 'ppma-boxes-editor-tab-content ppma-' . $args['tab'] . '-tab ' . $args['type'] . ' ppma-editor-'.$key;
@@ -1718,6 +1718,44 @@ class MA_Author_Boxes extends Module
                     //$additional_class .= (int)$args['index'] === 1 ? 'opened' : 'closed';
                     $additional_class .= ' profile-header-' .$args['tab_name'];
                     ?>
+                    <?php if ((int)$args['index'] === 1) : ?>
+                        <div class="ppma-editor-field-reorder-btn">
+                            <span class="dashicons dashicons-admin-generic"></span> 
+                            <?php esc_html_e('Reorder Fields', 'publishpress-authors'); ?>
+                        </div>
+                        <?php 
+
+                        $profile_fields   = self::get_profile_fields($args['post_id']);
+                        $modal_content = '';
+                        $modal_content .= '<div class="ppma-editor-order-form">';
+                        $modal_content .= '<p class="description">';
+                        $modal_content .= __('Reorder the fields by dragging them to the correct position and saving your changes.', 'publishpress-authors');
+                        $modal_content .= '</p>';
+                        $modal_content .= '<div class="ppma-re-order-lists">';
+                        foreach ($profile_fields as $key => $data) {
+                            if (!in_array($key, MA_Author_Boxes::AUTHOR_BOXES_EXCLUDED_FIELDS)) {
+                                $modal_content .= '<div class="field-sort-item"><h2>';
+                                $modal_content .= $data['label'];
+                                $modal_content .= '<input type="hidden" class="sort-field-names" value="'. esc_attr($key) .'">';
+                                $modal_content .= '</h2></div>';
+                            }
+                        }
+                        $modal_content .= '</div>';
+                        $modal_content .= '<div class="submit-wrapper">';
+                        $modal_content .= '<button class="button button-primary update-order" data-save="current">';
+                        $modal_content .= __('Save for Current Author Box', 'publishpress-authors');
+                        $modal_content .= '<div class="spinner"></div>';
+                        $modal_content .= '</button>';
+                        $modal_content .= '<button class="button button-secondary update-order" data-save="all">';
+                        $modal_content .= __('Save for All Author Boxes', 'publishpress-authors');
+                        $modal_content .= '<div class="spinner"></div>';
+                        $modal_content .= '</button>';
+                        $modal_content .= '</div>';
+                        $modal_content .= '<div class="ppma-order-response-message"></div>';
+                        $modal_content .= '</div>';
+                        Utils::loadThickBoxModal('ppma-field-reorder-thickbox-btn', 'initial', 'initial', $modal_content);
+                        ?>
+                    <?php endif; ?>
                 <div class="ppma-editor-profile-header-title <?php echo esc_attr($additional_class); ?>"
                     data-fields_name="<?php echo esc_attr($args['tab_name']); ?>">
                     <h2 class="title-text">
@@ -1778,6 +1816,7 @@ class MA_Author_Boxes extends Module
             [
                 'jquery',
                 'wp-color-picker',
+                'jquery-ui-sortable'
             ],
             PP_AUTHORS_VERSION
         );
@@ -1787,8 +1826,7 @@ class MA_Author_Boxes extends Module
             'author_term_id'   => $author->term_id,
             'nonce'     => wp_create_nonce('author-boxes-request-nonce')
         ];
-        $profile_fields   = Author_Editor::get_fields(false);
-        $profile_fields   = apply_filters('multiple_authors_author_fields', $profile_fields, false);
+        $profile_fields   = self::get_profile_fields($post->ID);
         $profile_fields_keys = [];
         foreach ($profile_fields as $key => $data) {
             if (!in_array($key, self::AUTHOR_BOXES_EXCLUDED_FIELDS)) {
@@ -1810,5 +1848,37 @@ class MA_Author_Boxes extends Module
             [],
             PP_AUTHORS_VERSION
         );
+    }
+
+    /**
+     * Get author box profile fields sorted by box author field order
+     *
+     * @param mixed $author_box
+     * @param mixed $author
+     * 
+     * @return array
+     */
+    public static function get_profile_fields($author_box = false, $author = false) {
+        
+        $profile_fields   = Author_Editor::get_fields($author);
+        $profile_fields   = apply_filters('multiple_authors_author_fields', $profile_fields, false);
+
+        if ($author_box && (int)$author_box > 0) {
+            $author_fields_order = get_post_meta($author_box, self::META_PREFIX . 'author_fields_order', true);
+            $profile_fields_keys  = array_keys($profile_fields);
+            if (!empty($author_fields_order) && is_array($author_fields_order)) {
+                $possible_new_fields  = array_diff($profile_fields_keys, $author_fields_order);
+                $current_field_sort = array_merge($possible_new_fields, $author_fields_order);
+                $ordered_fields = [];
+                foreach ($current_field_sort as $field_key) {
+                    if (isset($profile_fields[$field_key])) {
+                        $ordered_fields[$field_key] = $profile_fields[$field_key];
+                    }
+                }
+                $profile_fields = $ordered_fields;
+            }
+        }
+
+        return $profile_fields;
     }
 }

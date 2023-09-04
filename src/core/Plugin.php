@@ -27,7 +27,7 @@ class Plugin
 
     // Name for the taxonomy we're suing to store relationships
     // and the post type we're using to store co-authors
-    public $coauthor_taxonomy = 'author';
+    public static $coauthor_taxonomy = 'author';
 
     public $coreauthors_meta_box_name = 'authordiv';
 
@@ -598,7 +598,7 @@ class Plugin
         }
 
         $supported_post_types = Utils::get_enabled_post_types();
-        register_taxonomy($this->coauthor_taxonomy, $supported_post_types, $args);
+        register_taxonomy(self::$coauthor_taxonomy, $supported_post_types, $args);
 
         if (apply_filters('publishpress_authors_flush_rewrite_rules', PUBLISHPRESS_AUTHORS_FLUSH_REWRITE_RULES)) {
             /**
@@ -868,7 +868,7 @@ class Plugin
     {
         global $wpdb;
 
-        if ($this->coauthor_taxonomy !== $taxonomy) {
+        if (self::$coauthor_taxonomy !== $taxonomy) {
             return;
         }
 
@@ -971,7 +971,7 @@ class Plugin
             $term               = $this->update_author_term($author);
             $author_name        = $term->slug;
         }
-        wp_set_post_terms($post_id, $coauthors, $this->coauthor_taxonomy, false);
+        wp_set_post_terms($post_id, $coauthors, self::$coauthor_taxonomy, false);
 
         // If the original post_author is no longer assigned,
         // update to the first WP_User $coauthor
@@ -1025,7 +1025,7 @@ class Plugin
             if ($term->description != $term_description) {
                 wp_update_term(
                     $term->term_id,
-                    $this->coauthor_taxonomy,
+                    self::$coauthor_taxonomy,
                     ['description' => $term_description]
                 );
             }
@@ -1035,7 +1035,7 @@ class Plugin
                 'description' => $term_description,
             ];
 
-            wp_insert_term($coauthor->user_login, $this->coauthor_taxonomy, $args);
+            wp_insert_term($coauthor->user_login, self::$coauthor_taxonomy, $args);
         }
         wp_cache_delete('author-term-' . $coauthor->user_nicename, 'publishpress-authors');
 
@@ -1063,7 +1063,7 @@ class Plugin
         }
 
         // See if the prefixed term is available, otherwise default to just the nicename
-        $term = get_term_by('slug', $coauthor->user_nicename, $this->coauthor_taxonomy);
+        $term = get_term_by('slug', $coauthor->user_nicename, self::$coauthor_taxonomy);
 
         wp_cache_set($cache_key, $term, 'publishpress-authors');
 
@@ -1091,7 +1091,7 @@ class Plugin
         $raw_coauthors = $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT t.name, t.term_id, tt.term_taxonomy_id FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_id = t.term_id INNER JOIN $wpdb->term_relationships AS tr ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy IN (%s) AND tr.object_id IN (%s) $orderby $order", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-                $this->coauthor_taxonomy,
+                self::$coauthor_taxonomy,
                 $object_ids
             )
         );
@@ -1107,11 +1107,11 @@ class Plugin
                         break;
                     case 'all':
                     default:
-                        $terms[] = get_term($author->term_id, $this->coauthor_taxonomy);
+                        $terms[] = get_term($author->term_id, self::$coauthor_taxonomy);
                         break;
                 }
             } else {
-                $terms[] = get_term($author->term_id, $this->coauthor_taxonomy);
+                $terms[] = get_term($author->term_id, self::$coauthor_taxonomy);
             }
         }
 
@@ -1306,7 +1306,7 @@ class Plugin
 
         $args = apply_filters('coauthors_search_authors_get_terms_args', $args);
         add_filter('terms_clauses', [$this, 'filter_terms_clauses']);
-        $found_terms = get_terms($this->coauthor_taxonomy, $args);
+        $found_terms = get_terms(self::$coauthor_taxonomy, $args);
         remove_filter('terms_clauses', [$this, 'filter_terms_clauses']);
 
         if (empty($found_terms)) {
@@ -1527,6 +1527,7 @@ class Plugin
             'author_user_login'             => $author_user_login,
             'display_name_html'             => $author_display_name_html,
             'author_details'                => $author_details,
+            'author_menu_link'              => esc_url(admin_url('edit-tags.php?taxonomy=author')),
         ];
 
         wp_localize_script(
@@ -1722,7 +1723,7 @@ class Plugin
         if (false === $coauthor_terms) {
             $coauthor_terms = wp_get_object_terms(
                 $post_id,
-                $this->coauthor_taxonomy,
+                self::$coauthor_taxonomy,
                 [
                     'orderby' => 'term_order',
                     'order'   => 'ASC',
@@ -1758,7 +1759,7 @@ class Plugin
     public function clear_cache_on_terms_set($object_id, $terms, $tt_ids, $taxonomy, $append, $old_tt_ids)
     {
         // We only care about the coauthors taxonomy
-        if ($this->coauthor_taxonomy !== $taxonomy) {
+        if (self::$coauthor_taxonomy !== $taxonomy) {
             return;
         }
 
@@ -1847,7 +1848,7 @@ class Plugin
     {
         $field         = 'display_name';
         $post_id      = false;
-        $separator    = ',';
+        $separator    = ', ';
         $user_objects = false;
         $term_id      = false;
         $archive    = false;

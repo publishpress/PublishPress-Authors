@@ -94,7 +94,7 @@ if (!class_exists('MA_Default_Layouts')) {
                 ':root { --ppa-color-scheme: ' . $args['color_scheme'] . '; --ppa-color-scheme-active: ' . $this->luminanceColor($args['color_scheme'])  . '; }'
             );
 
-            if (!empty(trim($html))) {
+            if ($html && !empty(trim($html))) {
                 return $html;
             }
 

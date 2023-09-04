@@ -72,29 +72,11 @@
 .pp-multiple-authors-layout-centered .multiple-authors-links a,
 a.ppma-author-field-meta {
     border-radius: 20px;
-    background: var(--ppa-color-scheme);
     min-width: 30px;
-    height: 30px;
     line-height: 30px;
-    color: #fff;
-    margin-bottom: 0;
-    margin-right: 1px;
     text-decoration: none;
     display: inline-block;
-}
-
-.pp-multiple-authors-layout-boxed .multiple-authors-links a:hover,
-.pp-multiple-authors-layout-boxed .multiple-authors-links a:focus,
-.pp-multiple-authors-layout-boxed .multiple-authors-links a:active,
-.pp-multiple-authors-layout-centered .multiple-authors-links a:hover,
-.pp-multiple-authors-layout-centered .multiple-authors-links a:focus,
-.pp-multiple-authors-layout-centered .multiple-authors-links a:active {
-    background: var(--ppa-color-scheme-active);
-    color: #fff;
-}
-
-a.ppma-author-field-meta {
-    background: transparent;
+    margin-right: 3px;
 }
 
 a.ppma-author-field-meta i {
@@ -130,8 +112,13 @@ a.ppma-author-field-meta i {
     padding: 0 14px;
 }
 
-a.ppma-author-field-meta {
-    margin-right: 3px;
+.ppma-author-field-meta {
+    margin-right: 1px;
+    overflow-wrap: anywhere;
+}
+
+.ppma-author-field-type-wysiwyg {
+    white-space: pre-line;
 }
 
 .pp-author-boxes-recent-posts {
