@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 5.5
 Requires PHP: 7.2.5
 Tested up to: 6.3
-Stable tag: 4.2.0
+Stable tag: 4.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -214,6 +214,24 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
+= [4.2.1] - 04 Sep 2023 =
+
+* Feature: Allow users to re-order Author Boxes fields, #1441
+* Feature: Allow user to control the order of fields in the "Author Profile" via "Author Fields" Drag and Drop, #1463
+* Update: Hook into the action to flush cache when authors are saved, #1270
+* Update: Update instance of 'Author: %s' to use wordpress translation, #1235
+* Fixed: Fix ppma_edit_own_profile capability missing for required role, #1443
+* Update: Add rel="nofollow" to links in Author Boxes, #1249
+* Feature: Extend Search Box to all layouts, #1262
+* Fixed: Additional Rank math Integration conflict, #1434
+* Update: Remove custom names for each Author Fields label, #1289
+* Fixed: Author box Avatar Border Radius not reflecting when set to "0", #1432
+* Update: Improve message for mapping authors, #1131
+* Fixed: WYSIWYG Fields line breaks not working, #1444
+* Fixed: Compatibility with Admin Menu Editor, #1247
+* Fixed: [publishpress_authors_list] shortcode issue, #1448
+* Fixed: Authors data shortcode separator does not having space, #1445
+
 = [4.2.0] - 16 Aug 2023 =
 
 * Changed: Replaced Pimple library with a prefixed version of the library to avoid conflicts with other plugins;
@@ -221,7 +239,7 @@ There are two ways to install the PublishPress Authors plugin:
 * Changed: Change min PHP version to 7.2.5. If not compatible, the plugin will not execute;
 * Changed: Change min WP version to 5.5. If not compatible, the plugin will not execute;
 * Changed: Updated internal libraries to latest versions;
-* Changed: Refactor some occurrences of "plugins_loaded" replacing it by a new action: "plublishpress_<name>_loaded" which runs after the requirements and libraries are loaded, but before the plugin is initialized;
+* Changed: Refactor some occurrences of "plugins_loaded" replacing it by a new action: "plublishpress_authors_loaded" which runs after the requirements and libraries are loaded, but before the plugin is initialized;
 
 = [4.1.7] - 10 Jul 2023 =
 
