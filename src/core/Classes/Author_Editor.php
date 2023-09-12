@@ -653,7 +653,7 @@ class Author_Editor
 
         $user = get_user_by('ID', $user_id);
 
-        if (!empty(array_intersect($roles, $user->roles))) {
+        if (is_array($user->roles) && !empty(array_intersect($roles, $user->roles))) {
             // Create author for this user
             Author::create_from_user($user_id);
         }
