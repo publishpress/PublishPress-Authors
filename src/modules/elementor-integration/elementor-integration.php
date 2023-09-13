@@ -88,6 +88,23 @@ if (!class_exists('MA_Elementor_Integration')) {
             add_action('elementor/widget/posts/skins_init', [$this, 'add_posts_skins'], 10, 2);
             add_action('elementor/widget/archive-posts/skins_init', [$this, 'add_archive_posts_skins'], 10, 2);
             add_filter( 'elementor/theme/posts_archive/query_posts/query_vars', [$this, 'filter_posts_archive_query_vars'], 15);
+            add_filter( 'elementor/utils/get_the_archive_title', [$this, 'filter_author_archive_title']);
+        }
+
+        /**
+         * Filter Author archive title
+         * 
+         * @param $title
+         * 
+         * @return $title
+         */
+        public function filter_author_archive_title($title) {
+
+            if ( is_author() ) {
+                $title = '<span class="vcard vcardos">' .  get_queried_object()->display_name . '</span>';
+            }
+
+            return $title;
         }
 
         /**
