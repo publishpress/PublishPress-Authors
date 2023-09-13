@@ -101,7 +101,7 @@ if (!class_exists('MA_Elementor_Integration')) {
         public function filter_author_archive_title($title) {
 
             if ( is_author() ) {
-                $title = '<span class="vcard vcardos">' .  get_queried_object()->display_name . '</span>';
+                $title = '<span class="vcard">' .  get_queried_object()->display_name . '</span>';
             }
 
             return $title;
