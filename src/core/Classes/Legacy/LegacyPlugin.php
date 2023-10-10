@@ -238,6 +238,10 @@ class LegacyPlugin
             $defaultDirs['rank-math-seo-integration'] = PP_AUTHORS_MODULES_PATH;
         }
 
+        if (Utils::isUltimatePostInstalled()) {
+            $defaultDirs['ultimate-post-integration'] = PP_AUTHORS_MODULES_PATH;
+        }
+
         return apply_filters('ppma_module_dirs', $defaultDirs);
     }
 

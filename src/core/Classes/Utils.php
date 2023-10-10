@@ -697,6 +697,11 @@ class Utils
         return function_exists('genesis_autoload_register');
     }
 
+    public static function isUltimatePostInstalled()
+    {
+        return defined('ULTP_BASE');
+    }
+
     public static function isUltimateMemberInstalled()
     {
         return class_exists('UM_Functions');
