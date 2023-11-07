@@ -2322,7 +2322,7 @@ echo '<span class="ppma_settings_field_description">'
 
             $actions = [
                 'create_post_authors' => [
-                    'title'        => esc_html__('Create PublishPress Authors profiles for all authors', 'publishpress-authors'),
+                    'title'        => esc_html__('Create PublishPress Authors Profiles for all post authors', 'publishpress-authors'),
                     'description'  => 'If a WordPress user is the author of a post, but does not have a PublishPress Authors profile, this will automatically create a profile for them. <a href="https://publishpress.com/knowledge-base/authors-maintenance" target="_blank">Click here for documentation</a>.',
                     'button_label' => esc_html__('Create missing PublishPress Authors profiles', 'publishpress-authors'),
                 ],
@@ -2334,7 +2334,7 @@ echo '<span class="ppma_settings_field_description">'
                 ],
 
                 'sync_post_author' => [
-                    'title'       => esc_html__('Synchronize the author and user profile fields', 'publishpress-authors'),
+                    'title'       => esc_html__('Synchronize PublishPress Authors Fields and user profile fields', 'publishpress-authors'),
                     'description' => 'Description: This will update all the author profile in PublishPress Authors to match the default WordPress fields for each user. <a href="https://publishpress.com/knowledge-base/authors-maintenance" target="_blank">Click here for documentation</a>.',
                     'button_link' => '',
                     'after'       => '<div id="publishpress-authors-sync-post-authors"></div>',
