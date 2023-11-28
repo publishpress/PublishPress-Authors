@@ -159,6 +159,24 @@ ul.authors-list li.ui-sortable-helper {
     cursor: move;
 }
 
+ul.authors-list.no-select {
+    user-select: none;
+}
+
+.author-category-title {
+    color: #3c434a;
+    font-size: 14px;
+    padding: 8px 0;
+    font-weight: 1.4;
+    font-weight: 400;
+}
+
+ul.authors-list li.sortable-placeholder {
+    border-style: dashed;
+    pointer-events: none;
+    user-select: none;
+}
+
 ul.authors-list.authors-current-user-can-assign li:hover {
     cursor: move;
 }

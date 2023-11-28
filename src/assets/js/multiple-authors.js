@@ -104,11 +104,12 @@ jQuery(document).ready(function ($) {
             });
             authorsSearch.on("ppma_select2:select", function (e) {
                 var template = wp.template("authors-author-partial");
-                $(".authors-list").append(
+                $(".authors-list:first").append(
                     window.htmlEnDeCode.htmlDecode(template(e.params.data))
                 );
                 authorsSearch.val(null).trigger("change");
                 handleUsersAuthorField();
+                handleAuthorCategory();
             });
         });
     }
@@ -137,6 +138,19 @@ jQuery(document).ready(function ($) {
         } else {
             $authorsUserField.hide();
         }
+    }
+
+    function handleAuthorCategory() {
+        let $authorsCategoryId = '';
+        let $authorsCategoryTerm = '';
+        $('.authors-list').each(function () {
+            $authorsCategoryId = $(this).attr('data-category_id');
+            $(this).find('.author_categories').each(function () {
+                $authorsCategoryTerm = $(this).closest('li').find('.author_term').val();
+                $(this).attr('name', 'author_categories[' + $authorsCategoryTerm + ']');
+                $(this).val($authorsCategoryId);
+            });
+        });
     }
 
     function authorsUserSelect2(selector) {
@@ -343,7 +357,22 @@ jQuery(document).ready(function ($) {
     });
 
     function sortedAuthorsList(selector) {
-        selector.sortable().on("click", ".author-remove", function () {
+        selector.sortable({
+            connectWith: ".authors-list",
+            items: "> li:not(.no-drag)",
+            placeholder: "sortable-placeholder",
+            update: function (event, ui) {
+                handleAuthorCategory();
+            },
+            receive: function (event, ui) {
+                $(this).find('.sortable-placeholder').hide();
+            },
+            remove: function (event, ui) {
+                if ($(this).children().length === 1) {
+                    $(this).find('.sortable-placeholder').show();
+                }
+            },
+        }).on("click", ".author-remove", function () {
             var el = $(this);
             el.closest("li").remove();
             handleUsersAuthorField($(this).parent('.authors-list'));

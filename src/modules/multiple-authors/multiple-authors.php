@@ -394,6 +394,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
                 // Get the index for the menus, removing the first submenu which was automatically created by WP.
                 $itemsToSort = [
+                    'ppma-author-categories'            => null,
                     'edit.php?post_type=ppma_boxes'    => null,
                     'edit-tags.php?taxonomy=author'    => null,
                     'edit.php?post_type=ppmacf_field'  => null,
@@ -420,6 +421,13 @@ if (!class_exists('MA_Multiple_Authors')) {
                     $newSubmenu[] = $currentSubmenu[$itemsToSort['edit-tags.php?taxonomy=author']];
 
                     unset($currentSubmenu[$itemsToSort['edit-tags.php?taxonomy=author']]);
+                }
+
+                // Author Categories
+                if (isset($itemsToSort['ppma-author-categories'])) {
+                    $newSubmenu[] = $currentSubmenu[$itemsToSort['ppma-author-categories']];
+
+                    unset($currentSubmenu[$itemsToSort['ppma-author-categories']]);
                 }
 
                 // Author Boxes

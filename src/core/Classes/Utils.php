@@ -164,8 +164,9 @@ class Utils
      * @param array $authors Bylines to set on the post.
      * @param bool $syncPostAuthor
      * @param int $fallbackUserId User ID for using as the author in case no author or if only guests are selected
+     * @param array $categories for authors
      */
-    public static function set_post_authors($postId, $authors, $syncPostAuthor = true, $fallbackUserId = null)
+    public static function set_post_authors($postId, $authors, $syncPostAuthor = true, $fallbackUserId = null, $author_categories = [])
     {
         static::set_post_authors_name_meta($postId, $authors);
 
@@ -174,6 +175,7 @@ class Utils
         }
 
         $authors = wp_list_pluck($authors, 'term_id');
+        \MA_Author_Categories::updatePostAuthorCategory($postId, $authors, $author_categories);
         wp_set_object_terms($postId, $authors, 'author');
     }
 
@@ -1260,5 +1262,42 @@ class Utils
         $output = ob_get_clean();
 
         return $output;
+    }
+
+
+    /**
+     * Secondary admin notices function for use with admin_notices hook.
+     *
+     * Constructs admin notice HTML.
+     *
+     * @param string $message Message to use in admin notice. Optional. Default empty string.
+     * @param bool $success Whether or not a success. Optional. Default true.
+     * @return mixed
+     */
+    public static function admin_notices_helper($message = '', $success = true)
+    {
+
+        $class   = [];
+        $class[] = $success ? 'updated' : 'error';
+        $class[] = 'notice is-dismissible';
+
+        $messagewrapstart = '<div id="message" class="' . esc_attr(implode(' ', $class)) . '"><p>';
+
+        $messagewrapend = '</p></div>';
+
+        $action = '';
+
+        /**
+         * Filters the custom admin notice for ppma.
+         *
+         *
+         * @param string $value Complete HTML output for notice.
+         * @param string $action Action whose message is being generated.
+         * @param string $message The message to be displayed.
+         * @param string $messagewrapstart Beginning wrap HTML.
+         * @param string $messagewrapend Ending wrap HTML.
+         */
+        return apply_filters('ppma_admin_notice', $messagewrapstart . $message . $messagewrapend, $action, $message,
+            $messagewrapstart, $messagewrapend);
     }
 }

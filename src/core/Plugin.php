@@ -1923,6 +1923,7 @@ class Plugin
                 'ppma_manage_custom_fields',
                 'ppma_edit_post_authors',
                 'ppma_edit_own_profile',
+                'ppma_manage_author_categories',
             ]
         );
 
