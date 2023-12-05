@@ -664,7 +664,7 @@ class MA_Author_Categories extends Module
                     echo '<span class="subtitle">';
                     printf(
                         /* translators: %s: Search query. */
-                        __( 'Search results for: %s' ),
+                        esc_html__( 'Search results for: %s' ),
                         '<strong>' . esc_html( wp_unslash( $_REQUEST['s'] ) ) . '</strong>'
                     );
                     echo '</span>';

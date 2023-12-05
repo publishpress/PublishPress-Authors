@@ -1202,6 +1202,10 @@ class MA_Author_Boxes extends Module
         $box_post         = get_post($args['post_id']);
         $box_post_id      = (is_object($box_post) && isset($box_post->ID)) ? $box_post->ID : '1';
         $li_style         = (empty($args['author_inline_display']['value'])) ? true : false;
+        $current_post_id  = 0;
+        if (!empty($args['short_code_args']['post']->ID)) {
+            $current_post_id  = $args['short_code_args']['post']->ID;
+        }
 
         $author_separator = $args['box_tab_layout_author_separator']['value']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped;
         $author_counts    = count($authors);
@@ -1230,7 +1234,7 @@ class MA_Author_Boxes extends Module
         if (!empty($args['author_categories_group']['value'])) {
             $author_categories = \MA_Author_Categories::get_author_categories(['category_status' => 1]);
             if (!empty($author_categories)) {
-                $author_relations  = \MA_Author_Categories::get_author_relations(['post_id' => $args['post_id']]);
+                $author_relations  = \MA_Author_Categories::get_author_relations(['post_id' => $current_post_id]);
                 $admin_preview_arg = $admin_preview || !empty($args['ajax_preview']);
                 $author_categories_data = Post_Editor::group_category_authors($author_categories, $author_relations, $authors, $admin_preview_arg);
                 $author_categories_group_option = !empty($args['author_categories_group_option']['value']) ? $args['author_categories_group_option']['value'] : 'inline';
