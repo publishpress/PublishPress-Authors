@@ -144,6 +144,11 @@ jQuery(document).ready(function ($) {
         let $authorsCategoryId = '';
         let $authorsCategoryTerm = '';
         $('.authors-list').each(function () {
+            if ($(this).children().length === 1) {
+                $(this).find('.sortable-placeholder').show();
+            } else {
+                $(this).find('.sortable-placeholder').hide();
+            }
             $authorsCategoryId = $(this).attr('data-category_id');
             $(this).find('.author_categories').each(function () {
                 $authorsCategoryTerm = $(this).closest('li').find('.author_term').val();
@@ -251,17 +256,23 @@ jQuery(document).ready(function ($) {
             var $select = $quickEditTr.find('.authors-select2.authors-search');
             var $authorsList = $quickEditTr.find('.authors-current-user-can-assign');
             var $usersList = $quickEditTr.find('.authors-user-search');
+            var $authorList = '';
 
             authorsSelect2($select);
             authorsUserSelect2($usersList);
-            $authorsList.empty();
+            $authorsList.find("li:not(.sortable-placeholder)").remove();
 
             $('#post-' + postId)
                 .find('td.column-authors > a.author_name')
                 .each(function () {
                     var listItemTmpl = wp.template("authors-author-partial");
+                    if ($quickEditTr.find('.authors-current-user-can-assign.authors-category-' + $(this).data('author-category-id')).length > 0) {
+                        $authorList = $quickEditTr.find('.authors-current-user-can-assign.authors-category-' + $(this).data('author-category-id'));
+                    } else {
+                        $authorList = $quickEditTr.find('.authors-current-user-can-assign:first');
+                    }
 
-                    $authorsList.append(
+                    $authorList.append(
                         window.htmlEnDeCode.htmlDecode(
                             listItemTmpl({
                                 'display_name': $(this).data('author-display-name'),
@@ -275,6 +286,7 @@ jQuery(document).ready(function ($) {
             sortedAuthorsList($authorsList);
             $select.val(null).trigger('change');
             handleUsersAuthorField();
+            handleAuthorCategory();
 
             clearTimeout(timeoutFn);
         }, 50);
@@ -292,8 +304,9 @@ jQuery(document).ready(function ($) {
             sortedAuthorsList($("#bulk-edit .authors-current-user-can-assign"));
             authorsUserSelect2($("#bulk-edit .authors-user-search"));
             handleUsersAuthorField();
+            handleAuthorCategory();
             $("#bulk-edit .authors-current-user-can-assign")
-                .find("li")
+                .find("li:not(.sortable-placeholder)")
                 .each(function () {
                     $(this).remove();
                 });
@@ -334,8 +347,12 @@ jQuery(document).ready(function ($) {
 
         // get the data
         var selectedAuthors = [];
-        $bulk_row.find(".authors-list input").each(function () {
-            selectedAuthors.push(parseInt($(this).val()));
+        var selectedAuthorCategories = {};
+        var selectedVal = '';
+        $bulk_row.find(".authors-list input.author_term").each(function () {
+            selectedVal = parseInt($(this).val());
+            selectedAuthors.push(selectedVal);
+            selectedAuthorCategories[selectedVal] = $(this).closest('ul').attr('data-category_id');
         });
 
         var selectedFallbackUser = $('#publishpress-authors-user-author-select').val();
@@ -350,6 +367,7 @@ jQuery(document).ready(function ($) {
                 action: "save_bulk_edit_authors",
                 post_ids: $post_ids, // and these are the 2 parameters we're passing to our function
                 authors_ids: selectedAuthors,
+                author_categories: selectedAuthorCategories,
                 fallback_author_user: selectedFallbackUser,
                 bulkEditNonce: bulkEditNonce.nonce
             }

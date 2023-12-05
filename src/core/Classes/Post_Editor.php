@@ -142,13 +142,22 @@ class Post_Editor
                         $showedPostAuthorUser = true;
                     }
 
+                    
+                    $author_category  = \MA_Author_Categories::get_author_relations(['post_id' => $post_id, 'author_term_id' => $author->term_id]);
+                    if (!empty($author_category) && isset($author_category[0]['category_id'])) {
+                        $category_id = $author_category[0]['category_id'];
+                    } else {
+                        $category_id = 0;
+                    }
+
                     $authors_str[] = sprintf(
-                        '<a href="%s" data-author-term-id="%d" data-author-slug="%s" data-author-display-name="%s" data-author-is-guest="%s" class="%s">%s</a>',
+                        '<a href="%s" data-author-term-id="%d" data-author-slug="%s" data-author-display-name="%s" data-author-is-guest="%s" data-author-category-id="%s" class="%s">%s</a>',
                         esc_url($url),
                         esc_attr($author->term_id),
                         esc_attr($author->slug),
                         esc_attr($author->display_name),
                         esc_attr($author->is_guest() ? 1 : 0),
+                        esc_attr($category_id),
                         esc_attr(implode(' ', $classes)),
                         esc_html($author->display_name)
                     );
@@ -246,45 +255,56 @@ class Post_Editor
      * @param array $author_categories
      * @param array $author_relations
      * @param array $authors
+     * @param bool $admin_preview
      * 
      * @return array
      */
-    public static function group_category_authors($author_categories, $author_relations, $authors) {
+    public static function group_category_authors($author_categories, $author_relations, $authors, $admin_preview = false) {
 
         // group authors by category slug
-        $grouped_authors = array_reduce($author_relations, function ($result, $item) {
-            $result[$item['category_slug']][] = $item;
-            return $result;
-        }, []);
+        if (!$admin_preview) {
+            $grouped_authors = array_reduce($author_relations, function ($result, $item) {
+                $result[$item['category_slug']][] = $item;
+                return $result;
+            }, []);
 
-        // List all authors attached to the post
-        $remaining_authors = $authors;
+            // List all authors attached to the post
+            $remaining_authors = $authors;
+        } else {
+            $grouped_authors    = [];
+            $remaining_authors  = [];
+        }
 
         $authors_data = [];
         foreach ($author_categories as $author_category) {
-            if (!empty($remaining_authors) && !empty($grouped_authors) && isset($grouped_authors[$author_category['slug']])) {
-                // get current category term ids
-                $category_author_ids = array_column($grouped_authors[$author_category['slug']], 'author_term_id');
-                // get selected authors for the category terms
-                $selected_authors = array_filter($remaining_authors, function ($author) use ($category_author_ids) {
-                    $term_id = $author->term_id; 
-                    return in_array($term_id, $category_author_ids);
-                });
-                // update remaining authors
-                $remaining_authors = array_filter($remaining_authors, function ($author) use ($category_author_ids) {
-                    $term_id = $author->term_id; 
-                    return !in_array($term_id, $category_author_ids);
-                });
+            if (!$admin_preview) {
+                if (!empty($remaining_authors) && !empty($grouped_authors) && isset($grouped_authors[$author_category['slug']])) {
+                    // get current category term ids
+                    $category_author_ids = array_column($grouped_authors[$author_category['slug']], 'author_term_id');
+                    // get selected authors for the category terms
+                    $selected_authors = array_filter($remaining_authors, function ($author) use ($category_author_ids) {
+                        $term_id = $author->term_id;
+                        return in_array($term_id, $category_author_ids);
+                    });
+                    // update remaining authors
+                    $remaining_authors = array_filter($remaining_authors, function ($author) use ($category_author_ids) {
+                        $term_id = $author->term_id;
+                        return !in_array($term_id, $category_author_ids);
+                    });
+                } else {
+                    $selected_authors = [];
+                }
             } else {
-                $selected_authors = [];
+                $selected_authors = $authors;
             }
 
             $authors_data[] = [
-                'title'       => $author_category['plural_name'],
-                'description' => sprintf('Drag and Drop Author to add them to %s category.', $author_category['plural_name']),
-                'slug'        => $author_category['slug'],
-                'id'          => $author_category['id'],
-                'authors'     => $selected_authors
+                'title'             => $author_category['plural_name'],
+                'singular_title'    => $author_category['category_name'],
+                'description'       => sprintf('Drag and Drop Author to add them to %s category.', $author_category['plural_name']),
+                'slug'              => $author_category['slug'],
+                'id'                => $author_category['id'],
+                'authors'           => $selected_authors
             ];
         }
 
@@ -319,11 +339,12 @@ class Post_Editor
         } else {
             $author_categories_data = [];
             $author_categories_data[] = [
-                'title'       => '',
-                'description' => '',
-                'slug'        => '',
-                'id'          => '',
-                'authors'     => $authors
+                'title'             => '',
+                'singular_title'    => '',
+                'description'       => '',
+                'slug'              => '',
+                'id'                => '',
+                'authors'           => $authors
             ];
         }
         ?>
@@ -350,11 +371,14 @@ class Post_Editor
             </script>
             <p class="description"> </p>
         <?php endif; ?>
-        <?php foreach ($author_categories_data as $author_category_data) : ?>
+        <?php foreach ($author_categories_data as $author_category_data) :
+            $author_classes = $classes;
+            $author_classes[] = 'authors-category-' . $author_category_data['id'];
+             ?>
             <?php if (!empty($author_category_data['title'])) : ?>
                 <div class="author-category-title"><?php echo esc_html($author_category_data['title']); ?></div>
             <?php endif; ?>
-            <ul class="<?php echo esc_attr(implode(' ', $classes)); ?>" data-category_id="<?php echo esc_attr($author_category_data['id']); ?>">
+            <ul class="<?php echo esc_attr(implode(' ', $author_classes)); ?>" data-category_id="<?php echo esc_attr($author_category_data['id']); ?>">
                 <?php if (!empty($author_category_data['description'])) : ?>
                     <li class="sortable-placeholder no-drag" style="<?php echo (!empty($author_category_data['authors']) ? 'display: none' : ''); ?>"><p class="description"><?php echo esc_html($author_category_data['description']); ?></p></li>
                 <?php endif; ?>
@@ -553,6 +577,7 @@ class Post_Editor
         }
 
         $authors = isset($_POST['authors_ids']) ? array_map('sanitize_text_field', $_POST['authors_ids']) : [];
+        $author_categories = isset($_POST['author_categories']) ? Utils::sanitizeArray($_POST['author_categories']) : []; // phpcs:ignore WordPress.Security.
         $authors = self::remove_dirty_authors_from_authors_arr($authors);
 
         $fallbackUserId = isset($_POST['fallback_author_user']) ? (int)$_POST['fallback_author_user'] : null;
@@ -560,6 +585,7 @@ class Post_Editor
         if (!empty($post_ids) && !empty($authors)) {
             foreach ($post_ids as $post_id) {
                 Utils::set_post_authors($post_id, $authors, true, $fallbackUserId);
+                Utils::set_post_authors($post_id, $authors, true, $fallbackUserId, $author_categories);
             }
 
             do_action('publishpress_authors_flush_cache', $post_ids);

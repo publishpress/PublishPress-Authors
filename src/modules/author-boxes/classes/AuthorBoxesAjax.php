@@ -116,6 +116,7 @@ class AuthorBoxesAjax
             $preview_args            = [];
             $preview_args['authors'] = $preview_authors;
             $preview_args['post_id'] = $post_id;
+            $preview_args['ajax_preview'] = true;
 
             $fields = apply_filters('multiple_authors_author_boxes_fields', MA_Author_Boxes::get_fields(get_post($post_id)), get_post($post_id));
             foreach ($fields as $key => $args) {
@@ -432,6 +433,9 @@ if (!empty($new_style_8 = AuthorBoxesStyles::getBoxLayoutFieldStyles($args, ''))
 }
 if (!empty($new_style_9 = AuthorBoxesStyles::getCustomCssFieldStyles($args, ''))) {
     $generated_styles .= $new_style_9 . "\n";
+}
+if (!empty($new_style_10 = AuthorBoxesStyles::getAuthorCategoriesFieldStyles($args, ''))) {
+    $generated_styles .= $new_style_10 . "\n";
 }
 ?>
 <style>

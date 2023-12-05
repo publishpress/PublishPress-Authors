@@ -4,6 +4,15 @@
     margin-top: 0;
 }
 
+.pp-multiple-authors-boxes-wrapper h1,
+.pp-multiple-authors-boxes-wrapper h2,
+.pp-multiple-authors-boxes-wrapper h3,
+.pp-multiple-authors-boxes-wrapper h4,
+.pp-multiple-authors-boxes-wrapper h5,
+.pp-multiple-authors-boxes-wrapper h6 {
+    padding: initial !important;
+}
+
 .ppma-author-boxes-editor-table input[type=text],
 .ppma-author-boxes-editor-table input[type=number],
 .ppma-author-boxes-editor-table select {

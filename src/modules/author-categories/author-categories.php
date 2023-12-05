@@ -619,19 +619,24 @@ class MA_Author_Categories extends Module
 
         $default_args = [
             'post_id'  => '',
+            'author_term_id' => ''
         ];
 
         $args = wp_parse_args($args, $default_args);
 
-        $post_id    = intval($args['post_id']);
+        $post_id        = intval($args['post_id']);
+        $author_term_id = intval($args['author_term_id']);
 
         $table_name = AuthorCategoriesSchema::relationTableName();
 
         $sql = "SELECT * FROM $table_name WHERE 1=1";
 
-        // Add conditions based on provided arguments
         if (!empty($post_id)) {
             $sql .= $wpdb->prepare(" AND post_id = %d", $post_id);
+        }
+
+        if (!empty($author_term_id)) {
+            $sql .= $wpdb->prepare(" AND author_term_id = %d", $author_term_id);
         }
 
         $results = $wpdb->get_results($sql, ARRAY_A);
