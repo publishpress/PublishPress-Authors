@@ -423,18 +423,18 @@ if (!class_exists('MA_Multiple_Authors')) {
                     unset($currentSubmenu[$itemsToSort['edit-tags.php?taxonomy=author']]);
                 }
 
-                // Author Categories
-                if (isset($itemsToSort['ppma-author-categories'])) {
-                    $newSubmenu[] = $currentSubmenu[$itemsToSort['ppma-author-categories']];
-
-                    unset($currentSubmenu[$itemsToSort['ppma-author-categories']]);
-                }
-
                 // Author Boxes
                 if (isset($itemsToSort['edit.php?post_type=ppma_boxes'])) {
                     $newSubmenu[] = $currentSubmenu[$itemsToSort['edit.php?post_type=ppma_boxes']];
 
                     unset($currentSubmenu[$itemsToSort['edit.php?post_type=ppma_boxes']]);
+                }
+
+                // Author Categories
+                if (isset($itemsToSort['ppma-author-categories'])) {
+                    $newSubmenu[] = $currentSubmenu[$itemsToSort['ppma-author-categories']];
+
+                    unset($currentSubmenu[$itemsToSort['ppma-author-categories']]);
                 }
 
                 // Fields
