@@ -77,7 +77,6 @@ class AuthorCategoriesTable extends \WP_List_Table
             'category_name' => esc_html__('Name', 'publishpress-authors'),
             'plural_name' => esc_html__('Plural Name', 'publishpress-authors'),
             'category_status' => esc_html__('Enable Category', 'publishpress-authors'),
-            'created_at' => esc_html__('Date', 'publishpress-authors')
         ];
 
         return $columns;
@@ -94,7 +93,6 @@ class AuthorCategoriesTable extends \WP_List_Table
             'category_name' => ['category_name', true],
             'plural_name' => ['plural_name', true],
             'category_status' => ['category_status', true],
-            'created_at' => ['created_at', true],
         ];
 
         return $sortable_columns;
@@ -400,18 +398,6 @@ class AuthorCategoriesTable extends \WP_List_Table
         );
 
         return $title;
-    }
-
-    /**
-     * The action column
-     *
-     * @param $item
-     *
-     * @return string
-     */
-    protected function column_created_at($item)
-    {
-        return date_i18n('Y/m/d \a\t g:i a', strtotime($item['created_at']));
     }
 
     /**
