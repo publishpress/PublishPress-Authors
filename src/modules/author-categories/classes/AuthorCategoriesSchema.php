@@ -79,9 +79,9 @@ class AuthorCategoriesSchema
                 created_at datetime NOT NULL,
                 meta_data longtext NOT NULL default '',
                 PRIMARY KEY  (id),
+                UNIQUE KEY slug (slug),
                 KEY category_name (category_name),
-                KEY plural_name (plural_name),
-                KEY slug (slug)
+                KEY plural_name (plural_name)
             ) $charset_collate;";
 
             self::createTable($sql);

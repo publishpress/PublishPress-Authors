@@ -751,37 +751,19 @@ class MA_Author_Categories extends Module
         ];
 
         $default_categories[] = [
-            'category_name'     => esc_html__('Contributor', 'publishpress-authors'),
-            'plural_name'       => esc_html__('Contributors', 'publishpress-authors'),
-            'slug'              => sanitize_title(esc_html__('Contributor', 'publishpress-authors')),
+            'category_name'     => esc_html__('Reviewer', 'publishpress-authors'),
+            'plural_name'       => esc_html__('Reviewers', 'publishpress-authors'),
+            'slug'              => sanitize_title(esc_html__('Reviewer', 'publishpress-authors')),
             'category_order'    => 3,
             'category_status'   => 0,
             'created_at'        => current_time('mysql', true)
         ];
 
         $default_categories[] = [
-            'category_name'     => esc_html__('Written by', 'publishpress-authors'),
-            'plural_name'       => esc_html__('Written by', 'publishpress-authors'),
-            'slug'              => sanitize_title(esc_html__('Written by', 'publishpress-authors')),
+            'category_name'     => esc_html__('Editor', 'publishpress-authors'),
+            'plural_name'       => esc_html__('Editors', 'publishpress-authors'),
+            'slug'              => sanitize_title(esc_html__('Editor', 'publishpress-authors')),
             'category_order'    => 4,
-            'category_status'   => 0,
-            'created_at'        => current_time('mysql', true)
-        ];
-
-        $default_categories[] = [
-            'category_name'     => esc_html__('Reviewed by', 'publishpress-authors'),
-            'plural_name'       => esc_html__('Reviewed by', 'publishpress-authors'),
-            'slug'              => sanitize_title(esc_html__('Reviewed by', 'publishpress-authors')),
-            'category_order'    => 5,
-            'category_status'   => 0,
-            'created_at'        => current_time('mysql', true)
-        ];
-
-        $default_categories[] = [
-            'category_name'     => esc_html__('Updated by', 'publishpress-authors'),
-            'plural_name'       => esc_html__('Updated by', 'publishpress-authors'),
-            'slug'              => sanitize_title(esc_html__('Updated by', 'publishpress-authors')),
-            'category_order'    => 6,
             'category_status'   => 0,
             'created_at'        => current_time('mysql', true)
         ];
