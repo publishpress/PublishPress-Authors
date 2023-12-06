@@ -301,7 +301,7 @@ class Post_Editor
             $authors_data[] = [
                 'title'             => $author_category['plural_name'],
                 'singular_title'    => $author_category['category_name'],
-                'description'       => sprintf('Drag and Drop Author to add them to %s category.', $author_category['plural_name']),
+                'description'       => sprintf('Drag-and-drop Authors to add them to the %s category', $author_category['category_name']),
                 'slug'              => $author_category['slug'],
                 'id'                => $author_category['id'],
                 'authors'           => $selected_authors
