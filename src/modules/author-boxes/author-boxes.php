@@ -141,6 +141,7 @@ class MA_Author_Boxes extends Module
         add_filter('pp_multiple_authors_author_box_html', [$this, 'filterAuthorBoxHtml'], 9, 2);
         add_filter('pp_multiple_authors_authors_list_box_html', [$this, 'filterAuthorBoxHtml'], 9, 2);
         add_filter('bulk_actions-edit-' . self::POST_TYPE_BOXES . '', [$this, 'removeBulkActionEdit'], 11);
+        add_filter('parent_file', [$this, 'setParentFile']);
 
 
         add_action('wp_ajax_author_boxes_editor_get_preview', ['MultipleAuthorBoxes\AuthorBoxesAjax', 'handle_author_boxes_editor_get_preview']);
@@ -148,6 +149,26 @@ class MA_Author_Boxes extends Module
         add_action('wp_ajax_author_boxes_editor_save_fields_order', ['MultipleAuthorBoxes\AuthorBoxesAjax', 'handle_author_boxes_fields_order']);
 
         $this->registerPostType();
+    }
+
+    /**
+     * Set authors menu as parent for post type so menu is shown 
+     * as active when on post type edit screen.
+     *
+     * @param string $parent_file
+     * 
+     * @return string
+     */
+    public function setParentFile($parent_file)
+    {
+        global $current_screen;
+        
+        // Check if the current screen is the User Code page
+       if (!empty($current_screen->post_type) && $current_screen->post_type == self::POST_TYPE_BOXES) {
+            $parent_file = \MA_Multiple_Authors::MENU_SLUG;
+        }
+
+        return $parent_file;
     }
 
     /**
@@ -668,6 +689,12 @@ class MA_Author_Boxes extends Module
             return $html;
         }
 
+        $author_box_post = get_post($author_box_id);
+        if (empty($author_box_post) || !is_object($author_box_post) || !isset($author_box_post->ID)) {
+            // revert to default for deleted author box
+            $author_box_id = $this->getLegacyLayoutAuthorBoxId('boxed');
+        }
+
         $editor_data = $this->get_author_boxes_layout_meta_values($author_box_id);
 
         if (!is_array($editor_data)) {
@@ -888,6 +915,11 @@ class MA_Author_Boxes extends Module
          * @param WP_Post $post object.
          */
         $fields_tabs = apply_filters('authors_boxes_editor_fields_tabs', $fields_tabs, $post);
+
+
+        if (!Utils::isAuthorsProActive()) {
+            unset($fields_tabs['author_categories']);
+        }
 
         return $fields_tabs;
     }
@@ -1231,12 +1263,18 @@ class MA_Author_Boxes extends Module
         $author_categories_title_html_tag = 'span';
         $author_categories_title_prefix = '';
         $author_categories_title_suffix = '';
+
+        $all_author_categories_data = $author_categories_data;
+        $author_categories = \MA_Author_Categories::get_author_categories(['category_status' => 1]);
+        if (!empty($author_categories)) {
+            $author_relations  = \MA_Author_Categories::get_author_relations(['post_id' => $current_post_id]);
+            $admin_preview_arg = $admin_preview || !empty($args['ajax_preview']);
+            $all_author_categories_data = Post_Editor::group_category_authors($author_categories, $author_relations, $authors, $admin_preview_arg);
+        }
+
         if (!empty($args['author_categories_group']['value'])) {
-            $author_categories = \MA_Author_Categories::get_author_categories(['category_status' => 1]);
             if (!empty($author_categories)) {
-                $author_relations  = \MA_Author_Categories::get_author_relations(['post_id' => $current_post_id]);
-                $admin_preview_arg = $admin_preview || !empty($args['ajax_preview']);
-                $author_categories_data = Post_Editor::group_category_authors($author_categories, $author_relations, $authors, $admin_preview_arg);
+                $author_categories_data = $all_author_categories_data;
                 $author_categories_group_option = !empty($args['author_categories_group_option']['value']) ? $args['author_categories_group_option']['value'] : 'inline';
                 $author_categories_title_option = !empty($args['author_categories_title_option']['value']) ? $args['author_categories_title_option']['value'] : '';
                 $author_categories_title_html_tag = !empty($args['author_categories_title_html_tag']['value']) ? $args['author_categories_title_html_tag']['value'] : 'span';
@@ -1316,6 +1354,9 @@ class MA_Author_Boxes extends Module
                                                             $author_recent_posts = [];
                                                         endif;
 
+
+                                                        $current_author_category = \MA_Author_Categories::get_author_category($author, $all_author_categories_data);
+                                                        
                                                         //author fields item position
                                                         $name_row_extra = '';
                                                         $bio_row_extra  = '';
@@ -1354,6 +1395,29 @@ class MA_Author_Boxes extends Module
                                                                     continue;
                                                                 }
 
+                                                                $profile_author_category_content = '';
+                                                                if (!empty($args['profile_fields_' . $key . '_author_categories']['value'])) :
+                                                                    $profile_author_categories_divider = !empty($args['profile_fields_' . $key . '_author_categories_divider']['value']) ? $args['profile_fields_' . $key . '_author_categories_divider']['value'] : '';
+                                                                    
+                                                                    if (!empty($current_author_category)) :
+
+                                                                        $profile_author_category_prefix = '';
+                                                                        $profile_author_category_suffix = '';
+                                                                        if ($profile_author_categories_divider == 'colon') {
+                                                                            $profile_author_category_prefix = ': ';
+                                                                        } elseif ($profile_author_categories_divider == 'bracket') {
+                                                                            $profile_author_category_prefix = ' (';
+                                                                            $profile_author_category_suffix = ') ';
+                                                                        } elseif ($profile_author_categories_divider == 'square_bracket') {
+                                                                            $profile_author_category_prefix = ' [';
+                                                                            $profile_author_category_suffix = '] ';
+                                                                        }
+                                                                        $profile_author_category_content = '<span class="field-author-category ' . $key . '">' . $profile_author_category_prefix . $current_author_category['singular_title'] . $profile_author_category_suffix . '</span>';
+
+                                                                    endif;
+
+                                                                endif;
+
                                                                 $display_field_value = '';
                                                                 if ($profile_display === 'icon_prefix_value_suffix') {
                                                                     if (!empty($profile_display_icon)) {
@@ -1364,6 +1428,7 @@ class MA_Author_Boxes extends Module
                                                                     }
                                                                     if (!empty($field_value)) {
                                                                         $display_field_value .= $field_value . ' ';
+                                                                        $display_field_value .= $profile_author_category_content;
                                                                     }
                                                                     if (!empty($profile_display_suffix)) {
                                                                         $display_field_value .= esc_html($profile_display_suffix);
@@ -1441,8 +1506,32 @@ class MA_Author_Boxes extends Module
 
                                                             <<?php echo ($li_style ? 'div' : 'span'); ?> class="pp-author-boxes-avatar-details">
                                                             <?php if ($args['name_show']['value']) : ?>
+                                                                <?php
+                                                                $name_author_category_content = '';
+                                                                if (!empty($args['name_author_categories']['value'])) :
+                                                                    $name_author_categories_divider = !empty($args['name_author_categories_divider']['value']) ? $args['name_author_categories_divider']['value'] : '';
+                                                                    
+                                                                    if (!empty($current_author_category)) :
+
+                                                                        $name_author_category_prefix = '';
+                                                                        $name_author_category_suffix = '';
+                                                                        if ($name_author_categories_divider == 'colon') {
+                                                                            $name_author_category_prefix = ': ';
+                                                                        } elseif ($name_author_categories_divider == 'bracket') {
+                                                                            $name_author_category_prefix = ' (';
+                                                                            $name_author_category_suffix = ') ';
+                                                                        } elseif ($name_author_categories_divider == 'square_bracket') {
+                                                                            $name_author_category_prefix = ' [';
+                                                                            $name_author_category_suffix = '] ';
+                                                                        }
+                                                                        $name_author_category_content = '<span class="name-author-category">' . $name_author_category_prefix . $current_author_category['singular_title'] . $name_author_category_suffix . '</span>';
+
+                                                                    endif;
+
+                                                                endif;
+                                                                ?>
                                                                     <<?php echo esc_html($args['name_html_tag']['value']); ?> class="pp-author-boxes-name multiple-authors-name">
-                                                                        <a href="<?php echo esc_url($author->link); ?>" rel="author" title="<?php echo esc_attr($author->display_name); ?>" class="author url fn"><?php echo esc_html($author->display_name); ?></a><?php if (!$li_style && $author_categories_title_option == 'after_individual' && !empty($author_category_data['title'])) : ?><?php echo '<' . $author_categories_title_html_tag . ' class="ppma-category-group-title">' . $author_categories_title_prefix . '' . $author_category_data['singular_title'] . '' . $author_categories_title_suffix . '</' . $author_categories_title_html_tag . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php endif; ?><?php if (!$li_style && $author_counts > 1 && $index !== $author_counts - 1) {
+                                                                        <a href="<?php echo esc_url($author->link); ?>" rel="author" title="<?php echo esc_attr($author->display_name); ?>" class="author url fn"><?php echo esc_html($author->display_name); ?></a><?php echo $name_author_category_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php if (!$li_style && $author_categories_title_option == 'after_individual' && !empty($author_category_data['title'])) : ?><?php echo '<' . $author_categories_title_html_tag . ' class="ppma-category-group-title">' . $author_categories_title_prefix . '' . $author_category_data['singular_title'] . '' . $author_categories_title_suffix . '</' . $author_categories_title_html_tag . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php endif; ?><?php if (!$li_style && $author_counts > 1 && $index !== $author_counts - 1) {
                                                                             echo html_entity_decode($author_separator); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                                                                         } ?> 
                                                                     </<?php echo esc_html($args['name_html_tag']['value']); ?>>

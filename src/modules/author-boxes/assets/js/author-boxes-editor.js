@@ -367,7 +367,9 @@
                 'author_recent_posts_order'
             ];
             var name_refresh_trigger = [
-                'name_show'
+                'name_show',
+                'name_author_categories',
+                'name_author_categories_divider'
             ];
             var bio_refresh_trigger = [
                 'author_bio_show',
@@ -407,6 +409,8 @@
             for (field_key in profile_fields) {
                 var field_name = profile_fields[field_key];
                 profile_refresh_trigger.push('profile_fields_show_' + field_name);
+                profile_refresh_trigger.push('profile_fields_' + field_name + '_author_categories');
+                profile_refresh_trigger.push('profile_fields_' + field_name + '_author_categories_divider');
                 profile_refresh_trigger.push('profile_fields_' + field_name + '_html_tag');
                 profile_refresh_trigger.push('profile_fields_' + field_name + '_value_prefix');
                 profile_refresh_trigger.push('profile_fields_' + field_name + '_display');

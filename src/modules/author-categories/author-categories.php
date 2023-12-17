@@ -631,7 +631,7 @@ class MA_Author_Categories extends Module
 
         $sql = "SELECT * FROM $table_name WHERE 1=1";
 
-        if (!empty($post_id)) {
+        if ($post_id !== '') {
             $sql .= $wpdb->prepare(" AND post_id = %d", $post_id);
         }
 
@@ -642,6 +642,31 @@ class MA_Author_Categories extends Module
         $results = $wpdb->get_results($sql, ARRAY_A);
 
         return $results;
+    }
+
+    /**
+     * Get author category
+     *
+     * @param object $author
+     * @param array $author_categories_data
+     * 
+     * @return array
+     */
+    public static function get_author_category($author, $author_categories_data) {
+        
+        $author_category = [];
+
+        foreach ($author_categories_data as $author_category_data) {
+            if (!empty($author_category_data['singular_title']) && !empty($author_category_data['authors'])) {
+                $author_term_id = array_column($author_category_data['authors'], 'term_id');
+                if (in_array($author->term_id, $author_term_id)) {
+                    $author_category = $author_category_data;
+                }
+            }
+
+        }
+
+        return $author_category;
     }
 
 

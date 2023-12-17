@@ -126,8 +126,29 @@ class MA_Author_Custom_Fields extends Module
         add_action('admin_enqueue_scripts', [$this, 'enqueueAdminScripts']);
         add_action('wp_ajax_author_custom_fields_save_order', [$this, 'handle_ajax_update_field_order']);
         add_action('pre_get_posts', [$this, 'author_custom_fields_default_sort']);
+        add_filter('parent_file', [$this, 'setParentFile']);
 
         $this->registerPostType();
+    }
+
+    /**
+     * Set authors menu as parent for post type so menu is shown 
+     * as active when on post type edit screen.
+     *
+     * @param string $parent_file
+     * 
+     * @return string
+     */
+    public function setParentFile($parent_file)
+    {
+        global $current_screen;
+        
+        // Check if the current screen is the User Code page
+       if (!empty($current_screen->post_type) && $current_screen->post_type == self::POST_TYPE_CUSTOM_FIELDS) {
+            $parent_file = \MA_Multiple_Authors::MENU_SLUG;
+        }
+
+        return $parent_file;
     }
 
     /**

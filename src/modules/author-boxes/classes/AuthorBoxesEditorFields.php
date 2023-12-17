@@ -10,7 +10,7 @@
 
 namespace MultipleAuthorBoxes;
 
-use MultipleAuthors\Classes\Author_Editor;
+use MultipleAuthors\Classes\Utils;
 use MA_Author_Boxes;
 
 /**
@@ -239,6 +239,24 @@ class AuthorBoxesEditorFields
             'type'        => 'checkbox',
             'sanitize'    => 'absint',
             'tab'         => 'name',
+        ];
+        $fields['name_author_categories'] = [
+            'label'       => esc_html__('Show Author Categories', 'publishpress-authors'),
+            'type'        => 'checkbox',
+            'sanitize'    => 'absint',
+            'tab'         => 'name',
+        ];
+        $fields['name_author_categories_divider'] = [
+            'label'    => esc_html__('Author Categories Divider', 'publishpress-authors'),
+            'type'     => 'select',
+            'sanitize' => 'sanitize_text_field',
+            'options'  => [
+                'colon'          => esc_html__(':', 'publishpress-authors'),
+                'bracket'        => esc_html__('()', 'publishpress-authors'),
+                'square_bracket' => esc_html__('[]', 'publishpress-authors'),
+                'none'           => esc_html__('None', 'publishpress-authors'),
+            ],
+            'tab'      => 'name',
         ];
         $fields['name_size'] = [
             'label'    => esc_html__('Size', 'publishpress-authors'),
@@ -513,6 +531,10 @@ class AuthorBoxesEditorFields
     public static function getAuthorCategories($fields, $post) 
     {
 
+        if (!Utils::isAuthorsProActive()) {
+            return $fields;
+        }
+
         $author_categories = \MA_Author_Categories::get_author_categories(['category_status' => 1]);
 
         if (empty($author_categories)) {
@@ -697,6 +719,28 @@ class AuthorBoxesEditorFields
                     'label'       => sprintf(esc_html__('Show %1s', 'publishpress-authors'), $data['label']),
                     'type'        => 'checkbox',
                     'sanitize'    => 'absint',
+                    'tabbed'      => 1,
+                    'tab_name'    => $key,
+                    'tab'         => 'profile_fields',
+                ];
+                $fields['profile_fields_' . $key . '_author_categories'] = [
+                    'label'       => esc_html__('Show Author Categories', 'publishpress-authors'),
+                    'type'        => 'checkbox',
+                    'sanitize'    => 'absint',
+                    'tabbed'      => 1,
+                    'tab_name'    => $key,
+                    'tab'         => 'profile_fields',
+                ];
+                $fields['profile_fields_' . $key . '_author_categories_divider'] = [
+                    'label'    => esc_html__('Author Categories Divider', 'publishpress-authors'),
+                    'type'     => 'select',
+                    'sanitize' => 'sanitize_text_field',
+                    'options'  => [
+                        'colon'          => esc_html__(':', 'publishpress-authors'),
+                        'bracket'        => esc_html__('()', 'publishpress-authors'),
+                        'square_bracket' => esc_html__('[]', 'publishpress-authors'),
+                        'none'           => esc_html__('None', 'publishpress-authors'),
+                    ],
                     'tabbed'      => 1,
                     'tab_name'    => $key,
                     'tab'         => 'profile_fields',
