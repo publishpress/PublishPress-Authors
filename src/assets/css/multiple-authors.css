@@ -428,6 +428,20 @@ form#edittag tr.form-field #slug {
     min-width: 400px;
 }
 
+.post-type-ppma_boxes .manage-column.column-author_category_boxes {
+    width: 300px;
+}
+
+.post-type-ppma_boxes .author_category_boxes.column-author_category_boxes .green-check {
+    color: green;
+    margin-left: 30px;
+}
+
+.post-type-ppma_boxes .author_category_boxes.column-author_category_boxes .red-check {
+    color: red;
+    margin-left: 30px;
+}
+
 body.edit-php.post-type-ppmacf_field .row-actions .inline,
 body.edit-php.post-type-ppma_boxes .row-actions .inline,
 body.edit-php.post-type-ppmacf_field .tablenav.top .alignleft.actions:not(.bulkactions),

@@ -304,13 +304,13 @@ class Post_Editor
                 'description'       => sprintf('Drag-and-drop Authors to add them to the %s category', $author_category['category_name']),
                 'slug'              => $author_category['slug'],
                 'id'                => $author_category['id'],
-                'authors'           => $selected_authors
+                'authors'           => array_values($selected_authors)
             ];
         }
 
         // Add remaining author to first category
         if (!empty($remaining_authors)) {
-            $authors_data[0]['authors'] = array_merge($authors_data[0]['authors'], $remaining_authors);
+            $authors_data[0]['authors'] = array_values(array_merge($authors_data[0]['authors'], $remaining_authors));
         }
 
 

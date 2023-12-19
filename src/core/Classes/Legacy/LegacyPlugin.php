@@ -39,6 +39,7 @@ class LegacyPlugin
     public $class_names;
     public $shortcode_authors_list;
     public $author_categories;
+    public $author_boxes_pro;
 
     private $options_group = 'multiple_authors_';
 

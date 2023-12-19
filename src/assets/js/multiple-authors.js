@@ -180,6 +180,28 @@ jQuery(document).ready(function ($) {
         });
     }
 
+    function authorsPostSearchSelect2(selector) {
+        selector.each(function () {
+            var postsSearch = $(this).ppma_select2({
+                placeholder: $(this).data("placeholder"),
+                allowClear: $(this).data("allow-clear"),
+                ajax: {
+                    url:
+                        window.ajaxurl +
+                        "?action=authors_filter_posts_search&nonce=" +
+                        $(this).data("nonce") + "&post_type=" +
+                        $(this).data("post_type"),
+                    dataType: "json",
+                    data: function (params) {
+                        return {
+                            q: params.term
+                        };
+                    }
+                }
+            });
+        });
+    }
+
     function authorsUserSlugSelect2(selector) {
         selector.each(function () {
             var authorsSearch = $(this).ppma_select2({
@@ -234,6 +256,9 @@ jQuery(document).ready(function ($) {
                     $(this).find('.column-primary .row-actions').hide();
                 }
             });
+        }
+        if ($('.ppma-authors-post-search').length > 0) {
+            authorsPostSearchSelect2($('.ppma-authors-post-search'));
         }
     }
 

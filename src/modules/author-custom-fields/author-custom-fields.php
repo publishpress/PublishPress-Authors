@@ -141,11 +141,12 @@ class MA_Author_Custom_Fields extends Module
      */
     public function setParentFile($parent_file)
     {
-        global $current_screen;
+        global $submenu_file, $current_screen;
         
         // Check if the current screen is the User Code page
        if (!empty($current_screen->post_type) && $current_screen->post_type == self::POST_TYPE_CUSTOM_FIELDS) {
             $parent_file = \MA_Multiple_Authors::MENU_SLUG;
+            $submenu_file = 'edit.php?post_type=' . self::POST_TYPE_CUSTOM_FIELDS;
         }
 
         return $parent_file;

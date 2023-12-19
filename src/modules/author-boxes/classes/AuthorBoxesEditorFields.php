@@ -556,18 +556,22 @@ class AuthorBoxesEditorFields
             $fields['author_categories_layout'] = [
                 'label'    => esc_html__('Author Category Layout', 'publishpress-authors'),
                 'description' => esc_html__('Selecting an option here will overwrite author boxes settings to match selected layout.', 'publishpress-authors'),
-                'type'     => 'select',
+                'type'     => 'optgroup_select',
                 'sanitize' => 'sanitize_text_field',
                 'options'  => [
-                    ''                                      => esc_html__('Default', 'publishpress-authors'),
-                    'list_author_category_block'            => esc_html__('List Author Category Block', 'publishpress-authors'),
-                    'list_author_category_inline'           => esc_html__('List Author Category Inline', 'publishpress-authors'),
-                    'inline_category_1'                     => esc_html__('Inline Category 1', 'publishpress-authors'),
-                    'inline_category_2'                     => esc_html__('Inline Category 2', 'publishpress-authors'),
-                    'boxed_category_flex'                    => esc_html__('Boxed Category Flex', 'publishpress-authors'),
-                    'boxed_category_block'                  => esc_html__('Boxed Category Block', 'publishpress-authors'),
-                    'centered_category_flex'                 => esc_html__('Centered Category Flex', 'publishpress-authors'),
-                    'centered_category_block'               => esc_html__('Centered Category Block', 'publishpress-authors'),
+                    'inbuilt' => [
+                        'title' => esc_html__('Built-in Layout', 'publishpress-authors'),
+                        'options' => [
+                            'list_author_category_block'          => esc_html__('List Author Category Block', 'publishpress-authors'),
+                            'list_author_category_inline'         => esc_html__('List Author Category Inline', 'publishpress-authors'),
+                            'simple_name_author_category_block'   => esc_html__('Simple Name Author Category Block', 'publishpress-authors'),
+                            'simple_name_author_category_inline'  => esc_html__('Simple Name Author Category Inline', 'publishpress-authors')
+                        ]
+                    ],
+                    'author_boxes' => [
+                        'title'   => esc_html__('Existing Author Boxes', 'publishpress-authors'),
+                        'options' => MA_Author_Boxes::getAuthorBoxes(false, false, 'author_boxes')
+                    ]
                 ],
                 'tab'      => 'author_categories',
             ];
@@ -702,7 +706,8 @@ class AuthorBoxesEditorFields
      */
     public static function getProfileFields($fields, $post) 
     {
-        $profile_fields   = MA_Author_Boxes::get_profile_fields($post->ID);
+        $post_id = (is_object($post) ? $post->ID : false);
+        $profile_fields   = MA_Author_Boxes::get_profile_fields($post_id);
         $index = 0;
         foreach ($profile_fields as $key => $data) {
             if (!in_array($key, MA_Author_Boxes::AUTHOR_BOXES_EXCLUDED_FIELDS)) {

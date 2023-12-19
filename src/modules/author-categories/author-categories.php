@@ -833,7 +833,7 @@ class MA_Author_Categories extends Module
                  $role->add_cap('ppma_manage_author_categories');
              }
          }
-
+         update_option('ppma_author_categories_installed', 1);
     }
 
     /**
@@ -844,7 +844,7 @@ class MA_Author_Categories extends Module
      * @param void
      */
     public function runUpgradeTasks($currentVersion) {
-        if (version_compare($currentVersion, '4.3.0', '<')) {
+        if (empty(get_option('ppma_author_categories_installed'))) {
             $this->runInstallTasks($currentVersion);
         }
     }

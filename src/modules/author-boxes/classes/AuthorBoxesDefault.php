@@ -365,7 +365,8 @@ class AuthorBoxesDefault
      * Add editor data default values 
      *
      * @param array $editor_data
-     * @return void
+     * 
+     * @return array
      */
     public static function addEditorDataDefaultValues($editor_data) {
         $profile_fields   = apply_filters('multiple_authors_author_fields', [], false);
