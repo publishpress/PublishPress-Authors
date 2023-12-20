@@ -338,6 +338,12 @@ class Plugin
             2
         );
 
+        // Query filter for multiple authors
+        add_action(
+            'pre_get_posts',
+            ['MultipleAuthors\\Classes\\Query', 'filter_query_pre_get_posts']
+        );
+
         // Author search
         add_action(
             'wp_ajax_authors_search',
