@@ -181,6 +181,7 @@
 .editor-preview-author {
     display: flex;
     justify-content: flex-end;
+    margin-bottom: 20px;
 }
 
 .editor-preview-author .editor-preview-author-label {
