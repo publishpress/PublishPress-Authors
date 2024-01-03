@@ -1371,7 +1371,9 @@ class MA_Author_Boxes extends Module
                             <?php echo esc_html__('Preview post author:', 'publishpress-authors'); ?>
                         </div>
                         <div class="editor-preview-author-post">
-                            <select data-nonce="<?php
+                            <select 
+                            style="width: 195px;"
+                            data-nonce="<?php
                                 echo esc_attr(wp_create_nonce('authors-post-search')); ?>"
                                     data-post_type="<?php echo esc_attr($args['preview_post_type']); ?>"
                                     class="authors-select2 ppma-authors-post-search"
@@ -1414,9 +1416,15 @@ class MA_Author_Boxes extends Module
                         <span class="ppma-layout-prefix"><?php echo html_entity_decode($args['box_tab_layout_prefix']['value']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
                         <<?php echo ($li_style ? 'div' : 'span'); ?> class="ppma-author-category-wrap">
                             <?php foreach ($author_categories_data as $author_category_data) : ?>
-                                <?php if (!empty($author_category_data['authors'])) : ?>
+                                <?php if (!empty($author_category_data['authors'])) : 
+                                    if (count($author_category_data['authors']) > 1) {
+                                        $category_title_output = $author_category_data['title'];
+                                    } else {
+                                        $category_title_output = $author_category_data['singular_title'];
+                                    }
+                                    ?>
                                     <<?php echo ($author_categories_group_option == 'inline' ? 'span' : 'div'); ?> class="ppma-category-group ppma-category-group-<?php echo esc_attr($author_category_data['id']); ?>">
-                                    <?php if ($author_categories_title_option == 'before_group' && !empty($author_category_data['title'])) : ?><?php echo '<' . $author_categories_title_html_tag . ' class="ppma-category-group-title">' . $author_categories_title_prefix . '' . $author_category_data['title'] . '' . $author_categories_title_suffix . '</' . $author_categories_title_html_tag . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php endif; ?>
+                                    <?php if ($author_categories_title_option == 'before_group' && !empty($author_category_data['title'])) : ?><?php echo '<' . $author_categories_title_html_tag . ' class="ppma-category-group-title">' . $author_categories_title_prefix . '' . $category_title_output . '' . $author_categories_title_suffix . '</' . $author_categories_title_html_tag . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php endif; ?>
                                         <?php if ($li_style) : ?>
                                             <ul class="pp-multiple-authors-boxes-ul">
                                         <?php endif; ?>
