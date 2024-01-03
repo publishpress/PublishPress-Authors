@@ -2172,7 +2172,7 @@ class MA_Author_Boxes extends Module
                     $modal_content .= '<a class="upgrade-link" href="https://publishpress.com/links/authors-banner" target="_blank">'. __('Upgrade to Pro', 'publishpress-authors') .'</a>';
                     $modal_content .= '</p>';
                     $modal_content .= '</div>';
-                    Utils::loadThickBoxModal('ppma-new-acb-thickbox-botton', 500, 150, $modal_content);
+                    Utils::loadThickBoxModal('ppma-new-acb-thickbox-botton', 500, 180, $modal_content);
                 ?>
                 <script>
                 jQuery(document).ready(function ($) {
