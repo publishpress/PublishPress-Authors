@@ -767,9 +767,9 @@ class MA_Author_Categories extends Module
         ];
 
         $default_categories[] = [
-            'category_name'     => esc_html__('Co Author', 'publishpress-authors'),
-            'plural_name'       => esc_html__('Co Authors', 'publishpress-authors'),
-            'slug'              => sanitize_title(esc_html__('Co Author', 'publishpress-authors')),
+            'category_name'     => esc_html__('Coauthor', 'publishpress-authors'),
+            'plural_name'       => esc_html__('Coauthors', 'publishpress-authors'),
+            'slug'              => sanitize_title(esc_html__('Coauthor', 'publishpress-authors')),
             'category_order'    => 2,
             'category_status'   => 1,
             'created_at'        => current_time('mysql', true)
