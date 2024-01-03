@@ -184,6 +184,11 @@
     margin-bottom: 20px;
 }
 
+.editor-preview-author .ppma_select2-container {
+    max-width: 250px !important;
+    min-width: 250px !important;
+}
+
 .editor-preview-author .editor-preview-author-label {
     margin-right: 7px;
 }

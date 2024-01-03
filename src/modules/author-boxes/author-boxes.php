@@ -1372,7 +1372,6 @@ class MA_Author_Boxes extends Module
                         </div>
                         <div class="editor-preview-author-post">
                             <select 
-                            style="width: 195px;"
                             data-nonce="<?php
                                 echo esc_attr(wp_create_nonce('authors-post-search')); ?>"
                                     data-post_type="<?php echo esc_attr($args['preview_post_type']); ?>"
