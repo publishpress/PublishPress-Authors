@@ -253,7 +253,12 @@ jQuery(document).ready(function ($) {
                 var current_slug = $(this).find('td.column-slug').html();
                 if (default_fields.includes(current_slug)) {
                     $(this).find('.check-column input').attr('disabled', true);
-                    $(this).find('.column-primary .row-actions').hide();
+                    // 1. Hide .row-actions .trash
+                    $(this).find('.column-primary .row-actions .trash').hide();
+                    // 2. Remove the separator (|) after Edit button inside the .edit span
+                    $(this).find('.column-primary .row-actions .edit').contents().filter(function() {
+                        return this.nodeType === 3; // Filter out text nodes
+                      }).remove();
                 }
             });
         }
