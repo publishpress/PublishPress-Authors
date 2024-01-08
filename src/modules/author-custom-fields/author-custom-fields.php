@@ -683,12 +683,12 @@ class MA_Author_Custom_Fields extends Module
     {
         if (!Utils::isAuthorsProActive()) {
             add_meta_box(
-                self::META_PREFIX . 'banner',
+                self::META_PREFIX . 'sidebar_banner',
                 __('Banner', 'publishpress-authors'),
                 [$this, 'renderBannerMetabox'],
                 self::POST_TYPE_CUSTOM_FIELDS,
                 'side',
-                'high'
+                'low'
             );
         }
     }

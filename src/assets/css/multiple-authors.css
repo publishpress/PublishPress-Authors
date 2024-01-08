@@ -574,20 +574,20 @@ body.edit-php.post-type-ppma_boxes .tablenav.top .alignleft.actions:not(.bulkact
 
 #screen-options-wrap label[for^="ppma_boxes_banner-hide"],
 #ppma_boxes_banner .postbox-header:not(.ppma-advert),
-#screen-options-wrap label[for^="ppmacf_banner-hide"],
-#ppmacf_banner .postbox-header:not(.ppma-advert) {
+#screen-options-wrap label[for^="ppmacf_sidebar_banner-hide"],
+#ppmacf_sidebar_banner .postbox-header:not(.ppma-advert) {
     display: none !important;
 }
 
 #ppma_boxes_banner,
-#ppmacf_banner {
+#ppmacf_sidebar_banner {
     background: unset !important;
     border: none !important;
     margin-bottom: 0 !important;
 }
 
 #ppma_boxes_banner .inside:not(.ppma-advert),
-#ppmacf_banner .inside:not(.ppma-advert) {
+#ppmacf_sidebar_banner .inside:not(.ppma-advert) {
     padding: 0 !important;
 }
 
