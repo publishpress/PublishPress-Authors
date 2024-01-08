@@ -786,7 +786,7 @@ class MA_Author_Custom_Fields extends Module
      */
     public static function createDefaultCustomFields()
     {
-        $defaultCustomFields = array_reverse(self::getDefaultCustomFields());
+        $defaultCustomFields = self::getDefaultCustomFields();
 
         foreach ($defaultCustomFields as $name => $data) {
             self::creatCustomFieldsPost($name, $data);
@@ -840,7 +840,7 @@ class MA_Author_Custom_Fields extends Module
             'field_status'  => 'on',
             'description'  => '',
         ];
-        //add first name
+        //add last name
         $defaultCustomFields['last_name'] = [
             'post_title'   => __('Last Name', 'publishpress-authors'),
             'post_name'    => 'last_name',
@@ -848,7 +848,7 @@ class MA_Author_Custom_Fields extends Module
             'field_status'  => 'on',
             'description'  => '',
         ];
-        //add first name
+        //add user email
         $defaultCustomFields['user_email'] = [
             'post_title'   => __('Email', 'publishpress-authors'),
             'post_name'    => 'user_email',

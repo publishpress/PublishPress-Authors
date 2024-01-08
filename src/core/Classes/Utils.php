@@ -1044,12 +1044,13 @@ class Utils
     public static function loadThickBoxModal($button_class = 'ppma-thickbox-botton', $width = '600', $height = '550', $modal_content = '')
     {
         add_thickbox();
+        $button_id = "ppma-thickbox-content" . $button_class;
         ?>
-        <div id="ppma-thickbox-content" style="display:none;">
+        <div id="<?php echo esc_attr($button_id); ?>" style="display:none;">
             <div class="ppma-thickbox-modal-content"><?php echo $modal_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
         </div>
         <a
-            href="#TB_inline?&width=<?php echo esc_attr($width); ?>&height=<?php echo esc_attr($height); ?>&inlineId=ppma-thickbox-content" 
+            href="#TB_inline?&width=<?php echo esc_attr($width); ?>&height=<?php echo esc_attr($height); ?>&inlineId=<?php echo esc_attr($button_id); ?>" 
             class="<?php echo esc_attr($button_class); ?> thickbox">
         </a>
         <?php
