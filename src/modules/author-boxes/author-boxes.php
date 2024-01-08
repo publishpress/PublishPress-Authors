@@ -2168,13 +2168,15 @@ class MA_Author_Boxes extends Module
                     $modal_content = '';
                     $modal_content .= '<div class="new-acb-upgrade-notice">';
                     $modal_content .= '<p>';
-                    $modal_content .= __('PublishPress Authors Pro is required to add Author Categories Boxes.', 'publishpress-authors');
+                    $modal_content .= __('PublishPress Authors Pro allows you to unlock the full potential of Author Categories.', 'publishpress-authors');
+                    $modal_content .= '<br />';
+                    $modal_content .= __('You can create Author Boxes where Authors are grouped into their categories.', 'publishpress-authors');
                     $modal_content .= '</p>';
                     $modal_content .= '<p>';
                     $modal_content .= '<a class="upgrade-link" href="https://publishpress.com/links/authors-banner" target="_blank">'. __('Upgrade to Pro', 'publishpress-authors') .'</a>';
                     $modal_content .= '</p>';
                     $modal_content .= '</div>';
-                    Utils::loadThickBoxModal('ppma-new-acb-thickbox-botton', 500, 180, $modal_content);
+                    Utils::loadThickBoxModal('ppma-new-acb-thickbox-botton', 500, 230, $modal_content);
                 ?>
                 <script>
                 jQuery(document).ready(function ($) {

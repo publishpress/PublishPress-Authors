@@ -463,11 +463,12 @@ body.edit-php.post-type-ppma_boxes .tablenav.top .alignleft.actions:not(.bulkact
 }
 
 .ppma-thickbox-modal-content p {
-    line-height: 1.4em;
+    line-height: 1.5;
     font-size: 16px;
     margin-bottom: 20px;
     margin-top: 0;
     padding: 0;
+    color: #646970;
 }
 
 .ppma-thickbox-modal-content .upgrade-link {
