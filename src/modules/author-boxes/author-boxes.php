@@ -185,7 +185,9 @@ class MA_Author_Boxes extends Module
      */
     public function filterAuthorBoxesColumns($columns)
     {
-        $columns['author_category_boxes'] = esc_html__('Author Category Boxes', 'publishpress-authors');
+        if (Utils::isAuthorsProActive()) {
+            $columns['author_category_boxes'] = esc_html__('Author Category Boxes', 'publishpress-authors');
+        }
         $columns['shortcode'] = esc_html__('Shortcode', 'publishpress-authors');
 
         unset($columns['date']);
