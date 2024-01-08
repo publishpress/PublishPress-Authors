@@ -1370,7 +1370,7 @@ class MA_Author_Boxes extends Module
                 <div class="live-preview-box">
                     <div class="editor-preview-author">
                         <div class="editor-preview-author-label">
-                            <?php echo esc_html__('Preview post author:', 'publishpress-authors'); ?>
+                            <?php echo esc_html__('Post preview', 'publishpress-authors'); ?>
                         </div>
                         <div class="editor-preview-author-post">
                             <select 
