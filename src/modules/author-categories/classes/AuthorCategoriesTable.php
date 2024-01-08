@@ -438,8 +438,8 @@ class AuthorCategoriesTable extends \WP_List_Table
 
                             <div class="inline-edit-save submit">
                                 <?php wp_nonce_field('ppma-category-inline-edit-nonce', 'nonce', false); ?>
-                                <button type="button" class="cancel button alignleft"><?php esc_html_e('Cancel', 'publishpress-authors'); ?></button>
                                 <button type="button" class="ppma-inline-category-save button button-primary alignright"><?php esc_html_e('Update', 'publishpress-authors'); ?></button>
+                                <button type="button" class="cancel button alignleft"><?php esc_html_e('Cancel', 'publishpress-authors'); ?></button>
                                 <span class="spinner"></span>
                                 <br class="clear"/>
                                 <div class="notice notice-error notice-alt inline hidden">
