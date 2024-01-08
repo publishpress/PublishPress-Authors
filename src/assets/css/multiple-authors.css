@@ -425,7 +425,7 @@ form#edittag tr.form-field #slug {
 }
 
 .post-type-ppma_boxes .shortcode.column-shortcode input[type=text] {
-    min-width: 400px;
+    width: 100%;
 }
 
 .post-type-ppma_boxes .manage-column.column-author_category_boxes {
@@ -619,7 +619,6 @@ body.edit-php.post-type-ppma_boxes .tablenav.top .alignleft.actions:not(.bulkact
 
 @media screen and (max-width: 768px) {
     .post-type-ppma_boxes .shortcode.column-shortcode input[type=text] {
-        min-width: 90%;
         width: 90%;
     }
 }
