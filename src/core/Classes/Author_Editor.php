@@ -653,7 +653,7 @@ class Author_Editor
 
         $user = get_user_by('ID', $user_id);
 
-        if (!empty(array_intersect($roles, $user->roles))) {
+        if (is_array($user->roles) && !empty(array_intersect($roles, $user->roles))) {
             // Create author for this user
             Author::create_from_user($user_id);
         }
@@ -830,7 +830,8 @@ class Author_Editor
      */
     public static function filter_pre_insert_term($term, $taxonomy)
     {
-        if ($taxonomy === 'author' && !empty($_POST)) {
+        if ($taxonomy === 'author' && !empty($_POST['action']) && $_POST['action'] === 'add-tag') {
+
             $legacyPlugin = Factory::getLegacyPlugin();
             $author_id = (int)$_POST['authors-new'];
             $enable_guest_author_user = $legacyPlugin->modules->multiple_authors->options->enable_guest_author_user === 'yes';

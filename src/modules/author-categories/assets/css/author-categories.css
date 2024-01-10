@@ -1,0 +1,29 @@
+#addauthorcategory .spinner {
+    float: none;
+}
+
+table.authorcategories tr {
+    cursor: move;
+}
+
+table.authorcategories td.column-primary {
+    color: #2271b1;
+}
+
+table.authorcategories tr.inline-edit-row td {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+table.authorcategories .inline-edit-row fieldset label span.title,
+table.authorcategories .inline-edit-row fieldset.inline-edit-date legend {
+    width: 20% !important;
+}
+
+table.authorcategories .inline-edit-row .input-text-wrap input[type=text] {
+    width: 70% !important;
+}
+
+table.authorcategories .inline-editor .inline-edit-col label {
+    margin-bottom: 10px !important;
+}

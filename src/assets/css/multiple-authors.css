@@ -159,6 +159,24 @@ ul.authors-list li.ui-sortable-helper {
     cursor: move;
 }
 
+ul.authors-list.no-select {
+    user-select: none;
+}
+
+.author-category-title {
+    color: #3c434a;
+    font-size: 14px;
+    padding: 8px 0;
+    font-weight: 1.4;
+    font-weight: 400;
+}
+
+ul.authors-list li.sortable-placeholder {
+    border-style: dashed;
+    pointer-events: none;
+    user-select: none;
+}
+
 ul.authors-list.authors-current-user-can-assign li:hover {
     cursor: move;
 }
@@ -407,7 +425,21 @@ form#edittag tr.form-field #slug {
 }
 
 .post-type-ppma_boxes .shortcode.column-shortcode input[type=text] {
-    min-width: 400px;
+    width: 100%;
+}
+
+.post-type-ppma_boxes .manage-column.column-author_category_boxes {
+    width: 300px;
+}
+
+.post-type-ppma_boxes .author_category_boxes.column-author_category_boxes .green-check {
+    color: green;
+    margin-left: 30px;
+}
+
+.post-type-ppma_boxes .author_category_boxes.column-author_category_boxes .red-check {
+    color: red;
+    margin-left: 30px;
 }
 
 body.edit-php.post-type-ppmacf_field .row-actions .inline,
@@ -431,11 +463,12 @@ body.edit-php.post-type-ppma_boxes .tablenav.top .alignleft.actions:not(.bulkact
 }
 
 .ppma-thickbox-modal-content p {
-    line-height: 1.4em;
+    line-height: 1.5;
     font-size: 16px;
     margin-bottom: 20px;
     margin-top: 0;
     padding: 0;
+    color: #646970;
 }
 
 .ppma-thickbox-modal-content .upgrade-link {
@@ -542,20 +575,20 @@ body.edit-php.post-type-ppma_boxes .tablenav.top .alignleft.actions:not(.bulkact
 
 #screen-options-wrap label[for^="ppma_boxes_banner-hide"],
 #ppma_boxes_banner .postbox-header:not(.ppma-advert),
-#screen-options-wrap label[for^="ppmacf_banner-hide"],
-#ppmacf_banner .postbox-header:not(.ppma-advert) {
+#screen-options-wrap label[for^="ppmacf_sidebar_banner-hide"],
+#ppmacf_sidebar_banner .postbox-header:not(.ppma-advert) {
     display: none !important;
 }
 
 #ppma_boxes_banner,
-#ppmacf_banner {
+#ppmacf_sidebar_banner {
     background: unset !important;
     border: none !important;
     margin-bottom: 0 !important;
 }
 
 #ppma_boxes_banner .inside:not(.ppma-advert),
-#ppmacf_banner .inside:not(.ppma-advert) {
+#ppmacf_sidebar_banner .inside:not(.ppma-advert) {
     padding: 0 !important;
 }
 
@@ -587,7 +620,6 @@ body.edit-php.post-type-ppma_boxes .tablenav.top .alignleft.actions:not(.bulkact
 
 @media screen and (max-width: 768px) {
     .post-type-ppma_boxes .shortcode.column-shortcode input[type=text] {
-        min-width: 90%;
         width: 90%;
     }
 }

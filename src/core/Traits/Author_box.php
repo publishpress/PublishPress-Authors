@@ -105,7 +105,9 @@ trait Author_box
         $show_title = true,
         $layout = null,
         $archive = false,
-        $post_id = null
+        $post_id = null,
+        $term_id = false,
+        $user_id = false
     ) {
         $legacyPlugin = Factory::getLegacyPlugin();
 
@@ -148,7 +150,11 @@ trait Author_box
             $post = $this->postCache[$post_id];
         }
 
-        if ($archive) {
+        if ($term_id) {
+            $authorsList = [Author::get_by_term_id($term_id)];
+        } elseif ($user_id) {
+            $authorsList = [Author::get_by_user_id($user_id)];
+        } elseif ($archive) {
             $authorsList = [get_archive_author()];
         } else {
             $authorsList = get_post_authors($post_id, true, $archive);

@@ -394,6 +394,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
                 // Get the index for the menus, removing the first submenu which was automatically created by WP.
                 $itemsToSort = [
+                    'ppma-author-categories'            => null,
                     'edit.php?post_type=ppma_boxes'    => null,
                     'edit-tags.php?taxonomy=author'    => null,
                     'edit.php?post_type=ppmacf_field'  => null,
@@ -427,6 +428,13 @@ if (!class_exists('MA_Multiple_Authors')) {
                     $newSubmenu[] = $currentSubmenu[$itemsToSort['edit.php?post_type=ppma_boxes']];
 
                     unset($currentSubmenu[$itemsToSort['edit.php?post_type=ppma_boxes']]);
+                }
+
+                // Author Categories
+                if (isset($itemsToSort['ppma-author-categories'])) {
+                    $newSubmenu[] = $currentSubmenu[$itemsToSort['ppma-author-categories']];
+
+                    unset($currentSubmenu[$itemsToSort['ppma-author-categories']]);
                 }
 
                 // Fields
@@ -1205,6 +1213,20 @@ if (!class_exists('MA_Multiple_Authors')) {
                         ),
                     ],
                     'option_5' => [
+                        'shortcode'   => '[publishpress_authors_box layout="'. $default_layout .'" user_id="32"]',
+                        'description' => esc_html__(
+                            'You can load the authors for a specific user by providing the user id. For example, this shortcode will load the author with user id of 32',
+                            'publishpress-authors'
+                        ),
+                    ],
+                    'option_6' => [
+                        'shortcode'   => '[publishpress_authors_box layout="'. $default_layout .'" term_id="32"]',
+                        'description' => esc_html__(
+                            'You can load the authors for a specific author by providing the author term id for both guest and user author. For example, this shortcode will load the author with term id of 32',
+                            'publishpress-authors'
+                        ),
+                    ],
+                    'option_7' => [
                         'shortcode'   => '[publishpress_authors_box layout="'. $default_layout .'" archive="1"]',
                         'description' => sprintf(
                             esc_html__(
@@ -1214,7 +1236,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                             '<code class="color-red">archive="1"</code>'
                         ),
                     ],
-                    'option_6' => [
+                    'option_8' => [
                         'shortcode'   => '[publishpress_authors_box layout="'. $default_layout .'" archive="true"]',
                         'description' => sprintf(
                             esc_html__(
@@ -2322,19 +2344,19 @@ echo '<span class="ppma_settings_field_description">'
 
             $actions = [
                 'create_post_authors' => [
-                    'title'        => esc_html__('Create PublishPress Authors profiles for all authors', 'publishpress-authors'),
+                    'title'        => esc_html__('Create PublishPress Authors Profiles for all post authors', 'publishpress-authors'),
                     'description'  => 'If a WordPress user is the author of a post, but does not have a PublishPress Authors profile, this will automatically create a profile for them. <a href="https://publishpress.com/knowledge-base/authors-maintenance" target="_blank">Click here for documentation</a>.',
                     'button_label' => esc_html__('Create missing PublishPress Authors profiles', 'publishpress-authors'),
                 ],
 
                 'create_role_authors' => [
-                    'title'        => esc_html__('Create PublishPress Authors profiles for all users in a role', 'publishpress-authors'),
+                    'title'        => esc_html__('Create PublishPress Authors Profiles for all users in a role', 'publishpress-authors'),
                     'description'  => 'This will find all the users in a role and creates author profiles for them. You can choose the roles using the "Automatically create author profiles" setting. <a href="https://publishpress.com/knowledge-base/authors-maintenance" target="_blank">Click here for documentation</a>.',
                     'button_label' => esc_html__('Create PublishPress Authors profiles', 'publishpress-authors'),
                 ],
 
                 'sync_post_author' => [
-                    'title'       => esc_html__('Synchronize the author and user profile fields', 'publishpress-authors'),
+                    'title'       => esc_html__('Synchronize PublishPress Authors Fields and user profile fields', 'publishpress-authors'),
                     'description' => 'Description: This will update all the author profile in PublishPress Authors to match the default WordPress fields for each user. <a href="https://publishpress.com/knowledge-base/authors-maintenance" target="_blank">Click here for documentation</a>.',
                     'button_link' => '',
                     'after'       => '<div id="publishpress-authors-sync-post-authors"></div>',

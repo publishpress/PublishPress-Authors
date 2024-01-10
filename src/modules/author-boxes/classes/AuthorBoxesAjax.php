@@ -98,24 +98,21 @@ class AuthorBoxesAjax
 
             $author_term_id = !empty($_POST['author_term_id']) ? (int) $_POST['author_term_id'] : 0;
             $post_id = !empty($_POST['post_id']) ? (int) $_POST['post_id'] : 0;
-            $preview_author_slugs = (!empty($_POST['preview_author_slugs']) && is_array($_POST['preview_author_slugs'])) ? array_map('sanitize_text_field', $_POST['preview_author_slugs']) : [];
+            $preview_author_post = !empty($_POST['preview_author_post']) ? absint($_POST['preview_author_post']) : '';
 
-            if (!empty($preview_author_slugs)) {
-                $preview_authors = [];
-                foreach ($preview_author_slugs as $preview_author_slug) {
-                    $userAuthor = Author::get_by_term_slug($preview_author_slug);
-                    if (!$userAuthor) {
-                        $userAuthor = get_user_by('slug', $preview_author_slug);
-                    }
-                    $preview_authors[] = $userAuthor;
-                }
+            if (!empty($preview_author_post)) {
+                $preview_authors = publishpress_authors_get_post_authors($preview_author_post);
             } else {
                 $preview_authors = [Author::get_by_term_id($author_term_id)];
             }
             
             $preview_args            = [];
             $preview_args['authors'] = $preview_authors;
+            $preview_args['preview_author_post']    = $preview_author_post;
+            $preview_args['preview_post_title'] = get_the_title( $preview_author_post);
+            $preview_args['preview_post_type']  = get_post_type($preview_author_post);
             $preview_args['post_id'] = $post_id;
+            $preview_args['ajax_preview'] = true;
 
             $fields = apply_filters('multiple_authors_author_boxes_fields', MA_Author_Boxes::get_fields(get_post($post_id)), get_post($post_id));
             foreach ($fields as $key => $args) {
@@ -432,6 +429,9 @@ if (!empty($new_style_8 = AuthorBoxesStyles::getBoxLayoutFieldStyles($args, ''))
 }
 if (!empty($new_style_9 = AuthorBoxesStyles::getCustomCssFieldStyles($args, ''))) {
     $generated_styles .= $new_style_9 . "\n";
+}
+if (!empty($new_style_10 = AuthorBoxesStyles::getAuthorCategoriesFieldStyles($args, ''))) {
+    $generated_styles .= $new_style_10 . "\n";
 }
 ?>
 <style>

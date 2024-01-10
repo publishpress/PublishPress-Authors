@@ -338,6 +338,12 @@ class Plugin
             2
         );
 
+        // Query filter for multiple authors
+        add_action(
+            'pre_get_posts',
+            ['MultipleAuthors\\Classes\\Query', 'filter_query_pre_get_posts']
+        );
+
         // Author search
         add_action(
             'wp_ajax_authors_search',
@@ -350,6 +356,10 @@ class Plugin
         add_action(
             'wp_ajax_authors_filter_authors_search',
             ['MultipleAuthors\\Classes\\Admin_Ajax', 'handle_filter_authors_search']
+        );
+        add_action(
+            'wp_ajax_authors_filter_posts_search',
+            ['MultipleAuthors\\Classes\\Admin_Ajax', 'handle_filter_posts_search']
         );
         add_action(
             'wp_ajax_author_create_from_user',
@@ -1798,6 +1808,8 @@ class Plugin
         $layout     = null;
         $archive    = false;
         $post_id    = null;
+        $term_id    = false;
+        $user_id    = false;
 
         if (isset($attributes['show_title'])) {
             $show_title = $attributes['show_title'] === 'true' || (int)$attributes['show_title'] === 1;
@@ -1815,7 +1827,15 @@ class Plugin
             $post_id = $attributes['post_id'];
         }
 
-        return $this->get_author_box_markup('shortcode', $show_title, $layout, $archive, $post_id);
+        if (isset($attributes['term_id'])) {
+            $term_id = $attributes['term_id'];
+        }
+
+        if (isset($attributes['user_id'])) {
+            $user_id = $attributes['user_id'];
+        }
+
+        return $this->get_author_box_markup('shortcode', $show_title, $layout, $archive, $post_id, $term_id, $user_id);
     }
 
     public function shortcodeAuthorsList($attributes)
@@ -1923,6 +1943,7 @@ class Plugin
                 'ppma_manage_custom_fields',
                 'ppma_edit_post_authors',
                 'ppma_edit_own_profile',
+                'ppma_manage_author_categories',
             ]
         );
 

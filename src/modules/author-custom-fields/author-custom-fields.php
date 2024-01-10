@@ -126,8 +126,30 @@ class MA_Author_Custom_Fields extends Module
         add_action('admin_enqueue_scripts', [$this, 'enqueueAdminScripts']);
         add_action('wp_ajax_author_custom_fields_save_order', [$this, 'handle_ajax_update_field_order']);
         add_action('pre_get_posts', [$this, 'author_custom_fields_default_sort']);
+        add_filter('parent_file', [$this, 'setParentFile']);
 
         $this->registerPostType();
+    }
+
+    /**
+     * Set authors menu as parent for post type so menu is shown 
+     * as active when on post type edit screen.
+     *
+     * @param string $parent_file
+     * 
+     * @return string
+     */
+    public function setParentFile($parent_file)
+    {
+        global $submenu_file, $current_screen;
+        
+        // Check if the current screen is the User Code page
+       if (!empty($current_screen->post_type) && $current_screen->post_type == self::POST_TYPE_CUSTOM_FIELDS) {
+            $parent_file = \MA_Multiple_Authors::MENU_SLUG;
+            $submenu_file = 'edit.php?post_type=' . self::POST_TYPE_CUSTOM_FIELDS;
+        }
+
+        return $parent_file;
     }
 
     /**
@@ -661,12 +683,12 @@ class MA_Author_Custom_Fields extends Module
     {
         if (!Utils::isAuthorsProActive()) {
             add_meta_box(
-                self::META_PREFIX . 'banner',
+                self::META_PREFIX . 'sidebar_banner',
                 __('Banner', 'publishpress-authors'),
                 [$this, 'renderBannerMetabox'],
                 self::POST_TYPE_CUSTOM_FIELDS,
                 'side',
-                'high'
+                'low'
             );
         }
     }
@@ -764,7 +786,7 @@ class MA_Author_Custom_Fields extends Module
      */
     public static function createDefaultCustomFields()
     {
-        $defaultCustomFields = array_reverse(self::getDefaultCustomFields());
+        $defaultCustomFields = self::getDefaultCustomFields();
 
         foreach ($defaultCustomFields as $name => $data) {
             self::creatCustomFieldsPost($name, $data);
@@ -818,7 +840,7 @@ class MA_Author_Custom_Fields extends Module
             'field_status'  => 'on',
             'description'  => '',
         ];
-        //add first name
+        //add last name
         $defaultCustomFields['last_name'] = [
             'post_title'   => __('Last Name', 'publishpress-authors'),
             'post_name'    => 'last_name',
@@ -826,7 +848,7 @@ class MA_Author_Custom_Fields extends Module
             'field_status'  => 'on',
             'description'  => '',
         ];
-        //add first name
+        //add user email
         $defaultCustomFields['user_email'] = [
             'post_title'   => __('Email', 'publishpress-authors'),
             'post_name'    => 'user_email',

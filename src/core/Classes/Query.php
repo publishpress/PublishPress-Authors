@@ -85,6 +85,39 @@ class Query
     }
 
     /**
+     * Filter query for when ppma_filter is set to true
+     *
+     * @param WP_Query $query Query object.
+     */
+    public static function filter_query_pre_get_posts($query)
+    {
+        if (isset($query->query['ppma_filter']) && $query->query['ppma_filter'] === true && !empty($query->query_vars['author'])) {
+            $author_id = $query->query_vars['author'];
+            $author    = Author::get_by_user_id($author_id);
+
+            if ($author
+                && is_object($author)
+                && isset($author->term_id)
+                && (int)$author->term_id > 0
+            ) {
+                // Remove author from the query
+                $query->set('author', '');
+                // Add a taxonomy query
+                $query->set('tax_query', array(
+                    array(
+                        'taxonomy' => 'author',
+                        'field'    => 'term_id',
+                        'terms'    => $author->term_id,
+                    ),
+                ));
+            }
+
+        }
+
+        return $query;
+    }
+
+    /**
      * Fix for publishpress author pages post type.
      *
      * @param WP_Query $wp_query Query object.
