@@ -1,7 +1,7 @@
 (function ($) {
     'use strict';
 
-    jQuery(document).ready(function($) {
+    jQuery(document).ready(function ($) {
 
         if ($('body').hasClass('post-type-ppma_boxes') && $(".publishpress-author-box-editor").length > 0) {
 
@@ -11,15 +11,15 @@
             $('.pp-editor-color-picker').wpColorPicker({
                 change: function (event, ui) {
                     setTimeout(
-                        function() {
+                        function () {
                             generateEditorPreview(getAllEditorFieldsValues(), false);
-                    }, 100);
-                 },
-                clear: function () { 
+                        }, 100);
+                },
+                clear: function () {
                     setTimeout(
-                        function() {
+                        function () {
                             generateEditorPreview(getAllEditorFieldsValues(), false);
-                    }, 100);
+                        }, 100);
                 },
             });
 
@@ -53,8 +53,8 @@
         $(document).on('click', '.ppma-editor-profile-header-title', function (event) {
             event.preventDefault();
             var current_header = $(this);
-            var current_name   = current_header.attr('data-fields_name');
-            
+            var current_name = current_header.attr('data-fields_name');
+
             if (current_header.hasClass('opened')) {
                 current_header.removeClass('opened').addClass('closed');
                 $('.tabbed-content-' + current_name).hide();
@@ -121,13 +121,13 @@
             if (import_value) {
                 try {
                     import_value = atob(import_value);
-                  } catch(e) {
+                } catch (e) {
                     $(".ppma-editor-data-imported").css('color', 'red').html($(this).attr('data-invalid')).show().delay(2000).fadeOut('slow');
                     return;
                 }
                 try {
                     import_value = JSON.parse(import_value);
-                  } catch(e) {
+                } catch (e) {
                     $(".ppma-editor-data-imported").css('color', 'red').html($(this).attr('data-invalid')).show().delay(2000).fadeOut('slow');
                     return;
                 }
@@ -136,9 +136,9 @@
                 var key = '';
                 for (key in editor_values) {
                     var value = editor_values[key];
-                    var field  = $('[name="' + key + '"]');
+                    var field = $('[name="' + key + '"]');
                     field.val(value);
-                    
+
                     if (field.attr('type') === 'checkbox') {
                         if (Number(value) > 0) {
                             field.prop('checked', true);
@@ -147,18 +147,18 @@
                         }
                         field.val(1);
                     }
-                    
+
                     if (field.hasClass('pp-editor-color-picker')) {
                         field.trigger('change');
                     }
                 }
 
                 setTimeout(
-                    function() {
+                    function () {
                         $('#import_action').val('');
                         $('#avatar_show').trigger('change');
                         $('.ppma-editor-data-imported').css('color', 'green').show().delay(2000).fadeOut('slow');
-                }, 500);
+                    }, 500);
 
             } else {
                 $(".ppma-editor-data-imported").css('color', 'red').html($(this).attr('data-invalid')).show().delay(2000).fadeOut('slow');
@@ -181,7 +181,7 @@
                 nonce: authorBoxesEditor.nonce,
             };
             $.post(ajaxurl, data, function (response) {
-                var status  = response.status;
+                var status = response.status;
                 var content = response.content;
                 $('.ppma-editor-generate-template').attr('disabled', false);
                 $('.author-editor-loading-spinner').removeClass('is-active');
@@ -224,8 +224,8 @@
                 nonce: authorBoxesEditor.nonce,
             };
             $.post(ajaxurl, data, function (response) {
-                var status          = response.status;
-                var status_message  = response.content;
+                var status = response.status;
+                var status_message = response.content;
                 $('.ppma-order-response-message').html('<span class="' + status + '"> ' + status_message + ' </span>');
                 buttons.prop('disabled', false);
                 button.find('.spinner').removeClass('is-active');
@@ -236,10 +236,10 @@
         /**
          * editor live changes
          */
-        $(document).on('change input keyup', '.ppma-author-box-editor-fields .input input, .ppma-author-box-editor-fields .input textarea, .ppma-author-box-editor-fields .input select, .editor-preview-author-users select', function () {
+        $(document).on('change input keyup', '.ppma-author-box-editor-fields .input input, .ppma-author-box-editor-fields .input textarea, .ppma-author-box-editor-fields .input select, .editor-preview-author-post .ppma-authors-post-search', function () {
             //get current width and add at as custom height to prevent box from moving
             var box_editor_wrapper = $('.publishpress-author-box-editor .preview-section').closest('.publishpress-author-box-editor');
-            box_editor_wrapper.css('min-height', box_editor_wrapper.height());
+            box_editor_wrapper.css('min-height', 10);
 
             var current_field = $(this);
             var current_field_name = current_field.attr('name');
@@ -250,13 +250,7 @@
             $('.pp-multiple-authors-boxes-wrapper').attr('class', prev_layout_wrapper_classes + box_wrapper_class);
 
             var title_html_tag = $('#title_html_tag').val();
-            var title_text = '';
-            var author_slugs = $('.editor-preview-author-users select').val();
-            if (author_slugs.length > 1) {
-                title_text = $('#title_text_plural').val();
-            } else {
-                title_text = $('#title_text').val();
-            }
+            var title_text = $('#title_text_plural').val();
 
             //update title based on show/hide title
             if (current_field_name === 'show_title') {
@@ -367,7 +361,9 @@
                 'author_recent_posts_order'
             ];
             var name_refresh_trigger = [
-                'name_show'
+                'name_show',
+                'name_author_categories',
+                'name_author_categories_divider'
             ];
             var bio_refresh_trigger = [
                 'author_bio_show',
@@ -383,7 +379,22 @@
                 'meta_site_link_show'
             ];
             var layout_refresh_trigger = [
-                'box_tab_layout_author_separator'
+                'box_tab_layout_author_separator',
+                'author_inline_display'
+            ];
+            var author_categories_refresh_trigger = [
+                'author_categories_group',
+                'author_categories_group_option',
+                'author_categories_title_html_tag',
+                'author_categories_title_prefix',
+                'author_categories_title_suffix',
+                'author_categories_title_option',
+                'author_categories_group_display_style_laptop',
+                'author_categories_group_display_style_mobile',
+                'author_categories_bottom_space',
+                'author_categories_right_space',
+                'author_categories_font_size',
+                'author_categories_title_font_weight'
             ];
 
             var profile_fields = JSON.parse(authorBoxesEditor.profileFields);
@@ -392,6 +403,8 @@
             for (field_key in profile_fields) {
                 var field_name = profile_fields[field_key];
                 profile_refresh_trigger.push('profile_fields_show_' + field_name);
+                profile_refresh_trigger.push('profile_fields_' + field_name + '_author_categories');
+                profile_refresh_trigger.push('profile_fields_' + field_name + '_author_categories_divider');
                 profile_refresh_trigger.push('profile_fields_' + field_name + '_html_tag');
                 profile_refresh_trigger.push('profile_fields_' + field_name + '_value_prefix');
                 profile_refresh_trigger.push('profile_fields_' + field_name + '_display');
@@ -403,14 +416,55 @@
                 profile_refresh_trigger.push('profile_fields_' + field_name + '_after_display_suffix');
             }
 
-            let all_refresh_trigger = post_refresh_trigger.concat(bio_refresh_trigger, avatar_refresh_trigger, meta_refresh_trigger, profile_refresh_trigger, name_refresh_trigger, layout_refresh_trigger);
+            let all_refresh_trigger = post_refresh_trigger.concat(bio_refresh_trigger, avatar_refresh_trigger, meta_refresh_trigger, profile_refresh_trigger, name_refresh_trigger, layout_refresh_trigger, author_categories_refresh_trigger);
 
             var force_refresh = false;
-            if (all_refresh_trigger.includes(current_field_name) || current_field_name === 'preview_author_names[]') {
+            if (all_refresh_trigger.includes(current_field_name) || current_field_name === 'preview_author_post') {
                 force_refresh = true;
             }
 
             generateEditorPreview(editor_values, force_refresh);
+        });
+
+        /**
+         * Author category layout changes
+         */
+        $(document).on('change', '.ppma-author-box-editor-fields #author_categories_layout', function () {
+            var selected_layout = $(this).val();
+            if (selected_layout && selected_layout !== '') {
+                var layout_option = author_box_category_options(selected_layout);
+                if (layout_option) {
+                    // reset all fields
+                    $('.ppma-author-box-editor-fields .input input, .ppma-author-box-editor-fields .input textarea, .ppma-author-box-editor-fields .input select').each(function () {
+                        if ($(this).attr('name') !== 'author_categories_layout') {
+                            if ($(this).is(':checkbox')) {
+                                $(this).prop('checked', false);
+                            } else {
+                                $(this).val('');
+                            }
+
+                            if ($(this).hasClass('pp-editor-color-picker')) {
+                                $(this).trigger('change');
+                            }
+                        }
+                    });
+                    // update selected layout values
+                    for (var key in layout_option) {
+                        if (layout_option.hasOwnProperty(key)) {
+                            var value = layout_option[key];
+                            var $field = $('.ppma-author-box-editor-fields #' + key);
+
+                            if ($field.is(':checkbox')) {
+                                $field.prop('checked', value == 1);
+                            } else {
+                                $field.val(value);
+                            }
+                        }
+                    }
+                    $('.parent_author_box').val(selected_layout);
+                    $('#author_categories_group').trigger('change');
+                }
+            }
         });
 
         /**
@@ -419,8 +473,8 @@
         function toggleProfileFieldsActiveTab() {
             $('.ppma-editor-profile-header-title').each(function () {
                 var current_header = $(this);
-                var current_name   = current_header.attr('data-fields_name');
-                
+                var current_name = current_header.attr('data-fields_name');
+
                 if (current_header.hasClass('opened')) {
                     $('.tabbed-content-' + current_name).show();
                 } else {
@@ -439,13 +493,12 @@
             if (force_refresh) {
                 $('.pp-multiple-authors-boxes-wrapper').html('<div class="author-boxes-loading-spinner spinner is-active" style="float: none;"></div>');
                 $('.pp-author-boxes-editor-preview-styles').remove();
-
                 //prepare ajax data
                 var data = {
                     action: "author_boxes_editor_get_preview",
                     editor_data: $.extend({}, editor_values),
                     author_term_id: authorBoxesEditor.author_term_id,
-                    preview_author_slugs: $('.editor-preview-author-users select').val(),
+                    preview_author_post: $('.editor-preview-author-post .ppma-authors-post-search').val(),
                     post_id: authorBoxesEditor.post_id,
                     nonce: authorBoxesEditor.nonce,
                 };
@@ -490,9 +543,9 @@
          */
         function generateEditorExportData(populate = true) {
             var editor_values = getAllEditorFieldsValues();
-                editor_values = Object.assign({}, editor_values);
-                editor_values = JSON.stringify(editor_values);
-                editor_values = btoa(editor_values);
+            editor_values = Object.assign({}, editor_values);
+            editor_values = JSON.stringify(editor_values);
+            editor_values = btoa(editor_values);
             if (populate) {
                 $('#export_action').val(editor_values);
             } else {
@@ -516,7 +569,7 @@
                 editor_preview_styles += '.pp-multiple-authors-layout-boxed ul li > div:nth-child(1) {flex: 1 !important;}';
             }
             var profile_fields = JSON.parse(authorBoxesEditor.profileFields);
-            
+
             //profile styles
             for (field_key in profile_fields) {
                 var field_name = profile_fields[field_key];
@@ -563,27 +616,27 @@
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .box-header-title { margin-bottom: ' + value + 'px !important; } ';
                         }
-                      break;
+                        break;
                     case 'title_size':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .box-header-title { font-size: ' + value + 'px !important; } ';
                         }
-                      break;
+                        break;
                     case 'title_line_height':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .box-header-title { line-height: ' + value + 'px !important; } ';
                         }
-                      break;
+                        break;
                     case 'title_weight':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .box-header-title { font-weight: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'title_transform':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .box-header-title { text-transform: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'title_style':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .box-header-title { font-style: ' + value + ' !important; } ';
@@ -592,313 +645,350 @@
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .box-header-title { text-decoration: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'title_alignment':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .box-header-title { text-align: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'title_color':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .box-header-title { color: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     //avatar styles
                     case 'avatar_size':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-avatar img { width: ' + value + 'px !important; height: ' + value + 'px !important; } ';
                         }
-                      break;
+                        break;
                     case 'avatar_border_style':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-avatar img { border-style: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'avatar_border_width':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-avatar img { border-width: ' + value + 'px !important; } ';
                         }
-                      break;
+                        break;
                     case 'avatar_border_color':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-avatar img { border-color: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'avatar_border_radius':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-avatar img { border-radius: ' + value + '% !important; } ';
                         }
-                      break;
+                        break;
                     //name styles
                     case 'name_size':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-name a { font-size: ' + value + 'px !important; } ';
                         }
-                      break;
+                        break;
                     case 'name_line_height':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-name a { line-height: ' + value + 'px !important; } ';
                         }
-                      break;
+                        break;
                     case 'name_weight':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-name a { font-weight: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'name_transform':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-name a { text-transform: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'name_style':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-name a { font-style: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'name_decoration':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-name a { text-decoration: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'name_alignment':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-name { text-align: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'name_color':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-name a { color: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     //bio styles
                     case 'author_bio_size':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-description { font-size: ' + value + 'px !important; } ';
                         }
-                      break;
+                        break;
                     case 'author_bio_line_height':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-description { line-height: ' + value + 'px !important; } ';
                         }
-                      break;
+                        break;
                     case 'author_bio_weight':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-description { font-weight: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'author_bio_transform':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-description { text-transform: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'author_bio_style':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-description { font-style: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'author_bio_decoration':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-description { text-decoration: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'author_bio_alignment':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-description { text-align: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'author_bio_color':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-description { color: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     //meta styles
                     case 'meta_size':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-meta a span { font-size: ' + value + 'px !important; } ';
                         }
-                      break;
+                        break;
                     case 'meta_line_height':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-meta a span { line-height: ' + value + 'px !important; } ';
                         }
-                      break;
+                        break;
                     case 'meta_weight':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-meta a span { font-weight: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'meta_transform':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-meta a span { text-transform: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'meta_style':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-meta a span { font-style: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'meta_decoration':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-meta a span { text-decoration: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'meta_alignment':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-meta { text-align: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'meta_background_color':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-meta a { background-color: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'meta_color':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-meta a { color: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'meta_link_hover_color':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-meta a:hover { color: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     //recent posts styles
                     case 'author_recent_posts_title_color':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-title { color: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'author_recent_posts_title_border_bottom_style':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-title { border-bottom-style: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'author_recent_posts_title_border_width':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-title { border-width: ' + value + 'px !important; } ';
                         }
-                      break;
+                        break;
                     case 'author_recent_posts_title_border_color':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-title { border-color: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'author_recent_posts_size':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-item a { font-size: ' + value + 'px !important; } ';
                         }
-                      break;
+                        break;
                     case 'author_recent_posts_line_height':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-item a { line-height: ' + value + 'px !important; } ';
                         }
-                      break;
+                        break;
                     case 'author_recent_posts_weight':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-item a { font-weight: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'author_recent_posts_transform':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-item a { text-transform: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'author_recent_posts_style':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-item a { font-style: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'author_recent_posts_decoration':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-item a { text-decoration: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'author_recent_posts_alignment':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-item { text-align: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'author_recent_posts_color':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-item a { color: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'author_recent_posts_icon_color':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-author-boxes-recent-posts-item span.dashicons { color: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     //box layout styles
                     case 'box_layout_margin_top':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { margin-top: ' + value + 'px !important; } ';
                         }
-                      break;
+                        break;
                     case 'box_layout_margin_bottom':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { margin-bottom: ' + value + 'px !important; } ';
                         }
-                      break;
+                        break;
                     case 'box_layout_margin_left':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { margin-left: ' + value + 'px !important; } ';
                         }
-                      break;
+                        break;
                     case 'box_layout_margin_right':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { margin-right: ' + value + 'px !important; } ';
                         }
-                      break;
+                        break;
                     case 'box_layout_padding_top':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { padding-top: ' + value + 'px !important; } ';
                         }
-                      break;
+                        break;
                     case 'box_layout_padding_bottom':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { padding-bottom: ' + value + 'px !important; } ';
                         }
-                      break;
+                        break;
                     case 'box_layout_padding_left':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { padding-left: ' + value + 'px !important; } ';
                         }
-                      break;
+                        break;
                     case 'box_layout_padding_right':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { padding-right: ' + value + 'px !important; } ';
                         }
-                      break;
+                        break;
                     case 'box_layout_border_style':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { border-style: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'box_layout_border_width':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { border-width: ' + value + 'px !important; } ';
                         }
-                      break;
+                        break;
                     case 'box_layout_border_color':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { border-color: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'box_layout_box_width':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { width: ' + value + '% !important; } ';
                         }
-                      break;
+                        break;
                     case 'box_layout_background_color':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { background-color: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'box_layout_color':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { color: ' + value + ' !important; } ';
                         }
-                      break;
+                        break;
+                    case 'author_categories_group_display_style_laptop':
+                        if (value) {
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .ppma-author-category-wrap { display: ' + value + ' !important; } ';
+
+                            if (value == 'flex') {
+                                editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .ppma-author-category-wrap .ppma-category-group { flex: 1; } ';
+                            }
+                        }
+                        break;
+                    case 'author_categories_group_display_style_mobile':
+                        if (value) {
+                            editor_preview_styles += ' @media screen and (max-width: 768px) { .pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .ppma-author-category-wrap { display: ' + value + ' !important; } } ';
+                            if (value == 'flex') {
+                                editor_preview_styles += ' @media screen and (max-width: 768px) { .pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .ppma-author-category-wrap .ppma-category-group { flex: 1; } } ';
+                            }
+                        }
+                        break;
+                    case 'author_categories_bottom_space':
+                        if (value) {
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .ppma-author-category-wrap .ppma-category-group { margin-bottom: ' + value + 'px !important; } ';
+                        }
+                        break;
+                    case 'author_categories_right_space':
+                        if (value) {
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .ppma-author-category-wrap .ppma-category-group { margin-right: ' + value + 'px !important; } ';
+                        }
+                        break;
+                    case 'author_categories_font_size':
+                        if (value) {
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .ppma-author-category-wrap { font-size: ' + value + 'px !important; } ';
+                        }
+                        break;
+                    case 'author_categories_title_font_weight':
+                        if (value) {
+                            editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .ppma-author-category-wrap .ppma-category-group-title { font-weight: ' + value + ' !important; } ';
+                        }
+                        break;
                     case 'box_layout_shadow_color':
                         var shadow_color = editor_values['box_layout_shadow_color'];
                         var shadow_horizontal_offset = editor_values['box_layout_shadow_horizontal_offset'];
@@ -912,12 +1002,12 @@
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { box-shadow: ' + shadow_horizontal_offset + 'px ' + shadow_vertical_offset + 'px ' + shadow_blur + 'px ' + shadow_speed + 'px ' + shadow_color + ' !important; } ';
                         }
-                      break;
+                        break;
                     case 'box_layout_border_radius':
                         if (value) {
                             editor_preview_styles += '.pp-multiple-authors-boxes-wrapper.box-post-id-' + post_id + '.box-instance-id-' + instance_id + '.' + additional_class + '  .pp-multiple-authors-boxes-li { border-radius: ' + value + 'px !important; } ';
                         }
-                      break;
+                        break;
                     // custom css style
                     case 'box_tab_custom_css':
                         if (value) {
@@ -926,6 +1016,44 @@
                 }
             }
             $('.pp-author-boxes-editor-preview-styles style').html(editor_preview_styles);
+        }
+
+        function author_box_category_options(layout) {
+
+            var layouts = {};
+            var author_boxes = authorBoxesEditor.author_boxes;
+
+            // add inbuilt layouts
+            layouts.list_author_category_block = authorBoxesEditor.list_author_category_block;
+            layouts.list_author_category_inline = authorBoxesEditor.list_author_category_inline;
+            layouts.simple_name_author_category_block = authorBoxesEditor.simple_name_author_category_block;
+            layouts.simple_name_author_category_inline = authorBoxesEditor.simple_name_author_category_inline;
+            
+            // add user author box layouts
+            for (var key in author_boxes) {
+                if (author_boxes.hasOwnProperty(key)) {
+                    var value = author_boxes[key];
+                    //reset not needed fields
+                    value['show_title'] = 0;
+                    //author category
+                    value['author_categories_group'] = 1;
+                    value['author_categories_layout'] = layout;
+                    value['author_categories_group_option'] = 'inline';
+                    value['author_categories_group_display_style_laptop'] = 'flex';
+                    value['author_categories_group_display_style_mobile'] = 'block';
+                    value['author_categories_title_option'] = 'before_group';
+                    value['author_categories_title_font_weight'] = '';
+                    value['author_categories_title_html_tag'] = 'h1';
+                    value['author_categories_title_prefix'] = '';
+                    value['author_categories_title_suffix'] = '';
+                    value['author_categories_font_size'] = '';
+                    value['author_categories_bottom_space'] = '';
+                    value['author_categories_right_space'] = 10;
+                    layouts[key] = value;
+                }
+            }
+
+            return layouts[layout];
         }
 
     });

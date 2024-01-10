@@ -142,13 +142,22 @@ class Post_Editor
                         $showedPostAuthorUser = true;
                     }
 
+                    
+                    $author_category  = \MA_Author_Categories::get_author_relations(['post_id' => $post_id, 'author_term_id' => $author->term_id]);
+                    if (!empty($author_category) && isset($author_category[0]['category_id'])) {
+                        $category_id = $author_category[0]['category_id'];
+                    } else {
+                        $category_id = 0;
+                    }
+
                     $authors_str[] = sprintf(
-                        '<a href="%s" data-author-term-id="%d" data-author-slug="%s" data-author-display-name="%s" data-author-is-guest="%s" class="%s">%s</a>',
+                        '<a href="%s" data-author-term-id="%d" data-author-slug="%s" data-author-display-name="%s" data-author-is-guest="%s" data-author-category-id="%s" class="%s">%s</a>',
                         esc_url($url),
                         esc_attr($author->term_id),
                         esc_attr($author->slug),
                         esc_attr($author->display_name),
                         esc_attr($author->is_guest() ? 1 : 0),
+                        esc_attr($category_id),
                         esc_attr(implode(' ', $classes)),
                         esc_html($author->display_name)
                     );
@@ -241,53 +250,105 @@ class Post_Editor
     }
 
     /**
+     * Group author into categories
+     *
+     * @param array $author_categories
+     * @param array $author_relations
+     * @param array $authors
+     * @param bool $admin_preview
+     * 
+     * @return array
+     */
+    public static function group_category_authors($author_categories, $author_relations, $authors, $admin_preview = false) {
+
+        // group authors by category slug
+        if (!$admin_preview) {
+            $grouped_authors = array_reduce($author_relations, function ($result, $item) {
+                $result[$item['category_slug']][] = $item;
+                return $result;
+            }, []);
+
+            // List all authors attached to the post
+            $remaining_authors = $authors;
+        } else {
+            $grouped_authors    = [];
+            $remaining_authors  = [];
+        }
+
+        $authors_data = [];
+        foreach ($author_categories as $author_category) {
+            if (!$admin_preview) {
+                if (!empty($remaining_authors) && !empty($grouped_authors) && isset($grouped_authors[$author_category['slug']])) {
+                    // get current category term ids
+                    $category_author_ids = array_column($grouped_authors[$author_category['slug']], 'author_term_id');
+                    // get selected authors for the category terms
+                    $selected_authors = array_filter($remaining_authors, function ($author) use ($category_author_ids) {
+                        $term_id = is_object($author) ? $author->term_id : 0;
+                        return in_array($term_id, $category_author_ids);
+                    });
+                    // update remaining authors
+                    $remaining_authors = array_filter($remaining_authors, function ($author) use ($category_author_ids) {
+                        $term_id = is_object($author) ? $author->term_id : 0;
+                        return !in_array($term_id, $category_author_ids);
+                    });
+                } else {
+                    $selected_authors = [];
+                }
+            } else {
+                $selected_authors = $authors;
+            }
+
+            $authors_data[] = [
+                'title'             => $author_category['plural_name'],
+                'singular_title'    => $author_category['category_name'],
+                'description'       => sprintf('Drag-and-drop Authors to add them to the %s category', $author_category['category_name']),
+                'slug'              => $author_category['slug'],
+                'id'                => $author_category['id'],
+                'authors'           => array_values($selected_authors)
+            ];
+        }
+
+        // Add remaining author to first category
+        if (!empty($remaining_authors)) {
+            $authors_data[0]['authors'] = array_values(array_merge($authors_data[0]['authors'], $remaining_authors));
+        }
+
+
+        return $authors_data;
+    }
+
+    /**
      * Get rendered authors selection.
      */
     public static function get_rendered_authors_selection($authors, $showAvatars = true, $bulkEdit = false)
     {
+        $post = get_post();
+
         $classes = [
             'authors-list',
         ];
         if (current_user_can(get_taxonomy('author')->cap->assign_terms)) {
             $classes[] = 'authors-current-user-can-assign';
         }
+
+        $author_categories = \MA_Author_Categories::get_author_categories(['category_status' => 1]);
+
+        if (!empty($author_categories)) {
+            $author_relations  = \MA_Author_Categories::get_author_relations(['post_id' => $post->ID]);
+            $author_categories_data = self::group_category_authors($author_categories, $author_relations, $authors);
+        } else {
+            $author_categories_data = [];
+            $author_categories_data[] = [
+                'title'             => '',
+                'singular_title'    => '',
+                'description'       => '',
+                'slug'              => '',
+                'id'                => '',
+                'authors'           => $authors
+            ];
+        }
         ?>
-        <ul class="<?php echo esc_attr(implode(' ', $classes)); ?>">
-            <?php
-            if (!empty($authors)) {
-                foreach ($authors as $author) {
-                    if (!is_object($author) || is_wp_error($author)) {
-                        continue;
-                    }
-
-                    $display_name = $author->display_name;
-                    $term         = is_a($author, 'WP_User') ? 'u' . $author->ID : $author->term_id;
-
-                    $isGuest = 0;
-                    if (is_a($author, Author::class)) {
-                        $isGuest = $author->is_guest() ? 1 : 0;
-                    }
-
-                    $args = [
-                        'display_name' => $display_name,
-                        'term'         => $term,
-                        'is_guest'     => $isGuest,
-                    ];
-
-                    if ($showAvatars) {
-                        $args['avatar'] = $author->get_avatar(20);
-                    }
-
-                    echo self::get_rendered_author_partial($args);  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-                }
-            }
-            ?>
-        </ul>
-        <?php
-        wp_nonce_field('authors-save', 'authors-save');
-
-        if (current_user_can(get_taxonomy('author')->cap->assign_terms)) {
-            ?>
+        <?php if (current_user_can(get_taxonomy('author')->cap->assign_terms)) : ?>
             <select data-nonce="<?php
             echo esc_attr(wp_create_nonce('authors-search')); ?>"
                     id="publishpress-authors-author-select"
@@ -303,12 +364,62 @@ class Post_Editor
                         'display_name' => '{{ data.display_name }}',
                         'term'         => '{{ data.id }}',
                         'is_guest'     => '{{ data.is_guest }}',
+                        'category_id'  => 0,
                     ]
                 );
                 ?>
             </script>
+            <p class="description"> </p>
+        <?php endif; ?>
+        <?php foreach ($author_categories_data as $author_category_data) :
+            $author_classes = $classes;
+            $author_classes[] = 'authors-category-' . $author_category_data['id'];
+             ?>
+            <?php if (!empty($author_category_data['title'])) : ?>
+                <div class="author-category-title"><?php echo esc_html($author_category_data['title']); ?></div>
+            <?php endif; ?>
+            <ul class="<?php echo esc_attr(implode(' ', $author_classes)); ?>" data-category_id="<?php echo esc_attr($author_category_data['id']); ?>">
+                <?php if (!empty($author_category_data['description'])) : ?>
+                    <li class="sortable-placeholder no-drag" style="<?php echo (!empty($author_category_data['authors']) ? 'display: none' : ''); ?>"><p class="description"><?php echo esc_html($author_category_data['description']); ?></p></li>
+                <?php endif; ?>
+                <?php
+                if (!empty($author_category_data['authors'])) {
+                    foreach ($author_category_data['authors'] as $author) {
+                        if (!is_object($author) || is_wp_error($author)) {
+                            continue;
+                        }
+
+                        $display_name = $author->display_name;
+                        $term         = is_a($author, 'WP_User') ? 'u' . $author->ID : $author->term_id;
+
+                        $isGuest = 0;
+                        if (is_a($author, Author::class)) {
+                            $isGuest = $author->is_guest() ? 1 : 0;
+                        }
+
+                        $args = [
+                            'display_name' => $display_name,
+                            'term'         => $term,
+                            'is_guest'     => $isGuest,
+                            'category_id'  => $author_category_data['id'],
+                        ];
+
+                        if ($showAvatars) {
+                            $args['avatar'] = $author->get_avatar(20);
+                        }
+
+                        echo self::get_rendered_author_partial($args);  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                    }
+                }
+                ?>
+        </ul>
+        <?php endforeach; ?>
+        <?php
+        wp_nonce_field('authors-save', 'authors-save');
+
+        if (current_user_can(get_taxonomy('author')->cap->assign_terms)) {
+            ?>
             <?php
-            $post         = get_post();
             $userAuthor   = get_user_by('ID', $post->post_author);
             $postAuthorId = $post->post_author;
 
@@ -416,6 +527,7 @@ class Post_Editor
             'avatar'       => '',
             'term'         => '',
             'is_guest'     => 0,
+            'category_id'  => 0,
         ];
 
         $args     = array_merge($defaults, $args);
@@ -435,7 +547,8 @@ class Post_Editor
             <?php
             endif; ?>
             <span class="display-name"><?php echo esc_html($args['display_name']); ?></span>
-            <input type="hidden" name="authors[]" value="<?php echo esc_attr($args['term']); ?>">
+            <input type="hidden" name="authors[]" value="<?php echo esc_attr($args['term']); ?>" class="author_term">
+            <input type="hidden" name="author_categories[<?php echo esc_attr($args['term']); ?>]" class="author_categories" value="<?php echo esc_attr($args['category_id']); ?>">
         </li>
         <?php
         return ob_get_clean();
@@ -464,6 +577,7 @@ class Post_Editor
         }
 
         $authors = isset($_POST['authors_ids']) ? array_map('sanitize_text_field', $_POST['authors_ids']) : [];
+        $author_categories = isset($_POST['author_categories']) ? Utils::sanitizeArray($_POST['author_categories']) : []; // phpcs:ignore WordPress.Security.
         $authors = self::remove_dirty_authors_from_authors_arr($authors);
 
         $fallbackUserId = isset($_POST['fallback_author_user']) ? (int)$_POST['fallback_author_user'] : null;
@@ -471,6 +585,7 @@ class Post_Editor
         if (!empty($post_ids) && !empty($authors)) {
             foreach ($post_ids as $post_id) {
                 Utils::set_post_authors($post_id, $authors, true, $fallbackUserId);
+                Utils::set_post_authors($post_id, $authors, true, $fallbackUserId, $author_categories);
             }
 
             do_action('publishpress_authors_flush_cache', $post_ids);
@@ -504,12 +619,13 @@ class Post_Editor
         }
 
         $authors = isset($_POST['authors']) ? Utils::sanitizeArray($_POST['authors']) : []; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+        $author_categories = isset($_POST['author_categories']) ? Utils::sanitizeArray($_POST['author_categories']) : []; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
         $authors = self::remove_dirty_authors_from_authors_arr($authors);
 
         $fallbackUserId = isset($_POST['fallback_author_user']) ? (int)$_POST['fallback_author_user'] : null;
         $disableAuthorBox = isset($_POST['ppma_disable_author_box']) ? (int)$_POST['ppma_disable_author_box'] : 0;
 
-        Utils::set_post_authors($post_id, $authors, true, $fallbackUserId);
+        Utils::set_post_authors($post_id, $authors, true, $fallbackUserId, $author_categories);
         if (isset($_POST['ppma_save_disable_author_box']) && (int)$_POST['ppma_save_disable_author_box'] > 0) {
             update_post_meta($post_id, 'ppma_disable_author_box', $disableAuthorBox);
         }

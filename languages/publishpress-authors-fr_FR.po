@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Plugins - Co-Authors, Multiple Authors and Guest Authors "
 "in an Author Box with PublishPress Authors - Stable (latest release)\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2023-09-04 09:04+0000\n"
+"PO-Revision-Date: 2023-09-06 16:51+0200\n"
 "Last-Translator: \n"
 "Language-Team: French (France)\n"
 "Language: fr_FR\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Loco https://localise.biz/"
+"X-Generator: Poedit 3.3\n"
 
 #: src/functions/template-tags.php:615 src/functions/template-tags.php:1236
 msgid " and "
@@ -271,10 +271,8 @@ msgid "Advanced"
 msgstr "Avancé"
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:620
-#, fuzzy
-#| msgid "After %1s Display Suffix"
 msgid "After Display Suffix"
-msgstr "Après le suffixe d’affichage %1s"
+msgstr "Après le suffixe d’affichage"
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:129
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:314
@@ -472,11 +470,11 @@ msgstr "Profil de l’auteur/autrice"
 
 #: src/core/Classes/Term_Editor.php:43
 msgid "Author profile deleted."
-msgstr ""
+msgstr "Le profil de l’auteur/autrice a bien été supprimé."
 
 #: src/core/Classes/Term_Editor.php:44
 msgid "Author profile updated."
-msgstr ""
+msgstr "Le profil de l’auteur/autrice a bien été mis à jour."
 
 #: src/modules/multiple-authors/multiple-authors.php:2561
 msgid "Author Profiles"
@@ -551,7 +549,7 @@ msgstr "Débogage des auteurs ou autrices"
 
 #: src/core/Classes/Term_Editor.php:47
 msgid "Authors deleted."
-msgstr ""
+msgstr "Auteurs/autrices supprimés."
 
 #: src/modules/default-layouts/default-layouts.php:125
 msgid "Authors index"
@@ -601,10 +599,8 @@ msgid "Banner"
 msgstr "Bannière"
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:612
-#, fuzzy
-#| msgid "Before %1s Display Prefix"
 msgid "Before Display Prefix"
-msgstr "Avant le préfixe d’affichage %1s"
+msgstr "Avant le préfixe d’affichage"
 
 #: src/core/Classes/Author_Editor.php:348
 #: src/modules/author-boxes/author-boxes.php:842
@@ -819,8 +815,8 @@ msgstr "Copier dans le presse-papiers"
 
 #: src/modules/author-boxes/author-boxes.php:1664
 msgid ""
-"Create an empty php template file with your desired file slug in the %1s "
-"/publishpress-authors/author-boxes/ %2s folder of your theme. %3s For "
+"Create an empty php template file with your desired file slug in the %1s /"
+"publishpress-authors/author-boxes/ %2s folder of your theme. %3s For "
 "example, the file can be located here: %4s /wp-content/themes/%5syour-theme-"
 "name%6s/publishpress-authors/author-boxes/my-first-custom-author-template."
 "php %7s ."
@@ -850,8 +846,8 @@ msgstr "Créer des profils PublishPress Authors pour tous les auteurs/autrices"
 #: src/modules/multiple-authors/multiple-authors.php:2331
 msgid "Create PublishPress Authors profiles for all users in a role"
 msgstr ""
-"Créer des profils PublishPress Authors pour tous les "
-"utilisateurs/utilisatrices d’un rôle"
+"Créer des profils PublishPress Authors pour tous les utilisateurs/"
+"utilisatrices d’un rôle"
 
 #: src/core/Classes/Installer.php:327
 msgid "Creating author term for the user %d"
@@ -1050,7 +1046,7 @@ msgstr "Ignorer"
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:580
 msgid "Display"
-msgstr ""
+msgstr "Afficher"
 
 #: src/core/Widget.php:48
 msgid "Display a list of authors for the current post."
@@ -1068,28 +1064,20 @@ msgid "Display authors list."
 msgstr "Affichez la liste des auteurs/autrices."
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:631
-#, fuzzy
-#| msgid "%1s Display Icon"
 msgid "Display Icon"
-msgstr "Afficher l’icône du %1s"
+msgstr "Afficher l’icône"
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:649
-#, fuzzy
-#| msgid "%1s Display Icon Background Color"
 msgid "Display Icon Background Color"
-msgstr "%1s Afficher la couleur d’arrière-plan de l’icône"
+msgstr "Afficher la couleur d’arrière-plan de l’icône"
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:657
-#, fuzzy
-#| msgid "%1s Display Icon Border Radius %2s"
 msgid "Display Icon Border Radius (%)"
-msgstr "%1s Afficher le rayon de la bordure de l’icône %2s"
+msgstr "Afficher le rayon de la bordure de l’icône (%)"
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:640
-#, fuzzy
-#| msgid "%1s Display Icon Size"
 msgid "Display Icon Size"
-msgstr "%1s Afficher la taille de l’icône"
+msgstr "Afficher la taille de l’icône"
 
 #: src/modules/multiple-authors/multiple-authors.php:991
 #: src/modules/author-boxes/author-boxes.php:838
@@ -1097,16 +1085,12 @@ msgid "Display Name"
 msgstr "Afficher le prénom"
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:596
-#, fuzzy
-#| msgid "%1s Display Prefix"
 msgid "Display Prefix"
-msgstr "Afficher le préfixe du %1s"
+msgstr "Afficher le préfixe"
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:604
-#, fuzzy
-#| msgid "%1s Display Suffix"
 msgid "Display Suffix"
-msgstr "Afficher le suffixe du %1s"
+msgstr "Afficher le suffixe"
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:158
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:343
@@ -1230,11 +1214,11 @@ msgstr ""
 
 #: src/core/Classes/Term_Editor.php:45
 msgid "Error adding author account."
-msgstr ""
+msgstr "Erreur lors de l’ajout du compte d’auteur/autrice."
 
 #: src/core/Classes/Term_Editor.php:46
 msgid "Error updating author profile."
-msgstr ""
+msgstr "Erreur lors de la mis à jour du compte d’auteur/autrice."
 
 #: src/modules/multiple-authors/multiple-authors.php:3319
 msgid "Error. Author terms could not be reseted."
@@ -1288,7 +1272,7 @@ msgstr "Champ icône + préfixe + valeur + suffixe"
 
 #: src/modules/author-custom-fields/author-custom-fields.php:945
 msgid "Field Order updated."
-msgstr ""
+msgstr "L’ordre de champs a bien été mis à jour."
 
 #: src/modules/author-boxes/classes/AuthorBoxesAjax.php:66
 #, php-format
@@ -1296,6 +1280,8 @@ msgid ""
 "Field Order updated. %1sClick here%2s to reload this page to see new order "
 "changes."
 msgstr ""
+"L’ordre de champs a bien été mis à jour. %1sCliquez ici%2s pour recharger "
+"cette page et voir les nouvelles modifications d’ordre."
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:588
 msgid "Field Prefix"
@@ -1588,8 +1574,8 @@ msgstr "Biseau interne"
 #: src/modules/modules-settings/modules-settings.php:291
 msgid "Install this plugin to showcase content by your Authors."
 msgstr ""
-"Installez cette extension pour mettre en valeur le contenu de vos "
-"auteurs/autrices."
+"Installez cette extension pour mettre en valeur le contenu de vos auteurs/"
+"autrices."
 
 #: src/modules/author-boxes/author-boxes.php:1650
 msgid "Invalid data"
@@ -1815,7 +1801,7 @@ msgstr "Nouveau auteur/autrice"
 
 #: src/core/Classes/Term_Editor.php:42
 msgid "New author added."
-msgstr ""
+msgstr "Nouveau auteur/autrice ajouté."
 
 #: src/templates/parts/author-pages-list.php:156
 #: src/templates/parts/author-pages-grid.php:163
@@ -1857,8 +1843,9 @@ msgid ""
 "No post ID provided for Authors_Iterator constructor. Are you not in a loop "
 "or is $post not set?"
 msgstr ""
-"Aucun ID de publication n’est fourni pour le constructeur d’Authors_Iterator."
-" N’êtes-vous pas dans une boucle ou $post n’est-il pas défini ?"
+"Aucun ID de publication n’est fourni pour le constructeur "
+"d’Authors_Iterator. N’êtes-vous pas dans une boucle ou $post n’est-il pas "
+"défini ?"
 
 #: src/core/WP_Cli.php:56
 msgid "No posts without author terms were found"
@@ -2207,13 +2194,15 @@ msgstr "Supprimer cette image"
 
 #: src/modules/author-boxes/author-boxes.php:1724
 msgid "Reorder Fields"
-msgstr ""
+msgstr "Réordonner les champs"
 
 #: src/modules/author-boxes/author-boxes.php:1732
 msgid ""
 "Reorder the fields by dragging them to the correct position and saving your "
 "changes."
 msgstr ""
+"Réordonnez les champs en les faisant glisser jusqu’à la position correcte et "
+"en enregistrant vos modifications."
 
 #: src/core/Classes/Admin_Ajax.php:263 src/core/Classes/Admin_Ajax.php:344
 msgid "Request status."
@@ -2271,11 +2260,11 @@ msgstr "Suffixe de ligne"
 
 #: src/modules/author-boxes/author-boxes.php:1750
 msgid "Save for All Author Boxes"
-msgstr ""
+msgstr "Enregistrer pour toutes les boîtes d’auteur/autrice"
 
 #: src/modules/author-boxes/author-boxes.php:1746
 msgid "Save for Current Author Box"
-msgstr ""
+msgstr "Enregistrer pour la boîte d’auteur/autrice actuelle"
 
 #: src/core/Authors_Widget.php:381
 msgid "Search"
@@ -2386,7 +2375,7 @@ msgstr "Afficher %1s"
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:537
 msgid "Show After"
-msgstr ""
+msgstr "Afficher après"
 
 #: src/modules/multiple-authors/multiple-authors.php:748
 msgid "Show author bio:"
@@ -2547,6 +2536,9 @@ msgid ""
 "Sorry, this WordPress user is already mapped to another Author. By default, "
 "each user can only be connected to one Author profile."
 msgstr ""
+"Désolé, cet utilisateur WordPress est déjà associé à un autre auteur/"
+"autrice. Par défaut, chaque utilisateur ne peut être associé qu’à un seul "
+"profil d’auteur/autrice."
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:159
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:344
@@ -2601,19 +2593,14 @@ msgid "Text"
 msgstr "Texte"
 
 #: src/modules/multiple-authors/multiple-authors.php:1241
-#, fuzzy
-#| msgid ""
-#| "The authors data shortcode accepts field parameter such as: %1$s %2$s "
-#| "%3$s %4$s %5$s %6$s %7$s. You can see full details and parameters %8s in "
-#| "this guide %9s."
 msgid ""
 "The authors data shortcode accepts field parameter such as: %1$s %2$s %3$s "
 "%4$s %5$s %6$s %7$s. You can see full details and parameters %8$s in this "
 "guide %9$s."
 msgstr ""
 "Le code court des données d’auteurs et autrices accepte les paramètres de "
-"champ tels que : %1$s %2$s %3$s %4$s %5$s %6$s %7$s. Vous pouvez voir tous "
-"les détails et les paramètres dans ce guide %9s."
+"champ tels que : %1$s %2$s %3$s %4$s %5$s %6$s %7$s. Vous trouverez tous les "
+"détails et les paramètres %8$s dans ce guide %9$s."
 
 #: src/modules/seoframework-integration/seoframework-integration.php:58
 msgid "The SEO Framework Integration"
@@ -2646,10 +2633,10 @@ msgid ""
 msgstr ""
 "Il y a une dernière option à mentionner. Elle est surtout utile si vous "
 "utilisez un thème ou un constructeur de pages pour personnaliser les pages "
-"de profil d’auteur/autrice que vous trouvez à des URL telles que "
-"/author/username/. Vous pouvez utiliser le code court suivant sur la page "
-"des auteurs/autrices pour afficher le profil de l’auteur/autrice actuel. Il "
-"vous suffit d’ajouter le paramètre %s."
+"de profil d’auteur/autrice que vous trouvez à des URL telles que /author/"
+"username/. Vous pouvez utiliser le code court suivant sur la page des "
+"auteurs/autrices pour afficher le profil de l’auteur/autrice actuel. Il vous "
+"suffit d’ajouter le paramètre %s."
 
 #: src/modules/multiple-authors/multiple-authors.php:1866
 msgid ""
@@ -2673,8 +2660,8 @@ msgid ""
 "engines realize that the social profile is connected to this author."
 msgstr ""
 "Cette fonctionnalité ajoutera la propriété SameAs à ce lien afin que les "
-"moteurs de recherche réalisent que le profil social est lié à cet "
-"auteur/autrice."
+"moteurs de recherche réalisent que le profil social est lié à cet auteur/"
+"autrice."
 
 #: src/core/Plugin.php:514
 msgid ""
@@ -2754,8 +2741,8 @@ msgstr ""
 #: src/modules/multiple-authors/multiple-authors.php:2248
 msgid "This will display the authors email in the author box."
 msgstr ""
-"Cela affichera l’e-mail de l’auteur/autrice dans la boîte de "
-"l’auteur/autrice."
+"Cela affichera l’e-mail de l’auteur/autrice dans la boîte de l’auteur/"
+"autrice."
 
 #: src/modules/multiple-authors/multiple-authors.php:2268
 msgid "This will display the authors site in the author box."
@@ -2917,8 +2904,6 @@ msgid "Users Authors"
 msgstr "Utilisateurs auteurs et utilisatrices autrices"
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:571
-#, fuzzy
-#| msgid "%1s Value Prefix"
 msgid "Value Prefix"
 msgstr "Valeur préfixe %1s"
 
@@ -3029,8 +3014,8 @@ msgid ""
 msgstr ""
 "Vous pouvez également afficher un menu déroulant qui autorise aux "
 "internautes de rechercher des champs d’auteur et autrice spécifiques. Vous "
-"pouvez ajouter des champs à la liste déroulante en utilisant %1$s. Pour cela,"
-" il faut que la boîte de recherche soit active."
+"pouvez ajouter des champs à la liste déroulante en utilisant %1$s. Pour "
+"cela, il faut que la boîte de recherche soit active."
 
 #: src/modules/multiple-authors/multiple-authors.php:1258
 msgid ""
@@ -3061,10 +3046,10 @@ msgid ""
 "specific period using %1$s . This accept english date value like 1 week ago, "
 "1 month ago, 6 months ago, 1 year ago etc."
 msgstr ""
-"Vous pouvez limiter la liste des auteurs/autrices aux "
-"utilisateurs/utilisatrices ayant publié un article au cours d’une période "
-"spécifique en utilisant %1$s . Ceci accepte une valeur de date anglaise "
-"comme il y a 1 semaine, 1 mois, 6 mois, 1 an, etc."
+"Vous pouvez limiter la liste des auteurs/autrices aux utilisateurs/"
+"utilisatrices ayant publié un article au cours d’une période spécifique en "
+"utilisant %1$s . Ceci accepte une valeur de date anglaise comme il y a 1 "
+"semaine, 1 mois, 6 mois, 1 an, etc."
 
 #: src/modules/multiple-authors/multiple-authors.php:1339
 msgid ""
@@ -3111,8 +3096,8 @@ msgid ""
 "You can specify a separator such as ',' to separate authors. This field "
 "accepts basic HTML."
 msgstr ""
-"Vous pouvez spécifier un séparateur tel que ’,’ pour séparer les "
-"auteurs/autrices. Ce champ accepte le HTML de base."
+"Vous pouvez spécifier un séparateur tel que ’,’ pour séparer les auteurs/"
+"autrices. Ce champ accepte le HTML de base."
 
 #: src/modules/multiple-authors/multiple-authors.php:1181
 #, php-format
@@ -3165,7 +3150,7 @@ msgstr "Vous n’avez pas les droits nécessaires pour effectuer cette action."
 #: src/modules/author-custom-fields/author-custom-fields.php:927
 #: src/modules/author-boxes/classes/AuthorBoxesAjax.php:46
 msgid "You do not have permission to perform this action"
-msgstr ""
+msgstr "Vous n’avez pas le droit pour effectuer cette action"
 
 #: src/core/Classes/Author_Editor.php:679
 msgid ""

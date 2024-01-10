@@ -104,11 +104,12 @@ jQuery(document).ready(function ($) {
             });
             authorsSearch.on("ppma_select2:select", function (e) {
                 var template = wp.template("authors-author-partial");
-                $(".authors-list").append(
+                $(".authors-list:first").append(
                     window.htmlEnDeCode.htmlDecode(template(e.params.data))
                 );
                 authorsSearch.val(null).trigger("change");
                 handleUsersAuthorField();
+                handleAuthorCategory();
             });
         });
     }
@@ -139,6 +140,24 @@ jQuery(document).ready(function ($) {
         }
     }
 
+    function handleAuthorCategory() {
+        let $authorsCategoryId = '';
+        let $authorsCategoryTerm = '';
+        $('.authors-list').each(function () {
+            if ($(this).children().length === 1) {
+                $(this).find('.sortable-placeholder').show();
+            } else {
+                $(this).find('.sortable-placeholder').hide();
+            }
+            $authorsCategoryId = $(this).attr('data-category_id');
+            $(this).find('.author_categories').each(function () {
+                $authorsCategoryTerm = $(this).closest('li').find('.author_term').val();
+                $(this).attr('name', 'author_categories[' + $authorsCategoryTerm + ']');
+                $(this).val($authorsCategoryId);
+            });
+        });
+    }
+
     function authorsUserSelect2(selector) {
         selector.each(function () {
             var authorsSearch = $(this).ppma_select2({
@@ -154,6 +173,28 @@ jQuery(document).ready(function ($) {
                         return {
                             q: params.term,
                             ignored: []
+                        };
+                    }
+                }
+            });
+        });
+    }
+
+    function authorsPostSearchSelect2(selector) {
+        selector.each(function () {
+            var postsSearch = $(this).ppma_select2({
+                placeholder: $(this).data("placeholder"),
+                allowClear: $(this).data("allow-clear"),
+                ajax: {
+                    url:
+                        window.ajaxurl +
+                        "?action=authors_filter_posts_search&nonce=" +
+                        $(this).data("nonce") + "&post_type=" +
+                        $(this).data("post_type"),
+                    dataType: "json",
+                    data: function (params) {
+                        return {
+                            q: params.term
                         };
                     }
                 }
@@ -212,9 +253,17 @@ jQuery(document).ready(function ($) {
                 var current_slug = $(this).find('td.column-slug').html();
                 if (default_fields.includes(current_slug)) {
                     $(this).find('.check-column input').attr('disabled', true);
-                    $(this).find('.column-primary .row-actions').hide();
+                    // 1. Hide .row-actions .trash
+                    $(this).find('.column-primary .row-actions .trash').hide();
+                    // 2. Remove the separator (|) after Edit button inside the .edit span
+                    $(this).find('.column-primary .row-actions .edit').contents().filter(function() {
+                        return this.nodeType === 3; // Filter out text nodes
+                      }).remove();
                 }
             });
+        }
+        if ($('.ppma-authors-post-search').length > 0) {
+            authorsPostSearchSelect2($('.ppma-authors-post-search'));
         }
     }
 
@@ -237,17 +286,23 @@ jQuery(document).ready(function ($) {
             var $select = $quickEditTr.find('.authors-select2.authors-search');
             var $authorsList = $quickEditTr.find('.authors-current-user-can-assign');
             var $usersList = $quickEditTr.find('.authors-user-search');
+            var $authorList = '';
 
             authorsSelect2($select);
             authorsUserSelect2($usersList);
-            $authorsList.empty();
+            $authorsList.find("li:not(.sortable-placeholder)").remove();
 
             $('#post-' + postId)
                 .find('td.column-authors > a.author_name')
                 .each(function () {
                     var listItemTmpl = wp.template("authors-author-partial");
+                    if ($quickEditTr.find('.authors-current-user-can-assign.authors-category-' + $(this).data('author-category-id')).length > 0) {
+                        $authorList = $quickEditTr.find('.authors-current-user-can-assign.authors-category-' + $(this).data('author-category-id'));
+                    } else {
+                        $authorList = $quickEditTr.find('.authors-current-user-can-assign:first');
+                    }
 
-                    $authorsList.append(
+                    $authorList.append(
                         window.htmlEnDeCode.htmlDecode(
                             listItemTmpl({
                                 'display_name': $(this).data('author-display-name'),
@@ -261,6 +316,7 @@ jQuery(document).ready(function ($) {
             sortedAuthorsList($authorsList);
             $select.val(null).trigger('change');
             handleUsersAuthorField();
+            handleAuthorCategory();
 
             clearTimeout(timeoutFn);
         }, 50);
@@ -278,8 +334,9 @@ jQuery(document).ready(function ($) {
             sortedAuthorsList($("#bulk-edit .authors-current-user-can-assign"));
             authorsUserSelect2($("#bulk-edit .authors-user-search"));
             handleUsersAuthorField();
+            handleAuthorCategory();
             $("#bulk-edit .authors-current-user-can-assign")
-                .find("li")
+                .find("li:not(.sortable-placeholder)")
                 .each(function () {
                     $(this).remove();
                 });
@@ -320,8 +377,12 @@ jQuery(document).ready(function ($) {
 
         // get the data
         var selectedAuthors = [];
-        $bulk_row.find(".authors-list input").each(function () {
-            selectedAuthors.push(parseInt($(this).val()));
+        var selectedAuthorCategories = {};
+        var selectedVal = '';
+        $bulk_row.find(".authors-list input.author_term").each(function () {
+            selectedVal = parseInt($(this).val());
+            selectedAuthors.push(selectedVal);
+            selectedAuthorCategories[selectedVal] = $(this).closest('ul').attr('data-category_id');
         });
 
         var selectedFallbackUser = $('#publishpress-authors-user-author-select').val();
@@ -336,6 +397,7 @@ jQuery(document).ready(function ($) {
                 action: "save_bulk_edit_authors",
                 post_ids: $post_ids, // and these are the 2 parameters we're passing to our function
                 authors_ids: selectedAuthors,
+                author_categories: selectedAuthorCategories,
                 fallback_author_user: selectedFallbackUser,
                 bulkEditNonce: bulkEditNonce.nonce
             }
@@ -343,7 +405,22 @@ jQuery(document).ready(function ($) {
     });
 
     function sortedAuthorsList(selector) {
-        selector.sortable().on("click", ".author-remove", function () {
+        selector.sortable({
+            connectWith: ".authors-list",
+            items: "> li:not(.no-drag)",
+            placeholder: "sortable-placeholder",
+            update: function (event, ui) {
+                handleAuthorCategory();
+            },
+            receive: function (event, ui) {
+                $(this).find('.sortable-placeholder').hide();
+            },
+            remove: function (event, ui) {
+                if ($(this).children().length === 1) {
+                    $(this).find('.sortable-placeholder').show();
+                }
+            },
+        }).on("click", ".author-remove", function () {
             var el = $(this);
             el.closest("li").remove();
             handleUsersAuthorField($(this).parent('.authors-list'));

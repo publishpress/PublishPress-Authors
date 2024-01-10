@@ -18,26 +18,16 @@ $rating_star .= '<span class="dashicons dashicons-star-filled"></span>';
     <nav>
         <ul>
             <li>
-                <a href="//publishpress.com" target="_blank" rel="noopener noreferrer" title="About <?php echo esc_attr($context['plugin_name']); ?>"><?php esc_html_e('About', ' publishpress-authors'); ?></a>
+                <a href="//publishpress.com/authors/" target="_blank" rel="noopener noreferrer" title="About <?php echo esc_attr($context['plugin_name']); ?>"><?php esc_html_e('About', ' publishpress-authors'); ?></a>
             </li>
             <li>
-                <a href="//publishpress.com/knowledge-base/use-multiple-authors-add-publishpress/" target="_blank"
+                <a href="//publishpress.com/knowledge-base/authors-getting-started/" target="_blank"
                    rel="noopener noreferrer"
                    title="Documentation"><?php esc_html_e('Documentation', ' publishpress-authors'); ?></a>
             </li>
             <li>
-                <a href="//publishpress.com/contact" target="_blank" rel="noopener noreferrer"
+                <a href="//publishpress.com/publishpress-support/" target="_blank" rel="noopener noreferrer"
                    title="Contact the PublishPress team"><?php esc_html_e('Contact', ' publishpress-authors'); ?></a>
-            </li>
-            <li>
-                <a href="//twitter.com/publishpresscom" target="_blank" rel="noopener noreferrer">
-                    <span class="dashicons dashicons-twitter"></span>
-                </a>
-            </li>
-            <li>
-                <a href="//facebook.com/publishpress" target="_blank" rel="noopener noreferrer">
-                    <span class="dashicons dashicons-facebook"></span>
-                </a>
             </li>
         </ul>
     </nav>

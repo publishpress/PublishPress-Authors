@@ -86,6 +86,53 @@ class Admin_Ajax
     }
 
     /**
+     * Handle an ajax request to search filter available posts
+     */
+     public static function handle_filter_posts_search()
+     {
+         header('Content-Type: application/javascript');
+ 
+        if (empty($_GET['nonce'])
+            || !wp_verify_nonce(sanitize_key($_GET['nonce']), 'authors-post-search')
+        ) {
+            wp_send_json_error(null, 403);
+        }
+ 
+        if (! Capability::currentUserCanEditPostAuthors()) {
+            wp_send_json_error(null, 403);
+        }
+
+        $search     = !empty($_GET['q']) ? sanitize_text_field($_GET['q']) : '';
+        $post_type  = !empty($_GET['post_type']) ? sanitize_text_field($_GET['post_type']) : 'post';
+        
+        $post_args = [
+            'post_type'         => $post_type,
+            'post_status'       => 'publish',
+            'posts_per_page'    => apply_filters('ppma_authors_editor_post_result_limit', 20),
+        ];
+
+        if (!empty($search)) {
+            $post_args['s'] = $search;
+        }
+
+        $posts = get_posts($post_args);
+        $results = [];
+
+        foreach ($posts as $post) {
+            $results[] = [
+                'id' => $post->ID,
+                'text' => $post->post_title,
+            ];
+        }
+
+        $response = [
+            'results' => $results,
+        ];
+        echo wp_json_encode($response);
+        exit;
+    }
+
+    /**
      * Get the possible authors for a given search query.
      *
      * @param string $search Search query.

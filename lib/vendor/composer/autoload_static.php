@@ -22,6 +22,7 @@ class ComposerStaticInitPPAuthors
         'M' => 
         array (
             'MultipleAuthors\\' => 16,
+            'MultipleAuthorCategories\\' => 25,
             'MultipleAuthorBoxes\\' => 20,
         ),
     );
@@ -34,6 +35,10 @@ class ComposerStaticInitPPAuthors
         'MultipleAuthors\\' => 
         array (
             0 => __DIR__ . '/../..' . '/../src/core',
+        ),
+        'MultipleAuthorCategories\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/../src/modules/author-categories/classes',
         ),
         'MultipleAuthorBoxes\\' => 
         array (

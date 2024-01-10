@@ -1,3 +1,10 @@
+.pp-multiple-authors-boxes-wrapper .square-dot {
+    display: inline-block;
+}
+
+.pp-multiple-authors-boxes-wrapper .square-dot::before {
+    content: '\25A0';
+}
 .pp-multiple-authors-layout-simple_list ul,
 .pp-multiple-authors-layout-boxed ul {
     padding-left: 0;

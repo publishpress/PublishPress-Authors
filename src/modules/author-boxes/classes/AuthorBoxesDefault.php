@@ -107,7 +107,9 @@ class AuthorBoxesDefault
         $editor_data['author_recent_posts_html_tag'] = 'div';
         $editor_data['author_recent_posts_title_border_bottom_style'] = 'dotted';
         //box layout default
+        $editor_data['box_layout_border_width'] = 1;
         $editor_data['box_layout_border_style'] = 'solid';
+        $editor_data['box_layout_border_color'] = '#999';
         $editor_data['box_layout_shadow_horizontal_offset'] = 10;
         $editor_data['box_layout_shadow_vertical_offset'] = 10;
         $editor_data['box_layout_shadow_blur'] = 0;
@@ -162,7 +164,9 @@ class AuthorBoxesDefault
         $editor_data['author_recent_posts_title_border_bottom_style'] = 'dotted';
         $editor_data['author_recent_posts_alignment'] = 'left';
         //box layout default
+        $editor_data['box_layout_border_width'] = 1;
         $editor_data['box_layout_border_style'] = 'solid';
+        $editor_data['box_layout_border_color'] = '#999';
         $editor_data['box_layout_shadow_horizontal_offset'] = 10;
         $editor_data['box_layout_shadow_vertical_offset'] = 10;
         $editor_data['box_layout_shadow_blur'] = 0;
@@ -274,7 +278,7 @@ class AuthorBoxesDefault
         $editor_data['author_recent_posts_title_border_bottom_style'] = 'dotted';
         $editor_data['author_recent_posts_alignment'] = 'left';
         //box layout default
-        $editor_data['box_tab_layout_author_separator'] = ', ';
+        $editor_data['box_tab_layout_author_separator'] = '';
         $editor_data['box_layout_border_style'] = 'none';
         $editor_data['box_layout_shadow_horizontal_offset'] = 10;
         $editor_data['box_layout_shadow_vertical_offset'] = 10;
@@ -361,7 +365,8 @@ class AuthorBoxesDefault
      * Add editor data default values 
      *
      * @param array $editor_data
-     * @return void
+     * 
+     * @return array
      */
     public static function addEditorDataDefaultValues($editor_data) {
         $profile_fields   = apply_filters('multiple_authors_author_fields', [], false);

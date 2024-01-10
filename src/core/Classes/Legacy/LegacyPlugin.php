@@ -38,6 +38,8 @@ class LegacyPlugin
     public $helpers;
     public $class_names;
     public $shortcode_authors_list;
+    public $author_categories;
+    public $author_boxes_pro;
 
     private $options_group = 'multiple_authors_';
 
@@ -173,6 +175,7 @@ class LegacyPlugin
         $defaultDirs = [
             'modules-settings'     => PP_AUTHORS_MODULES_PATH,
             'author-boxes'         => PP_AUTHORS_MODULES_PATH,
+            'author-categories'    => PP_AUTHORS_MODULES_PATH,
             'author-custom-fields'  => PP_AUTHORS_MODULES_PATH,
             'settings'             => PP_AUTHORS_MODULES_PATH,
             'multiple-authors'     => PP_AUTHORS_MODULES_PATH,

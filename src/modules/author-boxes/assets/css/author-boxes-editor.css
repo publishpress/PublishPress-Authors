@@ -4,6 +4,15 @@
     margin-top: 0;
 }
 
+.pp-multiple-authors-boxes-wrapper h1,
+.pp-multiple-authors-boxes-wrapper h2,
+.pp-multiple-authors-boxes-wrapper h3,
+.pp-multiple-authors-boxes-wrapper h4,
+.pp-multiple-authors-boxes-wrapper h5,
+.pp-multiple-authors-boxes-wrapper h6 {
+    padding: initial !important;
+}
+
 .ppma-author-boxes-editor-table input[type=text],
 .ppma-author-boxes-editor-table input[type=number],
 .ppma-author-boxes-editor-table select {
@@ -172,6 +181,12 @@
 .editor-preview-author {
     display: flex;
     justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.editor-preview-author .ppma_select2-container {
+    max-width: 250px !important;
+    min-width: 250px !important;
 }
 
 .editor-preview-author .editor-preview-author-label {
