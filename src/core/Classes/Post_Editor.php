@@ -283,12 +283,12 @@ class Post_Editor
                     $category_author_ids = array_column($grouped_authors[$author_category['slug']], 'author_term_id');
                     // get selected authors for the category terms
                     $selected_authors = array_filter($remaining_authors, function ($author) use ($category_author_ids) {
-                        $term_id = $author->term_id;
+                        $term_id = is_object($author) ? $author->term_id : 0;
                         return in_array($term_id, $category_author_ids);
                     });
                     // update remaining authors
                     $remaining_authors = array_filter($remaining_authors, function ($author) use ($category_author_ids) {
-                        $term_id = $author->term_id;
+                        $term_id = is_object($author) ? $author->term_id : 0;
                         return !in_array($term_id, $category_author_ids);
                     });
                 } else {
