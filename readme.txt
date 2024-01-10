@@ -214,7 +214,7 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= [4.3.0] - 10 Jan 2023 =
+= [4.3.0] - 10 Jan 2024 =
 
 * Feature: Add the ability to group / categorize Authors (Author Categories), #58
 * Update: Add user_id and term_id parameter to [publishpress_authors_box] shortcode, #1602
