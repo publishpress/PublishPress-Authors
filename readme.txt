@@ -6,8 +6,8 @@ Author URI: https://publishpress.com
 Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 5.5
 Requires PHP: 7.2.5
-Tested up to: 6.3
-Stable tag: 4.2.1
+Tested up to: 6.4
+Stable tag: 4.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -213,6 +213,25 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [4.3.0] - 10 Jan 2024 =
+
+* Feature: Add the ability to group / categorize Authors (Author Categories), #58
+* Update: Add user_id and term_id parameter to [publishpress_authors_box] shortcode, #1602
+* Update: Add the Edit links for all Author Fields, #1475
+* Fixed: Author Boxes screen isn't fully responsive, #1594
+* Fixed: Author Fields are in the wrong order, #1587
+* Update: Move author field sidebar promo panel to the bottom, #1506
+* Update: Add support for multiple authors posts when using get_posts() function via 'ppma_filter' => true parameter, #1591
+* Fixed: Authors Profile not being created when "Enable Guest Author" is disabled, #1584
+* Update: Rename maintenance button tools, #1526
+* Update: WordPress Reviews library to 1.1.20, #1490
+* Update: Upgrade Reviews and Version Notices libraries, #1491
+* Fixed: PostX – Post Grid Gutenberg Blocks and WordPress Blog Plugin Compatibility, #1485
+* Fixed: Elementor Archive widget showing wrong author, #1481
+* Fixed: Uncaught TypeError: array_intersect(): Argument #2 must be of type array, null given, #1479
+* Update: Add filter to disable settings flush_rewrite_rules when authors page is enabled/disabled, #1425
+* Update: ES-FR-IT translation updates September 2023, #1478
 
 = [4.2.1] - 04 Sep 2023 =
 
