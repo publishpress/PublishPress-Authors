@@ -104,15 +104,15 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
             $author_profile_schema = [
                 '@type'         => 'Person',
                 '@id'           => $author->link,
-                '@name'         => $author->display_name,
-                '@description'  => $author->description,
-                '@url'          => $author->link,
-                '@image'        => [
+                'name'         => $author->display_name,
+                'description'  => $author->description,
+                'url'          => $author->link,
+                'image'        => [
                     '@type'     => 'ImageObject',
                     '@id'         => $author_avatar,
-                    '@url'        => $author_avatar,
-                    '@caption'    => $author->display_name,
-                    '@inLanguage' => apply_filters('rank_math/schema/language', get_bloginfo('language'))
+                    'url'        => $author_avatar,
+                    'caption'    => $author->display_name,
+                    'inLanguage' => apply_filters('rank_math/schema/language', get_bloginfo('language'))
                 ]
             ];
 
@@ -194,6 +194,8 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
                         }
                         if (isset($author_profile_data['@name'])) {
                             $data_publisher['name'] = $author_profile_data['@name'];
+                        } elseif (isset($author_profile_data['name'])) {
+                            $data_publisher['name'] = $author_profile_data['name'];
                         }
                         if (isset($author_profile_data['sameAs'])) {
                             $data_publisher['sameAs'] = $author_profile_data['sameAs'];
@@ -201,6 +203,9 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
                         if (isset($author_profile_data['@image'])) {
                             $data_publisher['logo'] = $author_profile_data['@image'];
                             $data_publisher['image'] = $author_profile_data['@image'];
+                        } elseif (isset($author_profile_data['image'])) {
+                            $data_publisher['logo'] = $author_profile_data['image'];
+                            $data_publisher['image'] = $author_profile_data['image'];
                         }
                         $data['publisher']       = $data_publisher;
                     }
@@ -212,6 +217,7 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
                         }
                     }
                 }
+
             }
 
             return $data;
