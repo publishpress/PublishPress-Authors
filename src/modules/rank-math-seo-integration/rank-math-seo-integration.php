@@ -204,11 +204,17 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
                             $data_publisher['sameAs'] = $author_profile_data['sameAs'];
                         }
                         if (isset($author_profile_data['@image'])) {
-                            $data_publisher['logo'] = $author_profile_data['@image'];
-                            $data_publisher['image'] = $author_profile_data['@image'];
+                            if (isset($author_profile_data['@type']) && $author_profile_data['@type'] == 'Person') {
+                                $data_publisher['image'] = $author_profile_data['@image'];
+                            } else {
+                                $data_publisher['logo'] = $author_profile_data['@image'];
+                            }
                         } elseif (isset($author_profile_data['image'])) {
-                            $data_publisher['logo'] = $author_profile_data['image'];
-                            $data_publisher['image'] = $author_profile_data['image'];
+                            if (isset($author_profile_data['@type']) && $author_profile_data['@type'] == 'Person') {
+                                $data_publisher['image'] = $author_profile_data['image'];
+                            } else {
+                                $data_publisher['logo'] = $author_profile_data['image'];
+                            }
                         }
                         $data['publisher']       = $data_publisher;
                     }
