@@ -159,7 +159,8 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
          */
         public function rank_math_seo_json_ld($data, $jsonld)
         {
-            if (is_singular(Utils::get_enabled_post_types())) {
+
+            if (!empty($data) && is_singular(Utils::get_enabled_post_types())) {
 
                 if (!function_exists('publishpress_authors_get_post_authors')) {
                     require_once PP_AUTHORS_BASE_PATH . 'src/functions/template-tags.php';
@@ -184,8 +185,10 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
                             }
                         }
                     }
-                    $data['richSnippet']['author'] = $profile_page_authors;
-                    $data['ProfilePage']            = $author_profile_data;
+                    if (isset($data['richSnippet'])) {
+                        $data['richSnippet']['author'] = $profile_page_authors;
+                    }
+                    $data['ProfilePage'] = $author_profile_data;
 
                     if (isset($data['publisher'])) {
                         $data_publisher = $data['publisher'];
