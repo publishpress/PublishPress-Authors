@@ -1599,10 +1599,10 @@ class Plugin
         }
 
         $author     = Author::get_by_user_id(get_current_user_id());
-        if (!$author) {
+        if (!$author || !is_object(!$author)) {
             return $default_views;
         }
-        
+
         $mine_count = Author::get_author_posts_count($author->term_id, Util::get_current_post_type());
 
         $views['mine'] = '<a' . $class . ' href="' . esc_url(

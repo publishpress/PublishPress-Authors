@@ -2148,6 +2148,11 @@ class MA_Author_Boxes extends Module
             && !empty($current_screen->post_type)
             && $current_screen->post_type === self::POST_TYPE_BOXES
         ) {
+
+            if ($pagenow === 'edit.php' && Utils::getDefaultLayout() === 'boxed') {
+                // recreate default boxes
+                self::createDefaultAuthorBoxes();
+            }
             ?>
             <script>
             jQuery(document).ready(function ($) {
