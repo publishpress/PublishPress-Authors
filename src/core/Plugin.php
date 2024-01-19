@@ -1582,6 +1582,8 @@ class Plugin
             $views = [];
         }
 
+        $default_views = $views;
+
         $views     = array_reverse($views);
         $all_view  = array_pop($views);
         $mine_args = [
@@ -1597,6 +1599,10 @@ class Plugin
         }
 
         $author     = Author::get_by_user_id(get_current_user_id());
+        if (!$author) {
+            return $default_views;
+        }
+        
         $mine_count = Author::get_author_posts_count($author->term_id, Util::get_current_post_type());
 
         $views['mine'] = '<a' . $class . ' href="' . esc_url(

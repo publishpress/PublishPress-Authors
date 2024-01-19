@@ -717,32 +717,24 @@ class MA_Author_Boxes extends Module
         $layoutName = sanitize_text_field($args['layout']);
         $author_box_id = false;
         if (substr($layoutName, 0, 10) === self::POST_TYPE_BOXES) {
-            $author_box_id = preg_replace("/[^0-9]/", "", $layoutName );
-        } elseif(in_array($layoutName, ['simple_list', 'centered', 'boxed', 'inline', 'inline_avatar'])) {
-            $author_box_id = $this->getLegacyLayoutAuthorBoxId($layoutName);
+            $author_box_id = (int) preg_replace("/[^0-9]/", "", $layoutName );
+            if ($author_box_id === 0) {
+                return $html;
+            }
         } else {
             //check in theme boxes template
-            $theme_boxes = self::getThemeAuthorBoxes();
-            if (array_key_exists($layoutName, $theme_boxes)) {
-                $box_template = locate_template(['publishpress-authors/author-boxes/'.$layoutName.'.php']);
-                if ($box_template) {
-                    global $ppma_template_authors, $ppma_template_authors_post;
-                    $ppma_template_authors      = $args['authors'];
-                    $ppma_template_authors_post = isset($args['post']) ? $args['post'] : false;
-                    ob_start(); 
-                    include $box_template;
-                    $html = ob_get_clean();
-                    return $html;
-                }
+            $box_template = locate_template(['publishpress-authors/author-boxes/'.$layoutName.'.php']);
+            if ($box_template && is_file($box_template) && is_readable($box_template)) {
+                global $ppma_template_authors, $ppma_template_authors_post;
+                $ppma_template_authors      = $args['authors'];
+                $ppma_template_authors_post = isset($args['post']) ? $args['post'] : false;
+                ob_start(); 
+                include $box_template;
+                $html = ob_get_clean();
+                return $html;
             }
 
             return $html;
-        }
-
-        $author_box_post = get_post($author_box_id);
-        if (empty($author_box_post) || !is_object($author_box_post) || !isset($author_box_post->ID)) {
-            // revert to default for deleted author box
-            $author_box_id = $this->getLegacyLayoutAuthorBoxId('boxed');
         }
 
         $editor_data = self::get_author_boxes_layout_meta_values($author_box_id);
