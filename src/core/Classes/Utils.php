@@ -759,11 +759,6 @@ class Utils
             'posts_per_page' => 1
         ];
         $default_post = get_posts($args);
-        if (empty($default_post)) {
-            //recreate default
-            MA_Author_Boxes::createDefaultAuthorBoxes();
-            $default_post = get_posts($args);
-        }
         
         if (!empty($default_post)) {
             $default_layout = MA_Author_Boxes::POST_TYPE_BOXES . '_' . $default_post[0]->ID;

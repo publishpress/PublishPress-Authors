@@ -58,7 +58,7 @@ if (!defined('PP_AUTHORS_LOADED')) {
     }
 
     if (!defined('PUBLISHPRESS_AUTHORS_FLUSH_REWRITE_RULES')) {
-        define('PUBLISHPRESS_AUTHORS_FLUSH_REWRITE_RULES', true);
+        define('PUBLISHPRESS_AUTHORS_FLUSH_REWRITE_RULES', false);
     }
 
     define('PP_AUTHORS_LOADED', true);
