@@ -374,7 +374,7 @@ class MA_Author_Custom_Fields extends Module
                 'id' => self::META_PREFIX . 'slug',
                 'type' => 'text',
                 'desc' => __(
-                    'The slug allows only lowercase letters, numbers and underscore. It is used as an attribute when referencing the author field.',
+                    'The slug is used in code to reference this author field. It is all lowercase and contains only letters, numbers, and hyphens.',
                     'publishpress-authors'
                 ),
             ]
