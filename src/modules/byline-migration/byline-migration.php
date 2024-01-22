@@ -56,6 +56,7 @@ if (!class_exists('MA_Byline_Migration')) {
          * @var stdClass
          */
         public $module;
+        public $module_url;
 
         private $eddAPIUrl = 'https://publishpress.com';
 

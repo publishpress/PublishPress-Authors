@@ -46,6 +46,8 @@ if (!class_exists('MA_Settings')) {
 
         public $module;
         public $module_url;
+        public $viewsPath;
+        public $view;
 
         /**
          * Register the module with PublishPress but don't do anything else

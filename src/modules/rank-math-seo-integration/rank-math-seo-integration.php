@@ -40,6 +40,7 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
          * @var stdClass
          */
         public $module;
+        public $module_url;
 
         /**
          * Construct the MA_Rank_Math_Seo_Integration class
