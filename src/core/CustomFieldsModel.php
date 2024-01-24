@@ -100,4 +100,23 @@ final class CustomFieldsModel
 
         return $fieldStatus;
     }
+
+    /**
+     * Retrieve all supported field rel options.
+     *
+     * @return  array
+     * @since   4.1.2
+     * @static
+     *
+     */
+    public static function getFieldRelOptions()
+    {
+        $fieldStatus = [
+            ''              => __('Select an option', 'publishpress-authors'),
+            'dofollow'      => __('dofollow', 'publishpress-authors'),
+            'nofollow'      => __('nofollow', 'publishpress-authors'),
+        ];
+
+        return $fieldStatus;
+    }
 }

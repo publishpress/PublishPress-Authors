@@ -374,7 +374,7 @@ class MA_Author_Custom_Fields extends Module
                 'id' => self::META_PREFIX . 'slug',
                 'type' => 'text',
                 'desc' => __(
-                    'The slug allows only lowercase letters, numbers and underscore. It is used as an attribute when referencing the author field.',
+                    'The slug is used in code to reference this author field. It is all lowercase and contains only letters, numbers, and hyphens.',
                     'publishpress-authors'
                 ),
             ]
@@ -399,6 +399,28 @@ class MA_Author_Custom_Fields extends Module
                     'This feature will add the SameAs property to this link so that search engines realize that the social profile is connected to this author.',
                     'publishpress-authors'
                 ),
+            ]
+        );
+
+        $metabox->add_field(
+            [
+                'name' => __('Open Link in New Tab', 'publishpress-authors'),
+                'id' => self::META_PREFIX . 'target',
+                'type' => 'checkbox',
+                'desc' => __(
+                    'This feature will add the target=”_blank” attribute to your link.',
+                    'publishpress-authors'
+                ),
+            ]
+        );
+
+        $metabox->add_field(
+            [
+                'name' => __('Link Rel', 'publishpress-authors'),
+                'id' => self::META_PREFIX . 'rel',
+                'type' => 'select',
+                'options' => CustomFieldsModel::getFieldRelOptions(),
+                'desc' => '',
             ]
         );
 
@@ -484,6 +506,8 @@ class MA_Author_Custom_Fields extends Module
                         'label'       => $post->post_title,
                         'type'        => $this->getFieldMeta($post->ID, 'type'),
                         'social_profile' => $this->getFieldMeta($post->ID, 'social_profile'),
+                        'rel'           => $this->getFieldMeta($post->ID, 'rel'),
+                        'target'        => $this->getFieldMeta($post->ID, 'target'),
                         'field_status' => $this->getFieldMeta($post->ID, 'field_status'),
                         'requirement' => $this->getFieldMeta($post->ID, 'requirement'),
                         'description' => $this->getFieldMeta($post->ID, 'description'),
@@ -822,6 +846,8 @@ class MA_Author_Custom_Fields extends Module
         update_post_meta($post_id, self::META_PREFIX . 'field_status', $data['field_status']);
         update_post_meta($post_id, self::META_PREFIX . 'requirement', isset($data['requirement']) ? $data['requirement'] : '' );
         update_post_meta($post_id, self::META_PREFIX . 'social_profile', isset($data['social_profile']) ? $data['social_profile'] : '' );
+        update_post_meta($post_id, self::META_PREFIX . 'rel', isset($data['rel']) ? $data['rel'] : '' );
+        update_post_meta($post_id, self::META_PREFIX . 'target', !empty($data['target']) ? 1 : '' );
         update_post_meta($post_id, self::META_PREFIX . 'description', $data['description']);
         update_post_meta($post_id, self::META_PREFIX . 'inbuilt', 1);
     }

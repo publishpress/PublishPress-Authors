@@ -561,88 +561,96 @@ class MA_Author_Categories extends Module
             $field_value  = $plural_name;
         }
 
-        $category_results = [];
-        if ($field_search) {
-            $query = $wpdb->prepare(
-                "SELECT * FROM {$table_name} WHERE {$field_search} = %s ORDER BY {$orderby} {$order} LIMIT 1",
-                $field_value
-            );
-            $category_results = $wpdb->get_row($query, \ARRAY_A);
-        } else {
+        $cache_key = 'author_categories_results_' . md5(serialize($args));
+    
+        $category_results = wp_cache_get($cache_key, 'author_categories_results_cache');
 
-            $offset = ($paged - 1) * $limit;
-
-            $query = "SELECT * FROM {$table_name} WHERE 1=1";
-            
-            if (!empty($search)) {
-                $query .= $wpdb->prepare(
-                    " AND (slug LIKE '%%%s%%' OR category_name LIKE '%%%s%%' OR plural_name LIKE '%%%s%%')",
-                    $search,
-                    $search,
-                    $search
+        if ($category_results === false) {
+            $category_results = [];
+            if ($field_search) {
+                $query = $wpdb->prepare(
+                    "SELECT * FROM {$table_name} WHERE {$field_search} = %s ORDER BY {$orderby} {$order} LIMIT 1",
+                    $field_value
                 );
-            }
+                $category_results = $wpdb->get_row($query, \ARRAY_A);
+            } else {
 
-            if ($category_status !== '') {
+                $offset = ($paged - 1) * $limit;
+
+                $query = "SELECT * FROM {$table_name} WHERE 1=1";
+                
+                if (!empty($search)) {
+                    $query .= $wpdb->prepare(
+                        " AND (slug LIKE '%%%s%%' OR category_name LIKE '%%%s%%' OR plural_name LIKE '%%%s%%')",
+                        $search,
+                        $search,
+                        $search
+                    );
+                }
+
+                if ($category_status !== '') {
+                    $query .= $wpdb->prepare(
+                        " AND category_status = %d",
+                        $category_status
+                    );
+                }
+
+                if ($count_only) {
+                    $query = str_replace("SELECT *", "SELECT COUNT(*)", $query);
+                    return $wpdb->get_var($query);
+                }
+
                 $query .= $wpdb->prepare(
-                    " AND category_status = %d",
-                    $category_status
+                    " ORDER BY {$orderby} {$order} LIMIT %d OFFSET %d",
+                    $limit,
+                    $offset
                 );
+                
+                $category_results = $wpdb->get_results($query, \ARRAY_A);
+                wp_cache_set($cache_key, $category_results, 'author_categories_results_cache', 3600);
             }
-
-            if ($count_only) {
-                $query = str_replace("SELECT *", "SELECT COUNT(*)", $query);
-                return $wpdb->get_var($query);
-            }
-
-            $query .= $wpdb->prepare(
-                " ORDER BY {$orderby} {$order} LIMIT %d OFFSET %d",
-                $limit,
-                $offset
-            );
-            
-            $category_results = $wpdb->get_results($query, \ARRAY_A);
         }
 
         return $category_results;
     }
 
-    /**
-     * Get author relationship
-     *
-     * @param array $args
-     * 
-     * @return array|integer
-     */
     public static function get_author_relations($args = []) {
         global $wpdb;
-
+    
         $default_args = [
             'post_id'  => '',
             'author_term_id' => ''
         ];
-
+    
         $args = wp_parse_args($args, $default_args);
-
+    
         $post_id        = intval($args['post_id']);
         $author_term_id = intval($args['author_term_id']);
-
-        $table_name = AuthorCategoriesSchema::relationTableName();
-
-        $sql = "SELECT * FROM $table_name WHERE 1=1";
-
-        if ($post_id !== '') {
-            $sql .= $wpdb->prepare(" AND post_id = %d", $post_id);
+    
+        $cache_key = 'author_categories_relation_' . md5(serialize($args));
+    
+        $results = wp_cache_get($cache_key, 'author_categories_relation_cache');
+    
+        if ($results === false) {
+            $table_name = AuthorCategoriesSchema::relationTableName();
+    
+            $sql = "SELECT * FROM $table_name WHERE 1=1";
+    
+            if ($post_id !== '') {
+                $sql .= $wpdb->prepare(" AND post_id = %d", $post_id);
+            }
+    
+            if (!empty($author_term_id)) {
+                $sql .= $wpdb->prepare(" AND author_term_id = %d", $author_term_id);
+            }
+    
+            $results = $wpdb->get_results($sql, ARRAY_A);
+    
+            wp_cache_set($cache_key, $results, 'author_categories_relation_cache', 3600);
         }
-
-        if (!empty($author_term_id)) {
-            $sql .= $wpdb->prepare(" AND author_term_id = %d", $author_term_id);
-        }
-
-        $results = $wpdb->get_results($sql, ARRAY_A);
-
+    
         return $results;
-    }
+    }    
 
     /**
      * Get author category

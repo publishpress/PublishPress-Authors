@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 5.5
 Requires PHP: 7.2.5
 Tested up to: 6.4
-Stable tag: 4.3.0
+Stable tag: 4.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -213,6 +213,18 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [4.3.1] - 24 Jan 2024 =
+
+* Update: Allow users to choose the target=”_blank” attribute for author field links, #1600
+* Update: Add rel options on Author Field Link, #1488
+* Update: Update Field Slug description, #1476
+* Fixed: Missing Field Schema Rank Math, #1618
+* Fixed: Unspecified Type on RankMath Schema Integration, #1583
+* Fixed: Optimized author queries to fix Authors slowing down some websites
+* Fixed: PHP Warning: Attempt to read property "post_type" on int, #1624
+* Fixed: PHP 8.2 Deprecated notices, #1533
+* Update: Authors Translation Updates January 2024, #1617
 
 = [4.3.0] - 10 Jan 2024 =
 

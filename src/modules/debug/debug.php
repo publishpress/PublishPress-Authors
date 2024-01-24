@@ -40,6 +40,7 @@ if (!class_exists('MA_Debug')) {
          * @var stdClass
          */
         public $module;
+        public $module_url;
 
         /**
          * Construct the MA_Debug class

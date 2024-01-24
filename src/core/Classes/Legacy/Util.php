@@ -38,7 +38,7 @@ class Util
 
         $post_type = null;
 
-        if ($post && $post->post_type) {
+        if ($post && is_object($post) && isset($post->post_type)) {
             $post_type = static::getPostPostType($post);
         } elseif ($typenow) {
             $post_type = $typenow;

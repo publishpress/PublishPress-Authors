@@ -39,6 +39,7 @@ if (!class_exists('MA_Generatepress_Integration')) {
          * @var stdClass
          */
         public $module;
+        public $module_url;
 
         /**
          * Construct the MA_Generatepress_Integration class

@@ -40,6 +40,7 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
          * @var stdClass
          */
         public $module;
+        public $module_url;
 
         /**
          * Construct the MA_Rank_Math_Seo_Integration class
@@ -104,15 +105,15 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
             $author_profile_schema = [
                 '@type'         => 'Person',
                 '@id'           => $author->link,
-                '@name'         => $author->display_name,
-                '@description'  => $author->description,
-                '@url'          => $author->link,
-                '@image'        => [
+                'name'         => $author->display_name,
+                'description'  => $author->description,
+                'url'          => $author->link,
+                'image'        => [
                     '@type'     => 'ImageObject',
                     '@id'         => $author_avatar,
-                    '@url'        => $author_avatar,
-                    '@caption'    => $author->display_name,
-                    '@inLanguage' => apply_filters('rank_math/schema/language', get_bloginfo('language'))
+                    'url'        => $author_avatar,
+                    'caption'    => $author->display_name,
+                    'inLanguage' => apply_filters('rank_math/schema/language', get_bloginfo('language'))
                 ]
             ];
 
@@ -159,7 +160,8 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
          */
         public function rank_math_seo_json_ld($data, $jsonld)
         {
-            if (is_singular(Utils::get_enabled_post_types())) {
+
+            if (!empty($data) && is_singular(Utils::get_enabled_post_types())) {
 
                 if (!function_exists('publishpress_authors_get_post_authors')) {
                     require_once PP_AUTHORS_BASE_PATH . 'src/functions/template-tags.php';
@@ -184,8 +186,10 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
                             }
                         }
                     }
-                    $data['richSnippet']['author'] = $profile_page_authors;
-                    $data['ProfilePage']            = $author_profile_data;
+                    if (isset($data['richSnippet'])) {
+                        $data['richSnippet']['author'] = $profile_page_authors;
+                    }
+                    $data['ProfilePage'] = $author_profile_data;
 
                     if (isset($data['publisher'])) {
                         $data_publisher = $data['publisher'];
@@ -194,13 +198,24 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
                         }
                         if (isset($author_profile_data['@name'])) {
                             $data_publisher['name'] = $author_profile_data['@name'];
+                        } elseif (isset($author_profile_data['name'])) {
+                            $data_publisher['name'] = $author_profile_data['name'];
                         }
                         if (isset($author_profile_data['sameAs'])) {
                             $data_publisher['sameAs'] = $author_profile_data['sameAs'];
                         }
                         if (isset($author_profile_data['@image'])) {
-                            $data_publisher['logo'] = $author_profile_data['@image'];
-                            $data_publisher['image'] = $author_profile_data['@image'];
+                            if (isset($author_profile_data['@type']) && $author_profile_data['@type'] == 'Person') {
+                                $data_publisher['image'] = $author_profile_data['@image'];
+                            } else {
+                                $data_publisher['logo'] = $author_profile_data['@image'];
+                            }
+                        } elseif (isset($author_profile_data['image'])) {
+                            if (isset($author_profile_data['@type']) && $author_profile_data['@type'] == 'Person') {
+                                $data_publisher['image'] = $author_profile_data['image'];
+                            } else {
+                                $data_publisher['logo'] = $author_profile_data['image'];
+                            }
                         }
                         $data['publisher']       = $data_publisher;
                     }
@@ -212,6 +227,7 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
                         }
                     }
                 }
+
             }
 
             return $data;

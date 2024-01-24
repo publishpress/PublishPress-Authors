@@ -717,32 +717,24 @@ class MA_Author_Boxes extends Module
         $layoutName = sanitize_text_field($args['layout']);
         $author_box_id = false;
         if (substr($layoutName, 0, 10) === self::POST_TYPE_BOXES) {
-            $author_box_id = preg_replace("/[^0-9]/", "", $layoutName );
-        } elseif(in_array($layoutName, ['simple_list', 'centered', 'boxed', 'inline', 'inline_avatar'])) {
-            $author_box_id = $this->getLegacyLayoutAuthorBoxId($layoutName);
+            $author_box_id = (int) preg_replace("/[^0-9]/", "", $layoutName );
+            if ($author_box_id === 0) {
+                return $html;
+            }
         } else {
             //check in theme boxes template
-            $theme_boxes = self::getThemeAuthorBoxes();
-            if (array_key_exists($layoutName, $theme_boxes)) {
-                $box_template = locate_template(['publishpress-authors/author-boxes/'.$layoutName.'.php']);
-                if ($box_template) {
-                    global $ppma_template_authors, $ppma_template_authors_post;
-                    $ppma_template_authors      = $args['authors'];
-                    $ppma_template_authors_post = isset($args['post']) ? $args['post'] : false;
-                    ob_start(); 
-                    include $box_template;
-                    $html = ob_get_clean();
-                    return $html;
-                }
+            $box_template = locate_template(['publishpress-authors/author-boxes/'.$layoutName.'.php']);
+            if ($box_template && is_file($box_template) && is_readable($box_template)) {
+                global $ppma_template_authors, $ppma_template_authors_post;
+                $ppma_template_authors      = $args['authors'];
+                $ppma_template_authors_post = isset($args['post']) ? $args['post'] : false;
+                ob_start(); 
+                include $box_template;
+                $html = ob_get_clean();
+                return $html;
             }
 
             return $html;
-        }
-
-        $author_box_post = get_post($author_box_id);
-        if (empty($author_box_post) || !is_object($author_box_post) || !isset($author_box_post->ID)) {
-            // revert to default for deleted author box
-            $author_box_id = $this->getLegacyLayoutAuthorBoxId('boxed');
         }
 
         $editor_data = self::get_author_boxes_layout_meta_values($author_box_id);
@@ -1487,6 +1479,9 @@ class MA_Author_Boxes extends Module
                                                                     continue;
                                                                 }
 
+                                                                $rel_html       = (!empty($data['rel'])) ? 'rel="'. esc_attr($data['rel']) .'"' : '';
+                                                                $target_html    = (!empty($data['target'])) ? 'target="_blank"' : 'target="_self"';
+
                                                                 $profile_author_category_content = '';
                                                                 if (!empty($args['profile_fields_' . $key . '_author_categories']['value'])) :
                                                                     $profile_author_categories_divider = !empty($args['profile_fields_' . $key . '_author_categories_divider']['value']) ? $args['profile_fields_' . $key . '_author_categories_divider']['value'] : '';
@@ -1555,7 +1550,7 @@ class MA_Author_Boxes extends Module
                                                                     $profile_field_html .= '<'. esc_html($profile_html_tag) .'';
                                                                     $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data ppma-author-field-meta '. esc_attr('ppma-author-field-type-' . $data['type']) .'" aria-label="'. esc_attr(($data['label'])) .'"';
                                                                     if ($profile_html_tag === 'a') {
-                                                                        $profile_field_html .= ' href="'. $profile_value_prefix.$field_value .'" rel="nofollow"';
+                                                                        $profile_field_html .= ' href="'. $profile_value_prefix.$field_value .'" '. $rel_html .' '. $target_html .'';
                                                                     }
                                                                     $profile_field_html .= '>';
                                                                     if ($profile_show_field) {
@@ -2156,6 +2151,11 @@ class MA_Author_Boxes extends Module
             && !empty($current_screen->post_type)
             && $current_screen->post_type === self::POST_TYPE_BOXES
         ) {
+
+            if ($pagenow === 'edit.php' && Utils::getDefaultLayout() === 'boxed') {
+                // recreate default boxes
+                self::createDefaultAuthorBoxes();
+            }
             ?>
             <script>
             jQuery(document).ready(function ($) {

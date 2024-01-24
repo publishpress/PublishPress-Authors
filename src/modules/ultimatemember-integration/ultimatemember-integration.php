@@ -40,6 +40,7 @@ if (!class_exists('MA_UltimateMember')) {
          * @var stdClass
          */
         public $module;
+        public $module_url;
 
         /**
          * Construct the MA_UltimateMember class
