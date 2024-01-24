@@ -9,6 +9,7 @@
  */
 
 use MultipleAuthors\Classes\Authors_Iterator;
+use MultipleAuthors\Classes\Post_Editor;
 use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Classes\Utils;
@@ -151,6 +152,62 @@ if (!function_exists('get_post_authors')) {
 
         return (array)$authorsInstances;
     }
+}
+
+if (!function_exists('ppma_post_authors_categorized')) {
+    /**
+     * Get all authors of a post.
+     *
+     * @param WP_Post|int|null $post Post to fetch authors for. Defaults to global post.
+     * @param array $category_slugs limit the result to category slugs
+     *
+     * @return array
+     */
+    function ppma_post_authors_categorized($post = 0, $category_slugs = [])
+    {
+        if (is_object($post)) {
+            $post = $post->ID;
+        } elseif (empty($post)) {
+            $post = get_post();
+            if (is_object($post) && !is_wp_error($post)) {
+                $post = $post->ID;
+            }
+        }
+
+        $postId = (int)$post;
+
+        if (empty($postId)) {
+            return [];
+        }
+
+        $authors = get_post_authors($postId);
+        $categorized_authors = [];
+        $author_relations = \MA_Author_Categories::get_author_relations(['post_id' => $postId, 'slug' => $category_slugs]);
+        if (empty($author_relations)) {
+            $categorized_authors['author'] = $authors;
+        } else {
+            $categorized_authors = [];
+            foreach ($author_relations as $data) {
+                $category_slug = $data['category_slug'];
+                foreach ($authors as $author) {
+                    if ($author->term_id == $data['author_term_id']) {
+                        $categorized_authors[$category_slug][] = $author;
+                        break; // Break the inner loop once a match is found
+                    }
+                }
+            }
+        }
+
+        if (!empty($category_slugs)) {
+            $category_slugs = array_values($category_slugs);
+            $filtered_authors     = array_intersect_key($categorized_authors, array_flip($category_slugs));
+            $categorized_authors = array_intersect_key($categorized_authors, $filtered_authors);
+    
+        }
+
+        return $categorized_authors;
+    }
+
 }
 
 if (!function_exists('publishpress_authors_get_post_authors')) {

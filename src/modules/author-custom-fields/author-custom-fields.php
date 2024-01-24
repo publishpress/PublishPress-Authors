@@ -408,7 +408,7 @@ class MA_Author_Custom_Fields extends Module
                 'id' => self::META_PREFIX . 'target',
                 'type' => 'checkbox',
                 'desc' => __(
-                    'This feature will add target=”_blank” attribute to your link.',
+                    'This feature will add the target=”_blank” attribute to your link.',
                     'publishpress-authors'
                 ),
             ]
