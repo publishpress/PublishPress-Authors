@@ -1017,8 +1017,10 @@ jQuery(document).ready(function ($) {
         var selectedType = $("#ppmacf_type").val();
         if (selectedType === 'url') {
             $('.cmb2-id-ppmacf-social-profile').show();
+            $('.cmb2-id-ppmacf-rel').show();
         } else {
             $('.cmb2-id-ppmacf-social-profile').hide();
+            $('.cmb2-id-ppmacf-rel').hide();
         }
     }
 
