@@ -1479,7 +1479,8 @@ class MA_Author_Boxes extends Module
                                                                     continue;
                                                                 }
 
-                                                                $rel_html = (!empty($data['rel'])) ? 'rel="'. esc_attr($data['rel']) .'"' : '';
+                                                                $rel_html       = (!empty($data['rel'])) ? 'rel="'. esc_attr($data['rel']) .'"' : '';
+                                                                $target_html    = (!empty($data['target'])) ? 'target="_blank"' : 'target="_self"';
 
                                                                 $profile_author_category_content = '';
                                                                 if (!empty($args['profile_fields_' . $key . '_author_categories']['value'])) :
@@ -1549,7 +1550,7 @@ class MA_Author_Boxes extends Module
                                                                     $profile_field_html .= '<'. esc_html($profile_html_tag) .'';
                                                                     $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data ppma-author-field-meta '. esc_attr('ppma-author-field-type-' . $data['type']) .'" aria-label="'. esc_attr(($data['label'])) .'"';
                                                                     if ($profile_html_tag === 'a') {
-                                                                        $profile_field_html .= ' href="'. $profile_value_prefix.$field_value .'" '. $rel_html .'';
+                                                                        $profile_field_html .= ' href="'. $profile_value_prefix.$field_value .'" '. $rel_html .' '. $target_html .'';
                                                                     }
                                                                     $profile_field_html .= '>';
                                                                     if ($profile_show_field) {

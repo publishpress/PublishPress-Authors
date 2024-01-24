@@ -1018,9 +1018,11 @@ jQuery(document).ready(function ($) {
         if (selectedType === 'url') {
             $('.cmb2-id-ppmacf-social-profile').show();
             $('.cmb2-id-ppmacf-rel').show();
+            $('.cmb2-id-ppmacf-target').show();
         } else {
             $('.cmb2-id-ppmacf-social-profile').hide();
             $('.cmb2-id-ppmacf-rel').hide();
+            $('.cmb2-id-ppmacf-target').hide();
         }
     }
 
