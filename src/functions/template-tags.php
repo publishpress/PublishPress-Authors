@@ -592,9 +592,16 @@ if (!function_exists('publishpress_authors_is_author_for_post')) {
             return false;
         }
 
+        $post_id = (int) $post_id;
+
+        if (empty($post_id)) {
+            return false;
+        }
+
         if (!$user) {
             return false;
         }
+
         if (get_post_status($post_id) === 'auto-draft') {
             return false;
         }
