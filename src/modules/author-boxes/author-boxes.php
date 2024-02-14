@@ -185,6 +185,8 @@ class MA_Author_Boxes extends Module
      */
     public function filterAuthorBoxesColumns($columns)
     {
+        $columns['default_author_boxes'] = esc_html__('Default Author box', 'publishpress-authors');
+
         if (Utils::isAuthorsProActive()) {
             $columns['author_category_boxes'] = esc_html__('Author Category Boxes', 'publishpress-authors');
         }
@@ -201,19 +203,27 @@ class MA_Author_Boxes extends Module
      */
     public function manageAuthorBoxesColumns($column, $postId)
     {
+        $legacyPlugin = Factory::getLegacyPlugin();
+
         if ($column === 'shortcode') {
             $layout_slug = self::POST_TYPE_BOXES . '_' . $postId;
         ?>
             <input readonly type="text" value='[publishpress_authors_box layout="<?php echo esc_attr($layout_slug); ?>"]' />
         <?php
+        } elseif ($column === 'default_author_boxes') {
+
+            if ($legacyPlugin->modules->multiple_authors->options->layout == 'ppma_boxes_' .$postId) :
+            ?>
+             <span class="dashicons dashicons-yes-alt ppma-green-check"></span>
+           <?php endif;
         } elseif ($column === 'author_category_boxes') {
             $editor_data = get_post_meta($postId, self::META_PREFIX . 'layout_parent_author_box', true);
 
             if (empty($editor_data)) :
             ?>
-                <span class="dashicons dashicons-no red-check"></span>
+                <span class="dashicons dashicons-no ppma-red-check"></span>
             <?php else : ?>
-                <span class="dashicons dashicons-yes-alt green-check"></span>
+                <span class="dashicons dashicons-yes-alt ppma-green-check"></span>
            <?php endif;
         }
     }
