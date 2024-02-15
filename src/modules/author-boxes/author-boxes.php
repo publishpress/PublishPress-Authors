@@ -1346,9 +1346,9 @@ class MA_Author_Boxes extends Module
         $author_categories_title_suffix = '';
 
         $all_author_categories_data = $author_categories_data;
-        $author_categories = \MA_Author_Categories::get_author_categories(['category_status' => 1]);
+        $author_categories = get_ppma_author_categories(['category_status' => 1]);
         if (!empty($author_categories)) {
-            $author_relations  = \MA_Author_Categories::get_author_relations(['post_id' => $current_post_id]);
+            $author_relations  = get_ppma_author_relations(['post_id' => $current_post_id]);
             $admin_preview_arg = $admin_preview || !empty($args['ajax_preview']);
             $all_author_categories_data = Post_Editor::group_category_authors($author_categories, $author_relations, $authors);
         }
@@ -1449,7 +1449,7 @@ class MA_Author_Boxes extends Module
                                                         endif;
 
 
-                                                        $current_author_category = \MA_Author_Categories::get_author_category($author, $all_author_categories_data);
+                                                        $current_author_category = get_ppma_author_category($author, $all_author_categories_data);
                                                         
                                                         //author fields item position
                                                         $name_row_extra = '';

@@ -28,7 +28,7 @@ class AuthorBoxesEditorFields
      * @param array $fields Existing fields to display.
      * @param WP_Post $post object.
      */
-    public static function getTitleFields($fields, $post) 
+    public static function getTitleFields($fields, $post)
     {
         $fields['show_title'] = [
             'label'       => esc_html__('Show Title', 'publishpress-authors'),
@@ -171,7 +171,7 @@ class AuthorBoxesEditorFields
      * @param array $fields Existing fields to display.
      * @param WP_Post $post object.
      */
-    public static function getAvatarFields($fields, $post) 
+    public static function getAvatarFields($fields, $post)
     {
         $fields['avatar_show'] = [
             'label'       => esc_html__('Show Avatar', 'publishpress-authors'),
@@ -232,7 +232,7 @@ class AuthorBoxesEditorFields
      * @param array $fields Existing fields to display.
      * @param WP_Post $post object.
      */
-    public static function getNameFields($fields, $post) 
+    public static function getNameFields($fields, $post)
     {
         $fields['name_show'] = [
             'label'       => esc_html__('Show Display Name', 'publishpress-authors'),
@@ -374,7 +374,7 @@ class AuthorBoxesEditorFields
      * @param array $fields Existing fields to display.
      * @param WP_Post $post object.
      */
-    public static function getMetaFields($fields, $post) 
+    public static function getMetaFields($fields, $post)
     {
         $fields['meta_show'] = [
             'label'       => esc_html__('Show Meta Information', 'publishpress-authors'),
@@ -528,14 +528,14 @@ class AuthorBoxesEditorFields
      * @param array $fields Existing fields to display.
      * @param WP_Post $post object.
      */
-    public static function getAuthorCategories($fields, $post) 
+    public static function getAuthorCategories($fields, $post)
     {
 
         if (!Utils::isAuthorsProActive()) {
             return $fields;
         }
 
-        $author_categories = \MA_Author_Categories::get_author_categories(['category_status' => 1]);
+        $author_categories = get_ppma_author_categories(['category_status' => 1]);
 
         if (empty($author_categories)) {
             $fields['author_categories_empty'] = [
@@ -704,7 +704,7 @@ class AuthorBoxesEditorFields
      * @param array $fields Existing fields to display.
      * @param WP_Post $post object.
      */
-    public static function getProfileFields($fields, $post) 
+    public static function getProfileFields($fields, $post)
     {
         $post_id = (is_object($post) ? $post->ID : false);
         $profile_fields   = MA_Author_Boxes::get_profile_fields($post_id);
@@ -998,7 +998,7 @@ class AuthorBoxesEditorFields
      * @param array $fields Existing fields to display.
      * @param WP_Post $post object.
      */
-    public static function getBioFields($fields, $post) 
+    public static function getBioFields($fields, $post)
     {
         $fields['author_bio_show'] = [
             'label'       => esc_html__('Show Biographical Info', 'publishpress-authors'),
@@ -1130,7 +1130,7 @@ class AuthorBoxesEditorFields
      * @param array $fields Existing fields to display.
      * @param WP_Post $post object.
      */
-    public static function getRecentPostsFields($fields, $post) 
+    public static function getRecentPostsFields($fields, $post)
     {
         $fields['author_recent_posts_show'] = [
             'label'       => esc_html__('Show Recent Posts', 'publishpress-authors'),
@@ -1337,7 +1337,7 @@ class AuthorBoxesEditorFields
      * @param array $fields Existing fields to display.
      * @param WP_Post $post object.
      */
-    public static function getBoxLayoutFields($fields, $post) 
+    public static function getBoxLayoutFields($fields, $post)
     {
 
         $fields['author_inline_display'] = [
@@ -1517,7 +1517,7 @@ class AuthorBoxesEditorFields
      * @param array $fields Existing fields to display.
      * @param WP_Post $post object.
      */
-    public static function getCustomCssFields($fields, $post) 
+    public static function getCustomCssFields($fields, $post)
     {
         $fields['box_tab_custom_css'] = [
             'label'       => esc_html__('Custom CSS', 'publishpress-authors'),
@@ -1545,7 +1545,7 @@ class AuthorBoxesEditorFields
      * @param array $fields Existing fields to display.
      * @param WP_Post $post object.
      */
-    public static function getExportFields($fields, $post) 
+    public static function getExportFields($fields, $post)
     {
         $fields['export_action'] = [
             'label'       => esc_html__('Export', 'publishpress-authors'),
@@ -1563,9 +1563,9 @@ class AuthorBoxesEditorFields
      * @param array $fields Existing fields to display.
      * @param WP_Post $post object.
      */
-    public static function getImportFields($fields, $post) 
+    public static function getImportFields($fields, $post)
     {
-        
+
         $fields['import_action'] = [
             'label'       => esc_html__('Import', 'publishpress-authors'),
             'type'     => 'import_action',
@@ -1581,7 +1581,7 @@ class AuthorBoxesEditorFields
      * @param array $fields Existing fields to display.
      * @param WP_Post $post object.
      */
-    public static function getGenerateTemplateFields($fields, $post) 
+    public static function getGenerateTemplateFields($fields, $post)
     {
 
         $fields['template_action'] = [

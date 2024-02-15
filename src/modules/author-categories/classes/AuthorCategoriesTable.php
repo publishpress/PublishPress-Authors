@@ -43,9 +43,9 @@ class AuthorCategoriesTable extends \WP_List_Table
 
 
         if ($count) {
-            $author_categories = \MA_Author_Categories::get_author_categories(['count_only' => true]);
+            $author_categories = get_ppma_author_categories(['count_only' => true]);
         } else {
-            $author_categories = \MA_Author_Categories::get_author_categories(['paged' => $page, 'limit' => $items_per_page, 'search' => $search, 'orderby' => $orderby, 'order' => $order]);
+            $author_categories = get_ppma_author_categories(['paged' => $page, 'limit' => $items_per_page, 'search' => $search, 'orderby' => $orderby, 'order' => $order]);
         }
 
         return $author_categories;
@@ -189,7 +189,7 @@ class AuthorCategoriesTable extends \WP_List_Table
      * Delete author category
      *
      * @param integer $category_id
-     * 
+     *
      * @return mixed
      */
     private function deleteAuthorCategory($category_id)
@@ -217,7 +217,7 @@ class AuthorCategoriesTable extends \WP_List_Table
      *
      * @param array $edit_args
      * @param integer $id
-     * 
+     *
      * @return array|bool
      */
     private function editAuthorCategory($edit_args, $id)
@@ -238,7 +238,7 @@ class AuthorCategoriesTable extends \WP_List_Table
             ]
         );
 
-        return self::get_author_categories(['id' => $id]);
+        return get_ppma_author_categories(['id' => $id]);
     }
 
     /**
