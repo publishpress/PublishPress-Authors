@@ -175,8 +175,60 @@ class Utils
         }
 
         $authors = wp_list_pluck($authors, 'term_id');
-        \MA_Author_Categories::updatePostAuthorCategory($postId, $authors, $author_categories);
+        self::updatePostAuthorCategory($postId, $authors, $author_categories);
         wp_set_object_terms($postId, $authors, 'author');
+    }
+
+    /**
+     * Update post author category
+     *
+     * @param integer $post_id
+     * @param array $authors
+     * @param array $post_author_categories
+     * 
+     * @return void
+     */
+    public static function updatePostAuthorCategory($post_id, $authors, $post_author_categories) {
+        global $wpdb;
+
+        if (!current_user_can(get_taxonomy('author')->cap->assign_terms) || empty(array_filter(array_values($post_author_categories)))) {
+            return;
+        }
+
+
+        $all_author_categories = get_ppma_author_categories([]);
+        $all_author_category_ids = array_column($all_author_categories, 'id');
+        
+        // Make 'id' the array index
+        $all_author_categories = array_combine($all_author_category_ids, $all_author_categories);
+
+        $table_name = $wpdb->prefix . 'ppma_author_relationships';
+
+        // Make sure there's no relationship for authors that could have been possibly removed
+        $wpdb->delete($table_name, ['post_id' => $post_id], ['%d']);
+
+        if (!empty($authors)) {
+            foreach ($authors as $author) {
+                if (isset($post_author_categories[$author])) {
+                    $category_id = $post_author_categories[$author];
+                    $wpdb->insert(
+                        $table_name,
+                        [
+                            'category_id'       => $all_author_categories[$category_id]['id'],
+                            'category_slug'     => $all_author_categories[$category_id]['slug'],
+                            'post_id'           => $post_id,
+                            'author_term_id'    => $author,
+                        ],
+                        [
+                            '%d',
+                            '%s',
+                            '%d',
+                            '%d',
+                        ]
+                    );
+                }
+            }
+        }
     }
 
     public static function detect_author_slug_mismatch()
