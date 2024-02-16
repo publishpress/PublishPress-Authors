@@ -98,6 +98,11 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'author_pages_layout'          => 'list',
                     'show_author_pages_bio'        => 'yes',
                     'author_pages_bio_layout'      => Utils::getDefaultLayout(),
+                    'author_legacy_layout_boxed'   => '',
+                    'author_legacy_layout_centered' => '',
+                    'author_legacy_layout_inline'   => '',
+                    'author_legacy_layout_inline_avatar' => '',
+                    'author_legacy_layout_simple_list' => '',
                     'author_pages_grid_layout_column' => '4',
                     'show_author_post_featured_image' => 'yes',
                     'show_author_post_excerpt'     => 'yes',
@@ -1014,6 +1019,46 @@ if (!class_exists('MA_Multiple_Authors')) {
                 [$this, 'settings_default_avatar'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_guest_authors'
+            );
+
+            add_settings_field(
+                'author_legacy_layout_boxed',
+                __('Boxed legacy layout Author Box:', 'publishpress-authors'),
+                [$this, 'settings_author_legacy_layout_boxed'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_advanced'
+            );
+
+            add_settings_field(
+                'author_legacy_layout_centered',
+                __('Centered legacy layout Author Box:', 'publishpress-authors'),
+                [$this, 'settings_author_legacy_layout_centered'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_advanced'
+            );
+
+            add_settings_field(
+                'author_legacy_layout_inline',
+                __('Inline legacy layout Author Box:', 'publishpress-authors'),
+                [$this, 'settings_author_legacy_layout_inline'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_advanced'
+            );
+
+            add_settings_field(
+                'author_legacy_layout_inline_avatar',
+                __('Inline avatar legacy layout Author Box:', 'publishpress-authors'),
+                [$this, 'settings_author_legacy_layout_inline_avatar'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_advanced'
+            );
+
+            add_settings_field(
+                'author_legacy_layout_simple_list',
+                __('Simple list legacy layout Author Box:', 'publishpress-authors'),
+                [$this, 'settings_author_legacy_layout_simple_list'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_advanced'
             );
 
             do_action('pp_authors_register_settings');
@@ -1943,6 +1988,191 @@ echo '<span class="ppma_settings_field_description">'
 
             echo '</select>';
             echo '</label>';
+        }
+
+
+        /**
+         *  @param array $args
+         */
+        public function settings_author_legacy_layout_boxed($args = [])
+        {
+            $id    = $this->module->options_group_name . '_author_legacy_layout_boxed';
+            $value = isset($this->module->options->author_legacy_layout_boxed)
+                ? $this->module->options->author_legacy_layout_boxed
+                : '';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<select id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_legacy_layout_boxed]">';
+
+            $layouts = apply_filters('pp_multiple_authors_author_layouts', []);
+            unset($layouts['authors_index']);
+            unset($layouts['authors_recent']);
+
+            echo '<option value="">' . esc_html__('Select option', 'publishpress-authors') . '</option>';
+            foreach ($layouts as $layout => $text) {
+                $selected = $value === $layout ? 'selected="selected"' : '';
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                echo '<option value="' . esc_attr($layout) . '" ' . $selected . '>' . esc_html($text) . '</option>';
+            }
+
+            echo '</select>';
+
+            echo '</label>';
+            echo '<div class="ppma_settings_field_description">'
+                . sprintf(
+                    esc_html__('This is useful if you have legacy layout shortcode %s in your post or code.', 'publishpress-authors'),
+                    '<strong>[publishpress_authors_box layout="boxed"]</strong>'
+                )
+                . '</div>';
+        }
+
+
+        /**
+         *  @param array $args
+         */
+        public function settings_author_legacy_layout_centered($args = [])
+        {
+            $id    = $this->module->options_group_name . '_author_legacy_layout_centered';
+            $value = isset($this->module->options->author_legacy_layout_centered)
+                ? $this->module->options->author_legacy_layout_centered
+                : '';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<select id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_legacy_layout_centered]">';
+
+            $layouts = apply_filters('pp_multiple_authors_author_layouts', []);
+            unset($layouts['authors_index']);
+            unset($layouts['authors_recent']);
+
+            echo '<option value="">' . esc_html__('Select option', 'publishpress-authors') . '</option>';
+            foreach ($layouts as $layout => $text) {
+                $selected = $value === $layout ? 'selected="selected"' : '';
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                echo '<option value="' . esc_attr($layout) . '" ' . $selected . '>' . esc_html($text) . '</option>';
+            }
+
+            echo '</select>';
+
+            echo '</label>';
+            echo '<div class="ppma_settings_field_description">'
+                . sprintf(
+                    esc_html__('This is useful if you have legacy layout shortcode %s in your post or code.', 'publishpress-authors'),
+                    '<strong>[publishpress_authors_box layout="centered"]</strong>'
+                )
+                . '</div>';
+        }
+
+
+        /**
+         *  @param array $args
+         */
+        public function settings_author_legacy_layout_inline($args = [])
+        {
+            $id    = $this->module->options_group_name . '_author_legacy_layout_inline';
+            $value = isset($this->module->options->author_legacy_layout_inline)
+                ? $this->module->options->author_legacy_layout_inline
+                : '';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<select id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_legacy_layout_inline]">';
+
+            $layouts = apply_filters('pp_multiple_authors_author_layouts', []);
+            unset($layouts['authors_index']);
+            unset($layouts['authors_recent']);
+
+            echo '<option value="">' . esc_html__('Select option', 'publishpress-authors') . '</option>';
+            foreach ($layouts as $layout => $text) {
+                $selected = $value === $layout ? 'selected="selected"' : '';
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                echo '<option value="' . esc_attr($layout) . '" ' . $selected . '>' . esc_html($text) . '</option>';
+            }
+
+            echo '</select>';
+
+            echo '</label>';
+            echo '<div class="ppma_settings_field_description">'
+                . sprintf(
+                    esc_html__('This is useful if you have legacy layout shortcode %s in your post or code.', 'publishpress-authors'),
+                    '<strong>[publishpress_authors_box layout="inline"]</strong>'
+                )
+                . '</div>';
+        }
+
+
+        /**
+         *  @param array $args
+         */
+        public function settings_author_legacy_layout_inline_avatar($args = [])
+        {
+            $id    = $this->module->options_group_name . '_author_legacy_layout_inline_avatar';
+            $value = isset($this->module->options->author_legacy_layout_inline_avatar)
+                ? $this->module->options->author_legacy_layout_inline_avatar
+                : '';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<select id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_legacy_layout_inline_avatar]">';
+
+            $layouts = apply_filters('pp_multiple_authors_author_layouts', []);
+            unset($layouts['authors_index']);
+            unset($layouts['authors_recent']);
+
+            echo '<option value="">' . esc_html__('Select option', 'publishpress-authors') . '</option>';
+            foreach ($layouts as $layout => $text) {
+                $selected = $value === $layout ? 'selected="selected"' : '';
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                echo '<option value="' . esc_attr($layout) . '" ' . $selected . '>' . esc_html($text) . '</option>';
+            }
+
+            echo '</select>';
+
+            echo '</label>';
+            echo '<div class="ppma_settings_field_description">'
+                . sprintf(
+                    esc_html__('This is useful if you have legacy layout shortcode %s in your post or code.', 'publishpress-authors'),
+                    '<strong>[publishpress_authors_box layout="inline_avatar"]</strong>'
+                )
+                . '</div>';
+        }
+
+
+        /**
+         *  @param array $args
+         */
+        public function settings_author_legacy_layout_simple_list($args = [])
+        {
+            $id    = $this->module->options_group_name . '_author_legacy_layout_simple_list';
+            $value = isset($this->module->options->author_legacy_layout_simple_list)
+                ? $this->module->options->author_legacy_layout_simple_list
+                : '';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<select id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_legacy_layout_simple_list]">';
+
+            $layouts = apply_filters('pp_multiple_authors_author_layouts', []);
+            unset($layouts['authors_index']);
+            unset($layouts['authors_recent']);
+
+            echo '<option value="">' . esc_html__('Select option', 'publishpress-authors') . '</option>';
+            foreach ($layouts as $layout => $text) {
+                $selected = $value === $layout ? 'selected="selected"' : '';
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                echo '<option value="' . esc_attr($layout) . '" ' . $selected . '>' . esc_html($text) . '</option>';
+            }
+
+            echo '</select>';
+
+            echo '</label>';
+            echo '<div class="ppma_settings_field_description">'
+                . sprintf(
+                    esc_html__('This is useful if you have legacy layout shortcode %s in your post or code.', 'publishpress-authors'),
+                    '<strong>[publishpress_authors_box layout="simple_list"]</strong>'
+                )
+                . '</div>';
         }
 
 
