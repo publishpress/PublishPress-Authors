@@ -190,7 +190,7 @@ class SchemaFacade
                 $data[$key]['author'] = $authors;
             }
             if (count($author_objects) === 1 && isset($piece['@type']) && !is_array($piece['@type']) && $piece['@type'] === 'Person') {
-                $data[$key] = $author_data;
+                $data[$key] = wp_parse_args($author_data, $piece);
             }
         }
 
