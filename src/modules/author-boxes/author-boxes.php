@@ -731,6 +731,16 @@ class MA_Author_Boxes extends Module
             if ($author_box_id === 0) {
                 return $html;
             }
+        } elseif(in_array($layoutName, ['simple_list', 'centered', 'boxed', 'inline', 'inline_avatar'])) {
+            $legacyPlugin              = Factory::getLegacyPlugin();
+            $legacy_layout_author_box   = $legacyPlugin->modules->multiple_authors->options->{'author_legacy_layout_' . $layoutName};
+            if (empty($legacy_layout_author_box)) {
+                return $html; 
+            }
+            $author_box_id = (int) preg_replace("/[^0-9]/", "", $legacy_layout_author_box );
+            if ($author_box_id === 0) {
+                return $html;
+            }
         } else {
             //check in theme boxes template
             $box_template = locate_template(['publishpress-authors/author-boxes/'.$layoutName.'.php']);
