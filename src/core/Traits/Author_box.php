@@ -97,6 +97,9 @@ trait Author_box
      * @param string $layout
      * @param bool $archive
      * @param int $post_id
+     * @param int $term_id
+     * @param int $user_id
+     * @param string $author_categories
      *
      * @return string
      */
@@ -263,6 +266,7 @@ trait Author_box
      * @param mixed $separator
      * @param mixed $user_objects
      * @param mixed $term_id
+     * @param bool $archive
      * @param string $author_categories
      *
      * @return string
