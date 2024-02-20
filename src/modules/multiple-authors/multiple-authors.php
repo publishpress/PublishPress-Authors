@@ -1291,6 +1291,13 @@ if (!class_exists('MA_Multiple_Authors')) {
                             '<code class="color-red">archive="true"</code>'
                         ),
                     ],
+                    'option_9' => [
+                    'shortcode'   => '[publishpress_authors_box author_categories="reviewer,coauthor"]',
+                    'description' => esc_html__(
+                        'You can load the authors belonging to a specific author categories by providing the category slug or slugs separated by comma for more than one category.',
+                        'publishpress-authors'
+                    ),
+                    ],
                 ],
             ];
 
@@ -1351,6 +1358,13 @@ if (!class_exists('MA_Multiple_Authors')) {
                             '<code class="color-red">user_objects="true"</code>',
                             '<a href="https://publishpress.com/knowledge-base/authors-data-backup/">',
                             '</a>'
+                        ),
+                    ],
+                    'option_7' => [
+                        'shortcode'   => '[publishpress_authors_data author_categories="reviewer,coauthor"]',
+                        'description' => esc_html__(
+                            'You can retrieve data of authors belonging to a specific author categories by providing the category slug or slugs separated by comma for more than one category.',
+                            'publishpress-authors'
                         ),
                     ],
                 ],
