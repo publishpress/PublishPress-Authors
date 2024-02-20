@@ -180,7 +180,7 @@ if (!function_exists('ppma_post_authors_categorized')) {
             return [];
         }
 
-        $authors = get_post_authors($postId);
+        $authors = get_post_authors($postId, true);
         $categorized_authors = [];
         $author_relations = get_ppma_author_relations(['post_id' => $postId, 'slug' => $category_slugs]);
         if (empty($author_relations)) {

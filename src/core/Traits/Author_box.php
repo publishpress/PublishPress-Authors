@@ -107,7 +107,8 @@ trait Author_box
         $archive = false,
         $post_id = null,
         $term_id = false,
-        $user_id = false
+        $user_id = false,
+        $author_categories = ''
     ) {
         $legacyPlugin = Factory::getLegacyPlugin();
 
@@ -119,6 +120,12 @@ trait Author_box
 
         if (!function_exists('get_post_authors') || !function_exists('get_archive_author')) {
             require_once PP_AUTHORS_BASE_PATH . 'src/functions/template-tags.php';
+        }
+
+        if (!empty($author_categories)) {
+            $author_categories = explode(",", $author_categories);
+            $author_categories = array_map('trim', $author_categories);
+            $author_categories = array_filter($author_categories);
         }
 
         $css_class = '';
@@ -157,7 +164,14 @@ trait Author_box
         } elseif ($archive) {
             $authorsList = [get_archive_author()];
         } else {
-            $authorsList = get_post_authors($post_id, true, $archive);
+            if (empty($author_categories)) {
+                $authorsList = get_post_authors($post_id, true, $archive);
+            } else {
+                $authorsList = ppma_post_authors_categorized($post_id, $author_categories);
+                if (!empty($authorsList)) {
+                    $authorsList = call_user_func_array('array_merge_recursive', array_values($authorsList));
+                }
+            }
         }
 
         $this->authorsCount = count($authorsList);
@@ -249,6 +263,7 @@ trait Author_box
      * @param mixed $separator
      * @param mixed $user_objects
      * @param mixed $term_id
+     * @param string $author_categories
      *
      * @return string
      */
@@ -258,7 +273,8 @@ trait Author_box
         $separator = ',',
         $user_objects = false,
         $term_id = false,
-        $archive = false
+        $archive = false,
+        $author_categories = ''
     ) {
         global $post;
 
@@ -274,6 +290,12 @@ trait Author_box
             $post_id = (int) $post_id;
         }
 
+        if (!empty($author_categories)) {
+            $author_categories = explode(",", $author_categories);
+            $author_categories = array_map('trim', $author_categories);
+            $author_categories = array_filter($author_categories);
+        }
+
         if ($term_id && (int)$term_id > 0) {
             $authors = [];
             $term_author = Author::get_by_term_id($term_id);
@@ -284,7 +306,14 @@ trait Author_box
             if ($archive) {
                 $authors = [get_archive_author()];
             } else {
-                $authors = get_post_authors($post_id, true, $archive);
+                if (empty($author_categories)) {
+                    $authors = get_post_authors($post_id, true, $archive);
+                } else {
+                    $authors = ppma_post_authors_categorized($post_id, $author_categories);
+                    if (!empty($authors)) {
+                        $authors = call_user_func_array('array_merge_recursive', array_values($authors));
+                    }
+                }
             }
         }
 
