@@ -76,6 +76,7 @@ class AuthorCategoriesTable extends \WP_List_Table
             'cb' => '<input type="checkbox" />',
             'category_name' => esc_html__('Name', 'publishpress-authors'),
             'plural_name' => esc_html__('Plural Name', 'publishpress-authors'),
+            'slug' => esc_html__('Slug', 'publishpress-authors'),
             'category_status' => esc_html__('Enable Category', 'publishpress-authors'),
         ];
 
@@ -92,6 +93,7 @@ class AuthorCategoriesTable extends \WP_List_Table
         $sortable_columns = [
             'category_name' => ['category_name', true],
             'plural_name' => ['plural_name', true],
+            'slug' => ['slug', true],
             'category_status' => ['category_status', true],
         ];
 
