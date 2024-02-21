@@ -2035,7 +2035,7 @@ echo '<span class="ppma_settings_field_description">'
             echo '</label>';
             echo '<div class="ppma_settings_field_description">'
                 . sprintf(
-                    esc_html__('This is useful if you have legacy layout shortcode %s in your post or code.', 'publishpress-authors'),
+                    esc_html__('This is useful if you use legacy shortcode %s', 'publishpress-authors'),
                     '<strong>[publishpress_authors_box layout="boxed"]</strong>'
                 )
                 . '</div>';
@@ -2072,7 +2072,7 @@ echo '<span class="ppma_settings_field_description">'
             echo '</label>';
             echo '<div class="ppma_settings_field_description">'
                 . sprintf(
-                    esc_html__('This is useful if you have legacy layout shortcode %s in your post or code.', 'publishpress-authors'),
+                    esc_html__('This is useful if you use legacy shortcode %s', 'publishpress-authors'),
                     '<strong>[publishpress_authors_box layout="centered"]</strong>'
                 )
                 . '</div>';
@@ -2109,7 +2109,7 @@ echo '<span class="ppma_settings_field_description">'
             echo '</label>';
             echo '<div class="ppma_settings_field_description">'
                 . sprintf(
-                    esc_html__('This is useful if you have legacy layout shortcode %s in your post or code.', 'publishpress-authors'),
+                    esc_html__('This is useful if you use legacy shortcode %s', 'publishpress-authors'),
                     '<strong>[publishpress_authors_box layout="inline"]</strong>'
                 )
                 . '</div>';
@@ -2146,7 +2146,7 @@ echo '<span class="ppma_settings_field_description">'
             echo '</label>';
             echo '<div class="ppma_settings_field_description">'
                 . sprintf(
-                    esc_html__('This is useful if you have legacy layout shortcode %s in your post or code.', 'publishpress-authors'),
+                    esc_html__('This is useful if you use legacy shortcode %s', 'publishpress-authors'),
                     '<strong>[publishpress_authors_box layout="inline_avatar"]</strong>'
                 )
                 . '</div>';
@@ -2183,7 +2183,7 @@ echo '<span class="ppma_settings_field_description">'
             echo '</label>';
             echo '<div class="ppma_settings_field_description">'
                 . sprintf(
-                    esc_html__('This is useful if you have legacy layout shortcode %s in your post or code.', 'publishpress-authors'),
+                    esc_html__('This is useful if you use legacy shortcode %s', 'publishpress-authors'),
                     '<strong>[publishpress_authors_box layout="simple_list"]</strong>'
                 )
                 . '</div>';
