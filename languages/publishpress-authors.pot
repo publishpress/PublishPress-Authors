@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PublishPress Authors\n"
-"POT-Creation-Date: 2024-02-20 14:37+0000\n"
+"POT-Creation-Date: 2024-02-21 15:09+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Anderson Grudtner Martins <anderson@publishpress.com>\n"
 "Language-Team: Anderson Grudtner Martins <anderson@publishpress.com>\n"
@@ -3026,8 +3026,7 @@ msgstr ""
 #: src/modules/multiple-authors/multiple-authors.php:2149
 #: src/modules/multiple-authors/multiple-authors.php:2186
 #, php-format
-msgid ""
-"This is useful if you have legacy layout shortcode %s in your post or code."
+msgid "This is useful if you use legacy shortcode %s"
 msgstr ""
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:789
@@ -3332,9 +3331,9 @@ msgstr ""
 #: src/modules/multiple-authors/multiple-authors.php:1354
 #, php-format
 msgid ""
-"You can also decide to return array lists of authors for custom use or "
-"formatting by using %1$s which will return all authors object data as array. "
-"You can check full details and sample usage %2$s in this guide %3$s"
+"You can also decide to return an array list of authors by using "
+"user_objects=\"true\" which will return all the authors object data as an "
+"array. You can check full details and sample usage %2$s in this guide%3$s."
 msgstr ""
 
 #: src/modules/multiple-authors/multiple-authors.php:1245
@@ -3418,7 +3417,7 @@ msgstr ""
 msgid ""
 "You can load the authors for a specific post, even if you are not in that "
 "post currently. For example, this shortcode will load the authors for the "
-"post with the ID of 32"
+"post with the ID of 32."
 msgstr ""
 
 #: src/modules/multiple-authors/multiple-authors.php:1262
@@ -3429,15 +3428,14 @@ msgstr ""
 
 #: src/modules/multiple-authors/multiple-authors.php:1346
 msgid ""
-"You can retrieve a specific author data by providing the author term id. For "
-"example, this shortcode will load the author with term id of 102"
+"You can retrieve a specific author by providing the author's term ID. For "
+"example, this shortcode will load the author with the term ID of 102."
 msgstr ""
 
 #: src/modules/multiple-authors/multiple-authors.php:1365
 msgid ""
-"You can retrieve data of authors belonging to a specific author categories "
-"by providing the category slug or slugs separated by comma for more than one "
-"category."
+"You can retrieve authors belonging to a specific Author Category by "
+"providing the category slug or slugs. Separate multiple slugs with a comma."
 msgstr ""
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1369
