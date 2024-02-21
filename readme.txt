@@ -214,7 +214,7 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= [4.3.2] - 20 Feb 2024 =
+= [4.3.2] - 21 Feb 2024 =
 
 * Update: Add author_categories parameter to authors data shortcode [publishpress_authors_data author_categories="reviewer"], #1658
 * Update: Add author_categories parameter to authors box shortcode [publishpress_authors_box author_categories="reviewer,coauthor"], #1658
