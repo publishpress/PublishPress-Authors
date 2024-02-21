@@ -212,7 +212,10 @@ class MA_Author_Boxes extends Module
         <?php
         } elseif ($column === 'default_author_boxes') {
 
-            if ($legacyPlugin->modules->multiple_authors->options->layout == 'ppma_boxes_' .$postId) :
+            if (
+                $legacyPlugin->modules->multiple_authors->options->layout == 'ppma_boxes_' .$postId
+                || ( (empty($legacyPlugin->modules->multiple_authors->options->layout) || $legacyPlugin->modules->multiple_authors->options->layout === 'author_boxes_boxed') && get_post_field('post_name', $postId) === 'author_boxes_boxed')
+            ) :
             ?>
              <span class="dashicons dashicons-yes-alt ppma-green-check"></span>
            <?php endif;
