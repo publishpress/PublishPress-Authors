@@ -185,7 +185,7 @@ class MA_Author_Boxes extends Module
      */
     public function filterAuthorBoxesColumns($columns)
     {
-        $columns['default_author_boxes'] = esc_html__('Default Author box', 'publishpress-authors');
+        $columns['default_author_boxes'] = esc_html__('Default Author Box', 'publishpress-authors');
 
         if (Utils::isAuthorsProActive()) {
             $columns['author_category_boxes'] = esc_html__('Author Category Boxes', 'publishpress-authors');
