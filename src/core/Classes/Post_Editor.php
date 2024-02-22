@@ -143,7 +143,7 @@ class Post_Editor
                     }
 
                     
-                    $author_category  = \MA_Author_Categories::get_author_relations(['post_id' => $post_id, 'author_term_id' => $author->term_id]);
+                    $author_category  = get_ppma_author_relations(['post_id' => $post_id, 'author_term_id' => $author->term_id]);
                     if (!empty($author_category) && isset($author_category[0]['category_id'])) {
                         $category_id = $author_category[0]['category_id'];
                     } else {
@@ -331,10 +331,10 @@ class Post_Editor
             $classes[] = 'authors-current-user-can-assign';
         }
 
-        $author_categories = \MA_Author_Categories::get_author_categories(['category_status' => 1]);
+        $author_categories = get_ppma_author_categories(['category_status' => 1]);
 
         if (!empty($author_categories)) {
-            $author_relations  = \MA_Author_Categories::get_author_relations(['post_id' => $post->ID]);
+            $author_relations  = get_ppma_author_relations(['post_id' => $post->ID]);
             $author_categories_data = self::group_category_authors($author_categories, $author_relations, $authors);
         } else {
             $author_categories_data = [];

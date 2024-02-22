@@ -432,12 +432,12 @@ form#edittag tr.form-field #slug {
     width: 300px;
 }
 
-.post-type-ppma_boxes .author_category_boxes.column-author_category_boxes .green-check {
+.ppma-green-check {
     color: green;
     margin-left: 30px;
 }
 
-.post-type-ppma_boxes .author_category_boxes.column-author_category_boxes .red-check {
+.ppma-red-check {
     color: red;
     margin-left: 30px;
 }

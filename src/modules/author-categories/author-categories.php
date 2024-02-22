@@ -251,7 +251,7 @@ class MA_Author_Categories extends Module
                     'Plural name is required.', 
                     'publishpress-authors'
                 );
-            } elseif(!empty(self::get_author_categories(['slug' => $slug]))) {
+            } elseif(!empty(get_ppma_author_categories(['slug' => $slug]))) {
                 $response_message = esc_html__(
                     'Author category with this name already exist.', 
                     'publishpress-authors'
@@ -322,7 +322,7 @@ class MA_Author_Categories extends Module
             $category_status = isset($_POST['enabled_category']) ? intval($_POST['enabled_category']) : 0;
             $category_id = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
             $slug = sanitize_title($category_name);
-            $existing_category = self::get_author_categories(['slug' => $slug]);
+            $existing_category = get_ppma_author_categories(['slug' => $slug]);
             if (empty($category_name) || empty($plural_name) || empty($category_id)) {
                 wp_die(esc_html__(
                     'All fields are required.', 
@@ -419,7 +419,7 @@ class MA_Author_Categories extends Module
         $category_id = $wpdb->insert_id;
 
         if ((int) $category_id > 0) {
-            return self::get_author_categories(['id' => $category_id]);
+            return get_ppma_author_categories(['id' => $category_id]);
         } else {
             return false;
         }
@@ -450,234 +450,8 @@ class MA_Author_Categories extends Module
             ]
         );
 
-        return self::get_author_categories(['id' => $id]);
+        return get_ppma_author_categories(['id' => $id]);
     }
-
-    /**
-     * Update post author category
-     *
-     * @param integer $post_id
-     * @param array $authors
-     * @param array $post_author_categories
-     * 
-     * @return void
-     */
-    public static function updatePostAuthorCategory($post_id, $authors, $post_author_categories) {
-        global $wpdb;
-
-        if (!current_user_can(get_taxonomy('author')->cap->assign_terms) || empty(array_filter(array_values($post_author_categories)))) {
-            return;
-        }
-
-
-        $all_author_categories = \MA_Author_Categories::get_author_categories([]);
-        $all_author_category_ids = array_column($all_author_categories, 'id');
-        
-        // Make 'id' the array index
-        $all_author_categories = array_combine($all_author_category_ids, $all_author_categories);
-
-        $table_name     = AuthorCategoriesSchema::relationTableName();
-
-        // Make sure there's no relationship for authors that could have been possibly removed
-        $wpdb->delete($table_name, ['post_id' => $post_id], ['%d']);
-
-        if (!empty($authors)) {
-            foreach ($authors as $author) {
-                if (isset($post_author_categories[$author])) {
-                    $category_id = $post_author_categories[$author];
-                    $wpdb->insert(
-                        $table_name,
-                        [
-                            'category_id'       => $all_author_categories[$category_id]['id'],
-                            'category_slug'     => $all_author_categories[$category_id]['slug'],
-                            'post_id'           => $post_id,
-                            'author_term_id'    => $author,
-                        ],
-                        [
-                            '%d',
-                            '%s',
-                            '%d',
-                            '%d',
-                        ]
-                    );
-                }
-            }
-        }
-    }
-
-
-    /**
-     * Get author categories
-     *
-     * @param array $args
-     * 
-     * @return array|integer
-     */
-    public static function get_author_categories($args = []) {
-        global $wpdb;
-
-        $default_args = [
-            'paged'             => 1,
-            'limit'             => 20,
-            'id'                => 0,
-            'slug'              => '',
-            'category_name'     => '',
-            'plural_name'       => '',
-            'search'            => '',
-            'category_status'   => '',
-            'orderby'           => 'category_order',
-            'order'             => 'ASC',
-            'count_only'        => false,
-        ];
-
-        $args = wp_parse_args($args, $default_args);
-
-        $table_name     = AuthorCategoriesSchema::tableName();
-
-        $paged           = intval($args['paged']);
-        $limit           = intval($args['limit']);
-        $id              = intval($args['id']);
-        $slug            = sanitize_text_field($args['slug']);
-        $category_name   = sanitize_text_field($args['category_name']);
-        $plural_name     = sanitize_text_field($args['plural_name']);
-        $orderby         = sanitize_text_field($args['orderby']);
-        $search          = sanitize_text_field($args['search']);
-        $order           = strtoupper(sanitize_text_field($args['order']));
-        $category_status = sanitize_text_field($args['category_status']);
-        $count_only      = boolval($args['count_only']);
-
-        $field_search = $field_value = false;
-        if (!empty($id)) {
-            $field_search = 'id';
-            $field_value  = $id;
-        } elseif (!empty($slug)) {
-            $field_search = 'slug';
-            $field_value  = $slug;
-        } elseif (!empty($category_name)) {
-            $field_search = 'category_name';
-            $field_value  = $category_name;
-        } elseif (!empty($plural_name)) {
-            $field_search = 'plural_name';
-            $field_value  = $plural_name;
-        }
-
-        $cache_key = 'author_categories_results_' . md5(serialize($args));
-    
-        $category_results = wp_cache_get($cache_key, 'author_categories_results_cache');
-
-        if ($category_results === false) {
-            $category_results = [];
-            if ($field_search) {
-                $query = $wpdb->prepare(
-                    "SELECT * FROM {$table_name} WHERE {$field_search} = %s ORDER BY {$orderby} {$order} LIMIT 1",
-                    $field_value
-                );
-                $category_results = $wpdb->get_row($query, \ARRAY_A);
-            } else {
-
-                $offset = ($paged - 1) * $limit;
-
-                $query = "SELECT * FROM {$table_name} WHERE 1=1";
-                
-                if (!empty($search)) {
-                    $query .= $wpdb->prepare(
-                        " AND (slug LIKE '%%%s%%' OR category_name LIKE '%%%s%%' OR plural_name LIKE '%%%s%%')",
-                        $search,
-                        $search,
-                        $search
-                    );
-                }
-
-                if ($category_status !== '') {
-                    $query .= $wpdb->prepare(
-                        " AND category_status = %d",
-                        $category_status
-                    );
-                }
-
-                if ($count_only) {
-                    $query = str_replace("SELECT *", "SELECT COUNT(*)", $query);
-                    return $wpdb->get_var($query);
-                }
-
-                $query .= $wpdb->prepare(
-                    " ORDER BY {$orderby} {$order} LIMIT %d OFFSET %d",
-                    $limit,
-                    $offset
-                );
-                
-                $category_results = $wpdb->get_results($query, \ARRAY_A);
-                wp_cache_set($cache_key, $category_results, 'author_categories_results_cache', 3600);
-            }
-        }
-
-        return $category_results;
-    }
-
-    public static function get_author_relations($args = []) {
-        global $wpdb;
-    
-        $default_args = [
-            'post_id'  => '',
-            'author_term_id' => ''
-        ];
-    
-        $args = wp_parse_args($args, $default_args);
-    
-        $post_id        = intval($args['post_id']);
-        $author_term_id = intval($args['author_term_id']);
-    
-        $cache_key = 'author_categories_relation_' . md5(serialize($args));
-    
-        $results = wp_cache_get($cache_key, 'author_categories_relation_cache');
-    
-        if ($results === false) {
-            $table_name = AuthorCategoriesSchema::relationTableName();
-    
-            $sql = "SELECT * FROM $table_name WHERE 1=1";
-    
-            if ($post_id !== '') {
-                $sql .= $wpdb->prepare(" AND post_id = %d", $post_id);
-            }
-    
-            if (!empty($author_term_id)) {
-                $sql .= $wpdb->prepare(" AND author_term_id = %d", $author_term_id);
-            }
-    
-            $results = $wpdb->get_results($sql, ARRAY_A);
-    
-            wp_cache_set($cache_key, $results, 'author_categories_relation_cache', 3600);
-        }
-    
-        return $results;
-    }    
-
-    /**
-     * Get author category
-     *
-     * @param object $author
-     * @param array $author_categories_data
-     * 
-     * @return array
-     */
-    public static function get_author_category($author, $author_categories_data) {
-        
-        $author_category = [];
-
-        foreach ($author_categories_data as $author_category_data) {
-            if (!empty($author_category_data['singular_title']) && !empty($author_category_data['authors'])) {
-                $author_term_id = array_column($author_category_data['authors'], 'term_id');
-                if (in_array($author->term_id, $author_term_id)) {
-                    $author_category = $author_category_data;
-                }
-            }
-
-        }
-
-        return $author_category;
-    }
-
-
 
     /**
      * Author categories callback
@@ -779,7 +553,7 @@ class MA_Author_Categories extends Module
             'plural_name'       => esc_html__('Coauthors', 'publishpress-authors'),
             'slug'              => sanitize_title(esc_html__('Coauthor', 'publishpress-authors')),
             'category_order'    => 2,
-            'category_status'   => 1,
+            'category_status'   => 0,
             'created_at'        => current_time('mysql', true)
         ];
 

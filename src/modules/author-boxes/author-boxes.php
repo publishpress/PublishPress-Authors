@@ -185,6 +185,8 @@ class MA_Author_Boxes extends Module
      */
     public function filterAuthorBoxesColumns($columns)
     {
+        $columns['default_author_boxes'] = esc_html__('Default Author Box', 'publishpress-authors');
+
         if (Utils::isAuthorsProActive()) {
             $columns['author_category_boxes'] = esc_html__('Author Category Boxes', 'publishpress-authors');
         }
@@ -201,19 +203,30 @@ class MA_Author_Boxes extends Module
      */
     public function manageAuthorBoxesColumns($column, $postId)
     {
+        $legacyPlugin = Factory::getLegacyPlugin();
+
         if ($column === 'shortcode') {
             $layout_slug = self::POST_TYPE_BOXES . '_' . $postId;
         ?>
             <input readonly type="text" value='[publishpress_authors_box layout="<?php echo esc_attr($layout_slug); ?>"]' />
         <?php
+        } elseif ($column === 'default_author_boxes') {
+
+            if (
+                $legacyPlugin->modules->multiple_authors->options->layout == 'ppma_boxes_' .$postId
+                || ( (empty($legacyPlugin->modules->multiple_authors->options->layout) || in_array($legacyPlugin->modules->multiple_authors->options->layout, ['author_boxes_boxed', 'boxed'])) && get_post_field('post_name', $postId) === 'author_boxes_boxed')
+            ) :
+            ?>
+             <span class="dashicons dashicons-yes-alt ppma-green-check"></span>
+           <?php endif;
         } elseif ($column === 'author_category_boxes') {
             $editor_data = get_post_meta($postId, self::META_PREFIX . 'layout_parent_author_box', true);
 
             if (empty($editor_data)) :
             ?>
-                <span class="dashicons dashicons-no red-check"></span>
+                <span class="dashicons dashicons-no ppma-red-check"></span>
             <?php else : ?>
-                <span class="dashicons dashicons-yes-alt green-check"></span>
+                <span class="dashicons dashicons-yes-alt ppma-green-check"></span>
            <?php endif;
         }
     }
@@ -718,6 +731,16 @@ class MA_Author_Boxes extends Module
         $author_box_id = false;
         if (substr($layoutName, 0, 10) === self::POST_TYPE_BOXES) {
             $author_box_id = (int) preg_replace("/[^0-9]/", "", $layoutName );
+            if ($author_box_id === 0) {
+                return $html;
+            }
+        } elseif(in_array($layoutName, ['simple_list', 'centered', 'boxed', 'inline', 'inline_avatar'])) {
+            $legacyPlugin              = Factory::getLegacyPlugin();
+            $legacy_layout_author_box   = $legacyPlugin->modules->multiple_authors->options->{'author_legacy_layout_' . $layoutName};
+            if (empty($legacy_layout_author_box)) {
+                return $html; 
+            }
+            $author_box_id = (int) preg_replace("/[^0-9]/", "", $legacy_layout_author_box );
             if ($author_box_id === 0) {
                 return $html;
             }
@@ -1336,9 +1359,9 @@ class MA_Author_Boxes extends Module
         $author_categories_title_suffix = '';
 
         $all_author_categories_data = $author_categories_data;
-        $author_categories = \MA_Author_Categories::get_author_categories(['category_status' => 1]);
+        $author_categories = get_ppma_author_categories(['category_status' => 1]);
         if (!empty($author_categories)) {
-            $author_relations  = \MA_Author_Categories::get_author_relations(['post_id' => $current_post_id]);
+            $author_relations  = get_ppma_author_relations(['post_id' => $current_post_id]);
             $admin_preview_arg = $admin_preview || !empty($args['ajax_preview']);
             $all_author_categories_data = Post_Editor::group_category_authors($author_categories, $author_relations, $authors);
         }
@@ -1439,7 +1462,7 @@ class MA_Author_Boxes extends Module
                                                         endif;
 
 
-                                                        $current_author_category = \MA_Author_Categories::get_author_category($author, $all_author_categories_data);
+                                                        $current_author_category = get_ppma_author_category($author, $all_author_categories_data);
                                                         
                                                         //author fields item position
                                                         $name_row_extra = '';

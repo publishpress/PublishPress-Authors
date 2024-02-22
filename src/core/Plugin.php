@@ -1816,6 +1816,7 @@ class Plugin
         $post_id    = null;
         $term_id    = false;
         $user_id    = false;
+        $author_categories = '';
 
         if (isset($attributes['show_title'])) {
             $show_title = $attributes['show_title'] === 'true' || (int)$attributes['show_title'] === 1;
@@ -1841,7 +1842,11 @@ class Plugin
             $user_id = $attributes['user_id'];
         }
 
-        return $this->get_author_box_markup('shortcode', $show_title, $layout, $archive, $post_id, $term_id, $user_id);
+        if (!empty($attributes['author_categories'])) {
+            $author_categories = $attributes['author_categories'];
+        }
+
+        return $this->get_author_box_markup('shortcode', $show_title, $layout, $archive, $post_id, $term_id, $user_id, $author_categories);
     }
 
     public function shortcodeAuthorsList($attributes)
@@ -1877,7 +1882,8 @@ class Plugin
         $separator    = ', ';
         $user_objects = false;
         $term_id      = false;
-        $archive    = false;
+        $archive      = false;
+        $author_categories = '';
 
 
         if (isset($attributes['post_id'])) {
@@ -1906,7 +1912,11 @@ class Plugin
             $term_id = $attributes['term_id'];
         }
 
-        return $this->get_authors_data($post_id, $field, $separator, $user_objects, $term_id, $archive);
+        if (!empty($attributes['author_categories'])) {
+            $author_categories = $attributes['author_categories'];
+        }
+
+        return $this->get_authors_data($post_id, $field, $separator, $user_objects, $term_id, $archive, $author_categories);
     }
 
     /**
