@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 5.5
 Requires PHP: 7.2.5
 Tested up to: 6.4
-Stable tag: 4.3.1
+Stable tag: 4.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -213,6 +213,18 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [4.3.2] - 22 Feb 2024 =
+
+* Update: Add author_categories parameter to authors data shortcode [publishpress_authors_data author_categories="reviewer"], #1658
+* Update: Add author_categories parameter to authors box shortcode [publishpress_authors_box author_categories="reviewer,coauthor"], #1658
+* Fixed: Schema Filter is not showing when Authors activated, #1655
+* Fixed: PHP Warnings: Illegal string offset '@type' in SchemaFacade.php, #1635
+* Update: Add settings to select legacy layout('simple_list', 'centered', 'boxed', 'inline', 'inline_avatar') author boxes, #1640
+* Update: Disable the Co-Authors category by default for new installs, #1659
+* Fixed: PHP Fatal error: Uncaught Error: Class "MA_Author_Categories" not found, #1647
+* Update: Show Post Default Author box in Author box lists, #1639
+* Update: Authors FREE Translations Updates 25 January 2024, #1636
 
 = [4.3.1] - 24 Jan 2024 =
 

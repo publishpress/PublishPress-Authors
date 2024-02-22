@@ -185,7 +185,7 @@ class MA_Author_Boxes extends Module
      */
     public function filterAuthorBoxesColumns($columns)
     {
-        $columns['default_author_boxes'] = esc_html__('Default Author box', 'publishpress-authors');
+        $columns['default_author_boxes'] = esc_html__('Default Author Box', 'publishpress-authors');
 
         if (Utils::isAuthorsProActive()) {
             $columns['author_category_boxes'] = esc_html__('Author Category Boxes', 'publishpress-authors');
@@ -212,7 +212,10 @@ class MA_Author_Boxes extends Module
         <?php
         } elseif ($column === 'default_author_boxes') {
 
-            if ($legacyPlugin->modules->multiple_authors->options->layout == 'ppma_boxes_' .$postId) :
+            if (
+                $legacyPlugin->modules->multiple_authors->options->layout == 'ppma_boxes_' .$postId
+                || ( (empty($legacyPlugin->modules->multiple_authors->options->layout) || in_array($legacyPlugin->modules->multiple_authors->options->layout, ['author_boxes_boxed', 'boxed'])) && get_post_field('post_name', $postId) === 'author_boxes_boxed')
+            ) :
             ?>
              <span class="dashicons dashicons-yes-alt ppma-green-check"></span>
            <?php endif;

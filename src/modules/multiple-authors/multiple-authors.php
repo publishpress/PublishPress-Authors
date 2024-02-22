@@ -1253,7 +1253,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'option_4' => [
                         'shortcode'   => '[publishpress_authors_box layout="'. $default_layout .'" post_id="32"]',
                         'description' => esc_html__(
-                            'You can load the authors for a specific post, even if you are not in that post currently. For example, this shortcode will load the authors for the post with the ID of 32',
+                            'You can load the authors for a specific post, even if you are not in that post currently. For example, this shortcode will load the authors for the post with the ID of 32.',
                             'publishpress-authors'
                         ),
                     ],
@@ -1337,14 +1337,14 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'option_4' => [
                         'shortcode'   => '[publishpress_authors_data post_id="32"]',
                         'description' => esc_html__(
-                            'You can load the authors for a specific post, even if you are not in that post currently. For example, this shortcode will load the authors for the post with the ID of 32',
+                            'You can load the authors for a specific post, even if you are not in that post currently. For example, this shortcode will load the authors for the post with the ID of 32.',
                             'publishpress-authors'
                         ),
                     ],
                     'option_5' => [
                         'shortcode'   => '[publishpress_authors_data term_id="102"]',
                         'description' => esc_html__(
-                            'You can retrieve a specific author data by providing the author term id. For example, this shortcode will load the author with term id of 102',
+                            'You can retrieve a specific author by providing the author\'s term ID. For example, this shortcode will load the author with the term ID of 102.',
                             'publishpress-authors'
                         ),
                     ],
@@ -1352,7 +1352,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'shortcode'   => '[publishpress_authors_data user_objects="true"]',
                         'description' => sprintf(
                             esc_html__(
-                                'You can also decide to return array lists of authors for custom use or formatting by using %1$s which will return all authors object data as array. You can check full details and sample usage %2$s in this guide %3$s',
+                                'You can also decide to return an array list of authors by using user_objects="true" which will return all the authors object data as an array. You can check full details and sample usage %2$s in this guide%3$s.',
                                 'publishpress-authors'
                             ),
                             '<code class="color-red">user_objects="true"</code>',
@@ -1363,7 +1363,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'option_7' => [
                         'shortcode'   => '[publishpress_authors_data author_categories="reviewer,coauthor"]',
                         'description' => esc_html__(
-                            'You can retrieve data of authors belonging to a specific author categories by providing the category slug or slugs separated by comma for more than one category.',
+                            'You can retrieve authors belonging to a specific Author Category by providing the category slug or slugs. Separate multiple slugs with a comma.',
                             'publishpress-authors'
                         ),
                     ],
@@ -2035,7 +2035,7 @@ echo '<span class="ppma_settings_field_description">'
             echo '</label>';
             echo '<div class="ppma_settings_field_description">'
                 . sprintf(
-                    esc_html__('This is useful if you have legacy layout shortcode %s in your post or code.', 'publishpress-authors'),
+                    esc_html__('This is useful if you use legacy shortcode %s', 'publishpress-authors'),
                     '<strong>[publishpress_authors_box layout="boxed"]</strong>'
                 )
                 . '</div>';
@@ -2072,7 +2072,7 @@ echo '<span class="ppma_settings_field_description">'
             echo '</label>';
             echo '<div class="ppma_settings_field_description">'
                 . sprintf(
-                    esc_html__('This is useful if you have legacy layout shortcode %s in your post or code.', 'publishpress-authors'),
+                    esc_html__('This is useful if you use legacy shortcode %s', 'publishpress-authors'),
                     '<strong>[publishpress_authors_box layout="centered"]</strong>'
                 )
                 . '</div>';
@@ -2109,7 +2109,7 @@ echo '<span class="ppma_settings_field_description">'
             echo '</label>';
             echo '<div class="ppma_settings_field_description">'
                 . sprintf(
-                    esc_html__('This is useful if you have legacy layout shortcode %s in your post or code.', 'publishpress-authors'),
+                    esc_html__('This is useful if you use legacy shortcode %s', 'publishpress-authors'),
                     '<strong>[publishpress_authors_box layout="inline"]</strong>'
                 )
                 . '</div>';
@@ -2146,7 +2146,7 @@ echo '<span class="ppma_settings_field_description">'
             echo '</label>';
             echo '<div class="ppma_settings_field_description">'
                 . sprintf(
-                    esc_html__('This is useful if you have legacy layout shortcode %s in your post or code.', 'publishpress-authors'),
+                    esc_html__('This is useful if you use legacy shortcode %s', 'publishpress-authors'),
                     '<strong>[publishpress_authors_box layout="inline_avatar"]</strong>'
                 )
                 . '</div>';
@@ -2183,7 +2183,7 @@ echo '<span class="ppma_settings_field_description">'
             echo '</label>';
             echo '<div class="ppma_settings_field_description">'
                 . sprintf(
-                    esc_html__('This is useful if you have legacy layout shortcode %s in your post or code.', 'publishpress-authors'),
+                    esc_html__('This is useful if you use legacy shortcode %s', 'publishpress-authors'),
                     '<strong>[publishpress_authors_box layout="simple_list"]</strong>'
                 )
                 . '</div>';
