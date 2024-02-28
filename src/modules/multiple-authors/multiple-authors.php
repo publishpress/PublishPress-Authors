@@ -299,6 +299,15 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             //add authors page post limit
             add_filter('pre_get_posts', [$this, 'authors_taxonomy_post_limit']);
+
+            //prevent guest author login
+            add_filter('wp_authenticate_user', [$this, 'prevent_guest_author_login'], 1);
+
+            //prevent outgoing email for guest author
+            add_filter('send_password_change_email', [$this, 'prevent_guest_author_emails'], 10, 2);
+            add_filter('wp_send_new_user_notification_to_admin', [$this, 'prevent_guest_author_emails'], 10, 2);
+            add_filter('wp_send_new_user_notification_to_user', [$this, 'prevent_guest_author_emails'], 10, 2);
+            add_filter('send_email_change_email', [$this, 'prevent_guest_author_emails'], 10, 2);
         }
 
         /**
@@ -4666,6 +4675,41 @@ echo '<span class="ppma_settings_field_description">'
                     }
                 }
             }
+        }
+
+        /**
+         * Prevent guest author login
+         *
+         * @param $user (null|WP_User|WP_Error) WP_User if the user is authenticated. WP_Error or null otherwise.
+         *
+         * @return WP_User object if credentials authenticate the user. WP_Error or null otherwise
+        */
+        public function prevent_guest_author_login($user) {
+
+            if (is_wp_error($user)) {
+                return $user;
+            }
+
+            if (isset($user->roles) && is_array($user->roles) && in_array('ppma_guest_author', $user->roles)) {
+                return new WP_Error('ppma_guest_author_login_denied', __('Guest Author cannot login on the site.', 'publishpress-authors'));
+            }
+
+            return $user;
+        }
+
+        /**
+         * Prevent outgoing email for guest author
+         * 
+         * @param bool $notify
+         * @param object $user
+         * 
+         * @return array $args
+         */
+        public function prevent_guest_author_emails($notify, $user) {
+            if ($user && is_object($user) && isset($user->roles) && in_array('ppma_guest_author', (array) $user->roles)) {
+                return false;
+            }
+            return $notify;
         }
     }
 }
