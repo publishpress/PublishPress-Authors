@@ -527,6 +527,26 @@ class Author_Editor
                                     selected="selected"><?php echo esc_html($user->display_name); ?></option>
                         <?php endif; ?>
                     </select>
+                <?php elseif ('button_group' === $args['type']) :
+                    $button_options = $args['options'];
+                    $selected_button = !empty($args['value']) ? $args['value'] : 'existing_user'
+                    ?>
+                    <div class="ppma-group-wrap">
+                        <div class="ppma-button-group">
+                            <?php 
+                            $group_description = '';
+                            foreach ($button_options as $group => $group_option) : 
+                                $group_option_style = $group === $selected_button ? '' : 'display: none;';
+                                $group_description .= '<p class="ppma-button-description description '. esc_attr($group) .'" style="'. $group_option_style .'">'. $group_option['description'] .'</p>';
+                            ?>
+                                <label class="<?php echo $group === $selected_button ? 'selected' : ''; ?>">
+                                    <input type="radio" name="<?php echo esc_attr($key); ?>" value="<?php echo esc_attr($group); ?>" <?php checked($group, $selected_button) ?>> 
+                                    <?php echo esc_attr($group_option['label']); ?>
+                                </label>
+                            <?php endforeach; ?>
+                        </div>
+                        <?php echo $group_description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                    </div>
                 <?php elseif ('wysiwyg' === $args['type']) : ?>
                     <?php wp_editor($args['value'], $key, []); ?>
                 <?php else : ?>
@@ -534,7 +554,7 @@ class Author_Editor
                            id="<?php echo esc_attr($key); ?>" value="<?php echo esc_attr($args['value']); ?>"/>
                 <?php endif; ?>
 
-                <?php if (isset($args['description'])) : ?>
+                <?php if (!empty($args['description'])) : ?>
                     <p class="description"><?php echo esc_html($args['description']); ?></p>
                 <?php endif; ?>
             </td>
@@ -654,27 +674,66 @@ class Author_Editor
 
     public static function action_new_form_tag()
     {
-        $legacyPlugin = Factory::getLegacyPlugin();
-        $enable_guest_author_user = $legacyPlugin->modules->multiple_authors->options->enable_guest_author_user === 'yes';
-
         // Close the form tag.
         echo '>';
 
+        $legacyPlugin = Factory::getLegacyPlugin();
+        $enable_guest_author_user = $legacyPlugin->modules->multiple_authors->options->enable_guest_author_user === 'yes';
+
+        $author_type_options = [];
+        $author_type_options['existing_user'] = [
+            'label'   => esc_html__('Existing User', 'publishpress-authors'),
+            'description' => esc_html__('Create an author profile for an existing user.', 'publishpress-authors'),
+        ];
+        $author_type_options['new_user'] = [
+            'label'   => esc_html__('New User', 'publishpress-authors'),
+            'description' => '<strong>' . esc_html__('Guest Author With a User Account:', 'publishpress-authors') . '</strong> ' . esc_html__('Create an author profile and a linked user account. This account will not be able to login to the WordPress dashboard. This option is best for compatibility with other themes and plugins.', 'publishpress-authors'),
+        ];
+
+        if ($enable_guest_author_user) {
+            $author_type_options['guest_author'] = [
+                'label'   => esc_html__('Guest Author', 'publishpress-authors'),
+                'description' => '<strong>' . esc_html__('Guest Author With No User Account:', 'publishpress-authors') . '</strong> ' . esc_html__('Create an author profile with no linked user account.', 'publishpress-authors'),
+            ];
+        }
         ?>
-        <div class="form-field term-user_id-wrap">
-        <label for="tag-user-id"><?php echo esc_html__('Mapped User', 'publishpress-authors'); ?></label>
-        <?php
-        echo static::get_rendered_author_partial( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-            [
-                'type'        => 'ajax_user_select',
-                'value'       => '',
-                'key'         => 'new',
-                'description' => ($enable_guest_author_user) ? esc_html__(
-                    'You don\'t have to choose a Mapped User. Leave this choice blank and you can create a Guest Author with no WordPress account.',
-                    'publishpress-authors'
-                ) : '',
-            ]
-        );
+        <div>
+            <div class="form-field term-author_type-wrap">
+                <label class="ppma-account-type"><?php echo esc_html__('Author Type', 'publishpress-authors'); ?></label>
+                <?php
+                echo static::get_rendered_author_partial( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                    [
+                        'type'        => 'button_group',
+                        'value'       => '',
+                        'key'         => 'author_type',
+                        'options'     => $author_type_options,
+                    ]
+                );
+            echo '</div>';
+            ?>
+            <div class="form-field term-author_email-wrap" style="display: none;">
+                <label class="ppma-account-email"><?php echo esc_html__('Author Email', 'publishpress-authors'); ?></label>
+                <?php
+                echo static::get_rendered_author_partial( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                    [
+                        'type'        => 'email',
+                        'value'       => '',
+                        'key'         => 'author_email',
+                    ]
+                );
+            echo '</div>';
+            ?>
+            <div class="form-field term-user_id-wrap">
+                <label for="tag-user-id"><?php echo esc_html__('Select Existing User', 'publishpress-authors'); ?></label>
+                <?php
+                echo static::get_rendered_author_partial( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                    [
+                        'type'        => 'ajax_user_select',
+                        'value'       => '',
+                        'key'         => 'new',
+                    ]
+                );
+            echo '</div>';
 
         // It is missing the end of the tag by purpose, because there is a hardcoded > after the action is called.
         echo '</div';
@@ -852,16 +911,6 @@ class Author_Editor
                     );
                 }
             }
-            
-            if (!$enable_guest_author_user && $author_id === 0) {
-                return new WP_Error(
-                    'publishpress_authors_mapped_user_required',
-                    esc_html__(
-                        'Mapped user is required.',
-                        'publishpress-authors'
-                    )
-                );
-            }
 
             if (empty($_POST['slug'])) {
                 $slug = sanitize_title($_POST['tag-name']);
@@ -901,6 +950,54 @@ class Author_Editor
                     'publishpress_authors_slug_exists',
                     esc_html__(
                         'An author with the name provided already exists.',
+                        'publishpress-authors'
+                    )
+                );
+            }
+
+            // create guest author user
+            if (!empty($_POST['authors-author_type']) && $_POST['authors-author_type'] === 'new_user') {
+                if (empty($_POST['authors-author_email'])) {
+                    return new WP_Error(
+                        'publishpress_authors_email_required',
+                        esc_html__(
+                            'An author email is required when creating new User Author.',
+                            'publishpress-authors'
+                        )
+                    );
+                } else {
+                    if (!get_role('ppma_guest_author')) {
+                        //Make sure Guest authir role exist
+                        add_role('ppma_guest_author', 'Guest Author', []);
+                    }
+
+                    // Add new user
+                    $user_data = array(
+                        'user_login'    => $slug,
+                        'display_name'  => sanitize_text_field($_POST['tag-name']),
+                        'user_email'    => sanitize_text_field($_POST['authors-author_email']),
+                        'user_pass'     => wp_generate_password(),
+                        'role'          => 'ppma_guest_author',
+                    );
+                    $user_id = wp_insert_user($user_data);
+
+                    if (is_wp_error($user_id)) {
+                        return new WP_Error(
+                            'publishpress_authors_new_user_error',
+                            $user_id->get_error_message()
+                        );
+                    } else {
+                        $author_id = $user_id;
+                        $_POST['authors-new'] = $author_id;
+                    }
+                }
+            }
+            
+            if (!$enable_guest_author_user && $author_id === 0) {
+                return new WP_Error(
+                    'publishpress_authors_mapped_user_required',
+                    esc_html__(
+                        'Mapped user is required.',
                         'publishpress-authors'
                     )
                 );
