@@ -169,6 +169,7 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
 
                 $post_authors        = publishpress_authors_get_post_authors();
                 $post_author         = $post_authors[0];
+                $authors_schema_data = [];
 
                 if (is_object($post_author) && isset($post_author->display_name)) {
                     $author_profile_data  = $this->generate_author_schema($post_author);
@@ -176,6 +177,7 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
                     if (count($post_authors) === 1) {
                         $profile_page_authors = ['@id' => $post_author->link];
                         $publisher_profile_page_authors = ['@id' => $post_author->link, 'name' => $post_author->display_name];
+                        $authors_schema_data[$post_author->user_email] = $this->generate_author_schema($post_author);
                     } else {
                         $profile_page_authors = [];
                         $publisher_profile_page_authors = [];
@@ -183,6 +185,7 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
                             if (is_object($post_author) && isset($post_author->display_name)) {
                                 $profile_page_authors[] = $this->generate_author_schema($post_author);
                                 $publisher_profile_page_authors[] = $this->generate_author_schema($post_author);
+                                $authors_schema_data[$post_author->user_email] = $this->generate_author_schema($post_author);
                             }
                         }
                     }
@@ -224,6 +227,29 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
                     foreach ($data as $index => $details) {
                         if (isset($details['author'])) {
                             $data[$index]['author'] = $publisher_profile_page_authors;
+                        }
+                        
+                        // add author category schema property
+                        if ($index == 'WebPage') {
+                            $author_categorized = false;
+                            foreach (get_ppma_author_categories() as $author_category) {
+                                if (!empty($author_category['schema_property'])) {
+                                    if (!$author_categorized) {
+                                        $author_categorized = ppma_post_authors_categorized();
+                                    }
+                                    if (isset($author_categorized[$author_category['slug']])) {
+                                        $category_schema = [];
+                                        foreach ($author_categorized[$author_category['slug']] as $author_categorized_author) {
+                                            if (isset($authors_schema_data[$author_categorized_author->user_email])) {
+                                                $category_schema[] = $authors_schema_data[$author_categorized_author->user_email];
+                                            }
+                                        }
+                                        if (count($category_schema) > 0) {
+                                            $data[$index][$author_category['schema_property']] = count($category_schema) > 1 ? $category_schema : $category_schema[0];
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }

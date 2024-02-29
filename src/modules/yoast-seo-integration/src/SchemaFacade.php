@@ -150,6 +150,7 @@ class SchemaFacade
 
         $ids     = [];
         $authors = [];
+        $authors_schema_data = [];
 
         // Add the authors to the schema.
         foreach ($author_objects as $author) {
@@ -174,6 +175,7 @@ class SchemaFacade
 
                     $ids[]     = [ '@id' => $author_data['@id'] ];
                     $authors[] = $author_data;
+                    $authors_schema_data[$author->user_email] = $author_data;
                 }
             }
         }
@@ -191,6 +193,28 @@ class SchemaFacade
             }
             if (count($author_objects) === 1 && isset($piece['@type']) && !is_array($piece['@type']) && $piece['@type'] === 'Person') {
                 $data[$key] = wp_parse_args($author_data, $piece);
+            }
+            // add author category schema property
+            if (isset($piece['@type']) && !is_array($piece['@type']) && $piece['@type'] === 'WebPage') {
+                $author_categorized = false;
+                foreach (get_ppma_author_categories() as $author_category) {
+                    if (!empty($author_category['schema_property'])) {
+                        if (!$author_categorized) {
+                            $author_categorized = ppma_post_authors_categorized();
+                        }
+                        if (isset($author_categorized[$author_category['slug']])) {
+                            $category_schema = [];
+                            foreach ($author_categorized[$author_category['slug']] as $author_categorized_author) {
+                                if (isset($authors_schema_data[$author_categorized_author->user_email])) {
+                                    $category_schema[] = $authors_schema_data[$author_categorized_author->user_email];
+                                }
+                            }
+                            if (count($category_schema) > 0) {
+                                $data[$key][$author_category['schema_property']] = count($category_schema) > 1 ? $category_schema : $category_schema[0];
+                            }
+                        }
+                    }
+                }
             }
         }
 
