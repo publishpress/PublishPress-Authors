@@ -32,6 +32,9 @@ if (!function_exists('get_archive_author')) {
         if (empty($authorName)) {
             $authorId = get_query_var('author');
             $user = get_user_by('ID', $authorId);
+            if (!is_object($user) || !isset($user->user_nicename)) {
+                return false;
+            }
             $authorName = $user->user_nicename;
         }
 
