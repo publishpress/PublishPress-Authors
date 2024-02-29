@@ -23,6 +23,7 @@ Here are the some most important features of PublishPress Authors:
 * **Multiple Authors**. By default, WordPress only allows one author per post. PublishPress Authors allows you to add an unlimited number of authors to each post. This is very useful if you have a busy site and need to manage and give credit to coauthors.
 * **Guest Authors**. You can create Guest Authors who don’t have an account on your site. This is important because not all writers need a username and password.
 * **Author Pages**. PublishPress Authors allows you to showcase the work of each individual author with customizable author pages where you decide which post information is displayed. 
+* **Author Categories**. You can use PublishPress Authors to categorize your authors as Coauthors, Reviews, Editors, Photographers, and more.
 
 ## PublishPress Authors Pro ##
 
@@ -67,6 +68,14 @@ Your author page will appear with an author box on the top of the screen and the
 
 [Click here to see how to use Author Pages](https://publishpress.com/knowledge-base/author-pages/).
 
+## Author Categories ##
+
+Author Categories is a feature that allows you to have different types of authors for WordPress post. For example, you can label one user as an "Author", one as “Contributor” and one as an “Editor”. This enables you to give different types of credit to the all the people who work on your content.
+
+PublishPress Authors Pro has a feature that allows you do more with Author Categories. You can create an “Author Categories Box”. This is a display format for your images that is specifically designed to group authors together in their categories.
+
+[Click here to see how to use Author Categorie](https://publishpress.com/knowledge-base/introduction-to-author-categories/).
+
 ## Custom Fields for Author Profiles (Pro version) ##
 
 PublishPress Authors Pro enables you to create author fields and enhance your author profiles. You can add Text, WYSIWYG, Link and email address fields. Then you can place those author fields in author bio profiles using custom layouts. The Pro version of Authors supports Facebook, Twitter, Instagram, Linkedin, YouTube, TikTok and more.
@@ -101,11 +110,13 @@ This plugin is partly based on Co-Authors Plus, which includes the work of batmo
 
 == Screenshots ==
 
-1. Add multiple authors: With PublishPress Authors, you can choose multiple authors for each post.
-2. Show your author profiles: PublishPress Authors gives you multiple ways to show author profiles. You can display authors under your content, in a widget, using shortcodes and more.
-3. Add guest authors: Using PublishPress Authors, you can create Guest Authors who don’t need an account on your site.
-4. Custom fields for author profiles: PublishPress Authors Pro enables you to create custom fields for your author profiles.
-5. Custom layouts for author profiles: PublishPress Authors Pro enables you to build custom layouts for authors.
+1. With PublishPress Authors, you can choose multiple authors for each post. When you write a post, you’ll see the Authors box in the right sidebar. You can choose from all the users on your site, and assign them as authors.
+2. PublishPress Authors gives you multiple ways to show author profiles. You can display authors under your content, in a widget, using shortcodes and more.
+3. Using PublishPress Authors, you can create Guest Authors who don’t need an account on your site. PublishPress will treat Guest Authors identically to Authors who have WordPress accounts.
+4. PublishPress Authors allows you to showcase the work of each individual author with customizable author pages where you decide which post information is displayed including tags, read more links, excerpts, and more.
+5. PublishPress Authors Pro enables you to create custom fields for your author profiles. You can add Text, WYSIWYG, Links, email fields and more.
+6. PublishPress Authors Pro enables you to build custom layouts for authors. Using all your author information and custom fields, you can design beautiful layouts for your authors.
+7. PublishPress Authors allows you to organize your authors by categories. You can organize your authors into groups such as “Authors”, “Coauthors”, “Reviews”, “Editors”, and more.
 
 
 == Frequently Asked Questions ==
