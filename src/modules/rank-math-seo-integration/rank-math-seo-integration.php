@@ -117,7 +117,7 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
                 ]
             ];
 
-            $author_profile_schema = $this->add_author_same_as_urls($author_profile_schema, $author);
+            $author_profile_schema = $this->add_author_schema_property($author_profile_schema, $author);
 
             return $author_profile_schema;
         }
@@ -267,7 +267,7 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
          *
          * @return array The Person schema data.
          */
-        protected function add_author_same_as_urls($data, $author)
+        protected function add_author_schema_property($data, $author)
         {
     
             $author_fields = get_posts(
@@ -275,18 +275,26 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
                     'post_type' => PPAuthorFields::POST_TYPE_CUSTOM_FIELDS,
                     'posts_per_page' => 100,
                     'post_status' => 'publish',
-                    'meta_query'  => [
-                        'relation' => 'AND',
+                    'meta_query' => [
+                        'relation' => 'OR',
                         [
-                            'key'   => 'ppmacf_social_profile',
-                            'value' => 1,
-                            'type'  => 'NUMERIC',
-                            'compare' => '='
+                            'relation' => 'AND',
+                            [
+                                'key' => 'ppmacf_social_profile',
+                                'value' => 1,
+                                'type' => 'NUMERIC',
+                                'compare' => '='
+                            ],
+                            [
+                                'key' => 'ppmacf_type',
+                                'value' => 'url',
+                                'compare' => '='
+                            ]
                         ],
                         [
-                            'key'   => 'ppmacf_type',
-                            'value' => 'url',
-                            'compare' => '='
+                            'key' => 'ppmacf_schema_property',
+                            'value' => '',
+                            'compare' => '!='
                         ]
                     ],
                 ]
@@ -300,9 +308,27 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
     
             if (!empty($author_fields)) {
                 foreach ($author_fields as $author_field) {
+
                     $field_value = isset($author->{$author_field->post_name}) ? $author->{$author_field->post_name} : '';
                     if (! empty(trim($field_value))) {
-                        $same_as_urls[] = $field_value;
+                        $ppmacf_social_profile = get_post_meta($author_field->ID, 'ppmacf_social_profile', true);
+                        $ppmacf_type = get_post_meta($author_field->ID, 'ppmacf_type', true);
+                        $ppmacf_schema_property = get_post_meta($author_field->ID, 'ppmacf_schema_property', true);
+
+                        if ($ppmacf_type == 'url' && (int) $ppmacf_social_profile === 1) {
+                            $same_as_urls[] = $field_value;
+                        }
+
+                        if (!empty($ppmacf_schema_property)) {
+                            if (isset($data[$ppmacf_schema_property])) {
+                                $schema_property_value = \array_values(\array_unique((array)$data[$ppmacf_schema_property]));
+                                $schema_property_value[] = $field_value;
+                                $data[$ppmacf_schema_property] = $schema_property_value;
+                            } else {
+                                $data[$ppmacf_schema_property] = $field_value;
+                            }
+
+                        }
                     }
                 }
             }
