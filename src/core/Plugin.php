@@ -565,7 +565,7 @@ class Plugin
                 'edit_item'                  => __('Edit Author', 'publishpress-authors'),
                 'view_item'                  => __('View Author', 'publishpress-authors'),
                 'update_item'                => __('Update Author', 'publishpress-authors'),
-                'add_new_item'               => __('New Author', 'publishpress-authors'),
+                'add_new_item'               => __('New Author Profile', 'publishpress-authors'),
                 'new_item_name'              => __('New Author', 'publishpress-authors'),
                 'separate_items_with_commas' => __(
                     'Separate authors with commas',
@@ -1480,7 +1480,9 @@ class Plugin
         }
 
         $js_strings = [
-            'edit_label'                    => __('Edit', 'publishpress-authors'),
+            'edit_label'                    => esc_html__('Edit', 'publishpress-authors'),
+            'new_button'                    => esc_html__('Add Author', 'publishpress-authors'),
+            'new_name_label'                => esc_html__('Author Name'),
             'confirm_delete'                => __(
                 'Are you sure you want to remove this author?',
                 'publishpress-authors'
