@@ -46,6 +46,7 @@ class Author_Editor
             if ('name' === $key) {
                 $new_columns['author_name']       = __('Name', 'publishpress-authors');
                 $new_columns['author_user_email'] = __('Email', 'publishpress-authors');
+                $new_columns['author_type'] = __('Author Type', 'publishpress-authors');
             } else {
                 $new_columns[$key] = $title;
             }
@@ -108,6 +109,16 @@ class Author_Editor
                 $retval = '<a href="' . esc_url('mailto:' . $author->user_email) . '">' . esc_html(
                         $author->user_email
                     ) . '</a>';
+            }
+        } elseif ('author_type' === $column_name) {
+            $author = Author::get_by_term_id($term_id);
+
+            if (is_object($author) && isset($author->roles) && !empty($author->roles) && in_array('ppma_guest_author', $author->roles)) {
+                $retval = __('Guest Author With User Account', 'publishpress-authors');
+            } elseif (is_object($author) && isset($author->roles) && !empty($author->roles) && !in_array('ppma_guest_author', $author->roles)) {
+                $retval = __('Existing User', 'publishpress-authors');
+            } else {
+                $retval = __('Guest Author With No Account', 'publishpress-authors');
             }
         }
 
