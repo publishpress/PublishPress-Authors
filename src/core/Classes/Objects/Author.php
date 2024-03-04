@@ -32,6 +32,7 @@ use WP_User;
  * @property string $display_name
  * @property string $link
  * @property string $user_id
+ * @property array $roles
  */
 class Author
 {
@@ -398,6 +399,7 @@ class Author
         $properties['first_name']    = true;
         $properties['last_name']     = true;
         $properties['nickname']      = true;
+        $properties['roles']        = true;
 
         // Short circuit to only trigger the filter for additional fields if the property is not already defined.
         // Save resources and avoid infinity loops on some queries that check is $query->is_author.
@@ -483,6 +485,19 @@ class Author
 
                     if (!empty($userObject) && !is_wp_error($userObject)) {
                         $return = $userObject->display_name;
+                    }
+                }
+
+                break;
+
+            case 'roles':
+                $return = [];
+
+                if (!$this->is_guest()) {
+                    $userObject = $this->get_user_object();
+
+                    if (!empty($userObject) && !is_wp_error($userObject)) {
+                        $return = $userObject->roles;
                     }
                 }
 
