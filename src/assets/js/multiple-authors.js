@@ -652,6 +652,7 @@ jQuery(document).ready(function ($) {
          * Update name field
          */
         $('form#edittag tr.form-field.term-name-wrap th label').html(MultipleAuthorsStrings.name_label);
+        $('form#addtag .form-field.term-name-wrap label').html(MultipleAuthorsStrings.new_name_label);
 
         /**
          * Add required to display name field
@@ -924,7 +925,7 @@ jQuery(document).ready(function ($) {
     if ($('body.taxonomy-author form#addtag #submit').length > 0) {
         var buttonTimeoutFn = setTimeout(function () {
             $('body.taxonomy-author form#addtag #submit').hide();
-            $('body.taxonomy-author form#addtag #submit').after('<input type="button" id="author-submit" class="button button-primary" value="' + $('body.taxonomy-author form#addtag #submit').val() + '">');
+            $('body.taxonomy-author form#addtag #submit').after('<input type="button" id="author-submit" class="button button-primary" value="' + MultipleAuthorsStrings.new_button + '">');
             clearTimeout(buttonTimeoutFn);
         }, 50);
     }
