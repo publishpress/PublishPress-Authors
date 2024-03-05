@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PublishPress Authors\n"
-"POT-Creation-Date: 2024-03-04 14:25+0000\n"
+"POT-Creation-Date: 2024-03-05 03:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Anderson Grudtner Martins <anderson@publishpress.com>\n"
 "Language-Team: Anderson Grudtner Martins <anderson@publishpress.com>\n"
@@ -289,7 +289,7 @@ msgstr ""
 msgid "Add New %1$s"
 msgstr ""
 
-#: src/modules/author-categories/author-categories.php:584
+#: src/modules/author-categories/author-categories.php:591
 msgid "Add New Author Category"
 msgstr ""
 
@@ -430,8 +430,8 @@ msgid "Ascending"
 msgstr ""
 
 #: src/core/Plugin.php:580
-#: src/modules/author-categories/author-categories.php:616
-#: src/modules/author-categories/author-categories.php:618
+#: src/modules/author-categories/author-categories.php:623
+#: src/modules/author-categories/author-categories.php:625
 msgid "Author"
 msgstr ""
 
@@ -600,10 +600,6 @@ msgstr ""
 msgid "Author profile deleted."
 msgstr ""
 
-#: src/core/Classes/Author_Editor.php:697
-msgid "Author Profile for Existing User:"
-msgstr ""
-
 #: src/core/Classes/Term_Editor.php:44
 msgid "Author profile updated."
 msgstr ""
@@ -648,7 +644,7 @@ msgstr ""
 #: src/core/Authors_Widget.php:138 src/core/Plugin.php:856
 #: src/core/Classes/Post_Editor.php:94 src/core/Classes/Post_Editor.php:206
 #: src/core/Traits/Author_box.php:189
-#: src/modules/author-categories/author-categories.php:617
+#: src/modules/author-categories/author-categories.php:624
 #: src/modules/editflow-integration/editflow-integration.php:114
 #: src/modules/multiple-authors/multiple-authors.php:319
 #: src/modules/multiple-authors/multiple-authors.php:320
@@ -907,12 +903,12 @@ msgstr ""
 msgid "Co-Authors Plus must be installed and active."
 msgstr ""
 
-#: src/modules/author-categories/author-categories.php:625
-#: src/modules/author-categories/author-categories.php:627
+#: src/modules/author-categories/author-categories.php:632
+#: src/modules/author-categories/author-categories.php:634
 msgid "Coauthor"
 msgstr ""
 
-#: src/modules/author-categories/author-categories.php:626
+#: src/modules/author-categories/author-categories.php:633
 msgid "Coauthors"
 msgstr ""
 
@@ -1347,12 +1343,12 @@ msgstr ""
 msgid "Edit User"
 msgstr ""
 
-#: src/modules/author-categories/author-categories.php:643
-#: src/modules/author-categories/author-categories.php:645
+#: src/modules/author-categories/author-categories.php:650
+#: src/modules/author-categories/author-categories.php:652
 msgid "Editor"
 msgstr ""
 
-#: src/modules/author-categories/author-categories.php:644
+#: src/modules/author-categories/author-categories.php:651
 msgid "Editors"
 msgstr ""
 
@@ -1387,7 +1383,7 @@ msgstr ""
 msgid "Enable Categories"
 msgstr ""
 
-#: src/modules/author-categories/author-categories.php:580
+#: src/modules/author-categories/author-categories.php:587
 #: src/modules/author-categories/classes/AuthorCategoriesTable.php:80
 #: src/modules/author-categories/classes/AuthorCategoriesTable.php:450
 msgid "Enable Category"
@@ -1471,11 +1467,6 @@ msgstr ""
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:572
 msgid "Existing Author Boxes"
-msgstr ""
-
-#: src/core/Classes/Author_Editor.php:119
-#: src/core/Classes/Author_Editor.php:696
-msgid "Existing User"
 msgstr ""
 
 #: src/modules/author-boxes/author-boxes.php:963
@@ -1593,10 +1584,12 @@ msgid ""
 "For authors_index layout, you can group user by profile field by using %1$s ."
 msgstr ""
 
-#: src/modules/author-categories/author-categories.php:575
+#: src/modules/author-categories/author-categories.php:576
+#, php-format
 msgid ""
 "For example, when this value is set to reviewedBy, all users under this "
-"category will be added to post reviewedBy property."
+"category will be added to post reviewedBy property. You can read more %1$s "
+"in this guide.%2$s"
 msgstr ""
 
 #: src/core/Classes/Author_Editor.php:313
@@ -1667,27 +1660,17 @@ msgstr ""
 msgid "Grouping Option"
 msgstr ""
 
-#: src/core/Classes/Author_Editor.php:93 src/core/Classes/Author_Editor.php:706
-msgid "Guest Author"
-msgstr ""
-
 #: src/modules/multiple-authors/multiple-authors.php:4694
 msgid "Guest Author cannot login on the site."
 msgstr ""
 
-#: src/core/Classes/Author_Editor.php:701
-msgid "Guest Author With a User Account:"
-msgstr ""
-
 #: src/core/Classes/Author_Editor.php:121
-msgid "Guest Author With No Account"
-msgstr ""
-
-#: src/core/Classes/Author_Editor.php:707
-msgid "Guest Author With No User Account:"
+#: src/core/Classes/Author_Editor.php:706
+msgid "Guest Author With No User Account"
 msgstr ""
 
 #: src/core/Classes/Author_Editor.php:117
+#: src/core/Classes/Author_Editor.php:700
 msgid "Guest Author With User Account"
 msgstr ""
 
@@ -2140,10 +2123,6 @@ msgstr ""
 msgid "New Author Profile"
 msgstr ""
 
-#: src/core/Classes/Author_Editor.php:700
-msgid "New User"
-msgstr ""
-
 #: src/templates/parts/author-pages-grid.php:163
 #: src/templates/parts/author-pages-list.php:156
 msgid "Next"
@@ -2547,6 +2526,11 @@ msgstr ""
 msgid "Recommendations for you"
 msgstr ""
 
+#: src/core/Classes/Author_Editor.php:119
+#: src/core/Classes/Author_Editor.php:696
+msgid "Registered Author With User Account"
+msgstr ""
+
 #: src/modules/author-boxes/author-boxes.php:404
 #: src/modules/author-custom-fields/author-custom-fields.php:183
 #, php-format
@@ -2603,12 +2587,12 @@ msgstr ""
 msgid "Rest API support"
 msgstr ""
 
-#: src/modules/author-categories/author-categories.php:634
-#: src/modules/author-categories/author-categories.php:636
+#: src/modules/author-categories/author-categories.php:641
+#: src/modules/author-categories/author-categories.php:643
 msgid "Reviewer"
 msgstr ""
 
-#: src/modules/author-categories/author-categories.php:635
+#: src/modules/author-categories/author-categories.php:642
 msgid "Reviewers"
 msgstr ""
 
@@ -2706,7 +2690,7 @@ msgid "Select an option"
 msgstr ""
 
 #: src/core/Classes/Author_Editor.php:738
-msgid "Select Existing User"
+msgid "Select Author Account"
 msgstr ""
 
 #: src/core/Classes/Author_Editor.php:466
@@ -3332,10 +3316,6 @@ msgstr ""
 #: src/modules/modules-settings/modules-settings.php:292
 msgid ""
 "Use the Content Display block to show your posts in many beautiful layouts."
-msgstr ""
-
-#: src/core/Classes/Author_Editor.php:91
-msgid "User"
 msgstr ""
 
 #: src/core/Authors_Widget.php:183
