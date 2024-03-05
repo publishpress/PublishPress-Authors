@@ -225,7 +225,7 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= [4.4.0] - 4 Mar 2024 =
+= [4.4.0] - 5 Mar 2024 =
 
 * Update: Add User Account option for Guest Authors, #1287
 * Update: Add Schema option for Author Categories, #1642
