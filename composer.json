@@ -28,16 +28,6 @@
     }
   },
   "minimum-stability": "stable",
-  "repositories": [
-    {
-      "type": "git",
-      "url": "https://github.com/publishpress/wp-browser"
-    },
-    {
-      "type": "git",
-      "url": "https://github.com/publishpress/publishpress-instance-protection"
-    }
-  ],
   "require": {
     "php": ">=7.2.5"
   },
