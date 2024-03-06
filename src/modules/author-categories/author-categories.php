@@ -689,7 +689,7 @@ class MA_Author_Categories extends Module
         $this->insertDefaultCategories();
 
         // add author category capability
-        $capability_roles = ['administrator', 'editor', 'author', 'contributor'];
+        $capability_roles = ['administrator'];
         foreach ($capability_roles as $capability_role) {
              $role = get_role($capability_role);
              if ($role instanceof \WP_Role) {
@@ -698,6 +698,7 @@ class MA_Author_Categories extends Module
          }
          update_option('ppma_author_categories_installed', 1);
          update_option('ppma_author_categories_meta_installed', 1);
+         update_option('ppma_author_categories_cap_upgrade', 1);
     }
 
     /**
@@ -713,6 +714,17 @@ class MA_Author_Categories extends Module
         } elseif (empty(get_option('ppma_author_categories_meta_installed'))) {
             AuthorCategoriesSchema::createMetaTableIfNotExists();
             update_option('ppma_author_categories_meta_installed', 1);
+        }
+        
+        if (empty(get_option('ppma_author_categories_cap_upgrade'))) {
+            $capability_roles = ['editor', 'author', 'contributor'];
+            foreach ($capability_roles as $capability_role) {
+                $role = get_role($capability_role);
+                if ($role instanceof \WP_Role && $role->has_cap('ppma_manage_author_categories')) {
+                    $role->remove_cap('ppma_manage_author_categories');
+                }
+            }
+            update_option('ppma_author_categories_cap_upgrade', 1);
         }
     }
 }
