@@ -203,10 +203,18 @@ class AuthorCategoriesTable extends \WP_List_Table
         }
 
         $table_name = AuthorCategoriesSchema::tableName();
+        $meta_table_name = AuthorCategoriesSchema::metaTableName();
 
         $delete = $wpdb->query(
             $wpdb->prepare(
                 "DELETE FROM {$table_name} WHERE id = %d",
+                $category_id
+            )
+        );
+
+        $wpdb->query(
+            $wpdb->prepare(
+                "DELETE FROM {$meta_table_name} WHERE category_id = %d",
                 $category_id
             )
         );
@@ -343,8 +351,9 @@ class AuthorCategoriesTable extends \WP_List_Table
         $actions = [];
 
         if (current_user_can(apply_filters('pp_multiple_authors_manage_categories_cap', 'ppma_manage_author_categories'))) {
+            $schema_property = !empty($item['schema_property']) ? $item['schema_property'] : '';
             $actions['inline hide-if-no-js'] = sprintf(
-                '<button type="button" class="button-link editinline" aria-label="%s" aria-expanded="false" data-category_id="' . $item['id'] . '" data-category_name="' . $item['category_name'] . '" data-plural_name="' . $item['plural_name'] . '" data-slug="' . $item['slug'] . '" data-category_status="' . $item['category_status'] . '">%s</button>',
+                '<button type="button" class="button-link editinline" aria-label="%s" aria-expanded="false" data-category_id="' . $item['id'] . '" data-category_name="' . $item['category_name'] . '" data-plural_name="' . $item['plural_name'] . '" data-schema_property="' . $schema_property . '" data-slug="' . $item['slug'] . '" data-category_status="' . $item['category_status'] . '">%s</button>',
                 /* translators: %s: Taxonomy term name. */
                 esc_attr(sprintf(esc_html__('Quick edit &#8220;%s&#8221; inline', 'publishpress-authors'), $item['category_name'])),
                 esc_html__('Quick&nbsp;Edit', 'publishpress-authors')
@@ -430,6 +439,12 @@ class AuthorCategoriesTable extends \WP_List_Table
                                         <span class="title"><?php esc_html_e('Plural Name', 'publishpress-authors'); ?></span>
                                         <span class="input-text-wrap"><input type="text" name="plural_name" class="plural_name" value=""/></span>
                                     </label>
+
+                                    <label>
+                                        <span class="title"><?php esc_html_e('Schema Property', 'publishpress-authors'); ?></span>
+                                        <span class="input-text-wrap"><input type="text" name="schema_property" class="schema_property" value=""/></span>
+                                    </label>
+
 
                                     <label>
                                         <span class="title"><?php esc_html_e('Enable Category', 'publishpress-authors'); ?></span>

@@ -238,6 +238,7 @@ class MA_Author_Categories extends Module
 
             $category_name = isset($_POST['category_name']) ? sanitize_text_field($_POST['category_name']) : '';
             $plural_name = isset($_POST['plural_name']) ? sanitize_text_field($_POST['plural_name']) : '';
+            $schema_property = isset($_POST['schema_property']) ? sanitize_text_field($_POST['schema_property']) : '';
             $enabled_category = isset($_POST['enabled_category']) ? intval($_POST['enabled_category']) : 0;
             $slug = sanitize_title($category_name);
 
@@ -260,6 +261,7 @@ class MA_Author_Categories extends Module
                 $category_args = [
                     'category_name'     => $category_name,
                     'plural_name'       => $plural_name,
+                    'meta_data'       => ['schema_property' => $schema_property],
                     'slug'              => $slug,
                     'category_order'    => 0,
                     'category_status'   => $enabled_category,
@@ -319,6 +321,7 @@ class MA_Author_Categories extends Module
 
             $category_name = isset($_POST['singular_name']) ? sanitize_text_field($_POST['singular_name']) : '';
             $plural_name = isset($_POST['plural_name']) ? sanitize_text_field($_POST['plural_name']) : '';
+            $schema_property = isset($_POST['schema_property']) ? sanitize_text_field($_POST['schema_property']) : '';
             $category_status = isset($_POST['enabled_category']) ? intval($_POST['enabled_category']) : 0;
             $category_id = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
             $slug = sanitize_title($category_name);
@@ -338,6 +341,7 @@ class MA_Author_Categories extends Module
                 $category_args = [
                     'category_name'     => $category_name,
                     'plural_name'       => $plural_name,
+                    'meta_data'       => ['schema_property' => $schema_property],
                     'slug'              => $slug,
                     'category_status'   => $category_status
                 ];
@@ -411,6 +415,12 @@ class MA_Author_Categories extends Module
 
         $table_name     = AuthorCategoriesSchema::tableName();
 
+        $meta_data = [];
+        if (isset($insert_args['meta_data'])) {
+            $meta_data = $insert_args['meta_data'];
+            unset($insert_args['meta_data']);
+        }
+
         $wpdb->insert(
             $table_name,
             $insert_args
@@ -419,6 +429,9 @@ class MA_Author_Categories extends Module
         $category_id = $wpdb->insert_id;
 
         if ((int) $category_id > 0) {
+            foreach ($meta_data as $meta_data_key => $meta_data_value) {
+                self::updateAuthorCategoryMeta($category_id, $meta_data_key, $meta_data_value);
+            }
             return get_ppma_author_categories(['id' => $category_id]);
         } else {
             return false;
@@ -442,6 +455,12 @@ class MA_Author_Categories extends Module
 
         $table_name     = AuthorCategoriesSchema::tableName();
 
+        $meta_data = [];
+        if (isset($edit_args['meta_data'])) {
+            $meta_data = $edit_args['meta_data'];
+            unset($edit_args['meta_data']);
+        }
+
         $wpdb->update(
             $table_name,
             $edit_args,
@@ -450,7 +469,56 @@ class MA_Author_Categories extends Module
             ]
         );
 
+        foreach ($meta_data as $meta_data_key => $meta_data_value) {
+            self::updateAuthorCategoryMeta($id, $meta_data_key, $meta_data_value);
+        }
+
         return get_ppma_author_categories(['id' => $id]);
+    }
+
+    public function updateAuthorCategoryMeta($category_id, $meta_key, $meta_value) {
+        global $wpdb;
+        
+        $table_name     = AuthorCategoriesSchema::metaTableName();
+
+        if (empty($meta_value)) {
+            $result = $wpdb->query(
+                $wpdb->prepare(
+                    "DELETE FROM {$table_name} WHERE meta_key = %s AND category_id = %d",
+                    $meta_key, $category_id
+                )
+            );
+        } else {
+            $meta_ids = $wpdb->get_col($wpdb->prepare("SELECT meta_id FROM $table_name WHERE meta_key = %s AND category_id = %d", $meta_key, $category_id));
+
+            if (empty($meta_ids)) {
+                $result = $wpdb->insert(
+                    $table_name,
+                    [
+                        'category_id'   => $category_id,
+                        'meta_key'      => $meta_key,
+                        'meta_value'    => maybe_serialize($meta_value)
+                    ]
+                );
+            } else {
+                $_meta_value = $meta_value;
+                $meta_value  = maybe_serialize( $meta_value );
+
+                $data  = compact('meta_value');
+                $where = [
+                    'category_id'   => $category_id,
+                    'meta_key'      => $meta_key,
+                ];
+
+                $result = $wpdb->update(
+                    $table_name,
+                    $data, 
+                    $where
+                );
+            }
+        }
+
+        return $result ? true : false;
     }
 
     /**
@@ -492,16 +560,28 @@ class MA_Author_Categories extends Module
                             <h2><?php esc_html_e('Add Author Category', 'publishpress-authors'); ?></h2>
                             <form id="addauthorcategory" method="post" action="#" class="validate">
                                 <div class="form-field form-required category-name-wrap">
-                                    <label for="category-name"><?php esc_html_e( 'Singular Name', 'publishpress-authors' ); ?></label>
+                                    <label for="category-name"><?php esc_html_e( 'Singular Name', 'publishpress-authors' ); ?> <span class="required">*</span></label>
                                     <input name="category-name" id="category-name" type="text" value="" size="40" required autocomplete="off" />
                                     <p id="category-name-description"><?php esc_html_e('Enter the Author Category name when it\'s a single author', 'publishpress-authors'); ?></p>
                                 </div>
                                 <div class="form-field form-required category-plural-name-wrap">
-                                    <label for="category-plural-name"><?php esc_html_e( 'Plural Name', 'publishpress-authors' ); ?></label>
+                                    <label for="category-plural-name"><?php esc_html_e( 'Plural Name', 'publishpress-authors' ); ?> <span class="required">*</span></label>
                                     <input name="category-plural-name" id="category-plural-name" type="text" value="" size="40" required autocomplete="off" />
                                     <p id="category-plural-description"><?php esc_html_e('Enter the Author Category name when there are more than 1 author', 'publishpress-authors'); ?></p>
                                 </div>
-                                <div class="form-field form-required category-enabled-category-wrap">
+                                <div class="form-field category-schema-property-wrap">
+                                    <label for="category-schema-property"><?php esc_html_e( 'Schema Property', 'publishpress-authors' ); ?></label>
+                                    <input name="category-schema-property" id="category-schema-property" type="text" value="" size="40" autocomplete="off" />
+                                    <p id="category-plural-description"><?php printf(
+                                        esc_html__(
+                                            'For example, when this value is set to reviewedBy, all users under this category will be added to post reviewedBy property. You can read more %1$s in this guide.%2$s',
+                                            'publishpress-authors'
+                                        ),
+                                        '<a target="_blank" href="https://publishpress.com/knowledge-base/author-categories-schema/">',
+                                        '</a>'
+                                    ); ?></p>
+                                </div>
+                                <div class="form-field category-enabled-category-wrap">
                                     <label for="category-enabled-category">
                                         <input name="category-enabled-category" id="category-enabled-category" type="checkbox" value="1" checked />
                                         <?php esc_html_e( 'Enable Category', 'publishpress-authors' ); ?>
@@ -602,13 +682,14 @@ class MA_Author_Categories extends Module
 
         // add new table
         AuthorCategoriesSchema::createTableIfNotExists();
+        AuthorCategoriesSchema::createMetaTableIfNotExists();
         AuthorCategoriesSchema::createRelationTableIfNotExists();
 
         // add default author category
         $this->insertDefaultCategories();
 
         // add author category capability
-        $capability_roles = ['administrator', 'editor', 'author', 'contributor'];
+        $capability_roles = ['administrator'];
         foreach ($capability_roles as $capability_role) {
              $role = get_role($capability_role);
              if ($role instanceof \WP_Role) {
@@ -616,6 +697,8 @@ class MA_Author_Categories extends Module
              }
          }
          update_option('ppma_author_categories_installed', 1);
+         update_option('ppma_author_categories_meta_installed', 1);
+         update_option('ppma_author_categories_cap_upgrade', 1);
     }
 
     /**
@@ -628,6 +711,20 @@ class MA_Author_Categories extends Module
     public function runUpgradeTasks($currentVersion) {
         if (empty(get_option('ppma_author_categories_installed'))) {
             $this->runInstallTasks($currentVersion);
+        } elseif (empty(get_option('ppma_author_categories_meta_installed'))) {
+            AuthorCategoriesSchema::createMetaTableIfNotExists();
+            update_option('ppma_author_categories_meta_installed', 1);
+        }
+        
+        if (empty(get_option('ppma_author_categories_cap_upgrade'))) {
+            $capability_roles = ['editor', 'author', 'contributor'];
+            foreach ($capability_roles as $capability_role) {
+                $role = get_role($capability_role);
+                if ($role instanceof \WP_Role && $role->has_cap('ppma_manage_author_categories')) {
+                    $role->remove_cap('ppma_manage_author_categories');
+                }
+            }
+            update_option('ppma_author_categories_cap_upgrade', 1);
         }
     }
 }

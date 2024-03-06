@@ -652,6 +652,7 @@ jQuery(document).ready(function ($) {
          * Update name field
          */
         $('form#edittag tr.form-field.term-name-wrap th label').html(MultipleAuthorsStrings.name_label);
+        $('form#addtag .form-field.term-name-wrap label').html(MultipleAuthorsStrings.new_name_label);
 
         /**
          * Add required to display name field
@@ -757,6 +758,36 @@ jQuery(document).ready(function ($) {
         }
 
     }
+
+    /**
+     * Author button group click
+     */
+    $(document).on("click", ".ppma-button-group label", function () {
+        var current_button = $(this);
+        var target_value   = current_button.find('input').val();
+        var button_group   = current_button.closest('.ppma-button-group');
+
+        //remove active class
+        button_group.find('label.selected').removeClass('selected');
+        //hide descriptions
+        button_group.closest('.ppma-group-wrap').find('.ppma-button-description').hide();
+        //add active class to current select
+        current_button.addClass('selected');
+        //show selected tab descriptions
+        button_group.closest('.ppma-group-wrap').find('.ppma-button-description.' + target_value).show();
+
+        // hide/show fields
+        if (target_value !== 'existing_user') {
+            $('.form-field.term-user_id-wrap').hide();
+        } else {
+            $('.form-field.term-user_id-wrap').show();
+        }
+        if (target_value !== 'new_user') {
+            $('.form-field.term-author_email-wrap').hide();
+        } else {
+            $('.form-field.term-author_email-wrap').show();
+        }
+    });
 
     /**
      * Author editor tab switch
@@ -894,7 +925,7 @@ jQuery(document).ready(function ($) {
     if ($('body.taxonomy-author form#addtag #submit').length > 0) {
         var buttonTimeoutFn = setTimeout(function () {
             $('body.taxonomy-author form#addtag #submit').hide();
-            $('body.taxonomy-author form#addtag #submit').after('<input type="button" id="author-submit" class="button button-primary" value="' + $('body.taxonomy-author form#addtag #submit').val() + '">');
+            $('body.taxonomy-author form#addtag #submit').after('<input type="button" id="author-submit" class="button button-primary" value="' + MultipleAuthorsStrings.new_button + '">');
             clearTimeout(buttonTimeoutFn);
         }, 50);
     }

@@ -29,6 +29,17 @@ class AuthorCategoriesSchema
 
         return $wpdb->prefix . 'ppma_author_categories';
     }
+    /**
+     * Author categories meta table name
+     *
+     * @return string
+     */
+    public static function metaTableName()
+    {
+        global $wpdb;
+
+        return $wpdb->prefix . 'ppma_author_categories_meta';
+    }
 
     /**
      * Author categories relationship table name
@@ -82,6 +93,34 @@ class AuthorCategoriesSchema
                 UNIQUE KEY slug (slug),
                 KEY category_name (category_name),
                 KEY plural_name (plural_name)
+            ) $charset_collate;";
+
+            self::createTable($sql);
+        }
+    }
+
+    /**
+     * Create author categories table if not exist
+     *
+     * @return void
+     */
+    public static function createMetaTableIfNotExists()
+    {
+        global $wpdb;
+
+        $table_name = self::metaTableName();
+
+        if (!self::tableExists($table_name)) {
+            $charset_collate = $wpdb->get_charset_collate();
+
+            $sql = "CREATE TABLE {$table_name} (
+                meta_id bigint(20) unsigned NOT NULL auto_increment,
+                category_id bigint(20) unsigned NOT NULL default '0',
+                meta_key varchar(200) NOT NULL default '',
+                meta_value longtext NOT NULL default '',
+                PRIMARY KEY  (meta_id),
+                KEY category_id (category_id),
+                KEY meta_key (meta_key)
             ) $charset_collate;";
 
             self::createTable($sql);

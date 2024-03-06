@@ -404,6 +404,18 @@ class MA_Author_Custom_Fields extends Module
 
         $metabox->add_field(
             [
+                'name' => __('Schema Property', 'publishpress-authors'),
+                'id' => self::META_PREFIX . 'schema_property',
+                'type' => 'text',
+                'desc' => __(
+                    'Add this field value as a Schema.org properties relevant to an author. For example, alumniOf, worksFor, birthPlace etc',
+                    'publishpress-authors'
+                ),
+            ]
+        );
+
+        $metabox->add_field(
+            [
                 'name' => __('Open Link in New Tab', 'publishpress-authors'),
                 'id' => self::META_PREFIX . 'target',
                 'type' => 'checkbox',
@@ -506,6 +518,7 @@ class MA_Author_Custom_Fields extends Module
                         'label'       => $post->post_title,
                         'type'        => $this->getFieldMeta($post->ID, 'type'),
                         'social_profile' => $this->getFieldMeta($post->ID, 'social_profile'),
+                        'schema_property' => $this->getFieldMeta($post->ID, 'schema_property'),
                         'rel'           => $this->getFieldMeta($post->ID, 'rel'),
                         'target'        => $this->getFieldMeta($post->ID, 'target'),
                         'field_status' => $this->getFieldMeta($post->ID, 'field_status'),
@@ -846,6 +859,7 @@ class MA_Author_Custom_Fields extends Module
         update_post_meta($post_id, self::META_PREFIX . 'field_status', $data['field_status']);
         update_post_meta($post_id, self::META_PREFIX . 'requirement', isset($data['requirement']) ? $data['requirement'] : '' );
         update_post_meta($post_id, self::META_PREFIX . 'social_profile', isset($data['social_profile']) ? $data['social_profile'] : '' );
+        update_post_meta($post_id, self::META_PREFIX . 'schema_property', isset($data['schema_property']) ? $data['schema_property'] : '' );
         update_post_meta($post_id, self::META_PREFIX . 'rel', isset($data['rel']) ? $data['rel'] : '' );
         update_post_meta($post_id, self::META_PREFIX . 'target', !empty($data['target']) ? 1 : '' );
         update_post_meta($post_id, self::META_PREFIX . 'description', $data['description']);

@@ -32,6 +32,9 @@ if (!function_exists('get_archive_author')) {
         if (empty($authorName)) {
             $authorId = get_query_var('author');
             $user = get_user_by('ID', $authorId);
+            if (!is_object($user) || !isset($user->user_nicename)) {
+                return false;
+            }
             $authorName = $user->user_nicename;
         }
 
@@ -1348,11 +1351,14 @@ if (!function_exists('get_ppma_author_categories')) {
             'orderby'           => 'category_order',
             'order'             => 'ASC',
             'count_only'        => false,
+            'meta_query'        => []
         ];
 
         $args = wp_parse_args($args, $default_args);
 
-        $table_name     = $wpdb->prefix . 'ppma_author_categories';
+        $table_name      = $wpdb->prefix . 'ppma_author_categories';
+        $meta_table_name = $wpdb->prefix . 'ppma_author_categories_meta';
+
 
         $paged           = intval($args['paged']);
         $limit           = intval($args['limit']);
@@ -1384,21 +1390,34 @@ if (!function_exists('get_ppma_author_categories')) {
         $cache_key = 'author_categories_results_' . md5(serialize($args));
     
         $category_results = wp_cache_get($cache_key, 'author_categories_results_cache');
-
+        $single_result = false;
         if ($category_results === false) {
             $category_results = [];
             if ($field_search) {
                 $query = $wpdb->prepare(
-                    "SELECT * FROM {$table_name} WHERE {$field_search} = %s ORDER BY {$orderby} {$order} LIMIT 1",
+                    "SELECT {$table_name}.*, {$meta_table_name}.meta_key, {$meta_table_name}.meta_value
+                    FROM {$table_name}
+                    LEFT JOIN {$meta_table_name} ON {$table_name}.id = {$meta_table_name}.category_id
+                    WHERE {$table_name}.{$field_search} = %s
+                    ORDER BY {$orderby} {$order}
+                    LIMIT 1",
                     $field_value
                 );
                 $category_results = $wpdb->get_row($query, \ARRAY_A);
+                $single_result = true;
             } else {
 
                 $offset = ($paged - 1) * $limit;
 
-                $query = "SELECT * FROM {$table_name} WHERE 1=1";
-                
+                if ($count_only) {
+                    $query = "SELECT * FROM {$table_name} WHERE 1=1";
+                } else {
+                    $query = "SELECT {$table_name}.*, {$meta_table_name}.meta_key, {$meta_table_name}.meta_value
+                    FROM {$table_name}
+                    LEFT JOIN {$meta_table_name} ON {$table_name}.id = {$meta_table_name}.category_id
+                    WHERE 1=1";
+                }
+
                 if (!empty($search)) {
                     $query .= $wpdb->prepare(
                         " AND (slug LIKE '%%%s%%' OR category_name LIKE '%%%s%%' OR plural_name LIKE '%%%s%%')",
@@ -1414,21 +1433,42 @@ if (!function_exists('get_ppma_author_categories')) {
                         $category_status
                     );
                 }
-
+        
                 if ($count_only) {
                     $query = str_replace("SELECT *", "SELECT COUNT(*)", $query);
                     return $wpdb->get_var($query);
                 }
-
+        
                 $query .= $wpdb->prepare(
                     " ORDER BY {$orderby} {$order} LIMIT %d OFFSET %d",
                     $limit,
                     $offset
                 );
+
                 
                 $category_results = $wpdb->get_results($query, \ARRAY_A);
                 wp_cache_set($cache_key, $category_results, 'author_categories_results_cache', 3600);
             }
+        }
+
+        if (is_array($category_results)) {
+            $merged_results = $single_result ? [$category_results] : $category_results;
+            $category_results = array_reduce($merged_results, function ($accumulator, $item) {
+                $id = $item['id'];
+            
+                if (!isset($accumulator[$id])) {
+                    $accumulator[$id] = $item;
+                }
+            
+                if (isset($item['meta_key']) && isset($item['meta_value'])) {
+                    $accumulator[$id][$item['meta_key']] = $item['meta_value'];
+                }
+            
+                unset($accumulator[$id]['meta_key'], $accumulator[$id]['meta_value']);
+            
+                return $accumulator;
+            }, []);
+            $category_results = $single_result ? array_values($category_results)[0] : array_values($category_results);
         }
 
         return $category_results;

@@ -442,6 +442,46 @@ form#edittag tr.form-field #slug {
     margin-left: 30px;
 }
 
+.form-wrap label.ppma-account-type {
+    margin: 0 0 2px;
+}
+
+.ppma-button-group {
+    padding-left: 1px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.ppma-button-group label {
+    display: inline-block;
+    border: #7e8993 solid 1px;
+    position: relative;
+    z-index: 1;
+    padding: 5px 10px;
+    background: #fff;
+    margin: 0 0 0 -1px;
+    flex: 1;
+    text-align: center;
+    white-space: normal;
+}
+
+.ppma-button-group label.selected {
+    border-color: #007cba;
+    background: #008dd4;
+    color: #fff;
+    z-index: 2;
+}
+
+.ppma-button-group label:first-child {
+    border-radius: 3px 0 0 3px;
+}
+
+.ppma-button-group input {
+    display: none !important;
+}
+
 body.edit-php.post-type-ppmacf_field .row-actions .inline,
 body.edit-php.post-type-ppma_boxes .row-actions .inline,
 body.edit-php.post-type-ppmacf_field .tablenav.top .alignleft.actions:not(.bulkactions),

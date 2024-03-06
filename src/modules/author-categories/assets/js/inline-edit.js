@@ -128,6 +128,7 @@ window.wp = window.wp || {};
 			var category_id = element.attr('data-category_id');
 			var category_name = element.attr('data-category_name');
 			var plural_name = element.attr('data-plural_name');
+			var schema_property = element.attr('data-schema_property');
 			var category_status = Number(element.attr('data-category_status'));
 			var enabled_category = category_status > 0 ? true : false;
 
@@ -139,6 +140,7 @@ window.wp = window.wp || {};
 
 			$(':input[name="singular_name"]', editRow).val(category_name);
 			$(':input[name="plural_name"]', editRow).val(plural_name);
+			$(':input[name="schema_property"]', editRow).val(schema_property);
 			$(':input[name="enabled_category"]', editRow).prop('checked', enabled_category);
 
 

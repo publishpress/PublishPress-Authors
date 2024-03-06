@@ -117,7 +117,7 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
                 ]
             ];
 
-            $author_profile_schema = $this->add_author_same_as_urls($author_profile_schema, $author);
+            $author_profile_schema = $this->add_author_schema_property($author_profile_schema, $author);
 
             return $author_profile_schema;
         }
@@ -169,6 +169,7 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
 
                 $post_authors        = publishpress_authors_get_post_authors();
                 $post_author         = $post_authors[0];
+                $authors_schema_data = [];
 
                 if (is_object($post_author) && isset($post_author->display_name)) {
                     $author_profile_data  = $this->generate_author_schema($post_author);
@@ -176,6 +177,7 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
                     if (count($post_authors) === 1) {
                         $profile_page_authors = ['@id' => $post_author->link];
                         $publisher_profile_page_authors = ['@id' => $post_author->link, 'name' => $post_author->display_name];
+                        $authors_schema_data[$post_author->user_email] = $this->generate_author_schema($post_author);
                     } else {
                         $profile_page_authors = [];
                         $publisher_profile_page_authors = [];
@@ -183,6 +185,7 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
                             if (is_object($post_author) && isset($post_author->display_name)) {
                                 $profile_page_authors[] = $this->generate_author_schema($post_author);
                                 $publisher_profile_page_authors[] = $this->generate_author_schema($post_author);
+                                $authors_schema_data[$post_author->user_email] = $this->generate_author_schema($post_author);
                             }
                         }
                     }
@@ -225,6 +228,29 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
                         if (isset($details['author'])) {
                             $data[$index]['author'] = $publisher_profile_page_authors;
                         }
+                        
+                        // add author category schema property
+                        if ($index == 'WebPage') {
+                            $author_categorized = false;
+                            foreach (get_ppma_author_categories() as $author_category) {
+                                if (!empty($author_category['schema_property'])) {
+                                    if (!$author_categorized) {
+                                        $author_categorized = ppma_post_authors_categorized();
+                                    }
+                                    if (isset($author_categorized[$author_category['slug']])) {
+                                        $category_schema = [];
+                                        foreach ($author_categorized[$author_category['slug']] as $author_categorized_author) {
+                                            if (isset($authors_schema_data[$author_categorized_author->user_email])) {
+                                                $category_schema[] = $authors_schema_data[$author_categorized_author->user_email];
+                                            }
+                                        }
+                                        if (count($category_schema) > 0) {
+                                            $data[$index][$author_category['schema_property']] = count($category_schema) > 1 ? $category_schema : $category_schema[0];
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -241,7 +267,7 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
          *
          * @return array The Person schema data.
          */
-        protected function add_author_same_as_urls($data, $author)
+        protected function add_author_schema_property($data, $author)
         {
     
             $author_fields = get_posts(
@@ -249,18 +275,26 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
                     'post_type' => PPAuthorFields::POST_TYPE_CUSTOM_FIELDS,
                     'posts_per_page' => 100,
                     'post_status' => 'publish',
-                    'meta_query'  => [
-                        'relation' => 'AND',
+                    'meta_query' => [
+                        'relation' => 'OR',
                         [
-                            'key'   => 'ppmacf_social_profile',
-                            'value' => 1,
-                            'type'  => 'NUMERIC',
-                            'compare' => '='
+                            'relation' => 'AND',
+                            [
+                                'key' => 'ppmacf_social_profile',
+                                'value' => 1,
+                                'type' => 'NUMERIC',
+                                'compare' => '='
+                            ],
+                            [
+                                'key' => 'ppmacf_type',
+                                'value' => 'url',
+                                'compare' => '='
+                            ]
                         ],
                         [
-                            'key'   => 'ppmacf_type',
-                            'value' => 'url',
-                            'compare' => '='
+                            'key' => 'ppmacf_schema_property',
+                            'value' => '',
+                            'compare' => '!='
                         ]
                     ],
                 ]
@@ -274,9 +308,27 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
     
             if (!empty($author_fields)) {
                 foreach ($author_fields as $author_field) {
+
                     $field_value = isset($author->{$author_field->post_name}) ? $author->{$author_field->post_name} : '';
                     if (! empty(trim($field_value))) {
-                        $same_as_urls[] = $field_value;
+                        $ppmacf_social_profile = get_post_meta($author_field->ID, 'ppmacf_social_profile', true);
+                        $ppmacf_type = get_post_meta($author_field->ID, 'ppmacf_type', true);
+                        $ppmacf_schema_property = get_post_meta($author_field->ID, 'ppmacf_schema_property', true);
+
+                        if ($ppmacf_type == 'url' && (int) $ppmacf_social_profile === 1) {
+                            $same_as_urls[] = $field_value;
+                        }
+
+                        if (!empty($ppmacf_schema_property)) {
+                            if (isset($data[$ppmacf_schema_property])) {
+                                $schema_property_value = \array_values(\array_unique((array)$data[$ppmacf_schema_property]));
+                                $schema_property_value[] = $field_value;
+                                $data[$ppmacf_schema_property] = $schema_property_value;
+                            } else {
+                                $data[$ppmacf_schema_property] = $field_value;
+                            }
+
+                        }
                     }
                 }
             }
