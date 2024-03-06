@@ -448,9 +448,9 @@ form#edittag tr.form-field #slug {
 
 .ppma-button-group {
     padding-left: 1px;
-    display: inline-flex;
+    display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     width: 100%;
 }
 
@@ -461,13 +461,10 @@ form#edittag tr.form-field #slug {
     z-index: 1;
     padding: 5px 10px;
     background: #fff;
-}
-
-.ppma-button-group label {
     margin: 0 0 0 -1px;
     flex: 1;
     text-align: center;
-    white-space: nowrap;
+    white-space: normal;
 }
 
 .ppma-button-group label.selected {

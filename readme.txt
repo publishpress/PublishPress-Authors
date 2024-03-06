@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 5.5
 Requires PHP: 7.2.5
 Tested up to: 6.4
-Stable tag: 4.3.2
+Stable tag: 4.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -224,6 +224,15 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [4.4.0] - 6 Mar 2024 =
+
+* Update: Add User Account option for Guest Authors, #1287
+* Update: Add Schema option for Author Categories, #1642
+* Update: Add Schema Property Options for Author Fields, #1641
+* Fixed: Attempt to read property "user_nicename", #1675
+* Fixed: Fatal error: Uncaught TypeError: Illegal offset type in isset or empty, #1644
+* Update: Translation Updates for Authors FREE v. 4.3.2, #1673
 
 = [4.3.2] - 22 Feb 2024 =
 

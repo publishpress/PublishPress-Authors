@@ -572,7 +572,14 @@ class MA_Author_Categories extends Module
                                 <div class="form-field category-schema-property-wrap">
                                     <label for="category-schema-property"><?php esc_html_e( 'Schema Property', 'publishpress-authors' ); ?></label>
                                     <input name="category-schema-property" id="category-schema-property" type="text" value="" size="40" autocomplete="off" />
-                                    <p id="category-plural-description"><?php esc_html_e('For example, when this value is set to reviewedBy, all users under this category will be added to post reviewedBy property.', 'publishpress-authors'); ?></p>
+                                    <p id="category-plural-description"><?php printf(
+                                        esc_html__(
+                                            'For example, when this value is set to reviewedBy, all users under this category will be added to post reviewedBy property. You can read more %1$s in this guide.%2$s',
+                                            'publishpress-authors'
+                                        ),
+                                        '<a target="_blank" href="https://publishpress.com/knowledge-base/author-categories-schema/">',
+                                        '</a>'
+                                    ); ?></p>
                                 </div>
                                 <div class="form-field category-enabled-category-wrap">
                                     <label for="category-enabled-category">
@@ -682,7 +689,7 @@ class MA_Author_Categories extends Module
         $this->insertDefaultCategories();
 
         // add author category capability
-        $capability_roles = ['administrator', 'editor', 'author', 'contributor'];
+        $capability_roles = ['administrator'];
         foreach ($capability_roles as $capability_role) {
              $role = get_role($capability_role);
              if ($role instanceof \WP_Role) {
@@ -691,6 +698,7 @@ class MA_Author_Categories extends Module
          }
          update_option('ppma_author_categories_installed', 1);
          update_option('ppma_author_categories_meta_installed', 1);
+         update_option('ppma_author_categories_cap_upgrade', 1);
     }
 
     /**
@@ -706,6 +714,17 @@ class MA_Author_Categories extends Module
         } elseif (empty(get_option('ppma_author_categories_meta_installed'))) {
             AuthorCategoriesSchema::createMetaTableIfNotExists();
             update_option('ppma_author_categories_meta_installed', 1);
+        }
+        
+        if (empty(get_option('ppma_author_categories_cap_upgrade'))) {
+            $capability_roles = ['editor', 'author', 'contributor'];
+            foreach ($capability_roles as $capability_role) {
+                $role = get_role($capability_role);
+                if ($role instanceof \WP_Role && $role->has_cap('ppma_manage_author_categories')) {
+                    $role->remove_cap('ppma_manage_author_categories');
+                }
+            }
+            update_option('ppma_author_categories_cap_upgrade', 1);
         }
     }
 }

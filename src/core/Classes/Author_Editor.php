@@ -87,14 +87,14 @@ class Author_Editor
                     'author'
                 ) . '">' . $author->display_name . '</a>';
 
-            if (!$author->is_guest()) {
+            /*if (!$author->is_guest()) {
                 $retval .= ' — <span class="post-state">' . __('User', 'publishpress-authors') . '</span>';
             } else {
                 $retval .= ' — <span class="post-state">' . __(
                         'Guest Author',
                         'publishpress-authors'
                     ) . '</span>';
-            }
+            }*/
 
             $retval .= '</strong>';
 
@@ -116,9 +116,9 @@ class Author_Editor
             if (is_object($author) && isset($author->roles) && !empty($author->roles) && in_array('ppma_guest_author', $author->roles)) {
                 $retval = __('Guest Author With User Account', 'publishpress-authors');
             } elseif (is_object($author) && isset($author->roles) && !empty($author->roles) && !in_array('ppma_guest_author', $author->roles)) {
-                $retval = __('Existing User', 'publishpress-authors');
+                $retval = __('Registered Author With User Account', 'publishpress-authors');
             } else {
-                $retval = __('Guest Author With No Account', 'publishpress-authors');
+                $retval = __('Guest Author With No User Account', 'publishpress-authors');
             }
         }
 
@@ -693,18 +693,18 @@ class Author_Editor
 
         $author_type_options = [];
         $author_type_options['existing_user'] = [
-            'label'   => esc_html__('Existing User', 'publishpress-authors'),
-            'description' => '<strong>' . esc_html__('Author Profile for Existing User:', 'publishpress-authors') . '</strong> ' . esc_html__('Create an author profile for a current user account. The user will be able to log in and update their profile.', 'publishpress-authors'),
+            'label'   => esc_html__('Registered Author With User Account', 'publishpress-authors'),
+            'description' => esc_html__('Create an author profile for a current user account. You can select users who are allowed to edit posts. This user will be able to update their profile.', 'publishpress-authors'),
         ];
         $author_type_options['new_user'] = [
-            'label'   => esc_html__('New User', 'publishpress-authors'),
-            'description' => '<strong>' . esc_html__('Guest Author With a User Account:', 'publishpress-authors') . '</strong> ' . esc_html__('Create an author profile and a linked user account. This account will not be able to login to the WordPress dashboard. This option is best for compatibility with other themes and plugins.', 'publishpress-authors'),
+            'label'   => esc_html__('Guest Author With User Account', 'publishpress-authors'),
+            'description' => esc_html__('Create an author profile and a linked user account. This account will be in the "Guest Author" role and will not be able to login to the WordPress dashboard or update their profile. This option is best for compatibility with other themes and plugins.', 'publishpress-authors'),
         ];
 
         if ($enable_guest_author_user) {
             $author_type_options['guest_author'] = [
-                'label'   => esc_html__('Guest Author', 'publishpress-authors'),
-                'description' => '<strong>' . esc_html__('Guest Author With No User Account:', 'publishpress-authors') . '</strong> ' . esc_html__('Create an author profile with no linked user account. This option is lightweight but may have compatibility issues with other themes and plugins.', 'publishpress-authors'),
+                'label'   => esc_html__('Guest Author With No User Account', 'publishpress-authors'),
+                'description' => esc_html__('Create an author profile with no linked user account. This option is lightweight but may have compatibility issues with other themes and plugins.', 'publishpress-authors'),
             ];
         }
         ?>
@@ -735,7 +735,7 @@ class Author_Editor
             echo '</div>';
             ?>
             <div class="form-field term-user_id-wrap">
-                <label for="tag-user-id"><?php echo esc_html__('Select Existing User', 'publishpress-authors'); ?></label>
+                <label for="tag-user-id"><?php echo esc_html__('Select Author Account', 'publishpress-authors'); ?></label>
                 <?php
                 echo static::get_rendered_author_partial( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     [
