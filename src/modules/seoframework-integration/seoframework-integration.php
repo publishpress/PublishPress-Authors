@@ -111,9 +111,9 @@ if (!class_exists('MA_Seoframework_Integration')) {
                 $author = Author::get_by_term_id($term->term_id);
 
                 if (is_a($author, Author::class) && $author->is_guest()) {
-                    $title = $prefix . ' ' . $author->display_name;
+                    $title = $author->display_name;
                     $args = [
-                        $title,
+                        $prefix . ' ' . $title,
                         $prefix,
                         $title
                     ];
@@ -124,9 +124,9 @@ if (!class_exists('MA_Seoframework_Integration')) {
                     $author_id = absint($author_id);
                     $author = Author::get_by_term_id($author_id);
                     if (is_a($author, Author::class) && $author->is_guest()) {
-                        $title = $prefix . ' ' . $author->display_name;
+                        $title = $author->display_name;
                         $args = [
-                            $title,
+                            $prefix . ' ' . $title,
                             $prefix,
                             $title
                         ];
