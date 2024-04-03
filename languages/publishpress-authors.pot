@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PublishPress Authors\n"
-"POT-Creation-Date: 2024-04-03 12:26+0000\n"
+"POT-Creation-Date: 2024-04-03 14:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Anderson Grudtner Martins <anderson@publishpress.com>\n"
 "Language-Team: Anderson Grudtner Martins <anderson@publishpress.com>\n"
@@ -982,8 +982,7 @@ msgstr ""
 msgid ""
 "Create an author profile and a linked user account. This account will be in "
 "the \"Guest Author\" role and will not be able to login to the WordPress "
-"dashboard or update their profile. This option is best for compatibility "
-"with other themes and plugins."
+"dashboard or update their profile."
 msgstr ""
 
 #: src/core/Classes/Author_Editor.php:698
