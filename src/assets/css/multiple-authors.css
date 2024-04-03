@@ -465,6 +465,7 @@ form#edittag tr.form-field #slug {
     flex: 1;
     text-align: center;
     white-space: normal;
+    cursor: pointer;
 }
 
 .ppma-button-group label.selected {
