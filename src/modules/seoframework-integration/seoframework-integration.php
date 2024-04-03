@@ -87,20 +87,55 @@ if (!class_exists('MA_Seoframework_Integration')) {
          */
         public function init()
         {
-            add_filter('the_seo_framework_generated_archive_title', [$this, 'setArchiveTitle'], 10, 2);
+            add_filter('the_seo_framework_generated_archive_title_items', [$this, 'setArchiveTitle'], 10, 5);
         }
 
-        public function setArchiveTitle($title, $term)
+
+		/**
+		 * @since 5.0.0
+		 * @param String[title,prefix,title_without_prefix] $items                The generated archive title items.
+		 * @param \WP_Term|\WP_User|\WP_Post_Type|null      $object               The archive object.
+		 *                                                                        Is null when query is autodetermined.
+		 * @param string                                    $title_without_prefix Archive title without prefix.
+		 * @param string                                    $prefix               Archive title prefix.
+		 */
+        public function setArchiveTitle(
+            $args, 
+            $term,
+            $title,
+            $title_without_prefix,
+            $prefix
+        )
         {
             if (is_tax('author')) {
                 $author = Author::get_by_term_id($term->term_id);
 
                 if (is_a($author, Author::class) && $author->is_guest()) {
                     $title = $author->display_name;
+                    $args = [
+                        $prefix . ' ' . $title,
+                        $prefix,
+                        $title
+                    ];
                 }
+            } elseif (is_author()) {
+                $author_id = get_query_var('author');
+                if (!empty($author_id) && $author_id < 0) {
+                    $author_id = absint($author_id);
+                    $author = Author::get_by_term_id($author_id);
+                    if (is_a($author, Author::class) && $author->is_guest()) {
+                        $title = $author->display_name;
+                        $args = [
+                            $prefix . ' ' . $title,
+                            $prefix,
+                            $title
+                        ];
+                    }
+                }
+
             }
 
-            return $title;
+            return $args;
         }
     }
 }

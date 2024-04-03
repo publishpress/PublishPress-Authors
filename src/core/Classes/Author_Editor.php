@@ -690,16 +690,20 @@ class Author_Editor
 
         $legacyPlugin = Factory::getLegacyPlugin();
         $enable_guest_author_user = $legacyPlugin->modules->multiple_authors->options->enable_guest_author_user === 'yes';
+        $enable_guest_author_acount = $legacyPlugin->modules->multiple_authors->options->enable_guest_author_acount === 'yes';
 
         $author_type_options = [];
         $author_type_options['existing_user'] = [
             'label'   => esc_html__('Registered Author With User Account', 'publishpress-authors'),
             'description' => esc_html__('Create an author profile for a current user account. You can select users who are allowed to edit posts. This user will be able to update their profile.', 'publishpress-authors'),
         ];
-        $author_type_options['new_user'] = [
-            'label'   => esc_html__('Guest Author With User Account', 'publishpress-authors'),
-            'description' => esc_html__('Create an author profile and a linked user account. This account will be in the "Guest Author" role and will not be able to login to the WordPress dashboard or update their profile. This option is best for compatibility with other themes and plugins.', 'publishpress-authors'),
-        ];
+
+        if ($enable_guest_author_acount) {
+            $author_type_options['new_user'] = [
+                'label'   => esc_html__('Guest Author With User Account', 'publishpress-authors'),
+                'description' => esc_html__('Create an author profile and a linked user account. This account will be in the "Guest Author" role and will not be able to login to the WordPress dashboard or update their profile.', 'publishpress-authors'),
+            ];
+        }
 
         if ($enable_guest_author_user) {
             $author_type_options['guest_author'] = [
