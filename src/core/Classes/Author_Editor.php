@@ -701,7 +701,7 @@ class Author_Editor
         if ($enable_guest_author_acount) {
             $author_type_options['new_user'] = [
                 'label'   => esc_html__('Guest Author With User Account', 'publishpress-authors'),
-                'description' => esc_html__('Create an author profile and a linked user account. This account will be in the "Guest Author" role and will not be able to login to the WordPress dashboard or update their profile. This option is best for compatibility with other themes and plugins.', 'publishpress-authors'),
+                'description' => esc_html__('Create an author profile and a linked user account. This account will be in the "Guest Author" role and will not be able to login to the WordPress dashboard or update their profile.', 'publishpress-authors'),
             ];
         }
 
