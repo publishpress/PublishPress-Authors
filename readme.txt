@@ -6,8 +6,8 @@ Author URI: https://publishpress.com
 Tags: multiple authors, authors, guest authors, author fields, author layouts
 Requires at least: 5.5
 Requires PHP: 7.2.5
-Tested up to: 6.4
-Stable tag: 4.4.0
+Tested up to: 6.5
+Stable tag: 4.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -225,6 +225,17 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [4.4.1] - 3 April 2024 =
+
+* Update: Add a setting to choose which Author types are allowed, #1692
+* Fixed: SEO Framework: deprecated Hook notice in error log, #1700
+* Fixed: Authors causing custom post type and taxonomy archives SEO title to be untitled, #1013
+* Fixed: RankMath Schema (Logo & Location) Issue, #1380
+* Fixed: PublishPress Authors plugin changes "Organization" to "Person", #1708
+* Fixed: Author boxes are not displayed correctly when using Inline with Avatars layout – punctuation, #1499
+* Update: Disable the lightweight Guest Authors feature by default for new installation, #1703
+* Update: Translation Updates ES-FR-IT Authors FREE v4.4.0, #1695
 
 = [4.4.0] - 6 Mar 2024 =
 
