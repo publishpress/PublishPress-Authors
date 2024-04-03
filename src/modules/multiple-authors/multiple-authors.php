@@ -125,7 +125,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'author_page_post_types'       => [],
                     'disable_quick_edit_author_box' => 'no',
                     'load_font_awesome'            => 'no',
-                    'enable_guest_author_user'     => 'yes',
+                    'enable_guest_author_user'     => 'no',
+                    'enable_guest_author_acount'   => 'yes',
                     'default_avatar'               => '',
                     'display_name_format'          => 'custom',
                 ],
@@ -1000,10 +1001,21 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_settings_field(
                 'enable_guest_author_user',
                 __(
-                    'Enable Guest Authors',
+                    'Enable Guest Author With No User Account',
                     'publishpress-authors'
                 ),
                 [$this, 'settings_enable_guest_author_user'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_guest_authors'
+            );
+
+            add_settings_field(
+                'enable_guest_author_acount',
+                __(
+                    'Enable Guest Guest Author With User Account',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_enable_guest_author_acount'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_guest_authors'
             );
@@ -1678,6 +1690,29 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '<label for="' . esc_attr($id) . '">';
 
             echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[enable_guest_author_user]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
+
+            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
+                . esc_html__(
+                    'Allow authors to be created without a real user account.',
+                    'publishpress-authors'
+                )
+                . '</span>';
+
+
+            echo '</label>';
+        }
+
+        /**
+         * @param array $args
+         */
+        public function settings_enable_guest_author_acount($args = [])
+        {
+            $id    = $this->module->options_group_name . '_enable_guest_author_acount';
+            $value = isset($this->module->options->enable_guest_author_acount) ? $this->module->options->enable_guest_author_acount : '';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[enable_guest_author_acount]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
 
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
@@ -2763,6 +2798,10 @@ echo '<span class="ppma_settings_field_description">'
 
             if (!isset($new_options['enable_guest_author_user'])) {
                 $new_options['enable_guest_author_user'] = 'no';
+            }
+
+            if (!isset($new_options['enable_guest_author_acount'])) {
+                $new_options['enable_guest_author_acount'] = 'no';
             }
 
             if (!isset($new_options['show_author_post_authors'])) {
