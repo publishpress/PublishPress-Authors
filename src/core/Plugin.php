@@ -1454,13 +1454,16 @@ class Plugin
         $author_user_login   = '';
         $author_details   = [];
         $author_display_name_html   = '';
-
+        $enqueue_media_script = false;
+        
         if (
             is_admin()
             && $pagenow === 'term.php'
             && isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'author'
             && isset($_GET['tag_ID'])
         ) {
+            $enqueue_media_script = true;
+
             $author = Author::get_by_term_id((int)$_GET['tag_ID']);
 
             if (is_object($author) && !is_wp_error($author) && isset($author->link)) {
@@ -1477,6 +1480,12 @@ class Plugin
                     'ID' => $author->ID,
                 ];
             }
+        } elseif (
+            is_admin()
+            && isset($_GET['page']) 
+            && $_GET['page'] === 'ppma-modules-settings'
+        ) {
+            $enqueue_media_script = true;
         }
 
         $js_strings = [
@@ -1554,7 +1563,9 @@ class Plugin
                 'nonce' => wp_create_nonce('bulk-edit-nonce')
             )
         );
-        wp_enqueue_media();
+        if ($enqueue_media_script) {
+            wp_enqueue_media();
+        }
     }
 
     /**
