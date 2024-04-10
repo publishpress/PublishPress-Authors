@@ -49,12 +49,12 @@ abstract class Author_Utils
             );
 
             if (empty($terms) || is_wp_error($terms)) {
-                return false;
+                static::$authorTermByEmail[$emailAddress] = false;
+            } else {
+                $firstTerm = $terms[0];
+    
+                static::$authorTermByEmail[$emailAddress] = $firstTerm->term_id;
             }
-
-            $firstTerm = $terms[0];
-
-            static::$authorTermByEmail[$emailAddress] = $firstTerm->term_id;
         }
 
         return static::$authorTermByEmail[$emailAddress];
