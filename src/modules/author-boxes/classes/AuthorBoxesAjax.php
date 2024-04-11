@@ -151,7 +151,8 @@ class AuthorBoxesAjax
             $profile_fields   = Author_Editor::get_fields(false);
             $profile_fields   = apply_filters('multiple_authors_author_fields', $profile_fields, false);
 
-            $editor_data = !empty($_POST['editor_data']) ? array_map('sanitize_text_field', $_POST['editor_data']) : [];
+            $editor_data = !empty($_POST['editor_data']) ? array_map('stripslashes_deep', $_POST['editor_data']) : [];
+            $editor_data = array_map('wp_kses_post', $editor_data);
             $fields = apply_filters('multiple_authors_author_boxes_fields', MA_Author_Boxes::get_fields(false), false);
             $args = [];
             $args['post_id'] = '</?php echo $post_id; ?>';
@@ -248,7 +249,7 @@ foreach ($profile_fields as $key => $data) {
                                 <?php 
                                 $profile_field_html = '
                                 
-                                </?php if (!empty(trim($author->$key))) : ?>
+                                </?php if (!empty(trim($author->'. esc_attr($key) .'))) : ?>
                                     ';
     if (!empty(trim($profile_before_display_prefix))) {
                                 $profile_field_html  .= '<span class="ppma-author-field-meta-prefix"> '. $profile_before_display_prefix .' </span>';
@@ -256,7 +257,7 @@ foreach ($profile_fields as $key => $data) {
                                 $profile_field_html .= '<'. esc_html($profile_html_tag) .'';
                                 $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data ppma-author-field-meta  '. esc_attr('ppma-author-field-type-' . $data['type']) .'" aria-label="'. esc_attr(($data['label'])) .'"';
                                 if ($profile_html_tag === 'a') {
-                                    $profile_field_html .= ' href="</?php echo $author->$key; ?>"';
+                                    $profile_field_html .= ' href="</?php echo $author->'. esc_attr($key) .'; ?>"';
                                 }
                                 $profile_field_html .= '>';
                                 ?>
