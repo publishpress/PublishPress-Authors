@@ -754,6 +754,7 @@ class MA_Author_Custom_Fields extends Module
             'title' => $columns['title'],
             'field_status' => __('Status', 'publishpress-authors'),
             'requirement' => __('Requirement', 'publishpress-authors'),
+            'type' => __('Type', 'publishpress-authors'),
             'slug' => __('Slug', 'publishpress-authors'),
         ];
 
@@ -796,6 +797,11 @@ class MA_Author_Custom_Fields extends Module
                 <?php echo esc_html_e('Required', 'publishpress-authors'); ?>
             <?php
             }
+        } elseif ($column === 'type') {
+            $type = $this->getFieldMeta($post->ID, 'type');
+            $type_options = CustomFieldsModel::getFieldTypes();
+            $field_type = array_key_exists($type, $type_options) ? $type_options[$type] : $type;
+            echo esc_html($field_type);
         }
     }
 
