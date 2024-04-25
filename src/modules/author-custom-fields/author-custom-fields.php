@@ -370,6 +370,15 @@ class MA_Author_Custom_Fields extends Module
 
         $metabox->add_field(
             [
+                'name' => __('Field Status', 'publishpress-authors'),
+                'id' => self::META_PREFIX . 'field_status',
+                'type' => 'select',
+                'options' => CustomFieldsModel::getFieldStatus(),
+            ]
+        );
+
+        $metabox->add_field(
+            [
                 'name' => __('Field Slug', 'publishpress-authors'),
                 'id' => self::META_PREFIX . 'slug',
                 'type' => 'text',
@@ -433,15 +442,6 @@ class MA_Author_Custom_Fields extends Module
                 'type' => 'select',
                 'options' => CustomFieldsModel::getFieldRelOptions(),
                 'desc' => '',
-            ]
-        );
-
-        $metabox->add_field(
-            [
-                'name' => __('Field Status', 'publishpress-authors'),
-                'id' => self::META_PREFIX . 'field_status',
-                'type' => 'select',
-                'options' => CustomFieldsModel::getFieldStatus(),
             ]
         );
 
