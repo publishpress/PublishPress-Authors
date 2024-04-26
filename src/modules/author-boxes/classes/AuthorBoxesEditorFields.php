@@ -720,8 +720,8 @@ class AuthorBoxesEditorFields
                     'tab_name'    => $key,
                     'tab'         => 'profile_fields',
                 ];
-                $fields['profile_fields_show_' . $key] = [
-                    'label'       => sprintf(esc_html__('Show %1s', 'publishpress-authors'), $data['label']),
+                $fields['profile_fields_hide_' . $key] = [
+                    'label'       => sprintf(esc_html__('Hide %1s', 'publishpress-authors'), $data['label']),
                     'type'        => 'checkbox',
                     'sanitize'    => 'absint',
                     'tabbed'      => 1,
