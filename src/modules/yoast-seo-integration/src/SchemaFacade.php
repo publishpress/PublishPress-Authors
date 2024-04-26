@@ -42,7 +42,7 @@ class SchemaFacade
         add_filter('wpseo_meta_author', [$this, 'filter_author_meta' ], 11, 2);
         add_filter('wpseo_opengraph_title', [$this, 'handleAuthorWpseoTitle']);
         add_filter('wpseo_title', [$this, 'handleAuthorWpseoTitle']);
-        add_filter( 'wpseo_enhanced_slack_data', [$this, 'generateSlackData' ], 10, 2);
+        add_filter('wpseo_enhanced_slack_data', [$this, 'filterSlackData' ], 10, 2);
     }
 
     /**
@@ -281,7 +281,7 @@ class SchemaFacade
     *
     * @return array The Slack labels + data.
     */
-   public function generateSlackData( array $data, $presentation ) {
+   public function filterSlackData( array $data, $presentation ) {
 
         if (!is_singular(Utils::get_enabled_post_types()) || empty($presentation->model->object_type)) {
             return $data;

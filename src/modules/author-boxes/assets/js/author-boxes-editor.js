@@ -42,7 +42,7 @@
             var field_icon = $(this).attr('data-social');
             $('#profile_fields_' + field_icon + '_display_icon').val('<span class="dashicons dashicons-' + field_icon + '"></span>');
 
-            if ($('#profile_fields_show_' + field_icon + '').is(':checked')) {
+            if (!$('#profile_fields_hide_' + field_icon + '').is(':checked')) {
                 generateEditorPreview(getAllEditorFieldsValues(), true);
             }
         });
@@ -402,7 +402,7 @@
             var profile_refresh_trigger = [];
             for (field_key in profile_fields) {
                 var field_name = profile_fields[field_key];
-                profile_refresh_trigger.push('profile_fields_show_' + field_name);
+                profile_refresh_trigger.push('profile_fields_hide_' + field_name);
                 profile_refresh_trigger.push('profile_fields_' + field_name + '_author_categories');
                 profile_refresh_trigger.push('profile_fields_' + field_name + '_author_categories_divider');
                 profile_refresh_trigger.push('profile_fields_' + field_name + '_html_tag');

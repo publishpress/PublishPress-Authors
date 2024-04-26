@@ -224,7 +224,7 @@ $meta_row_extra = '';
 
 foreach ($profile_fields as $key => $data) {
     if (!in_array($key, MA_Author_Boxes::AUTHOR_BOXES_EXCLUDED_FIELDS)) {
-                                    $profile_show_field = $args['profile_fields_show_' . $key]['value'] ? true : false;
+                                    $profile_show_field = $args['profile_fields_hide_' . $key]['value'] ? false : true;
     
                                     $profile_html_tag  = !empty($args['profile_fields_' . $key . '_html_tag']['value'])
                                         ? $args['profile_fields_' . $key . '_html_tag']['value'] : 'span';
