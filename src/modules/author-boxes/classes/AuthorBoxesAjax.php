@@ -340,27 +340,12 @@ $custom_styles = '.pp-multiple-authors-layout-boxed ul li > div:nth-child(1) {fl
 <?php endif; ?>
 <?php echo $bio_row_extra ; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
-<?php if ($args['meta_show']['value']) : ?>
-                        <<?php echo esc_html($args['meta_html_tag']['value']); ?> class="pp-author-boxes-meta multiple-authors-links">
 <?php if ($args['meta_view_all_show']['value']) : ?>
+                        <<?php echo esc_html($args['meta_html_tag']['value']); ?> class="pp-author-boxes-meta multiple-authors-links">
                             <a href="</?php echo esc_url($author->link); ?>" title="</?php echo esc_attr__('View all posts', 'publishpress-authors'); ?>">
                                     <span></?php echo esc_html__('View all posts', 'publishpress-authors'); ?></span>
                             </a>
-<?php endif; ?>
-<?php if ($args['meta_email_show']['value']) : ?>
-                            </?php if ($author->user_email) : ?>
-                                <a href="</?php echo esc_url('mailto:'.$author->user_email); ?>" target="_blank" aria-label="<?php echo esc_attr__('Email', 'publishpress-authors'); ?>">
-                                    <span class="dashicons dashicons-email-alt"></span>
-                                </a>
-                            </?php endif; ?>
-<?php endif; ?>
-<?php if ($args['meta_site_link_show']['value']) : ?>
-                            </?php if ($author->user_email) : ?>
-                                <a href="</?php echo esc_url($author->user_url); ?>" target="_blank" aria-label="<?php echo esc_attr__('Website', 'publishpress-authors'); ?>">
-                                    <span class="dashicons dashicons-admin-links"></span>
-                                </a>
-                            </?php endif; ?>
-<?php endif; ?>
+
                         </<?php echo esc_html($args['meta_html_tag']['value']); ?>>
 <?php endif; ?>
 <?php echo $meta_row_extra ; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>

@@ -376,29 +376,11 @@ class AuthorBoxesEditorFields
      */
     public static function getMetaFields($fields, $post)
     {
-        $fields['meta_show'] = [
-            'label'       => esc_html__('Show Meta Information', 'publishpress-authors'),
-            'type'        => 'checkbox',
-            'sanitize'    => 'absint',
-            'tab'         => 'meta',
-        ];
         $fields['meta_view_all_show'] = [
             'label'       => esc_html__('Show "View all posts" link', 'publishpress-authors'),
             'type'        => 'checkbox',
             'sanitize'    => 'absint',
             'tab'         => 'meta',
-        ];
-        $fields['meta_email_show'] = [
-            'label'       => esc_html__('Show Email field', 'publishpress-authors'),
-            'type'        => 'checkbox',
-            'sanitize'    => 'absint',
-            'tab'         => 'meta',
-        ];
-        $fields['meta_site_link_show'] = [
-            'label'    => esc_html__('Show Website field', 'publishpress-authors'),
-            'type'     => 'checkbox',
-            'sanitize' => 'absint',
-            'tab'      => 'meta',
         ];
         $fields['meta_size'] = [
             'label'    => esc_html__('Size', 'publishpress-authors'),

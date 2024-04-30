@@ -90,11 +90,8 @@ class AuthorBoxesDefault
         $editor_data['author_bio_show'] = 1;
         $editor_data['author_bio_html_tag'] = 'p';
         //meta default
-        $editor_data['meta_show'] = 1;
         $editor_data['meta_view_all_show'] = 1;
-        $editor_data['meta_email_show'] = 1;
-        $editor_data['meta_site_link_show'] = 1;
-        $editor_data['meta_html_tag'] = 'p';
+        $editor_data['meta_html_tag'] = 'span';
         $editor_data['meta_background_color'] = '#655997';
         $editor_data['meta_color'] = '#ffffff';
         $editor_data['meta_link_hover_color'] = '#ffffff';
@@ -115,6 +112,24 @@ class AuthorBoxesDefault
         $editor_data['box_layout_shadow_blur'] = 0;
         $editor_data['box_layout_shadow_speed'] = 0;
         $editor_data['box_layout_color'] = '#3c434a';
+        // hide all default fields
+        $editor_data['profile_fields_hide_first_name'] = 1;
+        $editor_data['profile_fields_hide_last_name'] = 1;
+        // email field
+        $editor_data['profile_fields_user_email_html_tag'] = 'a';
+        $editor_data['profile_fields_user_email_value_prefix'] = 'mailto:';
+        $editor_data['profile_fields_user_email_display'] = 'icon';
+        $editor_data['profile_fields_user_email_display_icon'] = '<span class="dashicons dashicons-email-alt"></span>';
+        $editor_data['profile_fields_user_email_display_icon_background_color'] = '#655997';
+        $editor_data['profile_fields_user_email_color'] = '#ffffff';
+        $editor_data['profile_fields_user_email_display_icon_border_radius'] = '100';
+        // website field
+        $editor_data['profile_fields_user_url_html_tag'] = 'a';
+        $editor_data['profile_fields_user_url_display'] = 'icon';
+        $editor_data['profile_fields_user_url_display_icon'] = '<span class="dashicons dashicons-admin-links"></span>';
+        $editor_data['profile_fields_user_url_display_icon_background_color'] = '#655997';
+        $editor_data['profile_fields_user_url_color'] = '#ffffff';
+        $editor_data['profile_fields_user_url_display_icon_border_radius'] = '100';
 
         $editor_data = self::addEditorDataDefaultValues($editor_data);
 
@@ -146,11 +161,8 @@ class AuthorBoxesDefault
         $editor_data['author_bio_show'] = 1;
         $editor_data['author_bio_html_tag'] = 'p';
         //meta default
-        $editor_data['meta_show'] = 1;
         $editor_data['meta_view_all_show'] = 1;
-        $editor_data['meta_email_show'] = 1;
-        $editor_data['meta_site_link_show'] = 1;
-        $editor_data['meta_html_tag'] = 'p';
+        $editor_data['meta_html_tag'] = 'span';
         $editor_data['meta_background_color'] = '#655997';
         $editor_data['meta_color'] = '#ffffff';
         $editor_data['meta_link_hover_color'] = '#ffffff';
@@ -172,6 +184,24 @@ class AuthorBoxesDefault
         $editor_data['box_layout_shadow_blur'] = 0;
         $editor_data['box_layout_shadow_speed'] = 0;
         $editor_data['box_layout_color'] = '#3c434a';
+        // hide all default fields
+        $editor_data['profile_fields_hide_first_name'] = 1;
+        $editor_data['profile_fields_hide_last_name'] = 1;
+        // email field
+        $editor_data['profile_fields_user_email_html_tag'] = 'a';
+        $editor_data['profile_fields_user_email_value_prefix'] = 'mailto:';
+        $editor_data['profile_fields_user_email_display'] = 'icon';
+        $editor_data['profile_fields_user_email_display_icon'] = '<span class="dashicons dashicons-email-alt"></span>';
+        $editor_data['profile_fields_user_email_display_icon_background_color'] = '#655997';
+        $editor_data['profile_fields_user_email_color'] = '#ffffff';
+        $editor_data['profile_fields_user_email_display_icon_border_radius'] = '100';
+        // website field
+        $editor_data['profile_fields_user_url_html_tag'] = 'a';
+        $editor_data['profile_fields_user_url_display'] = 'icon';
+        $editor_data['profile_fields_user_url_display_icon'] = '<span class="dashicons dashicons-admin-links"></span>';
+        $editor_data['profile_fields_user_url_display_icon_background_color'] = '#655997';
+        $editor_data['profile_fields_user_url_color'] = '#ffffff';
+        $editor_data['profile_fields_user_url_display_icon_border_radius'] = '100';
 
         $editor_data = self::addEditorDataDefaultValues($editor_data);
 
@@ -201,9 +231,7 @@ class AuthorBoxesDefault
         $editor_data['author_bio_html_tag'] = 'p';
         //meta default
         $editor_data['meta_view_all_show'] = 1;
-        $editor_data['meta_email_show'] = 1;
-        $editor_data['meta_site_link_show'] = 1;
-        $editor_data['meta_html_tag'] = 'p';
+        $editor_data['meta_html_tag'] = 'span';
         $editor_data['meta_background_color'] = '#655997';
         $editor_data['meta_color'] = '#ffffff';
         $editor_data['meta_link_hover_color'] = '#ffffff';
@@ -224,6 +252,24 @@ class AuthorBoxesDefault
         $editor_data['box_layout_shadow_blur'] = 0;
         $editor_data['box_layout_shadow_speed'] = 0;
         $editor_data['box_layout_color'] = '#3c434a';
+        // hide all default fields
+        $editor_data['profile_fields_hide_first_name'] = 1;
+        $editor_data['profile_fields_hide_last_name'] = 1;
+        // email field
+        $editor_data['profile_fields_user_email_html_tag'] = 'a';
+        $editor_data['profile_fields_user_email_value_prefix'] = 'mailto:';
+        $editor_data['profile_fields_user_email_display'] = 'icon';
+        $editor_data['profile_fields_user_email_display_icon'] = '<span class="dashicons dashicons-email-alt"></span>';
+        $editor_data['profile_fields_user_email_display_icon_background_color'] = '#655997';
+        $editor_data['profile_fields_user_email_color'] = '#ffffff';
+        $editor_data['profile_fields_user_email_display_icon_border_radius'] = '100';
+        // website field
+        $editor_data['profile_fields_user_url_html_tag'] = 'a';
+        $editor_data['profile_fields_user_url_display'] = 'icon';
+        $editor_data['profile_fields_user_url_display_icon'] = '<span class="dashicons dashicons-admin-links"></span>';
+        $editor_data['profile_fields_user_url_display_icon_background_color'] = '#655997';
+        $editor_data['profile_fields_user_url_color'] = '#ffffff';
+        $editor_data['profile_fields_user_url_display_icon_border_radius'] = '100';
         //default css
         $editor_data['box_tab_custom_css'] = '.pp-multiple-authors-layout-inline ul.pp-multiple-authors-boxes-ul {
             display: flex;
@@ -262,9 +308,7 @@ class AuthorBoxesDefault
         $editor_data['author_bio_html_tag'] = 'p';
         //meta default
         $editor_data['meta_view_all_show'] = 1;
-        $editor_data['meta_email_show'] = 1;
-        $editor_data['meta_site_link_show'] = 1;
-        $editor_data['meta_html_tag'] = 'p';
+        $editor_data['meta_html_tag'] = 'span';
         $editor_data['meta_background_color'] = '#655997';
         $editor_data['meta_color'] = '#ffffff';
         $editor_data['meta_link_hover_color'] = '#ffffff';
@@ -285,6 +329,24 @@ class AuthorBoxesDefault
         $editor_data['box_layout_shadow_blur'] = 0;
         $editor_data['box_layout_shadow_speed'] = 0;
         $editor_data['box_layout_color'] = '#3c434a';
+        // hide all default fields
+        $editor_data['profile_fields_hide_first_name'] = 1;
+        $editor_data['profile_fields_hide_last_name'] = 1;
+        // email field
+        $editor_data['profile_fields_user_email_html_tag'] = 'a';
+        $editor_data['profile_fields_user_email_value_prefix'] = 'mailto:';
+        $editor_data['profile_fields_user_email_display'] = 'icon';
+        $editor_data['profile_fields_user_email_display_icon'] = '<span class="dashicons dashicons-email-alt"></span>';
+        $editor_data['profile_fields_user_email_display_icon_background_color'] = '#655997';
+        $editor_data['profile_fields_user_email_color'] = '#ffffff';
+        $editor_data['profile_fields_user_email_display_icon_border_radius'] = '100';
+        // website field
+        $editor_data['profile_fields_user_url_html_tag'] = 'a';
+        $editor_data['profile_fields_user_url_display'] = 'icon';
+        $editor_data['profile_fields_user_url_display_icon'] = '<span class="dashicons dashicons-admin-links"></span>';
+        $editor_data['profile_fields_user_url_display_icon_background_color'] = '#655997';
+        $editor_data['profile_fields_user_url_color'] = '#ffffff';
+        $editor_data['profile_fields_user_url_display_icon_border_radius'] = '100';
         //default css
         $editor_data['box_tab_custom_css'] = '.pp-multiple-authors-layout-inline ul.pp-multiple-authors-boxes-ul {
             display: flex;
@@ -327,9 +389,7 @@ class AuthorBoxesDefault
         $editor_data['author_bio_html_tag'] = 'p';
         //meta default
         $editor_data['meta_view_all_show'] = 1;
-        $editor_data['meta_email_show'] = 1;
-        $editor_data['meta_site_link_show'] = 1;
-        $editor_data['meta_html_tag'] = 'p';
+        $editor_data['meta_html_tag'] = 'span';
         $editor_data['meta_background_color'] = '#655997';
         $editor_data['meta_color'] = '#ffffff';
         $editor_data['meta_link_hover_color'] = '#ffffff';
@@ -350,6 +410,24 @@ class AuthorBoxesDefault
         $editor_data['box_layout_shadow_blur'] = 0;
         $editor_data['box_layout_shadow_speed'] = 0;
         $editor_data['box_layout_color'] = '#3c434a';
+        // hide all default fields
+        $editor_data['profile_fields_hide_first_name'] = 1;
+        $editor_data['profile_fields_hide_last_name'] = 1;
+        // email field
+        $editor_data['profile_fields_user_email_html_tag'] = 'a';
+        $editor_data['profile_fields_user_email_value_prefix'] = 'mailto:';
+        $editor_data['profile_fields_user_email_display'] = 'icon';
+        $editor_data['profile_fields_user_email_display_icon'] = '<span class="dashicons dashicons-email-alt"></span>';
+        $editor_data['profile_fields_user_email_display_icon_background_color'] = '#655997';
+        $editor_data['profile_fields_user_email_color'] = '#ffffff';
+        $editor_data['profile_fields_user_email_display_icon_border_radius'] = '100';
+        // website field
+        $editor_data['profile_fields_user_url_html_tag'] = 'a';
+        $editor_data['profile_fields_user_url_display'] = 'icon';
+        $editor_data['profile_fields_user_url_display_icon'] = '<span class="dashicons dashicons-admin-links"></span>';
+        $editor_data['profile_fields_user_url_display_icon_background_color'] = '#655997';
+        $editor_data['profile_fields_user_url_color'] = '#ffffff';
+        $editor_data['profile_fields_user_url_display_icon_border_radius'] = '100';
         //default css
         $editor_data['box_tab_custom_css'] = '.pp-multiple-authors-boxes-wrapper.pp-multiple-authors-layout-simple_list .pp-multiple-authors-boxes-ul li {
             border-left: none !important;
@@ -370,7 +448,7 @@ class AuthorBoxesDefault
      */
     public static function addEditorDataDefaultValues($editor_data) {
         $profile_fields   = apply_filters('multiple_authors_author_fields', [], false);
-        $social_fields   = ['facebook', 'twitter', 'instagram', 'linkedin', 'youtube'];
+        $social_fields   = ['facebook', 'twitter', 'instagram', 'linkedin', 'youtube', 'user_url', 'user_email'];
 
         foreach ($profile_fields as $key => $data) {
             if ($data['type'] === 'url' && !in_array($key, $social_fields)) {
