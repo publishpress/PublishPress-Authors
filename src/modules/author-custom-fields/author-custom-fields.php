@@ -845,7 +845,7 @@ class MA_Author_Custom_Fields extends Module
      */
     protected static function creatCustomFieldsPost($name, $data)
     {
-        // Check if we already have the layout based on the slug.
+        // Check if we already have the field based on the slug.
         $existingCustomField = Utils::get_page_by_title($data['post_title'], OBJECT, self::POST_TYPE_CUSTOM_FIELDS);
         if ($existingCustomField) {
             return;
@@ -909,6 +909,15 @@ class MA_Author_Custom_Fields extends Module
             'type'         => 'url',
             'field_status'  => 'on',
             'description'  => '',
+        ];
+        //add job title
+        $defaultCustomFields['job_title'] = [
+            'post_title'   => __('Job Title', 'publishpress-authors'),
+            'post_name'    => 'job_title',
+            'type'         => 'text',
+            'field_status'  => 'on',
+            'description'  => '',
+            'schema_property'  => 'jobTitle',
         ];
 
         return $defaultCustomFields;
