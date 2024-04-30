@@ -555,6 +555,44 @@ class MA_Author_Boxes extends Module
         return $layouts;
     }
 
+    public static function authorBoxesMetaRemovalUpdate() {
+        $post_args = [
+            'post_type' => self::POST_TYPE_BOXES,
+            'posts_per_page' => -1,
+            'post_status' => 'publish',
+        ];
+
+        $posts = get_posts($post_args);
+
+        if (! empty($posts)) {
+            foreach ($posts as $post) {
+                $editor_data = (array) get_post_meta($post->ID, self::META_PREFIX . 'layout_meta_value', true);
+                //meta default
+                $editor_data['meta_html_tag'] = 'span';
+                // hide all default fields
+                $editor_data['profile_fields_hide_first_name'] = 1;
+                $editor_data['profile_fields_hide_last_name'] = 1;
+                // style email field
+                $editor_data['profile_fields_user_email_html_tag'] = 'a';
+                $editor_data['profile_fields_user_email_value_prefix'] = 'mailto:';
+                $editor_data['profile_fields_user_email_display'] = 'icon';
+                $editor_data['profile_fields_user_email_display_icon'] = '<span class="dashicons dashicons-email-alt"></span>';
+                $editor_data['profile_fields_user_email_display_icon_background_color'] = '#655997';
+                $editor_data['profile_fields_user_email_color'] = '#ffffff';
+                $editor_data['profile_fields_user_email_display_icon_border_radius'] = '100';
+                // style website field
+                $editor_data['profile_fields_user_url_html_tag'] = 'a';
+                $editor_data['profile_fields_user_url_display'] = 'icon';
+                $editor_data['profile_fields_user_url_display_icon'] = '<span class="dashicons dashicons-admin-links"></span>';
+                $editor_data['profile_fields_user_url_display_icon_background_color'] = '#655997';
+                $editor_data['profile_fields_user_url_color'] = '#ffffff';
+                $editor_data['profile_fields_user_url_display_icon_border_radius'] = '100';
+                update_post_meta($post->ID, self::META_PREFIX . 'layout_meta_value', $editor_data);
+            }
+        }
+
+    }
+
     /**
      * @param boolean $ids_only
      * @param boolean $with_editor_data
@@ -936,8 +974,8 @@ class MA_Author_Boxes extends Module
                 'icon'  => 'dashicons dashicons-welcome-write-blog',
             ],
             'meta'  => [
-                'label' => __('Meta', 'publishpress-authors'),
-                'icon'  => 'dashicons dashicons-forms',
+                'label' => __('View All Posts', 'publishpress-authors'),
+                'icon'  => 'dashicons dashicons-admin-page',
             ],
             'author_categories'  => [
                 'label' => __('Author Categories', 'publishpress-authors'),
@@ -1104,6 +1142,11 @@ class MA_Author_Boxes extends Module
             //set social_field profile display icon background color
             if (!isset($editor_data['profile_fields_'.$social_field.'_display_icon_background_color'])) {
                 $editor_data['profile_fields_'.$social_field.'_display_icon_background_color'] = '#655997';
+            }
+
+            //set social_field profile display icon color
+            if (!isset($editor_data['profile_fields_'.$social_field.'_color'])) {
+                $editor_data['profile_fields_'.$social_field.'_color'] = '#ffffff';
             }
 
             //set social_field profile display icon border radius
@@ -1654,23 +1697,11 @@ class MA_Author_Boxes extends Module
                                                                 <?php endif; ?>
                                                                 <?php echo $bio_row_extra ; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
-                                                                <?php if ($args['meta_show']['value']) : ?>
+                                                                <?php if ($args['meta_view_all_show']['value']) : ?>
                                                                     <<?php echo esc_html($args['meta_html_tag']['value']); ?> class="pp-author-boxes-meta multiple-authors-links">
-                                                                        <?php if ($args['meta_view_all_show']['value']) : ?>
-                                                                            <a href="<?php echo esc_url($author->link); ?>" title="<?php echo esc_attr__('View all posts', 'publishpress-authors'); ?>">
-                                                                                <span><?php echo esc_html__('View all posts', 'publishpress-authors'); ?></span>
-                                                                            </a>
-                                                                        <?php endif; ?>
-                                                                        <?php if ($args['meta_email_show']['value'] && $author->user_email) : ?>
-                                                                            <a href="<?php echo esc_url('mailto:'.$author->user_email); ?>" target="_blank" aria-label="<?php echo esc_attr__('Email', 'publishpress-authors'); ?>" rel="nofollow">
-                                                                                <span class="dashicons dashicons-email-alt"></span>
-                                                                            </a>
-                                                                        <?php endif; ?>
-                                                                        <?php if ($args['meta_site_link_show']['value'] && $author->user_url) : ?>
-                                                                            <a href="<?php echo esc_url($author->user_url); ?>" target="_blank" aria-label="<?php echo esc_attr__('Website', 'publishpress-authors'); ?>" rel="nofollow">
-                                                                                <span class="dashicons dashicons-admin-links"></span>
-                                                                            </a>
-                                                                        <?php endif; ?>
+                                                                        <a href="<?php echo esc_url($author->link); ?>" title="<?php echo esc_attr__('View all posts', 'publishpress-authors'); ?>">
+                                                                            <span><?php echo esc_html__('View all posts', 'publishpress-authors'); ?></span>
+                                                                        </a>
                                                                     </<?php echo esc_html($args['meta_html_tag']['value']); ?>>
                                                                 <?php endif; ?>
                                                                 <?php echo $meta_row_extra ; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>

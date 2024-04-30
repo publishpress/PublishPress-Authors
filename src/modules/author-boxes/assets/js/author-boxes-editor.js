@@ -306,7 +306,7 @@
             //update meta html tag
             if (current_field_name === 'meta_html_tag') {
                 //this only matter if meta is displayed
-                if ($('#meta_show').is(':checked')) {
+                if ($('#meta_view_all_show').is(':checked')) {
                     var meta_html_tag = $('#meta_html_tag').val();
                     $(".pp-author-boxes-meta").replaceWith(function () {
                         return "<" + meta_html_tag + " class='pp-author-boxes-meta multiple-authors-links'>" + this.innerHTML + "</" + meta_html_tag + ">";
@@ -373,10 +373,7 @@
                 'avatar_show'
             ];
             var meta_refresh_trigger = [
-                'meta_show',
-                'meta_view_all_show',
-                'meta_email_show',
-                'meta_site_link_show'
+                'meta_view_all_show'
             ];
             var layout_refresh_trigger = [
                 'box_tab_layout_author_separator',

@@ -102,6 +102,9 @@ class Installer
         if (version_compare($currentVersions, '4.2.1', '<')) {
             self::addNewAuthorCapabilitiesToRoles();
         }
+        if (version_compare($currentVersions, '4.5.0', '<')) {
+            MA_Author_Boxes::authorBoxesMetaRemovalUpdate();
+        }
 
         /**
          * @param string $previousVersion
