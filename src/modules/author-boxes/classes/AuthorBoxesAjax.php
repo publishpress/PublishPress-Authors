@@ -307,7 +307,10 @@ foreach ($profile_fields as $key => $data) {
     }
     ?>
     <?php endif; } } ?>
-
+<?php 
+$display_name_prefix    = !empty($args['display_name_prefix']['value']) ? $args['display_name_prefix']['value'] : '';
+$display_name_suffix    = !empty($args['display_name_suffix']['value']) ? $args['display_name_suffix']['value'] : '';
+?>
                 <li class="pp-multiple-authors-boxes-li author_index_</?php echo esc_attr($index); ?> author_</?php echo esc_attr($author->slug); ?>">
 
 <?php if ($args['avatar_show']['value']) : ?>
@@ -327,7 +330,7 @@ $custom_styles = '.pp-multiple-authors-layout-boxed ul li > div:nth-child(1) {fl
 <?php if ($args['name_show']['value']) : ?>
                         <<?php echo esc_html($args['name_html_tag']['value']); ?> class="pp-author-boxes-name multiple-authors-name">
                             <a href="</?php echo esc_url($author->link); ?>" rel="author" title="</?php echo esc_attr($author->display_name); ?>" class="author url fn">
-                                </?php echo esc_html($author->display_name); ?>
+                                <?php echo esc_html($display_name_prefix); ?></?php echo esc_html($author->display_name); ?><?php echo esc_html($display_name_suffix); ?>
                             </a>
                         </<?php echo esc_html($args['name_html_tag']['value']); ?>>
 <?php endif; ?>

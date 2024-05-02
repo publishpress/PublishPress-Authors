@@ -258,6 +258,18 @@ class AuthorBoxesEditorFields
             ],
             'tab'      => 'name',
         ];
+        $fields['display_name_prefix'] = [
+            'label'       => esc_html__('Display Name Prefix', 'publishpress-authors'),
+            'type'        => 'text',
+            'sanitize'    => ['stripslashes_deep', 'wp_kses_post'],
+            'tab'         => 'name',
+        ];
+        $fields['display_name_suffix'] = [
+            'label'       => esc_html__('Display Name Suffix', 'publishpress-authors'),
+            'type'        => 'text',
+            'sanitize'    => ['stripslashes_deep', 'wp_kses_post'],
+            'tab'         => 'name',
+        ];
         $fields['name_size'] = [
             'label'    => esc_html__('Size', 'publishpress-authors'),
             'type'     => 'number',
