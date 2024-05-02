@@ -105,6 +105,7 @@ class Installer
         if (version_compare($currentVersions, '4.5.0', '<')) {
             MA_Author_Boxes::authorBoxesMetaRemovalUpdate();
             self::createDefaultCustomFields();
+            self::createDefaultAuthorBoxes();
         }
 
         /**

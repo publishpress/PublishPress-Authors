@@ -363,7 +363,9 @@
             var name_refresh_trigger = [
                 'name_show',
                 'name_author_categories',
-                'name_author_categories_divider'
+                'name_author_categories_divider',
+                'display_name_prefix',
+                'display_name_suffix'
             ];
             var bio_refresh_trigger = [
                 'author_bio_show',

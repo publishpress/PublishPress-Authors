@@ -1355,8 +1355,8 @@ class MA_Author_Boxes extends Module
         $custom_styles = AuthorBoxesStyles::getRProfileFieldStyles($args, $custom_styles);
         $custom_styles = AuthorBoxesStyles::getRecentPostsFieldStyles($args, $custom_styles);
         $custom_styles = AuthorBoxesStyles::getBoxLayoutFieldStyles($args, $custom_styles);
-        $custom_styles = AuthorBoxesStyles::getCustomCssFieldStyles($args, $custom_styles);
         $custom_styles = AuthorBoxesStyles::getAuthorCategoriesFieldStyles($args, $custom_styles);
+        $custom_styles = AuthorBoxesStyles::getCustomCssFieldStyles($args, $custom_styles);
 
         $admin_preview = (!empty($args['admin_preview'])) ? true : false;
 
@@ -1639,6 +1639,9 @@ class MA_Author_Boxes extends Module
                                                                 <?php endif;
                                                             }
                                                         }
+
+                                                        $display_name_prefix    = !empty($args['display_name_prefix']['value']) ? $args['display_name_prefix']['value'] : '';
+                                                        $display_name_suffix    = !empty($args['display_name_suffix']['value']) ? $args['display_name_suffix']['value'] : '';
                                                         ?>
                                                         <?php if ($li_style) : ?>
                                                             <li class="pp-multiple-authors-boxes-li author_index_<?php echo esc_attr($index); ?> author_<?php echo esc_attr($author->slug); ?> <?php echo ($args['avatar_show']['value']) ? 'has-avatar' : 'no-avatar'; ?>">
@@ -1684,7 +1687,7 @@ class MA_Author_Boxes extends Module
                                                                 endif;
                                                                 ?>
                                                                     <<?php echo esc_html($args['name_html_tag']['value']); ?> class="pp-author-boxes-name multiple-authors-name">
-                                                                        <a href="<?php echo esc_url($author->link); ?>" rel="author" title="<?php echo esc_attr($author->display_name); ?>" class="author url fn"><?php echo esc_html($author->display_name); ?></a><?php echo $name_author_category_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php if (!$li_style && $author_categories_title_option == 'after_individual' && !empty($author_category_data['title'])) : ?><?php echo '<' . $author_categories_title_html_tag . ' class="ppma-category-group-title">' . $author_categories_title_prefix . '' . $author_category_data['singular_title'] . '' . $author_categories_title_suffix . '</' . $author_categories_title_html_tag . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php endif; ?><?php if (count($author_category_data['authors']) > 1 && $index !== count($author_category_data['authors']) - 1) {
+                                                                        <a href="<?php echo esc_url($author->link); ?>" rel="author" title="<?php echo esc_attr($author->display_name); ?>" class="author url fn"><?php echo esc_html($display_name_prefix . $author->display_name . $display_name_suffix); ?></a><?php echo $name_author_category_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php if (!$li_style && $author_categories_title_option == 'after_individual' && !empty($author_category_data['title'])) : ?><?php echo '<' . $author_categories_title_html_tag . ' class="ppma-category-group-title">' . $author_categories_title_prefix . '' . $author_category_data['singular_title'] . '' . $author_categories_title_suffix . '</' . $author_categories_title_html_tag . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php endif; ?><?php if (count($author_category_data['authors']) > 1 && $index !== count($author_category_data['authors']) - 1) {
                                                                             echo html_entity_decode($author_separator); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                                                                         } ?> 
                                                                     </<?php echo esc_html($args['name_html_tag']['value']); ?>>
