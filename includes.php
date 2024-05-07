@@ -59,7 +59,7 @@ if (!defined('PP_AUTHORS_LOADED')) {
                         function ($settings) {
                             $settings['publishpress-authors'] = [
                                 'parent' => 'ppma-authors',
-                                'label'  => 'Upgrade to Pro',
+                                'label'  => __( 'Upgrade to Pro', 'publishpress-authors' ),
                                 'link'   => 'https://publishpress.com/links/authors-menu',
                             ];
 
