@@ -258,6 +258,16 @@ class AuthorBoxesEditorFields
             ],
             'tab'      => 'name',
         ];
+        $fields['display_name_position'] = [
+            'label'    => esc_html__('Display Name Position', 'publishpress-authors'),
+            'type'     => 'select',
+            'sanitize' => 'sanitize_text_field',
+            'options'  => [
+                'after_avatar'       => esc_html__('After Avatar', 'publishpress-authors'),
+                'infront_of_avatar'  => esc_html__('Infront of Avatar', 'publishpress-authors'),
+            ],
+            'tab'      => 'name',
+        ];
         $fields['display_name_prefix'] = [
             'label'       => esc_html__('Display Name Prefix', 'publishpress-authors'),
             'type'        => 'text',
@@ -556,6 +566,8 @@ class AuthorBoxesEditorFields
                     'inbuilt' => [
                         'title' => esc_html__('Built-in Layout', 'publishpress-authors'),
                         'options' => [
+                            'boxed_categories'          => esc_html__('Boxed (Categories)', 'publishpress-authors'),
+                            'two_columns_categories'          => esc_html__('Two Columns (Categories)', 'publishpress-authors'),
                             'list_author_category_block'          => esc_html__('List Author Category Block', 'publishpress-authors'),
                             'list_author_category_inline'         => esc_html__('List Author Category Inline', 'publishpress-authors'),
                             'simple_name_author_category_block'   => esc_html__('Simple Name Author Category Block', 'publishpress-authors'),
