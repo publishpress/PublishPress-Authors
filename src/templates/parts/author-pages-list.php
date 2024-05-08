@@ -70,8 +70,10 @@ if ($author_post_custom_height > 0) {
         <?php if (have_posts()) : ?>
             <?php while ( have_posts() ) : the_post(); ?>
                     <?php
+                    $featured_image_id = get_post_thumbnail_id();
                     $featured_image = PP_AUTHORS_ASSETS_URL . 'img/no-image-450.jpeg';
                     $featured_image = has_post_thumbnail() ? wp_get_attachment_image_src(get_post_thumbnail_id(), 'single-post-thumbnail')[0] : $featured_image;
+                    $featured_image_alt = get_post_meta($featured_image_id, '_wp_attachment_image_alt', TRUE);
                     $post_categories  = ($show_post_category) ? get_the_category_list(', ') : false;
                     $post_tags        = ($show_post_tags) ? get_the_tags() : [];
                     $post_authors     = ($show_post_authors) ? get_post_authors() : [];
@@ -80,7 +82,7 @@ if ($author_post_custom_height > 0) {
                         <div class="article-content">
                             <div class="article-image">
                                 <?php if ($show_post_featured_image) : ?>
-                                    <img src="<?php echo esc_url($featured_image); ?>" style="<?php echo esc_attr($featured_image_style); ?>">
+                                    <img src="<?php echo esc_url($featured_image); ?>" alt="<?php echo esc_attr($featured_image_alt); ?>" style="<?php echo esc_attr($featured_image_style); ?>">
                                 <?php endif; ?>
                             </div>
 
