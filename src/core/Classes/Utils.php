@@ -185,7 +185,7 @@ class Utils
      * @param integer $post_id
      * @param array $authors
      * @param array $post_author_categories
-     * 
+     *
      * @return void
      */
     public static function updatePostAuthorCategory($post_id, $authors, $post_author_categories) {
@@ -198,7 +198,7 @@ class Utils
 
         $all_author_categories = get_ppma_author_categories([]);
         $all_author_category_ids = array_column($all_author_categories, 'id');
-        
+
         // Make 'id' the array index
         $all_author_categories = array_combine($all_author_category_ids, $all_author_categories);
 
@@ -237,7 +237,7 @@ class Utils
 
         $results = $wpdb->get_results(
             "SELECT t.term_id, u.user_nicename
-                FROM $wpdb->terms AS t 
+                FROM $wpdb->terms AS t
                 INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id
                 INNER JOIN $wpdb->termmeta AS tm ON tm.term_id = tt.term_id
                 INNER JOIN $wpdb->users AS u ON u.ID = tm.meta_value
@@ -811,7 +811,7 @@ class Utils
             'posts_per_page' => 1
         ];
         $default_post = get_posts($args);
-        
+
         if (!empty($default_post)) {
             $default_layout = MA_Author_Boxes::POST_TYPE_BOXES . '_' . $default_post[0]->ID;
         } else {
@@ -896,9 +896,9 @@ class Utils
 
     /**
      * Helper function to check if template exist in theme/child theme.
-     * We couldn't use wordpress locate_template() as it support theme compact which load 
+     * We couldn't use wordpress locate_template() as it support theme compact which load
      * default template for files like sidebar.php even if it doesn't exist in theme
-     * 
+     *
      * @param array $template
      * @return mixed
      */
@@ -918,7 +918,7 @@ class Utils
                 break;
             }
         }
-        
+
         return $template;
     }
 
@@ -931,14 +931,14 @@ class Utils
      * @param boolean $read_more_link
      * @return string
      */
-    public static function ppma_article_excerpt($limit, $source = null, $echo = false, $read_more_link = false) 
+    public static function ppma_article_excerpt($limit, $source = null, $echo = false, $read_more_link = false)
     {
         $legacyPlugin = Factory::getLegacyPlugin();
 
         $excerpt = ($source === "content") ? get_the_content() : get_the_excerpt();
 
         $author_post_excerpt_ellipsis  = $legacyPlugin->modules->multiple_authors->options->author_post_excerpt_ellipsis;
-        
+
         if (empty(trim($excerpt))) {
             $excerpt = get_the_content();
         }
@@ -950,7 +950,7 @@ class Utils
             // truncate excerpt
             $excerpt = substr($excerpt, 0, $limit);
         }
-        
+
         if (!empty($author_post_excerpt_ellipsis) && !empty(trim($excerpt))) {
             $excerpt .= $author_post_excerpt_ellipsis;
         }
@@ -972,13 +972,13 @@ class Utils
      *
      * @return bool
      */
-    public static function ppma_is_block_theme() 
+    public static function ppma_is_block_theme()
     {
 
         $is_block_theme = false;
 
-        if (function_exists('wp_is_block_theme') 
-            && function_exists('block_template_part') 
+        if (function_exists('wp_is_block_theme')
+            && function_exists('block_template_part')
             && wp_is_block_theme()
         ) {
             $is_block_theme = true;
@@ -992,7 +992,7 @@ class Utils
      *
      * @return string
      */
-    public static function ppma_get_block_theme_header() 
+    public static function ppma_get_block_theme_header()
     {
 
         $block_theme_header = '';
@@ -1012,7 +1012,7 @@ class Utils
      *
      * @return string
      */
-    public static function ppma_get_block_theme_footer() 
+    public static function ppma_get_block_theme_footer()
     {
 
         $block_theme_footer = '';
@@ -1032,11 +1032,11 @@ class Utils
      *
      * @return void
      */
-    public static function ppma_format_block_theme_header() 
+    public static function ppma_format_block_theme_header()
     {
         $fse_header = self::ppma_get_block_theme_header();
         $fse_footer = self::ppma_get_block_theme_footer();//we need to get footer as well before wp_head() call to enable fse css generator
-        ?> 
+        ?>
         <!doctype html>
         <html <?php language_attributes(); ?>>
         <head>
@@ -1046,7 +1046,7 @@ class Utils
         <body <?php body_class(); ?>>
         <?php wp_body_open(); ?>
         <div class="wp-site-blocks">
-        <?php echo $fse_header; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+        <?php echo $fse_header; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
 
     /**
@@ -1054,7 +1054,7 @@ class Utils
      *
      * @return void
      */
-    public static function ppma_format_block_theme_footer() 
+    public static function ppma_format_block_theme_footer()
     {
         $fse_footer = self::ppma_get_block_theme_footer();
         ?>
@@ -1097,7 +1097,7 @@ class Utils
             <div class="ppma-thickbox-modal-content"><?php echo $modal_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
         </div>
         <a
-            href="#TB_inline?&width=<?php echo esc_attr($width); ?>&height=<?php echo esc_attr($height); ?>&inlineId=<?php echo esc_attr($button_id); ?>" 
+            href="#TB_inline?&width=<?php echo esc_attr($width); ?>&height=<?php echo esc_attr($height); ?>&inlineId=<?php echo esc_attr($button_id); ?>"
             class="<?php echo esc_attr($button_class); ?> thickbox">
         </a>
         <?php
@@ -1124,6 +1124,7 @@ class Utils
                         <li><?php echo esc_html__('Add new Author Fields', 'publishpress-authors'); ?></li>
                         <li><?php echo esc_html__('Add fields for social networks', 'publishpress-authors'); ?></li>
                         <li><?php echo esc_html__('Create Author Boxes with authors organized in categories', 'publishpress-authors'); ?></li>
+                        <li><?php echo esc_html__('Support for Polylang', 'publishpress-authors'); ?></li>
                         <li><?php echo esc_html__('Remove PublishPress ads and branding', 'publishpress-authors'); ?></li>
                         <li><?php echo esc_html__('Fast, professional support', 'publishpress-authors'); ?></li>
                     </ul>
@@ -1142,7 +1143,7 @@ class Utils
                 <div class="inside ppma-advert">
                     <p><?php echo esc_html__('If you need help or have a new feature request, let us know.', 'publishpress-authors'); ?>
                         <a class="advert-link" href="https://wordpress.org/plugins/publishpress-authors/" target="_blank">
-                        <?php echo esc_html__('Request Support', 'publishpress-authors'); ?> 
+                        <?php echo esc_html__('Request Support', 'publishpress-authors'); ?>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="linkIcon">
                                 <path
                                     d="M18.2 17c0 .7-.6 1.2-1.2 1.2H7c-.7 0-1.2-.6-1.2-1.2V7c0-.7.6-1.2 1.2-1.2h3.2V4.2H7C5.5 4.2 4.2 5.5 4.2 7v10c0 1.5 1.2 2.8 2.8 2.8h10c1.5 0 2.8-1.2 2.8-2.8v-3.6h-1.5V17zM14.9 3v1.5h3.7l-6.4 6.4 1.1 1.1 6.4-6.4v3.7h1.5V3h-6.3z"
@@ -1151,9 +1152,9 @@ class Utils
                         </a>
                     </p>
                     <p>
-                    <?php echo esc_html__('Detailed documentation is also available on the plugin website.', 'publishpress-authors'); ?> 
+                    <?php echo esc_html__('Detailed documentation is also available on the plugin website.', 'publishpress-authors'); ?>
                         <a class="advert-link" href="https://publishpress.com/knowledge-base/getting-started-ma/" target="_blank">
-                        <?php echo esc_html__('View Knowledge Base', 'publishpress-authors'); ?> 
+                        <?php echo esc_html__('View Knowledge Base', 'publishpress-authors'); ?>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="linkIcon">
                                 <path
                                     d="M18.2 17c0 .7-.6 1.2-1.2 1.2H7c-.7 0-1.2-.6-1.2-1.2V7c0-.7.6-1.2 1.2-1.2h3.2V4.2H7C5.5 4.2 4.2 5.5 4.2 7v10c0 1.5 1.2 2.8 2.8 2.8h10c1.5 0 2.8-1.2 2.8-2.8v-3.6h-1.5V17zM14.9 3v1.5h3.7l-6.4 6.4 1.1 1.1 6.4-6.4v3.7h1.5V3h-6.3z"
@@ -1171,7 +1172,7 @@ class Utils
      * Load layout frontend css
      */
     public static function loadLayoutFrontCss()
-    { 
+    {
         $legacyPlugin = Factory::getLegacyPlugin();
         $load_font_awesome = isset($legacyPlugin->modules->multiple_authors->options->load_font_awesome)
         ? 'yes' === $legacyPlugin->modules->multiple_authors->options->load_font_awesome : true;
@@ -1213,7 +1214,7 @@ class Utils
     public static function get_page_by_title( $page_title, $output = OBJECT, $post_type = 'page' )
     {
         global $wpdb;
-    
+
         if ( is_array( $post_type ) ) {
             $post_type           = esc_sql( $post_type );
             $post_type_in_string = "'" . implode( "','", $post_type ) . "'";
@@ -1238,13 +1239,13 @@ class Utils
                 $post_type
             );
         }
-    
+
         $page = $wpdb->get_var( $sql );
-    
+
         if ( $page ) {
             return get_post( $page, $output );
         }
-    
+
         return null;
     }
 
@@ -1266,14 +1267,14 @@ class Utils
 
     /**
      * Get Author display name option like wordpress
-     * 
+     *
      * @param integer $term_id
-     * 
+     *
      * @return string $output
      */
-    public static function get_author_display_name_select($term_id = 0) 
+    public static function get_author_display_name_select($term_id = 0)
     {
-        
+
         $profile_user = Author::get_by_term_id($term_id);
         $public_display                     = array();
         $public_display['display_nickname'] = $profile_user->nickname;
