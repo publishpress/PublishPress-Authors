@@ -1101,7 +1101,7 @@ class MA_Author_Boxes extends Module
 
         if ($use_default || empty(get_post_meta($post_id, self::META_PREFIX . 'layout_meta_value', true))) {
             if (Utils::isAuthorsProActive() && !empty($_GET['author_category_box'])) {
-                $editor_data = \MA_Author_Boxes_Pro::getAuthorBoxesListCategoryBlockEditorData();
+                $editor_data = \MA_Author_Boxes_Pro::getAuthorBoxesBoxedCategoriesEditorData();
             } else {
                 $editor_data = AuthorBoxesDefault::getAuthorBoxesDefaultData('author_boxes_boxed');
             }
@@ -1420,6 +1420,12 @@ class MA_Author_Boxes extends Module
             }
         }
 
+        if (!empty($args['author_categories_layout']['value']) && in_array($args['author_categories_layout']['value'], ['boxed_categories', 'two_columns_categories'])) {
+            $author_category_box_layout = true;
+        } else {
+            $author_category_box_layout = false;
+        }
+        $author_category_box_layout_html = '';
         ?>
 
         <?php if ($admin_preview) : ?>
@@ -1474,7 +1480,9 @@ class MA_Author_Boxes extends Module
                         <?php endif; ?>
                         <span class="ppma-layout-prefix"><?php echo html_entity_decode($args['box_tab_layout_prefix']['value']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
                         <<?php echo ($li_style ? 'div' : 'span'); ?> class="ppma-author-category-wrap">
-                            <?php foreach ($author_categories_data as $author_category_data) : ?>
+                            <?php 
+                            $author_category_index = 0;
+                            foreach ($author_categories_data as $author_category_data) : ?>
                                 <?php if (!empty($author_category_data['authors'])) : 
                                     if (count($author_category_data['authors']) > 1) {
                                         $category_title_output = $author_category_data['title'];
@@ -1482,10 +1490,13 @@ class MA_Author_Boxes extends Module
                                         $category_title_output = $author_category_data['singular_title'];
                                     }
                                     ?>
-                                    <<?php echo ($author_categories_group_option == 'inline' ? 'span' : 'div'); ?> class="ppma-category-group ppma-category-group-<?php echo esc_attr($author_category_data['id']); ?>">
+                                    <?php if ($author_category_index === 1) : ?>
+                                        <<?php echo ($author_categories_group_option == 'inline' ? 'span' : 'div'); ?> class="ppma-category-group-other-wraps">
+                                    <?php endif; ?>
+                                    <<?php echo ($author_categories_group_option == 'inline' ? 'span' : 'div'); ?> class="ppma-category-group ppma-category-group-<?php echo esc_attr($author_category_data['id']); ?> category-index-<?php echo esc_attr($author_category_index); ?>">
                                     <?php if ($author_categories_title_option == 'before_group' && !empty($author_category_data['title'])) : ?><?php echo '<' . $author_categories_title_html_tag . ' class="ppma-category-group-title">' . $author_categories_title_prefix . '' . $category_title_output . '' . $author_categories_title_suffix . '</' . $author_categories_title_html_tag . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php endif; ?>
                                         <?php if ($li_style) : ?>
-                                            <ul class="pp-multiple-authors-boxes-ul">
+                                            <ul class="pp-multiple-authors-boxes-ul author-ul-<?php echo esc_attr($author_category_index); ?>">
                                         <?php endif; ?>
                                             <?php if (!empty($author_category_data['authors'])) : ?>
                                                 <?php echo esc_html($auto_list_prefix); ?>
@@ -1640,63 +1651,89 @@ class MA_Author_Boxes extends Module
                                                             }
                                                         }
 
+                                                        $display_name_position    = !empty($args['display_name_position']['value']) ? $args['display_name_position']['value'] : 'after_avatar';
                                                         $display_name_prefix    = !empty($args['display_name_prefix']['value']) ? $args['display_name_prefix']['value'] : '';
                                                         $display_name_suffix    = !empty($args['display_name_suffix']['value']) ? $args['display_name_suffix']['value'] : '';
-                                                        ?>
+
+                                                        $display_name_markup = '';
+                                                       if ($args['name_show']['value']) :
+                                                            $name_author_category_content = '';
+                                                            if (!empty($args['name_author_categories']['value'])) :
+                                                                $name_author_categories_divider = !empty($args['name_author_categories_divider']['value']) ? $args['name_author_categories_divider']['value'] : '';
+                                                                    
+                                                                if (!empty($current_author_category)) :
+
+                                                                    $name_author_category_prefix = '';
+                                                                    $name_author_category_suffix = '';
+                                                                    if ($name_author_categories_divider == 'colon') {
+                                                                        $name_author_category_prefix = ': ';
+                                                                    } elseif ($name_author_categories_divider == 'bracket') {
+                                                                        $name_author_category_prefix = ' (';
+                                                                        $name_author_category_suffix = ') ';
+                                                                    } elseif ($name_author_categories_divider == 'square_bracket') {
+                                                                        $name_author_category_prefix = ' [';
+                                                                        $name_author_category_suffix = '] ';
+                                                                    }
+                                                                    $name_author_category_content = '<span class="name-author-category">' . $name_author_category_prefix . $current_author_category['singular_title'] . $name_author_category_suffix . '</span>';
+                                                                endif;
+                                                            endif;
+                                                            
+                                                            $display_name_markup .= '<'.esc_html($args['name_html_tag']['value']) .' class="pp-author-boxes-name multiple-authors-name">'; ?>
+                                                            <?php if ($author_categories_title_option == 'before_individual' && !empty($author_category_data['title'])) :
+                                                                $display_name_markup .= '<' . $author_categories_title_html_tag . ' class="ppma-category-group-title">' . $author_categories_title_prefix . '' . $author_category_data['singular_title'] . '' . $author_categories_title_suffix . '</' . $author_categories_title_html_tag . '>';
+                                                            endif; 
+                                                            $display_name_markup .= '<a href="'. esc_url($author->link) .'" rel="author" title="'. esc_attr($author->display_name) .'" class="author url fn">'. esc_html($display_name_prefix . $author->display_name . $display_name_suffix) .'</a>'. $name_author_category_content;
+                                                            if ($author_categories_title_option == 'after_individual' && !empty($author_category_data['title'])) :
+                                                                $display_name_markup .= '<' . $author_categories_title_html_tag . ' class="ppma-category-group-title">' . $author_categories_title_prefix . '' . $author_category_data['singular_title'] . '' . $author_categories_title_suffix . '</' . $author_categories_title_html_tag . '>';
+                                                            endif;
+                                                            if (count($author_category_data['authors']) > 1 && $index !== count($author_category_data['authors']) - 1) {
+                                                                $display_name_markup .= html_entity_decode($author_separator);
+                                                            }
+                                                            $display_name_markup .= '</'. esc_html($args['name_html_tag']['value']) .'>';
+                                                        endif; ?>
+
                                                         <?php if ($li_style) : ?>
                                                             <li class="pp-multiple-authors-boxes-li author_index_<?php echo esc_attr($index); ?> author_<?php echo esc_attr($author->slug); ?> <?php echo ($args['avatar_show']['value']) ? 'has-avatar' : 'no-avatar'; ?>">
                                                         <?php endif; ?>
-                                                        <?php if ($author_categories_title_option == 'before_individual' && !empty($author_category_data['title'])) : ?><?php echo '<' . $author_categories_title_html_tag . ' class="ppma-category-group-title">' . $author_categories_title_prefix . '' . $author_category_data['singular_title'] . '' . $author_categories_title_suffix . '</' . $author_categories_title_html_tag . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php endif; ?>
                                                             <?php if ($args['avatar_show']['value']) : ?>
                                                                 <div class="pp-author-boxes-avatar">
+                                                                    <div class="avatar-image">
                                                                     <?php if ($author->get_avatar()) : ?>
                                                                         <?php echo $author->get_avatar($args['avatar_size']['value']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                                                                     <?php else : ?>
                                                                         <?php echo get_avatar($author->user_email, $args['avatar_size']['value']); ?>
                                                                     <?php endif; ?>
+                                                                    </div>
+                                                                    <?php if ($display_name_position === 'infront_of_avatar') :
+                                                                        echo $display_name_markup;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                                                                    endif ?>
                                                                 </div>
                                                             <?php else : 
                                                                 $custom_styles .= '.' . str_replace(' ', '.', trim($body_class)) . ' ul li > div:nth-child(1) {flex: 1 !important;}';
-                                                            ?>
-                                                            <?php endif; ?>
+                                                             endif;
+                                                            
+                                                             if ($display_name_position === 'infront_of_avatar' && ! $args['avatar_show']['value']) :
+                                                                    echo '<div class="pp-author-boxes-avatar">' . $display_name_markup . '</div>';  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                                                            endif ?>
 
                                                             <<?php echo ($li_style ? 'div' : 'span'); ?> class="pp-author-boxes-avatar-details">
-                                                            <?php if ($args['name_show']['value']) : ?>
-                                                                <?php
-                                                                $name_author_category_content = '';
-                                                                if (!empty($args['name_author_categories']['value'])) :
-                                                                    $name_author_categories_divider = !empty($args['name_author_categories_divider']['value']) ? $args['name_author_categories_divider']['value'] : '';
-                                                                    
-                                                                    if (!empty($current_author_category)) :
-
-                                                                        $name_author_category_prefix = '';
-                                                                        $name_author_category_suffix = '';
-                                                                        if ($name_author_categories_divider == 'colon') {
-                                                                            $name_author_category_prefix = ': ';
-                                                                        } elseif ($name_author_categories_divider == 'bracket') {
-                                                                            $name_author_category_prefix = ' (';
-                                                                            $name_author_category_suffix = ') ';
-                                                                        } elseif ($name_author_categories_divider == 'square_bracket') {
-                                                                            $name_author_category_prefix = ' [';
-                                                                            $name_author_category_suffix = '] ';
-                                                                        }
-                                                                        $name_author_category_content = '<span class="name-author-category">' . $name_author_category_prefix . $current_author_category['singular_title'] . $name_author_category_suffix . '</span>';
-
-                                                                    endif;
-
-                                                                endif;
-                                                                ?>
-                                                                    <<?php echo esc_html($args['name_html_tag']['value']); ?> class="pp-author-boxes-name multiple-authors-name">
-                                                                        <a href="<?php echo esc_url($author->link); ?>" rel="author" title="<?php echo esc_attr($author->display_name); ?>" class="author url fn"><?php echo esc_html($display_name_prefix . $author->display_name . $display_name_suffix); ?></a><?php echo $name_author_category_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php if (!$li_style && $author_categories_title_option == 'after_individual' && !empty($author_category_data['title'])) : ?><?php echo '<' . $author_categories_title_html_tag . ' class="ppma-category-group-title">' . $author_categories_title_prefix . '' . $author_category_data['singular_title'] . '' . $author_categories_title_suffix . '</' . $author_categories_title_html_tag . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php endif; ?><?php if (count($author_category_data['authors']) > 1 && $index !== count($author_category_data['authors']) - 1) {
-                                                                            echo html_entity_decode($author_separator); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-                                                                        } ?> 
-                                                                    </<?php echo esc_html($args['name_html_tag']['value']); ?>>
-                                                                <?php endif; ?>
+                                                                <?php 
+                                                                if ($display_name_position === 'after_avatar') :
+                                                                    echo $display_name_markup;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                                                                endif ?>
                                                                 <?php echo $name_row_extra ; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                                                                 <?php if ($args['author_bio_show']['value']) : ?>
-                                                                    <<?php echo esc_html($args['author_bio_html_tag']['value']); ?> class="pp-author-boxes-description multiple-authors-description">
-                                                                        <?php echo $author->get_description($args['author_bio_limit']['value']);  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-                                                                    </<?php echo esc_html($args['author_bio_html_tag']['value']); ?>>
+                                                                    <?php if ($author_category_box_layout) :
+                                                                            if (empty($author_category_box_layout_html) && !empty($author->get_description($args['author_bio_limit']['value']))) :
+                                                                                $author_category_box_layout_html = '<'. esc_html($args['author_bio_html_tag']['value']) .' class="pp-author-boxes-description multiple-authors-description author-description-'. esc_attr($index) .'">
+                                                                                '. $author->get_description($args['author_bio_limit']['value']) .'
+                                                                            </'. esc_html($args['author_bio_html_tag']['value']) .'>';
+                                                                            endif;
+                                                                        else : ?>
+                                                                        <<?php echo esc_html($args['author_bio_html_tag']['value']); ?> class="pp-author-boxes-description multiple-authors-description author-description-<?php echo esc_attr($index); ?>">
+                                                                            <?php echo $author->get_description($args['author_bio_limit']['value']);  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                                                                        </<?php echo esc_html($args['author_bio_html_tag']['value']); ?>>
+                                                                    <?php endif; ?>
                                                                 <?php endif; ?>
                                                                 <?php echo $bio_row_extra ; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
@@ -1735,9 +1772,6 @@ class MA_Author_Boxes extends Module
                                                                     </div>
                                                                 <?php endif; ?>
                                                             </<?php echo ($li_style ? 'div' : 'span'); ?>>
-                                                            <?php if ($li_style) : ?>
-                                                             <?php if ($author_categories_title_option == 'after_individual' && !empty($author_category_data['title'])) : ?><?php echo '<' . $author_categories_title_html_tag . ' class="ppma-category-group-title">' . $author_categories_title_prefix . '' . $author_category_data['singular_title'] . '' . $author_categories_title_suffix . '</' . $author_categories_title_html_tag . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php endif; ?>
-                                                            <?php endif; ?>
                                                         <?php if (empty($args['name_show']['value']) && count($author_category_data['authors']) > 1 && $index !== count($author_category_data['authors']) - 1) {
                                                             echo html_entity_decode($author_separator); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                                                         } ?>
@@ -1751,9 +1785,13 @@ class MA_Author_Boxes extends Module
                                             </ul>
                                         <?php endif; ?>
                                     </<?php echo ($author_categories_group_option == 'inline' ? 'span' : 'div'); ?>>
+                                    <?php if ( $author_category_index !== 0 && (count($author_categories_data) - 1) === $author_category_index) : ?>
+                                        </<?php echo ($author_categories_group_option == 'inline' ? 'span' : 'div'); ?>>
+                                    <?php endif; ?>
                                 <?php endif; ?>
-                            <?php endforeach; ?>
+                            <?php $author_category_index++; endforeach; ?>
                         </<?php echo ($li_style ? 'div' : 'span'); ?>>
+                    <?php echo $author_category_box_layout_html;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                     <span class="ppma-layout-suffix"><?php echo html_entity_decode($args['box_tab_layout_suffix']['value']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
                     </div>
                     <!--end code -->
@@ -1970,7 +2008,7 @@ class MA_Author_Boxes extends Module
                         </ul>
                         <p><?php
                             printf(
-                                esc_html__('You can read more information on the %s.', 'publishpress-authors'),
+                                esc_html__('You can read more information on the %s.'),
                                 '<a href="https://publishpress.com/knowledge-base/author-boxes-theme-templates/" target="_blank">' . esc_html__(
                                     'documentation page',
                                     'publishpress-authors'
@@ -2132,10 +2170,7 @@ class MA_Author_Boxes extends Module
         ];
 
         if (Utils::isAuthorsProActive()) {
-            $localized_data['list_author_category_inline'] = \MA_Author_Boxes_Pro::getAuthorBoxesListCategoryInlineEditorData();
-            $localized_data['list_author_category_block'] = \MA_Author_Boxes_Pro::getAuthorBoxesListCategoryBlockEditorData();
-            $localized_data['simple_name_author_category_block'] = \MA_Author_Boxes_Pro::getAuthorBoxesSimpleNameCategoryBlockEditorData();
-            $localized_data['simple_name_author_category_inline'] = \MA_Author_Boxes_Pro::getAuthorBoxesSimpleNameCategoryInlineEditorData();
+            $localized_data = array_merge($localized_data, \MA_Author_Boxes_Pro::getAuthorBoxesDefaultData());
         }
 
         $profile_fields   = self::get_profile_fields($post->ID);
