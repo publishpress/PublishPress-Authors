@@ -320,10 +320,10 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
                         if (!empty($ppmacf_schema_property)) {
                             if (isset($data[$ppmacf_schema_property])) {
                                 $schema_property_value = \array_values(\array_unique((array)$data[$ppmacf_schema_property]));
-                                $schema_property_value[] = $field_value;
+                                $schema_property_value[] = strip_tags($field_value);
                                 $data[$ppmacf_schema_property] = $schema_property_value;
                             } else {
-                                $data[$ppmacf_schema_property] = $field_value;
+                                $data[$ppmacf_schema_property] = strip_tags($field_value);
                             }
 
                         }
