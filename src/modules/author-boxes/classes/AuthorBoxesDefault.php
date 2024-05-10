@@ -155,7 +155,7 @@ class AuthorBoxesDefault
         $editor_data['box_tab_custom_wrapper_class'] = 'pp-multiple-authors-layout-boxed-right';
         //avatar default
         $editor_data['avatar_show'] = 1;
-        $editor_data['avatar_size'] = 350;
+        $editor_data['avatar_size'] = 250;
         $editor_data['avatar_border_radius'] = '';
         //name default
         $editor_data['name_show'] = 1;
@@ -286,6 +286,11 @@ class AuthorBoxesDefault
         .pp-multiple-authors-wrapper.pp-multiple-authors-layout-boxed-right .pp-multiple-authors-boxes-li .pp-author-boxes-avatar-details {
             flex: 1;
             margin: auto;
+        }
+        
+        .pp-multiple-authors-wrapper.pp-multiple-authors-layout-boxed-right .pp-multiple-authors-boxes-li .pp-author-boxes-avatar .avatar-image {
+            float: right;
+            margin-right: 10px;
         }
         
         .pp-multiple-authors-wrapper.pp-multiple-authors-layout-boxed-right .pp-multiple-authors-boxes-li .pp-author-boxes-avatar-details {

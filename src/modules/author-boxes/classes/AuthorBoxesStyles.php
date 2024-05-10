@@ -297,6 +297,7 @@ class AuthorBoxesStyles
                 }
                 if (!empty($args['profile_fields_' . $key . '_color']['value'])) {
                     $custom_styles .= '.pp-multiple-authors-boxes-wrapper.'.$args['additional_class'].' .ppma-author-'. $key .'-profile-data { color: '. $args['profile_fields_' . $key . '_color']['value'] .' !important; } ';
+                    $custom_styles .= '.pp-multiple-authors-boxes-wrapper.'.$args['additional_class'].' .ppma-author-'. $key .'-profile-data:hover { color: '. $args['profile_fields_' . $key . '_color']['value'] .' !important; } ';
                 }
             }
         }
