@@ -829,7 +829,7 @@ class MA_Author_Custom_Fields extends Module
      */
     public static function createDefaultCustomFields()
     {
-        $defaultCustomFields = self::getDefaultCustomFields();
+        $defaultCustomFields = array_reverse(self::getDefaultCustomFields());
 
         foreach ($defaultCustomFields as $name => $data) {
             self::creatCustomFieldsPost($name, $data);
