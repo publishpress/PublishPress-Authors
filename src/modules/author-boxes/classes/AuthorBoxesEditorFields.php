@@ -179,6 +179,13 @@ class AuthorBoxesEditorFields
             'sanitize'    => 'absint',
             'tab'         => 'avatar',
         ];
+        $fields['avatar_link'] = [
+            'label'       => esc_html__('Link Avatar', 'publishpress-authors'),
+            'description' => esc_html__('Add a link to author avatar', 'publishpress-authors'),
+            'type'        => 'checkbox',
+            'sanitize'    => 'absint',
+            'tab'         => 'avatar',
+        ];
         $fields['avatar_size'] = [
             'label'    => esc_html__('Avatar size (px)', 'publishpress-authors'),
             'type'     => 'number',
@@ -568,10 +575,10 @@ class AuthorBoxesEditorFields
                         'options' => [
                             'boxed_categories'          => esc_html__('Boxed (Categories)', 'publishpress-authors'),
                             'two_columns_categories'          => esc_html__('Two Columns (Categories)', 'publishpress-authors'),
-                            'list_author_category_block'          => esc_html__('List Author Category Block', 'publishpress-authors'),
-                            'list_author_category_inline'         => esc_html__('List Author Category Inline', 'publishpress-authors'),
-                            'simple_name_author_category_block'   => esc_html__('Simple Name Author Category Block', 'publishpress-authors'),
-                            'simple_name_author_category_inline'  => esc_html__('Simple Name Author Category Inline', 'publishpress-authors')
+                            'list_author_category_block'          => esc_html__('List Authors Block (Categories)', 'publishpress-authors'),
+                            'list_author_category_inline'         => esc_html__('List Authors Inline (Categories)', 'publishpress-authors'),
+                            'simple_name_author_category_block'   => esc_html__('Simple Name Authors Block (Categories)', 'publishpress-authors'),
+                            'simple_name_author_category_inline'  => esc_html__('Simple Name Authors Inline (Categories)', 'publishpress-authors')
                         ]
                     ],
                     'author_boxes' => [

@@ -134,6 +134,14 @@ class AuthorBoxesDefault
         $editor_data['profile_fields_user_url_color'] = '#ffffff';
         $editor_data['profile_fields_user_url_display_icon_border_radius'] = '100';
 
+        // hide non essential author fields
+        $profile_fields   = apply_filters('multiple_authors_author_fields', [], false);
+        foreach ($profile_fields as $key => $data) {
+            if (!in_array($key, ['user_email', 'user_url'])) {
+                $editor_data['profile_fields_hide_' . $key] = 1;
+            }
+        }
+
         $editor_data = self::addEditorDataDefaultValues($editor_data);
 
         return $editor_data;
@@ -307,6 +315,14 @@ class AuthorBoxesDefault
             }
         }';
 
+        // hide non essential author fields
+        $profile_fields   = apply_filters('multiple_authors_author_fields', [], false);
+        foreach ($profile_fields as $key => $data) {
+            if (!in_array($key, ['user_email', 'user_url', 'tiktok', 'youtube', 'linkedin', 'instagram', 'twitter', 'facebook', 'job_title'])) {
+                $editor_data['profile_fields_hide_' . $key] = 1;
+            }
+        }
+
         $editor_data = self::addEditorDataDefaultValues($editor_data);
 
         return $editor_data;
@@ -379,6 +395,14 @@ class AuthorBoxesDefault
         $editor_data['profile_fields_user_url_color'] = '#ffffff';
         $editor_data['profile_fields_user_url_display_icon_border_radius'] = '100';
 
+        // hide non essential author fields
+        $profile_fields   = apply_filters('multiple_authors_author_fields', [], false);
+        foreach ($profile_fields as $key => $data) {
+            if (!in_array($key, ['user_email', 'user_url'])) {
+                $editor_data['profile_fields_hide_' . $key] = 1;
+            }
+        }
+
         $editor_data = self::addEditorDataDefaultValues($editor_data);
 
         return $editor_data;
@@ -406,7 +430,7 @@ class AuthorBoxesDefault
         //bio default
         $editor_data['author_bio_html_tag'] = 'p';
         //meta default
-        $editor_data['meta_view_all_show'] = 1;
+        $editor_data['meta_view_all_show'] = 0;
         $editor_data['meta_html_tag'] = 'span';
         $editor_data['meta_background_color'] = '#655997';
         $editor_data['meta_color'] = '#ffffff';
@@ -455,6 +479,12 @@ class AuthorBoxesDefault
             margin-right: 10px
         }';
 
+        // hide all author fields
+        $profile_fields   = apply_filters('multiple_authors_author_fields', [], false);
+        foreach ($profile_fields as $key => $data) {
+            $editor_data['profile_fields_hide_' . $key] = 1;
+        }
+
         $editor_data = self::addEditorDataDefaultValues($editor_data);
 
         return $editor_data;
@@ -483,7 +513,7 @@ class AuthorBoxesDefault
         //bio default
         $editor_data['author_bio_html_tag'] = 'p';
         //meta default
-        $editor_data['meta_view_all_show'] = 1;
+        $editor_data['meta_view_all_show'] = 0;
         $editor_data['meta_html_tag'] = 'span';
         $editor_data['meta_background_color'] = '#655997';
         $editor_data['meta_color'] = '#ffffff';
@@ -536,6 +566,12 @@ class AuthorBoxesDefault
             display: inline-block;
         }';
 
+        // hide all author fields
+        $profile_fields   = apply_filters('multiple_authors_author_fields', [], false);
+        foreach ($profile_fields as $key => $data) {
+            $editor_data['profile_fields_hide_' . $key] = 1;
+        }
+
         $editor_data = self::addEditorDataDefaultValues($editor_data);
 
         return $editor_data;
@@ -564,7 +600,7 @@ class AuthorBoxesDefault
         //bio default
         $editor_data['author_bio_html_tag'] = 'p';
         //meta default
-        $editor_data['meta_view_all_show'] = 1;
+        $editor_data['meta_view_all_show'] = 0;
         $editor_data['meta_html_tag'] = 'span';
         $editor_data['meta_background_color'] = '#655997';
         $editor_data['meta_color'] = '#ffffff';
@@ -609,6 +645,12 @@ class AuthorBoxesDefault
             border-left: none !important;
             border-right: none !important;
         }';
+
+        // hide all author fields
+        $profile_fields   = apply_filters('multiple_authors_author_fields', [], false);
+        foreach ($profile_fields as $key => $data) {
+            $editor_data['profile_fields_hide_' . $key] = 1;
+        }
 
         $editor_data = self::addEditorDataDefaultValues($editor_data);
 

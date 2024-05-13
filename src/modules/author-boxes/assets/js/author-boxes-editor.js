@@ -373,7 +373,8 @@
                 'author_bio_limit'
             ];
             var avatar_refresh_trigger = [
-                'avatar_show'
+                'avatar_show',
+                'avatar_link'
             ];
             var meta_refresh_trigger = [
                 'meta_view_all_show'

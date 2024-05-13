@@ -297,6 +297,10 @@ class MA_Author_Boxes extends Module
             self::createLayoutPost($name, $title);
             sleep(2);
         }
+
+        if (Utils::isAuthorsProActive()) {
+            \MA_Author_Boxes_Pro::createDefaultAuthorBoxes();
+        }
     }
 
     /**
@@ -1419,13 +1423,6 @@ class MA_Author_Boxes extends Module
                 $author_categories_title_suffix = !empty($args['author_categories_title_suffix']['value']) ? html_entity_decode($args['author_categories_title_suffix']['value']) : '';
             }
         }
-
-        if (!empty($args['author_categories_layout']['value']) && in_array($args['author_categories_layout']['value'], ['boxed_categories', 'two_columns_categories'])) {
-            $author_category_box_layout = true;
-        } else {
-            $author_category_box_layout = false;
-        }
-        $author_category_box_layout_html = '';
         ?>
 
         <?php if ($admin_preview) : ?>
@@ -1698,10 +1695,16 @@ class MA_Author_Boxes extends Module
                                                             <?php if ($args['avatar_show']['value']) : ?>
                                                                 <div class="pp-author-boxes-avatar">
                                                                     <div class="avatar-image">
+                                                                    <?php if ($args['avatar_link']['value']) : ?>
+                                                                        <a href="<?php echo esc_url($author->link); ?>" class="author-avatar-link">
+                                                                        <?php endif; ?>
                                                                     <?php if ($author->get_avatar()) : ?>
                                                                         <?php echo $author->get_avatar($args['avatar_size']['value']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                                                                     <?php else : ?>
                                                                         <?php echo get_avatar($author->user_email, $args['avatar_size']['value']); ?>
+                                                                    <?php endif; ?>
+                                                                    <?php if ($args['avatar_link']['value']) : ?>
+                                                                        </a>
                                                                     <?php endif; ?>
                                                                     </div>
                                                                     <?php if ($display_name_position === 'infront_of_avatar') :
@@ -1723,17 +1726,9 @@ class MA_Author_Boxes extends Module
                                                                 endif ?>
                                                                 <?php echo $name_row_extra ; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                                                                 <?php if ($args['author_bio_show']['value']) : ?>
-                                                                    <?php if ($author_category_box_layout) :
-                                                                            if (empty($author_category_box_layout_html) && !empty($author->get_description($args['author_bio_limit']['value']))) :
-                                                                                $author_category_box_layout_html = '<'. esc_html($args['author_bio_html_tag']['value']) .' class="pp-author-boxes-description multiple-authors-description author-description-'. esc_attr($index) .'">
-                                                                                '. $author->get_description($args['author_bio_limit']['value']) .'
-                                                                            </'. esc_html($args['author_bio_html_tag']['value']) .'>';
-                                                                            endif;
-                                                                        else : ?>
                                                                         <<?php echo esc_html($args['author_bio_html_tag']['value']); ?> class="pp-author-boxes-description multiple-authors-description author-description-<?php echo esc_attr($index); ?>">
                                                                             <?php echo $author->get_description($args['author_bio_limit']['value']);  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                                                                         </<?php echo esc_html($args['author_bio_html_tag']['value']); ?>>
-                                                                    <?php endif; ?>
                                                                 <?php endif; ?>
                                                                 <?php echo $bio_row_extra ; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
@@ -1791,7 +1786,6 @@ class MA_Author_Boxes extends Module
                                 <?php endif; ?>
                             <?php $author_category_index++; endforeach; ?>
                         </<?php echo ($li_style ? 'div' : 'span'); ?>>
-                    <?php echo $author_category_box_layout_html;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                     <span class="ppma-layout-suffix"><?php echo html_entity_decode($args['box_tab_layout_suffix']['value']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
                     </div>
                     <!--end code -->
