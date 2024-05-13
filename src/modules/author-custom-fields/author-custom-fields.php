@@ -829,10 +829,12 @@ class MA_Author_Custom_Fields extends Module
      */
     public static function createDefaultCustomFields()
     {
-        $defaultCustomFields = array_reverse(self::getDefaultCustomFields());
+        $defaultCustomFields = self::getDefaultCustomFields();
 
+        $position = 0;
         foreach ($defaultCustomFields as $name => $data) {
-            self::creatCustomFieldsPost($name, $data);
+            self::creatCustomFieldsPost($name, $data, $position);
+            $position++;
             sleep(2);
         }
     }
@@ -843,7 +845,7 @@ class MA_Author_Custom_Fields extends Module
      * @param string $name
      * @param string $title
      */
-    protected static function creatCustomFieldsPost($name, $data)
+    protected static function creatCustomFieldsPost($name, $data, $position = 0)
     {
         // Check if we already have the field based on the slug.
         $existingCustomField = Utils::get_page_by_title($data['post_title'], OBJECT, self::POST_TYPE_CUSTOM_FIELDS);
@@ -858,6 +860,7 @@ class MA_Author_Custom_Fields extends Module
                 'post_content' => $data['post_title'],
                 'post_status' => 'publish',
                 'post_name' => $data['post_name'],
+                'menu_order' => $position,
             ]
         );
         update_post_meta($post_id, self::META_PREFIX . 'slug', $data['post_name']);

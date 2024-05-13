@@ -48,11 +48,11 @@ class Installer
         self::addDefaultCapabilitiesForAdministrators();
         self::addEditPostAuthorsCapabilitiesToRoles();
         self::addManageLayoutsCapabilitiesToRoles();
-        self::flushRewriteRules();
-        self::createDefaultAuthorBoxes();
         self::addManageFieldsCapabilitiesToRoles();
         self::createDefaultCustomFields();
+        self::createDefaultAuthorBoxes();
         self::addNewAuthorCapabilitiesToRoles();
+        self::flushRewriteRules();
 
         /**
          * @param string $currentVersion
@@ -88,7 +88,6 @@ class Installer
 
         if (version_compare($currentVersions, '4.0.0', '<')) {
             self::addManageFieldsCapabilitiesToRoles();
-            self::createDefaultCustomFields();
             self::updateAuthorBoxesFieldValue(['name_show' => 1]);
         }
 
