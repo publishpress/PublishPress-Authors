@@ -416,9 +416,13 @@ class MA_Author_Custom_Fields extends Module
                 'name' => __('Schema Property', 'publishpress-authors'),
                 'id' => self::META_PREFIX . 'schema_property',
                 'type' => 'text',
-                'desc' => __(
-                    'Add this field value as a Schema.org properties relevant to an author. For example, alumniOf, worksFor, birthPlace etc',
-                    'publishpress-authors'
+                'desc' => sprintf(
+                    esc_html__(
+                        'Add a Schema.org property to this field. Examples include alumniOf, worksFor, and birthPlace. %1$sClick here for documentation.%2$s',
+                        'publishpress-authors'
+                    ),
+                    '<a target="_blank" href="https://publishpress.com/knowledge-base/author-fields-schema/">',
+                    '</a>'
                 ),
             ]
         );
