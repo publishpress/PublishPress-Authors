@@ -364,16 +364,23 @@ class MA_Author_Boxes extends Module
 
         $editor_data = AuthorBoxesDefault::getAuthorBoxesDefaultData($name);
         if ($editor_data && is_array($editor_data)) {
+            $post_name = sanitize_title($name);
             $post_id = wp_insert_post(
                 [
                     'post_type' => self::POST_TYPE_BOXES,
                     'post_title' => $title,
                     'post_content' => $title,
                     'post_status' => 'publish',
-                    'post_name' => sanitize_title($name),
+                    'post_name' => $post_name,
                 ]
             );
             update_post_meta($post_id, self::META_PREFIX . 'layout_meta_value', $editor_data);
+
+            if ($post_name === 'author_boxes_boxed') {
+                $legacyPlugin = Factory::getLegacyPlugin();
+                $legacyPlugin->update_module_option('multiple_authors', 'layout', self::POST_TYPE_BOXES . '_' . $post_id);
+                $legacyPlugin->update_module_option('multiple_authors', 'author_pages_bio_layout', self::POST_TYPE_BOXES . '_' . $post_id);
+            }
         }
     }
 
