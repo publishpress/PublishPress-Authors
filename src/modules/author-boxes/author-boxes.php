@@ -136,6 +136,7 @@ class MA_Author_Boxes extends Module
         add_filter('pp_multiple_authors_author_box_html', [$this, 'filterAuthorBoxHtml'], 9, 2);
         add_filter('pp_multiple_authors_authors_list_box_html', [$this, 'filterAuthorBoxHtml'], 9, 2);
         add_filter('bulk_actions-edit-' . self::POST_TYPE_BOXES . '', [$this, 'removeBulkActionEdit'], 11);
+        add_action('pre_get_posts', [$this, 'author_author_boxes_default_sort']);
         add_filter('parent_file', [$this, 'setParentFile']);
         add_action('admin_head', [$this, 'addInlineScripts']);
 
@@ -2284,6 +2285,22 @@ class MA_Author_Boxes extends Module
                 </script>
 
             <?php endif;
+        }
+    }
+
+    /**
+     * Sort author boxes by order
+     *
+     * @param object $query
+     * @return void
+     */
+    public function author_author_boxes_default_sort($query) {
+
+        if (is_admin() && $query->is_main_query() && $query->get('post_type') === self::POST_TYPE_BOXES) {
+            if (!$query->get('orderby')) {
+                $query->set('orderby', 'menu_order');
+                $query->set('order', 'ASC');
+            }
         }
     }
 }
