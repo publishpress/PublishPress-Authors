@@ -42,6 +42,7 @@ class SchemaFacade
         add_filter('wpseo_meta_author', [$this, 'filter_author_meta' ], 11, 2);
         add_filter('wpseo_opengraph_title', [$this, 'handleAuthorWpseoTitle']);
         add_filter('wpseo_title', [$this, 'handleAuthorWpseoTitle']);
+        add_filter('wpseo_enhanced_slack_data', [$this, 'filterSlackData' ], 10, 2);
     }
 
     /**
@@ -271,4 +272,37 @@ class SchemaFacade
 
         return $title;
     }
+  
+    /**
+    * Change Enhanced Slack sharing data labels.
+    *
+    * @param array                  $data         The Slack labels + data.
+    * @param $presentation The indexable presentation object.
+    *
+    * @return array The Slack labels + data.
+    */
+   public function filterSlackData( array $data, $presentation ) {
+
+        if (!is_singular(Utils::get_enabled_post_types()) || empty($presentation->model->object_type)) {
+            return $data;
+        }
+
+        if (!function_exists('publishpress_authors_get_post_authors')) {
+            require_once PP_AUTHORS_BASE_PATH . 'functions/template-tags.php';
+        }
+    
+        if (array_key_exists(\__( 'Written by', 'wordpress-seo' ), $data)) {
+            $author_objects = get_post_authors($presentation->model->object_id, false, false);
+            $author_names = [];
+            foreach ($author_objects as $author) {
+                if (is_object($author) && isset($author->display_name)) {
+                    $author_names[] = $author->display_name;
+                }
+            }
+
+            $data[\__( 'Written by', 'wordpress-seo' )] = join(', ', $author_names);
+        }
+
+       return $data;
+   }
 }

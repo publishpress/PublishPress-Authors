@@ -179,6 +179,13 @@ class AuthorBoxesEditorFields
             'sanitize'    => 'absint',
             'tab'         => 'avatar',
         ];
+        $fields['avatar_link'] = [
+            'label'       => esc_html__('Link Avatar', 'publishpress-authors'),
+            'description' => esc_html__('Add a link to author avatar', 'publishpress-authors'),
+            'type'        => 'checkbox',
+            'sanitize'    => 'absint',
+            'tab'         => 'avatar',
+        ];
         $fields['avatar_size'] = [
             'label'    => esc_html__('Avatar size (px)', 'publishpress-authors'),
             'type'     => 'number',
@@ -257,6 +264,28 @@ class AuthorBoxesEditorFields
                 'none'           => esc_html__('None', 'publishpress-authors'),
             ],
             'tab'      => 'name',
+        ];
+        $fields['display_name_position'] = [
+            'label'    => esc_html__('Display Name Position', 'publishpress-authors'),
+            'type'     => 'select',
+            'sanitize' => 'sanitize_text_field',
+            'options'  => [
+                'after_avatar'       => esc_html__('After Avatar', 'publishpress-authors'),
+                'infront_of_avatar'  => esc_html__('Infront of Avatar', 'publishpress-authors'),
+            ],
+            'tab'      => 'name',
+        ];
+        $fields['display_name_prefix'] = [
+            'label'       => esc_html__('Display Name Prefix', 'publishpress-authors'),
+            'type'        => 'text',
+            'sanitize'    => ['stripslashes_deep', 'wp_kses_post'],
+            'tab'         => 'name',
+        ];
+        $fields['display_name_suffix'] = [
+            'label'       => esc_html__('Display Name Suffix', 'publishpress-authors'),
+            'type'        => 'text',
+            'sanitize'    => ['stripslashes_deep', 'wp_kses_post'],
+            'tab'         => 'name',
         ];
         $fields['name_size'] = [
             'label'    => esc_html__('Size', 'publishpress-authors'),
@@ -376,29 +405,11 @@ class AuthorBoxesEditorFields
      */
     public static function getMetaFields($fields, $post)
     {
-        $fields['meta_show'] = [
-            'label'       => esc_html__('Show Meta Information', 'publishpress-authors'),
-            'type'        => 'checkbox',
-            'sanitize'    => 'absint',
-            'tab'         => 'meta',
-        ];
         $fields['meta_view_all_show'] = [
             'label'       => esc_html__('Show "View all posts" link', 'publishpress-authors'),
             'type'        => 'checkbox',
             'sanitize'    => 'absint',
             'tab'         => 'meta',
-        ];
-        $fields['meta_email_show'] = [
-            'label'       => esc_html__('Show Email field', 'publishpress-authors'),
-            'type'        => 'checkbox',
-            'sanitize'    => 'absint',
-            'tab'         => 'meta',
-        ];
-        $fields['meta_site_link_show'] = [
-            'label'    => esc_html__('Show Website field', 'publishpress-authors'),
-            'type'     => 'checkbox',
-            'sanitize' => 'absint',
-            'tab'      => 'meta',
         ];
         $fields['meta_size'] = [
             'label'    => esc_html__('Size', 'publishpress-authors'),
@@ -562,10 +573,12 @@ class AuthorBoxesEditorFields
                     'inbuilt' => [
                         'title' => esc_html__('Built-in Layout', 'publishpress-authors'),
                         'options' => [
-                            'list_author_category_block'          => esc_html__('List Author Category Block', 'publishpress-authors'),
-                            'list_author_category_inline'         => esc_html__('List Author Category Inline', 'publishpress-authors'),
-                            'simple_name_author_category_block'   => esc_html__('Simple Name Author Category Block', 'publishpress-authors'),
-                            'simple_name_author_category_inline'  => esc_html__('Simple Name Author Category Inline', 'publishpress-authors')
+                            'boxed_categories'          => esc_html__('Boxed (Categories)', 'publishpress-authors'),
+                            'two_columns_categories'          => esc_html__('Two Columns (Categories)', 'publishpress-authors'),
+                            'list_author_category_block'          => esc_html__('List Authors Block (Categories)', 'publishpress-authors'),
+                            'list_author_category_inline'         => esc_html__('List Authors Inline (Categories)', 'publishpress-authors'),
+                            'simple_name_author_category_block'   => esc_html__('Simple Name Authors Block (Categories)', 'publishpress-authors'),
+                            'simple_name_author_category_inline'  => esc_html__('Simple Name Authors Inline (Categories)', 'publishpress-authors')
                         ]
                     ],
                     'author_boxes' => [
@@ -720,8 +733,8 @@ class AuthorBoxesEditorFields
                     'tab_name'    => $key,
                     'tab'         => 'profile_fields',
                 ];
-                $fields['profile_fields_show_' . $key] = [
-                    'label'       => sprintf(esc_html__('Show %1s', 'publishpress-authors'), $data['label']),
+                $fields['profile_fields_hide_' . $key] = [
+                    'label'       => sprintf(esc_html__('Hide %1s', 'publishpress-authors'), $data['label']),
                     'type'        => 'checkbox',
                     'sanitize'    => 'absint',
                     'tabbed'      => 1,

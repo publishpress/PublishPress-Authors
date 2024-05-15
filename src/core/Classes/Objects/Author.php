@@ -209,7 +209,7 @@ class Author
 
         $user_id = (int)$user_id;
 
-        if (!isset(self::$authorsByIdCache[$user_id]) || empty(self::$authorsByIdCache[$user_id])) {
+        if (!isset(self::$authorsByIdCache[$user_id])) {//  || empty(self::$authorsByIdCache[$user_id]) This is resulting in deuplicate query for when user doesn't have an author profile
             $term_id = $wpdb->get_var(
                 $wpdb->prepare(
                     "SELECT te.term_id

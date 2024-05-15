@@ -370,6 +370,15 @@ class MA_Author_Custom_Fields extends Module
 
         $metabox->add_field(
             [
+                'name' => __('Field Status', 'publishpress-authors'),
+                'id' => self::META_PREFIX . 'field_status',
+                'type' => 'select',
+                'options' => CustomFieldsModel::getFieldStatus(),
+            ]
+        );
+
+        $metabox->add_field(
+            [
                 'name' => __('Field Slug', 'publishpress-authors'),
                 'id' => self::META_PREFIX . 'slug',
                 'type' => 'text',
@@ -407,9 +416,13 @@ class MA_Author_Custom_Fields extends Module
                 'name' => __('Schema Property', 'publishpress-authors'),
                 'id' => self::META_PREFIX . 'schema_property',
                 'type' => 'text',
-                'desc' => __(
-                    'Add this field value as a Schema.org properties relevant to an author. For example, alumniOf, worksFor, birthPlace etc',
-                    'publishpress-authors'
+                'desc' => sprintf(
+                    esc_html__(
+                        'Add a Schema.org property to this field. Examples include alumniOf, worksFor, and birthPlace. %1$sClick here for documentation.%2$s',
+                        'publishpress-authors'
+                    ),
+                    '<a target="_blank" href="https://publishpress.com/knowledge-base/author-fields-schema/">',
+                    '</a>'
                 ),
             ]
         );
@@ -433,15 +446,6 @@ class MA_Author_Custom_Fields extends Module
                 'type' => 'select',
                 'options' => CustomFieldsModel::getFieldRelOptions(),
                 'desc' => '',
-            ]
-        );
-
-        $metabox->add_field(
-            [
-                'name' => __('Field Status', 'publishpress-authors'),
-                'id' => self::META_PREFIX . 'field_status',
-                'type' => 'select',
-                'options' => CustomFieldsModel::getFieldStatus(),
             ]
         );
 
@@ -754,6 +758,7 @@ class MA_Author_Custom_Fields extends Module
             'title' => $columns['title'],
             'field_status' => __('Status', 'publishpress-authors'),
             'requirement' => __('Requirement', 'publishpress-authors'),
+            'type' => __('Type', 'publishpress-authors'),
             'slug' => __('Slug', 'publishpress-authors'),
         ];
 
@@ -796,6 +801,11 @@ class MA_Author_Custom_Fields extends Module
                 <?php echo esc_html_e('Required', 'publishpress-authors'); ?>
             <?php
             }
+        } elseif ($column === 'type') {
+            $type = $this->getFieldMeta($post->ID, 'type');
+            $type_options = CustomFieldsModel::getFieldTypes();
+            $field_type = array_key_exists($type, $type_options) ? $type_options[$type] : $type;
+            echo esc_html($field_type);
         }
     }
 
@@ -825,8 +835,10 @@ class MA_Author_Custom_Fields extends Module
     {
         $defaultCustomFields = self::getDefaultCustomFields();
 
+        $position = 0;
         foreach ($defaultCustomFields as $name => $data) {
-            self::creatCustomFieldsPost($name, $data);
+            self::creatCustomFieldsPost($name, $data, $position);
+            $position++;
             sleep(2);
         }
     }
@@ -837,9 +849,9 @@ class MA_Author_Custom_Fields extends Module
      * @param string $name
      * @param string $title
      */
-    protected static function creatCustomFieldsPost($name, $data)
+    protected static function creatCustomFieldsPost($name, $data, $position = 0)
     {
-        // Check if we already have the layout based on the slug.
+        // Check if we already have the field based on the slug.
         $existingCustomField = Utils::get_page_by_title($data['post_title'], OBJECT, self::POST_TYPE_CUSTOM_FIELDS);
         if ($existingCustomField) {
             return;
@@ -852,6 +864,7 @@ class MA_Author_Custom_Fields extends Module
                 'post_content' => $data['post_title'],
                 'post_status' => 'publish',
                 'post_name' => $data['post_name'],
+                'menu_order' => $position,
             ]
         );
         update_post_meta($post_id, self::META_PREFIX . 'slug', $data['post_name']);
@@ -903,6 +916,15 @@ class MA_Author_Custom_Fields extends Module
             'type'         => 'url',
             'field_status'  => 'on',
             'description'  => '',
+        ];
+        //add job title
+        $defaultCustomFields['job_title'] = [
+            'post_title'   => __('Job Title', 'publishpress-authors'),
+            'post_name'    => 'job_title',
+            'type'         => 'text',
+            'field_status'  => 'on',
+            'description'  => '',
+            'schema_property'  => 'jobTitle',
         ];
 
         return $defaultCustomFields;

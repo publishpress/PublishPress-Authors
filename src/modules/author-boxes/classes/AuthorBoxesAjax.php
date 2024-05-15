@@ -151,7 +151,8 @@ class AuthorBoxesAjax
             $profile_fields   = Author_Editor::get_fields(false);
             $profile_fields   = apply_filters('multiple_authors_author_fields', $profile_fields, false);
 
-            $editor_data = !empty($_POST['editor_data']) ? array_map('sanitize_text_field', $_POST['editor_data']) : [];
+            $editor_data = !empty($_POST['editor_data']) ? array_map('stripslashes_deep', $_POST['editor_data']) : [];
+            $editor_data = array_map('wp_kses_post', $editor_data);
             $fields = apply_filters('multiple_authors_author_boxes_fields', MA_Author_Boxes::get_fields(false), false);
             $args = [];
             $args['post_id'] = '</?php echo $post_id; ?>';
@@ -223,7 +224,7 @@ $meta_row_extra = '';
 
 foreach ($profile_fields as $key => $data) {
     if (!in_array($key, MA_Author_Boxes::AUTHOR_BOXES_EXCLUDED_FIELDS)) {
-                                    $profile_show_field = $args['profile_fields_show_' . $key]['value'] ? true : false;
+                                    $profile_show_field = $args['profile_fields_hide_' . $key]['value'] ? false : true;
     
                                     $profile_html_tag  = !empty($args['profile_fields_' . $key . '_html_tag']['value'])
                                         ? $args['profile_fields_' . $key . '_html_tag']['value'] : 'span';
@@ -248,7 +249,7 @@ foreach ($profile_fields as $key => $data) {
                                 <?php 
                                 $profile_field_html = '
                                 
-                                </?php if (!empty(trim($author->$key))) : ?>
+                                </?php if (!empty(trim($author->'. esc_attr($key) .'))) : ?>
                                     ';
     if (!empty(trim($profile_before_display_prefix))) {
                                 $profile_field_html  .= '<span class="ppma-author-field-meta-prefix"> '. $profile_before_display_prefix .' </span>';
@@ -256,7 +257,7 @@ foreach ($profile_fields as $key => $data) {
                                 $profile_field_html .= '<'. esc_html($profile_html_tag) .'';
                                 $profile_field_html .= ' class="ppma-author-'. esc_attr($key) .'-profile-data ppma-author-field-meta  '. esc_attr('ppma-author-field-type-' . $data['type']) .'" aria-label="'. esc_attr(($data['label'])) .'"';
                                 if ($profile_html_tag === 'a') {
-                                    $profile_field_html .= ' href="</?php echo $author->$key; ?>"';
+                                    $profile_field_html .= ' href="</?php echo $author->'. esc_attr($key) .'; ?>"';
                                 }
                                 $profile_field_html .= '>';
                                 ?>
@@ -306,7 +307,10 @@ foreach ($profile_fields as $key => $data) {
     }
     ?>
     <?php endif; } } ?>
-
+<?php 
+$display_name_prefix    = !empty($args['display_name_prefix']['value']) ? $args['display_name_prefix']['value'] : '';
+$display_name_suffix    = !empty($args['display_name_suffix']['value']) ? $args['display_name_suffix']['value'] : '';
+?>
                 <li class="pp-multiple-authors-boxes-li author_index_</?php echo esc_attr($index); ?> author_</?php echo esc_attr($author->slug); ?>">
 
 <?php if ($args['avatar_show']['value']) : ?>
@@ -326,7 +330,7 @@ $custom_styles = '.pp-multiple-authors-layout-boxed ul li > div:nth-child(1) {fl
 <?php if ($args['name_show']['value']) : ?>
                         <<?php echo esc_html($args['name_html_tag']['value']); ?> class="pp-author-boxes-name multiple-authors-name">
                             <a href="</?php echo esc_url($author->link); ?>" rel="author" title="</?php echo esc_attr($author->display_name); ?>" class="author url fn">
-                                </?php echo esc_html($author->display_name); ?>
+                                <?php echo esc_html($display_name_prefix); ?></?php echo esc_html($author->display_name); ?><?php echo esc_html($display_name_suffix); ?>
                             </a>
                         </<?php echo esc_html($args['name_html_tag']['value']); ?>>
 <?php endif; ?>
@@ -339,27 +343,12 @@ $custom_styles = '.pp-multiple-authors-layout-boxed ul li > div:nth-child(1) {fl
 <?php endif; ?>
 <?php echo $bio_row_extra ; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
-<?php if ($args['meta_show']['value']) : ?>
-                        <<?php echo esc_html($args['meta_html_tag']['value']); ?> class="pp-author-boxes-meta multiple-authors-links">
 <?php if ($args['meta_view_all_show']['value']) : ?>
+                        <<?php echo esc_html($args['meta_html_tag']['value']); ?> class="pp-author-boxes-meta multiple-authors-links">
                             <a href="</?php echo esc_url($author->link); ?>" title="</?php echo esc_attr__('View all posts', 'publishpress-authors'); ?>">
                                     <span></?php echo esc_html__('View all posts', 'publishpress-authors'); ?></span>
                             </a>
-<?php endif; ?>
-<?php if ($args['meta_email_show']['value']) : ?>
-                            </?php if ($author->user_email) : ?>
-                                <a href="</?php echo esc_url('mailto:'.$author->user_email); ?>" target="_blank" aria-label="<?php echo esc_attr__('Email', 'publishpress-authors'); ?>">
-                                    <span class="dashicons dashicons-email-alt"></span>
-                                </a>
-                            </?php endif; ?>
-<?php endif; ?>
-<?php if ($args['meta_site_link_show']['value']) : ?>
-                            </?php if ($author->user_email) : ?>
-                                <a href="</?php echo esc_url($author->user_url); ?>" target="_blank" aria-label="<?php echo esc_attr__('Website', 'publishpress-authors'); ?>">
-                                    <span class="dashicons dashicons-admin-links"></span>
-                                </a>
-                            </?php endif; ?>
-<?php endif; ?>
+
                         </<?php echo esc_html($args['meta_html_tag']['value']); ?>>
 <?php endif; ?>
 <?php echo $meta_row_extra ; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>

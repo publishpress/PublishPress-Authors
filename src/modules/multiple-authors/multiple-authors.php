@@ -1012,7 +1012,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_settings_field(
                 'enable_guest_author_acount',
                 __(
-                    'Enable Guest Guest Author With User Account',
+                    'Enable Guest Author With User Account',
                     'publishpress-authors'
                 ),
                 [$this, 'settings_enable_guest_author_acount'],
