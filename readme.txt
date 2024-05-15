@@ -230,7 +230,7 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= [4.5.0] - 14 May 2024 =
+= [4.5.0] - 15 May 2024 =
 
 * Update: Add new author box : Boxed (Categories), #1737
 * Update: Add new author box : Two Columns (Categories), #1738
