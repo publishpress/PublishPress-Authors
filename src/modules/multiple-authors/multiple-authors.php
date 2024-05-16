@@ -86,8 +86,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                 'default_options'      => [
                     'enabled'                      => 'on',
                     'post_types'                   => [
-                        'post' => 'on',
-                        'page' => 'on',
+                        'post' => 'on'
                     ],
                     'append_to_content'            => 'yes',
                     'author_for_new_users'         => [],
