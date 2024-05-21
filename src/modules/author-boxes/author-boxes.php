@@ -1471,7 +1471,7 @@ class MA_Author_Boxes extends Module
                         <?php echo $args['short_code_args']['search_box_html']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                     <?php endif; ?>
 
-                    <div class="<?php echo esc_attr($body_class); ?>"
+                    <<?php echo ($li_style ? 'div' : 'span'); ?> class="<?php echo esc_attr($body_class); ?>"
                     data-post_id="<?php echo esc_attr($args['post_id']); ?>"
                     data-instance_id="<?php echo esc_attr($args['instance_id']); ?>"
                     data-additional_class="<?php echo esc_attr($args['additional_class']); ?>"
@@ -1794,8 +1794,8 @@ class MA_Author_Boxes extends Module
                                 <?php endif; ?>
                             <?php $author_category_index++; endforeach; ?>
                         </<?php echo ($li_style ? 'div' : 'span'); ?>>
-                    <span class="ppma-layout-suffix"><?php echo html_entity_decode($args['box_tab_layout_suffix']['value']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
-                    </div>
+                        <span class="ppma-layout-suffix"><?php echo html_entity_decode($args['box_tab_layout_suffix']['value']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+                    </<?php echo ($li_style ? 'div' : 'span'); ?>>
                     <!--end code -->
                     <?php if ($admin_preview) : ?>
                 </div>
