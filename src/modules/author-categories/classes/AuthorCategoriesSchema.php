@@ -82,9 +82,9 @@ class AuthorCategoriesSchema
 
             $sql = "CREATE TABLE {$table_name} (
                 id bigint(20) unsigned NOT NULL auto_increment,
-                category_name varchar(200) NOT NULL default '',
-                plural_name varchar(200) NOT NULL default '',
-                slug varchar(200) NOT NULL default '',
+                category_name varchar(191) NOT NULL default '',
+                plural_name varchar(191) NOT NULL default '',
+                slug varchar(191) NOT NULL default '',
                 category_order int(11) NOT NULL default 0,
                 category_status int(11) NOT NULL default 1,
                 created_at datetime NOT NULL,
@@ -116,7 +116,7 @@ class AuthorCategoriesSchema
             $sql = "CREATE TABLE {$table_name} (
                 meta_id bigint(20) unsigned NOT NULL auto_increment,
                 category_id bigint(20) unsigned NOT NULL default '0',
-                meta_key varchar(200) NOT NULL default '',
+                meta_key varchar(191) NOT NULL default '',
                 meta_value longtext NOT NULL default '',
                 PRIMARY KEY  (meta_id),
                 KEY category_id (category_id),
@@ -144,7 +144,7 @@ class AuthorCategoriesSchema
             $sql = "CREATE TABLE {$table_name} (
                 id bigint(20) unsigned NOT NULL auto_increment,
                 category_id bigint(20) unsigned NOT NULL,
-                category_slug varchar(200) NOT NULL default '',
+                category_slug varchar(191) NOT NULL default '',
                 post_id bigint(20) unsigned NOT NULL,
                 author_term_id bigint(20) unsigned NOT NULL default '0',
                 author_user_id bigint(20) unsigned NOT NULL default '0',
