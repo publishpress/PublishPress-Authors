@@ -788,7 +788,12 @@ class MA_Author_Boxes extends Module
             $legacyPlugin              = Factory::getLegacyPlugin();
             $legacy_layout_author_box   = $legacyPlugin->modules->multiple_authors->options->{'author_legacy_layout_' . $layoutName};
             if (empty($legacy_layout_author_box)) {
-                return $html; 
+                // set the legacy layout setting
+                $author_box_id = $this->getLegacyLayoutAuthorBoxId($layoutName);
+                $legacyPlugin->update_module_option('multiple_authors', 'author_legacy_layout_' . $layoutName, self::POST_TYPE_BOXES . '_' . $author_box_id);
+                if ($author_box_id === 0) {
+                    return $html;
+                }
             }
             $author_box_id = (int) preg_replace("/[^0-9]/", "", $legacy_layout_author_box );
             if ($author_box_id === 0) {
