@@ -3759,6 +3759,13 @@ echo '<span class="ppma_settings_field_description">'
                     [
                         'nonce'     => wp_create_nonce('sync_post_author'),
                         'chunkSize' => PUBLISHPRESS_AUTHORS_SYNC_POST_AUTHOR_CHUNK_SIZE,
+                        'buttonLabel'      => esc_html__('Sync author and user fields', 'publishpress-authors'),
+                        'messageCollectingData'      => esc_html__('Collecting data...', 'publishpress-authors'),
+                        'messageEndingProcess'      => esc_html__('Finishing the process...', 'publishpress-authors'),
+                        'messageDone'      => esc_html__('Done! %d posts were updated.', 'publishpress-authors'),
+                        'messageWait'      => esc_html__('Please, wait...', 'publishpress-authors'),
+                        'messageStarting'      => esc_html__('Updating author field on posts...', 'publishpress-authors'),
+                        'messageProgress'      => esc_html__('Updated %d of %d posts...', 'publishpress-authors'),
                     ]
                 );
 
@@ -3783,6 +3790,13 @@ echo '<span class="ppma_settings_field_description">'
                     [
                         'nonce'     => wp_create_nonce('sync_author_slug'),
                         'chunkSize' => PUBLISHPRESS_AUTHORS_SYNC_AUTHOR_SLUG_CHUNK_SIZE,
+                        'buttonLabel'      => esc_html__('Sync author and user URLs', 'publishpress-authors'),
+                        'messageCollectingData'      => esc_html__('Collecting data...', 'publishpress-authors'),
+                        'messageEndingProcess'      => esc_html__('Finishing the process...', 'publishpress-authors'),
+                        'messageDone'      => esc_html__('Done! %d authors were updated.', 'publishpress-authors'),
+                        'messageWait'      => esc_html__('Please, wait...', 'publishpress-authors'),
+                        'messageStarting'      => esc_html__('Updating authors slug...', 'publishpress-authors'),
+                        'messageProgress'      => esc_html__('Updated %d of %d authors...', 'publishpress-authors'),
                     ]
                 );
 
@@ -3814,6 +3828,16 @@ echo '<span class="ppma_settings_field_description">'
                         'ppmaCoAuthorsMigration',
                         [
                             'nonce' => wp_create_nonce('migrate_coauthors'),
+                            'start_message'      => esc_html__('Collecting data for the migration...', 'publishpress-authors'),
+                            'error_message'      => esc_html__('Error: ', 'publishpress-authors'),
+                            'progress_message'   => esc_html__('Creating missed post authors....', 'publishpress-authors'),
+                            'wait_message'       => esc_html__('Please, wait...', 'publishpress-authors'),
+                            'copying_message'    => esc_html__('Copying authors\' data...', 'publishpress-authors'),
+                            'copy_message'       => esc_html__('Copy Co-Authors Plus data', 'publishpress-authors'),
+                            'deactivating_message' => esc_html__('Deactivating Co-uthors Plus...', 'publishpress-authors'),
+                            'deactivated_message'  => esc_html__('Done! Co-Authors Plus is deactivated.', 'publishpress-authors'),
+                            'deactivate_message' => esc_html__('Deactivate Co-Authors Plus', 'publishpress-authors'),
+                            'completed_message'  => esc_html__('Done! Co-Authors Plus data was copied.', 'publishpress-authors'),
                         ]
                     );
                 }
