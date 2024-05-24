@@ -1,5 +1,3 @@
-let {__} = wp.i18n;
-
 class PPAuthorsBylinesMigrationBox extends React.Component {
     constructor(props) {
         super(props);
@@ -36,7 +34,7 @@ class PPAuthorsBylinesMigrationBox extends React.Component {
         var self = this;
 
         this.setState({
-            'log': __('Collecting data for the migration...', 'publishpress-authors')
+            'log': ppmaBylinesMigration.start_message
         });
 
         window.setTimeout(() => {
@@ -54,7 +52,7 @@ class PPAuthorsBylinesMigrationBox extends React.Component {
                         self.setState({
                             progress: 0,
                             inProgress: false,
-                            log: __('Error: ', 'publishpress-authors') + response.error,
+                            log: ppmaBylinesMigration.error_message + response.error,
                             showDeactivateOption: false
                         });
 
@@ -71,7 +69,7 @@ class PPAuthorsBylinesMigrationBox extends React.Component {
                     self.setState({
                         progress: 0,
                         inProgress: false,
-                        log: __('Error: ', 'publishpress-authors') + errorThrown + ' [' + textStatus + ']',
+                        log: ppmaBylinesMigration.error_message + errorThrown + ' [' + textStatus + ']',
                         showDeactivateOption: false
                     });
                 }
@@ -96,7 +94,7 @@ class PPAuthorsBylinesMigrationBox extends React.Component {
                     self.setState({
                         progress: 0,
                         inProgress: false,
-                        log: __('Error: ', 'publishpress-authors') + response.error,
+                        log: ppmaBylinesMigration.error_message + response.error,
                         showDeactivateOption: false
                     });
 
@@ -117,7 +115,7 @@ class PPAuthorsBylinesMigrationBox extends React.Component {
                 if (totalMigrated < self.state.totalToMigrate) {
                     self.migrateChunkOfData();
                 } else {
-                    let logMessage = __('Done! Bylines data was copied and you can deactivate the plugin.', 'publishpress-authors');
+                    let logMessage = ppmaBylinesMigration.completed_message;
 
                     self.setState({
                         progress: 100,
@@ -136,7 +134,7 @@ class PPAuthorsBylinesMigrationBox extends React.Component {
                 self.setState({
                     progress: 0,
                     inProgress: false,
-                    log: __('Error: ', 'publishpress-authors') + errorThrown + ' [' + textStatus + ']',
+                    log: ppmaBylinesMigration.error_message + errorThrown + ' [' + textStatus + ']',
                     showDeactivateOption: false
                 });
             }
@@ -150,7 +148,7 @@ class PPAuthorsBylinesMigrationBox extends React.Component {
             {
                 progress: 1,
                 inProgress: true,
-                log: __('Please, wait...', 'publishpress-authors'),
+                log: ppmaBylinesMigration.wait_message,
                 showDeactivateOption: false
             }
         );
@@ -160,7 +158,7 @@ class PPAuthorsBylinesMigrationBox extends React.Component {
                 self.setState(
                     {
                         progress: 2,
-                        log: __('Copying authors\' data...', 'publishpress-authors')
+                        log: ppmaBylinesMigration.progress_message
                     }
                 );
 
@@ -175,7 +173,7 @@ class PPAuthorsBylinesMigrationBox extends React.Component {
         this.setState(
             {
                 disablingBylines: true,
-                log: __('Deactivating Bylines...', 'publishpress-authors')
+                log: ppmaBylinesMigration.deactivating_message
             }
         );
 
@@ -190,21 +188,21 @@ class PPAuthorsBylinesMigrationBox extends React.Component {
             success: function (response) {
                 self.setState({
                     disablingBylines: false,
-                    log: __('Done! Bylines is deactivated.', 'publishpress-authors'),
+                    log: ppmaBylinesMigration.deactivated_message,
                     showDeactivateOption: false
                 });
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 self.setState({
                     disablingBylines: false,
-                    log: __('Error: ', 'publishpress-authors') + errorThrown + ' [' + textStatus + ']'
+                    log: ppmaBylinesMigration.error_message + errorThrown + ' [' + textStatus + ']'
                 });
             }
         });
     }
 
     renderDeactivatePluginOption() {
-        let label = __('Deactivate Bylines', 'publishpress-authors');
+        let label = ppmaBylinesMigration.deactivate_message;
         let isEnabled = !this.state.disablingBylines;
 
         return (
@@ -241,7 +239,7 @@ class PPAuthorsBylinesMigrationBox extends React.Component {
         return (
             <div>
                 <PPAuthorsMaintenanceButton
-                    label={__('Copy Bylines Data', 'publishpress-authors')}
+                    label={ppmaBylinesMigration.copy_message}
                     onClick={this.startMigration}
                     enabled={isEnabled}/>
                 {deactivatePluginPanel}

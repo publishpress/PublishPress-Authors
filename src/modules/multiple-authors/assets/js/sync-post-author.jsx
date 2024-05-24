@@ -12,13 +12,13 @@ jQuery(function () {
                           actionGetInitialData={'get_sync_post_author_data'}
                           actionMigrationStep={'sync_post_author'}
                           actionFinishProcess={'finish_sync_post_author'}
-                          buttonLabel={__('Sync author and user fields', 'publishpress-authors')}
-                          messageCollectingData={__('Collecting data...', 'publishpress-authors')}
-                          messageEndingProcess={__('Finishing the process...', 'publishpress-authors')}
-                          messageDone={__('Done! %d posts were updated.', 'publishpress-authors')}
-                          messageWait={__('Please, wait...', 'publishpress-authors')}
-                          messageStarting={__('Updating author field on posts...', 'publishpress-authors')}
-                          messageProgress={__('Updated %d of %d posts...', 'publishpress-authors')}
+                          buttonLabel={ppmaSyncPostAuthor.buttonLabel}
+                          messageCollectingData={ppmaSyncPostAuthor.messageCollectingData}
+                          messageEndingProcess={ppmaSyncPostAuthor.messageEndingProcess}
+                          messageDone={ppmaSyncPostAuthor.messageDone}
+                          messageWait={ppmaSyncPostAuthor.messageWait}
+                          messageStarting={ppmaSyncPostAuthor.messageStarting}
+                          messageProgress={ppmaSyncPostAuthor.messageProgress}
         />,
         document.getElementById('publishpress-authors-sync-post-authors')
     );
