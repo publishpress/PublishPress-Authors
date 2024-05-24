@@ -51,6 +51,7 @@ class Installer
         self::addManageFieldsCapabilitiesToRoles();
         self::createDefaultCustomFields();
         self::createDefaultAuthorBoxes();
+        MA_Author_Boxes::authorBoxesFieldsUpdate();
         self::addNewAuthorCapabilitiesToRoles();
         self::flushRewriteRules();
 
@@ -105,6 +106,9 @@ class Installer
             MA_Author_Boxes::authorBoxesMetaRemovalUpdate();
             self::createDefaultCustomFields();
             self::createDefaultAuthorBoxes();
+        }
+        if (version_compare($currentVersions, '4.6.0', '<')) {
+            MA_Author_Boxes::authorBoxesFieldsUpdate();
         }
 
         /**
