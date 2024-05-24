@@ -14,6 +14,7 @@ module.exports = {
         'sync-author-slug': './src/modules/multiple-authors/assets/js/sync-author-slug.jsx',
         'byline-migration': './src/modules/byline-migration/assets/js/byline-migration.jsx',
         'bylines-migration': './src/modules/bylines-migration/assets/js/bylines-migration.jsx',
+        'author-boxes-block': './src/modules/author-boxes/assets/js/author-boxes-block.jsx',
     },
     output: {
         path: path.join(__dirname, 'src/assets/js'),

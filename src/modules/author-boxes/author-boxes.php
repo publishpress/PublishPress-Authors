@@ -139,12 +139,15 @@ class MA_Author_Boxes extends Module
         add_action('pre_get_posts', [$this, 'author_author_boxes_default_sort']);
         add_filter('parent_file', [$this, 'setParentFile']);
         add_action('admin_head', [$this, 'addInlineScripts']);
-
-
+        add_action('enqueue_block_editor_assets', [$this, 'author_boxes_block_enqueue_assets']);
+        add_action('wp_ajax_ppma_block_fetch_author_boxes', [$this, 'ppma_block_fetch_author_boxes']);
+        add_action('wp_ajax_nopriv_ppma_block_fetch_author_boxes', [$this, 'ppma_block_fetch_author_boxes']);
+        
         add_action('wp_ajax_author_boxes_editor_get_preview', ['MultipleAuthorBoxes\AuthorBoxesAjax', 'handle_author_boxes_editor_get_preview']);
         add_action('wp_ajax_author_boxes_editor_get_template', ['MultipleAuthorBoxes\AuthorBoxesAjax', 'handle_author_boxes_editor_get_template']);
         add_action('wp_ajax_author_boxes_editor_save_fields_order', ['MultipleAuthorBoxes\AuthorBoxesAjax', 'handle_author_boxes_fields_order']);
 
+        $this->author_boxes_block_register();
         $this->registerPostType();
     }
 
@@ -613,9 +616,11 @@ class MA_Author_Boxes extends Module
     public static function getAuthorBoxes($ids_only = false, $with_editor_data = false, $type = 'all')
     {
         $post_args = [
-            'post_type' => self::POST_TYPE_BOXES,
-            'posts_per_page' => -1,
-            'post_status' => 'publish',
+            'post_type'         => self::POST_TYPE_BOXES,
+            'posts_per_page'    => -1,
+            'post_status'       => 'publish',
+            'orderby'           => 'menu_order',
+            'order'             => 'ASC'
         ];
 
         if ($type == 'author_categories') {
@@ -2308,4 +2313,77 @@ class MA_Author_Boxes extends Module
             }
         }
     }
+
+    /**
+     * Enqueue block editor assets
+     */
+    public function author_boxes_block_enqueue_assets() {
+        wp_enqueue_script(
+            'author-boxes-block',
+            PP_AUTHORS_URL . 'src/assets/js/author-boxes-block.min.js',
+            ['wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-data'],
+            PP_AUTHORS_VERSION
+        );
+    
+        wp_localize_script( 'author-boxes-block', 'authorBoxesBlock', array(
+            'ajax_url' => admin_url( 'admin-ajax.php' ),
+            'block_title' => __('Author Box', 'publishpress-authors'),
+            'select_label' => __('Select an author box', 'publishpress-authors'),
+        ));
+
+        wp_enqueue_style(
+            'multiple-authors-widget-css',
+            PP_AUTHORS_ASSETS_URL . 'css/multiple-authors-widget.css',
+            ['wp-edit-blocks'],
+            PP_AUTHORS_VERSION,
+            'all'
+        );
+    }
+    
+    /**
+     * Register block
+     */
+    public function author_boxes_block_register() {
+        register_block_type( 'publishpress-authors/author-boxes-block', [
+            'editor_script' => 'author-boxes-block',
+            'editor_style'  => 'multiple-authors-widget-css',
+            'render_callback' => [$this, 'author_boxes_block_render'],
+            'attributes' => [
+                'selectedBoxId' => [
+                    'type' => 'string'
+                ],
+            ],
+        ]);
+    }
+    
+    /**
+     * Render callback for the block
+     */
+    public function author_boxes_block_render( $attributes ) {
+
+        $layout = !empty( $attributes['selectedBoxId']) ? sanitize_text_field($attributes['selectedBoxId']) : 'boxed';
+
+        $html_output = do_shortcode('[publishpress_authors_box layout="'. $layout .'"]');
+
+        return $html_output;
+    }
+    
+    /**
+     * AJAX handler for fetching author boxes
+     */
+    public function ppma_block_fetch_author_boxes() {
+        $author_boxes = $this->getAuthorBoxes(false);
+
+        $boxes = [];
+        if (!empty($author_boxes)) {
+            foreach ($author_boxes as $box_id => $box_title) {
+                $boxes[] = array(
+                    'id'    => $box_id,
+                    'title' => $box_title,
+                );
+            }
+        }
+        wp_send_json($boxes);
+    }
+
 }
