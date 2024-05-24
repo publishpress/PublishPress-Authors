@@ -608,6 +608,32 @@ class MA_Author_Boxes extends Module
 
     }
 
+    public static function authorBoxesFieldsUpdate() {
+        $post_args = [
+            'post_type' => self::POST_TYPE_BOXES,
+            'posts_per_page' => -1,
+            'post_status' => 'publish',
+        ];
+
+        $posts = get_posts($post_args);
+
+        if (! empty($posts)) {
+            foreach ($posts as $post) {
+                if (in_array($post->post_name, ['author_boxes_simple_list', 'author_boxes_inline', 'author_boxes_inline_avatar'])) {
+                    $editor_data = (array) get_post_meta($post->ID, self::META_PREFIX . 'layout_meta_value', true);
+                    $editor_data['meta_view_all_show'] = 0;
+                    // hide all author fields
+                    $profile_fields   = apply_filters('multiple_authors_author_fields', [], false);
+                    foreach ($profile_fields as $key => $data) {
+                        $editor_data['profile_fields_hide_' . $key] = 1;
+                    }
+                    update_post_meta($post->ID, self::META_PREFIX . 'layout_meta_value', $editor_data);
+                }
+            }
+        }
+
+    }
+
     /**
      * @param boolean $ids_only
      * @param boolean $with_editor_data
