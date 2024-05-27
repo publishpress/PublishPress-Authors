@@ -32,6 +32,68 @@
                 return;
             });
             $(".ppma-re-order-lists").sortable();
+
+            /**
+             * Code editor
+             */
+            if( $(".ppma-author-code-editor").length ) {
+                var global_editor_settings = [], editor_settings = '', editor_textarea = '', editor_init = '', textarea_id = '', editor_mode = '', formatted_code = '';
+                $(".ppma-author-code-editor").each(function () {
+                    editor_textarea = $(this);
+                    textarea_id     = editor_textarea.attr('id');
+                    editor_mode     = editor_textarea.attr('data-editor_mode');
+                    editor_settings = wp.codeEditor.defaultSettings ? _.clone( wp.codeEditor.defaultSettings ) : {};
+                    editor_settings.codemirror = _.extend(
+                        {},
+                        editor_settings.codemirror,
+                        {
+                            indentUnit: 2,
+                            tabSize: 2,
+                            mode: "" + editor_mode + "",
+                            inputStyle: 'textarea',
+                            matchBrackets: true,
+                            autoRefresh:true,
+                            gutters: ['CodeMirror-lint-markers', 'CodeMirror-foldgutter'],
+                            lint: 'php' !== editor_mode,
+                            direction: 'ltr',
+                            theme: 'php' === editor_mode ? 'monokai' : '',
+                            readOnly: 'php' === editor_mode ? true : false
+                        }
+                    );
+                    editor_init = wp.codeEditor.initialize(editor_textarea, editor_settings);
+                    global_editor_settings[textarea_id] = editor_init;
+                    if ('php' !== editor_mode) {
+                        formatted_code = css_beautify(editor_init.codemirror.getValue(), {
+                            indent_size: 4,
+                            space_in_empty_paren: true
+                        });
+                        editor_init.codemirror.setValue(formatted_code);
+                    }
+                });
+
+                $(document).on("keyup", ".ppma-boxes-editor-tab-content.code_editor .CodeMirror-code", function() {
+                    var editor_textarea = $(this).closest('td.input').find('textarea.ppma-author-code-editor');
+                    var editor_textarea_id = editor_textarea.attr('id');
+                    var current_code_editor = global_editor_settings[editor_textarea_id];
+                    current_code_editor.codemirror.save();
+                    editor_textarea.val(current_code_editor.codemirror.getValue());
+                    editor_textarea.trigger("change");
+                });
+                $(document).on("click", ".ppma-boxes-editor-tab-content.code_editor .clear-code-editor-content", function() {
+                    var editor_textarea = $(this).closest('td.input').find('textarea.ppma-author-code-editor');
+                    var editor_textarea_id = editor_textarea.attr('id');
+                    var current_code_editor = global_editor_settings[editor_textarea_id];
+                    current_code_editor.codemirror.setValue("");
+                    editor_textarea.val("");
+                    editor_textarea.trigger("change");
+                });
+                $(document).on("click", ".ppma-boxes-editor-tab-content.code_editor .refresh-code-editor", function() {
+                    var editor_textarea = $(this).closest('td.input').find('textarea.ppma-author-code-editor');
+                    var editor_textarea_id = editor_textarea.attr('id');
+                    var current_code_editor = global_editor_settings[editor_textarea_id];
+                    current_code_editor.codemirror.refresh();
+                });
+            }
         }
 
         /**
@@ -187,7 +249,15 @@
                 $('.author-editor-loading-spinner').removeClass('is-active');
                 if (status === 'success') {
                     var template_content = content.replaceAll('</?php', '<?php');
-                    $('#template_action').val(template_content);
+
+                    var editor_textarea = $('#template_action');
+                    var editor_textarea_id = editor_textarea.attr('id');
+                    var current_code_editor = global_editor_settings[editor_textarea_id];
+
+                    current_code_editor.codemirror.setValue(template_content);
+                    editor_textarea.val(template_content);
+                    editor_textarea.trigger("change");
+
                     $('.ppma-editor-template-generated').css('color', 'green').show().delay(2000).fadeOut('slow');
                 } else {
                     $('.ppma-editor-template-generated').css('color', 'red').html(content).show().delay(2000).fadeOut('slow');

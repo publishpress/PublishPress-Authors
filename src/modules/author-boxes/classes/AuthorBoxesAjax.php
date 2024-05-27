@@ -182,6 +182,7 @@ class AuthorBoxesAjax
  * This sometimes may be different from global $post as user can  get authors 
  * for specific post.
  */
+
 global $ppma_template_authors, $ppma_template_authors_post, $post, $ppma_instance_id;
 
 $authors = $ppma_template_authors;
@@ -208,13 +209,9 @@ $instance_id = $ppma_instance_id;
 <span class="ppma-layout-prefix"><?php echo html_entity_decode($args['box_tab_layout_prefix']['value']);  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
     <ul class="pp-multiple-authors-boxes-ul">
         </?php foreach ($authors as $index => $author) : ?>
-
             </?php if ($author && is_object($author) && isset($author->term_id)) : ?>
-
 <?php if ($args['author_recent_posts_show']['value']) : ?>
-
                 </?php $author_recent_posts = multiple_authors_get_author_recent_posts($author, true, <?php echo esc_html($args['author_recent_posts_limit']['value']); ?>, '<?php echo esc_html($args['author_recent_posts_orderby']['value']); ?>', '<?php echo esc_html($args['author_recent_posts_order']['value']); ?>'); ?>
-
 <?php endif; ?>
 <?php 
 //author fields item position
@@ -388,43 +385,21 @@ $custom_styles = '.pp-multiple-authors-layout-boxed ul li > div:nth-child(1) {fl
 </div>
 
 <?php 
-$generated_styles = '';
-if (!empty($custom_styles)) {
-    $generated_styles .= $custom_styles . "\n";
-}
-if (!empty($new_style_1 = AuthorBoxesStyles::getTitleFieldStyles($args, ''))) {
-    $generated_styles .= $new_style_1 . "\n";
-}
-if (!empty($new_style_2 = AuthorBoxesStyles::getAvatarFieldStyles($args, ''))) {
-    $generated_styles .= $new_style_2 . "\n";
-}
-if (!empty($new_style_3 = AuthorBoxesStyles::getNameFieldStyles($args, ''))) {
-    $generated_styles .= $new_style_3 . "\n";
-}
-if (!empty($new_style_4 = AuthorBoxesStyles::getBioFieldStyles($args, ''))) {
-    $generated_styles .= $new_style_4 . "\n";
-}
-if (!empty($new_style_5 = AuthorBoxesStyles::getMetaFieldStyles($args, ''))) {
-    $generated_styles .= $new_style_5 . "\n";
-}
-if (!empty($new_style_6 = AuthorBoxesStyles::getRProfileFieldStyles($args, ''))) {
-    $generated_styles .= $new_style_6 . "\n";
-}
-if (!empty($new_style_7 = AuthorBoxesStyles::getRecentPostsFieldStyles($args, ''))) {
-    $generated_styles .= $new_style_7 . "\n";
-}
-if (!empty($new_style_8 = AuthorBoxesStyles::getBoxLayoutFieldStyles($args, ''))) {
-    $generated_styles .= $new_style_8 . "\n";
-}
-if (!empty($new_style_9 = AuthorBoxesStyles::getCustomCssFieldStyles($args, ''))) {
-    $generated_styles .= $new_style_9 . "\n";
-}
-if (!empty($new_style_10 = AuthorBoxesStyles::getAuthorCategoriesFieldStyles($args, ''))) {
-    $generated_styles .= $new_style_10 . "\n";
-}
+
+$custom_styles = AuthorBoxesStyles::getTitleFieldStyles($args, $custom_styles);
+$custom_styles = AuthorBoxesStyles::getAvatarFieldStyles($args, $custom_styles);
+$custom_styles = AuthorBoxesStyles::getNameFieldStyles($args, $custom_styles);
+$custom_styles = AuthorBoxesStyles::getBioFieldStyles($args, $custom_styles);
+$custom_styles = AuthorBoxesStyles::getMetaFieldStyles($args, $custom_styles);
+$custom_styles = AuthorBoxesStyles::getRProfileFieldStyles($args, $custom_styles);
+$custom_styles = AuthorBoxesStyles::getRecentPostsFieldStyles($args, $custom_styles);
+$custom_styles = AuthorBoxesStyles::getBoxLayoutFieldStyles($args, $custom_styles);
+$custom_styles = AuthorBoxesStyles::getAuthorCategoriesFieldStyles($args, $custom_styles);
+$custom_styles = AuthorBoxesStyles::getCustomCssFieldStyles($args, $custom_styles);
+
 ?>
 <style>
-    <?php echo $generated_styles; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+    <?php echo $custom_styles; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 </style>
             <?php 
             $response['content'] = ob_get_clean();
