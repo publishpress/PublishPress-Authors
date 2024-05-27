@@ -1535,7 +1535,8 @@ class AuthorBoxesEditorFields
         $fields['box_tab_custom_css'] = [
             'label'       => esc_html__('Custom CSS', 'publishpress-authors'),
             'placeholder' => esc_html__('Add Custom CSS styles here...', 'publishpress-authors'),
-            'type'        => 'textarea',
+            'type'        => 'code_editor',
+            'editor_mode' => 'css',
             'sanitize'    => 'sanitize_textarea_field',
             'tab'         => 'custom_css',
         ];

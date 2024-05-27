@@ -1910,7 +1910,7 @@ class MA_Author_Boxes extends Module
         $tab_style = ($args['tab'] === self::default_tab()) ? '' : 'display:none;';
         ob_start();
         $generate_tab_title = false;
-        if (in_array($args['type'], ['textarea', 'export_action', 'import_action', 'template_action', 'line_break', 'profile_header'])) {
+        if (in_array($args['type'], ['textarea', 'export_action', 'import_action', 'template_action', 'line_break', 'profile_header', 'code_editor'])) {
             $th_style = 'display: none;';
             $colspan  = 2;
         } else {
@@ -1921,7 +1921,8 @@ class MA_Author_Boxes extends Module
         <tr 
             class="<?php echo esc_attr($tab_class); ?>"
             data-tab="<?php echo esc_attr($args['tab']); ?>"
-            style="<?php echo esc_attr($tab_style); ?>">
+            style="<?php echo esc_attr($tab_style); ?>"
+            >
             <?php if (!empty($args['label'])) : ?>
                 <th scope="row" style="<?php echo esc_attr($th_style); ?>">
                     <label for="<?php echo esc_attr($key); ?>">
@@ -2055,13 +2056,20 @@ class MA_Author_Boxes extends Module
                         </p>
                         <br />
                     </div>
-                    <textarea name="<?php echo esc_attr($key); ?>"
-                        id="<?php echo esc_attr($key); ?>" 
+                    <textarea
+                        name="<?php echo esc_attr($key); ?>"
+                        id="<?php echo esc_attr($key); ?>"
                         type="<?php echo esc_attr($args['type']); ?>"
                         rows="<?php echo esc_attr($args['rows']); ?>"
                         placeholder="<?php echo esc_attr($args['placeholder']); ?>"
-                        <?php echo (isset($args['readonly']) && $args['readonly'] === true) ? 'readonly' : ''; ?>
-                        ></textarea>
+                        data-editor_mode="php"
+                        class="ppma-author-code-editor"
+                        <?php echo (isset($args['readonly']) && $args['readonly'] === true) ? 'readonly' : ''; ?>></textarea>
+                    <br />
+                    <div class="clear-code-editor-content"></div>
+                    <div class="update-code-editor-content"></div>
+                    <div class="refresh-code-editor"></div>
+                    
                     <div class="generate-template-buttons">
                         <span>
                             <a href="#" class="button button-primary ppma-editor-generate-template">
@@ -2091,6 +2099,27 @@ class MA_Author_Boxes extends Module
                         placeholder="<?php echo esc_attr($args['placeholder']); ?>"
                         <?php echo (isset($args['readonly']) && $args['readonly'] === true) ? 'readonly' : ''; ?>
                         ><?php echo esc_html($args['value']); ?></textarea>
+                <?php
+                elseif ('code_editor' === $args['type']) :
+                    ?>
+                    <label for="<?php echo esc_attr($key); ?>" class="code-editor-label">
+                        <?php echo esc_html($args['label']); ?>
+                    </label>
+                    <div class="code-mirror-before"><div><?php echo htmlentities('<style type="text/css">'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div></div>
+                    <textarea
+                        name="<?php echo esc_attr($key); ?>"
+                        id="<?php echo esc_attr($key); ?>"
+                        type="<?php echo esc_attr($args['type']); ?>"
+                        rows="<?php echo esc_attr($args['rows']); ?>"
+                        placeholder="<?php echo esc_attr($args['placeholder']); ?>"
+                        data-editor_mode="<?php echo esc_attr($args['editor_mode']); ?>"
+                        class="ppma-author-code-editor"
+                        <?php echo (isset($args['readonly']) && $args['readonly'] === true) ? 'readonly' : ''; ?>><?php echo esc_html($args['value']); ?></textarea>
+                    <div class="code-mirror-after"><div><?php echo htmlentities('</style>'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div></div>
+                    <br />
+                    <div class="clear-code-editor-content"></div>
+                    <div class="update-code-editor-content"></div>
+                    <div class="refresh-code-editor"></div>
                 <?php
                 elseif ('profile_header' === $args['type']) :
                     $additional_class = 'closed';
@@ -2189,13 +2218,31 @@ class MA_Author_Boxes extends Module
         //color picker style
         wp_enqueue_style('wp-color-picker');
 
+        //add code editor
+        wp_enqueue_code_editor(['type' => 'text/html']);
+
+        wp_enqueue_style(
+            'codemirror-monokai', 
+            PP_AUTHORS_ASSETS_URL . 'lib/codemirror/css/monokai.min.css', 
+            [], PP_AUTHORS_VERSION
+        );
+        wp_enqueue_script(
+            'js-beautify', 
+            PP_AUTHORS_ASSETS_URL . 'lib/js-beautify/js/beautify-css.min.js', 
+            [], 
+            PP_AUTHORS_VERSION, 
+            true
+        );
+
         wp_enqueue_script(
             'author-boxes-editor-js',
             $moduleAssetsUrl . '/js/author-boxes-editor.js',
             [
                 'jquery',
+                'code-editor',
                 'wp-color-picker',
-                'jquery-ui-sortable'
+                'jquery-ui-sortable',
+                'js-beautify'
             ],
             PP_AUTHORS_VERSION
         );
