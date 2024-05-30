@@ -1,0 +1,1398 @@
+[
+  {
+    "class": "dashicons-admin-appearance",
+    "name": "Admin Appearance"
+  },
+  {
+    "class": "dashicons-admin-collapse",
+    "name": "Admin Collapse"
+  },
+  {
+    "class": "dashicons-admin-comments",
+    "name": "Admin Comments"
+  },
+  {
+    "class": "dashicons-admin-customizer",
+    "name": "Admin Customizer"
+  },
+  {
+    "class": "dashicons-admin-generic",
+    "name": "Admin Generic"
+  },
+  {
+    "class": "dashicons-admin-home",
+    "name": "Admin Home"
+  },
+  {
+    "class": "dashicons-admin-links",
+    "name": "Admin Links"
+  },
+  {
+    "class": "dashicons-admin-media",
+    "name": "Admin Media"
+  },
+  {
+    "class": "dashicons-admin-multisite",
+    "name": "Admin Multisite"
+  },
+  {
+    "class": "dashicons-admin-network",
+    "name": "Admin Network"
+  },
+  {
+    "class": "dashicons-admin-page",
+    "name": "Admin Page"
+  },
+  {
+    "class": "dashicons-admin-plugins",
+    "name": "Admin Plugins"
+  },
+  {
+    "class": "dashicons-admin-post",
+    "name": "Admin Post"
+  },
+  {
+    "class": "dashicons-admin-settings",
+    "name": "Admin Settings"
+  },
+  {
+    "class": "dashicons-admin-site-alt",
+    "name": "Admin Site Alt"
+  },
+  {
+    "class": "dashicons-admin-site-alt2",
+    "name": "Admin Site Alt2"
+  },
+  {
+    "class": "dashicons-admin-site-alt3",
+    "name": "Admin Site Alt3"
+  },
+  {
+    "class": "dashicons-admin-site",
+    "name": "Admin Site"
+  },
+  {
+    "class": "dashicons-admin-tools",
+    "name": "Admin Tools"
+  },
+  {
+    "class": "dashicons-admin-users",
+    "name": "Admin Users"
+  },
+  {
+    "class": "dashicons-airplane",
+    "name": "Airplane"
+  },
+  {
+    "class": "dashicons-album",
+    "name": "Album"
+  },
+  {
+    "class": "dashicons-align-center",
+    "name": "Align Center"
+  },
+  {
+    "class": "dashicons-align-full-width",
+    "name": "Align Full Width"
+  },
+  {
+    "class": "dashicons-align-left",
+    "name": "Align Left"
+  },
+  {
+    "class": "dashicons-align-none",
+    "name": "Align None"
+  },
+  {
+    "class": "dashicons-align-pull-left",
+    "name": "Align Pull Left"
+  },
+  {
+    "class": "dashicons-align-pull-right",
+    "name": "Align Pull Right"
+  },
+  {
+    "class": "dashicons-align-right",
+    "name": "Align Right"
+  },
+  {
+    "class": "dashicons-align-wide",
+    "name": "Align Wide"
+  },
+  {
+    "class": "dashicons-amazon",
+    "name": "Amazon"
+  },
+  {
+    "class": "dashicons-analytics",
+    "name": "Analytics"
+  },
+  {
+    "class": "dashicons-archive",
+    "name": "Archive"
+  },
+  {
+    "class": "dashicons-arrow-down-alt",
+    "name": "Arrow Down Alt"
+  },
+  {
+    "class": "dashicons-arrow-down-alt2",
+    "name": "Arrow Down Alt2"
+  },
+  {
+    "class": "dashicons-arrow-down",
+    "name": "Arrow Down"
+  },
+  {
+    "class": "dashicons-arrow-left-alt",
+    "name": "Arrow Left Alt"
+  },
+  {
+    "class": "dashicons-arrow-left-alt2",
+    "name": "Arrow Left Alt2"
+  },
+  {
+    "class": "dashicons-arrow-left",
+    "name": "Arrow Left"
+  },
+  {
+    "class": "dashicons-arrow-right-alt",
+    "name": "Arrow Right Alt"
+  },
+  {
+    "class": "dashicons-arrow-right-alt2",
+    "name": "Arrow Right Alt2"
+  },
+  {
+    "class": "dashicons-arrow-right",
+    "name": "Arrow Right"
+  },
+  {
+    "class": "dashicons-arrow-up-alt",
+    "name": "Arrow Up Alt"
+  },
+  {
+    "class": "dashicons-arrow-up-alt2",
+    "name": "Arrow Up Alt2"
+  },
+  {
+    "class": "dashicons-arrow-up-duplicate",
+    "name": "Arrow Up Duplicate"
+  },
+  {
+    "class": "dashicons-arrow-up",
+    "name": "Arrow Up"
+  },
+  {
+    "class": "dashicons-art",
+    "name": "Art"
+  },
+  {
+    "class": "dashicons-awards",
+    "name": "Awards"
+  },
+  {
+    "class": "dashicons-backup",
+    "name": "Backup"
+  },
+  {
+    "class": "dashicons-bank",
+    "name": "Bank"
+  },
+  {
+    "class": "dashicons-beer",
+    "name": "Beer"
+  },
+  {
+    "class": "dashicons-bell",
+    "name": "Bell"
+  },
+  {
+    "class": "dashicons-block-default",
+    "name": "Block Default"
+  },
+  {
+    "class": "dashicons-book-alt",
+    "name": "Book Alt"
+  },
+  {
+    "class": "dashicons-book",
+    "name": "Book"
+  },
+  {
+    "class": "dashicons-buddicons-activity",
+    "name": "Buddicons Activity"
+  },
+  {
+    "class": "dashicons-buddicons-bbpress-logo",
+    "name": "Buddicons Bbpress Logo"
+  },
+  {
+    "class": "dashicons-buddicons-buddypress-logo",
+    "name": "Buddicons Buddypress Logo"
+  },
+  {
+    "class": "dashicons-buddicons-community",
+    "name": "Buddicons Community"
+  },
+  {
+    "class": "dashicons-buddicons-forums",
+    "name": "Buddicons Forums"
+  },
+  {
+    "class": "dashicons-buddicons-friends",
+    "name": "Buddicons Friends"
+  },
+  {
+    "class": "dashicons-buddicons-groups",
+    "name": "Buddicons Groups"
+  },
+  {
+    "class": "dashicons-buddicons-pm",
+    "name": "Buddicons Pm"
+  },
+  {
+    "class": "dashicons-buddicons-replies",
+    "name": "Buddicons Replies"
+  },
+  {
+    "class": "dashicons-buddicons-topics",
+    "name": "Buddicons Topics"
+  },
+  {
+    "class": "dashicons-buddicons-tracking",
+    "name": "Buddicons Tracking"
+  },
+  {
+    "class": "dashicons-building",
+    "name": "Building"
+  },
+  {
+    "class": "dashicons-businessman",
+    "name": "Businessman"
+  },
+  {
+    "class": "dashicons-businessperson",
+    "name": "Businessperson"
+  },
+  {
+    "class": "dashicons-businesswoman",
+    "name": "Businesswoman"
+  },
+  {
+    "class": "dashicons-button",
+    "name": "Button"
+  },
+  {
+    "class": "dashicons-calculator",
+    "name": "Calculator"
+  },
+  {
+    "class": "dashicons-calendar-alt",
+    "name": "Calendar Alt"
+  },
+  {
+    "class": "dashicons-calendar",
+    "name": "Calendar"
+  },
+  {
+    "class": "dashicons-camera-alt",
+    "name": "Camera Alt"
+  },
+  {
+    "class": "dashicons-camera",
+    "name": "Camera"
+  },
+  {
+    "class": "dashicons-car",
+    "name": "Car"
+  },
+  {
+    "class": "dashicons-carrot",
+    "name": "Carrot"
+  },
+  {
+    "class": "dashicons-cart",
+    "name": "Cart"
+  },
+  {
+    "class": "dashicons-category",
+    "name": "Category"
+  },
+  {
+    "class": "dashicons-chart-area",
+    "name": "Chart Area"
+  },
+  {
+    "class": "dashicons-chart-bar",
+    "name": "Chart Bar"
+  },
+  {
+    "class": "dashicons-chart-line",
+    "name": "Chart Line"
+  },
+  {
+    "class": "dashicons-chart-pie",
+    "name": "Chart Pie"
+  },
+  {
+    "class": "dashicons-clipboard",
+    "name": "Clipboard"
+  },
+  {
+    "class": "dashicons-clock",
+    "name": "Clock"
+  },
+  {
+    "class": "dashicons-cloud-saved",
+    "name": "Cloud Saved"
+  },
+  {
+    "class": "dashicons-cloud-upload",
+    "name": "Cloud Upload"
+  },
+  {
+    "class": "dashicons-cloud",
+    "name": "Cloud"
+  },
+  {
+    "class": "dashicons-code-standards",
+    "name": "Code Standards"
+  },
+  {
+    "class": "dashicons-coffee",
+    "name": "Coffee"
+  },
+  {
+    "class": "dashicons-color-picker",
+    "name": "Color Picker"
+  },
+  {
+    "class": "dashicons-columns",
+    "name": "Columns"
+  },
+  {
+    "class": "dashicons-controls-back",
+    "name": "Controls Back"
+  },
+  {
+    "class": "dashicons-controls-forward",
+    "name": "Controls Forward"
+  },
+  {
+    "class": "dashicons-controls-pause",
+    "name": "Controls Pause"
+  },
+  {
+    "class": "dashicons-controls-play",
+    "name": "Controls Play"
+  },
+  {
+    "class": "dashicons-controls-repeat",
+    "name": "Controls Repeat"
+  },
+  {
+    "class": "dashicons-controls-skipback",
+    "name": "Controls Skipback"
+  },
+  {
+    "class": "dashicons-controls-skipforward",
+    "name": "Controls Skipforward"
+  },
+  {
+    "class": "dashicons-controls-volumeoff",
+    "name": "Controls Volumeoff"
+  },
+  {
+    "class": "dashicons-controls-volumeon",
+    "name": "Controls Volumeon"
+  },
+  {
+    "class": "dashicons-cover-image",
+    "name": "Cover Image"
+  },
+  {
+    "class": "dashicons-dashboard",
+    "name": "Dashboard"
+  },
+  {
+    "class": "dashicons-database-add",
+    "name": "Database Add"
+  },
+  {
+    "class": "dashicons-database-export",
+    "name": "Database Export"
+  },
+  {
+    "class": "dashicons-database-import",
+    "name": "Database Import"
+  },
+  {
+    "class": "dashicons-database-remove",
+    "name": "Database Remove"
+  },
+  {
+    "class": "dashicons-database-view",
+    "name": "Database View"
+  },
+  {
+    "class": "dashicons-database",
+    "name": "Database"
+  },
+  {
+    "class": "dashicons-desktop",
+    "name": "Desktop"
+  },
+  {
+    "class": "dashicons-dismiss",
+    "name": "Dismiss"
+  },
+  {
+    "class": "dashicons-download",
+    "name": "Download"
+  },
+  {
+    "class": "dashicons-drumstick",
+    "name": "Drumstick"
+  },
+  {
+    "class": "dashicons-edit-large",
+    "name": "Edit Large"
+  },
+  {
+    "class": "dashicons-edit-page",
+    "name": "Edit Page"
+  },
+  {
+    "class": "dashicons-edit",
+    "name": "Edit"
+  },
+  {
+    "class": "dashicons-editor-aligncenter",
+    "name": "Editor Aligncenter"
+  },
+  {
+    "class": "dashicons-editor-alignleft",
+    "name": "Editor Alignleft"
+  },
+  {
+    "class": "dashicons-editor-alignright",
+    "name": "Editor Alignright"
+  },
+  {
+    "class": "dashicons-editor-bold",
+    "name": "Editor Bold"
+  },
+  {
+    "class": "dashicons-editor-break",
+    "name": "Editor Break"
+  },
+  {
+    "class": "dashicons-editor-code-duplicate",
+    "name": "Editor Code Duplicate"
+  },
+  {
+    "class": "dashicons-editor-code",
+    "name": "Editor Code"
+  },
+  {
+    "class": "dashicons-editor-contract",
+    "name": "Editor Contract"
+  },
+  {
+    "class": "dashicons-editor-customchar",
+    "name": "Editor Customchar"
+  },
+  {
+    "class": "dashicons-editor-expand",
+    "name": "Editor Expand"
+  },
+  {
+    "class": "dashicons-editor-help",
+    "name": "Editor Help"
+  },
+  {
+    "class": "dashicons-editor-indent",
+    "name": "Editor Indent"
+  },
+  {
+    "class": "dashicons-editor-insertmore",
+    "name": "Editor Insertmore"
+  },
+  {
+    "class": "dashicons-editor-italic",
+    "name": "Editor Italic"
+  },
+  {
+    "class": "dashicons-editor-justify",
+    "name": "Editor Justify"
+  },
+  {
+    "class": "dashicons-editor-kitchensink",
+    "name": "Editor Kitchensink"
+  },
+  {
+    "class": "dashicons-editor-ltr",
+    "name": "Editor Ltr"
+  },
+  {
+    "class": "dashicons-editor-ol-rtl",
+    "name": "Editor Ol Rtl"
+  },
+  {
+    "class": "dashicons-editor-ol",
+    "name": "Editor Ol"
+  },
+  {
+    "class": "dashicons-editor-outdent",
+    "name": "Editor Outdent"
+  },
+  {
+    "class": "dashicons-editor-paragraph",
+    "name": "Editor Paragraph"
+  },
+  {
+    "class": "dashicons-editor-paste-text",
+    "name": "Editor Paste Text"
+  },
+  {
+    "class": "dashicons-editor-paste-word",
+    "name": "Editor Paste Word"
+  },
+  {
+    "class": "dashicons-editor-quote",
+    "name": "Editor Quote"
+  },
+  {
+    "class": "dashicons-editor-removeformatting",
+    "name": "Editor Removeformatting"
+  },
+  {
+    "class": "dashicons-editor-rtl",
+    "name": "Editor Rtl"
+  },
+  {
+    "class": "dashicons-editor-spellcheck",
+    "name": "Editor Spellcheck"
+  },
+  {
+    "class": "dashicons-editor-strikethrough",
+    "name": "Editor Strikethrough"
+  },
+  {
+    "class": "dashicons-editor-table",
+    "name": "Editor Table"
+  },
+  {
+    "class": "dashicons-editor-textcolor",
+    "name": "Editor Textcolor"
+  },
+  {
+    "class": "dashicons-editor-ul",
+    "name": "Editor Ul"
+  },
+  {
+    "class": "dashicons-editor-underline",
+    "name": "Editor Underline"
+  },
+  {
+    "class": "dashicons-editor-unlink",
+    "name": "Editor Unlink"
+  },
+  {
+    "class": "dashicons-editor-video",
+    "name": "Editor Video"
+  },
+  {
+    "class": "dashicons-ellipsis",
+    "name": "Ellipsis"
+  },
+  {
+    "class": "dashicons-email-alt",
+    "name": "Email Alt"
+  },
+  {
+    "class": "dashicons-email-alt2",
+    "name": "Email Alt2"
+  },
+  {
+    "class": "dashicons-email",
+    "name": "Email"
+  },
+  {
+    "class": "dashicons-embed-audio",
+    "name": "Embed Audio"
+  },
+  {
+    "class": "dashicons-embed-generic",
+    "name": "Embed Generic"
+  },
+  {
+    "class": "dashicons-embed-photo",
+    "name": "Embed Photo"
+  },
+  {
+    "class": "dashicons-embed-post",
+    "name": "Embed Post"
+  },
+  {
+    "class": "dashicons-embed-video",
+    "name": "Embed Video"
+  },
+  {
+    "class": "dashicons-excerpt-view",
+    "name": "Excerpt View"
+  },
+  {
+    "class": "dashicons-exit",
+    "name": "Exit"
+  },
+  {
+    "class": "dashicons-external",
+    "name": "External"
+  },
+  {
+    "class": "dashicons-facebook-alt",
+    "name": "Facebook Alt"
+  },
+  {
+    "class": "dashicons-facebook",
+    "name": "Facebook"
+  },
+  {
+    "class": "dashicons-feedback",
+    "name": "Feedback"
+  },
+  {
+    "class": "dashicons-filter",
+    "name": "Filter"
+  },
+  {
+    "class": "dashicons-flag",
+    "name": "Flag"
+  },
+  {
+    "class": "dashicons-food",
+    "name": "Food"
+  },
+  {
+    "class": "dashicons-format-aside",
+    "name": "Format Aside"
+  },
+  {
+    "class": "dashicons-format-audio",
+    "name": "Format Audio"
+  },
+  {
+    "class": "dashicons-format-chat",
+    "name": "Format Chat"
+  },
+  {
+    "class": "dashicons-format-gallery",
+    "name": "Format Gallery"
+  },
+  {
+    "class": "dashicons-format-image",
+    "name": "Format Image"
+  },
+  {
+    "class": "dashicons-format-quote",
+    "name": "Format Quote"
+  },
+  {
+    "class": "dashicons-format-status",
+    "name": "Format Status"
+  },
+  {
+    "class": "dashicons-format-video",
+    "name": "Format Video"
+  },
+  {
+    "class": "dashicons-forms",
+    "name": "Forms"
+  },
+  {
+    "class": "dashicons-fullscreen-alt",
+    "name": "Fullscreen Alt"
+  },
+  {
+    "class": "dashicons-fullscreen-exit-alt",
+    "name": "Fullscreen Exit Alt"
+  },
+  {
+    "class": "dashicons-games",
+    "name": "Games"
+  },
+  {
+    "class": "dashicons-google",
+    "name": "Google"
+  },
+  {
+    "class": "dashicons-googleplus",
+    "name": "Googleplus"
+  },
+  {
+    "class": "dashicons-grid-view",
+    "name": "Grid View"
+  },
+  {
+    "class": "dashicons-groups",
+    "name": "Groups"
+  },
+  {
+    "class": "dashicons-hammer",
+    "name": "Hammer"
+  },
+  {
+    "class": "dashicons-heading",
+    "name": "Heading"
+  },
+  {
+    "class": "dashicons-heart",
+    "name": "Heart"
+  },
+  {
+    "class": "dashicons-hidden",
+    "name": "Hidden"
+  },
+  {
+    "class": "dashicons-hourglass",
+    "name": "Hourglass"
+  },
+  {
+    "class": "dashicons-html",
+    "name": "Html"
+  },
+  {
+    "class": "dashicons-id-alt",
+    "name": "Id Alt"
+  },
+  {
+    "class": "dashicons-id",
+    "name": "Id"
+  },
+  {
+    "class": "dashicons-image-crop",
+    "name": "Image Crop"
+  },
+  {
+    "class": "dashicons-image-filter",
+    "name": "Image Filter"
+  },
+  {
+    "class": "dashicons-image-flip-horizontal",
+    "name": "Image Flip Horizontal"
+  },
+  {
+    "class": "dashicons-image-flip-vertical",
+    "name": "Image Flip Vertical"
+  },
+  {
+    "class": "dashicons-image-rotate-left",
+    "name": "Image Rotate Left"
+  },
+  {
+    "class": "dashicons-image-rotate-right",
+    "name": "Image Rotate Right"
+  },
+  {
+    "class": "dashicons-image-rotate",
+    "name": "Image Rotate"
+  },
+  {
+    "class": "dashicons-images-alt",
+    "name": "Images Alt"
+  },
+  {
+    "class": "dashicons-images-alt2",
+    "name": "Images Alt2"
+  },
+  {
+    "class": "dashicons-index-card",
+    "name": "Index Card"
+  },
+  {
+    "class": "dashicons-info-outline",
+    "name": "Info Outline"
+  },
+  {
+    "class": "dashicons-info",
+    "name": "Info"
+  },
+  {
+    "class": "dashicons-insert-after",
+    "name": "Insert After"
+  },
+  {
+    "class": "dashicons-insert-before",
+    "name": "Insert Before"
+  },
+  {
+    "class": "dashicons-insert",
+    "name": "Insert"
+  },
+  {
+    "class": "dashicons-instagram",
+    "name": "Instagram"
+  },
+  {
+    "class": "dashicons-laptop",
+    "name": "Laptop"
+  },
+  {
+    "class": "dashicons-layout",
+    "name": "Layout"
+  },
+  {
+    "class": "dashicons-leftright",
+    "name": "Leftright"
+  },
+  {
+    "class": "dashicons-lightbulb",
+    "name": "Lightbulb"
+  },
+  {
+    "class": "dashicons-linkedin",
+    "name": "Linkedin"
+  },
+  {
+    "class": "dashicons-list-view",
+    "name": "List View"
+  },
+  {
+    "class": "dashicons-location-alt",
+    "name": "Location Alt"
+  },
+  {
+    "class": "dashicons-location",
+    "name": "Location"
+  },
+  {
+    "class": "dashicons-lock-duplicate",
+    "name": "Lock Duplicate"
+  },
+  {
+    "class": "dashicons-lock",
+    "name": "Lock"
+  },
+  {
+    "class": "dashicons-marker",
+    "name": "Marker"
+  },
+  {
+    "class": "dashicons-media-archive",
+    "name": "Media Archive"
+  },
+  {
+    "class": "dashicons-media-audio",
+    "name": "Media Audio"
+  },
+  {
+    "class": "dashicons-media-code",
+    "name": "Media Code"
+  },
+  {
+    "class": "dashicons-media-default",
+    "name": "Media Default"
+  },
+  {
+    "class": "dashicons-media-document",
+    "name": "Media Document"
+  },
+  {
+    "class": "dashicons-media-interactive",
+    "name": "Media Interactive"
+  },
+  {
+    "class": "dashicons-media-spreadsheet",
+    "name": "Media Spreadsheet"
+  },
+  {
+    "class": "dashicons-media-text",
+    "name": "Media Text"
+  },
+  {
+    "class": "dashicons-media-video",
+    "name": "Media Video"
+  },
+  {
+    "class": "dashicons-megaphone",
+    "name": "Megaphone"
+  },
+  {
+    "class": "dashicons-menu-alt",
+    "name": "Menu Alt"
+  },
+  {
+    "class": "dashicons-menu-alt2",
+    "name": "Menu Alt2"
+  },
+  {
+    "class": "dashicons-menu-alt3",
+    "name": "Menu Alt3"
+  },
+  {
+    "class": "dashicons-menu",
+    "name": "Menu"
+  },
+  {
+    "class": "dashicons-microphone",
+    "name": "Microphone"
+  },
+  {
+    "class": "dashicons-migrate",
+    "name": "Migrate"
+  },
+  {
+    "class": "dashicons-minus",
+    "name": "Minus"
+  },
+  {
+    "class": "dashicons-money-alt",
+    "name": "Money Alt"
+  },
+  {
+    "class": "dashicons-money",
+    "name": "Money"
+  },
+  {
+    "class": "dashicons-move",
+    "name": "Move"
+  },
+  {
+    "class": "dashicons-nametag",
+    "name": "Nametag"
+  },
+  {
+    "class": "dashicons-networking",
+    "name": "Networking"
+  },
+  {
+    "class": "dashicons-no-alt",
+    "name": "No Alt"
+  },
+  {
+    "class": "dashicons-no",
+    "name": "No"
+  },
+  {
+    "class": "dashicons-open-folder",
+    "name": "Open Folder"
+  },
+  {
+    "class": "dashicons-palmtree",
+    "name": "Palmtree"
+  },
+  {
+    "class": "dashicons-paperclip",
+    "name": "Paperclip"
+  },
+  {
+    "class": "dashicons-pdf",
+    "name": "Pdf"
+  },
+  {
+    "class": "dashicons-performance",
+    "name": "Performance"
+  },
+  {
+    "class": "dashicons-pets",
+    "name": "Pets"
+  },
+  {
+    "class": "dashicons-phone",
+    "name": "Phone"
+  },
+  {
+    "class": "dashicons-pinterest",
+    "name": "Pinterest"
+  },
+  {
+    "class": "dashicons-playlist-audio",
+    "name": "Playlist Audio"
+  },
+  {
+    "class": "dashicons-playlist-video",
+    "name": "Playlist Video"
+  },
+  {
+    "class": "dashicons-plugins-checked",
+    "name": "Plugins Checked"
+  },
+  {
+    "class": "dashicons-plus-alt",
+    "name": "Plus Alt"
+  },
+  {
+    "class": "dashicons-plus-alt2",
+    "name": "Plus Alt2"
+  },
+  {
+    "class": "dashicons-plus",
+    "name": "Plus"
+  },
+  {
+    "class": "dashicons-podio",
+    "name": "Podio"
+  },
+  {
+    "class": "dashicons-portfolio",
+    "name": "Portfolio"
+  },
+  {
+    "class": "dashicons-post-status",
+    "name": "Post Status"
+  },
+  {
+    "class": "dashicons-pressthis",
+    "name": "Pressthis"
+  },
+  {
+    "class": "dashicons-printer",
+    "name": "Printer"
+  },
+  {
+    "class": "dashicons-privacy",
+    "name": "Privacy"
+  },
+  {
+    "class": "dashicons-products",
+    "name": "Products"
+  },
+  {
+    "class": "dashicons-randomize",
+    "name": "Randomize"
+  },
+  {
+    "class": "dashicons-reddit",
+    "name": "Reddit"
+  },
+  {
+    "class": "dashicons-redo",
+    "name": "Redo"
+  },
+  {
+    "class": "dashicons-remove",
+    "name": "Remove"
+  },
+  {
+    "class": "dashicons-rest-api",
+    "name": "Rest Api"
+  },
+  {
+    "class": "dashicons-rss",
+    "name": "Rss"
+  },
+  {
+    "class": "dashicons-saved",
+    "name": "Saved"
+  },
+  {
+    "class": "dashicons-schedule",
+    "name": "Schedule"
+  },
+  {
+    "class": "dashicons-screenoptions",
+    "name": "Screenoptions"
+  },
+  {
+    "class": "dashicons-search",
+    "name": "Search"
+  },
+  {
+    "class": "dashicons-share-alt",
+    "name": "Share Alt"
+  },
+  {
+    "class": "dashicons-share-alt2",
+    "name": "Share Alt2"
+  },
+  {
+    "class": "dashicons-share",
+    "name": "Share"
+  },
+  {
+    "class": "dashicons-shield-alt",
+    "name": "Shield Alt"
+  },
+  {
+    "class": "dashicons-shield",
+    "name": "Shield"
+  },
+  {
+    "class": "dashicons-shortcode",
+    "name": "Shortcode"
+  },
+  {
+    "class": "dashicons-slides",
+    "name": "Slides"
+  },
+  {
+    "class": "dashicons-smartphone",
+    "name": "Smartphone"
+  },
+  {
+    "class": "dashicons-smiley",
+    "name": "Smiley"
+  },
+  {
+    "class": "dashicons-sort",
+    "name": "Sort"
+  },
+  {
+    "class": "dashicons-sos",
+    "name": "Sos"
+  },
+  {
+    "class": "dashicons-spotify",
+    "name": "Spotify"
+  },
+  {
+    "class": "dashicons-star-empty",
+    "name": "Star Empty"
+  },
+  {
+    "class": "dashicons-star-filled",
+    "name": "Star Filled"
+  },
+  {
+    "class": "dashicons-star-half",
+    "name": "Star Half"
+  },
+  {
+    "class": "dashicons-sticky",
+    "name": "Sticky"
+  },
+  {
+    "class": "dashicons-store",
+    "name": "Store"
+  },
+  {
+    "class": "dashicons-superhero-alt",
+    "name": "Superhero Alt"
+  },
+  {
+    "class": "dashicons-superhero",
+    "name": "Superhero"
+  },
+  {
+    "class": "dashicons-table-col-after",
+    "name": "Table Col After"
+  },
+  {
+    "class": "dashicons-table-col-before",
+    "name": "Table Col Before"
+  },
+  {
+    "class": "dashicons-table-col-delete",
+    "name": "Table Col Delete"
+  },
+  {
+    "class": "dashicons-table-row-after",
+    "name": "Table Row After"
+  },
+  {
+    "class": "dashicons-table-row-before",
+    "name": "Table Row Before"
+  },
+  {
+    "class": "dashicons-table-row-delete",
+    "name": "Table Row Delete"
+  },
+  {
+    "class": "dashicons-tablet",
+    "name": "Tablet"
+  },
+  {
+    "class": "dashicons-tag",
+    "name": "Tag"
+  },
+  {
+    "class": "dashicons-tagcloud",
+    "name": "Tagcloud"
+  },
+  {
+    "class": "dashicons-testimonial",
+    "name": "Testimonial"
+  },
+  {
+    "class": "dashicons-text-page",
+    "name": "Text Page"
+  },
+  {
+    "class": "dashicons-text",
+    "name": "Text"
+  },
+  {
+    "class": "dashicons-thumbs-down",
+    "name": "Thumbs Down"
+  },
+  {
+    "class": "dashicons-thumbs-up",
+    "name": "Thumbs Up"
+  },
+  {
+    "class": "dashicons-tickets-alt",
+    "name": "Tickets Alt"
+  },
+  {
+    "class": "dashicons-tickets",
+    "name": "Tickets"
+  },
+  {
+    "class": "dashicons-tide",
+    "name": "Tide"
+  },
+  {
+    "class": "dashicons-translation",
+    "name": "Translation"
+  },
+  {
+    "class": "dashicons-trash",
+    "name": "Trash"
+  },
+  {
+    "class": "dashicons-twitch",
+    "name": "Twitch"
+  },
+  {
+    "class": "dashicons-twitter-alt",
+    "name": "Twitter Alt"
+  },
+  {
+    "class": "dashicons-twitter",
+    "name": "Twitter"
+  },
+  {
+    "class": "dashicons-undo",
+    "name": "Undo"
+  },
+  {
+    "class": "dashicons-universal-access-alt",
+    "name": "Universal Access Alt"
+  },
+  {
+    "class": "dashicons-universal-access",
+    "name": "Universal Access"
+  },
+  {
+    "class": "dashicons-unlock",
+    "name": "Unlock"
+  },
+  {
+    "class": "dashicons-update-alt",
+    "name": "Update Alt"
+  },
+  {
+    "class": "dashicons-update",
+    "name": "Update"
+  },
+  {
+    "class": "dashicons-upload",
+    "name": "Upload"
+  },
+  {
+    "class": "dashicons-vault",
+    "name": "Vault"
+  },
+  {
+    "class": "dashicons-video-alt",
+    "name": "Video Alt"
+  },
+  {
+    "class": "dashicons-video-alt2",
+    "name": "Video Alt2"
+  },
+  {
+    "class": "dashicons-video-alt3",
+    "name": "Video Alt3"
+  },
+  {
+    "class": "dashicons-visibility",
+    "name": "Visibility"
+  },
+  {
+    "class": "dashicons-warning",
+    "name": "Warning"
+  },
+  {
+    "class": "dashicons-welcome-add-page",
+    "name": "Welcome Add Page"
+  },
+  {
+    "class": "dashicons-welcome-comments",
+    "name": "Welcome Comments"
+  },
+  {
+    "class": "dashicons-welcome-learn-more",
+    "name": "Welcome Learn More"
+  },
+  {
+    "class": "dashicons-welcome-view-site",
+    "name": "Welcome View Site"
+  },
+  {
+    "class": "dashicons-welcome-widgets-menus",
+    "name": "Welcome Widgets Menus"
+  },
+  {
+    "class": "dashicons-welcome-write-blog",
+    "name": "Welcome Write Blog"
+  },
+  {
+    "class": "dashicons-whatsapp",
+    "name": "Whatsapp"
+  },
+  {
+    "class": "dashicons-wordpress-alt",
+    "name": "Wordpress Alt"
+  },
+  {
+    "class": "dashicons-wordpress",
+    "name": "Wordpress"
+  },
+  {
+    "class": "dashicons-xing",
+    "name": "Xing"
+  },
+  {
+    "class": "dashicons-yes-alt",
+    "name": "Yes Alt"
+  },
+  {
+    "class": "dashicons-yes",
+    "name": "Yes"
+  },
+  {
+    "class": "dashicons-youtube",
+    "name": "Youtube"
+  },
+  {
+    "class": "dashicons-editor-distractionfree",
+    "name": "Editor Distractionfree"
+  },
+  {
+    "class": "dashicons-exerpt-view",
+    "name": "Exerpt View"
+  },
+  {
+    "class": "dashicons-format-links",
+    "name": "Format Links"
+  },
+  {
+    "class": "dashicons-format-standard",
+    "name": "Format Standard"
+  },
+  {
+    "class": "dashicons-post-trash",
+    "name": "Post Trash"
+  },
+  {
+    "class": "dashicons-share1",
+    "name": "Share1"
+  },
+  {
+    "class": "dashicons-welcome-edit-page",
+    "name": "Welcome Edit Page"
+  }
+]

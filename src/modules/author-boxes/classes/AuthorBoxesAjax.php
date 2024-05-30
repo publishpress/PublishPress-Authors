@@ -12,6 +12,7 @@ namespace MultipleAuthorBoxes;
 
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Classes\Author_Editor;
+use MultipleAuthors\Factory;
 use MA_Author_Boxes;
 
 /**
@@ -65,6 +66,48 @@ class AuthorBoxesAjax
                 $response['status']  = 'success';
                 $response['content'] = sprintf(esc_html__('Field Order updated. %1sClick here%2s to reload this page to see new order changes.', 'publishpress-authors'), '<a href="'. esc_url(admin_url('post.php?post='. $post_id .'&action=edit')) .'">', '</a>');
             }
+        }
+
+        wp_send_json($response);
+        exit;
+    }
+
+    /**
+     * Handle a request to get author fields icons.
+     */
+    public static function handle_author_boxes_editor_get_fields_icons()
+    {
+
+        $response['status']  = 'success';
+        $response['content'] = esc_html__('An error occured.', 'publishpress-authors');
+
+        //do not process request if nonce validation failed
+        if (empty($_POST['nonce']) 
+            || !wp_verify_nonce(sanitize_key($_POST['nonce']), 'author-boxes-request-nonce')
+        ) {
+            $response['status']  = 'error';
+            $response['content'] = esc_html__(
+                'Security error. Kindly reload this page and try again', 
+                'publishpress-authors'
+            );
+        } else {
+            $legacyPlugin = Factory::getLegacyPlugin();
+            $enable_font_awesome = isset($legacyPlugin->modules->multiple_authors->options->enable_font_awesome)
+            ? 'yes' === $legacyPlugin->modules->multiple_authors->options->enable_font_awesome : true;
+
+            $moduleAssetIconsPath = PP_AUTHORS_BASE_PATH . 'src/assets/icons/';
+            $field_icons = [];
+            // add dashicons
+            $dashicons_data = file_get_contents($moduleAssetIconsPath . 'dashicons-icons.json');
+            $field_icons['Dashicons'] = json_decode($dashicons_data, true);
+            
+            if ($enable_font_awesome) {
+                // add font awesome
+                $fontawesome_data = file_get_contents($moduleAssetIconsPath . 'fontawesome-icons.json');
+                $field_icons['FontAwesome'] = json_decode($fontawesome_data, true);
+            }
+
+            $response['content'] = $field_icons;
         }
 
         wp_send_json($response);

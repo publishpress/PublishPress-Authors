@@ -146,6 +146,7 @@ class MA_Author_Boxes extends Module
         add_action('wp_ajax_author_boxes_editor_get_preview', ['MultipleAuthorBoxes\AuthorBoxesAjax', 'handle_author_boxes_editor_get_preview']);
         add_action('wp_ajax_author_boxes_editor_get_template', ['MultipleAuthorBoxes\AuthorBoxesAjax', 'handle_author_boxes_editor_get_template']);
         add_action('wp_ajax_author_boxes_editor_save_fields_order', ['MultipleAuthorBoxes\AuthorBoxesAjax', 'handle_author_boxes_fields_order']);
+        add_action('wp_ajax_author_boxes_editor_get_fields_icons', ['MultipleAuthorBoxes\AuthorBoxesAjax', 'handle_author_boxes_editor_get_fields_icons']);
 
         $this->author_boxes_block_register();
         $this->registerPostType();
@@ -1160,7 +1161,7 @@ class MA_Author_Boxes extends Module
         $editor_data['post_id'] = $post_id;
 
         //set social profile defaults
-        $social_fields = ['facebook', 'twitter', 'instagram', 'linkedin', 'youtube'];
+        $social_fields = ['facebook', 'twitter', 'instagram', 'linkedin', 'youtube', 'tiktok'];
         foreach ($social_fields as $social_field) {
             //set default display to icon
             if (!isset($editor_data['profile_fields_'.$social_field.'_display']) 
@@ -1172,7 +1173,11 @@ class MA_Author_Boxes extends Module
             if (!isset($editor_data['profile_fields_'.$social_field.'_display_icon']) 
                 || (isset($editor_data['profile_fields_'.$social_field.'_display_icon']) && empty($editor_data['profile_fields_'.$social_field.'_display_icon']))
             ) {
-                $editor_data['profile_fields_'.$social_field.'_display_icon'] = '<span class="dashicons dashicons-'.$social_field.'"></span>';
+                if ($social_field === 'tiktok') {
+                    $editor_data['profile_fields_'.$social_field.'_display_icon'] = '<i class="fab fa-'.$social_field.'"></i>';
+                } else {
+                    $editor_data['profile_fields_'.$social_field.'_display_icon'] = '<span class="dashicons dashicons-'.$social_field.'"></span>';
+                }
             }
 
             //set social_field profile html tag to 'a' if icon is select
@@ -1365,6 +1370,9 @@ class MA_Author_Boxes extends Module
                     </tbody>
                 </table>
             </div>
+        </div>
+        <div id="author-field-icons-modal" style="display: none;">
+            <div id="author-field-icons-container" class="author-field-icons-container"></div>
         </div>
         <?php
     }
@@ -2175,6 +2183,45 @@ class MA_Author_Boxes extends Module
                         </button>
                     </div>
                 </div>
+                <?php
+                elseif ('icon' === $args['type']) : 
+                $selected_icon = $args['value'];
+                $button_select = sprintf(esc_html__('Select %1s', 'publishpress-authors'), ' ' . $args['label']);
+                $button_change = sprintf(esc_html__('Change %1s', 'publishpress-authors'), ' ' . $args['label']);
+                $button_remove = sprintf(esc_html__('Remove %1s', 'publishpress-authors'), ' ' . $args['label']);
+
+                $default_text = empty($selected_icon) ? $button_select : $button_change;
+                $remove_style = empty($selected_icon) ? 'display: none;' : '';
+
+                $field_name = ucwords(str_replace('_', ' ', $args['tab_name']));
+                ?>
+                    <input name="<?php echo esc_attr($key); ?>"
+                        style="display: none;"
+                        id="<?php echo esc_attr($key); ?>" 
+                        type="<?php echo esc_attr($args['type']); ?>"
+                        value="<?php echo esc_attr($args['value']); ?>"
+                        placeholder="<?php echo esc_attr($args['placeholder']); ?>"
+                        <?php echo (isset($args['readonly']) && $args['readonly'] === true) ? 'readonly' : ''; ?>
+                         />
+                    <div class="author-boxes-field-icon">
+                        <div class="selected-field-icon action-button">
+                            <?php if (!empty($selected_icon)) : ?>
+                                <?php echo $selected_icon; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                            <?php endif; ?>
+                        </div>
+                        <div class="select-new-button action-button"
+                            data-button_text="<?php echo esc_attr($default_text); ?>"
+                            data-button_select="<?php echo esc_attr($button_select); ?>"
+                            data-field_name="<?php echo esc_attr($field_name); ?>"
+                            data-input_id="<?php echo esc_attr($key); ?>"
+                            data-search_placeholder="<?php echo sprintf(esc_attr__('Search %1s Icon', 'publishpress-authors'), $field_name); ?>"
+                        >
+                            <div class="button-secondary"><?php echo esc_html($default_text); ?></div>
+                        </div>
+                        <div class="remove-icon-button action-button">
+                            <div class="button-secondary" style="<?php echo esc_attr($remove_style); ?>"><?php echo esc_html($button_remove); ?></div>
+                        </div>
+                    </div>
                 <?php else : ?>
                     <input name="<?php echo esc_attr($key); ?>"
                         id="<?php echo esc_attr($key); ?>" 
@@ -2233,6 +2280,8 @@ class MA_Author_Boxes extends Module
             PP_AUTHORS_VERSION, 
             true
         );
+        
+        add_thickbox();
 
         wp_enqueue_script(
             'author-boxes-editor-js',
