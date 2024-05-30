@@ -123,7 +123,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'fallback_user_for_guest_post' => function_exists('get_current_user_id') ? get_current_user_id() : 0,
                     'author_page_post_types'       => [],
                     'disable_quick_edit_author_box' => 'no',
-                    'load_font_awesome'            => 'no',
+                    'enable_font_awesome'            => 'yes',
                     'enable_guest_author_user'     => 'no',
                     'enable_guest_author_acount'   => 'yes',
                     'default_avatar'               => '',
@@ -703,9 +703,9 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
 
             add_settings_field(
-                'load_font_awesome',
+                'enable_font_awesome',
                 __('Font Awesome icons:', 'publishpress-authors'),
-                [$this, 'settings_load_font_awesome_option'],
+                [$this, 'settings_enable_font_awesome_option'],
                 $this->module->options_group_name,
                 $this->module->options_group_name . '_advanced'
             );
@@ -1238,7 +1238,7 @@ if (!class_exists('MA_Multiple_Authors')) {
          */
         private function settings_ppma_shortcodes($shortcodes = []) {
 
-            $default_layout = Utils::getDefaultLayout(); 
+            $default_layout = Utils::getDefaultLayout();
 
             //add author box shortcode
             $shortcodes['publishpress_authors_box'] = [
@@ -2586,13 +2586,13 @@ echo '<span class="ppma_settings_field_description">'
          *
          * @param array
          */
-        public function settings_load_font_awesome_option($args = [])
+        public function settings_enable_font_awesome_option($args = [])
         {
-            $id    = $this->module->options_group_name . '_load_font_awesome';
-            $value = isset($this->module->options->load_font_awesome) ? $this->module->options->load_font_awesome : 'no';
+            $id    = $this->module->options_group_name . '_enable_font_awesome';
+            $value = isset($this->module->options->enable_font_awesome) ? $this->module->options->enable_font_awesome : 'no';
 
             echo '<label for="' . esc_attr($id) . '">';
-            echo '<input type="checkbox" value="yes" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[load_font_awesome]" '
+            echo '<input type="checkbox" value="yes" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[enable_font_awesome]" '
                 . checked($value, 'yes', false) . ' />';
             echo '&nbsp;&nbsp;&nbsp; <span class="ppma_settings_field_description">' . esc_html__(
                     'This will load Font Awesome icons for use in Author Boxes.',
@@ -2763,8 +2763,8 @@ echo '<span class="ppma_settings_field_description">'
                 $new_options['show_site_link'] = 'no';
             }
 
-            if (!isset($new_options['load_font_awesome'])) {
-                $new_options['load_font_awesome'] = 'no';
+            if (!isset($new_options['enable_font_awesome'])) {
+                $new_options['enable_font_awesome'] = 'no';
             }
 
             if (!isset($new_options['disable_quick_edit_author_box'])) {
@@ -4492,7 +4492,7 @@ echo '<span class="ppma_settings_field_description">'
                     if (isset($args['tax_query'])) {
                         $args['tax_query']['relation'] = 'AND';
                     }
-                    
+
                     unset($args['author']);
 
                     $args['tax_query'][] = [
@@ -4761,10 +4761,10 @@ echo '<span class="ppma_settings_field_description">'
 
         /**
          * Prevent outgoing email for guest author
-         * 
+         *
          * @param bool $notify
          * @param object $user
-         * 
+         *
          * @return array $args
          */
         public function prevent_guest_author_emails($notify, $user) {

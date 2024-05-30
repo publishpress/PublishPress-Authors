@@ -859,8 +859,7 @@ class AuthorBoxesEditorFields
 
                 $fields['profile_fields_' . $key . '_display_icon'] = [
                     'label'       => esc_html__('Display Icon', 'publishpress-authors'),
-                    'description' => $field_description,
-                    'type'        => 'text',
+                    'type'        => 'icon',
                     'sanitize'    => ['stripslashes_deep', 'wp_kses_post'],
                     'tabbed'      => 1,
                     'tab_name'    => $key,

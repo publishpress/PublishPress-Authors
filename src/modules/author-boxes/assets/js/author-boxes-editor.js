@@ -4,6 +4,133 @@
     jQuery(document).ready(function ($) {
 
         if ($('body').hasClass('post-type-ppma_boxes') && $(".publishpress-author-box-editor").length > 0) {
+            var author_field_icons = '';
+            populate_author_fields_icons();
+            /**
+             * Author field icon
+             */
+            $(document).on('click', '.ppma-author-boxes-editor-table .select-new-button', function (e) {
+                e.preventDefault();
+                if (author_field_icons == '') {
+                    populate_author_fields_icons();
+                } else {
+                    var button = $(this);
+                    var icon_field = button.attr('data-input_id');
+                    var current_icon = button.closest('.author-boxes-field-icon').find('.selected-field-icon').children().first();
+                    var current_icon_html = '';
+                    var current_icon_class = '';
+
+                    if (current_icon && current_icon.length > 0) {
+                        current_icon_html = current_icon.prop('outerHTML');
+                        current_icon_class = current_icon.attr('class');
+                    }
+
+                    var popup_header = '<div class="popup-modal-header">';
+                    // add text to header
+                    popup_header += button.attr('data-button_text') + ' &nbsp;';
+                    // add icon to header
+                    popup_header += current_icon_html + ' ';
+                    // add search box to header
+                    popup_header += '<div class="icon-sticky-header">';
+                    popup_header += '<input type="text" class="ppma-field-icon-search" placeholder="' + button.attr('data-search_placeholder') + '">';
+
+                    var container = $('<div></div>');
+
+                    var tabs = '<div class="ppma-field-icon-tabs">';
+                    var tabContents = $('<div class="author-field-icons-tab-contents"></div>');
+            
+                    var first_item = false;
+                    $.each(author_field_icons, function(parent, iconLists) {
+                        var active_tab = !first_item ? 'active' : '';
+                        var tab_content_class = !first_item ? '' : 'hidden';
+
+                        var tabContent = $('<div class="author-field-icons-tab-content ' + tab_content_class + '" id="' + parent.toLowerCase() + '"></div>');
+                        tabs += '<button class="author-field-icons-tab-button ' + active_tab + '" data-target="' + parent.toLowerCase() + '">' + parent + '</button>';
+            
+                        var iconList = $('<div class="icon-list"></div>'); 
+                        iconLists.forEach(function(icon) {
+                            var icon_active_class = '';
+
+                            if (parent == 'Dashicons') {
+                                icon_active_class = current_icon_class == 'dashicons ' + icon.class + '' ? 'active' : '';
+                                iconList.append('<div class="icon-item icon-' + parent.toLowerCase() + ' ' + icon_active_class + '" data-name="' + icon.name.toLowerCase() + '" data-field="' + icon_field + '"><span class="icon-element"><i class="dashicons ' + icon.class + '"></i></span><span class="icon-name">' + icon.name + '</span></div>');
+                            } else if (parent === 'FontAwesome') {
+                                icon_active_class = current_icon_class == icon.class ? 'active' : '';
+                                iconList.append('<div class="icon-item icon-' + parent.toLowerCase() + ' ' + icon_active_class + '" data-name="' + icon.name.toLowerCase() + '" data-field="' + icon_field + '"><span class="icon-element"><i class="' + icon.class + '"></i></span><span class="icon-name">' + icon.name + '</span></div>');
+                            }
+                        });
+                        tabContent.append(iconList);
+                        tabContents.append(tabContent);
+                        first_item = true;
+                    });
+                    tabs += '</div>';
+                    // add tabs to header
+                    popup_header += tabs;
+                    popup_header += '</div>';
+                    popup_header += '</div>';
+
+                    container.append(tabContents);
+                    $('#author-field-icons-container').html(container);
+            
+                    tb_show(popup_header, '#TB_inline?width=600&height=400&inlineId=author-field-icons-modal'); // Open modal
+
+                }
+            });
+
+            /**
+             * Author field icon tab
+             */
+            $(document).on('click', '.ppma-field-icon-tabs button', function (e) {
+                e.preventDefault();
+                $('.author-field-icons-tab-content').addClass('hidden');
+                $('#' + $(this).data('target')).removeClass('hidden');
+                $('.author-field-icons-tab-button').removeClass('active');
+                $(this).addClass('active');
+            });
+
+            /**
+             * Author field icon search
+             */
+            $(document).on('input', '.ppma-field-icon-search', function (e) {
+                e.preventDefault();
+                var searchTerm = $(this).val().toLowerCase();
+                $('.author-field-icons-tab-contents .icon-item').each(function() {
+                    var iconName = $(this).data('name');
+                    if (iconName.includes(searchTerm)) {
+                        $(this).removeClass('hidden');
+                    } else {
+                        $(this).addClass('hidden');
+                    }
+                });
+            });
+
+            /**
+             * Author field icon select
+             */
+            $(document).on('click', '.author-field-icons-tab-contents .icon-item', function (e) {
+                e.preventDefault();
+                var icon_wrap = $(this);
+                var icon = icon_wrap.find('.icon-element').html();
+                var field = icon_wrap.attr('data-field');
+                var field_wrap = $('.ppma-boxes-editor-tab-content.ppma-editor-' + field + '');
+                field_wrap.find('input#' + field).val(icon).trigger('change');
+                field_wrap.find('.selected-field-icon').html(icon);
+                field_wrap.find('.remove-icon-button.action-button').show();
+                tb_remove();
+            });
+
+            /**
+             * Author field icon removal
+             */
+            $(document).on('click', '.ppma-author-boxes-editor-table .remove-icon-button', function (e) {
+                e.preventDefault();
+                var button = $(this);
+                button.hide();
+                button.closest('td').find('input').val('').trigger('change');
+                button.closest('td').find('.selected-field-icon').html('');
+                button.closest('td').find('.select-new-button .button-secondary').html(button.closest('td').find('.select-new-button').attr('data-button_select'));
+                button.closest('td').find('.remove-icon-button.action-button').hide();
+            });
 
             /**
              * color picker init
@@ -208,6 +335,14 @@
                             field.prop('checked', false);
                         }
                         field.val(1);
+                    } else if (key === 'box_tab_custom_css') {
+                        var editor_textarea = field;
+                        var editor_textarea_id = editor_textarea.attr('id');
+                        var current_code_editor = global_editor_settings[editor_textarea_id];
+                        current_code_editor.codemirror.setValue(value);
+                        editor_textarea.val(value);
+                        editor_textarea.trigger("change");
+                        current_code_editor.codemirror.refresh();
                     }
 
                     if (field.hasClass('pp-editor-color-picker')) {
@@ -537,6 +672,22 @@
                 }
             }
         });
+
+        /**
+         * Populate author field icons
+         */
+        function populate_author_fields_icons() {
+            //prepare ajax data
+            var data = {
+                action: "author_boxes_editor_get_fields_icons",
+                nonce: authorBoxesEditor.nonce,
+            };
+            $.post(ajaxurl, data, function (response) {
+                if (response.status == 'success') {
+                    author_field_icons = response.content;
+                }
+            });
+        }
 
         /**
          * Toggle profile fields active tab

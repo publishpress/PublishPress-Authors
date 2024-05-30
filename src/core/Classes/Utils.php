@@ -1174,8 +1174,8 @@ class Utils
     public static function loadLayoutFrontCss()
     {
         $legacyPlugin = Factory::getLegacyPlugin();
-        $load_font_awesome = isset($legacyPlugin->modules->multiple_authors->options->load_font_awesome)
-        ? 'yes' === $legacyPlugin->modules->multiple_authors->options->load_font_awesome : true;
+        $enable_font_awesome = isset($legacyPlugin->modules->multiple_authors->options->enable_font_awesome)
+        ? 'yes' === $legacyPlugin->modules->multiple_authors->options->enable_font_awesome : true;
 
         wp_enqueue_style('dashicons');
         wp_enqueue_style(
@@ -1186,7 +1186,7 @@ class Utils
             'all'
         );
 
-        if ($load_font_awesome) {
+        if ($enable_font_awesome) {
             wp_enqueue_style(
                 'multiple-authors-fontawesome',
                 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css',
