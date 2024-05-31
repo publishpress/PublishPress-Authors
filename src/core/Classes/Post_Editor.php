@@ -443,7 +443,7 @@ class Post_Editor
                             <?php checked((int)get_post_meta($post->ID, 'ppma_disable_author_box', true), 1); ?>
                         />
                     <label for="ppma_disable_author_box">
-                        <?php echo esc_html_e('Disable post author box display?', 'publishpress-authors'); ?>
+                        <?php echo esc_html_e('Disable the default author display under this post', 'publishpress-authors'); ?>
                     </label>
                 </div>
             <?php endif; ?>
