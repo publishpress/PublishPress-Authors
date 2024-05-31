@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author bio, author layouts
 Requires at least: 5.5
 Requires PHP: 7.2.5
 Tested up to: 6.5
-Stable tag: 4.5.0
+Stable tag: 4.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -229,6 +229,20 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [4.6.0] - 03 June 2024 =
+
+* Update: Add Author Boxes Gutenberg Block, #11
+* Update: Add Author box icon search, #1771
+* Update: Use Code editor for Author Boxes Custom Css and Generate Theme template textarea, #1710
+* Update: Hide all author fields for existing sites Simple List, Inline and Inline with Avatars author boxes, #1776
+* Fixed: JSON files with strings are not generated, #1743
+* Fixed: Fix "PublishPress Authors: View is not readable: inline" error when using legacy layout in shortcode, #1780
+* Update: Remove generatepress 'by' author box prefix, #1777
+* Fixed: wp_ppma_author_categories_meta' doesn't exist on some sites, #1774
+* Fixed: Some Strings are hardcoded and not translatable, #1742
+* Update: Only enable the Author Box on Posts on new installation, #1766
+* Update: Authors Translation Updates v.4.5.0, #1770
 
 = [4.5.0] - 15 May 2024 =
 
