@@ -2204,7 +2204,7 @@ class MA_Author_Boxes extends Module
                         <?php echo (isset($args['readonly']) && $args['readonly'] === true) ? 'readonly' : ''; ?>
                          />
                     <div class="author-boxes-field-icon">
-                        <div class="selected-field-icon action-button">
+                        <div class="selected-field-icon action-button" style="<?php echo esc_attr($remove_style); ?>">
                             <?php if (!empty($selected_icon)) : ?>
                                 <?php echo $selected_icon; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                             <?php endif; ?>
@@ -2212,14 +2212,15 @@ class MA_Author_Boxes extends Module
                         <div class="select-new-button action-button"
                             data-button_text="<?php echo esc_attr($default_text); ?>"
                             data-button_select="<?php echo esc_attr($button_select); ?>"
+                            data-button_change="<?php echo esc_attr($button_change); ?>"
                             data-field_name="<?php echo esc_attr($field_name); ?>"
                             data-input_id="<?php echo esc_attr($key); ?>"
                             data-search_placeholder="<?php echo sprintf(esc_attr__('Search %1s Icon', 'publishpress-authors'), $field_name); ?>"
                         >
                             <div class="button-secondary"><?php echo esc_html($default_text); ?></div>
                         </div>
-                        <div class="remove-icon-button action-button">
-                            <div class="button-secondary" style="<?php echo esc_attr($remove_style); ?>"><?php echo esc_html($button_remove); ?></div>
+                        <div class="remove-icon-button action-button" style="<?php echo esc_attr($remove_style); ?>">
+                            <div class="button-secondary"><?php echo esc_html($button_remove); ?></div>
                         </div>
                     </div>
                 <?php else : ?>
