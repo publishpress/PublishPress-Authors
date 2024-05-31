@@ -116,6 +116,8 @@
                 field_wrap.find('input#' + field).val(icon).trigger('change');
                 field_wrap.find('.selected-field-icon').html(icon);
                 field_wrap.find('.remove-icon-button.action-button').show();
+                field_wrap.find('.selected-field-icon.action-button').show();
+                field_wrap.find('.select-new-button .button-secondary').html(field_wrap.find('.select-new-button').attr('data-button_change'));
                 tb_remove();
             });
 
@@ -130,6 +132,7 @@
                 button.closest('td').find('.selected-field-icon').html('');
                 button.closest('td').find('.select-new-button .button-secondary').html(button.closest('td').find('.select-new-button').attr('data-button_select'));
                 button.closest('td').find('.remove-icon-button.action-button').hide();
+                button.closest('td').find('.selected-field-icon.action-button').hide();
             });
 
             /**
