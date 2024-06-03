@@ -12,6 +12,7 @@ namespace MultipleAuthorBoxes;
 
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Classes\Author_Editor;
+use MultipleAuthors\Factory;
 use MA_Author_Boxes;
 
 /**
@@ -65,6 +66,48 @@ class AuthorBoxesAjax
                 $response['status']  = 'success';
                 $response['content'] = sprintf(esc_html__('Field Order updated. %1sClick here%2s to reload this page to see new order changes.', 'publishpress-authors'), '<a href="'. esc_url(admin_url('post.php?post='. $post_id .'&action=edit')) .'">', '</a>');
             }
+        }
+
+        wp_send_json($response);
+        exit;
+    }
+
+    /**
+     * Handle a request to get author fields icons.
+     */
+    public static function handle_author_boxes_editor_get_fields_icons()
+    {
+
+        $response['status']  = 'success';
+        $response['content'] = esc_html__('An error occured.', 'publishpress-authors');
+
+        //do not process request if nonce validation failed
+        if (empty($_POST['nonce']) 
+            || !wp_verify_nonce(sanitize_key($_POST['nonce']), 'author-boxes-request-nonce')
+        ) {
+            $response['status']  = 'error';
+            $response['content'] = esc_html__(
+                'Security error. Kindly reload this page and try again', 
+                'publishpress-authors'
+            );
+        } else {
+            $legacyPlugin = Factory::getLegacyPlugin();
+            $enable_font_awesome = isset($legacyPlugin->modules->multiple_authors->options->enable_font_awesome)
+            ? 'yes' === $legacyPlugin->modules->multiple_authors->options->enable_font_awesome : true;
+
+            $moduleAssetIconsPath = PP_AUTHORS_BASE_PATH . 'src/assets/icons/';
+            $field_icons = [];
+            // add dashicons
+            $dashicons_data = file_get_contents($moduleAssetIconsPath . 'dashicons-icons.json');
+            $field_icons['Dashicons'] = json_decode($dashicons_data, true);
+            
+            if ($enable_font_awesome) {
+                // add font awesome
+                $fontawesome_data = file_get_contents($moduleAssetIconsPath . 'fontawesome-icons.json');
+                $field_icons['FontAwesome'] = json_decode($fontawesome_data, true);
+            }
+
+            $response['content'] = $field_icons;
         }
 
         wp_send_json($response);
@@ -182,6 +225,7 @@ class AuthorBoxesAjax
  * This sometimes may be different from global $post as user can  get authors 
  * for specific post.
  */
+
 global $ppma_template_authors, $ppma_template_authors_post, $post, $ppma_instance_id;
 
 $authors = $ppma_template_authors;
@@ -208,13 +252,9 @@ $instance_id = $ppma_instance_id;
 <span class="ppma-layout-prefix"><?php echo html_entity_decode($args['box_tab_layout_prefix']['value']);  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
     <ul class="pp-multiple-authors-boxes-ul">
         </?php foreach ($authors as $index => $author) : ?>
-
             </?php if ($author && is_object($author) && isset($author->term_id)) : ?>
-
 <?php if ($args['author_recent_posts_show']['value']) : ?>
-
                 </?php $author_recent_posts = multiple_authors_get_author_recent_posts($author, true, <?php echo esc_html($args['author_recent_posts_limit']['value']); ?>, '<?php echo esc_html($args['author_recent_posts_orderby']['value']); ?>', '<?php echo esc_html($args['author_recent_posts_order']['value']); ?>'); ?>
-
 <?php endif; ?>
 <?php 
 //author fields item position
@@ -388,43 +428,21 @@ $custom_styles = '.pp-multiple-authors-layout-boxed ul li > div:nth-child(1) {fl
 </div>
 
 <?php 
-$generated_styles = '';
-if (!empty($custom_styles)) {
-    $generated_styles .= $custom_styles . "\n";
-}
-if (!empty($new_style_1 = AuthorBoxesStyles::getTitleFieldStyles($args, ''))) {
-    $generated_styles .= $new_style_1 . "\n";
-}
-if (!empty($new_style_2 = AuthorBoxesStyles::getAvatarFieldStyles($args, ''))) {
-    $generated_styles .= $new_style_2 . "\n";
-}
-if (!empty($new_style_3 = AuthorBoxesStyles::getNameFieldStyles($args, ''))) {
-    $generated_styles .= $new_style_3 . "\n";
-}
-if (!empty($new_style_4 = AuthorBoxesStyles::getBioFieldStyles($args, ''))) {
-    $generated_styles .= $new_style_4 . "\n";
-}
-if (!empty($new_style_5 = AuthorBoxesStyles::getMetaFieldStyles($args, ''))) {
-    $generated_styles .= $new_style_5 . "\n";
-}
-if (!empty($new_style_6 = AuthorBoxesStyles::getRProfileFieldStyles($args, ''))) {
-    $generated_styles .= $new_style_6 . "\n";
-}
-if (!empty($new_style_7 = AuthorBoxesStyles::getRecentPostsFieldStyles($args, ''))) {
-    $generated_styles .= $new_style_7 . "\n";
-}
-if (!empty($new_style_8 = AuthorBoxesStyles::getBoxLayoutFieldStyles($args, ''))) {
-    $generated_styles .= $new_style_8 . "\n";
-}
-if (!empty($new_style_9 = AuthorBoxesStyles::getCustomCssFieldStyles($args, ''))) {
-    $generated_styles .= $new_style_9 . "\n";
-}
-if (!empty($new_style_10 = AuthorBoxesStyles::getAuthorCategoriesFieldStyles($args, ''))) {
-    $generated_styles .= $new_style_10 . "\n";
-}
+
+$custom_styles = AuthorBoxesStyles::getTitleFieldStyles($args, $custom_styles);
+$custom_styles = AuthorBoxesStyles::getAvatarFieldStyles($args, $custom_styles);
+$custom_styles = AuthorBoxesStyles::getNameFieldStyles($args, $custom_styles);
+$custom_styles = AuthorBoxesStyles::getBioFieldStyles($args, $custom_styles);
+$custom_styles = AuthorBoxesStyles::getMetaFieldStyles($args, $custom_styles);
+$custom_styles = AuthorBoxesStyles::getRProfileFieldStyles($args, $custom_styles);
+$custom_styles = AuthorBoxesStyles::getRecentPostsFieldStyles($args, $custom_styles);
+$custom_styles = AuthorBoxesStyles::getBoxLayoutFieldStyles($args, $custom_styles);
+$custom_styles = AuthorBoxesStyles::getAuthorCategoriesFieldStyles($args, $custom_styles);
+$custom_styles = AuthorBoxesStyles::getCustomCssFieldStyles($args, $custom_styles);
+
 ?>
 <style>
-    <?php echo $generated_styles; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+    <?php echo $custom_styles; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 </style>
             <?php 
             $response['content'] = ob_get_clean();

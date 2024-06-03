@@ -144,6 +144,15 @@ if (!class_exists('MA_Bylines_Migration')) {
                 [
                     'notMigratedPostsId' => $this->getNotMigratedPostsId(),
                     'nonce'              => wp_create_nonce(self::NONCE_ACTION),
+                    'start_message'      => esc_html__('Collecting data for the migration...', 'publishpress-authors'),
+                    'error_message'      => esc_html__('Error: ', 'publishpress-authors'),
+                    'completed_message'  => esc_html__('Done! Bylines data was copied and you can deactivate the plugin.', 'publishpress-authors'),
+                    'wait_message'       => esc_html__('Please, wait...', 'publishpress-authors'),
+                    'progress_message'   => esc_html__('Copying authors\' data...', 'publishpress-authors'),
+                    'deactivating_message' => esc_html__('Deactivating Bylines...', 'publishpress-authors'),
+                    'deactivated_message'  => esc_html__('Done! Bylines is deactivated.', 'publishpress-authors'),
+                    'deactivate_message' => esc_html__('Deactivate Bylines', 'publishpress-authors'),
+                    'copy_message'       => esc_html__('Copy Bylines Data', 'publishpress-authors'),
                 ]
             );
 

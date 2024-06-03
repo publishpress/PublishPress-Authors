@@ -485,6 +485,10 @@ body:not(.theme-twentytwenty):not(.theme-twentytwentyone) .pp-multiple-authors-r
     display: none !important;
 }
 
+.editor-styles-wrapper .wp-block .pp-multiple-authors-boxes-wrapper a {
+    text-decoration: none;
+}
+
 @media (min-width: 576px) {
     .pp-multiple-authors-recent .ppma-col-sm-4 {
         -webkit-box-flex: 0;

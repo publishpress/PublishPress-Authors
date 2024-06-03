@@ -501,13 +501,13 @@ class AuthorBoxesEditorFields
             'tab'      => 'meta',
         ];
         $fields['meta_background_color'] = [
-            'label'    => esc_html__('Meta Background Color', 'publishpress-authors'),
+            'label'    => esc_html__('View all posts Background Color', 'publishpress-authors'),
             'type'     => 'color',
             'sanitize' => 'sanitize_text_field',
             'tab'      => 'meta',
         ];
         $fields['meta_link_hover_color'] = [
-            'label'    => esc_html__('Meta Link Hover Color', 'publishpress-authors'),
+            'label'    => esc_html__('View all posts Link Hover Color', 'publishpress-authors'),
             'type'     => 'color',
             'sanitize' => 'sanitize_text_field',
             'tab'      => 'meta',
@@ -770,7 +770,7 @@ class AuthorBoxesEditorFields
                     'tabbed'      => 1,
                     'tab_name'    => $key,
                     'options'  => [
-                        'meta'  => esc_html__('Meta Row', 'publishpress-authors'),
+                        'meta'  => esc_html__('View all posts Row', 'publishpress-authors'),
                         'name' => esc_html__('Name Row', 'publishpress-authors'),
                         'bio'    => esc_html__('Biographical Info Row', 'publishpress-authors')
                     ],
@@ -859,8 +859,7 @@ class AuthorBoxesEditorFields
 
                 $fields['profile_fields_' . $key . '_display_icon'] = [
                     'label'       => esc_html__('Display Icon', 'publishpress-authors'),
-                    'description' => $field_description,
-                    'type'        => 'text',
+                    'type'        => 'icon',
                     'sanitize'    => ['stripslashes_deep', 'wp_kses_post'],
                     'tabbed'      => 1,
                     'tab_name'    => $key,
@@ -1535,7 +1534,8 @@ class AuthorBoxesEditorFields
         $fields['box_tab_custom_css'] = [
             'label'       => esc_html__('Custom CSS', 'publishpress-authors'),
             'placeholder' => esc_html__('Add Custom CSS styles here...', 'publishpress-authors'),
-            'type'        => 'textarea',
+            'type'        => 'code_editor',
+            'editor_mode' => 'css',
             'sanitize'    => 'sanitize_textarea_field',
             'tab'         => 'custom_css',
         ];
