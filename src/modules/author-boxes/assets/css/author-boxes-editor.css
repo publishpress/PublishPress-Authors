@@ -128,7 +128,7 @@
 .ppma-author-boxes-editor-table input[type=text],
 .ppma-author-boxes-editor-table input[type=number],
 .ppma-author-boxes-editor-table select {
-    width: 300px;
+    width: 95%;
 }
 
 .ppma-author-boxes-editor-table textarea {
@@ -450,7 +450,7 @@
     .ppma-author-boxes-editor-table input[type=text],
     .ppma-author-boxes-editor-table input[type=number],
     .ppma-author-boxes-editor-table select{
-        width: 200px;
+        width: 95%;
     }
     .ppma-author-box-editor-fields {
         min-width: unset;
