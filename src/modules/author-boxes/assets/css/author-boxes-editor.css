@@ -148,7 +148,7 @@
 }
 
 .ppma-author-boxes-editor-table .author-boxes-field-icon {
-    display: flex;
+    display: grid;
     gap: 10px;
 }
 
