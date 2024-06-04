@@ -225,13 +225,11 @@ class MA_Author_Boxes extends Module
              <span class="dashicons dashicons-yes-alt ppma-green-check"></span>
            <?php endif;
         } elseif ($column === 'author_category_boxes') {
-            $editor_data = get_post_meta($postId, self::META_PREFIX . 'layout_parent_author_box', true);
+            $layout_parent = get_post_meta($postId, self::META_PREFIX . 'layout_parent_author_box', true);
 
-            if (empty($editor_data)) :
+            if (!empty($layout_parent)) :
             ?>
-                <span class="dashicons dashicons-no ppma-red-check"></span>
-            <?php else : ?>
-                <span class="dashicons dashicons-yes-alt ppma-green-check"></span>
+               <span class="dashicons dashicons-yes-alt ppma-green-check"></span>
            <?php endif;
         }
     }
