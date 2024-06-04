@@ -1007,7 +1007,7 @@ class MA_Author_Boxes extends Module
     {
         $fields_tabs = [
             'title'     => [
-                'label'  => __('Title', 'publishpress-authors'),
+                'label'  => __('Box Title', 'publishpress-authors'),
                 'icon'   => 'dashicons dashicons-translation',
             ],
             'avatar'  => [
@@ -1346,7 +1346,7 @@ class MA_Author_Boxes extends Module
             </div>
 
             <div class="ppma-author-box-editor-fields wrapper-column">
-                <table class="form-table ppma-author-boxes-editor-table" role="presentation">
+                <table class="form-table ppma-author-boxes-editor-table fixed" role="presentation">
                     <tbody>
                         <?php 
                         if ($post->post_status === 'auto-draft') {
