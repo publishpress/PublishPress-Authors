@@ -136,7 +136,8 @@ class AuthorBoxesAjax
             $post_data = $_POST['editor_data'];// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
             $editor_data = [];
             foreach ($post_data as $key => $value) {
-                $editor_data[$key] = htmlspecialchars(stripslashes_deep(wp_kses_post($value)));// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+                $value = is_array($value) ? map_deep($value, 'wp_kses_post') : wp_kses_post($value);
+                $editor_data[$key] = stripslashes_deep($value);
             }
 
             $author_term_id = !empty($_POST['author_term_id']) ? (int) $_POST['author_term_id'] : 0;
@@ -195,7 +196,7 @@ class AuthorBoxesAjax
             $profile_fields   = apply_filters('multiple_authors_author_fields', $profile_fields, false);
 
             $editor_data = !empty($_POST['editor_data']) ? array_map('stripslashes_deep', $_POST['editor_data']) : [];
-            $editor_data = array_map('wp_kses_post', $editor_data);
+            $editor_data = map_deep($editor_data, 'wp_kses_post');
             $fields = apply_filters('multiple_authors_author_boxes_fields', MA_Author_Boxes::get_fields(false), false);
             $args = [];
             $args['post_id'] = '</?php echo $post_id; ?>';
@@ -204,6 +205,7 @@ class AuthorBoxesAjax
                 $field_args['value'] = isset($editor_data[$key]) ? $editor_data[$key] : '';
                 $args[$key] = $field_args;
             }
+
             $args['instance_id'] = 1;
             $args['additional_class'] = str_replace(' ', '.', trim($args['box_tab_custom_wrapper_class']['value']));
 

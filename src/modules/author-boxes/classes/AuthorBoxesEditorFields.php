@@ -1554,6 +1554,24 @@ class AuthorBoxesEditorFields
     }
 
     /**
+     * Add shortcode fields to the author boxes editor.
+     *
+     * @param array $fields Existing fields to display.
+     * @param WP_Post $post object.
+     */
+    public static function getShortcodeFields($fields, $post)
+    {
+        $fields['shortcodes'] = [
+            'label'       => esc_html__('Shortcodes', 'publishpress-authors'),
+            'type'     => 'shortcodes',
+            'sanitize' => ['html_entity_decode', 'stripslashes_deep', 'wp_kses_post'],
+            'tab'      => 'shortcodes'
+        ];
+
+        return $fields;
+    }
+
+    /**
      * Add export fields to the author boxes editor.
      *
      * @param array $fields Existing fields to display.
