@@ -227,6 +227,29 @@
         }
 
         /**
+         * Author box shortcode delete
+         */
+        $(document).on('click', '.ppma-boxes-shortcodes-wrap .shortcode-entries .delete-shortcode', function (e) {
+            e.preventDefault();
+            $(this).closest('tr').remove();
+            generateEditorPreview(getAllEditorFieldsValues(), true);
+        });
+
+        /**
+         * Author box shortcode add
+         */
+        $(document).on('click', '.ppma-boxes-shortcodes-wrap .shortcode-entries .add-new-shortcode', function (e) {
+            e.preventDefault();
+            var shortcode = $('.ppma-boxes-shortcodes-wrap .shortcode-form .shortcodes-shortcode-input').val();
+            var position  = $('.ppma-boxes-shortcodes-wrap .shortcode-form .shortcodes-position-input').val();
+
+            if (shortcode && !isEmptyOrSpaces(shortcode)) {
+                addShortcodeEntry(shortcode, position);
+                generateEditorPreview(getAllEditorFieldsValues(), true);
+            }
+        });
+
+        /**
          * Populate social icon on button click
          */
         $(document).on('click', '.ppma-add-social-icon', function (event) {
@@ -325,7 +348,10 @@
                 }
 
                 var editor_values = import_value;
+
                 var key = '';
+                // clear shortcodes entries
+                $('.ppma-boxes-shortcodes-wrap tr.shortcode-entry').remove();
                 for (key in editor_values) {
                     var value = editor_values[key];
                     var field = $('[name="' + key + '"]');
@@ -338,6 +364,14 @@
                             field.prop('checked', false);
                         }
                         field.val(1);
+                    } else if (key === 'shortcodes') {
+                        if (value.shortcode && value.position) {
+                            var shortcodes = value.shortcode;
+                            var positions = value.position;
+                            for (var i = shortcodes.length - 1; i >= 0; i--) {
+                                addShortcodeEntry(shortcodes[i], positions[i]);
+                            }
+                        }
                     } else if (key === 'box_tab_custom_css') {
                         var editor_textarea = field;
                         var editor_textarea_id = editor_textarea.attr('id');
@@ -375,11 +409,13 @@
 
             //prepare ajax data
             var editor_values = getAllEditorFieldsValues();
+
             var data = {
                 action: "author_boxes_editor_get_template",
                 editor_data: $.extend({}, editor_values),
                 nonce: authorBoxesEditor.nonce,
             };
+
             $.post(ajaxurl, data, function (response) {
                 var status = response.status;
                 var content = response.content;
@@ -746,20 +782,62 @@
         function getAllEditorFieldsValues() {
             var editor_values = [];
             var input_value = '';
+            var processedMultipleInputs = [];
             $('.ppma-author-box-editor-fields .input input, .ppma-author-box-editor-fields .input textarea, .ppma-author-box-editor-fields .input select').each(function () {
                 var excluded_input = ['export_action', 'import_action', 'template_action'];
-                if (!excluded_input.includes($(this).attr('name'))) {
-                    if ($(this).attr('type') === 'checkbox') {
-                        input_value = ($(this).is(':checked')) ? '1' : '';
+                var input = $(this);
+                var input_name = input.attr('name');
+                if (input_name && !excluded_input.includes(input_name)) {
+                    if (input.attr('type') === 'checkbox') {
+                        input_value = (input.is(':checked')) ? '1' : '';
+                        editor_values[input_name] = input_value;
+                    } else if (input_name.endsWith('[]')) {
+                        var real_name = input_name;
+                        var match = input_name.match(/^(.*?)\[/);
+                        if (match) {
+                            real_name = match[1];
+                        }
+                        if (!processedMultipleInputs.includes(real_name)) {
+                            input_value = collectMultipleInputData(real_name);
+                            editor_values[real_name] = input_value;
+                            processedMultipleInputs.push(real_name);
+                        }
+
                     } else {
-                        input_value = $(this).val();
+                        input_value = input.val();
+                        editor_values[input_name] = input_value;
                     }
-                    editor_values[$(this).attr('name')] = input_value;
                 }
             });
 
             return editor_values;
         }
+
+        /**
+         * Get array input values same way php will get $_POST['name] 
+         * with all sub arrays key in a single name.
+         * 
+         * @param {*} inputName 
+         * @returns 
+         */
+        function collectMultipleInputData(inputName) {
+            var multipleInputData = {};
+          
+            var inputs = document.querySelectorAll('input[name^="' + inputName + '["]');
+            
+            inputs.forEach(input => {
+              const name = input.name.match(/\[([^\]]+)\]\[]/)[1];
+              const value = input.value;
+              
+              if (!multipleInputData[name]) {
+                multipleInputData[name] = [];
+              }
+              multipleInputData[name].push(value);
+            });
+          
+            return multipleInputData;
+        }
+
 
         /**
          * Generate and populate export data
@@ -768,9 +846,11 @@
          */
         function generateEditorExportData(populate = true) {
             var editor_values = getAllEditorFieldsValues();
+
             editor_values = Object.assign({}, editor_values);
             editor_values = JSON.stringify(editor_values);
             editor_values = btoa(editor_values);
+
             if (populate) {
                 $('#export_action').val(editor_values);
             } else {
@@ -1281,6 +1361,34 @@
             }
 
             return layouts[layout];
+        }
+
+        function isEmptyOrSpaces(str) {
+            return str == '' || str === null || str.match(/^ *$/) !== null;
+        }
+
+        function escAttr(str) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;',
+                '`': '&#96;'
+            };
+            return String(str).replace(/[&<>"'`]/g, function(match) {
+                return map[match];
+            });
+        }
+
+        function addShortcodeEntry(shortcode, position) {
+            var new_entry = '<tr class="shortcode-entry">';
+            new_entry += '<td class="shortcode">' + escAttr(shortcode) + '</td>';
+            new_entry += '<td class="position">' + position.charAt(0).toUpperCase() + position.slice(1) + '</td>';
+            new_entry += '<td class="action"><input name="shortcodes[shortcode][]" id="shortcodes-shortcode" type="hidden" value="' + escAttr(shortcode) + '"><input name="shortcodes[position][]" id="shortcodes-position" type="hidden" value="' + position + '"><span class="delete-shortcode">' + $('.ppma-boxes-shortcodes-wrap .shortcode-entries .add-new-shortcode').attr('data-delete') +'</span></td>';
+            new_entry += '</tr>';
+            $('.ppma-boxes-shortcodes-wrap .shortcode-form .shortcodes-shortcode-input').val('');
+            $('.ppma-boxes-shortcodes-wrap .shortcode-form').after(new_entry);
         }
 
     });

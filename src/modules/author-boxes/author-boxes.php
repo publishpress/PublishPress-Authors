@@ -122,6 +122,7 @@ class MA_Author_Boxes extends Module
         add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getMetaFields'], 10, 2);
         add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getAuthorCategories'], 10, 2);
         add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getProfileFields'], 10, 2);
+        add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getShortcodeFields'], 10, 2);
         add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getBioFields'], 10, 2);
         add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getRecentPostsFields'], 10, 2);
         add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getBoxLayoutFields'], 10, 2);
@@ -261,7 +262,7 @@ class MA_Author_Boxes extends Module
             if (isset($args['sanitize']) && is_array($args['sanitize']) && $_POST[$key] !== '') {
                 $value = $_POST[$key]; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
                 foreach ($args['sanitize'] as $sanitize) {
-                    $value = $sanitize($value);
+                    $value = is_array($value) ? map_deep($value, $sanitize) : $sanitize($value);
                 }
                 $meta_data[$key] = $value;
             } else {
@@ -269,6 +270,7 @@ class MA_Author_Boxes extends Module
                 $meta_data[$key] = (isset($_POST[$key]) && $_POST[$key] !== '') ? $sanitize($_POST[$key]) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
             }
         }
+
         update_post_meta($post_id, self::META_PREFIX . 'layout_parent_author_box', $parent_author_box);
         update_post_meta($post_id, self::META_PREFIX . 'layout_preview_author_post', $preview_author_post);
         update_post_meta($post_id, self::META_PREFIX . 'layout_meta_value', $meta_data);
@@ -1032,6 +1034,10 @@ class MA_Author_Boxes extends Module
                 'label' => __('Author Fields', 'publishpress-authors'),
                 'icon'  => 'dashicons dashicons-groups',
             ],
+            'shortcodes'  => [
+                'label' => __('Shortcodes', 'publishpress-authors'),
+                'icon'  => 'dashicons dashicons-shortcode',
+            ],
             'author_recent_posts'  => [
                 'label' => __('Author Recent Posts', 'publishpress-authors'),
                 'icon'  => 'dashicons dashicons-admin-page',
@@ -1416,6 +1422,11 @@ class MA_Author_Boxes extends Module
 
         $profile_fields   = self::get_profile_fields($args['post_id']);
 
+        if (($admin_preview || is_admin()) && !empty($args['preview_author_post'])) {
+            global $post;
+            $post = get_post($args['preview_author_post']);
+        }
+
         $authors = (isset($args['authors']) && is_array($args['authors']) && !empty($args['authors'])) ? $args['authors'] : [];
 
         $box_post         = get_post($args['post_id']);
@@ -1472,6 +1483,30 @@ class MA_Author_Boxes extends Module
                 $author_categories_title_prefix = !empty($args['author_categories_title_prefix']['value']) ? html_entity_decode($args['author_categories_title_prefix']['value']) : '';
                 $author_categories_title_suffix = !empty($args['author_categories_title_suffix']['value']) ? html_entity_decode($args['author_categories_title_suffix']['value']) : '';
             }
+        }
+
+        $shortcodes_data = !empty($args['shortcodes']['value']) ? $args['shortcodes']['value'] : [];
+
+        $meta_shortcode_output = '';
+        $name_shortcode_output = '';
+        $bio_shortcode_output = '';
+        $authors_shortcode_output = '';
+        if (!empty($shortcodes_data) && is_array($shortcodes_data)) {
+            foreach ($shortcodes_data['shortcode'] as $shortcode_index => $shortcode_data) :
+                $shortcode_shortcode = $shortcodes_data['shortcode'][$shortcode_index];
+                $shortcode_position  = $shortcodes_data['position'][$shortcode_index];
+                $shortcode_html = do_shortcode($shortcode_shortcode);
+
+                if ($shortcode_position == 'meta') {
+                    $meta_shortcode_output .= $shortcode_html;
+                } elseif ($shortcode_position == 'name') {
+                    $name_shortcode_output .= $shortcode_html;
+                } elseif ($shortcode_position == 'bio') {
+                    $bio_shortcode_output .= $shortcode_html;
+                } elseif ($shortcode_position == 'authors') {
+                    $authors_shortcode_output .= $shortcode_html;
+                }
+            endforeach;
         }
         ?>
 
@@ -1697,6 +1732,9 @@ class MA_Author_Boxes extends Module
                                                                 <?php endif;
                                                             }
                                                         }
+                                                        $name_row_extra .= $name_shortcode_output;
+                                                        $bio_row_extra  .= $bio_shortcode_output;
+                                                        $meta_row_extra .= $meta_shortcode_output;
 
                                                         $display_name_position    = !empty($args['display_name_position']['value']) ? $args['display_name_position']['value'] : 'after_avatar';
                                                         $display_name_prefix    = !empty($args['display_name_prefix']['value']) ? $args['display_name_prefix']['value'] : '';
@@ -1837,6 +1875,7 @@ class MA_Author_Boxes extends Module
                             <?php $author_category_index++; endforeach; ?>
                         </<?php echo ($li_style ? 'div' : 'span'); ?>>
                         <span class="ppma-layout-suffix"><?php echo html_entity_decode($args['box_tab_layout_suffix']['value']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+                        <?php echo $authors_shortcode_output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                     </<?php echo ($li_style ? 'div' : 'span'); ?>>
                     <!--end code -->
                     <?php if ($admin_preview) : ?>
@@ -1916,7 +1955,7 @@ class MA_Author_Boxes extends Module
         $tab_style = ($args['tab'] === self::default_tab()) ? '' : 'display:none;';
         ob_start();
         $generate_tab_title = false;
-        if (in_array($args['type'], ['textarea', 'export_action', 'import_action', 'template_action', 'line_break', 'profile_header', 'code_editor'])) {
+        if (in_array($args['type'], ['textarea', 'export_action', 'shortcodes', 'import_action', 'template_action', 'line_break', 'profile_header', 'code_editor'])) {
             $th_style = 'display: none;';
             $colspan  = 2;
         } else {
@@ -2000,6 +2039,93 @@ class MA_Author_Boxes extends Module
                         id="<?php echo esc_attr($key); ?>" 
                         type="text"
                         value="<?php echo esc_attr($args['value']); ?>" />
+                <?php
+                elseif ('shortcodes' === $args['type']) :
+                    $shortcodes_data = $args['value'];
+
+                    $shortcode_positions = [
+                        'meta'      => esc_html__('After View all posts Row', 'publishpress-authors'),
+                        'name'      => esc_html__('After Name Row', 'publishpress-authors'),
+                        'bio'       => esc_html__('After Biographical Info Row', 'publishpress-authors'),
+                        'authors'   => esc_html__('After All Authors', 'publishpress-authors')
+                    ];
+                    ?>
+                    <div class="ppma-boxes-shortcodes-wrap">
+                        <div class="shortcode-entries">
+                            <table class="shortcode-table fixed">
+                                <thead>
+                                    <tr>
+                                        <th><?php echo esc_html__('Shortcode', 'publishpress-authors'); ?> <span class="required">*</span></th>
+                                        <th><?php echo esc_html__('position', 'publishpress-authors'); ?></th>
+                                        <th class="action"><?php echo esc_html__('Action', 'publishpress-authors'); ?></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="shortcode-form">
+                                        <td class="shortcode-field">
+                                            <input name="<?php echo esc_attr($key); ?>-shortcode-input"
+                                                id="<?php echo esc_attr($key); ?>-shortcode-input" 
+                                                class="<?php echo esc_attr($key); ?>-shortcode-input" 
+                                                type="text"
+                                                value=""
+                                                placeholder="<?php echo esc_attr__('Shortcode', 'publishpress-authors'); ?>"
+                                            />
+                                        </td>
+                                        <td class="shortcode-field">
+                                        <select name="<?php echo esc_attr($key); ?>-position-input"
+                                            id="<?php echo esc_attr($key); ?>-position-input"
+                                            class="<?php echo esc_attr($key); ?>-position-input"
+                                            />
+                                            <?php foreach ($shortcode_positions as $position_key => $position_label) : ?>
+                                                <option value="<?php echo esc_attr($position_key); ?>" 
+                                                    <?php selected($position_key, 'authors'); ?>>
+                                                    <?php echo esc_html($position_label); ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        </td>
+                                        <td class="shortcode-field">
+                                            <div class="add-new-shortcode button"
+                                                data-delete="<?php echo esc_attr__('Delete', 'publishpress-authors'); ?>">
+                                                <?php echo esc_html__('Add', 'publishpress-authors'); ?>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <?php if (is_array($shortcodes_data) && !empty($shortcodes_data)) : ?>
+                                        <?php foreach ($shortcodes_data['shortcode'] as $shortcode_index => $shortcode_data) :
+                                            $shortcode_shortcode = $shortcodes_data['shortcode'][$shortcode_index];
+                                            $shortcode_position  = $shortcodes_data['position'][$shortcode_index];
+                                        ?>
+                                            <tr class="shortcode-entry">
+                                                <td class="shortcode">
+                                                    <?php echo esc_html($shortcode_shortcode); ?>
+                                                </td>
+                                                <td class="position">
+                                                    <?php echo esc_html(ucfirst($shortcode_position)); ?>
+                                                </td>
+                                                <td class="action">
+                                                    <input name="<?php echo esc_attr($key); ?>[shortcode][]"
+                                                        id="<?php echo esc_attr($key); ?>-shortcode"
+                                                        type="hidden"
+                                                        value="<?php echo esc_attr($shortcode_shortcode); ?>"
+                                                    />
+                                                    <input name="<?php echo esc_attr($key); ?>[position][]"
+                                                        id="<?php echo esc_attr($key); ?>-position"
+                                                        type="hidden"
+                                                        value="<?php echo esc_attr($shortcode_position); ?>"
+                                                    />
+                                                    <span class="delete-shortcode">
+                                                        <?php echo esc_html__('Delete', 'publishpress-authors'); ?>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <p class="description"><?php echo sprintf(esc_html__('You can use basic html as prefixes in short code, for example: %1s.', 'publishpress-authors'), '&lt;span class="read-time"&gt;Read Time&lt;/span&gt; [read_time_shortcode]'); ?></p>
                 <?php
                 elseif ('export_action' === $args['type']) :
                     ?>
