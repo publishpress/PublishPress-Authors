@@ -1517,8 +1517,6 @@ if (!function_exists('get_ppma_author_relations')) {
     }
 }
 
-
-
 if (!function_exists('get_ppma_author_category')) {
     /**
      * Get author category
@@ -1543,6 +1541,24 @@ if (!function_exists('get_ppma_author_category')) {
         }
 
         return $author_category;
+    }
+
+}
+
+if (!function_exists('get_ppma_section_content')) {
+    /**
+     * Return section content
+     *
+     * @param string $page
+     * 
+     * @return string
+     */
+    function get_ppma_section_content($page) {
+        ob_start();
+        
+        do_settings_sections($page);
+
+        return ob_get_clean();
     }
 
 }

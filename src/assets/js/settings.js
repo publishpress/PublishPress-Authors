@@ -28,6 +28,11 @@ jQuery(document).ready(function ($) {
     }
 
     var $hiddenFields = $('input[id^="ppma-tab-"]');
+    var $customSettings = $('.ppma-settings-wrap.custom-settings').length > 0;
+
+    if ($customSettings) {
+        ppmaTab = 'ppma-tab-author-pages';
+    }
 
     $hiddenFields.each(function () {
         var $this = $(this);

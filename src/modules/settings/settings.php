@@ -291,7 +291,7 @@ if (!class_exists('MA_Settings')) {
             }
 
             if ($_POST['action'] != 'update'
-                || (!isset($_GET['page']) || $_GET['page'] != 'ppma-modules-settings')
+                || (!isset($_GET['page']) || !in_array($_GET['page'], ['ppma-modules-settings', 'ppma-author-pages']))
             ) {
                 return false;
             }
@@ -299,6 +299,8 @@ if (!class_exists('MA_Settings')) {
             if (!Capability::currentUserCanManageSettings() || !wp_verify_nonce(sanitize_key($_POST['_wpnonce']), 'edit-publishpress-settings')) {
                 wp_die(esc_html__('Cheatin&#8217; uh?'));
             }
+
+            $author_pages_settings = in_array($_GET['page'], ['ppma-author-pages']);
 
             $legacyPlugin = Factory::getLegacyPlugin();
 
@@ -330,7 +332,9 @@ if (!class_exists('MA_Settings')) {
                 if (method_exists($legacyPlugin->$module_name, 'settings_save')) {
                     $legacyPlugin->$module_name->settings_save($new_options);
                 }
+            }
 
+            if ($author_pages_settings) {
                 // Flush rewrite rules due to authors page slug
                 set_transient('ppma_flush_rewrite_rules', true);
             }
