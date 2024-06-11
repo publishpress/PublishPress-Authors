@@ -2056,7 +2056,7 @@ class MA_Author_Boxes extends Module
                                 <thead>
                                     <tr>
                                         <th><?php echo esc_html__('Shortcode', 'publishpress-authors'); ?> <span class="required">*</span></th>
-                                        <th><?php echo esc_html__('position', 'publishpress-authors'); ?></th>
+                                        <th><?php echo esc_html__('Position', 'publishpress-authors'); ?></th>
                                         <th class="action"><?php echo esc_html__('Action', 'publishpress-authors'); ?></th>
                                     </tr>
                                 </thead>
