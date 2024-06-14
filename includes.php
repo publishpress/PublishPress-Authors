@@ -46,7 +46,8 @@ if (!defined('PP_AUTHORS_LOADED')) {
                                     ['base' => 'edit', 'id' => 'edit-ppmacf_field', 'post_type' => 'ppmacf_field'],
                                     ['base' => 'post', 'id' => 'ppmacf_field', 'post_type' => 'ppmacf_field'],
                                     ['base' => 'authors_page_ppma-modules-settings', 'id' => 'authors_page_ppma-modules-settings'],
-                                    ['base' => 'authors_page_ppma-author-categories', 'id' => 'authors_page_ppma-author-categories'],
+                                    ['base' => 'authors_page_ppma-author-list', 'id' => 'authors_page_ppma-author-list'],
+                                    ['base' => 'authors_page_ppma-author-pages', 'id' => 'authors_page_ppma-author-pages'],
                                 ]
                             ];
 

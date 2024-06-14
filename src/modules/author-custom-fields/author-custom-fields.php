@@ -479,14 +479,14 @@ class MA_Author_Custom_Fields extends Module
      */
     public function filterAuthorFields($fields, $author)
     {
-        $customFields = $this->getAuthorCustomFields(true);
+        $customFields = self::getAuthorCustomFields(true);
         foreach ($fields as $field_key => $field_data) {
             if (isset($customFields[$field_key])) {
                 unset($fields[$field_key]);
             }
         }
 
-        $author_fields = array_merge($fields, $this->getAuthorCustomFields());
+        $author_fields = array_merge($fields, self::getAuthorCustomFields());
 
         //Move Biographical Info to the bottom
         if (isset($author_fields['description'])) {
@@ -500,7 +500,7 @@ class MA_Author_Custom_Fields extends Module
         return $author_fields;
     }
 
-    public function getAuthorCustomFields($include_disabled = false)
+    public static function getAuthorCustomFields($include_disabled = false)
     {
         $posts = get_posts(
             [
@@ -516,18 +516,18 @@ class MA_Author_Custom_Fields extends Module
 
         if (! empty($posts)) {
             foreach ($posts as $post) {
-                if ($include_disabled || $this->getFieldMeta($post->ID, 'field_status') !== 'off') {
+                if ($include_disabled || self::getFieldMeta($post->ID, 'field_status') !== 'off') {
                     $fields[$post->post_name] = [
                         'name'        => $post->post_name,
                         'label'       => $post->post_title,
-                        'type'        => $this->getFieldMeta($post->ID, 'type'),
-                        'social_profile' => $this->getFieldMeta($post->ID, 'social_profile'),
-                        'schema_property' => $this->getFieldMeta($post->ID, 'schema_property'),
-                        'rel'           => $this->getFieldMeta($post->ID, 'rel'),
-                        'target'        => $this->getFieldMeta($post->ID, 'target'),
-                        'field_status' => $this->getFieldMeta($post->ID, 'field_status'),
-                        'requirement' => $this->getFieldMeta($post->ID, 'requirement'),
-                        'description' => $this->getFieldMeta($post->ID, 'description'),
+                        'type'        => self::getFieldMeta($post->ID, 'type'),
+                        'social_profile' => self::getFieldMeta($post->ID, 'social_profile'),
+                        'schema_property' => self::getFieldMeta($post->ID, 'schema_property'),
+                        'rel'           => self::getFieldMeta($post->ID, 'rel'),
+                        'target'        => self::getFieldMeta($post->ID, 'target'),
+                        'field_status' => self::getFieldMeta($post->ID, 'field_status'),
+                        'requirement' => self::getFieldMeta($post->ID, 'requirement'),
+                        'description' => self::getFieldMeta($post->ID, 'description'),
                         'post_id'     => $post->ID,
                     ];
                 }
@@ -543,7 +543,7 @@ class MA_Author_Custom_Fields extends Module
      *
      * @return mixed
      */
-    public function getFieldMeta($postId, $field)
+    public static function getFieldMeta($postId, $field)
     {
         return get_post_meta($postId, self::META_PREFIX . $field, true);
     }
@@ -554,7 +554,7 @@ class MA_Author_Custom_Fields extends Module
     public function saveTermCustomField($termId)
     {
         // Get a list of custom fields to save them.
-        $fields = $this->getAuthorCustomFields();
+        $fields = self::getAuthorCustomFields();
 
         if (! empty($fields)) {
             foreach ($fields as $field) {
@@ -675,7 +675,7 @@ class MA_Author_Custom_Fields extends Module
      */
     public function filterAuthorProperties($properties)
     {
-        $customFields = $this->getAuthorCustomFields();
+        $customFields = self::getAuthorCustomFields();
 
         if (! empty($customFields)) {
             foreach ($customFields as $customField) {
@@ -695,7 +695,7 @@ class MA_Author_Custom_Fields extends Module
      */
     public function filterAuthorAttribute($return, $authorId, $attribute)
     {
-        $customFields = $this->getAuthorCustomFields();
+        $customFields = self::getAuthorCustomFields();
 
         if (! empty($customFields) && isset($customFields[$attribute])) {
             return $this->getCustomFieldValue($authorId, $attribute);
@@ -782,7 +782,7 @@ class MA_Author_Custom_Fields extends Module
         if ($column === 'slug') {
             echo esc_html($post->post_name);
         } elseif ($column === 'field_status') {
-            if ($this->getFieldMeta($post->ID, 'field_status') !== 'off') {
+            if (self::getFieldMeta($post->ID, 'field_status') !== 'off') {
                 ?>
                 <div style="color: green;">
                     <?php echo esc_html_e('Active', 'publishpress-authors'); ?>
@@ -794,7 +794,7 @@ class MA_Author_Custom_Fields extends Module
             <?php
             }
         } elseif ($column === 'requirement') {
-            if ($this->getFieldMeta($post->ID, 'requirement') !== 'required') {
+            if (self::getFieldMeta($post->ID, 'requirement') !== 'required') {
                 ?>
                 <?php echo esc_html_e('Optional', 'publishpress-authors'); ?>
             <?php } else { ?>
@@ -802,7 +802,7 @@ class MA_Author_Custom_Fields extends Module
             <?php
             }
         } elseif ($column === 'type') {
-            $type = $this->getFieldMeta($post->ID, 'type');
+            $type = self::getFieldMeta($post->ID, 'type');
             $type_options = CustomFieldsModel::getFieldTypes();
             $field_type = array_key_exists($type, $type_options) ? $type_options[$type] : $type;
             echo esc_html($field_type);

@@ -28,7 +28,7 @@
                                             <img src="<?php echo esc_url($post['featuired_image']); ?>">
                                         </a>
                                     </div>
-                                    
+
                                     <div class="ppma-col-5 post-<?php esc_attr_e($post_id); ?>">
                                         <div class="text">
                                             <a href="<?php echo esc_url($post['permalink']); ?>" class="headline">
@@ -50,7 +50,7 @@
                                     </div>
                                 <?php endif; ?>
                             <?php endforeach; ?>
-                            
+
                             <?php if ($result['view_link']) : ?>
                                 <div class="ppma-col-12 all-author-post-link">
                                     <a href="<?php echo esc_url($author->link); ?>">
@@ -78,11 +78,11 @@
     </div>
 
     <?php if ($context['pagination']) : ?>
-        <nav class="footer-navigation navigation pagination">
+        <nav class="author-boxes-footer-navigation footer-navigation navigation pagination">
             <div class="nav-links">
             <?php echo $context['pagination']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
             </div>
         </nav>
     <?php endif; ?>
-    
+
 </div>
