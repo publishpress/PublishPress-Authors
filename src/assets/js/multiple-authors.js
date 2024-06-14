@@ -202,6 +202,28 @@ jQuery(document).ready(function ($) {
         });
     }
 
+    function authorsUserTermIdSelect2(selector) {
+        selector.each(function () {
+            var authorsSearch = $(this).ppma_select2({
+                placeholder: $(this).data("placeholder"),
+                allowClear: true,
+                ajax: {
+                    url:
+                        window.ajaxurl +
+                        "?action=authors_filter_authors_search&field=term_id&nonce=" +
+                        $(this).data("nonce"),
+                    dataType: "json",
+                    data: function (params) {
+                        return {
+                            q: params.term,
+                            ignored: []
+                        };
+                    }
+                }
+            });
+        });
+    }
+
     function authorsUserSlugSelect2(selector) {
         selector.each(function () {
             var authorsSearch = $(this).ppma_select2({
@@ -231,8 +253,10 @@ jQuery(document).ready(function ($) {
         handleUsersAuthorField();
         if ($('.authors-user-slug-search').length > 0) {
             authorsUserSlugSelect2($('.authors-user-slug-search'));
-
         }
+    }
+    if ($('.authors-user-term-id-search').length > 0) {
+        authorsUserTermIdSelect2($('.authors-user-term-id-search'));
     }
     
     if ($("body").hasClass("post-php") || $("body").hasClass("post-new-php")  || $("body").hasClass("edit-php")) {

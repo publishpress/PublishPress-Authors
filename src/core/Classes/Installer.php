@@ -28,6 +28,7 @@ use MultipleAuthors\Factory;
 use MultipleAuthors\Classes\Objects\Author;
 use MA_Author_Custom_Fields;
 use MA_Author_Boxes;
+use MA_Author_List;
 use WP_Role;
 
 class Installer
@@ -52,6 +53,7 @@ class Installer
         self::createDefaultCustomFields();
         self::createDefaultAuthorBoxes();
         MA_Author_Boxes::authorBoxesFieldsUpdate();
+        MA_Author_List::createDefaultList();
         self::addNewAuthorCapabilitiesToRoles();
         self::flushRewriteRules();
 
@@ -109,6 +111,9 @@ class Installer
         }
         if (version_compare($currentVersions, '4.6.0', '<')) {
             MA_Author_Boxes::authorBoxesFieldsUpdate();
+        }
+        if (version_compare($currentVersions, '4.7.0', '<')) {
+            MA_Author_List::createDefaultList();
         }
 
         /**

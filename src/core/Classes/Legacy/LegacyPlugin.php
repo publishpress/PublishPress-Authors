@@ -159,6 +159,7 @@ class LegacyPlugin
             'author-boxes'         => PP_AUTHORS_MODULES_PATH,
             'author-categories'    => PP_AUTHORS_MODULES_PATH,
             'author-custom-fields' => PP_AUTHORS_MODULES_PATH,
+            'author-list'          => PP_AUTHORS_MODULES_PATH,
             'author-pages'         => PP_AUTHORS_MODULES_PATH,
             'settings'             => PP_AUTHORS_MODULES_PATH,
             'multiple-authors'     => PP_AUTHORS_MODULES_PATH,

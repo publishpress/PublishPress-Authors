@@ -88,24 +88,6 @@ class MA_Author_Pages extends Module
     public function init()
     {
         add_action('multiple_authors_admin_submenu', [$this, 'adminSubmenu'], 50);
-        //add_filter('removable_query_args', [$this, 'removableQueryArgs']);
-    }
-
-    public function removableQueryArgs($args) {
-
-        if (!isset($_GET['page']) || $_GET['page'] !== self::MENU_SLUG) {
-            return $args;
-        }
-        
-        return array_merge(
-            $args,
-            [
-                'action',
-                'author_pages',
-                '_wpnonce'
-            ]
-        );
-
     }
 
     /**
@@ -242,94 +224,6 @@ class MA_Author_Pages extends Module
                 </h2>
 
             </header>
-        <?php
-    }
-
-    /**
-     * Author Pages callback
-     *
-     * @return void
-     */
-    public function manageAuthorPages2() {
-
-        ?>
-
-        <div class="wrap">
-
-            <h1 class="wp-heading-inline"><?php esc_html_e('Author Pages', 'publishpress-authors'); ?></h1>
-            <?php
-                if ( isset( $_REQUEST['s'] ) && strlen( $_REQUEST['s'] ) ) {
-                    echo '<span class="subtitle">';
-                    printf(
-                        /* translators: %s: Search query. */
-                        esc_html__( 'Search results for: %s' ),
-                        '<strong>' . esc_html( wp_unslash( $_REQUEST['s'] ) ) . '</strong>'
-                    );
-                    echo '</span>';
-                }
-            ?>
-            <hr class="wp-header-end">
-            <div id="ajax-response"></div>
-
-
-            <form class="search-form wp-clearfix" method="get">
-                <?php $this->author_pages_table->search_box(esc_html__('Search Author Pages', 'publishpress-authors'), 'author-pages'); ?>
-            </form>
-
-            <div id="col-container" class="wp-clearfix">
-                <div id="col-left">
-                    <div class="col-wrap">  
-                        <div class="form-wrap">
-                            <h2><?php esc_html_e('Add Author Category', 'publishpress-authors'); ?></h2>
-                            <form id="addauthorcategory" method="post" action="#" class="validate">
-                                <div class="form-field form-required category-name-wrap">
-                                    <label for="category-name"><?php esc_html_e( 'Singular Name', 'publishpress-authors' ); ?> <span class="required">*</span></label>
-                                    <input name="category-name" id="category-name" type="text" value="" size="40" required autocomplete="off" />
-                                    <p id="category-name-description"><?php esc_html_e('Enter the Author Category name when it\'s a single author', 'publishpress-authors'); ?></p>
-                                </div>
-                                <div class="form-field form-required category-plural-name-wrap">
-                                    <label for="category-plural-name"><?php esc_html_e( 'Plural Name', 'publishpress-authors' ); ?> <span class="required">*</span></label>
-                                    <input name="category-plural-name" id="category-plural-name" type="text" value="" size="40" required autocomplete="off" />
-                                    <p id="category-plural-description"><?php esc_html_e('Enter the Author Category name when there are more than 1 author', 'publishpress-authors'); ?></p>
-                                </div>
-                                <div class="form-field category-schema-property-wrap">
-                                    <label for="category-schema-property"><?php esc_html_e( 'Schema Property', 'publishpress-authors' ); ?></label>
-                                    <input name="category-schema-property" id="category-schema-property" type="text" value="" size="40" autocomplete="off" />
-                                    <p id="category-plural-description"><?php printf(
-                                        esc_html__(
-                                            'For example, when this value is set to reviewedBy, all users under this category will be added to post reviewedBy property. You can read more %1$s in this guide.%2$s',
-                                            'publishpress-authors'
-                                        ),
-                                        '<a target="_blank" href="https://publishpress.com/knowledge-base/author-pages-schema/">',
-                                        '</a>'
-                                    ); ?></p>
-                                </div>
-                                <div class="form-field category-enabled-category-wrap">
-                                    <label for="category-enabled-category">
-                                        <input name="category-enabled-category" id="category-enabled-category" type="checkbox" value="1" checked />
-                                        <?php esc_html_e( 'Enable Category', 'publishpress-authors' ); ?>
-                                    </label>
-                                </div>
-                            <p class="submit">
-                                <?php submit_button( __('Add New Author Category', 'publishpress-authors'), 'primary', 'submit', false ); ?>
-                                <span class="spinner"></span>
-                            </p>
-                            </form>
-                        </div>
-                    </div>
-                </div><!-- /col-left -->
-
-                <div id="col-right">
-                    <div class="col-wrap">
-                        <form action="<?php echo esc_url(add_query_arg('', '')); ?>" method="post">
-                            <?php $this->author_pages_table->display(); ?>
-                        </form>
-                    </div>
-                </div><!-- /col-right -->
-            </div><!-- /col-container -->
-
-        </div><!-- /wrap -->
-        <?php $this->author_pages_table->inline_edit(); ?>
         <?php
     }
 }

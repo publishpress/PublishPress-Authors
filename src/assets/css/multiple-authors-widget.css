@@ -214,31 +214,35 @@ a.ppma-author-field-meta i {
     display: inline-block;
 }
 
-.pp-multiple-authors-index .footer-navigation,
-.pp-multiple-authors-recent .footer-navigation {
+.author-boxes-footer-navigation {
+    margin-top: 20px;
     margin-bottom: 100px;
 }
 
-.pp-multiple-authors-index .author-index-navigation .page-item {
+.author-boxes-footer-navigation .nav-links .page-numbers {
+    margin-right: 10px;
+}
+
+.pp-multiple-authors-wrapper .author-index-navigation .page-item {
     cursor: pointer;
 }
 
-.pp-multiple-authors-index .author-index-navigation .page-item.active {
+.pp-multiple-authors-wrapper .author-index-navigation .page-item.active {
     cursor: not-allowed;
     pointer-events: none;
 }
 
-.pp-multiple-authors-index .author-index-navigation .page-item.active > a {
+.pp-multiple-authors-wrapper .author-index-navigation .page-item.active > a {
   color: #555;
   text-decoration: none;
 }
 
-.pp-multiple-authors-index .author-index-navigation {
+.pp-multiple-authors-wrapper .author-index-navigation {
     margin: 0 0 1rem 0;
     padding: 0;
 }
 
-.pp-multiple-authors-index .author-index-navigation li {
+.pp-multiple-authors-wrapper .author-index-navigation li {
     padding: 0.5rem 0.75rem;
     margin: 0;
     border: 1px solid #ffffff;
@@ -275,7 +279,7 @@ a.ppma-author-field-meta i {
 }
 
 .pp-multiple-authors-index .tease-author {
-    margin-right: 10px;
+    margin-right: 50px;
     float: left;
 }
 
@@ -479,6 +483,11 @@ body:not(.theme-twentytwenty):not(.theme-twentytwentyone) .pp-multiple-authors-r
 
 .pp-multiple-authors-searchbox {
     margin-bottom: 20px;
+    display: flex;
+}
+
+.pp-multiple-authors-searchbox form {
+    display: flex;
 }
 
 .pp-multiple-authors-layout-inline .pp-author-boxes-name::after {
@@ -565,20 +574,6 @@ body:not(.theme-twentytwenty):not(.theme-twentytwentyone) .pp-multiple-authors-r
         display: table;
         clear: both
     }
-    .pp-multiple-authors-index .author-index-authors ul>.author-index-item {
-        float: left;
-        padding: 0 0 0 20px;
-        width: 50%
-    }
-    .pp-multiple-authors-index .author-index-authors ul>.author-index-item:first-child {
-      padding-left: 0;
-    }
-    .pp-multiple-authors-index .author-index-authors ul>.author-index-item:nth-of-type(2n+3) {
-        clear: left
-    }
-    .pp-multiple-authors-index .author-index-authors ul>.author-index-item.n3 {
-        clear: left
-    }
 }
 
 @media (min-width: 601px) and (max-width: 899px) {
@@ -587,23 +582,6 @@ body:not(.theme-twentytwenty):not(.theme-twentytwentyone) .pp-multiple-authors-r
         display: table;
         clear: both
     }
-    .pp-multiple-authors-index .author-index-authors ul>.author-index-item {
-        float: left;
-        padding: 0 0 0 20px;
-        width: 33.3333%
-    }
-    .pp-multiple-authors-index .author-index-authors ul>.author-index-item:first-child {
-      padding-left: 0;
-    }
-    .pp-multiple-authors-index .author-index-authors ul>.author-index-item:nth-of-type(3n+4) {
-        clear: left
-    }
-    .pp-multiple-authors-index .ie7 .author-index-authors ul>.author-index-item {
-        width: 33%
-    }
-    .pp-multiple-authors-index .author-index-authors ul>.author-index-item.n4 {
-        clear: left
-    }
 }
 
 @media (min-width: 900px) {
@@ -611,19 +589,5 @@ body:not(.theme-twentytwenty):not(.theme-twentytwentyone) .pp-multiple-authors-r
         content: "";
         display: table;
         clear: both
-    }
-    .pp-multiple-authors-index .author-index-authors ul>.author-index-item {
-        float: left;
-        padding: 0 0 0 20px;
-        width: 25%
-    }
-    .pp-multiple-authors-index .author-index-authors ul>.author-index-item:first-child {
-      padding-left: 0;
-    }
-    .pp-multiple-authors-index .author-index-authors ul>.author-index-item:nth-of-type(4n+5) {
-        clear: left
-    }
-    .pp-multiple-authors-index .author-index-authors ul>.author-index-item.n5 {
-        clear: left
     }
 }

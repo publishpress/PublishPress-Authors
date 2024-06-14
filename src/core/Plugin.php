@@ -1864,6 +1864,7 @@ class Plugin
 
     public function shortcodeAuthorsList($attributes)
     {
+        $legacyPlugin   = Factory::getLegacyPlugin();
         $widget = new Authors_Widget('authors_list_shortcode', 'authors_list_shortcode');
 
         $defaults = [
@@ -1872,6 +1873,15 @@ class Plugin
 
         if (isset($attributes['layout']) && in_array($attributes['layout'], ['authors_index', 'authors_recent'])) {
             $attributes['show_title'] = false;
+        }
+
+        if (!empty($attributes['list_id'])) {
+            $author_lists       = $legacyPlugin->modules->author_list->options->author_list_data;
+            $author_list_data   = isset($author_lists[$attributes['list_id']]) ? $author_lists[$attributes['list_id']] : false;
+            if ($author_list_data) {
+                $attributes = $author_list_data['shortcode_args'];
+            }
+
         }
 
         $attributes = wp_parse_args($attributes, $defaults);

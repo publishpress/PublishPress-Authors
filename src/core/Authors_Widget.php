@@ -254,6 +254,7 @@ class Authors_Widget extends WP_Widget
             Utils::loadLayoutFrontCss();
 
             $inline_style = '';
+
             if (isset($instance['authors_recent_col']) && (int)$instance['authors_recent_col'] > 0) {
                 $column_width = ((100-8)/(int)$instance['authors_recent_col']);
                 $inline_style .= '@media (min-width: 768px) {
@@ -276,13 +277,15 @@ class Authors_Widget extends WP_Widget
                     $wrapper_class_selector = '.' . $layout;
                 }
                 $inline_style .= '@media (min-width: 768px) {
-                    .pp-multiple-authors-wrapper'. $wrapper_class_selector .' ul {
+                    .pp-multiple-authors-wrapper'. $wrapper_class_selector .' ul,
+                    .pp-multiple-authors-index .author-index-authors ul {
                         display: flex;
                         flex-wrap: wrap;
                     }
-                    .pp-multiple-authors-wrapper'. $wrapper_class_selector .' ul li {
+                    .pp-multiple-authors-wrapper'. $wrapper_class_selector .' ul li,
+                    .pp-multiple-authors-index .author-index-authors ul li {
                         margin-right: 15px;
-                        width: calc('.$column_width.'% - 20px);
+                        width: calc('.$column_width.'% - 60px);
                     }
                 }';
             }
@@ -438,6 +441,10 @@ class Authors_Widget extends WP_Widget
          * @param array $args
          */
         $html = apply_filters('pp_multiple_authors_authors_list_box_html', null, $args);
+
+        if (is_admin() && !empty($inline_style)) {
+            $html .= '<style>'. $inline_style .'</style>';
+        }
 
         return $html;
     }
