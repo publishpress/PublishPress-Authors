@@ -184,8 +184,8 @@ class MA_Author_List extends Module
         // Add the submenu to the PublishPress menu.
         $hook = add_submenu_page(
             \MA_Multiple_Authors::MENU_SLUG,
-            esc_html__('Author List', 'publishpress-authors'),
-            esc_html__('Author List', 'publishpress-authors'),
+            esc_html__('Author Lists', 'publishpress-authors'),
+            esc_html__('Author Lists', 'publishpress-authors'),
             Capability::getManageOptionsCapability(),
             self::MENU_SLUG,
             [$this, 'manageAuthorList'],
@@ -253,7 +253,7 @@ class MA_Author_List extends Module
     public function all_author_list() { 
         ?>
         <div class="wrap author-list-wrap all">
-            <h1 class="wp-heading-inline"><?php esc_html_e('Author List', 'publishpress-authors'); ?></h1>
+            <h1 class="wp-heading-inline"><?php esc_html_e('Author Lists', 'publishpress-authors'); ?></h1>
 
             <a
                 href="<?php echo esc_url(admin_url('admin.php?page='. self::MENU_SLUG .'&author_list_edit=0')); ?>" 
@@ -273,7 +273,7 @@ class MA_Author_List extends Module
             <div id="ajax-response"></div>
 
             <form class="search-form wp-clearfix" method="get">
-                <?php $this->author_list_table->search_box(__('Search Author List', 'publishpress-authors'), 'term'); ?>
+                <?php $this->author_list_table->search_box(__('Search Author Lists', 'publishpress-authors'), 'term'); ?>
             </form>
             <div class="clear"></div>
             <div id="col-container" class="wp-clearfix">
@@ -690,7 +690,7 @@ class MA_Author_List extends Module
         }, array());
         ?>
         <div class="wrap author-list-wrap form <?php echo esc_attr($form_type); ?>">
-            <h1 class="wp-heading-inline"><?php esc_html_e('Author List', 'publishpress-authors'); ?></h1>
+            <h1 class="wp-heading-inline"><?php esc_html_e('Author Lists', 'publishpress-authors'); ?></h1>
 
             <form method="post" action="">
                 <input type="hidden" name="form_type" value="<?php echo esc_attr($form_type); ?>">
