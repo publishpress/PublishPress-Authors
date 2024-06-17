@@ -400,7 +400,7 @@ class MA_Author_List extends Module
         ];
         $fields['show_empty']   = [
             'label'             => esc_html__('Show Empty', 'publishpress-authors'),
-            'description'       => esc_html__('Enable this option to show all authors, including those without any posts. Disable it to limit the result to only authors who are assigned to posts.', 'publishpress-authors'),
+            'description'       => esc_html__('Enable this option to show all authors, including those without any posts. Disable this option to show only authors who are assigned to posts.', 'publishpress-authors'),
             'type'              => 'checkbox',
             'sanitize'          => 'absint',
             'field_visibility'  => [],
@@ -434,8 +434,7 @@ class MA_Author_List extends Module
         ];
         $fields['last_article_date']   = [
             'label'             => esc_html__('Last Article Date', 'publishpress-authors'),
-            'description'       => esc_html__('You can limit the author list to users with a published post within a specific period using. This accept english date value like 1 week ago, 1 month ago, 6 months ago, 1 year ago etc.
-            ', 'publishpress-authors'),
+            'description'       => esc_html__('You can limit the author list to users with a published post within a specific time. This option accepts date values such as 1 week ago, 1 month ago, 6 months ago, 1 year ago etc.', 'publishpress-authors'),
             'type'              => 'text',
             'sanitize'          => 'sanitize_text_field',
             'field_visibility'  => [],
