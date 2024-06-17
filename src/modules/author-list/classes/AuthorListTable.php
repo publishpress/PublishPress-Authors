@@ -86,8 +86,7 @@ class AuthorListTable extends \WP_List_Table
         $columns = [
             'title'     =>  esc_html__('Title', 'publishpress-authors'),
             'layout'    =>  esc_html__('Layout', 'publishpress-authors'),
-            'dynamic_shortcode' =>  esc_html__('Dynamic Shortcode', 'publishpress-authors'),
-            'static_shortcode' =>  esc_html__('Static Shortcode', 'publishpress-authors')
+            'dynamic_shortcode' =>  esc_html__('Shortcode', 'publishpress-authors')
         ];
 
         return $columns;
