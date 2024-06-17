@@ -527,7 +527,7 @@ class MA_Author_List extends Module
             'ID'                    => $author_list_last_id,
             'title'                 => esc_html__('Author Index List', 'publishpress-authors'),
             'layout'                => 'authors_index',
-            'layout_columns'        => '',
+            'layout_columns'        => 1,
             'group_by'              => '',
             
             'author_type'           => 'roles',
@@ -653,7 +653,7 @@ class MA_Author_List extends Module
             $author_list_data = [
                 'title'                 => esc_html__('Author List', 'publishpress-authors'),
                 'layout'                => 'authors_index',
-                'layout_columns'        => '',
+                'layout_columns'        => 1,
                 'group_by'              => '',
                 
                 'author_type'           => 'roles',
