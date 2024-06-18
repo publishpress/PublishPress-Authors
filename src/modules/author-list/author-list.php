@@ -291,6 +291,10 @@ class MA_Author_List extends Module
      */
     public function author_list_fields_tabs() {
         $fields_tabs = [
+            'preview' => [
+                'label' => __('Preview', 'publishpress-authors'),
+                'icon'  => 'dashicons-before dashicons-welcome-view-site'
+            ],
             'general' => [
                 'label' => __('General', 'publishpress-authors'),
                 'icon'  => 'dashicons-before dashicons-admin-tools'
@@ -306,10 +310,6 @@ class MA_Author_List extends Module
             'search' => [
                 'label' => __('Search', 'publishpress-authors'),
                 'icon'  => 'dashicons-before dashicons-search'
-            ],
-            'preview' => [
-                'label' => __('Preview', 'publishpress-authors'),
-                'icon'  => 'dashicons-before dashicons-welcome-view-site'
             ],
         ];
 
@@ -665,8 +665,10 @@ class MA_Author_List extends Module
                 'orderby'               => 'name',
                 'order'                 => 'asc',
                 'last_article_date'     => '',
-                'search_box'            => 0,
+                'search_box'            => 1,
                 'search_field'          => '',
+
+                'static_shortcode'      => '[publishpress_authors_list layout="authors_index" limit_per_page="20" show_empty="1" orderby="name" order="asc" search_box="true"]',
             ];
         }
 
@@ -675,7 +677,7 @@ class MA_Author_List extends Module
         $static_shortcode   = isset($author_list_data['static_shortcode']) ? $author_list_data['static_shortcode'] : '';
 
         $form_title = $form_type == 'edit' ? esc_html__('Edit Author List', 'publishpress-authors') : esc_html__('Add Author List', 'publishpress-authors');
-        $active_tab = !empty($_REQUEST['active_tab']) ? sanitize_text_field($_REQUEST['active_tab']) : 'general';
+        $active_tab = !empty($_REQUEST['active_tab']) ? sanitize_text_field($_REQUEST['active_tab']) : 'preview';
 
         $fields_tabs = $this->author_list_fields_tabs();
         $list_fields = $this->author_list_fields();
@@ -804,7 +806,7 @@ class MA_Author_List extends Module
     {
         $defaults = [
             'type'        => 'text',
-            'tab'         => 'general',
+            'tab'         => 'preview',
             'options'     => [],
             'value'       => '',
             'label'       => '',
@@ -1011,10 +1013,11 @@ class MA_Author_List extends Module
                     </div>
                 <?php
                 elseif ('preview' === $args['type']) :
+                    $shortcode_content = !empty($option_values['static_shortcode']) ? do_shortcode($option_values['static_shortcode']) : '';
                     ?>
                     <p class="description" style="margin-bottom: 20px;"><span class="required">*</span> <?php esc_html_e('This is a quick preview of this Author List. Test on frontend pages to see exactly how it looks with your theme.', 'publishpress-authors'); ?></p>
-                    <div class="preview-shortcode-wrap"></div>
-                    <div class="preview-skeleton">
+                    <div class="preview-shortcode-wrap"><?php echo $shortcode_content; ?></div>
+                    <div class="preview-skeleton" style="display: none;">
                         <div class="skeleton skeleton-header"></div>
                         <div class="skeleton skeleton-sub-header"></div>
                         <div class="skeleton skeleton-content"></div>
