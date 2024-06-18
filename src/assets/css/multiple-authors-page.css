@@ -2,6 +2,11 @@ body.tax-author .ast-container {
     display: block;
 }
 
+.ppma-author-pages {
+    padding-right: min(6.5rem, 8vw);
+    padding-left: min(6.5rem, 8vw);
+}
+
 .ppma-page-header {
     padding-bottom: 10px;
 }

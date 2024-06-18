@@ -50,7 +50,7 @@ if ($author_post_custom_height > 0) {
     $featured_image_style  .= 'height: '.$author_post_custom_height.'px;'; 
 }
 ?>
-<div class="site-main alignwide">
+<div class="ppma-author-pages site-main alignwide has-global-padding">
     <div class="ppma-page-header">
         <?php 
         if ($show_author_page_title) {
