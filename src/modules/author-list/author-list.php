@@ -1012,7 +1012,7 @@ class MA_Author_List extends Module
                 <?php
                 elseif ('preview' === $args['type']) :
                     ?>
-                    <p class="description" style="margin-bottom: 20px;"><span class="required">*</span> <?php esc_html_e('This is a quick preview of the shortcode. Test on frontend pages to see excactly how it looks with your theme styling and space.', 'publishpress-authors'); ?></p>
+                    <p class="description" style="margin-bottom: 20px;"><span class="required">*</span> <?php esc_html_e('This is a quick preview of this Author List. Test on frontend pages to see exactly how it looks with your theme.', 'publishpress-authors'); ?></p>
                     <div class="preview-shortcode-wrap"></div>
                     <div class="preview-skeleton">
                         <div class="skeleton skeleton-header"></div>
