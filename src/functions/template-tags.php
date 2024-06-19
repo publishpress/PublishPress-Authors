@@ -443,7 +443,7 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
             $term_query = "SELECT t.term_id as `term_id` ";
             $term_query .= "FROM {$wpdb->terms} AS t ";
             $term_query .= "INNER JOIN {$wpdb->term_taxonomy} AS tt ON (tt.term_id = t.term_id) ";
-            if (true === $args['hide_empty']) {
+            if (true === $args['hide_empty'] || $last_article_date) {
                 $term_query .= "INNER JOIN {$wpdb->term_relationships} AS tr ON (tt.term_taxonomy_id = tr.term_taxonomy_id) ";
                 $term_query .= "INNER JOIN {$wpdb->posts} AS p ON (tr.object_id = p.ID) ";
             }

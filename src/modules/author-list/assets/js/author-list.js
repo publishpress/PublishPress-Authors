@@ -53,6 +53,8 @@
          * Generate shortcode based on author list configuration
          */
         function getShortCodes() {
+            var pro_active = authorList.isAuthorsProActive;
+
             var shortcode = '[publishpress_authors_list';
             // add layout
             var layout = $('.author-list-tab-content .input #layout').val();
@@ -87,35 +89,37 @@
             }
             // add limit_per_page
             var limit_per_page = $('.author-list-tab-content .input #limit_per_page').val();
-            if (!isEmptyOrSpaces(limit_per_page)) {
+            if (pro_active && !isEmptyOrSpaces(limit_per_page)) {
                 shortcode += ' limit_per_page="' + limit_per_page + '"';
             }
-            // add show_empty
-            var show_empty = $('.author-list-tab-content .input #show_empty').is(':checked') ? 1 : 0;
-            shortcode += ' show_empty="' + show_empty + '"';
+            if (pro_active) {
+                // add show_empty
+                var show_empty = $('.author-list-tab-content .input #show_empty').is(':checked') ? 1 : 0;
+                shortcode += ' show_empty="' + show_empty + '"';
+            }
             // add orderby
             var orderby = $('.author-list-tab-content .input #orderby').val();
-            if (!isEmptyOrSpaces(orderby)) {
+            if (pro_active && !isEmptyOrSpaces(orderby)) {
                 shortcode += ' orderby="' + orderby + '"';
             }
             // add order
             var order = $('.author-list-tab-content .input #order').val();
-            if (!isEmptyOrSpaces(order)) {
+            if (pro_active && !isEmptyOrSpaces(order)) {
                 shortcode += ' order="' + order + '"';
             }
             // add last_article_date
             var last_article_date = $('.author-list-tab-content .input #last_article_date').val();
-            if (!isEmptyOrSpaces(last_article_date)) {
+            if (pro_active && !isEmptyOrSpaces(last_article_date)) {
                 shortcode += ' last_article_date="' + last_article_date + '"';
             }
             // add search_box
             var search_box = $('.author-list-tab-content .input #search_box').is(':checked');
-            if (search_box) {
+            if (pro_active && search_box) {
                 shortcode += ' search_box="true"';
             }
             // add search_field
             var search_field = $('.author-list-tab-content .input #search_field').val();
-            if (search_field.length > 0) {
+            if (pro_active && search_field.length > 0) {
                 shortcode += ' search_field="' + search_field.join(',') + '"';
             }
 
