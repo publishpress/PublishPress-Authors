@@ -171,15 +171,25 @@ if (!class_exists('MA_Modules_Settings')) {
 
             $legacyPlugin = Factory::getLegacyPlugin();
 
+            /**
+             * @param array $tabs
+             *
+             * @return array
+             */
+            $tabs = apply_filters('publishpress_multiple_authors_settings_tabs', []);
+
             if (is_array($ppma_custom_settings)) {
                 $ppma_settings_modules      = $ppma_custom_settings['modules'];
                 $ppma_settings_class_names  = $ppma_custom_settings['class_names'];
-                $show_tabs = false;
+                $ppma_settings_class_names  = $ppma_custom_settings['class_names'];
+                $tabs                       = $ppma_custom_settings['tabs'];
+                $ppma_active_tab            = $ppma_custom_settings['active_tabs'];
             } else {
                 $ppma_settings_modules      = $legacyPlugin->modules;
                 $ppma_settings_class_names  = $legacyPlugin->class_names;
-                $show_tabs = true;
+                $ppma_active_tab            = '#ppma-tab-general';
             }
+
             ?>
 
             <div class="pp-columns-wrapper<?php echo (!Utils::isAuthorsProActive()) ? ' pp-enable-sidebar' : '' ?>">
@@ -188,18 +198,12 @@ if (!class_exists('MA_Modules_Settings')) {
                           action="<?php echo esc_url(menu_page_url($this->module->settings_slug, false)); ?>" method="post">
 
                         <?php
-                        /**
-                         * @param array $tabs
-                         *
-                         * @return array
-                         */
-                        $tabs = $show_tabs ? apply_filters('publishpress_multiple_authors_settings_tabs', []) : [];
                         if (!empty($tabs)) {
                             echo '<ul id="publishpress-authors-settings-tabs" class="nav-tab-wrapper">';
                             foreach ($tabs as $tabLink => $tabLabel) {
                                 $li_style = $tabLink === '#ppma-tab-author-pages' ? 'display: none;' : '';
-                                echo '<li style="'. esc_attr($li_style) .'" class="nav-tab ' . ($tabLink === '#ppma-tab-general' ? 'nav-tab-active' : '') . '">';
-                                echo '<a href="' . esc_url($tabLink) . '">' . esc_html($tabLabel) . '</a>';
+                                echo '<li style="'. esc_attr($li_style) .'" class="nav-tab ' . ($tabLink === $ppma_active_tab ? 'nav-tab-active' : '') . '">';
+                                echo '<a href="' . esc_url($tabLink) . '" data-tab-content="' . esc_attr($tabLink) . '">' . esc_html($tabLabel) . '</a>';
                                 echo '</li>';
                             }
                             echo '</ul>';
