@@ -143,7 +143,8 @@ class MA_Author_List extends Module
         );
 
         $localized_data = [
-            'nonce' => wp_create_nonce('author-list-request-nonce')
+            'nonce' => wp_create_nonce('author-list-request-nonce'),
+            'isAuthorsProActive' => Utils::isAuthorsProActive()
         ];
 
         wp_localize_script(
@@ -321,6 +322,8 @@ class MA_Author_List extends Module
      */
     public function author_list_fields() {
 
+        $pro_active = Utils::isAuthorsProActive();
+        
         $fields = [];
 
         $author_fields = [
@@ -388,78 +391,24 @@ class MA_Author_List extends Module
         ];
 
         // add options fields
-        $fields['limit_per_page'] = [
-            'label'             => esc_html__('Authors Per Page', 'publishpress-authors'),
-            'description'       => esc_html__('You can set the number of authors to show per page.', 'publishpress-authors'),
-            'type'              => 'number',
-            'min'               => 1,
-            'max'               => 9999,
-            'sanitize'          => 'sanitize_text_field',
-            'field_visibility'  => [],
-            'tab'               => 'options',
-        ];
-        $fields['show_empty']   = [
-            'label'             => esc_html__('Show Empty', 'publishpress-authors'),
-            'description'       => esc_html__('Enable this option to show all authors, including those without any posts. Disable this option to show only authors who are assigned to posts.', 'publishpress-authors'),
-            'type'              => 'checkbox',
-            'sanitize'          => 'absint',
-            'field_visibility'  => [],
-            'tab'               => 'options',
-        ];
-        $fields['orderby']   = [
-            'label'             => esc_html__('Order By', 'publishpress-authors'),
-            'description'       => '',
-            'type'              => 'select',
-            'options'           => [
-                'name'          => esc_html__('Name', 'publishpress-authors'),
-                'count'         => esc_html__('Post Counts', 'publishpress-authors'),
-                'first_name'    => esc_html__('First Name', 'publishpress-authors'),
-                'last_name'     => esc_html__('Last Name', 'publishpress-authors')
-            ],
-            'sanitize'          => 'sanitize_text_field',
-            'field_visibility'  => [],
-            'tab'               => 'options',
-        ];
-        $fields['order']   = [
-            'label'             => esc_html__('Order', 'publishpress-authors'),
-            'description'       => '',
-            'type'              => 'select',
-            'options'           => [
-                'asc'   => esc_html__('Ascending', 'publishpress-authors'),
-                'desc'  => esc_html__('Descending', 'publishpress-authors')
-            ],
-            'sanitize'          => 'sanitize_text_field',
-            'field_visibility'  => [],
-            'tab'               => 'options',
-        ];
-        $fields['last_article_date']   = [
-            'label'             => esc_html__('Last Article Date', 'publishpress-authors'),
-            'description'       => esc_html__('You can limit the author list to users with a published post within a specific time. This option accepts date values such as 1 week ago, 1 month ago, 6 months ago, 1 year ago etc.', 'publishpress-authors'),
-            'type'              => 'text',
-            'sanitize'          => 'sanitize_text_field',
-            'field_visibility'  => [],
-            'tab'               => 'options',
-        ];
+        if (!$pro_active) {
+            $fields['options_promo'] = [
+                'label'             => esc_html__('Configure Author List Options', 'publishpress-authors'),
+                'description'       => esc_html__('Authors Pro allows you to set Author Lists pagination using number of authors to show per page, ability to show or hide authors without without any posts, order authors by their published post counts, names and limit the author results to users with a published post within a specific time.', 'publishpress-authors'),
+                'type'              => 'promo',
+                'tab'               => 'options',
+            ];
+        }
 
         // add search fields
-        $fields['search_box']   = [
-            'label'             => esc_html__('Show Search Box', 'publishpress-authors'),
-            'description'       => '',
-            'type'              => 'checkbox',
-            'sanitize'          => 'absint',
-            'field_visibility'  => [],
-            'tab'               => 'search',
-        ];
-        $fields['search_field']   = [
-            'label'             => esc_html__('Search Field Dropdown', 'publishpress-authors'),
-            'description'       => esc_html__('You can also show a dropdown menu that allows users to search on specific author fields.', 'publishpress-authors'),
-            'type'              => 'select',
-            'multiple'          => true,
-            'options'           => $author_fields,
-            'sanitize'          => 'sanitize_text_field',
-            'field_visibility'  => [],
-            'tab'               => 'search',
-        ];
+        if (!$pro_active) {
+            $fields['search_promo'] = [
+                'label'             => esc_html__('Add Search Box to Author Lists', 'publishpress-authors'),
+                'description'       => esc_html__('Authors Pro allows you to show search box and search through author fields.', 'publishpress-authors'),
+                'type'              => 'promo',
+                'tab'               => 'search',
+            ];
+        }
 
         // add preview fields
         $fields['preview']   = [
@@ -470,6 +419,16 @@ class MA_Author_List extends Module
             'field_visibility'  => [],
             'tab'               => 'preview',
         ];
+
+        /**
+         * Customize author lists fields.
+         *
+         * @param array $fields Existing fields.
+         * @param array $author_fields Author fields options.
+         */
+        $fields = apply_filters('authors_lists_editor_fields', $fields, $author_fields);
+
+
 
         return $fields;
     }
@@ -484,6 +443,9 @@ class MA_Author_List extends Module
         if (!empty($author_lists)) {
             return;
         }
+
+        $pro_active = Utils::isAuthorsProActive();
+
         // Add author recent list
         $author_list_last_id++;
         $author_recent_list = [
@@ -498,16 +460,18 @@ class MA_Author_List extends Module
             'roles'                 => '',
             'term_id'               => '',
 
-            'limit_per_page'        => 20,
-            'show_empty'            => 1,
-            'orderby'               => 'name',
-            'order'                 => 'asc',
+            'limit_per_page'        => $pro_active ? 20 : '',
+            'show_empty'            => $pro_active ? 1 : '',
+            'orderby'               => $pro_active ? 'name' : '',
+            'order'                 => $pro_active ? 'asc' : '',
             'last_article_date'     => '',
-            'search_box'            => 1,
-            'search_field'          => ['first_name', 'last_name', 'user_email'],
+            'search_box'            => $pro_active ? 1 : '',
+            'search_field'          => $pro_active ? ['first_name', 'last_name', 'user_email'] : [],
             'dynamic_shortcode'     => '[publishpress_authors_list list_id="'. $author_list_last_id .'"]',
-            'static_shortcode'      => '[publishpress_authors_list layout="authors_recent" authors_recent_col="2" limit_per_page="20" show_empty="1" orderby="name" order="asc" search_box="true" search_field="first_name,last_name,user_email"]',
-            'shortcode_args'        => [
+        ];
+        if ($pro_active) {
+            $author_recent_list['static_shortcode'] = '[publishpress_authors_list layout="authors_recent" authors_recent_col="2" limit_per_page="20" show_empty="1" orderby="name" order="asc" search_box="true" search_field="first_name,last_name,user_email"]';
+            $author_recent_list['shortcode_args'] = [
                 'layout'                => 'authors_recent',
                 'authors_recent_col'    => 2,
                 'limit_per_page'        => 20,
@@ -516,8 +480,14 @@ class MA_Author_List extends Module
                 'order'                 => 'asc',
                 'search_box'            => true,
                 'search_field'          => 'first_name,last_name,user_email'
-            ]
-        ];
+            ];
+        } else {
+            $author_recent_list['static_shortcode'] = '[publishpress_authors_list layout="authors_recent" authors_recent_col="2"]';
+            $author_recent_list['shortcode_args'] = [
+                'layout'                => 'authors_recent',
+                'authors_recent_col'    => 2,
+            ];
+        }
         $author_lists[$author_list_last_id] = $author_recent_list;
 
         // add author index list
@@ -534,16 +504,18 @@ class MA_Author_List extends Module
             'roles'                 => '',
             'term_id'               => '',
 
-            'limit_per_page'        => 20,
-            'show_empty'            => 1,
-            'orderby'               => 'name',
-            'order'                 => 'asc',
+            'limit_per_page'        => $pro_active ? 20 : '',
+            'show_empty'            => $pro_active ? 1 : '',
+            'orderby'               => $pro_active ? 'name' : '',
+            'order'                 => $pro_active ? 'asc' : '',
             'last_article_date'     => '',
-            'search_box'            => 1,
-            'search_field'          => ['first_name', 'last_name', 'user_email'],
+            'search_box'            => $pro_active ? 1 : '',
+            'search_field'          => $pro_active ? ['first_name', 'last_name', 'user_email'] : [],
             'dynamic_shortcode'     => '[publishpress_authors_list list_id="'. $author_list_last_id .'"]',
-            'static_shortcode'      => '[publishpress_authors_list layout="authors_index" limit_per_page="20" show_empty="1" orderby="name" order="asc" search_box="true" search_field="first_name,last_name,user_email"]',
-            'shortcode_args'        => [
+        ];
+        if ($pro_active) {
+            $author_index_list['static_shortcode'] = '[publishpress_authors_list layout="authors_index" limit_per_page="20" show_empty="1" orderby="name" order="asc" search_box="true" search_field="first_name,last_name,user_email"]';
+            $author_index_list['shortcode_args'] = [
                 'layout'                => 'authors_index',
                 'limit_per_page'        => 20,
                 'show_empty'            => 1,
@@ -551,8 +523,14 @@ class MA_Author_List extends Module
                 'order'                 => 'asc',
                 'search_box'            => true,
                 'search_field'          => 'first_name,last_name,user_email'
-            ]
-        ];
+            ];
+        } else {
+            $author_index_list['static_shortcode'] = '[publishpress_authors_list layout="authors_index"]';
+            $author_index_list['shortcode_args'] = [
+                'layout'                => 'authors_index',
+            ];
+        }
+
         $author_lists[$author_list_last_id] = $author_index_list;
 
         $legacyPlugin->update_module_option('author_list', 'author_list_last_id', $author_list_last_id);
@@ -637,9 +615,9 @@ class MA_Author_List extends Module
      */
     public function edit_author_list() {
         $legacyPlugin       = Factory::getLegacyPlugin();
-
-        $author_list_id   = !empty($_GET['author_list_edit']) ? absint($_GET['author_list_edit']) : 0;
-        $author_list_data = false;
+        $pro_active         = Utils::isAuthorsProActive();
+        $author_list_id     = !empty($_GET['author_list_edit']) ? absint($_GET['author_list_edit']) : 0;
+        $author_list_data   = false;
 
         if (!empty($author_list_id)) {
             $author_lists       = $legacyPlugin->modules->author_list->options->author_list_data;
@@ -660,16 +638,20 @@ class MA_Author_List extends Module
                 'roles'                 => '',
                 'term_id'               => '',
 
-                'limit_per_page'        => 20,
-                'show_empty'            => 1,
-                'orderby'               => 'name',
-                'order'                 => 'asc',
+                'limit_per_page'        => $pro_active ? 20 : '',
+                'show_empty'            => $pro_active ? 1 : '',
+                'orderby'               => $pro_active ? 'name' : '',
+                'order'                 => $pro_active ? 'asc' : '',
                 'last_article_date'     => '',
-                'search_box'            => 1,
+                'search_box'            => $pro_active ? 1 : '',
                 'search_field'          => '',
-
-                'static_shortcode'      => '[publishpress_authors_list layout="authors_index" limit_per_page="20" show_empty="1" orderby="name" order="asc" search_box="true"]',
             ];
+
+            if ($pro_active) {
+                $author_list_data['static_shortcode'] = '[publishpress_authors_list layout="authors_index" limit_per_page="20" show_empty="1" orderby="name" order="asc" search_box="true"]';
+            } else {
+                $author_list_data['static_shortcode'] = '[publishpress_authors_list layout="authors_index"]';
+            }
         }
 
 
@@ -725,7 +707,7 @@ class MA_Author_List extends Module
                                                 <table class="form-table author-list-table <?php echo esc_attr($tab_name); ?> fixed" style="<?php echo esc_attr($none_active_style); ?>" role="presentation">
                                                     <tbody>
                                                         <?php
-                                                        $tab_options = $grouped_fields[$tab_name];
+                                                        $tab_options = isset($grouped_fields[$tab_name]) ? $grouped_fields[$tab_name] : [];
                                                         foreach ($tab_options as $option_name => $option_options) :
                                                             $option_args          = $option_options;
                                                             $option_args['key']   = $option_name;
@@ -829,7 +811,7 @@ class MA_Author_List extends Module
         
         ob_start();
         $generate_tab_title = false;
-        if (in_array($args['type'], ['textarea', 'preview', 'tab'])) {
+        if (in_array($args['type'], ['textarea', 'preview', 'tab', 'promo'])) {
             $th_style = 'display: none;';
             $colspan  = 2;
         } else {
@@ -1012,6 +994,16 @@ class MA_Author_List extends Module
                         <?php endforeach; ?>
                     </div>
                 <?php
+                elseif ('textarea' === $args['type']) :
+                    ?>
+                    <textarea name="author_list[<?php echo esc_attr($key); ?>]"
+                        id="<?php echo esc_attr($key); ?>" 
+                        type="<?php echo esc_attr($args['type']); ?>"
+                        rows="<?php echo esc_attr($args['rows']); ?>"
+                        placeholder="<?php echo esc_attr($args['placeholder']); ?>"
+                        <?php echo (isset($args['readonly']) && $args['readonly'] === true) ? 'readonly' : ''; ?>
+                        ><?php echo esc_html($args['value']); ?></textarea>
+                <?php
                 elseif ('preview' === $args['type']) :
                     $shortcode_content = !empty($option_values['static_shortcode']) ? do_shortcode($option_values['static_shortcode']) : '';
                     ?>
@@ -1025,15 +1017,24 @@ class MA_Author_List extends Module
                         <div class="skeleton skeleton-content"></div>
                     </div>
                 <?php
-                elseif ('textarea' === $args['type']) :
+                elseif ('promo' === $args['type']) :
                     ?>
-                    <textarea name="author_list[<?php echo esc_attr($key); ?>]"
-                        id="<?php echo esc_attr($key); ?>" 
-                        type="<?php echo esc_attr($args['type']); ?>"
-                        rows="<?php echo esc_attr($args['rows']); ?>"
-                        placeholder="<?php echo esc_attr($args['placeholder']); ?>"
-                        <?php echo (isset($args['readonly']) && $args['readonly'] === true) ? 'readonly' : ''; ?>
-                        ><?php echo esc_html($args['value']); ?></textarea>
+                    <div class="ppma-advertisement-right-sidebar">
+                        <div class="advertisement-box-content postbox ppma-advert">
+                            <div class="postbox-header ppma-advert">
+                                <h3 class="advertisement-box-header hndle is-non-sortable">
+                                    <span><?php echo esc_html($args['label']); ?></span>
+                                </h3>
+                            </div>
+        
+                            <div class="inside-content">
+                                <p><?php echo esc_html($args['description']); ?></p>
+                                <div class="upgrade-btn">
+                                    <a href="https://publishpress.com/links/authors-menu" target="__blank"><?php echo esc_html__('Upgrade to Pro', 'publishpress-authors'); ?></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 <?php else : ?>
                     <input name="author_list[<?php echo esc_attr($key); ?>]"
                         id="<?php echo esc_attr($key); ?>" 
@@ -1043,7 +1044,7 @@ class MA_Author_List extends Module
                         <?php echo (isset($args['readonly']) && $args['readonly'] === true) ? 'readonly' : ''; ?>
                          />
                 <?php endif; ?>
-                <?php if (isset($args['description']) && !empty($args['description'])) : ?>
+                <?php if (!in_array($args['type'], ['promo']) && isset($args['description']) && !empty($args['description'])) : ?>
                         <?php if($args['type'] !== 'checkbox') : ?>
                             <br />
                         <?php endif; ?>

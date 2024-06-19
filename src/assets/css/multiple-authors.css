@@ -614,6 +614,18 @@ body.edit-php.post-type-ppma_boxes .tablenav.top .alignleft.actions:not(.bulkact
     border: 1px solid #655897;
 }
 
+.ppma-advertisement-right-sidebar .inside-content {
+    position: relative;
+    margin: 11px 0;
+    padding: 0 12px 12px;
+    line-height: 1.4;
+    font-size: 13px;
+}
+
+.ppma-advertisement-right-sidebar .inside-content .upgrade-btn {
+    margin-top: 20px;
+}
+
 #screen-options-wrap label[for^="ppma_boxes_banner-hide"],
 #ppma_boxes_banner .postbox-header:not(.ppma-advert),
 #screen-options-wrap label[for^="ppmacf_sidebar_banner-hide"],
