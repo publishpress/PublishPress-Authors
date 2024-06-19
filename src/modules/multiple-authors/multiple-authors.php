@@ -1762,6 +1762,17 @@ if (!class_exists('MA_Multiple_Authors')) {
 
 
             echo '</label>';
+            if ($value === 'yes') {
+                $current_author = Author::get_by_user_id(get_current_user_id());
+                if (
+                    $current_author &&
+                    is_object($current_author) &&
+                    isset($current_author->link)
+                ) {
+                    $author_url = $current_author->link;
+                    echo '<div style="margin-top: 15px;"><a class="button" target="_blank" href="'. $author_url .'">'. esc_html__('View Author Page', 'publishpress-authors') .'</a></div>';
+                }
+            }
         }
 
 

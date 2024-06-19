@@ -108,6 +108,18 @@ class MA_Author_Pages extends Module
         );
     }
 
+    public function author_pages_tabs() {
+        $tabs = [
+            '.ppma-author-pages-tab-general'            => esc_html__('General', 'publishpress-authors'),
+            '.ppma-author-pages-tab-layout'             => esc_html__('Layout', 'publishpress-authors'),
+            '.ppma-author-pages-tab-author-bio'         => esc_html__('Author Bio', 'publishpress-authors'),
+            '.ppma-author-pages-tab-author-page-title'  => esc_html__('Author Page Title', 'publishpress-authors'),
+            '.ppma-author-pages-tab-posts'              => esc_html__('Posts', 'publishpress-authors'),
+        ];
+
+        return $tabs;
+    }
+
     public function manageAuthorPages()
     {
         global $ppma_custom_settings;
@@ -145,10 +157,12 @@ class MA_Author_Pages extends Module
             ],
             'class_names' => [
                 $this->module_name => 'MA_Author_Pages'
-            ]
+            ],
+            'tabs' => $this->author_pages_tabs(),
+            'active_tabs' => '.ppma-author-pages-tab-general',
         ];
 
-        $this->print_default_header($ppma_custom_settings['modules'][$this->module_name]);
+        $this->print_default_header($ppma_custom_settings['modules'][$this->module_name], esc_html__('Please note this feature will not work for all themes.', 'publishpress-authors'));
 
         // Get module output
         ob_start();
@@ -217,11 +231,11 @@ class MA_Author_Pages extends Module
                     <?php if ($current_module->short_description && empty($custom_text)): ?>
                         <?php //echo esc_html($current_module->short_description); ?>
                     <?php endif; ?>
-
-                    <?php if (!empty($custom_text)) : ?>
-                        <?php echo esc_html($custom_text); ?>
-                    <?php endif; ?>
                 </h2>
+
+                <?php if (!empty($custom_text)) : ?>
+                    <p class="description"><?php echo esc_html($custom_text); ?></p>
+                <?php endif; ?>
 
             </header>
         <?php
