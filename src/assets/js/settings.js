@@ -5,15 +5,20 @@ jQuery(document).ready(function ($) {
     $tabsWrapper.find('li').click(function (e) {
         e.preventDefault();
         $tabsWrapper.children('li').filter('.nav-tab-active').removeClass('nav-tab-active');
+        var $customSettings = $('.ppma-settings-wrap.custom-settings').length > 0;
         $(this).addClass('nav-tab-active');
 
-        var panel = $(this).find('a').first().attr('href');
-
-        if (browserSupportStorage()) {
-            saveStorageData('ppma_settings_active_tab', panel.slice(1));
+        var panel = $(this).find('a').first().attr('data-tab-content');
+        
+        if ($customSettings) {
+            $('table[id^="ppma-"] tr').hide();
+        } else {
+            if (browserSupportStorage()) {
+                saveStorageData('ppma_settings_active_tab', panel.slice(1));
+            }
+            $('table[id^="ppma-"]').hide();
         }
 
-        $('table[id^="ppma-"]').hide();
         $(panel).show();
     });
 
@@ -28,6 +33,11 @@ jQuery(document).ready(function ($) {
     }
 
     var $hiddenFields = $('input[id^="ppma-tab-"]');
+    var $customSettings = $('.ppma-settings-wrap.custom-settings').length > 0;
+
+    if ($customSettings) {
+        ppmaTab = 'ppma-tab-author-pages';
+    }
 
     $hiddenFields.each(function () {
         var $this = $(this);

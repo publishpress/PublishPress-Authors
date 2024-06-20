@@ -16,7 +16,7 @@
         "@babel/core": "^7.3.3",
         "@codeceptjs/configure": "^0.6.2",
         "@codeceptjs/examples": "^1.2.1",
-        "@codeceptjs/ui": "^1.0.1",
+        "@codeceptjs/ui": "^1.2.0",
         "@wordpress/babel-preset-default": "^3.0.2",
         "babel-loader": "8.0.5",
         "babel-minify-webpack-plugin": "^0.3.1",
@@ -25,8 +25,8 @@
         "codeceptjs": "^3.4.1",
         "cross-env": "^5.2.1",
         "playwright": "^1.13.0",
-        "webpack": "4.29.5",
-        "webpack-cli": "3.2.3"
+        "webpack": "5.92.0",
+        "webpack-cli": "5.1.4"
     },
     "browser": {},
     "scripts": {

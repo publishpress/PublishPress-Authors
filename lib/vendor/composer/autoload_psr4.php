@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'PPAuthors\\YoastSEO\\' => array($baseDir . '/../src/modules/yoast-seo-integration/src'),
     'MultipleAuthors\\' => array($baseDir . '/../src/core'),
+    'MultipleAuthorList\\' => array($baseDir . '/../src/modules/author-list/classes'),
     'MultipleAuthorCategories\\' => array($baseDir . '/../src/modules/author-categories/classes'),
     'MultipleAuthorBoxes\\' => array($baseDir . '/../src/modules/author-boxes/classes'),
 );

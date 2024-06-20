@@ -31,44 +31,44 @@ class AuthorBoxesEditorFields
     public static function getTitleFields($fields, $post)
     {
         $fields['show_title'] = [
-            'label'       => esc_html__('Show Title', 'publishpress-authors'),
+            'label'       => esc_html__('Show Box Title', 'publishpress-authors'),
             'description' => '',
             'type'        => 'checkbox',
             'sanitize'    => 'sanitize_text_field',
             'tab'         => 'title',
         ];
         $fields['title_text'] = [
-            'label'       => esc_html__('Title Text (Single)', 'publishpress-authors'),
+            'label'       => esc_html__('Box Title Text (Single)', 'publishpress-authors'),
             'type'        => 'text',
             'sanitize'    => 'sanitize_text_field',
             'tab'         => 'title',
         ];
         $fields['title_text_plural'] = [
-            'label'       => esc_html__('Title Text (Plural)', 'publishpress-authors'),
+            'label'       => esc_html__('Box Title Text (Plural)', 'publishpress-authors'),
             'type'        => 'text',
             'sanitize'    => 'sanitize_text_field',
             'tab'         => 'title',
         ];
         $fields['title_bottom_space'] = [
-            'label'    => esc_html__('Bottom space', 'publishpress-authors'),
+            'label'    => esc_html__('Box Title Bottom space', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'title',
         ];
         $fields['title_size'] = [
-            'label'    => esc_html__('Size', 'publishpress-authors'),
+            'label'    => esc_html__('Box Title Size', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'title',
         ];
         $fields['title_line_height'] = [
-            'label'    => esc_html__('Line Height (px)', 'publishpress-authors'),
+            'label'    => esc_html__('Box Title Line Height (px)', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'title',
         ];
         $fields['title_weight'] = [
-            'label'    => esc_html__('Weight', 'publishpress-authors'),
+            'label'    => esc_html__('Box Title Weight', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -88,7 +88,7 @@ class AuthorBoxesEditorFields
             'tab'      => 'title',
         ];
         $fields['title_transform'] = [
-            'label'    => esc_html__('Transform', 'publishpress-authors'),
+            'label'    => esc_html__('Box Title Transform', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -101,7 +101,7 @@ class AuthorBoxesEditorFields
             'tab'      => 'title',
         ];
         $fields['title_style'] = [
-            'label'    => esc_html__('Style', 'publishpress-authors'),
+            'label'    => esc_html__('Box Title Style', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -113,7 +113,7 @@ class AuthorBoxesEditorFields
             'tab'      => 'title',
         ];
         $fields['title_decoration'] = [
-            'label'    => esc_html__('Decoration', 'publishpress-authors'),
+            'label'    => esc_html__('Box Title Decoration', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -126,7 +126,7 @@ class AuthorBoxesEditorFields
             'tab'      => 'title',
         ];
         $fields['title_alignment'] = [
-            'label'    => esc_html__('Alignment', 'publishpress-authors'),
+            'label'    => esc_html__('Box Title Alignment', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -139,13 +139,13 @@ class AuthorBoxesEditorFields
             'tab'      => 'title',
         ];
         $fields['title_color'] = [
-            'label'    => esc_html__('Color', 'publishpress-authors'),
+            'label'    => esc_html__('Box Title Color', 'publishpress-authors'),
             'type'     => 'color',
             'sanitize' => 'sanitize_text_field',
             'tab'      => 'title',
         ];
         $fields['title_html_tag'] = [
-            'label'    => esc_html__('HTML Tag', 'publishpress-authors'),
+            'label'    => esc_html__('Box Title HTML Tag', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -193,7 +193,7 @@ class AuthorBoxesEditorFields
             'tab'      => 'avatar',
         ];
         $fields['avatar_border_style'] = [
-            'label'    => esc_html__('Border Style', 'publishpress-authors'),
+            'label'    => esc_html__('Avatar Border Style', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -210,19 +210,19 @@ class AuthorBoxesEditorFields
             'tab'      => 'avatar',
         ];
         $fields['avatar_border_width'] = [
-            'label'    => esc_html__('Border Width', 'publishpress-authors'),
+            'label'    => esc_html__('Avatar Border Width', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'avatar',
         ];
         $fields['avatar_border_color'] = [
-            'label'    => esc_html__('Border Color', 'publishpress-authors'),
+            'label'    => esc_html__('Avatar Border Color', 'publishpress-authors'),
             'type'     => 'color',
             'sanitize' => 'sanitize_text_field',
             'tab'      => 'avatar',
         ];
         $fields['avatar_border_radius'] = [
-            'label'      => esc_html__('Border Radius (%)', 'publishpress-authors'),
+            'label'      => esc_html__('Avatar Border Radius (%)', 'publishpress-authors'),
             'type'       => 'number',
             'min'        => '0',
             'max'        => '100',
@@ -288,19 +288,19 @@ class AuthorBoxesEditorFields
             'tab'         => 'name',
         ];
         $fields['name_size'] = [
-            'label'    => esc_html__('Size', 'publishpress-authors'),
+            'label'    => esc_html__('Display Name Size', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'name',
         ];
         $fields['name_line_height'] = [
-            'label'    => esc_html__('Line Height (px)', 'publishpress-authors'),
+            'label'    => esc_html__('Display Name Line Height (px)', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'name',
         ];
         $fields['name_weight'] = [
-            'label'    => esc_html__('Weight', 'publishpress-authors'),
+            'label'    => esc_html__('Display Name Weight', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -320,7 +320,7 @@ class AuthorBoxesEditorFields
             'tab'      => 'name',
         ];
         $fields['name_transform'] = [
-            'label'    => esc_html__('Transform', 'publishpress-authors'),
+            'label'    => esc_html__('Display Name Transform', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -333,7 +333,7 @@ class AuthorBoxesEditorFields
             'tab'      => 'name',
         ];
         $fields['name_style'] = [
-            'label'    => esc_html__('Style', 'publishpress-authors'),
+            'label'    => esc_html__('Display Name Style', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -345,7 +345,7 @@ class AuthorBoxesEditorFields
             'tab'      => 'name',
         ];
         $fields['name_decoration'] = [
-            'label'    => esc_html__('Decoration', 'publishpress-authors'),
+            'label'    => esc_html__('Display Name Decoration', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -358,7 +358,7 @@ class AuthorBoxesEditorFields
             'tab'      => 'name',
         ];
         $fields['name_alignment'] = [
-            'label'    => esc_html__('Alignment', 'publishpress-authors'),
+            'label'    => esc_html__('Display Name Alignment', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -371,13 +371,13 @@ class AuthorBoxesEditorFields
             'tab'      => 'name',
         ];
         $fields['name_color'] = [
-            'label'    => esc_html__('Color', 'publishpress-authors'),
+            'label'    => esc_html__('Display Name Color', 'publishpress-authors'),
             'type'     => 'color',
             'sanitize' => 'sanitize_text_field',
             'tab'      => 'name',
         ];
         $fields['name_html_tag'] = [
-            'label'    => esc_html__('HTML Tag', 'publishpress-authors'),
+            'label'    => esc_html__('Display Name HTML Tag', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -412,19 +412,19 @@ class AuthorBoxesEditorFields
             'tab'         => 'meta',
         ];
         $fields['meta_size'] = [
-            'label'    => esc_html__('Size', 'publishpress-authors'),
+            'label'    => esc_html__('View All Posts Link Size', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'meta',
         ];
         $fields['meta_line_height'] = [
-            'label'    => esc_html__('Line Height (px)', 'publishpress-authors'),
+            'label'    => esc_html__('View All Posts Link Line Height (px)', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'meta',
         ];
         $fields['meta_weight'] = [
-            'label'    => esc_html__('Weight', 'publishpress-authors'),
+            'label'    => esc_html__('View All Posts Link Weight', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -444,7 +444,7 @@ class AuthorBoxesEditorFields
             'tab'      => 'meta',
         ];
         $fields['meta_transform'] = [
-            'label'    => esc_html__('Transform', 'publishpress-authors'),
+            'label'    => esc_html__('View All Posts Link Transform', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -457,7 +457,7 @@ class AuthorBoxesEditorFields
             'tab'      => 'meta',
         ];
         $fields['meta_style'] = [
-            'label'    => esc_html__('Style', 'publishpress-authors'),
+            'label'    => esc_html__('View All Posts Link Style', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -469,7 +469,7 @@ class AuthorBoxesEditorFields
             'tab'      => 'meta',
         ];
         $fields['meta_decoration'] = [
-            'label'    => esc_html__('Decoration', 'publishpress-authors'),
+            'label'    => esc_html__('View All Posts Link Decoration', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -482,7 +482,7 @@ class AuthorBoxesEditorFields
             'tab'      => 'meta',
         ];
         $fields['meta_alignment'] = [
-            'label'    => esc_html__('Alignment', 'publishpress-authors'),
+            'label'    => esc_html__('View All Posts Link Alignment', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -495,25 +495,25 @@ class AuthorBoxesEditorFields
             'tab'      => 'meta',
         ];
         $fields['meta_color'] = [
-            'label'    => esc_html__('Meta Color', 'publishpress-authors'),
+            'label'    => esc_html__('View All Posts Link Meta Color', 'publishpress-authors'),
             'type'     => 'color',
             'sanitize' => 'sanitize_text_field',
             'tab'      => 'meta',
         ];
         $fields['meta_background_color'] = [
-            'label'    => esc_html__('View all posts Background Color', 'publishpress-authors'),
+            'label'    => esc_html__('View All Posts Link Background Color', 'publishpress-authors'),
             'type'     => 'color',
             'sanitize' => 'sanitize_text_field',
             'tab'      => 'meta',
         ];
         $fields['meta_link_hover_color'] = [
-            'label'    => esc_html__('View all posts Link Hover Color', 'publishpress-authors'),
+            'label'    => esc_html__('View All Posts Link Hover Color', 'publishpress-authors'),
             'type'     => 'color',
             'sanitize' => 'sanitize_text_field',
             'tab'      => 'meta',
         ];
         $fields['meta_html_tag'] = [
-            'label'    => esc_html__('HTML Tag', 'publishpress-authors'),
+            'label'    => esc_html__('View All Posts Link HTML Tag', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -589,7 +589,7 @@ class AuthorBoxesEditorFields
                 'tab'      => 'author_categories',
             ];
             $fields['author_categories_group_option'] = [
-                'label'    => esc_html__('Grouping Option', 'publishpress-authors'),
+                'label'    => esc_html__('Author Category Grouping Option', 'publishpress-authors'),
                 'type'     => 'select',
                 'sanitize' => 'sanitize_text_field',
                 'options'  => [
@@ -599,7 +599,7 @@ class AuthorBoxesEditorFields
                 'tab'      => 'author_categories',
             ];
             $fields['author_categories_group_display_style_laptop'] = [
-                'label'    => esc_html__('Group Display Style (Laptop)', 'publishpress-authors'),
+                'label'    => esc_html__('Author Category Group Display Style (Laptop)', 'publishpress-authors'),
                 'type'     => 'select',
                 'sanitize' => 'sanitize_text_field',
                 'options'  => [
@@ -611,7 +611,7 @@ class AuthorBoxesEditorFields
                 'tab'      => 'author_categories',
             ];
             $fields['author_categories_group_display_style_mobile'] = [
-                'label'    => esc_html__('Group Display Style (Mobile)', 'publishpress-authors'),
+                'label'    => esc_html__('Author Category Group Display Style (Mobile)', 'publishpress-authors'),
                 'type'     => 'select',
                 'sanitize' => 'sanitize_text_field',
                 'options'  => [
@@ -635,7 +635,7 @@ class AuthorBoxesEditorFields
                 'tab'      => 'author_categories',
             ];
             $fields['author_categories_title_font_weight'] = [
-                'label'    => esc_html__('Weight', 'publishpress-authors'),
+                'label'    => esc_html__('Author Category Weight', 'publishpress-authors'),
                 'type'     => 'select',
                 'sanitize' => 'sanitize_text_field',
                 'options'  => [
@@ -655,7 +655,7 @@ class AuthorBoxesEditorFields
                 'tab'      => 'author_categories',
             ];
             $fields['author_categories_title_html_tag'] = [
-                'label'    => esc_html__('Title HTML Tag', 'publishpress-authors'),
+                'label'    => esc_html__('Author Category Title HTML Tag', 'publishpress-authors'),
                 'type'     => 'select',
                 'sanitize' => 'sanitize_text_field',
                 'options'  => [
@@ -672,7 +672,7 @@ class AuthorBoxesEditorFields
                 'tab'      => 'author_categories',
             ];
             $fields['author_categories_title_prefix'] = [
-                'label'       => esc_html__('Group Title Prefix', 'publishpress-authors'),
+                'label'       => esc_html__('Author Category Group Title Prefix', 'publishpress-authors'),
                 'description' => esc_html__('Enter the text that should be added before group title. This field accepts basic HTML.', 'publishpress-authors'),
                 'placeholder' => '',
                 'type'     => 'text',
@@ -680,7 +680,7 @@ class AuthorBoxesEditorFields
                 'tab'      => 'author_categories',
             ];
             $fields['author_categories_title_suffix'] = [
-                'label'       => esc_html__('Group Title Suffix', 'publishpress-authors'),
+                'label'       => esc_html__('Author Category Group Title Suffix', 'publishpress-authors'),
                 'description' => esc_html__('Enter the text that should be added after group title. This field accepts basic HTML.', 'publishpress-authors'),
                 'placeholder' => '',
                 'type'     => 'text',
@@ -688,20 +688,20 @@ class AuthorBoxesEditorFields
                 'tab'      => 'author_categories',
             ];
             $fields['author_categories_font_size'] = [
-                'label'    => esc_html__('Group Font Size', 'publishpress-authors'),
+                'label'    => esc_html__('Author Category Group Font Size', 'publishpress-authors'),
                 'type'     => 'number',
                 'sanitize' => 'intval',
                 'tabbed'      => 1,
                 'tab'      => 'author_categories',
             ];
             $fields['author_categories_bottom_space'] = [
-                'label'    => esc_html__('Group Bottom Space', 'publishpress-authors'),
+                'label'    => esc_html__('Author Category Group Bottom Space', 'publishpress-authors'),
                 'type'     => 'number',
                 'sanitize' => 'intval',
                 'tab'      => 'author_categories',
             ];
             $fields['author_categories_right_space'] = [
-                'label'    => esc_html__('Group Right Space', 'publishpress-authors'),
+                'label'    => esc_html__('Author Category Group Right Space', 'publishpress-authors'),
                 'type'     => 'number',
                 'sanitize' => 'intval',
                 'tab'      => 'author_categories',
@@ -777,7 +777,7 @@ class AuthorBoxesEditorFields
                     'tab'         => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_html_tag'] = [
-                    'label'    => esc_html__('HTML Tag', 'publishpress-authors'),
+                    'label'    => sprintf(esc_html__('%1s HTML Tag', 'publishpress-authors'), $data['label']),
                     'description' => esc_html__('\'span\' will display as an inline element and \'div\' will display as a block element. To make this display into a link, select \'link\' and enter the first part of the URL into the \'Prefix\' field.', 'publishpress-authors'),
                     'type'     => 'select',
                     'sanitize' => 'sanitize_text_field',
@@ -798,7 +798,7 @@ class AuthorBoxesEditorFields
                     'tab'      => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_value_prefix'] = [
-                    'label'       => esc_html__('Value Prefix', 'publishpress-authors'),
+                    'label'       => sprintf(esc_html__('%1s Value Prefix', 'publishpress-authors'), $data['label']),
                     'description' => esc_html__('This is useful when linking to an email, URL, or phone number. For example, \'mailto:\', \'https://\' or \'tel:\' can be added as the prefix.', 'publishpress-authors'),
                     'type'        => 'text',
                     'sanitize'    => 'sanitize_text_field',
@@ -807,7 +807,7 @@ class AuthorBoxesEditorFields
                     'tab'         => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_display'] = [
-                    'label'    => esc_html__('Display', 'publishpress-authors'),
+                    'label'    => sprintf(esc_html__('%1s Display', 'publishpress-authors'), $data['label']),
                     'type'     => 'select',
                     'sanitize' => 'sanitize_text_field',
                     'tabbed'      => 1,
@@ -823,7 +823,7 @@ class AuthorBoxesEditorFields
                     'tab'      => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_display_prefix'] = [
-                    'label'       => esc_html__('Display Prefix', 'publishpress-authors'),
+                    'label'       => sprintf(esc_html__('%1s Display Prefix', 'publishpress-authors'), $data['label']),
                     'type'        => 'text',
                     'sanitize'    => 'sanitize_text_field',
                     'tabbed'      => 1,
@@ -831,7 +831,7 @@ class AuthorBoxesEditorFields
                     'tab'         => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_display_suffix'] = [
-                    'label'       => esc_html__('Display Suffix', 'publishpress-authors'),
+                    'label'       => sprintf(esc_html__('%1s Display Suffix', 'publishpress-authors'), $data['label']),
                     'type'        => 'text',
                     'sanitize'    => 'sanitize_text_field',
                     'tabbed'      => 1,
@@ -839,7 +839,7 @@ class AuthorBoxesEditorFields
                     'tab'         => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_before_display_prefix'] = [
-                    'label'       => esc_html__('Before Display Prefix', 'publishpress-authors'),
+                    'label'       => sprintf(esc_html__('%1s Before Display Suffix', 'publishpress-authors'), $data['label']),
                     'type'        => 'text',
                     'sanitize'    => 'sanitize_text_field',
                     'tabbed'      => 1,
@@ -847,7 +847,7 @@ class AuthorBoxesEditorFields
                     'tab'         => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_after_display_suffix'] = [
-                    'label'       => esc_html__('After Display Suffix', 'publishpress-authors'),
+                    'label'       => sprintf(esc_html__('%1s After Display Suffix', 'publishpress-authors'), $data['label']),
                     'type'        => 'text',
                     'sanitize'    => 'sanitize_text_field',
                     'tabbed'      => 1,
@@ -858,7 +858,7 @@ class AuthorBoxesEditorFields
                 $field_description = sprintf(esc_html__('You can use icons from Dashicons and Font Awesome. %1s %2sClick here for documentation%3s.', 'publishpress-authors'), '<br />', '<a href="https://publishpress.com/knowledge-base/author-fields-icons/" target="blank">', '</a>');
 
                 $fields['profile_fields_' . $key . '_display_icon'] = [
-                    'label'       => esc_html__('Display Icon', 'publishpress-authors'),
+                    'label'       => sprintf(esc_html__('%1s Display Icon', 'publishpress-authors'), $data['label']),
                     'type'        => 'icon',
                     'sanitize'    => ['stripslashes_deep', 'wp_kses_post'],
                     'tabbed'      => 1,
@@ -866,7 +866,7 @@ class AuthorBoxesEditorFields
                     'tab'         => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_display_icon_size'] = [
-                    'label'    => esc_html__('Display Icon Size', 'publishpress-authors'),
+                    'label'    => sprintf(esc_html__('%1s Display Icon Size', 'publishpress-authors'), $data['label']),
                     'type'     => 'number',
                     'sanitize' => 'intval',
                     'tabbed'   => 1,
@@ -875,7 +875,7 @@ class AuthorBoxesEditorFields
                 ];
 
                 $fields['profile_fields_' . $key . '_display_icon_background_color'] = [
-                    'label'    => esc_html__('Display Icon Background Color', 'publishpress-authors'),
+                    'label'    => sprintf(esc_html__('%1s Display Icon Background Color', 'publishpress-authors'), $data['label']),
                     'type'     => 'color',
                     'sanitize' => 'sanitize_text_field',
                     'tabbed'   => 1,
@@ -883,7 +883,7 @@ class AuthorBoxesEditorFields
                     'tab'      => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_display_icon_border_radius'] = [
-                    'label'      => esc_html__('Display Icon Border Radius (%)', 'publishpress-authors'),
+                    'label'      => sprintf(esc_html__('%1s Display Icon Border Radius (%2s)', 'publishpress-authors'), $data['label'], '%'),
                     'type'       => 'number',
                     'min'        => '0',
                     'max'        => '100',
@@ -894,7 +894,8 @@ class AuthorBoxesEditorFields
                 ];
 
                 $fields['profile_fields_' . $key . '_size'] = [
-                    'label'    => esc_html__('Size', 'publishpress-authors'),
+                    'label'    => sprintf(esc_html__('%1s Size', 'publishpress-authors'), $data['label']),
+                    esc_html__('Size', 'publishpress-authors'),
                     'type'     => 'number',
                     'sanitize' => 'intval',
                     'tabbed'      => 1,
@@ -902,7 +903,7 @@ class AuthorBoxesEditorFields
                     'tab'      => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_line_height'] = [
-                    'label'    => esc_html__('Line Height (px)', 'publishpress-authors'),
+                    'label'    => sprintf(esc_html__('%1s Line Height (px)', 'publishpress-authors'), $data['label']),
                     'type'     => 'number',
                     'sanitize' => 'intval',
                     'tabbed'      => 1,
@@ -910,7 +911,7 @@ class AuthorBoxesEditorFields
                     'tab'      => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_weight'] = [
-                    'label'    => esc_html__('Weight', 'publishpress-authors'),
+                    'label'    => sprintf(esc_html__('%1s Weight', 'publishpress-authors'), $data['label']),
                     'type'     => 'select',
                     'sanitize' => 'sanitize_text_field',
                     'tabbed'      => 1,
@@ -932,7 +933,7 @@ class AuthorBoxesEditorFields
                     'tab'      => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_transform'] = [
-                    'label'    => esc_html__('Transform', 'publishpress-authors'),
+                    'label'    => sprintf(esc_html__('%1s Transform', 'publishpress-authors'), $data['label']),
                     'type'     => 'select',
                     'sanitize' => 'sanitize_text_field',
                     'tabbed'      => 1,
@@ -947,7 +948,7 @@ class AuthorBoxesEditorFields
                     'tab'      => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_style'] = [
-                    'label'    => esc_html__('Style', 'publishpress-authors'),
+                    'label'    => sprintf(esc_html__('%1s Style', 'publishpress-authors'), $data['label']),
                     'type'     => 'select',
                     'sanitize' => 'sanitize_text_field',
                     'tabbed'      => 1,
@@ -961,7 +962,7 @@ class AuthorBoxesEditorFields
                     'tab'      => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_decoration'] = [
-                    'label'    => esc_html__('Decoration', 'publishpress-authors'),
+                    'label'    => sprintf(esc_html__('%1s Decoration', 'publishpress-authors'), $data['label']),
                     'type'     => 'select',
                     'sanitize' => 'sanitize_text_field',
                     'tabbed'      => 1,
@@ -976,7 +977,7 @@ class AuthorBoxesEditorFields
                     'tab'      => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_alignment'] = [
-                    'label'    => esc_html__('Alignment', 'publishpress-authors'),
+                    'label'    => sprintf(esc_html__('%1s Alignment', 'publishpress-authors'), $data['label']),
                     'type'     => 'select',
                     'sanitize' => 'sanitize_text_field',
                     'tabbed'      => 1,
@@ -991,7 +992,7 @@ class AuthorBoxesEditorFields
                     'tab'      => 'profile_fields',
                 ];
                 $fields['profile_fields_' . $key . '_color'] = [
-                    'label'    => esc_html__('Color', 'publishpress-authors'),
+                    'label'    => sprintf(esc_html__('%1s Color', 'publishpress-authors'), $data['label']),
                     'type'     => 'color',
                     'sanitize' => 'sanitize_text_field',
                     'tabbed'      => 1,
@@ -1019,26 +1020,26 @@ class AuthorBoxesEditorFields
             'tab'         => 'author_bio',
         ];
         $fields['author_bio_limit'] = [
-            'label'    => esc_html__('Character Limit', 'publishpress-authors'),
+            'label'    => esc_html__('Biographical Info Character Limit', 'publishpress-authors'),
             'min'      => 0,
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'author_bio',
         ];
         $fields['author_bio_size'] = [
-            'label'    => esc_html__('Size', 'publishpress-authors'),
+            'label'    => esc_html__('Biographical Info Size', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'author_bio',
         ];
         $fields['author_bio_line_height'] = [
-            'label'    => esc_html__('Line Height (px)', 'publishpress-authors'),
+            'label'    => esc_html__('Biographical Info Line Height (px)', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'author_bio',
         ];
         $fields['author_bio_weight'] = [
-            'label'    => esc_html__('Weight', 'publishpress-authors'),
+            'label'    => esc_html__('Biographical Info Weight', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -1058,7 +1059,7 @@ class AuthorBoxesEditorFields
             'tab'      => 'author_bio',
         ];
         $fields['author_bio_transform'] = [
-            'label'    => esc_html__('Transform', 'publishpress-authors'),
+            'label'    => esc_html__('Biographical Info Transform', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -1071,7 +1072,7 @@ class AuthorBoxesEditorFields
             'tab'      => 'author_bio',
         ];
         $fields['author_bio_style'] = [
-            'label'    => esc_html__('Style', 'publishpress-authors'),
+            'label'    => esc_html__('Biographical Info Style', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -1083,7 +1084,7 @@ class AuthorBoxesEditorFields
             'tab'      => 'author_bio',
         ];
         $fields['author_bio_decoration'] = [
-            'label'    => esc_html__('Decoration', 'publishpress-authors'),
+            'label'    => esc_html__('Biographical Info Decoration', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -1096,7 +1097,7 @@ class AuthorBoxesEditorFields
             'tab'      => 'author_bio',
         ];
         $fields['author_bio_alignment'] = [
-            'label'    => esc_html__('Alignment', 'publishpress-authors'),
+            'label'    => esc_html__('Biographical Info Alignment', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -1109,14 +1110,14 @@ class AuthorBoxesEditorFields
             'tab'      => 'author_bio',
         ];
         $fields['author_bio_color'] = [
-            'label'    => esc_html__('Color', 'publishpress-authors'),
+            'label'    => esc_html__('Biographical Info Color', 'publishpress-authors'),
             'type'     => 'color',
             'sanitize' => 'sanitize_text_field',
             'tab'      => 'author_bio',
         ];
 
         $fields['author_bio_html_tag'] = [
-            'label'    => esc_html__('HTML Tag', 'publishpress-authors'),
+            'label'    => esc_html__('Biographical Info HTML Tag', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -1151,7 +1152,7 @@ class AuthorBoxesEditorFields
             'tab'         => 'author_recent_posts',
         ];
         $fields['author_recent_posts_title_show'] = [
-            'label'       => esc_html__('Show Recent Title', 'publishpress-authors'),
+            'label'       => esc_html__('Show Recent Posts Title', 'publishpress-authors'),
             'type'        => 'checkbox',
             'sanitize'    => 'absint',
             'tab'         => 'author_recent_posts',
@@ -1198,13 +1199,13 @@ class AuthorBoxesEditorFields
             'tab'      => 'author_recent_posts',
         ];
         $fields['author_recent_posts_limit'] = [
-            'label'    => esc_html__('Limit', 'publishpress-authors'),
+            'label'    => esc_html__('Recent Posts Limit', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'author_recent_posts',
         ];
         $fields['author_recent_posts_orderby'] = [
-            'label'    => esc_html__('Order By', 'publishpress-authors'),
+            'label'    => esc_html__('Order Recent Posts By', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -1218,7 +1219,7 @@ class AuthorBoxesEditorFields
             'tab'      => 'author_recent_posts',
         ];
         $fields['author_recent_posts_order'] = [
-            'label'    => esc_html__('Order', 'publishpress-authors'),
+            'label'    => esc_html__('Recent Posts Order', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -1228,19 +1229,19 @@ class AuthorBoxesEditorFields
             'tab'      => 'author_recent_posts',
         ];
         $fields['author_recent_posts_size'] = [
-            'label'    => esc_html__('Size', 'publishpress-authors'),
+            'label'    => esc_html__('Recent Posts Size', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'author_recent_posts',
         ];
         $fields['author_recent_posts_line_height'] = [
-            'label'    => esc_html__('Line Height (px)', 'publishpress-authors'),
+            'label'    => esc_html__('Recent Posts Line Height (px)', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'author_recent_posts',
         ];
         $fields['author_recent_posts_weight'] = [
-            'label'    => esc_html__('Weight', 'publishpress-authors'),
+            'label'    => esc_html__('Recent Posts Weight', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -1260,7 +1261,7 @@ class AuthorBoxesEditorFields
             'tab'      => 'author_recent_posts',
         ];
         $fields['author_recent_posts_transform'] = [
-            'label'    => esc_html__('Transform', 'publishpress-authors'),
+            'label'    => esc_html__('Recent Posts Transform', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -1273,7 +1274,7 @@ class AuthorBoxesEditorFields
             'tab'      => 'author_recent_posts',
         ];
         $fields['author_recent_posts_style'] = [
-            'label'    => esc_html__('Style', 'publishpress-authors'),
+            'label'    => esc_html__('Recent Posts Style', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -1285,7 +1286,7 @@ class AuthorBoxesEditorFields
             'tab'      => 'author_recent_posts',
         ];
         $fields['author_recent_posts_decoration'] = [
-            'label'    => esc_html__('Decoration', 'publishpress-authors'),
+            'label'    => esc_html__('Recent Posts Decoration', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -1298,7 +1299,7 @@ class AuthorBoxesEditorFields
             'tab'      => 'author_recent_posts',
         ];
         $fields['author_recent_posts_alignment'] = [
-            'label'    => esc_html__('Alignment', 'publishpress-authors'),
+            'label'    => esc_html__('Recent Posts Alignment', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -1311,19 +1312,19 @@ class AuthorBoxesEditorFields
             'tab'      => 'author_recent_posts',
         ];
         $fields['author_recent_posts_color'] = [
-            'label'    => esc_html__('Color', 'publishpress-authors'),
+            'label'    => esc_html__('Recent Posts Color', 'publishpress-authors'),
             'type'     => 'color',
             'sanitize' => 'sanitize_text_field',
             'tab'      => 'author_recent_posts',
         ];
         $fields['author_recent_posts_icon_color'] = [
-            'label'    => esc_html__('Icon Color', 'publishpress-authors'),
+            'label'    => esc_html__('Recent Posts Icon Color', 'publishpress-authors'),
             'type'     => 'color',
             'sanitize' => 'sanitize_text_field',
             'tab'      => 'author_recent_posts',
         ];
         $fields['author_recent_posts_html_tag'] = [
-            'label'    => esc_html__('HTML Tag', 'publishpress-authors'),
+            'label'    => esc_html__('Recent Posts HTML Tag', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -1361,7 +1362,7 @@ class AuthorBoxesEditorFields
         ];
 
         $fields['box_tab_layout_prefix'] = [
-            'label'       => esc_html__('Row Prefix', 'publishpress-authors'),
+            'label'       => esc_html__('Author Row Prefix', 'publishpress-authors'),
             'description' => esc_html__('Enter the text that should be added before authors. This field accepts basic HTML.', 'publishpress-authors'),
             'placeholder' => '',
             'type'     => 'text',
@@ -1369,7 +1370,7 @@ class AuthorBoxesEditorFields
             'tab'      => 'box_layout',
         ];
         $fields['box_tab_layout_suffix'] = [
-            'label'       => esc_html__('Row Suffix', 'publishpress-authors'),
+            'label'       => esc_html__('Author Row Suffix', 'publishpress-authors'),
             'description' => esc_html__('Enter the text that should be added after authors. This field accepts basic HTML.', 'publishpress-authors'),
             'placeholder' => '',
             'type'     => 'text',
@@ -1385,61 +1386,61 @@ class AuthorBoxesEditorFields
             'tab'      => 'box_layout',
         ];
         $fields['box_layout_margin_top'] = [
-            'label'    => esc_html__('Margin Top', 'publishpress-authors'),
+            'label'    => esc_html__('Author Box Margin Top', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'box_layout',
         ];
         $fields['box_layout_margin_bottom'] = [
-            'label'    => esc_html__('Margin Bottom', 'publishpress-authors'),
+            'label'    => esc_html__('Author Box Margin Bottom', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'box_layout',
         ];
         $fields['box_layout_margin_left'] = [
-            'label'    => esc_html__('Margin Left', 'publishpress-authors'),
+            'label'    => esc_html__('Author Box Margin Left', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'box_layout',
         ];
         $fields['box_layout_margin_right'] = [
-            'label'    => esc_html__('Margin Right', 'publishpress-authors'),
+            'label'    => esc_html__('Author Box Margin Right', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'box_layout',
         ];
         $fields['box_layout_padding_top'] = [
-            'label'    => esc_html__('Padding Top', 'publishpress-authors'),
+            'label'    => esc_html__('Author Box Padding Top', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'box_layout',
         ];
         $fields['box_layout_padding_bottom'] = [
-            'label'    => esc_html__('Padding Bottom', 'publishpress-authors'),
+            'label'    => esc_html__('Author Box Padding Bottom', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'box_layout',
         ];
         $fields['box_layout_padding_left'] = [
-            'label'    => esc_html__('Padding Left', 'publishpress-authors'),
+            'label'    => esc_html__('Author Box Padding Left', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'box_layout',
         ];
         $fields['box_layout_padding_right'] = [
-            'label'    => esc_html__('Padding Right', 'publishpress-authors'),
+            'label'    => esc_html__('Author Box Padding Right', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'box_layout',
         ];
         $fields['box_layout_border_width'] = [
-            'label'    => esc_html__('Border Width (px)', 'publishpress-authors'),
+            'label'    => esc_html__('Author Box Border Width (px)', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'box_layout',
         ];
         $fields['box_layout_border_style'] = [
-            'label'    => esc_html__('Border Style', 'publishpress-authors'),
+            'label'    => esc_html__('Author Box Border Style', 'publishpress-authors'),
             'type'     => 'select',
             'sanitize' => 'sanitize_text_field',
             'options'  => [
@@ -1457,13 +1458,13 @@ class AuthorBoxesEditorFields
             'tab'      => 'box_layout',
         ];
         $fields['box_layout_border_color'] = [
-            'label'    => esc_html__('Border color', 'publishpress-authors'),
+            'label'    => esc_html__('Author Box Border Color', 'publishpress-authors'),
             'type'     => 'color',
             'sanitize' => 'sanitize_text_field',
             'tab'      => 'box_layout',
         ];
         $fields['box_layout_box_width'] = [
-            'label'      => esc_html__('Box Width (%)', 'publishpress-authors'),
+            'label'      => esc_html__('Author Box Width (%)', 'publishpress-authors'),
             'type'       => 'number',
             'min'        => '0',
             'max'        => '100',
@@ -1472,49 +1473,49 @@ class AuthorBoxesEditorFields
             'tab'        => 'box_layout',
         ];
         $fields['box_layout_border_radius'] = [
-            'label'    => esc_html__('Border radius (px)', 'publishpress-authors'),
+            'label'    => esc_html__('Author Box Border Radius (px)', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'box_layout',
         ];
         $fields['box_layout_background_color'] = [
-            'label'    => esc_html__('Background Color', 'publishpress-authors'),
+            'label'    => esc_html__('Author Box Background Color', 'publishpress-authors'),
             'type'     => 'color',
             'sanitize' => 'sanitize_text_field',
             'tab'      => 'box_layout',
         ];
         $fields['box_layout_color'] = [
-            'label'    => esc_html__('Color', 'publishpress-authors'),
+            'label'    => esc_html__('Author Box Color', 'publishpress-authors'),
             'type'     => 'color',
             'sanitize' => 'sanitize_text_field',
             'tab'      => 'box_layout',
         ];
         $fields['box_layout_shadow_color'] = [
-            'label'    => esc_html__('Shadow Color', 'publishpress-authors'),
+            'label'    => esc_html__('Author Box Shadow Color', 'publishpress-authors'),
             'type'     => 'color',
             'sanitize' => 'sanitize_text_field',
             'tab'      => 'box_layout',
         ];
         $fields['box_layout_shadow_horizontal_offset'] = [
-            'label'    => esc_html__('Shadow Horizontal Offset', 'publishpress-authors'),
+            'label'    => esc_html__('Author Box Shadow Horizontal Offset', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'box_layout',
         ];
         $fields['box_layout_shadow_vertical_offset'] = [
-            'label'    => esc_html__('Shadow Vertical Offset', 'publishpress-authors'),
+            'label'    => esc_html__('Author Box Shadow Vertical Offset', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'box_layout',
         ];
         $fields['box_layout_shadow_blur'] = [
-            'label'    => esc_html__('Shadow Blur', 'publishpress-authors'),
+            'label'    => esc_html__('Author Box Shadow Blur', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'box_layout',
         ];
         $fields['box_layout_shadow_speed'] = [
-            'label'    => esc_html__('Shadow spread', 'publishpress-authors'),
+            'label'    => esc_html__('Author Box Shadow Spread', 'publishpress-authors'),
             'type'     => 'number',
             'sanitize' => 'intval',
             'tab'      => 'box_layout',
@@ -1547,6 +1548,24 @@ class AuthorBoxesEditorFields
             'type'     => 'text',
             'sanitize' => 'sanitize_text_field',
             'tab'      => 'custom_css',
+        ];
+
+        return $fields;
+    }
+
+    /**
+     * Add shortcode fields to the author boxes editor.
+     *
+     * @param array $fields Existing fields to display.
+     * @param WP_Post $post object.
+     */
+    public static function getShortcodeFields($fields, $post)
+    {
+        $fields['shortcodes'] = [
+            'label'       => esc_html__('Shortcodes', 'publishpress-authors'),
+            'type'     => 'shortcodes',
+            'sanitize' => ['html_entity_decode', 'stripslashes_deep', 'wp_kses_post'],
+            'tab'      => 'shortcodes'
         ];
 
         return $fields;

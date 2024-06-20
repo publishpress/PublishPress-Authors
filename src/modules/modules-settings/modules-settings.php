@@ -99,7 +99,7 @@ if (!class_exists('MA_Modules_Settings')) {
                 'all'
             );
 
-            if (isset($_GET['page']) && $_GET['page'] === 'ppma-modules-settings') {
+            if (isset($_GET['page']) && in_array($_GET['page'], ['ppma-modules-settings', 'ppma-author-pages'])) {
                 wp_enqueue_script('jquery-ui-core');
                 wp_enqueue_script('jquery-ui-tabs');
             }
@@ -167,7 +167,29 @@ if (!class_exists('MA_Modules_Settings')) {
          */
         public function print_configure_view()
         {
+            global $ppma_custom_settings;
+
             $legacyPlugin = Factory::getLegacyPlugin();
+
+            /**
+             * @param array $tabs
+             *
+             * @return array
+             */
+            $tabs = apply_filters('publishpress_multiple_authors_settings_tabs', []);
+
+            if (is_array($ppma_custom_settings)) {
+                $ppma_settings_modules      = $ppma_custom_settings['modules'];
+                $ppma_settings_class_names  = $ppma_custom_settings['class_names'];
+                $ppma_settings_class_names  = $ppma_custom_settings['class_names'];
+                $tabs                       = $ppma_custom_settings['tabs'];
+                $ppma_active_tab            = $ppma_custom_settings['active_tabs'];
+            } else {
+                $ppma_settings_modules      = $legacyPlugin->modules;
+                $ppma_settings_class_names  = $legacyPlugin->class_names;
+                $ppma_active_tab            = '#ppma-tab-general';
+            }
+
             ?>
 
             <div class="pp-columns-wrapper<?php echo (!Utils::isAuthorsProActive()) ? ' pp-enable-sidebar' : '' ?>">
@@ -176,17 +198,12 @@ if (!class_exists('MA_Modules_Settings')) {
                           action="<?php echo esc_url(menu_page_url($this->module->settings_slug, false)); ?>" method="post">
 
                         <?php
-                        /**
-                         * @param array $tabs
-                         *
-                         * @return array
-                         */
-                        $tabs = apply_filters('publishpress_multiple_authors_settings_tabs', []);
                         if (!empty($tabs)) {
                             echo '<ul id="publishpress-authors-settings-tabs" class="nav-tab-wrapper">';
                             foreach ($tabs as $tabLink => $tabLabel) {
-                                echo '<li class="nav-tab ' . ($tabLink === '#ppma-tab-general' ? 'nav-tab-active' : '') . '">';
-                                echo '<a href="' . esc_url($tabLink) . '">' . esc_html($tabLabel) . '</a>';
+                                $li_style = $tabLink === '#ppma-tab-author-pages' ? 'display: none;' : '';
+                                echo '<li style="'. esc_attr($li_style) .'" class="nav-tab ' . ($tabLink === $ppma_active_tab ? 'nav-tab-active' : '') . '">';
+                                echo '<a href="' . esc_url($tabLink) . '" data-tab-content="' . esc_attr($tabLink) . '">' . esc_html($tabLabel) . '</a>';
                                 echo '</li>';
                             }
                             echo '</ul>';
@@ -197,7 +214,7 @@ if (!class_exists('MA_Modules_Settings')) {
                         <?php do_settings_sections($this->module->options_group_name); ?>
 
                         <?php
-                        foreach ($legacyPlugin->class_names as $slug => $class_name) {
+                        foreach ($ppma_settings_class_names as $slug => $class_name) {
                             $mod_data = $legacyPlugin->$slug->module;
 
                             if ($mod_data->autoload
@@ -222,7 +239,7 @@ if (!class_exists('MA_Modules_Settings')) {
                         // Check if we have any feature user can toggle.
                         $featuresCount = 0;
 
-                        foreach ($legacyPlugin->modules as $mod_name => $mod_data) {
+                        foreach ($ppma_settings_modules as $mod_name => $mod_data) {
                             if (!$mod_data->autoload && $mod_data->slug !== $this->module->slug) {
                                 $featuresCount++;
                             }
@@ -245,7 +262,7 @@ if (!class_exists('MA_Modules_Settings')) {
                                                 'publishpress-authors'
                                             ); ?></th>
                                         <td>
-                                            <?php foreach ($legacyPlugin->modules as $mod_name => $mod_data) : ?>
+                                            <?php foreach ($ppma_settings_modules as $mod_name => $mod_data) : ?>
 
                                                 <?php if ($mod_data->autoload || $mod_data->slug === $this->module->slug) {
                                                     continue;

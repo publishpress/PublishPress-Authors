@@ -128,7 +128,7 @@
 .ppma-author-boxes-editor-table input[type=text],
 .ppma-author-boxes-editor-table input[type=number],
 .ppma-author-boxes-editor-table select {
-    width: 300px;
+    width: 95%;
 }
 
 .ppma-author-boxes-editor-table textarea {
@@ -148,7 +148,7 @@
 }
 
 .ppma-author-boxes-editor-table .author-boxes-field-icon {
-    display: flex;
+    display: grid;
     gap: 10px;
 }
 
@@ -219,6 +219,7 @@
 }
 
 .ppma-boxes-editor-tab-content.ppma-export-tab .title,
+.ppma-boxes-editor-tab-content.ppma-shortcodes-tab .title,
 .ppma-boxes-editor-tab-content.ppma-import-tab .title,
 .ppma-boxes-editor-tab-content.ppma-editor-template_action .title {
     margin-left: 0 !important;
@@ -229,6 +230,46 @@
     line-height: 1.3;
     font-weight: 600;
     color: #1d2327;
+}
+
+.ppma-boxes-shortcodes-wrap .shortcode-entries table.shortcode-table {
+    padding: 5px;
+}
+
+.ppma-boxes-shortcodes-wrap .shortcode-entries table.shortcode-table input[type=text],
+.ppma-boxes-shortcodes-wrap .shortcode-entries table.shortcode-table select {
+    width: 100%;
+}
+
+.ppma-boxes-shortcodes-wrap .shortcode-entries table.shortcode-table th.action {
+    width: 12%;
+}
+
+.ppma-boxes-shortcodes-wrap .shortcode-entries table.shortcode-table th,
+.ppma-boxes-shortcodes-wrap .shortcode-entries table.shortcode-table td {
+    padding: 6px 1px 4px 1px;
+}
+
+.ppma-boxes-shortcodes-wrap .shortcode-entries table.shortcode-table tr:not(:first-child) td {
+    padding: 6px 1px 4px 5px;
+}
+
+.ppma-boxes-shortcodes-wrap .shortcode-entries table.shortcode-table tr:not(:first-child) td {
+    border-top: 1px solid #c3c4c7;
+    border-right: 1px solid #c3c4c7;
+}
+
+.ppma-boxes-shortcodes-wrap .shortcode-entries table.shortcode-table tr:not(:first-child) td:first-child {
+    border-left: 1px solid #c3c4c7;
+}
+
+.ppma-boxes-shortcodes-wrap .shortcode-entries table.shortcode-table tr:last-child:not(.shortcode-form) td {
+    border-bottom: 1px solid #c3c4c7;
+}
+
+.ppma-boxes-shortcodes-wrap .shortcode-entries .delete-shortcode {
+    color: #f54d4d;
+    cursor: pointer;
 }
 
 .ppma-boxes-editor-tab-content.ppma-profile_fields-tab.profile_header .input {
@@ -450,7 +491,7 @@
     .ppma-author-boxes-editor-table input[type=text],
     .ppma-author-boxes-editor-table input[type=number],
     .ppma-author-boxes-editor-table select{
-        width: 200px;
+        width: 95%;
     }
     .ppma-author-box-editor-fields {
         min-width: unset;

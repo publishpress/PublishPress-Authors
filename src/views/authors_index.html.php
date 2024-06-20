@@ -10,7 +10,7 @@
             </li>
         <?php endforeach; ?>
     </ul>
-    <?php 
+    <?php
     $currentUserIndex = 0;
     foreach ($context['results'] as $alphabet => $users) : ?>
         <div class="author-index-group author-index-group-<?php esc_attr_e($alphabet); ?>">
@@ -19,7 +19,7 @@
             </div>
             <div class="author-index-authors author-index-<?php esc_attr_e($alphabet); ?>">
                 <ul>
-                    <?php foreach ($users as $author) : 
+                    <?php foreach ($users as $author) :
                         $currentUserIndex = $currentUserIndex + 1;
                         ?>
                         <li class="author-index-item author_index_<?php esc_attr_e($currentUserIndex); ?> author_<?php esc_attr_e($author->slug); ?>">
@@ -38,7 +38,7 @@
     <?php endforeach; ?>
 
     <?php if ($context['pagination']) : ?>
-        <nav class="footer-navigation navigation pagination">
+        <nav class="author-boxes-footer-navigation footer-navigation navigation pagination">
             <div class="nav-links">
             <?php echo $context['pagination']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
             </div>

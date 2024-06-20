@@ -122,6 +122,7 @@ class MA_Author_Boxes extends Module
         add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getMetaFields'], 10, 2);
         add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getAuthorCategories'], 10, 2);
         add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getProfileFields'], 10, 2);
+        add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getShortcodeFields'], 10, 2);
         add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getBioFields'], 10, 2);
         add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getRecentPostsFields'], 10, 2);
         add_filter('author_boxes_editor_fields', ['MultipleAuthorBoxes\AuthorBoxesEditorFields', 'getBoxLayoutFields'], 10, 2);
@@ -142,7 +143,7 @@ class MA_Author_Boxes extends Module
         add_action('enqueue_block_editor_assets', [$this, 'author_boxes_block_enqueue_assets']);
         add_action('wp_ajax_ppma_block_fetch_author_boxes', [$this, 'ppma_block_fetch_author_boxes']);
         add_action('wp_ajax_nopriv_ppma_block_fetch_author_boxes', [$this, 'ppma_block_fetch_author_boxes']);
-        
+
         add_action('wp_ajax_author_boxes_editor_get_preview', ['MultipleAuthorBoxes\AuthorBoxesAjax', 'handle_author_boxes_editor_get_preview']);
         add_action('wp_ajax_author_boxes_editor_get_template', ['MultipleAuthorBoxes\AuthorBoxesAjax', 'handle_author_boxes_editor_get_template']);
         add_action('wp_ajax_author_boxes_editor_save_fields_order', ['MultipleAuthorBoxes\AuthorBoxesAjax', 'handle_author_boxes_fields_order']);
@@ -158,22 +159,22 @@ class MA_Author_Boxes extends Module
      * @return string
      */
     public static function default_tab() {
-        
+
         return apply_filters('ma_author_boxes_editor_default_tab', 'title');
     }
 
     /**
-     * Set authors menu as parent for post type so menu is shown 
+     * Set authors menu as parent for post type so menu is shown
      * as active when on post type edit screen.
      *
      * @param string $parent_file
-     * 
+     *
      * @return string
      */
     public function setParentFile($parent_file)
     {
         global $submenu_file, $current_screen;
-        
+
         // Check if the current screen is the User Code page
        if (!empty($current_screen->post_type) && $current_screen->post_type == self::POST_TYPE_BOXES) {
             $parent_file = \MA_Multiple_Authors::MENU_SLUG;
@@ -225,13 +226,11 @@ class MA_Author_Boxes extends Module
              <span class="dashicons dashicons-yes-alt ppma-green-check"></span>
            <?php endif;
         } elseif ($column === 'author_category_boxes') {
-            $editor_data = get_post_meta($postId, self::META_PREFIX . 'layout_parent_author_box', true);
+            $layout_parent = get_post_meta($postId, self::META_PREFIX . 'layout_parent_author_box', true);
 
-            if (empty($editor_data)) :
+            if (!empty($layout_parent)) :
             ?>
-                <span class="dashicons dashicons-no ppma-red-check"></span>
-            <?php else : ?>
-                <span class="dashicons dashicons-yes-alt ppma-green-check"></span>
+               <span class="dashicons dashicons-yes-alt ppma-green-check"></span>
            <?php endif;
         }
     }
@@ -240,7 +239,7 @@ class MA_Author_Boxes extends Module
      * Save Author boxes data
      *
      * @param integer $post_id post id
-     * 
+     *
      * @return void
      */
     public function saveAuthorBoxesData($post_id) {
@@ -263,7 +262,7 @@ class MA_Author_Boxes extends Module
             if (isset($args['sanitize']) && is_array($args['sanitize']) && $_POST[$key] !== '') {
                 $value = $_POST[$key]; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
                 foreach ($args['sanitize'] as $sanitize) {
-                    $value = $sanitize($value);
+                    $value = is_array($value) ? map_deep($value, $sanitize) : $sanitize($value);
                 }
                 $meta_data[$key] = $value;
             } else {
@@ -271,6 +270,7 @@ class MA_Author_Boxes extends Module
                 $meta_data[$key] = (isset($_POST[$key]) && $_POST[$key] !== '') ? $sanitize($_POST[$key]) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
             }
         }
+
         update_post_meta($post_id, self::META_PREFIX . 'layout_parent_author_box', $parent_author_box);
         update_post_meta($post_id, self::META_PREFIX . 'layout_preview_author_post', $preview_author_post);
         update_post_meta($post_id, self::META_PREFIX . 'layout_meta_value', $meta_data);
@@ -543,16 +543,16 @@ class MA_Author_Boxes extends Module
      * Remove "Edit" from bulk action
      *
      * @param array $actions
-     * 
+     *
      * @return array
      */
-    public function removeBulkActionEdit($actions) 
+    public function removeBulkActionEdit($actions)
     {
-    
+
         if (isset($actions['edit'])) {
             unset($actions['edit']);
         }
-    
+
         return $actions;
     }
 
@@ -658,7 +658,7 @@ class MA_Author_Boxes extends Module
                     'compare' => '!=',
                 ],
             ];
-            
+
         } elseif ($type == 'author_boxes') {
             $post_args['meta_query'] = [
                 'relation' => 'OR',
@@ -715,11 +715,11 @@ class MA_Author_Boxes extends Module
                     $file_extension = pathinfo($dir_file, PATHINFO_EXTENSION);
                     $filename       = basename($dir_file);
                     $filename       = str_ireplace('.php', '', $filename);
-                    if ($file_extension === 'php') { 
+                    if ($file_extension === 'php') {
                         $theme_author_boxes[$filename] = self::cleanThemeBoxName($filename) . ' (' . __('Theme', 'publishpress-authors') . ')';
                     }
                 }
-            } 
+            }
         }
 
         return $theme_author_boxes;
@@ -727,7 +727,7 @@ class MA_Author_Boxes extends Module
 
     /**
      * This is a clone of wordpress 'list_files' that's been caught in undefined function in some themes.
-     * 
+     *
      * Returns a listing of all files in the specified folder and all subdirectories up to 100 levels deep.
      *
      * The depth of the recursiveness can be controlled by the $levels param.
@@ -748,15 +748,15 @@ class MA_Author_Boxes extends Module
             if (empty($folder)) {
                 return false;
             }
-                
+
             $folder = trailingslashit($folder);
-                
+
             if (! $levels) {
                 return false;
             }
-                
+
             $files = array();
-                
+
             if (is_dir($folder)) {
                 $dir = @opendir($folder);
                 while (($file = readdir($dir)) !== false) {
@@ -764,20 +764,20 @@ class MA_Author_Boxes extends Module
                     if (in_array($file, array( '.', '..' ), true)) {
                         continue;
                     }
-                
+
                     // Skip hidden and excluded files.
                     if ('.' === $file[0] || in_array($file, $exclusions, true)) {
                         continue;
                     }
-                
+
                     if (!is_dir($folder . $file)) {
                         $files[] = $folder . $file;
                     }
                 }
-                
+
                 closedir($dir);
             }
-                
+
             return $files;
         }
     }
@@ -838,7 +838,7 @@ class MA_Author_Boxes extends Module
                 global $ppma_template_authors, $ppma_template_authors_post;
                 $ppma_template_authors      = $args['authors'];
                 $ppma_template_authors_post = isset($args['post']) ? $args['post'] : false;
-                ob_start(); 
+                ob_start();
                 include $box_template;
                 $html = ob_get_clean();
                 return $html;
@@ -903,7 +903,7 @@ class MA_Author_Boxes extends Module
             MA_Author_Boxes::createDefaultAuthorBoxes();
             $layout_post = get_posts($args);
         }
-        
+
         if (!empty($layout_post)) {
             return $layout_post[0]->ID;
         }
@@ -1007,7 +1007,7 @@ class MA_Author_Boxes extends Module
     {
         $fields_tabs = [
             'title'     => [
-                'label'  => __('Title', 'publishpress-authors'),
+                'label'  => __('Box Title', 'publishpress-authors'),
                 'icon'   => 'dashicons dashicons-translation',
             ],
             'avatar'  => [
@@ -1033,6 +1033,10 @@ class MA_Author_Boxes extends Module
             'profile_fields'  => [
                 'label' => __('Author Fields', 'publishpress-authors'),
                 'icon'  => 'dashicons dashicons-groups',
+            ],
+            'shortcodes'  => [
+                'label' => __('Shortcodes', 'publishpress-authors'),
+                'icon'  => 'dashicons dashicons-shortcode',
             ],
             'author_recent_posts'  => [
                 'label' => __('Author Recent Posts', 'publishpress-authors'),
@@ -1075,7 +1079,7 @@ class MA_Author_Boxes extends Module
 
         return $fields_tabs;
     }
-    
+
     /**
      * Get the fields to be rendered in the author boxes editor
      *
@@ -1105,7 +1109,7 @@ class MA_Author_Boxes extends Module
      * @return void
      */
     public function renderLayoutSLugMetabox(\WP_Post $post)
-    { 
+    {
         $layout_slug = self::POST_TYPE_BOXES . '_' . $post->ID;
     ?>
         <input type="text" value="<?php echo esc_attr($layout_slug); ?>" readonly />
@@ -1119,7 +1123,7 @@ class MA_Author_Boxes extends Module
      * @return void
      */
     public function renderBannerMetabox(\WP_Post $post)
-    { 
+    {
         Utils::ppma_pro_sidebar();
     }
 
@@ -1130,7 +1134,7 @@ class MA_Author_Boxes extends Module
      * @return void
      */
     public function renderShortcodeMetabox(\WP_Post $post)
-    { 
+    {
         $layout_slug = self::POST_TYPE_BOXES . '_' . $post->ID;
     ?>
         <textarea readonly>[publishpress_authors_box layout="<?php echo esc_attr($layout_slug); ?>"]</textarea>
@@ -1164,13 +1168,13 @@ class MA_Author_Boxes extends Module
         $social_fields = ['facebook', 'twitter', 'instagram', 'linkedin', 'youtube', 'tiktok'];
         foreach ($social_fields as $social_field) {
             //set default display to icon
-            if (!isset($editor_data['profile_fields_'.$social_field.'_display']) 
+            if (!isset($editor_data['profile_fields_'.$social_field.'_display'])
                 || (isset($editor_data['profile_fields_'.$social_field.'_display']) && empty($editor_data['profile_fields_'.$social_field.'_display']))
             ) {
                 $editor_data['profile_fields_'.$social_field.'_display'] = 'icon';
             }
             //set default ucon value
-            if (!isset($editor_data['profile_fields_'.$social_field.'_display_icon']) 
+            if (!isset($editor_data['profile_fields_'.$social_field.'_display_icon'])
                 || (isset($editor_data['profile_fields_'.$social_field.'_display_icon']) && empty($editor_data['profile_fields_'.$social_field.'_display_icon']))
             ) {
                 if ($social_field === 'tiktok') {
@@ -1186,7 +1190,7 @@ class MA_Author_Boxes extends Module
             }
 
             //set social_field profile display icon size
-            if (!isset($editor_data['profile_fields_'.$social_field.'_display_icon_size']) 
+            if (!isset($editor_data['profile_fields_'.$social_field.'_display_icon_size'])
                 || (isset($editor_data['profile_fields_'.$social_field.'_display_icon_size']) && empty($editor_data['profile_fields_'.$social_field.'_display_icon_size']))
             ) {
                 $editor_data['profile_fields_'.$social_field.'_display_icon_size'] = '16';
@@ -1206,7 +1210,7 @@ class MA_Author_Boxes extends Module
             if (!isset($editor_data['profile_fields_'.$social_field.'_display_icon_border_radius'])) {
                 $editor_data['profile_fields_'.$social_field.'_display_icon_border_radius'] = '50';
             }
-            
+
         }
 
 
@@ -1217,7 +1221,7 @@ class MA_Author_Boxes extends Module
      * Render preview metabox
      *
      * @param \WP_Post $post
-     * 
+     *
      * @return void
      */
     public function renderPreviewMetabox(\WP_Post $post)
@@ -1261,7 +1265,7 @@ class MA_Author_Boxes extends Module
             $preview_post_type  = '';
             $preview_authors = [Author::get_by_user_id(get_current_user_id())];
         }
-        
+
         /**
          * Render fields
          */
@@ -1277,11 +1281,11 @@ class MA_Author_Boxes extends Module
             $args['value'] = isset($editor_data[$key]) ? $editor_data[$key] : '';
             $preview_args[$key] = $args;
         }
-        
+
         ?>
         <div class="pressshack-admin-wrapper publishpress-author-box-editor">
             <div class="preview-section wrapper-column">
-                <?php 
+                <?php
                 /**
                  * Render editor preview
                  */
@@ -1297,7 +1301,7 @@ class MA_Author_Boxes extends Module
      * Render editor metabox
      *
      * @param \WP_Post $post
-     * 
+     *
      * @return void
      */
     public function renderEditorMetabox(\WP_Post $post)
@@ -1332,8 +1336,8 @@ class MA_Author_Boxes extends Module
                     foreach ($fields_tabs as $key => $args) {
                         $active_tab = ($key === self::default_tab()) ? ' active' : ''; ?>
                     <li>
-                        <a data-tab="<?php esc_attr_e($key); ?>" 
-                            class="<?php esc_attr_e($active_tab); ?>" 
+                        <a data-tab="<?php esc_attr_e($key); ?>"
+                            class="<?php esc_attr_e($active_tab); ?>"
                             href="#"
                             >
                             <span class="<?php esc_attr_e($args['icon']); ?>"></span>
@@ -1346,9 +1350,9 @@ class MA_Author_Boxes extends Module
             </div>
 
             <div class="ppma-author-box-editor-fields wrapper-column">
-                <table class="form-table ppma-author-boxes-editor-table" role="presentation">
+                <table class="form-table ppma-author-boxes-editor-table fixed" role="presentation">
                     <tbody>
-                        <?php 
+                        <?php
                         if ($post->post_status === 'auto-draft') {
                             $editor_data = self::get_author_boxes_layout_meta_values($post->ID, true);
                         } else {
@@ -1393,7 +1397,7 @@ class MA_Author_Boxes extends Module
         }
 
         /**
-         * I'm leaving this as 1 as it's not working when generating css, 
+         * I'm leaving this as 1 as it's not working when generating css,
          * only one instance is added. Instead, I'll be adding the box additional class
          * to prevent boxes styles from classing.
          */
@@ -1417,6 +1421,11 @@ class MA_Author_Boxes extends Module
         $admin_preview = (!empty($args['admin_preview'])) ? true : false;
 
         $profile_fields   = self::get_profile_fields($args['post_id']);
+
+        if (($admin_preview || is_admin()) && !empty($args['preview_author_post'])) {
+            global $post;
+            $post = get_post($args['preview_author_post']);
+        }
 
         $authors = (isset($args['authors']) && is_array($args['authors']) && !empty($args['authors'])) ? $args['authors'] : [];
 
@@ -1475,6 +1484,30 @@ class MA_Author_Boxes extends Module
                 $author_categories_title_suffix = !empty($args['author_categories_title_suffix']['value']) ? html_entity_decode($args['author_categories_title_suffix']['value']) : '';
             }
         }
+
+        $shortcodes_data = !empty($args['shortcodes']['value']) ? $args['shortcodes']['value'] : [];
+
+        $meta_shortcode_output = '';
+        $name_shortcode_output = '';
+        $bio_shortcode_output = '';
+        $authors_shortcode_output = '';
+        if (!empty($shortcodes_data) && is_array($shortcodes_data)) {
+            foreach ($shortcodes_data['shortcode'] as $shortcode_index => $shortcode_data) :
+                $shortcode_shortcode = $shortcodes_data['shortcode'][$shortcode_index];
+                $shortcode_position  = $shortcodes_data['position'][$shortcode_index];
+                $shortcode_html = do_shortcode($shortcode_shortcode);
+
+                if ($shortcode_position == 'meta') {
+                    $meta_shortcode_output .= $shortcode_html;
+                } elseif ($shortcode_position == 'name') {
+                    $name_shortcode_output .= $shortcode_html;
+                } elseif ($shortcode_position == 'bio') {
+                    $bio_shortcode_output .= $shortcode_html;
+                } elseif ($shortcode_position == 'authors') {
+                    $authors_shortcode_output .= $shortcode_html;
+                }
+            endforeach;
+        }
         ?>
 
         <?php if ($admin_preview) : ?>
@@ -1486,7 +1519,7 @@ class MA_Author_Boxes extends Module
                             <?php echo esc_html__('Post preview', 'publishpress-authors'); ?>
                         </div>
                         <div class="editor-preview-author-post">
-                            <select 
+                            <select
                             data-nonce="<?php
                                 echo esc_attr(wp_create_nonce('authors-post-search')); ?>"
                                     data-post_type="<?php echo esc_attr($args['preview_post_type']); ?>"
@@ -1502,8 +1535,8 @@ class MA_Author_Boxes extends Module
                             </select>
                         </div>
                     </div>
-        <?php endif; ?> 
-        <?php if (Utils::isAuthorsProActive() && (!empty($_GET['author_category_box']) || !empty(get_post_meta($box_post_id, \MA_Author_Boxes::META_PREFIX . 'layout_parent_author_box', true)))) : 
+        <?php endif; ?>
+        <?php if (Utils::isAuthorsProActive() && (!empty($_GET['author_category_box']) || !empty(get_post_meta($box_post_id, \MA_Author_Boxes::META_PREFIX . 'layout_parent_author_box', true)))) :
             $parent_author_box = (!empty($_GET['author_category_box']) ? 'list_author_category_block' : get_post_meta($box_post_id, \MA_Author_Boxes::META_PREFIX . 'layout_parent_author_box', true));
             ?>
             <input type="hidden" name="parent_author_box" class="parent_author_box" value="<?php echo esc_attr($parent_author_box); ?>" />
@@ -1529,10 +1562,10 @@ class MA_Author_Boxes extends Module
                         <?php endif; ?>
                         <span class="ppma-layout-prefix"><?php echo html_entity_decode($args['box_tab_layout_prefix']['value']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
                         <<?php echo ($li_style ? 'div' : 'span'); ?> class="ppma-author-category-wrap">
-                            <?php 
+                            <?php
                             $author_category_index = 0;
                             foreach ($author_categories_data as $author_category_data) : ?>
-                                <?php if (!empty($author_category_data['authors'])) : 
+                                <?php if (!empty($author_category_data['authors'])) :
                                     if (count($author_category_data['authors']) > 1) {
                                         $category_title_output = $author_category_data['title'];
                                     } else {
@@ -1551,10 +1584,10 @@ class MA_Author_Boxes extends Module
                                                 <?php echo esc_html($auto_list_prefix); ?>
                                                 <?php foreach ($author_category_data['authors'] as $index => $author) : ?>
                                                     <?php if ($author && is_object($author) && isset($author->term_id)) : ?>
-                                                        <?php 
+                                                        <?php
                                                         if ($args['author_recent_posts_show']['value']) :
                                                             $author_recent_posts = multiple_authors_get_author_recent_posts(
-                                                                $author, 
+                                                                $author,
                                                                 true,
                                                                 $args['author_recent_posts_limit']['value'],
                                                                 $args['author_recent_posts_orderby']['value'],
@@ -1566,7 +1599,7 @@ class MA_Author_Boxes extends Module
 
 
                                                         $current_author_category = get_ppma_author_category($author, $all_author_categories_data);
-                                                        
+
                                                         //author fields item position
                                                         $name_row_extra = '';
                                                         $bio_row_extra  = '';
@@ -1576,10 +1609,10 @@ class MA_Author_Boxes extends Module
                                                             if (!in_array($key, self::AUTHOR_BOXES_EXCLUDED_FIELDS)) {
                                                                 $profile_show_field = $args['profile_fields_hide_' . $key]['value'] ? false : true;
 
-                                                                $profile_html_tag  = !empty($args['profile_fields_' . $key . '_html_tag']['value']) 
+                                                                $profile_html_tag  = !empty($args['profile_fields_' . $key . '_html_tag']['value'])
                                                                     ? $args['profile_fields_' . $key . '_html_tag']['value'] : 'span';
 
-                                                                $profile_display  = !empty($args['profile_fields_' . $key . '_display']['value']) 
+                                                                $profile_display  = !empty($args['profile_fields_' . $key . '_display']['value'])
                                                                     ? $args['profile_fields_' . $key . '_display']['value'] : 'icon_prefix_value_suffix';
 
                                                                 $profile_value_prefix      = $args['profile_fields_' . $key . '_value_prefix']['value'];
@@ -1611,7 +1644,7 @@ class MA_Author_Boxes extends Module
                                                                 $profile_author_category_content = '';
                                                                 if (!empty($args['profile_fields_' . $key . '_author_categories']['value'])) :
                                                                     $profile_author_categories_divider = !empty($args['profile_fields_' . $key . '_author_categories_divider']['value']) ? $args['profile_fields_' . $key . '_author_categories_divider']['value'] : '';
-                                                                    
+
                                                                     if (!empty($current_author_category)) :
 
                                                                         $profile_author_category_prefix = '';
@@ -1667,9 +1700,9 @@ class MA_Author_Boxes extends Module
                                                                 }
 
                                                                 if ($profile_show_field) : ?>
-                                                                    <?php 
+                                                                    <?php
                                                                     $profile_field_html  = '';
-                                                                    
+
                                                                     if (!empty(trim($profile_before_display_prefix))) {
                                                                         $profile_field_html  .= '<span class="ppma-author-field-meta-prefix"> '. $profile_before_display_prefix .' </span>';
                                                                     }
@@ -1687,7 +1720,7 @@ class MA_Author_Boxes extends Module
                                                                         $profile_field_html  .= '<span class="ppma-author-field-meta-suffix"> '. $profile_after_display_suffix .' </span>';
                                                                     }
                                                                     ?>
-                                                                    <?php 
+                                                                    <?php
                                                                     if ($profile_display_position === 'name') {
                                                                         $name_row_extra .= $profile_field_html;
                                                                     } elseif ($profile_display_position === 'bio') {
@@ -1699,6 +1732,9 @@ class MA_Author_Boxes extends Module
                                                                 <?php endif;
                                                             }
                                                         }
+                                                        $name_row_extra .= $name_shortcode_output;
+                                                        $bio_row_extra  .= $bio_shortcode_output;
+                                                        $meta_row_extra .= $meta_shortcode_output;
 
                                                         $display_name_position    = !empty($args['display_name_position']['value']) ? $args['display_name_position']['value'] : 'after_avatar';
                                                         $display_name_prefix    = !empty($args['display_name_prefix']['value']) ? $args['display_name_prefix']['value'] : '';
@@ -1709,7 +1745,7 @@ class MA_Author_Boxes extends Module
                                                             $name_author_category_content = '';
                                                             if (!empty($args['name_author_categories']['value'])) :
                                                                 $name_author_categories_divider = !empty($args['name_author_categories_divider']['value']) ? $args['name_author_categories_divider']['value'] : '';
-                                                                    
+
                                                                 if (!empty($current_author_category)) :
 
                                                                     $name_author_category_prefix = '';
@@ -1726,11 +1762,11 @@ class MA_Author_Boxes extends Module
                                                                     $name_author_category_content = '<span class="name-author-category">' . $name_author_category_prefix . $current_author_category['singular_title'] . $name_author_category_suffix . '</span>';
                                                                 endif;
                                                             endif;
-                                                            
+
                                                             $display_name_markup .= '<'.esc_html($args['name_html_tag']['value']) .' class="pp-author-boxes-name multiple-authors-name">'; ?>
                                                             <?php if ($author_categories_title_option == 'before_individual' && !empty($author_category_data['title'])) :
                                                                 $display_name_markup .= '<' . $author_categories_title_html_tag . ' class="ppma-category-group-title">' . $author_categories_title_prefix . '' . $author_category_data['singular_title'] . '' . $author_categories_title_suffix . '</' . $author_categories_title_html_tag . '>';
-                                                            endif; 
+                                                            endif;
                                                             $display_name_markup .= '<a href="'. esc_url($author->link) .'" rel="author" title="'. esc_attr($author->display_name) .'" class="author url fn">'. esc_html($display_name_prefix . $author->display_name . $display_name_suffix) .'</a>'. $name_author_category_content;
                                                             if ($author_categories_title_option == 'after_individual' && !empty($author_category_data['title'])) :
                                                                 $display_name_markup .= '<' . $author_categories_title_html_tag . ' class="ppma-category-group-title">' . $author_categories_title_prefix . '' . $author_category_data['singular_title'] . '' . $author_categories_title_suffix . '</' . $author_categories_title_html_tag . '>';
@@ -1763,16 +1799,16 @@ class MA_Author_Boxes extends Module
                                                                         echo $display_name_markup;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                                                                     endif ?>
                                                                 </div>
-                                                            <?php else : 
+                                                            <?php else :
                                                                 $custom_styles .= '.' . str_replace(' ', '.', trim($body_class)) . ' ul li > div:nth-child(1) {flex: 1 !important;}';
                                                              endif;
-                                                            
+
                                                              if ($display_name_position === 'infront_of_avatar' && ! $args['avatar_show']['value']) :
                                                                     echo '<div class="pp-author-boxes-avatar">' . $display_name_markup . '</div>';  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                                                             endif ?>
 
                                                             <<?php echo ($li_style ? 'div' : 'span'); ?> class="pp-author-boxes-avatar-details">
-                                                                <?php 
+                                                                <?php
                                                                 if ($display_name_position === 'after_avatar') :
                                                                     echo $display_name_markup;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                                                                 endif ?>
@@ -1839,6 +1875,7 @@ class MA_Author_Boxes extends Module
                             <?php $author_category_index++; endforeach; ?>
                         </<?php echo ($li_style ? 'div' : 'span'); ?>>
                         <span class="ppma-layout-suffix"><?php echo html_entity_decode($args['box_tab_layout_suffix']['value']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+                        <?php echo $authors_shortcode_output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                     </<?php echo ($li_style ? 'div' : 'span'); ?>>
                     <!--end code -->
                     <?php if ($admin_preview) : ?>
@@ -1848,7 +1885,7 @@ class MA_Author_Boxes extends Module
         <?php endif; ?>
 
         <?php if (isset($args['short_code_args']) && isset($args['short_code_args']['pagination']) && !empty($args['short_code_args']['pagination'])) : ?>
-            <nav class="footer-navigation navigation pagination">
+            <nav class="author-boxes-footer-navigation footer-navigation navigation pagination">
                 <div class="nav-links">
                     <?php echo $args['short_code_args']['pagination']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                 </div>
@@ -1872,7 +1909,7 @@ class MA_Author_Boxes extends Module
                 <?php echo $custom_styles; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
             </style>
         <?php endif; ?>
-        
+
         <?php
         $auto_list_prefix = '';//reset show by
 
@@ -1914,11 +1951,11 @@ class MA_Author_Boxes extends Module
         if ((int)$args['tabbed'] > 0) {
             $tab_class .= ' tabbed-content tabbed-content-' . $args['tab_name'];
         }
-            
+
         $tab_style = ($args['tab'] === self::default_tab()) ? '' : 'display:none;';
         ob_start();
         $generate_tab_title = false;
-        if (in_array($args['type'], ['textarea', 'export_action', 'import_action', 'template_action', 'line_break', 'profile_header', 'code_editor'])) {
+        if (in_array($args['type'], ['textarea', 'export_action', 'shortcodes', 'import_action', 'template_action', 'line_break', 'profile_header', 'code_editor'])) {
             $th_style = 'display: none;';
             $colspan  = 2;
         } else {
@@ -1926,7 +1963,7 @@ class MA_Author_Boxes extends Module
             $colspan  = '';
         }
         ?>
-        <tr 
+        <tr
             class="<?php echo esc_attr($tab_class); ?>"
             data-tab="<?php echo esc_attr($args['tab']); ?>"
             style="<?php echo esc_attr($tab_style); ?>"
@@ -1943,7 +1980,7 @@ class MA_Author_Boxes extends Module
                 if ('number' === $args['type']) :
                     ?>
                     <input name="<?php echo esc_attr($key); ?>"
-                        id="<?php echo esc_attr($key); ?>" 
+                        id="<?php echo esc_attr($key); ?>"
                         type="<?php echo esc_attr($args['type']); ?>"
                         value="<?php echo esc_attr($args['value']); ?>"
                         min="<?php echo esc_attr($args['min']); ?>"
@@ -1955,7 +1992,7 @@ class MA_Author_Boxes extends Module
                 elseif ('checkbox' === $args['type']) :
                     ?>
                     <input name="<?php echo esc_attr($key); ?>"
-                        id="<?php echo esc_attr($key); ?>" 
+                        id="<?php echo esc_attr($key); ?>"
                         type="<?php echo esc_attr($args['type']); ?>"
                         value="1"
                         <?php echo (isset($args['readonly']) && $args['readonly'] === true) ? 'readonly' : ''; ?>
@@ -1969,7 +2006,7 @@ class MA_Author_Boxes extends Module
                         <?php echo (isset($args['readonly']) && $args['readonly'] === true) ? 'readonly' : ''; ?>
                         />
                         <?php foreach ($args['options'] as $key => $label) : ?>
-                            <option value="<?php echo esc_attr($key); ?>" 
+                            <option value="<?php echo esc_attr($key); ?>"
                                 <?php selected($key, $args['value']); ?>>
                                 <?php echo esc_html($label); ?>
                             </option>
@@ -1986,7 +2023,7 @@ class MA_Author_Boxes extends Module
                         <?php foreach ($args['options'] as $group_key => $group_option) : ?>
                             <optgroup label="<?php echo esc_attr($group_option['title']); ?>">
                                 <?php foreach ($group_option['options'] as $key => $label) : ?>
-                                    <option value="<?php echo esc_attr($key); ?>" 
+                                    <option value="<?php echo esc_attr($key); ?>"
                                         <?php selected($key, $args['value']); ?>>
                                         <?php echo esc_html($label); ?>
                                     </option>
@@ -1999,16 +2036,103 @@ class MA_Author_Boxes extends Module
                     ?>
                     <input name="<?php echo esc_attr($key); ?>"
                         class="pp-editor-color-picker"
-                        id="<?php echo esc_attr($key); ?>" 
+                        id="<?php echo esc_attr($key); ?>"
                         type="text"
                         value="<?php echo esc_attr($args['value']); ?>" />
+                <?php
+                elseif ('shortcodes' === $args['type']) :
+                    $shortcodes_data = $args['value'];
+
+                    $shortcode_positions = [
+                        'meta'      => esc_html__('After View all posts Row', 'publishpress-authors'),
+                        'name'      => esc_html__('After Name Row', 'publishpress-authors'),
+                        'bio'       => esc_html__('After Biographical Info Row', 'publishpress-authors'),
+                        'authors'   => esc_html__('After All Authors', 'publishpress-authors')
+                    ];
+                    ?>
+                    <div class="ppma-boxes-shortcodes-wrap">
+                        <div class="shortcode-entries">
+                            <table class="shortcode-table fixed">
+                                <thead>
+                                    <tr>
+                                        <th><?php echo esc_html__('Shortcode', 'publishpress-authors'); ?> <span class="required">*</span></th>
+                                        <th><?php echo esc_html__('Position', 'publishpress-authors'); ?></th>
+                                        <th class="action"><?php echo esc_html__('Action', 'publishpress-authors'); ?></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="shortcode-form">
+                                        <td class="shortcode-field">
+                                            <input name="<?php echo esc_attr($key); ?>-shortcode-input"
+                                                id="<?php echo esc_attr($key); ?>-shortcode-input"
+                                                class="<?php echo esc_attr($key); ?>-shortcode-input"
+                                                type="text"
+                                                value=""
+                                                placeholder="<?php echo esc_attr__('Shortcode', 'publishpress-authors'); ?>"
+                                            />
+                                        </td>
+                                        <td class="shortcode-field">
+                                        <select name="<?php echo esc_attr($key); ?>-position-input"
+                                            id="<?php echo esc_attr($key); ?>-position-input"
+                                            class="<?php echo esc_attr($key); ?>-position-input"
+                                            />
+                                            <?php foreach ($shortcode_positions as $position_key => $position_label) : ?>
+                                                <option value="<?php echo esc_attr($position_key); ?>"
+                                                    <?php selected($position_key, 'authors'); ?>>
+                                                    <?php echo esc_html($position_label); ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        </td>
+                                        <td class="shortcode-field">
+                                            <div class="add-new-shortcode button"
+                                                data-delete="<?php echo esc_attr__('Delete', 'publishpress-authors'); ?>">
+                                                <?php echo esc_html__('Add', 'publishpress-authors'); ?>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <?php if (is_array($shortcodes_data) && !empty($shortcodes_data)) : ?>
+                                        <?php foreach ($shortcodes_data['shortcode'] as $shortcode_index => $shortcode_data) :
+                                            $shortcode_shortcode = $shortcodes_data['shortcode'][$shortcode_index];
+                                            $shortcode_position  = $shortcodes_data['position'][$shortcode_index];
+                                        ?>
+                                            <tr class="shortcode-entry">
+                                                <td class="shortcode">
+                                                    <?php echo esc_html($shortcode_shortcode); ?>
+                                                </td>
+                                                <td class="position">
+                                                    <?php echo esc_html(ucfirst($shortcode_position)); ?>
+                                                </td>
+                                                <td class="action">
+                                                    <input name="<?php echo esc_attr($key); ?>[shortcode][]"
+                                                        id="<?php echo esc_attr($key); ?>-shortcode"
+                                                        type="hidden"
+                                                        value="<?php echo esc_attr($shortcode_shortcode); ?>"
+                                                    />
+                                                    <input name="<?php echo esc_attr($key); ?>[position][]"
+                                                        id="<?php echo esc_attr($key); ?>-position"
+                                                        type="hidden"
+                                                        value="<?php echo esc_attr($shortcode_position); ?>"
+                                                    />
+                                                    <span class="delete-shortcode">
+                                                        <?php echo esc_html__('Delete', 'publishpress-authors'); ?>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <p class="description"><?php echo sprintf(esc_html__('You can use basic html as prefixes in short code, for example: %1s.', 'publishpress-authors'), '&lt;span class="read-time"&gt;Read Time&lt;/span&gt; [read_time_shortcode]'); ?></p>
                 <?php
                 elseif ('export_action' === $args['type']) :
                     ?>
                     <h2 class="title"><?php echo esc_html__('Export Editor Settings', 'publishpress-authors'); ?></h2>
                     <p class="description"><?php echo esc_html__('You can use this data to export your author box design and import it to a new site.', 'publishpress-authors'); ?></p>
                     <textarea name="<?php echo esc_attr($key); ?>"
-                        id="<?php echo esc_attr($key); ?>" 
+                        id="<?php echo esc_attr($key); ?>"
                         type="<?php echo esc_attr($args['type']); ?>"
                         rows="<?php echo esc_attr($args['rows']); ?>"
                         placeholder="<?php echo esc_attr($args['placeholder']); ?>"
@@ -2028,7 +2152,7 @@ class MA_Author_Boxes extends Module
                     <h2 class="title"><?php echo esc_html__('Import Editor Settings', 'publishpress-authors'); ?></h2>
                     <p class="description"><?php echo esc_html__('Paste the editor data from the "Export" tab on another site.', 'publishpress-authors'); ?></p>
                     <textarea name="<?php echo esc_attr($key); ?>"
-                        id="<?php echo esc_attr($key); ?>" 
+                        id="<?php echo esc_attr($key); ?>"
                         type="<?php echo esc_attr($args['type']); ?>"
                         rows="<?php echo esc_attr($args['rows']); ?>"
                         placeholder="<?php echo esc_attr($args['placeholder']); ?>"
@@ -2077,7 +2201,7 @@ class MA_Author_Boxes extends Module
                     <div class="clear-code-editor-content"></div>
                     <div class="update-code-editor-content"></div>
                     <div class="refresh-code-editor"></div>
-                    
+
                     <div class="generate-template-buttons">
                         <span>
                             <a href="#" class="button button-primary ppma-editor-generate-template">
@@ -2101,7 +2225,7 @@ class MA_Author_Boxes extends Module
                 elseif ('textarea' === $args['type']) :
                     ?>
                     <textarea name="<?php echo esc_attr($key); ?>"
-                        id="<?php echo esc_attr($key); ?>" 
+                        id="<?php echo esc_attr($key); ?>"
                         type="<?php echo esc_attr($args['type']); ?>"
                         rows="<?php echo esc_attr($args['rows']); ?>"
                         placeholder="<?php echo esc_attr($args['placeholder']); ?>"
@@ -2136,10 +2260,10 @@ class MA_Author_Boxes extends Module
                     ?>
                     <?php if ((int)$args['index'] === 1) : ?>
                         <div class="ppma-editor-field-reorder-btn">
-                            <span class="dashicons dashicons-admin-generic"></span> 
+                            <span class="dashicons dashicons-admin-generic"></span>
                             <?php esc_html_e('Reorder Fields', 'publishpress-authors'); ?>
                         </div>
-                        <?php 
+                        <?php
 
                         $profile_fields   = self::get_profile_fields($args['post_id']);
                         $modal_content = '';
@@ -2184,7 +2308,7 @@ class MA_Author_Boxes extends Module
                     </div>
                 </div>
                 <?php
-                elseif ('icon' === $args['type']) : 
+                elseif ('icon' === $args['type']) :
                 $selected_icon = $args['value'];
                 $button_select = sprintf(esc_html__('Select %1s', 'publishpress-authors'), ' ' . $args['label']);
                 $button_change = sprintf(esc_html__('Change %1s', 'publishpress-authors'), ' ' . $args['label']);
@@ -2197,7 +2321,7 @@ class MA_Author_Boxes extends Module
                 ?>
                     <input name="<?php echo esc_attr($key); ?>"
                         style="display: none;"
-                        id="<?php echo esc_attr($key); ?>" 
+                        id="<?php echo esc_attr($key); ?>"
                         type="<?php echo esc_attr($args['type']); ?>"
                         value="<?php echo esc_attr($args['value']); ?>"
                         placeholder="<?php echo esc_attr($args['placeholder']); ?>"
@@ -2225,7 +2349,7 @@ class MA_Author_Boxes extends Module
                     </div>
                 <?php else : ?>
                     <input name="<?php echo esc_attr($key); ?>"
-                        id="<?php echo esc_attr($key); ?>" 
+                        id="<?php echo esc_attr($key); ?>"
                         type="<?php echo esc_attr($args['type']); ?>"
                         value="<?php echo esc_attr($args['value']); ?>"
                         placeholder="<?php echo esc_attr($args['placeholder']); ?>"
@@ -2241,7 +2365,7 @@ class MA_Author_Boxes extends Module
                         </span>
                 <?php endif; ?>
             </td>
-        </tr> 
+        </tr>
         <?php
         return ob_get_clean();
     }
@@ -2270,18 +2394,18 @@ class MA_Author_Boxes extends Module
         wp_enqueue_code_editor(['type' => 'text/html']);
 
         wp_enqueue_style(
-            'codemirror-monokai', 
-            PP_AUTHORS_ASSETS_URL . 'lib/codemirror/css/monokai.min.css', 
+            'codemirror-monokai',
+            PP_AUTHORS_ASSETS_URL . 'lib/codemirror/css/monokai.min.css',
             [], PP_AUTHORS_VERSION
         );
         wp_enqueue_script(
-            'js-beautify', 
-            PP_AUTHORS_ASSETS_URL . 'lib/js-beautify/js/beautify-css.min.js', 
-            [], 
-            PP_AUTHORS_VERSION, 
+            'js-beautify',
+            PP_AUTHORS_ASSETS_URL . 'lib/js-beautify/js/beautify-css.min.js',
+            [],
+            PP_AUTHORS_VERSION,
             true
         );
-        
+
         add_thickbox();
 
         wp_enqueue_script(
@@ -2337,11 +2461,11 @@ class MA_Author_Boxes extends Module
      *
      * @param mixed $author_box
      * @param mixed $author
-     * 
+     *
      * @return array
      */
     public static function get_profile_fields($author_box = false, $author = false) {
-        
+
         $profile_fields   = Author_Editor::get_fields($author);
         $profile_fields   = apply_filters('multiple_authors_author_fields', $profile_fields, false);
 
@@ -2369,12 +2493,12 @@ class MA_Author_Boxes extends Module
      *
      * @return void
      */
-    public function addInlineScripts() 
+    public function addInlineScripts()
     {
         global $pagenow, $current_screen;
 
-        if (in_array($pagenow, ['post.php', 'edit.php']) 
-            && $current_screen 
+        if (in_array($pagenow, ['post.php', 'edit.php'])
+            && $current_screen
             && !empty($current_screen->post_type)
             && $current_screen->post_type === self::POST_TYPE_BOXES
         ) {
@@ -2447,7 +2571,7 @@ class MA_Author_Boxes extends Module
             ['wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-data'],
             PP_AUTHORS_VERSION
         );
-    
+
         wp_localize_script( 'author-boxes-block', 'authorBoxesBlock', array(
             'ajax_url' => admin_url( 'admin-ajax.php' ),
             'block_title' => __('Author Box', 'publishpress-authors'),
@@ -2462,7 +2586,7 @@ class MA_Author_Boxes extends Module
             'all'
         );
     }
-    
+
     /**
      * Register block
      */
@@ -2478,7 +2602,7 @@ class MA_Author_Boxes extends Module
             ],
         ]);
     }
-    
+
     /**
      * Render callback for the block
      */
@@ -2490,7 +2614,7 @@ class MA_Author_Boxes extends Module
 
         return $html_output;
     }
-    
+
     /**
      * AJAX handler for fetching author boxes
      */
