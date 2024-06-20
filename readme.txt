@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author bio, author layouts
 Requires at least: 5.5
 Requires PHP: 7.2.5
 Tested up to: 6.5
-Stable tag: 4.6.0
+Stable tag: 4.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -229,6 +229,16 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [4.7.0] - 20 June 2024 =
+
+* Update: Add Authors List Menu, #1009
+* Update: Move Author Pages to the Main Menu, #1779
+* Update: Allow shortcodes in Author Boxes, #1489
+* Update: Add a wrapper to Author Pages, #1821
+* Update: Update author category column check icon, #1793
+* Update: Update Author Box text labels, #1795
+* Update: Authors Translation Updates, #1799
 
 = [4.6.0] - 03 June 2024 =
 
