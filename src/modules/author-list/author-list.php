@@ -394,7 +394,7 @@ class MA_Author_List extends Module
         if (!$pro_active) {
             $fields['options_promo'] = [
                 'label'             => esc_html__('Configure Author List Options', 'publishpress-authors'),
-                'description'       => esc_html__('Authors Pro allows you to set Author Lists pagination using number of authors to show per page, ability to show or hide authors without without any posts, order authors by their published post counts, names and limit the author results to users with a published post within a specific time.', 'publishpress-authors'),
+                'description'       => esc_html__('Authors Pro allows you to add extra features to the Authors List. These features include pagination, choose the order of authors, and much more.', 'publishpress-authors'),
                 'type'              => 'promo',
                 'tab'               => 'options',
             ];
