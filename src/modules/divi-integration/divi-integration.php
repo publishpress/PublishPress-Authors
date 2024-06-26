@@ -89,6 +89,7 @@ if (!class_exists('MA_Divi_Integration')) {
                 );
             }
             add_filter('the_author_posts_link', [$this, 'filter_author_posts_link'], 11);
+            add_filter('et_pb_blog_image_width', [$this, 'filter_et_pb_blog_image_width'], 11);
         }
 
         /**
@@ -116,6 +117,21 @@ if (!class_exists('MA_Divi_Integration')) {
             $link = join(", ",$author_links);
 
             return $link;
+        }
+
+        public function filter_et_pb_blog_image_width($width) {
+            global $authordata, $post;
+
+            if (empty($authordata)) {
+                // the only way we're able to set author data for situation where post author/fallback author user has been deleted
+                $legacyPlugin           = Factory::getLegacyPlugin();
+                $fallbackAuthor         = isset($legacyPlugin->modules->multiple_authors->options->fallback_user_for_guest_post) ?
+                    (int)$legacyPlugin->modules->multiple_authors->options->fallback_user_for_guest_post : 0;
+                
+                $authordata = get_userdata($fallbackAuthor);
+            }
+
+            return $width;
         }
 
         /**
