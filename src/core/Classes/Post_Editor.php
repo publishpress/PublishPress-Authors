@@ -432,6 +432,11 @@ class Post_Editor
                 $userAuthor   = Author::get_by_user_id($postAuthorId);
 
             }
+
+            if (!$userAuthor) {
+                $postAuthorId = get_current_user_id();
+                $userAuthor   = Author::get_by_user_id($postAuthorId);
+            }
             ?>
             <?php if (!$bulkEdit) : ?>
                 <div class="ppma-authors-display-option-wrapper">
