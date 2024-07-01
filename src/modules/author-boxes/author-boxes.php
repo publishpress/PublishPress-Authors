@@ -2063,13 +2063,11 @@ class MA_Author_Boxes extends Module
                                 <tbody>
                                     <tr class="shortcode-form">
                                         <td class="shortcode-field">
-                                            <input name="<?php echo esc_attr($key); ?>-shortcode-input"
+                                            <textarea name="<?php echo esc_attr($key); ?>-shortcode-input"
                                                 id="<?php echo esc_attr($key); ?>-shortcode-input"
                                                 class="<?php echo esc_attr($key); ?>-shortcode-input"
-                                                type="text"
-                                                value=""
                                                 placeholder="<?php echo esc_attr__('Shortcode', 'publishpress-authors'); ?>"
-                                            />
+                                            ></textarea>
                                         </td>
                                         <td class="shortcode-field">
                                         <select name="<?php echo esc_attr($key); ?>-position-input"
@@ -2125,7 +2123,7 @@ class MA_Author_Boxes extends Module
                             </table>
                         </div>
                     </div>
-                    <p class="description"><?php echo sprintf(esc_html__('You can use basic html as prefixes in short code, for example: %1s.', 'publishpress-authors'), '&lt;span class="read-time"&gt;Read Time&lt;/span&gt; [read_time_shortcode]'); ?></p>
+                    <p class="description"><?php echo sprintf(esc_html__('You can use basic HTML in this field. For example: Read Time %1s.', 'publishpress-authors'), '[read_time_shortcode]'); ?></p>
                 <?php
                 elseif ('export_action' === $args['type']) :
                     ?>
