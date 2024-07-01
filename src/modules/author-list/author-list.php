@@ -378,7 +378,7 @@ class MA_Author_List extends Module
         // add users fields
         $fields['author_type'] = [
             'label'             => esc_html__('Author Type', 'publishpress-authors'),
-            'description'       => esc_html__('Select an option to limit the results to selected user roles, author type or specific authors.', 'publishpress-authors'),
+            'description'       => esc_html__('Select an option to limit the results to selected user roles, author types or specific authors.', 'publishpress-authors'),
             'type'              => 'tab',
             'options'           => [
                 'roles'         => esc_html__('Roles', 'publishpress-authors'),
@@ -404,7 +404,7 @@ class MA_Author_List extends Module
         if (!$pro_active) {
             $fields['search_promo'] = [
                 'label'             => esc_html__('Add Search Box to Author Lists', 'publishpress-authors'),
-                'description'       => esc_html__('Authors Pro allows you to show search box and search through author fields.', 'publishpress-authors'),
+                'description'       => esc_html__('Author Pro allows you to add a search box to the Authors List. You can also show a dropdown menu that allows users to search on specific author fields.', 'publishpress-authors'),
                 'type'              => 'promo',
                 'tab'               => 'search',
             ];
@@ -1007,7 +1007,7 @@ class MA_Author_List extends Module
                 elseif ('preview' === $args['type']) :
                     $shortcode_content = !empty($option_values['static_shortcode']) ? do_shortcode($option_values['static_shortcode']) : '';
                     ?>
-                    <p class="description" style="margin-bottom: 20px;"><span class="required">*</span> <?php esc_html_e('This is a quick preview of this Author List. Test on frontend pages to see exactly how it looks with your theme.', 'publishpress-authors'); ?></p>
+                    <p class="description" style="margin-bottom: 20px;"><?php esc_html_e('This is a quick preview of this Author List. Test on frontend pages to see exactly how it looks with your theme.', 'publishpress-authors'); ?></p>
                     <div class="preview-shortcode-wrap"><?php echo $shortcode_content; ?></div>
                     <div class="preview-skeleton" style="display: none;">
                         <div class="skeleton skeleton-header"></div>
