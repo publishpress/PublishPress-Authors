@@ -162,7 +162,9 @@ class MA_Author_Pages extends Module
             'active_tabs' => '.ppma-author-pages-tab-general',
         ];
 
-        $this->print_default_header($ppma_custom_settings['modules'][$this->module_name], esc_html__('Please note this feature will not work for all themes.', 'publishpress-authors'));
+        $page_description = esc_html__('Please note this feature will not work for all themes.', 'publishpress-authors') . ' <a target="_blank" href="https://publishpress.com/knowledge-base/author-pages-troubleshooting/">'.  esc_html__('Click here for more details.', 'publishpress-authors') .'</a>';
+
+        $this->print_default_header($ppma_custom_settings['modules'][$this->module_name], $page_description);
 
         // Get module output
         ob_start();
@@ -234,7 +236,7 @@ class MA_Author_Pages extends Module
                 </h2>
 
                 <?php if (!empty($custom_text)) : ?>
-                    <p class="description"><?php echo esc_html($custom_text); ?></p>
+                    <p class="description"><?php echo $custom_text;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
                 <?php endif; ?>
 
             </header>
