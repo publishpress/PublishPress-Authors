@@ -349,7 +349,7 @@ class MA_Author_List extends Module
             'sanitize'          => 'sanitize_text_field',
             'field_visibility'  => [],
             'tab'               => 'general',
-            'required'          => 1,
+            'required'          => true,
         ];
         $fields['layout'] = [
             'label'             => esc_html__('Layout', 'publishpress-authors'),
@@ -359,7 +359,7 @@ class MA_Author_List extends Module
             'sanitize'          => 'sanitize_text_field',
             'field_visibility'  => [],
             'tab'               => 'general',
-            'required'          => 1,
+            'required'          => true,
         ];
         $fields['layout_columns'] = [
             'label'             => esc_html__('Layout Columns', 'publishpress-authors'),
@@ -807,6 +807,7 @@ class MA_Author_List extends Module
             'rows'        => '20',
             'readonly'    => false,
             'multiple'    => false,
+            'required'    => false,
             'field_visibility'  => [],
         ];
 
@@ -816,7 +817,7 @@ class MA_Author_List extends Module
         if ('range' === $args['type'] && $args['show_input']) {
             $tab_class .= ' double-input';
         }
-        
+
         ob_start();
         $generate_tab_title = false;
         if (in_array($args['type'], ['textarea', 'preview', 'tab', 'promo'])) {
@@ -841,6 +842,9 @@ class MA_Author_List extends Module
                 <th scope="row" style="<?php echo esc_attr($th_style); ?>">
                     <label for="<?php echo esc_attr($key); ?>">
                         <?php echo esc_html($args['label']); ?>
+                        <?php if (isset($args['required']) && $args['required'] === true) : ?>
+                            <span class="required">*</span>
+                        <?php endif; ?>
                     </label>
                 </th>
             <?php endif; ?>
@@ -1050,6 +1054,7 @@ class MA_Author_List extends Module
                         value="<?php echo esc_attr($args['value']); ?>"
                         placeholder="<?php echo esc_attr($args['placeholder']); ?>"
                         <?php echo (isset($args['readonly']) && $args['readonly'] === true) ? 'readonly' : ''; ?>
+                        <?php echo (isset($args['required']) && $args['required'] === true) ? 'required' : ''; ?>
                          />
                 <?php endif; ?>
                 <?php if (!in_array($args['type'], ['promo']) && isset($args['description']) && !empty($args['description'])) : ?>
