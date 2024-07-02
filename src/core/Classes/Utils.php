@@ -1123,6 +1123,7 @@ class Utils
                     <ul>
                         <li><?php echo esc_html__('Add new Author Fields', 'publishpress-authors'); ?></li>
                         <li><?php echo esc_html__('Add fields for social networks', 'publishpress-authors'); ?></li>
+                        <li><?php echo esc_html__('Extra features for Author Lists', 'publishpress-authors'); ?></li>
                         <li><?php echo esc_html__('Create Author Boxes with authors organized in categories', 'publishpress-authors'); ?></li>
                         <li><?php echo esc_html__('Support for Polylang', 'publishpress-authors'); ?></li>
                         <li><?php echo esc_html__('Remove PublishPress ads and branding', 'publishpress-authors'); ?></li>
