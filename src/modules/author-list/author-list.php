@@ -34,6 +34,14 @@ use MultipleAuthors\Factory;
 class MA_Author_List extends Module
 {
 
+    /**
+     * Instance of the module
+     *
+     * @var stdClass
+     */
+    public $module;
+    public $module_url;
+
     public $module_name = 'author_list';
 
     // WP_List_Table object
