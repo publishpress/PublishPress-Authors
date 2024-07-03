@@ -807,7 +807,7 @@ class Author_Editor
             'publishpress-authors'
         );
         $bulk_actions['convert_into_guest_author'] = __(
-            'Convert into guest author',
+            'Convert into Guest Author With User Account',
             'publishpress-authors'
         );
         $bulk_actions['update_post_count'] = __(
