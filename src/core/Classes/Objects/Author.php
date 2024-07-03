@@ -9,6 +9,7 @@
 
 namespace MultipleAuthors\Classes\Objects;
 
+use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Classes\Author_Utils;
 use MultipleAuthors\Factory;
 use WP_Error;
@@ -333,9 +334,39 @@ class Author
      */
     public static function convert_into_guest_author($term_id)
     {
+        if (!get_role('ppma_guest_author')) {
+            //Make sure Guest authir role exist
+            add_role('ppma_guest_author', 'Guest Author', []);
+        }
+
         $userId = get_term_meta($term_id, 'user_id', true);
-        delete_term_meta($term_id, 'user_id');
-        delete_term_meta($term_id, 'user_id_' . $userId);
+        $author = Author::get_by_term_id($term_id);
+        if ($userId && is_object($author) && isset($author->display_name)) {
+            $user_data = [
+                'ID'    => $userId,
+                'role'  => 'ppma_guest_author'
+            ];
+            wp_update_user($user_data);
+            update_term_meta($term_id, 'user_id', $userId);
+            update_term_meta($term_id, 'user_id_' . $userId, $userId);
+        } elseif (!empty($author->user_email)) {
+            $user_data = [
+                'user_login'    => !empty($author->user_login)? $author->user_login : sanitize_title($author->user_email),
+                'display_name'  => $author->display_name,
+                'user_email'    => $author->user_email,
+                'user_pass'     => wp_generate_password(),
+                'role'          => 'ppma_guest_author',
+            ];
+            $userId = wp_insert_user($user_data);
+            
+            if (!is_wp_error($userId)) {
+                update_term_meta($term_id, 'user_id', $userId);
+                update_term_meta($term_id, 'user_id_' . $userId, $userId);
+            }
+        } else {
+            delete_term_meta($term_id, 'user_id');
+            delete_term_meta($term_id, 'user_id_' . $userId);
+        }
     }
 
     /**
