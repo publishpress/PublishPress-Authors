@@ -242,6 +242,14 @@ class MA_Author_List extends Module
                     $success = true;
                     $message = esc_html__('Author List deleted successfully.', 'publishpress-authors');
                 break;
+                case 4:
+                    $success = true;
+                    $message = esc_html__('Author List restored from the Trash.', 'publishpress-authors');
+                break;
+                case 5:
+                    $success = true;
+                    $message = esc_html__('Author List moved to the Trash.', 'publishpress-authors');
+                break;
                 default:
             }
             if ($message) {
@@ -590,6 +598,8 @@ class MA_Author_List extends Module
             $author_list['ID'] = $author_list_id;
             // add shortcode parameters
             $author_list['shortcode_args'] = $this->extract_shortcode_params($author_list['static_shortcode']);
+            // update status as active: TODO: Should this come from the from?
+            $author_list['status'] = 'active';
 
             $author_lists[$author_list_id] = $author_list;
 
@@ -601,17 +611,27 @@ class MA_Author_List extends Module
         } else if (!empty($_REQUEST['action']) 
         && !empty($_REQUEST['_wpnonce']) 
         && wp_verify_nonce(sanitize_key($_REQUEST['_wpnonce']), 'author-list-request-nonce')
-        && $_REQUEST['action'] === 'ppma-delete-author-list'
+        && in_array($_REQUEST['action'], ['ppma-trash-author-list', 'ppma-restore-author-list', 'ppma-delete-author-list'])
         && current_user_can(Capability::getManageOptionsCapability())
     ) {
         $legacyPlugin       = Factory::getLegacyPlugin();
-
+        $request_action = sanitize_key($_REQUEST['action']);
         $author_list_id = absint($_REQUEST['author_list_id']);
         $author_lists   = $legacyPlugin->modules->author_list->options->author_list_data;
         if (array_key_exists($author_list_id, $author_lists)) {
-            unset($author_lists[$author_list_id]);
+            if ($request_action == 'ppma-trash-author-list') {
+                $update_message = 5;
+                $author_lists[$author_list_id]['status'] = 'trash';
+            } elseif ($request_action == 'ppma-restore-author-list') {
+                $update_message = 4;
+                $author_lists[$author_list_id]['status'] = 'active';
+            } else {
+                $update_message = 3;
+                unset($author_lists[$author_list_id]);
+            }
+
             $legacyPlugin->update_module_option($this->module_name, 'author_list_data', $author_lists);
-            wp_safe_redirect(admin_url('admin.php?page='. self::MENU_SLUG .'&update_message=3'));
+            wp_safe_redirect(admin_url('admin.php?page='. self::MENU_SLUG .'&update_message=' . $update_message));
             exit();
         }
     }
