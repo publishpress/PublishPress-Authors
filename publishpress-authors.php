@@ -114,15 +114,28 @@ if (! defined('PP_AUTHORS_LOADED')) {
 
         $multiple_authors_addon = new Plugin();
 
+        /**
+         * This installer is currently not running due to it been 
+         * inside plugins_loaded and we need to find a way around it
+         */
+        /*
         register_activation_hook(
             PP_AUTHORS_FILE,
             function () {
                 require_once PP_AUTHORS_BASE_PATH . 'activation.php';
             }
         );
+        */
 
         include_once __DIR__ . '/src/functions/notify.php';
 
         do_action('plublishpress_authors_loaded');
     }, -10);
+
+    register_activation_hook(
+        __FILE__,
+        function () {
+            update_option('ppma_activated', true);
+        }
+    );
 }
