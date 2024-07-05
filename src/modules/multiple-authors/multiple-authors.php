@@ -308,6 +308,9 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_filter('wp_send_new_user_notification_to_admin', [$this, 'prevent_guest_author_emails'], 10, 2);
             add_filter('wp_send_new_user_notification_to_user', [$this, 'prevent_guest_author_emails'], 10, 2);
             add_filter('send_email_change_email', [$this, 'prevent_guest_author_emails'], 10, 2);
+
+            // Redirect on plugin activation
+            add_action('admin_init', [$this, 'redirect_on_activate'], 2000);
         }
 
         /**
@@ -4799,6 +4802,20 @@ echo '<span class="ppma_settings_field_description">'
                 return false;
             }
             return $notify;
+        }
+
+        /**
+         * Redirect user on plugin activation
+         *
+         * @return void
+         */
+        public function redirect_on_activate()
+        {
+            if (get_option('ppma_activated')) {
+                delete_option('ppma_activated');
+                wp_redirect(admin_url("edit-tags.php?taxonomy=author&welcome"));
+                exit;
+              }
         }
     }
 }
