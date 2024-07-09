@@ -1891,7 +1891,10 @@ class MA_Author_Boxes extends Module
                 </div>
             </nav>
         <?php endif; ?>
-        <?php Utils::loadLayoutFrontCss(); ?>
+        
+        <?php if (apply_filters('publishpress_authors_load_style_in_frontend', PUBLISHPRESS_AUTHORS_LOAD_STYLE_IN_FRONTEND)) :
+            Utils::loadLayoutFrontCss();
+        endif; ?>
 
         <?php if ($admin_preview || is_admin()) : ?>
             <div class="pp-author-boxes-editor-preview-styles">
