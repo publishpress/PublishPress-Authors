@@ -24,6 +24,14 @@ if (!class_exists('WP_List_Table')) {
 class AuthorListTable extends \WP_List_Table
 {
 
+    /**
+     * The current view.
+     *
+     * @access public
+     * @var    string
+     */
+    public $list_view = 'active';
+
     /** Class constructor */
     public function __construct()
     {
@@ -33,6 +41,55 @@ class AuthorListTable extends \WP_List_Table
             'plural'   =>  esc_html__('AuthorList', 'publishpress-authors'),
             'ajax'     => false
         ]);
+
+        // Get the current view.
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended 
+        if (isset($_GET['view'])) {
+            $this->list_view = sanitize_key($_GET['view']);
+        }
+    }
+
+    /**
+     * Returns an array of views for the list table.
+     *
+     * @access protected
+     * @return array
+     */
+    protected function get_views()
+    {
+        $views = [];
+        $current = ' class="current"';
+
+        $list_view_filters = [
+            'active'    => _n_noop('All %s', 'All %s', 'publishpress-authors'),
+            'trash'     => _n_noop('Trash %s', 'Trash %s', 'publishpress-authors'),
+        ];
+
+        foreach ($list_view_filters as $view => $noop) {
+
+            $count = count($this->get_author_list_data($view));
+
+            // Add the view link.
+            $views[$view] = sprintf(
+                '<a%s href="%s">%s</a>',
+                $view === $this->list_view ? $current : '',
+                esc_url(
+                    add_query_arg(
+                        [
+                            'page' => 'ppma-author-list',
+                            'view' => esc_attr($view)
+                        ],
+                        admin_url('admin.php')
+                    )
+                ),
+                sprintf(
+                    translate_nooped_plural($noop, $count, $noop['domain']),
+                    sprintf('<span class="count">(%s)</span>', number_format_i18n($count))
+                )
+            );
+        }
+
+        return $views;
     }
 
     /**
@@ -43,23 +100,29 @@ class AuthorListTable extends \WP_List_Table
      *
      * @return mixed
      */
-    public static function get_author_list_data()
+    public static function get_author_list_data($view = 'active')
     {
-        $legacyPlugin = Factory::getLegacyPlugin();
-        
-        $author_list_data = $legacyPlugin->modules->author_list->options->author_list_data;
-        
-        return $author_list_data;
-    }
+        global $author_list_grouped_data;
 
-    /**
-     * Returns the count of records in the database.
-     *
-     * @return null|string
-     */
-    public static function record_count()
-    {
-        return count(get_author_list_data());
+        if (!is_array($author_list_grouped_data) || !isset($author_list_grouped_data[$view])) {
+            if (!is_array($author_list_grouped_data)) {
+                $author_list_grouped_data = [];
+            }
+            $legacyPlugin = Factory::getLegacyPlugin();
+            
+            $author_list_data = $legacyPlugin->modules->author_list->options->author_list_data;
+
+            if (!empty($author_list_data)) {
+                foreach ($author_list_data as $item_id => $item) {
+                    if (isset($item['status']) && $item['status'] == $view) {
+                        $author_list_grouped_data[$view][$item_id] = $item;
+                    } elseif (!isset($item['status'])) {
+                        $author_list_grouped_data['active'][$item_id] = $item;
+                    }
+                }
+            }
+        }
+        return isset($author_list_grouped_data[$view]) ? $author_list_grouped_data[$view] : [];
     }
 
     /**
@@ -108,7 +171,7 @@ class AuthorListTable extends \WP_List_Table
     /** Text displayed when no stterm data is available */
     public function no_items()
     {
-        _e('No author list avaliable.', 'publishpress-authors');
+        _e('No author list avaliable in the selected view.', 'publishpress-authors');
     }
 
     /**
@@ -162,7 +225,7 @@ class AuthorListTable extends \WP_List_Table
         /**
          * Fetch the data
          */
-        $data = self::get_author_list_data();
+        $data = self::get_author_list_data($this->list_view);
 
         /**
          * Handle search
@@ -267,31 +330,61 @@ class AuthorListTable extends \WP_List_Table
     protected function handle_row_actions($item, $column_name, $primary)
     {
         //Build row actions
-        $actions = [
-            'edit'   => sprintf(
-                '<a href="%s">%s</a>',
-                add_query_arg(
-                    [
-                        'page'              => 'ppma-author-list',
-                        'author_list_edit'  => $item['ID'],
-                    ],
-                    admin_url('admin.php')
+        if ($this->list_view === 'active') {
+            $actions = [
+                'edit'   => sprintf(
+                    '<a href="%s">%s</a>',
+                    add_query_arg(
+                        [
+                            'page'              => 'ppma-author-list',
+                            'author_list_edit'  => $item['ID'],
+                        ],
+                        admin_url('admin.php')
+                    ),
+                    esc_html__('Edit', 'publishpress-authors')
                 ),
-                 esc_html__('Edit', 'publishpress-authors')
-            ),
-            'delete' => sprintf(
-                '<a href="%s" class="delete-author-list">%s</a>',
-                add_query_arg([
-                        'page'              => 'ppma-author-list',
-                        'action'            => 'ppma-delete-author-list',
-                        'author_list_id'    => esc_attr($item['ID']),
-                        '_wpnonce'          => wp_create_nonce('author-list-request-nonce')
-                    ],
-                    admin_url('admin.php')
+                'delete' => sprintf(
+                    '<a href="%s" class="delete-author-list">%s</a>',
+                    add_query_arg([
+                            'page'              => 'ppma-author-list',
+                            'action'            => 'ppma-trash-author-list',
+                            'author_list_id'    => esc_attr($item['ID']),
+                            '_wpnonce'          => wp_create_nonce('author-list-request-nonce')
+                        ],
+                        admin_url('admin.php')
+                    ),
+                    esc_html__('Trash', 'publishpress-authors')
                 ),
-                 esc_html__('Delete', 'publishpress-authors')
-            ),
-        ];
+            ];
+        } else {
+            $actions = [
+                'edit'   => sprintf(
+                    '<a href="%s">%s</a>',
+                    add_query_arg(
+                        [
+                            'page'              => 'ppma-author-list',
+                            'action'            => 'ppma-restore-author-list',
+                            'author_list_id'    => esc_attr($item['ID']),
+                            '_wpnonce'          => wp_create_nonce('author-list-request-nonce')
+                        ],
+                        admin_url('admin.php')
+                    ),
+                    esc_html__('Restore', 'publishpress-authors')
+                ),
+                'delete' => sprintf(
+                    '<a href="%s" class="delete-author-list">%s</a>',
+                    add_query_arg([
+                            'page'              => 'ppma-author-list',
+                            'action'            => 'ppma-delete-author-list',
+                            'author_list_id'    => esc_attr($item['ID']),
+                            '_wpnonce'          => wp_create_nonce('author-list-request-nonce')
+                        ],
+                        admin_url('admin.php')
+                    ),
+                    esc_html__('Delete Permanently', 'publishpress-authors')
+                ),
+            ];
+        }
 
         return $column_name === $primary ? $this->row_actions($actions, false) : '';
     }
@@ -360,6 +453,18 @@ class AuthorListTable extends \WP_List_Table
     {
 
         return '<textarea style="resize:none; width: 99%;" readonly>' . $item['static_shortcode'] . '</textarea>';
+    }
+
+    /**
+     * Display the list table.
+     *
+     * @access public
+     * @return void
+     */
+    public function display()
+    {
+        $this->views();
+        parent::display();
     }
 
 }

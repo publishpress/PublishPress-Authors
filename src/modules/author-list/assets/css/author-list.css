@@ -125,6 +125,10 @@ ul.author-list-tab li a span {
     width: 100%;
 }
 
+.wrap.author-list-wrap .tablenav.top {
+    display: inline;
+}
+
 @keyframes loading {
     0% {
         left: -150px;

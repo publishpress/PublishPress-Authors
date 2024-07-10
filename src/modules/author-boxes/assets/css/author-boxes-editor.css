@@ -236,9 +236,10 @@
     padding: 5px;
 }
 
-.ppma-boxes-shortcodes-wrap .shortcode-entries table.shortcode-table input[type=text],
 .ppma-boxes-shortcodes-wrap .shortcode-entries table.shortcode-table select {
     width: 100%;
+    height: 45px;
+    margin-top: -3px;
 }
 
 .ppma-boxes-shortcodes-wrap .shortcode-entries table.shortcode-table th.action {

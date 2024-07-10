@@ -1451,32 +1451,18 @@ class MA_Author_Boxes extends Module
         }
 
         // format author category support
-        $author_categories_data = [];
-        $author_categories_data[] = [
-            'title'       => '',
-            'singular_title' => '',
-            'description' => '',
-            'slug'        => '',
-            'id'          => '',
-            'authors'     => $authors
-        ];
+        $author_categories = get_ppma_author_categories(['category_status' => 1]);
+        $author_categories_data = ppma_get_grouped_post_authors($current_post_id, $authors, $author_categories);
+
         $author_categories_group_option = 'inline';
         $author_categories_title_option = '';
         $author_categories_title_html_tag = 'span';
         $author_categories_title_prefix = '';
         $author_categories_title_suffix = '';
 
-        $all_author_categories_data = $author_categories_data;
-        $author_categories = get_ppma_author_categories(['category_status' => 1]);
-        if (!empty($author_categories)) {
-            $author_relations  = get_ppma_author_relations(['post_id' => $current_post_id]);
-            $admin_preview_arg = $admin_preview || !empty($args['ajax_preview']);
-            $all_author_categories_data = Post_Editor::group_category_authors($author_categories, $author_relations, $authors);
-        }
 
         if (!empty($args['author_categories_group']['value'])) {
             if (!empty($author_categories)) {
-                $author_categories_data = $all_author_categories_data;
                 $author_categories_group_option = !empty($args['author_categories_group_option']['value']) ? $args['author_categories_group_option']['value'] : 'inline';
                 $author_categories_title_option = !empty($args['author_categories_title_option']['value']) ? $args['author_categories_title_option']['value'] : '';
                 $author_categories_title_html_tag = !empty($args['author_categories_title_html_tag']['value']) ? $args['author_categories_title_html_tag']['value'] : 'span';
@@ -1598,7 +1584,7 @@ class MA_Author_Boxes extends Module
                                                         endif;
 
 
-                                                        $current_author_category = get_ppma_author_category($author, $all_author_categories_data);
+                                                        $current_author_category = get_ppma_author_category($author, $author_categories_data);
 
                                                         //author fields item position
                                                         $name_row_extra = '';
@@ -1896,7 +1882,7 @@ class MA_Author_Boxes extends Module
         <?php if ($admin_preview || is_admin()) : ?>
             <div class="pp-author-boxes-editor-preview-styles">
                 <style>
-                    <?php echo $custom_styles; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                    <?php echo html_entity_decode($custom_styles); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                 </style>
             </div>
         <?php else : ?>
@@ -1906,7 +1892,7 @@ class MA_Author_Boxes extends Module
             );*/
             ?>
             <style>
-                <?php echo $custom_styles; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                <?php echo html_entity_decode($custom_styles); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
             </style>
         <?php endif; ?>
 
@@ -2063,13 +2049,11 @@ class MA_Author_Boxes extends Module
                                 <tbody>
                                     <tr class="shortcode-form">
                                         <td class="shortcode-field">
-                                            <input name="<?php echo esc_attr($key); ?>-shortcode-input"
+                                            <textarea name="<?php echo esc_attr($key); ?>-shortcode-input"
                                                 id="<?php echo esc_attr($key); ?>-shortcode-input"
                                                 class="<?php echo esc_attr($key); ?>-shortcode-input"
-                                                type="text"
-                                                value=""
                                                 placeholder="<?php echo esc_attr__('Shortcode', 'publishpress-authors'); ?>"
-                                            />
+                                            ></textarea>
                                         </td>
                                         <td class="shortcode-field">
                                         <select name="<?php echo esc_attr($key); ?>-position-input"
@@ -2125,7 +2109,7 @@ class MA_Author_Boxes extends Module
                             </table>
                         </div>
                     </div>
-                    <p class="description"><?php echo sprintf(esc_html__('You can use basic html as prefixes in short code, for example: %1s.', 'publishpress-authors'), '&lt;span class="read-time"&gt;Read Time&lt;/span&gt; [read_time_shortcode]'); ?></p>
+                    <p class="description"><?php echo sprintf(esc_html__('You can use basic HTML in this field. For example: Read Time %1s.', 'publishpress-authors'), '[read_time_shortcode]'); ?></p>
                 <?php
                 elseif ('export_action' === $args['type']) :
                     ?>

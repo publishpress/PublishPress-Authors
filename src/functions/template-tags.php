@@ -183,6 +183,7 @@ if (!function_exists('ppma_post_authors_categorized')) {
             return [];
         }
 
+        // TODO: Cache the result
         $authors = get_post_authors($postId, true);
         $categorized_authors = [];
         $author_relations = get_ppma_author_relations(['post_id' => $postId, 'slug' => $category_slugs]);
@@ -1589,6 +1590,54 @@ if (!function_exists('get_ppma_author_categories')) {
 }
 
 
+if (!function_exists('ppma_get_grouped_post_authors')) {
+    function ppma_get_grouped_post_authors($post = 0, $authors = false, $author_categories = false) {
+
+        if (is_object($post)) {
+            $post = $post->ID;
+        } elseif (empty($post)) {
+            $post = get_post();
+            if (is_object($post) && !is_wp_error($post)) {
+                $post = $post->ID;
+            }
+        }
+
+        $post_id = (int)$post;
+
+        if (empty($post_id) ) {
+            return [];
+        }
+        
+        if (!$authors) {
+            $authors = get_post_authors($post_id);
+        }
+
+        // make sure there's a default grouping
+        $author_categories_data = [];
+        $author_categories_data[] = [
+            'title'       => '',
+            'singular_title' => '',
+            'description' => '',
+            'slug'        => '',
+            'id'          => '',
+            'authors'     => $authors
+        ];
+
+        if (!$author_categories) {
+            $author_categories = get_ppma_author_categories(['category_status' => 1]);
+        }
+        // group authors to categories
+        if (!empty($author_categories)) {
+            $author_relations       = get_ppma_author_relations(['post_id' => $post_id]);
+            $author_categories_data = Post_Editor::group_category_authors($author_categories, $author_relations, $authors);
+        }
+        
+        // TODO: Cache this data
+        return $author_categories_data;
+    }
+}
+
+
 if (!function_exists('get_ppma_author_relations')) {
     function get_ppma_author_relations($args = []) {
         global $wpdb;
@@ -1608,16 +1657,19 @@ if (!function_exists('get_ppma_author_relations')) {
         $results = wp_cache_get($cache_key, 'author_categories_relation_cache');
 
         if ($results === false) {
-            $table_name = $wpdb->prefix . 'ppma_author_relationships';
+            $relationships_table    = $wpdb->prefix . 'ppma_author_relationships';
+            $categories_table       = $wpdb->prefix . 'ppma_author_categories';
 
-            $sql = "SELECT * FROM $table_name WHERE 1=1";
+            $sql = "SELECT * FROM $relationships_table WHERE 1=1";
+
+            $sql = "SELECT r.*, c.category_name, c.plural_name FROM $relationships_table r LEFT JOIN $categories_table c ON r.category_id = c.id  WHERE 1=1";
 
             if ($post_id !== '') {
-                $sql .= $wpdb->prepare(" AND post_id = %d", $post_id);
+                $sql .= $wpdb->prepare(" AND r.post_id = %d", $post_id);
             }
 
             if (!empty($author_term_id)) {
-                $sql .= $wpdb->prepare(" AND author_term_id = %d", $author_term_id);
+                $sql .= $wpdb->prepare(" AND r.author_term_id = %d", $author_term_id);
             }
 
             $results = $wpdb->get_results($sql, ARRAY_A);

@@ -34,6 +34,14 @@ use MultipleAuthors\Factory;
 class MA_Author_List extends Module
 {
 
+    /**
+     * Instance of the module
+     *
+     * @var stdClass
+     */
+    public $module;
+    public $module_url;
+
     public $module_name = 'author_list';
 
     // WP_List_Table object
@@ -234,6 +242,14 @@ class MA_Author_List extends Module
                     $success = true;
                     $message = esc_html__('Author List deleted successfully.', 'publishpress-authors');
                 break;
+                case 4:
+                    $success = true;
+                    $message = esc_html__('Author List restored from the Trash.', 'publishpress-authors');
+                break;
+                case 5:
+                    $success = true;
+                    $message = esc_html__('Author List moved to the Trash.', 'publishpress-authors');
+                break;
                 default:
             }
             if ($message) {
@@ -341,7 +357,7 @@ class MA_Author_List extends Module
             'sanitize'          => 'sanitize_text_field',
             'field_visibility'  => [],
             'tab'               => 'general',
-            'required'          => 1,
+            'required'          => true,
         ];
         $fields['layout'] = [
             'label'             => esc_html__('Layout', 'publishpress-authors'),
@@ -351,7 +367,7 @@ class MA_Author_List extends Module
             'sanitize'          => 'sanitize_text_field',
             'field_visibility'  => [],
             'tab'               => 'general',
-            'required'          => 1,
+            'required'          => true,
         ];
         $fields['layout_columns'] = [
             'label'             => esc_html__('Layout Columns', 'publishpress-authors'),
@@ -378,7 +394,7 @@ class MA_Author_List extends Module
         // add users fields
         $fields['author_type'] = [
             'label'             => esc_html__('Author Type', 'publishpress-authors'),
-            'description'       => esc_html__('Select an option to limit the results to selected user roles, author type or specific authors.', 'publishpress-authors'),
+            'description'       => esc_html__('Select an option to limit the results to selected user roles, author types or specific authors.', 'publishpress-authors'),
             'type'              => 'tab',
             'options'           => [
                 'roles'         => esc_html__('Roles', 'publishpress-authors'),
@@ -404,7 +420,7 @@ class MA_Author_List extends Module
         if (!$pro_active) {
             $fields['search_promo'] = [
                 'label'             => esc_html__('Add Search Box to Author Lists', 'publishpress-authors'),
-                'description'       => esc_html__('Authors Pro allows you to show search box and search through author fields.', 'publishpress-authors'),
+                'description'       => esc_html__('Author Pro allows you to add a search box to the Authors List. You can also show a dropdown menu that allows users to search on specific author fields.', 'publishpress-authors'),
                 'type'              => 'promo',
                 'tab'               => 'search',
             ];
@@ -582,6 +598,8 @@ class MA_Author_List extends Module
             $author_list['ID'] = $author_list_id;
             // add shortcode parameters
             $author_list['shortcode_args'] = $this->extract_shortcode_params($author_list['static_shortcode']);
+            // update status as active: TODO: Should this come from the from?
+            $author_list['status'] = 'active';
 
             $author_lists[$author_list_id] = $author_list;
 
@@ -593,17 +611,27 @@ class MA_Author_List extends Module
         } else if (!empty($_REQUEST['action']) 
         && !empty($_REQUEST['_wpnonce']) 
         && wp_verify_nonce(sanitize_key($_REQUEST['_wpnonce']), 'author-list-request-nonce')
-        && $_REQUEST['action'] === 'ppma-delete-author-list'
+        && in_array($_REQUEST['action'], ['ppma-trash-author-list', 'ppma-restore-author-list', 'ppma-delete-author-list'])
         && current_user_can(Capability::getManageOptionsCapability())
     ) {
         $legacyPlugin       = Factory::getLegacyPlugin();
-
+        $request_action = sanitize_key($_REQUEST['action']);
         $author_list_id = absint($_REQUEST['author_list_id']);
         $author_lists   = $legacyPlugin->modules->author_list->options->author_list_data;
         if (array_key_exists($author_list_id, $author_lists)) {
-            unset($author_lists[$author_list_id]);
+            if ($request_action == 'ppma-trash-author-list') {
+                $update_message = 5;
+                $author_lists[$author_list_id]['status'] = 'trash';
+            } elseif ($request_action == 'ppma-restore-author-list') {
+                $update_message = 4;
+                $author_lists[$author_list_id]['status'] = 'active';
+            } else {
+                $update_message = 3;
+                unset($author_lists[$author_list_id]);
+            }
+
             $legacyPlugin->update_module_option($this->module_name, 'author_list_data', $author_lists);
-            wp_safe_redirect(admin_url('admin.php?page='. self::MENU_SLUG .'&update_message=3'));
+            wp_safe_redirect(admin_url('admin.php?page='. self::MENU_SLUG .'&update_message=' . $update_message));
             exit();
         }
     }
@@ -799,6 +827,7 @@ class MA_Author_List extends Module
             'rows'        => '20',
             'readonly'    => false,
             'multiple'    => false,
+            'required'    => false,
             'field_visibility'  => [],
         ];
 
@@ -808,7 +837,7 @@ class MA_Author_List extends Module
         if ('range' === $args['type'] && $args['show_input']) {
             $tab_class .= ' double-input';
         }
-        
+
         ob_start();
         $generate_tab_title = false;
         if (in_array($args['type'], ['textarea', 'preview', 'tab', 'promo'])) {
@@ -833,6 +862,9 @@ class MA_Author_List extends Module
                 <th scope="row" style="<?php echo esc_attr($th_style); ?>">
                     <label for="<?php echo esc_attr($key); ?>">
                         <?php echo esc_html($args['label']); ?>
+                        <?php if (isset($args['required']) && $args['required'] === true) : ?>
+                            <span class="required">*</span>
+                        <?php endif; ?>
                     </label>
                 </th>
             <?php endif; ?>
@@ -1007,7 +1039,7 @@ class MA_Author_List extends Module
                 elseif ('preview' === $args['type']) :
                     $shortcode_content = !empty($option_values['static_shortcode']) ? do_shortcode($option_values['static_shortcode']) : '';
                     ?>
-                    <p class="description" style="margin-bottom: 20px;"><span class="required">*</span> <?php esc_html_e('This is a quick preview of this Author List. Test on frontend pages to see exactly how it looks with your theme.', 'publishpress-authors'); ?></p>
+                    <p class="description" style="margin-bottom: 20px;"><?php esc_html_e('This is a quick preview of this Author List. Test on frontend pages to see exactly how it looks with your theme.', 'publishpress-authors'); ?></p>
                     <div class="preview-shortcode-wrap"><?php echo $shortcode_content; ?></div>
                     <div class="preview-skeleton" style="display: none;">
                         <div class="skeleton skeleton-header"></div>
@@ -1042,6 +1074,7 @@ class MA_Author_List extends Module
                         value="<?php echo esc_attr($args['value']); ?>"
                         placeholder="<?php echo esc_attr($args['placeholder']); ?>"
                         <?php echo (isset($args['readonly']) && $args['readonly'] === true) ? 'readonly' : ''; ?>
+                        <?php echo (isset($args['required']) && $args['required'] === true) ? 'required' : ''; ?>
                          />
                 <?php endif; ?>
                 <?php if (!in_array($args['type'], ['promo']) && isset($args['description']) && !empty($args['description'])) : ?>

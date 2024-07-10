@@ -88,6 +88,50 @@ if (!class_exists('MA_Divi_Integration')) {
                     sprintf('[PublishPress Authors] Method [%s] caught the exception %s', __METHOD__, $e->getMessage())
                 );
             }
+            add_filter('the_author_posts_link', [$this, 'filter_author_posts_link'], 11);
+            add_filter('et_pb_blog_image_width', [$this, 'filter_et_pb_blog_image_width'], 11);
+        }
+
+        /**
+         * Filter author post link to support multiple and guest author
+         * 
+         * @param string $link
+         * 
+         * @return string
+         */
+        public function filter_author_posts_link($link) {
+            global $authordata, $post;
+
+            $authors = get_post_authors($post->ID);
+            
+            $author_links = [];
+            foreach ($authors as $index => $author) {
+                $author_links[] = sprintf(
+                    '<a href="%1$s" title="%2$s" rel="author">%3$s</a>',
+                    esc_url( $author->link ),
+                    // translators: post author name.
+                    esc_attr( sprintf( __( 'Posts by %s', 'et_builder' ), $author->display_name ) ),
+                    $author->display_name
+                );
+            }
+            $link = join(", ",$author_links);
+
+            return $link;
+        }
+
+        public function filter_et_pb_blog_image_width($width) {
+            global $authordata, $post;
+
+            if (empty($authordata)) {
+                // the only way we're able to set author data for situation where post author/fallback author user has been deleted
+                $legacyPlugin           = Factory::getLegacyPlugin();
+                $fallbackAuthor         = isset($legacyPlugin->modules->multiple_authors->options->fallback_user_for_guest_post) ?
+                    (int)$legacyPlugin->modules->multiple_authors->options->fallback_user_for_guest_post : 0;
+                
+                $authordata = get_userdata($fallbackAuthor);
+            }
+
+            return $width;
         }
 
         /**
