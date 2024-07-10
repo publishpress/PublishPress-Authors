@@ -409,9 +409,10 @@
 
             //prepare ajax data
             var editor_values = getAllEditorFieldsValues();
-
             var data = {
                 action: "author_boxes_editor_get_template",
+                preview_author_post: $('.editor-preview-author-post .ppma-authors-post-search').val(),
+                post_id: authorBoxesEditor.post_id,
                 editor_data: $.extend({}, editor_values),
                 nonce: authorBoxesEditor.nonce,
             };

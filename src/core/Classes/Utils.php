@@ -1178,14 +1178,16 @@ class Utils
         $enable_font_awesome = isset($legacyPlugin->modules->multiple_authors->options->enable_font_awesome)
         ? 'yes' === $legacyPlugin->modules->multiple_authors->options->enable_font_awesome : true;
 
-        wp_enqueue_style('dashicons');
-        wp_enqueue_style(
-            'multiple-authors-widget-css',
-            PP_AUTHORS_ASSETS_URL . 'css/multiple-authors-widget.css',
-            false,
-            PP_AUTHORS_VERSION,
-            'all'
-        );
+        if (is_admin() || apply_filters('publishpress_authors_load_style_in_frontend', PUBLISHPRESS_AUTHORS_LOAD_STYLE_IN_FRONTEND)) {
+            wp_enqueue_style('dashicons');
+            wp_enqueue_style(
+                'multiple-authors-widget-css',
+                PP_AUTHORS_ASSETS_URL . 'css/multiple-authors-widget.css',
+                false,
+                PP_AUTHORS_VERSION,
+                'all'
+            );
+        }
 
         if ($enable_font_awesome) {
             wp_enqueue_style(
