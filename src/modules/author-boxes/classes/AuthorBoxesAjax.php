@@ -171,24 +171,6 @@ class AuthorBoxesAjax
         exit;
     }
 
-    function get_method_code($class, $method) {
-        // Use ReflectionClass to get the file and start line of the method
-        $reflector = new ReflectionClass($class);
-        $methodReflector = $reflector->getMethod($method);
-        $fileName = $methodReflector->getFileName();
-        $startLine = $methodReflector->getStartLine() - 1; // Reflector returns 1-based line numbers
-        $endLine = $methodReflector->getEndLine();
-        
-        // Read the file into an array of lines
-        $fileLines = file($fileName);
-        
-        // Extract the lines corresponding to the method
-        $methodLines = array_slice($fileLines, $startLine, $endLine - $startLine);
-        
-        // Join the lines to form the method code
-        return implode('', $methodLines);
-    }
-
     /**
      * Handle a request to generate author boxes template.
      */
