@@ -746,12 +746,14 @@ class Author
     {
         $urls = $this->get_custom_avatar_url($size);
 
+        $imageId = attachment_url_to_postid($urls['url']);
+
         $class = [
             'multiple_authors_guest_author_avatar',
             'avatar',
         ];
 
-        $alt = $this->display_name;
+        $alt = get_post_meta( $imageId, '_wp_attachment_image_alt', true );
 
         // Build the HTML tag.
         $avatar = sprintf(
