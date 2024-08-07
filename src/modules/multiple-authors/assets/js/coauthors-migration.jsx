@@ -45,7 +45,7 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
                 async: false,
                 data: {
                     action: 'get_coauthors_migration_data',
-                    nonce: this.props.nonce
+                    nonce: self.props.nonce
                 },
                 success: function (response) {
                     self.setState({
@@ -82,7 +82,7 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
                 async: false,
                 data: {
                     action: 'finish_coauthors_migration',
-                    nonce: this.props.nonce
+                    nonce: self.props.nonce
                 },
                 success: function (response) {
                     onFinishCallBack();
@@ -108,8 +108,8 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
             url: ajaxurl,
             data: {
                 action: 'migrate_coauthors',
-                nonce: this.props.nonce,
-                chunkSize: this.state.chunkSize
+                nonce: self.props.nonce,
+                chunkSize: self.state.chunkSize
             },
             success: function (response) {
                 let totalMigrated = self.state.totalMigrated + self.state.chunkSize;
@@ -194,7 +194,7 @@ class PPAuthorsCoAuthorsMigrationBox extends React.Component {
             url: ajaxurl,
             data: {
                 action: 'deactivate_coauthors_plus',
-                nonce: this.props.nonce
+                nonce: self.props.nonce
             },
             success: function (response) {
                 self.setState({
