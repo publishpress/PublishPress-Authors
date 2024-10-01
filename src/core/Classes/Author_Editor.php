@@ -582,6 +582,7 @@ class Author_Editor
     public static function action_edited_author($term_id)
     {
         if (empty($_POST['author-edit-nonce'])
+            || !is_user_logged_in()
             || !wp_verify_nonce(sanitize_key($_POST['author-edit-nonce']), 'author-edit')) {
             return;
         }
@@ -598,6 +599,28 @@ class Author_Editor
                 $user_id = false;
             } else {
                 $updated_args['ID'] = $user_id;
+            }
+        }
+
+        /**
+         * Make sure current user is set as user ID if user does not 
+         * have capability to edit other authors/users.
+         * 
+         * Note: Prevent ability to edit administrator completely.
+         */
+        if ($user && (int)$user_id !== get_current_user_id()) {
+            
+            // Prevent editing administrators completely
+            if (in_array('administrator', $user->roles)) {
+                $user_id = false;
+                $user = false;
+            }
+            // Check if the user lacks the necessary capabilities and fallback to current user
+            elseif (!current_user_can(get_taxonomy('author')->cap->manage_terms)
+                    && !current_user_can('edit_user', $user_id)) {
+                // Fallback to current user if they lack permissions
+                $user_id    = get_current_user_id();
+                $user       = get_user_by('id', $user_id);
             }
         }
 
