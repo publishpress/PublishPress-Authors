@@ -597,8 +597,6 @@ class Author_Editor
             if (!is_a($user, 'WP_User')) {
                 $user = false;
                 $user_id = false;
-            } else {
-                $updated_args['ID'] = $user_id;
             }
         }
 
@@ -624,12 +622,20 @@ class Author_Editor
             }
         }
 
+        if ($user) {
+            $updated_args['ID'] = $user_id;
+        }
+
         foreach (self::get_fields($author) as $key => $args) {
             if (!isset($_POST['authors-' . $key])) {
                 continue;
             }
             $sanitize = isset($args['sanitize']) ? $args['sanitize'] : 'sanitize_text_field';
-            $field_value = $sanitize($_POST['authors-' . $key]); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+            if ($key == 'user_id') {
+                $field_value = $user_id;
+            } else {
+                $field_value = $sanitize($_POST['authors-' . $key]); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+            }
             update_term_meta($term_id, $key, $field_value);
             if ($user_id) {
                 update_user_meta($user_id, $key, $field_value);
