@@ -246,11 +246,11 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= [4.7.2] - 14 Oct 2024 =
+= [4.7.2] - 15 Oct 2024 =
 
 * Update: Improve Author User data update capability check
 * Fixed: Fix Guest Author conversion not working for Author without email, #1908
-* Update: Brazil Translation Update ,#1910
+* Update: Brazil Translation Update, #1910
 
 = [4.7.1] - 10 July 2024 =
 
