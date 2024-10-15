@@ -6,8 +6,8 @@ Author URI: https://publishpress.com
 Tags: multiple authors, authors, guest authors, author bio, author layouts
 Requires at least: 5.5
 Requires PHP: 7.2.5
-Tested up to: 6.5
-Stable tag: 4.7.1
+Tested up to: 6.6
+Stable tag: 4.7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -245,6 +245,12 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [4.7.2] - 15 Oct 2024 =
+
+* Update: Improve Author User data update capability check
+* Fixed: Fix Guest Author conversion not working for Author without email, #1908
+* Update: Brazil Translation Update, #1910
 
 = [4.7.1] - 10 July 2024 =
 
