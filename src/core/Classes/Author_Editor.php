@@ -582,6 +582,7 @@ class Author_Editor
     public static function action_edited_author($term_id)
     {
         if (empty($_POST['author-edit-nonce'])
+            || !is_user_logged_in()
             || !wp_verify_nonce(sanitize_key($_POST['author-edit-nonce']), 'author-edit')) {
             return;
         }
@@ -596,9 +597,33 @@ class Author_Editor
             if (!is_a($user, 'WP_User')) {
                 $user = false;
                 $user_id = false;
-            } else {
-                $updated_args['ID'] = $user_id;
             }
+        }
+
+        /**
+         * Make sure current user is set as user ID if user does not 
+         * have capability to edit other authors/users.
+         * 
+         * Note: Prevent ability to edit administrator completely.
+         */
+        if ($user && (int)$user_id !== get_current_user_id()) {
+            
+            // Prevent editing administrators completely
+            if (in_array('administrator', $user->roles)) {
+                $user_id = false;
+                $user = false;
+            }
+            // Check if the user lacks the necessary capabilities and fallback to current user
+            elseif (!current_user_can(get_taxonomy('author')->cap->manage_terms)
+                    || !current_user_can('edit_user', $user_id)) {
+                // Fallback to current user if they lack permissions
+                $user_id    = get_current_user_id();
+                $user       = get_user_by('id', $user_id);
+            }
+        }
+
+        if ($user) {
+            $updated_args['ID'] = $user_id;
         }
 
         foreach (self::get_fields($author) as $key => $args) {
@@ -606,7 +631,11 @@ class Author_Editor
                 continue;
             }
             $sanitize = isset($args['sanitize']) ? $args['sanitize'] : 'sanitize_text_field';
-            $field_value = $sanitize($_POST['authors-' . $key]); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+            if ($key == 'user_id') {
+                $field_value = $user_id;
+            } else {
+                $field_value = $sanitize($_POST['authors-' . $key]); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+            }
             update_term_meta($term_id, $key, $field_value);
             if ($user_id) {
                 update_user_meta($user_id, $key, $field_value);
@@ -807,7 +836,7 @@ class Author_Editor
             'publishpress-authors'
         );
         $bulk_actions['convert_into_guest_author'] = __(
-            'Convert into Guest Author With User Account',
+            'Convert to Registered Author With User Account',
             'publishpress-authors'
         );
         $bulk_actions['update_post_count'] = __(

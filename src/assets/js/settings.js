@@ -24,7 +24,7 @@ jQuery(document).ready(function ($) {
 
     var ppmaTab = 'ppma-tab-general';
 
-    if (typeof ppmaSettings != 'undefined' && typeof ppmaSettings.tab != 'undefined') {
+    if (typeof ppmaSettings != 'undefined' && typeof ppmaSettings.tab != 'undefined' && ppmaSettings.tab !== '') {
        ppmaTab = ppmaSettings.tab;
        $('#publishpress-authors-settings-tabs a[href="#' + ppmaTab + '"]').click();
     } else if (browserSupportStorage() && getStorageData('ppma_settings_active_tab')) {

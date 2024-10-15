@@ -177,6 +177,10 @@ trait Author_box
             }
         }
 
+        if (empty($authorsList)) {
+            return '';
+        }
+
         $this->authorsCount = count($authorsList);
 
         if ($this->authorsCount === 1) {

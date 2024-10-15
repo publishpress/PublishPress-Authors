@@ -3761,12 +3761,10 @@ echo '<span class="ppma_settings_field_description">'
                     PP_AUTHORS_VERSION
                 );
 
-                if (!empty($_REQUEST['ppma_tab'])) {
-                    wp_localize_script('multiple-authors-settings', 'ppmaSettings', [
-                        'tab' => 'ppma-tab-' . sanitize_key($_REQUEST['ppma_tab']),
-                        'runScript' => !empty($_REQUEST['ppma_maint']) ? sanitize_key($_REQUEST['ppma_maint']) : '',
-                    ]);
-                }
+                wp_localize_script('multiple-authors-settings', 'ppmaSettings', [
+                    'tab' => !empty($_REQUEST['ppma_tab']) ? 'ppma-tab-' . sanitize_key($_REQUEST['ppma_tab']) : '',
+                    'runScript' => !empty($_REQUEST['ppma_maint']) ? sanitize_key($_REQUEST['ppma_maint']) : '',
+                ]);
 
                 wp_enqueue_script(
                     'publishpress-authors-sync-post-author',

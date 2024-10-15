@@ -341,6 +341,9 @@ class Author
 
         $userId = get_term_meta($term_id, 'user_id', true);
         $author = Author::get_by_term_id($term_id);
+
+        $new_author_email = !empty($author->user_email) ? $author->user_email : self::generate_random_domain_email($term_id);
+
         if ($userId && is_object($author) && isset($author->display_name)) {
             $user_data = [
                 'ID'    => $userId,
@@ -349,24 +352,38 @@ class Author
             wp_update_user($user_data);
             update_term_meta($term_id, 'user_id', $userId);
             update_term_meta($term_id, 'user_id_' . $userId, $userId);
-        } elseif (!empty($author->user_email)) {
+        } else {
             $user_data = [
-                'user_login'    => !empty($author->user_login)? $author->user_login : sanitize_title($author->user_email),
+                'user_login'    => !empty($author->user_login)? $author->user_login : sanitize_title($new_author_email),
                 'display_name'  => $author->display_name,
-                'user_email'    => $author->user_email,
+                'user_email'    => $new_author_email,
                 'user_pass'     => wp_generate_password(),
                 'role'          => 'ppma_guest_author',
             ];
             $userId = wp_insert_user($user_data);
-            
+
             if (!is_wp_error($userId)) {
+                update_term_meta($term_id, 'user_email', $new_author_email);
                 update_term_meta($term_id, 'user_id', $userId);
                 update_term_meta($term_id, 'user_id_' . $userId, $userId);
             }
-        } else {
-            delete_term_meta($term_id, 'user_id');
-            delete_term_meta($term_id, 'user_id_' . $userId);
         }
+    }
+
+    /**
+     * Generate random domain email
+     */
+    public static function generate_random_domain_email($unique_id = '') {
+        // Get current timestamp
+        $timestamp = $unique_id . time();
+        
+        // Get website domain
+        $domain = parse_url(get_bloginfo('url'), PHP_URL_HOST);
+        
+        // Generate the email
+        $random_email = 'guestauthor+' . $timestamp . '@' . $domain;
+        
+        return $random_email;
     }
 
     /**
@@ -746,12 +763,14 @@ class Author
     {
         $urls = $this->get_custom_avatar_url($size);
 
+        $imageId = attachment_url_to_postid($urls['url']);
+
         $class = [
             'multiple_authors_guest_author_avatar',
             'avatar',
         ];
 
-        $alt = $this->display_name;
+        $alt = get_post_meta( $imageId, '_wp_attachment_image_alt', true );
 
         // Build the HTML tag.
         $avatar = sprintf(
