@@ -33,6 +33,10 @@ class MA_Author_Pages extends Module
 
     public $module_name = 'author_pages';
 
+    public $module_url;
+
+    public $module;
+
     public $viewsPath;
 
     public $view;
