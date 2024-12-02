@@ -152,7 +152,6 @@ class Utils
 
         Utils::set_post_authors($post_id, $authors);
 
-        do_action('publishpress_authors_flush_cache', $post_id);
 
         return $result;
     }
