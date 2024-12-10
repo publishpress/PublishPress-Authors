@@ -271,7 +271,7 @@ class AuthorBoxesEditorFields
             'sanitize' => 'sanitize_text_field',
             'options'  => [
                 'after_avatar'       => esc_html__('After Avatar', 'publishpress-authors'),
-                'infront_of_avatar'  => esc_html__('Infront of Avatar', 'publishpress-authors'),
+                'infront_of_avatar'  => esc_html__('In front of Avatar', 'publishpress-authors'),
             ],
             'tab'      => 'name',
         ];
