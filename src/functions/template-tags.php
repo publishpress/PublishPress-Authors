@@ -1604,7 +1604,7 @@ if (!function_exists('ppma_get_grouped_post_authors')) {
 
         $post_id = (int)$post;
 
-        if (empty($post_id) ) {
+        if (empty($post_id) && !$authors ) {
             return [];
         }
         
