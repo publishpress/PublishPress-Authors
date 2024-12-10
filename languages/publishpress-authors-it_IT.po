@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Plugins - Co-Authors, Multiple Authors and Guest Authors "
 "in an Author Box with PublishPress Authors - Stable (latest release)\n"
-"POT-Creation-Date: 2024-07-10 07:21+0000\n"
-"PO-Revision-Date: 2024-07-10 20:03+0200\n"
+"POT-Creation-Date: 2024-10-14 09:25+0000\n"
+"PO-Revision-Date: 2024-10-16 14:11+0200\n"
 "Last-Translator: \n"
 "Language-Team: Italian\n"
 "Language: it_IT\n"
@@ -483,7 +483,7 @@ msgstr "Dopo la riga di \"Vedi tutti gli articoli\""
 #, php-format
 msgid "All %s"
 msgid_plural "All %s"
-msgstr[0] "Tutto %s"
+msgstr[0] "Tutti %s"
 msgstr[1] "Tutti %s"
 
 #: src/core/Authors_Widget.php:181 src/core/Authors_Widget.php:412
@@ -515,13 +515,13 @@ msgstr "Permette di creare autore senza un vero account utente."
 msgid "Allow User to Choose"
 msgstr "Consente all'utente di scegliere"
 
-#: src/core/Classes/Author_Editor.php:978
+#: src/core/Classes/Author_Editor.php:1007
 msgid "An author email is required when creating new User Author."
 msgstr ""
 "L'email dell'autore è obbligatoria quando si crea un nuovo utente autore."
 
-#: src/core/Classes/Author_Editor.php:948
-#: src/core/Classes/Author_Editor.php:966
+#: src/core/Classes/Author_Editor.php:977
+#: src/core/Classes/Author_Editor.php:995
 msgid "An author with the name provided already exists."
 msgstr "Un autore con questo nome esiste già."
 
@@ -821,7 +821,7 @@ msgstr "Weight della categoria d'autore"
 msgid "Author category with this name already exist."
 msgstr "Una categoria autore con questo nome esiste già."
 
-#: src/core/Classes/Author_Editor.php:730
+#: src/core/Classes/Author_Editor.php:759
 msgid "Author Email"
 msgstr "Email dell'autore"
 
@@ -995,7 +995,7 @@ msgstr "AuthorList"
 
 #: src/core/Authors_Widget.php:138 src/core/Plugin.php:856
 #: src/core/Classes/Post_Editor.php:94 src/core/Classes/Post_Editor.php:206
-#: src/core/Traits/Author_box.php:189
+#: src/core/Traits/Author_box.php:193
 #: src/modules/author-categories/author-categories.php:624
 #: src/modules/author-list/author-list.php:402
 #: src/modules/editflow-integration/editflow-integration.php:114
@@ -1044,7 +1044,7 @@ msgid ""
 "Authors Pro allows you to add extra features to the Authors List. These "
 "features include pagination, choose the order of authors, and much more."
 msgstr ""
-"Authors Pro ti permette di aggiungere ulteriori funzionalità all'elenco "
+"Authors Pro ti permette di aggiungere ulteriori caratteristiche all'elenco "
 "degli autori. Queste caratteristiche includono la paginazione, la scelta "
 "dell'ordine degli autori e molto altro ancora."
 
@@ -1338,7 +1338,7 @@ msgstr ""
 msgid "Click To Copy!"
 msgstr "Fai clic per copiare!"
 
-#: src/modules/multiple-authors/multiple-authors.php:4395
+#: src/modules/multiple-authors/multiple-authors.php:4393
 msgid "Click to run the update now"
 msgstr "Fai clic per avviare adesso l'aggiornamento"
 
@@ -1357,12 +1357,12 @@ msgstr "Coautori"
 
 #: src/modules/byline-migration/byline-migration.php:145
 #: src/modules/bylines-migration/bylines-migration.php:147
-#: src/modules/multiple-authors/multiple-authors.php:3861
+#: src/modules/multiple-authors/multiple-authors.php:3859
 msgid "Collecting data for the migration..."
 msgstr "Raccogliendo i dati per la migrazione…"
 
-#: src/modules/multiple-authors/multiple-authors.php:3793
-#: src/modules/multiple-authors/multiple-authors.php:3824
+#: src/modules/multiple-authors/multiple-authors.php:3791
+#: src/modules/multiple-authors/multiple-authors.php:3822
 msgid "Collecting data..."
 msgstr "Raccogliendo i dati…"
 
@@ -1395,9 +1395,9 @@ msgstr ""
 msgid "Contact"
 msgstr "Contatto"
 
-#: src/core/Classes/Author_Editor.php:809
-msgid "Convert into Guest Author With User Account"
-msgstr "Convertire in autore ospite con account utente"
+#: src/core/Classes/Author_Editor.php:838
+msgid "Convert to Registered Author With User Account"
+msgstr "Converti in autore registrato con account utente"
 
 #: src/modules/author-boxes/author-boxes.php:2131
 #: src/modules/author-boxes/author-boxes.php:2203
@@ -1422,7 +1422,7 @@ msgstr "Copiare i dati info autori"
 msgid "Copy Co-Authors Plus Data"
 msgstr "Copia i dati Co-Authors Plus"
 
-#: src/modules/multiple-authors/multiple-authors.php:3866
+#: src/modules/multiple-authors/multiple-authors.php:3864
 msgid "Copy Co-Authors Plus data"
 msgstr "Copia i dati Co-Authors Plus"
 
@@ -1437,11 +1437,11 @@ msgstr "Copia negli appunti"
 
 #: src/modules/byline-migration/byline-migration.php:149
 #: src/modules/bylines-migration/bylines-migration.php:151
-#: src/modules/multiple-authors/multiple-authors.php:3865
+#: src/modules/multiple-authors/multiple-authors.php:3863
 msgid "Copying authors' data..."
 msgstr "Copiando i dati degli autori…"
 
-#: src/core/Classes/Author_Editor.php:704
+#: src/core/Classes/Author_Editor.php:733
 msgid ""
 "Create an author profile and a linked user account. This account will be in "
 "the \"Guest Author\" role and will not be able to login to the WordPress "
@@ -1451,7 +1451,7 @@ msgstr ""
 "ruolo di \"Autore ospite\" e non potrà accedere alla bacheca di WordPress o "
 "aggiornare il proprio profilo."
 
-#: src/core/Classes/Author_Editor.php:698
+#: src/core/Classes/Author_Editor.php:727
 msgid ""
 "Create an author profile for a current user account. You can select users "
 "who are allowed to edit posts. This user will be able to update their "
@@ -1461,7 +1461,7 @@ msgstr ""
 "utenti che sono autorizzati a modificare gli articoli. Questo utente potrà "
 "aggiornare il proprio profilo."
 
-#: src/core/Classes/Author_Editor.php:711
+#: src/core/Classes/Author_Editor.php:740
 msgid ""
 "Create an author profile with no linked user account. This option is "
 "lightweight but may have compatibility issues with other themes and plugins."
@@ -1513,7 +1513,7 @@ msgstr ""
 msgid "Creating author term for the user %d"
 msgstr "Creando il termine autore per l'utente %d"
 
-#: src/modules/multiple-authors/multiple-authors.php:3863
+#: src/modules/multiple-authors/multiple-authors.php:3861
 msgid "Creating missed post authors...."
 msgstr "Creazione degli autori degli articoli mancanti in corso…"
 
@@ -1587,7 +1587,7 @@ msgstr "Disattivare Byline"
 msgid "Deactivate Bylines"
 msgstr "Disattivare Bylines"
 
-#: src/modules/multiple-authors/multiple-authors.php:3869
+#: src/modules/multiple-authors/multiple-authors.php:3867
 msgid "Deactivate Co-Authors Plus"
 msgstr "Disattivare Co-Authors Plus"
 
@@ -1599,7 +1599,7 @@ msgstr "Disattivando Byline…"
 msgid "Deactivating Bylines..."
 msgstr "Disattivando Bylines…"
 
-#: src/modules/multiple-authors/multiple-authors.php:3867
+#: src/modules/multiple-authors/multiple-authors.php:3865
 msgid "Deactivating Co-uthors Plus..."
 msgstr "Disattivando Co-Authors Plus…"
 
@@ -1738,8 +1738,8 @@ msgstr ""
 "Disabilitato perché add_post_type_support('%1$s', '%2$s') è incluso in un "
 "file già caricato."
 
-#: src/modules/multiple-authors/multiple-authors.php:4327
-#: src/modules/multiple-authors/multiple-authors.php:4401
+#: src/modules/multiple-authors/multiple-authors.php:4325
+#: src/modules/multiple-authors/multiple-authors.php:4399
 msgid "Dismiss"
 msgstr "Ignora"
 
@@ -1836,11 +1836,11 @@ msgstr "pagina della documentazione"
 msgid "dofollow"
 msgstr "dofollow"
 
-#: src/modules/multiple-authors/multiple-authors.php:3826
+#: src/modules/multiple-authors/multiple-authors.php:3824
 msgid "Done! %d authors were updated."
 msgstr "Fatto! %d autori sono stati aggiornati."
 
-#: src/modules/multiple-authors/multiple-authors.php:3795
+#: src/modules/multiple-authors/multiple-authors.php:3793
 msgid "Done! %d posts were updated."
 msgstr "Fatto! %d articoli sono stati aggiornati."
 
@@ -1862,11 +1862,11 @@ msgstr ""
 msgid "Done! Bylines is deactivated."
 msgstr "Fatto! Bylines è stato disattivato."
 
-#: src/modules/multiple-authors/multiple-authors.php:3870
+#: src/modules/multiple-authors/multiple-authors.php:3868
 msgid "Done! Co-Authors Plus data was copied."
 msgstr "Fatto! I dati di Co-Authors Plus sono stati copiati."
 
-#: src/modules/multiple-authors/multiple-authors.php:3868
+#: src/modules/multiple-authors/multiple-authors.php:3866
 msgid "Done! Co-Authors Plus is deactivated."
 msgstr "Fatto! Co-Authors Plus è stato disattivato."
 
@@ -2060,7 +2060,7 @@ msgstr "Errore. Impossibile reimpostare i termini dell'autore."
 
 #: src/modules/byline-migration/byline-migration.php:146
 #: src/modules/bylines-migration/bylines-migration.php:148
-#: src/modules/multiple-authors/multiple-authors.php:3862
+#: src/modules/multiple-authors/multiple-authors.php:3860
 msgid "Error: "
 msgstr "Errore: "
 
@@ -2164,8 +2164,8 @@ msgstr "Campo valore"
 msgid "Filter %2$s list"
 msgstr "Filtra elenco %2$s"
 
-#: src/modules/multiple-authors/multiple-authors.php:3794
-#: src/modules/multiple-authors/multiple-authors.php:3825
+#: src/modules/multiple-authors/multiple-authors.php:3792
+#: src/modules/multiple-authors/multiple-authors.php:3823
 msgid "Finishing the process..."
 msgstr "Ultimando il processo…"
 
@@ -2254,18 +2254,18 @@ msgstr "Scanalatura"
 msgid "Group By"
 msgstr "Raggruppa per"
 
-#: src/modules/multiple-authors/multiple-authors.php:4786
+#: src/modules/multiple-authors/multiple-authors.php:4784
 msgid "Guest Author cannot login on the site."
 msgstr "L'autore ospite non può accedere al sito."
 
 #: src/core/Classes/Author_Editor.php:121
-#: src/core/Classes/Author_Editor.php:710
+#: src/core/Classes/Author_Editor.php:739
 #: src/modules/author-list/author-list.php:979
 msgid "Guest Author With No User Account"
 msgstr "Autore ospite senza account utente"
 
 #: src/core/Classes/Author_Editor.php:117
-#: src/core/Classes/Author_Editor.php:703
+#: src/core/Classes/Author_Editor.php:732
 #: src/modules/author-list/author-list.php:978
 msgid "Guest Author With User Account"
 msgstr "Autore ospite con account utente"
@@ -2510,7 +2510,7 @@ msgstr "Nonce invalido"
 msgid "is required"
 msgstr "è obbligatorio"
 
-#: src/modules/multiple-authors/multiple-authors.php:4321
+#: src/modules/multiple-authors/multiple-authors.php:4319
 msgid "It looks like you have Co-Authors Plus installed."
 msgstr "Sembra che tu hai installato anche Co-Authors Plus."
 
@@ -2640,7 +2640,7 @@ msgstr "La manutenzione è stata completata con successo."
 msgid "Mapped User"
 msgstr "Utente mappato"
 
-#: src/core/Classes/Admin_Ajax.php:346 src/core/Classes/Author_Editor.php:1014
+#: src/core/Classes/Admin_Ajax.php:346 src/core/Classes/Author_Editor.php:1043
 msgid "Mapped user is required."
 msgstr "L'utente mappato è obbligatorio."
 
@@ -2746,7 +2746,7 @@ msgstr "Nessun termine autore"
 msgid "No authors found."
 msgstr "Nessun autore trovato."
 
-#: src/core/Classes/Author_Editor.php:878
+#: src/core/Classes/Author_Editor.php:907
 msgid "No authors were updated"
 msgstr "Nessun autore è stato aggiornato"
 
@@ -2916,7 +2916,7 @@ msgstr ""
 "consigliamo di eseguire un backup del sito nel caso in cui qualcosa possa "
 "andare storto."
 
-#: src/modules/multiple-authors/multiple-authors.php:4322
+#: src/modules/multiple-authors/multiple-authors.php:4320
 msgid "Please click here and read this guide!"
 msgstr "Fai clic qui e leggi questa guida!"
 
@@ -2935,9 +2935,9 @@ msgstr "Prendi nota che questa caratteristica non funziona con tutti i temi."
 #: src/core/Plugin.php:1534
 #: src/modules/byline-migration/byline-migration.php:148
 #: src/modules/bylines-migration/bylines-migration.php:150
-#: src/modules/multiple-authors/multiple-authors.php:3796
-#: src/modules/multiple-authors/multiple-authors.php:3827
-#: src/modules/multiple-authors/multiple-authors.php:3864
+#: src/modules/multiple-authors/multiple-authors.php:3794
+#: src/modules/multiple-authors/multiple-authors.php:3825
+#: src/modules/multiple-authors/multiple-authors.php:3862
 msgid "Please, wait..."
 msgstr "Attendere prego…"
 
@@ -3052,7 +3052,7 @@ msgstr ""
 "PublishPress Authors ti permette di aggiungere autori multipli e autori "
 "ospiti agli articoli di WordPress"
 
-#: src/modules/multiple-authors/multiple-authors.php:4394
+#: src/modules/multiple-authors/multiple-authors.php:4392
 msgid ""
 "PublishPress Authors needs a database update for Permissions integration."
 msgstr ""
@@ -3189,7 +3189,7 @@ msgid "Recommendations for you"
 msgstr "Raccomandazioni per te"
 
 #: src/core/Classes/Author_Editor.php:119
-#: src/core/Classes/Author_Editor.php:697
+#: src/core/Classes/Author_Editor.php:726
 #: src/modules/author-list/author-list.php:977
 msgid "Registered Author With User Account"
 msgstr "Autore registrato con account utente"
@@ -3397,9 +3397,9 @@ msgid ""
 "or specific authors."
 msgstr ""
 "Seleziona un'opzione per limitare i risultati ai ruoli utente selezionati, "
-"ai tipi di autore o a specifici autori."
+"al tipo di autore o a specifici autori."
 
-#: src/core/Classes/Author_Editor.php:742
+#: src/core/Classes/Author_Editor.php:771
 msgid "Select Author Account"
 msgstr "Seleziona un account autore"
 
@@ -3657,7 +3657,7 @@ msgstr "Solido"
 msgid "Sorry, the request returned an error."
 msgstr "Spiacenti, la richiesta ha restituito un errore."
 
-#: src/core/Classes/Admin_Ajax.php:334 src/core/Classes/Author_Editor.php:922
+#: src/core/Classes/Admin_Ajax.php:334 src/core/Classes/Author_Editor.php:951
 msgid ""
 "Sorry, this WordPress user is already mapped to another Author. By default, "
 "each user can only be connected to one Author profile."
@@ -3688,12 +3688,12 @@ msgstr "Stato"
 msgid "Support for Polylang"
 msgstr "Compatibile con Polylang"
 
-#: src/core/Classes/Author_Editor.php:805
-#: src/modules/multiple-authors/multiple-authors.php:3792
+#: src/core/Classes/Author_Editor.php:834
+#: src/modules/multiple-authors/multiple-authors.php:3790
 msgid "Sync author and user fields"
 msgstr "Sincronizza i campi autore e utente"
 
-#: src/modules/multiple-authors/multiple-authors.php:3823
+#: src/modules/multiple-authors/multiple-authors.php:3821
 msgid "Sync author and user URLs"
 msgstr "Sincronizza l'autore e gli URL utente"
 
@@ -4024,27 +4024,27 @@ msgstr "Aggiorna"
 msgid "Update Author"
 msgstr "Aggiorna autore"
 
-#: src/core/Classes/Author_Editor.php:813
+#: src/core/Classes/Author_Editor.php:842
 msgid "Update post count"
 msgstr "Aggiorna conteggio articoli"
 
-#: src/core/Classes/Author_Editor.php:881
+#: src/core/Classes/Author_Editor.php:910
 msgid "Updated %d authors"
 msgstr "Aggiorna %d autori"
 
-#: src/modules/multiple-authors/multiple-authors.php:3829
+#: src/modules/multiple-authors/multiple-authors.php:3827
 msgid "Updated %d of %d authors..."
 msgstr "Aggiornato %d di %d autori…"
 
-#: src/modules/multiple-authors/multiple-authors.php:3798
+#: src/modules/multiple-authors/multiple-authors.php:3796
 msgid "Updated %d of %d posts..."
 msgstr "Aggiornato %d di %d articoli…"
 
-#: src/modules/multiple-authors/multiple-authors.php:3797
+#: src/modules/multiple-authors/multiple-authors.php:3795
 msgid "Updating author field on posts..."
 msgstr "Aggiornamento dei campi autore negli articoli…"
 
-#: src/modules/multiple-authors/multiple-authors.php:3828
+#: src/modules/multiple-authors/multiple-authors.php:3826
 msgid "Updating authors slug..."
 msgstr "Aggiornamento dello slug dell'autore…"
 
