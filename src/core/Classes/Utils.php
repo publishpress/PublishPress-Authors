@@ -1191,7 +1191,7 @@ class Utils
         if ($enable_font_awesome) {
             wp_enqueue_style(
                 'multiple-authors-fontawesome',
-                'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css',
+                'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css',
                 false,
                 PP_AUTHORS_VERSION,
                 'all'

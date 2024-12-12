@@ -96,7 +96,7 @@
                 var searchTerm = $(this).val().toLowerCase();
                 $('.author-field-icons-tab-contents .icon-item').each(function() {
                     var iconName = $(this).data('name');
-                    if (iconName.includes(searchTerm)) {
+                    if (String(iconName).includes(searchTerm)) {
                         $(this).removeClass('hidden');
                     } else {
                         $(this).addClass('hidden');
