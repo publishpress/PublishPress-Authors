@@ -1019,6 +1019,12 @@ class AuthorBoxesEditorFields
             'sanitize'    => 'absint',
             'tab'         => 'author_bio',
         ];
+        $fields['author_bio_link'] = [
+            'label'       => esc_html__('Enable Biographical Link', 'publishpress-authors'),
+            'type'        => 'checkbox',
+            'sanitize'    => 'absint',
+            'tab'         => 'author_bio',
+        ];
         $fields['author_bio_limit'] = [
             'label'    => esc_html__('Biographical Info Character Limit', 'publishpress-authors'),
             'min'      => 0,
