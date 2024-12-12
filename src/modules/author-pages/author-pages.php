@@ -31,6 +31,10 @@ use MultipleAuthors\Factory;
 class MA_Author_Pages extends Module
 {
 
+    public $module;
+    
+    public $module_url;
+
     public $module_name = 'author_pages';
 
     public $viewsPath;
