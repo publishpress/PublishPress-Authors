@@ -946,10 +946,8 @@ class Utils
         $excerpt = strip_shortcodes($excerpt);
         $excerpt = wp_strip_all_tags($excerpt);
 
-        if (strlen($excerpt) > $limit) {
-            // truncate excerpt
-            $excerpt = substr($excerpt, 0, $limit);
-        }
+        // If the string length exceeds $limit, we look for the nearest space
+        $excerpt = strlen($excerpt) > $limit ? substr($excerpt, 0, strpos($excerpt . ' ', ' ', $limit)) : $excerpt;
 
         if (!empty($author_post_excerpt_ellipsis) && !empty(trim($excerpt))) {
             $excerpt .= $author_post_excerpt_ellipsis;
