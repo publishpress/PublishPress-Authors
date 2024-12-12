@@ -229,6 +229,7 @@ class Utils
                 }
             }
         }
+        do_action('publishpress_authors_flush_cache', $post_id);
     }
 
     public static function detect_author_slug_mismatch()

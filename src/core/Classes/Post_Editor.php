@@ -762,10 +762,20 @@ class Post_Editor
     {
         if (empty($post_id)) {
             wp_cache_flush_group('get_post_authors');
+            wp_cache_flush_group('author_categories_relation_cache');
 
             return;
         }
 
+        // author categories relation for the post
+        $args = [
+            'post_id'  => $post_id,
+            'author_term_id' => ''
+        ];
+        $cache_key = 'author_categories_relation_' . md5(serialize($args));
+        wp_cache_delete($cache_key, 'author_categories_relation_cache');
+
+        // post authors
         wp_cache_delete($post_id, 'get_post_authors:authors');
     }
 }
