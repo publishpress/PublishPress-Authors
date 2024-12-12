@@ -338,6 +338,8 @@ class MA_Author_List extends Module
      */
     public function author_list_fields() {
 
+        global $_wp_additional_image_sizes;
+
         $pro_active = Utils::isAuthorsProActive();
         
         $fields = [];
@@ -347,6 +349,34 @@ class MA_Author_List extends Module
         ];
         foreach (\MA_Author_Custom_Fields::getAuthorCustomFields() as $field_name => $field_options) {
             $author_fields[$field_name] = $field_options['label'];
+        }
+
+        // featured image size options
+        $sizes = array_reverse(array_merge(
+            get_intermediate_image_sizes(), 
+            array('full')
+        ));
+
+        $know_sizes = [
+            'full' => esc_html__('The original size of the uploaded image', 'publishpress-authors'),
+            'large' => esc_html__('Large-sized image (1024px by 1024px)', 'publishpress-authors'),
+            'medium_large' => esc_html__('Medium-large image (768px)', 'publishpress-authors'),
+            'medium' => esc_html__('Medium-sized image (300px by 300px)', 'publishpress-authors'),
+            'thumbnail' => esc_html__('Small-sized image (150px by 150px)', 'publishpress-authors')
+        ];
+
+        $featured_image_options = [];
+
+        foreach ($sizes as $size) {
+            if (isset($_wp_additional_image_sizes[$size])) {
+                $width = $_wp_additional_image_sizes[$size]['width'];
+                $height = $_wp_additional_image_sizes[$size]['height'];
+                $featured_image_options[$size] = "$size: {$width}x{$height}";
+            } elseif (isset($know_sizes[$size])) {
+                $featured_image_options[$size] = $know_sizes[$size];
+            } else {
+                $featured_image_options[$size] = $size;
+            }
         }
 
         // add general fields
@@ -387,6 +417,17 @@ class MA_Author_List extends Module
             'sanitize'          => 'sanitize_text_field',
             'field_visibility'  => [
                 'layout' => ['authors_index']
+            ],
+            'tab'               => 'general',
+        ];
+        $fields['featured_image_size'] = [
+            'label'             => esc_html__('Featured Image Size', 'publishpress-authors'),
+            'description'       => esc_html__('For authors_recent layout, you can select the featured image size..', 'publishpress-authors'),
+            'type'              => 'select',
+            'options'           => $featured_image_options,
+            'sanitize'          => 'sanitize_text_field',
+            'field_visibility'  => [
+                'layout' => ['authors_recent']
             ],
             'tab'               => 'general',
         ];
@@ -850,6 +891,9 @@ class MA_Author_List extends Module
 
         $tr_style = '';
         if ($key === 'group_by' && $option_values['layout'] !== 'authors_index') {
+            $tr_style = 'display: none;';
+        }
+        if ($key === 'featured_image_size' && $option_values['layout'] !== 'authors_recent') {
             $tr_style = 'display: none;';
         }
         ?>
