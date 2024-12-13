@@ -762,6 +762,11 @@ class Utils
         return class_exists('UM_Functions');
     }
 
+    public static function isAllInOneSeoPackInstalled()
+    {
+        return defined('AIOSEO_DIR');
+    }
+
     public static function isCompatibleYoastSeoInstalled()
     {
         if (! defined('WPSEO_VERSION')) {
