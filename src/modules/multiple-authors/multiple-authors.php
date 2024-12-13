@@ -4482,7 +4482,7 @@ echo '<span class="ppma_settings_field_description">'
             if (!empty($validPostAuthors)) {
                 Utils::set_post_authors($postId, $validPostAuthors);
 
-                do_action('publishpress_authors_flush_cache', $postId);
+                do_action('publishpress_authors_flush_cache_for_post', $postId);
             }
 
             return $postId;
@@ -4559,7 +4559,7 @@ echo '<span class="ppma_settings_field_description">'
         {
             Utils::set_post_authors($postId, $authors);
 
-            do_action('publishpress_authors_flush_cache', $postId);
+            do_action('publishpress_authors_flush_cache_for_post', $postId);
         }
 
         public function userProfileUpdate($userId, $oldUserData)

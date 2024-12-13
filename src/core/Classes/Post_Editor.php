@@ -46,6 +46,7 @@ class Post_Editor
         add_action('quick_edit_custom_box', [__CLASS__, 'add_author_bulk_quick_edit_custom_box'], 10, 2);
         add_action('wp_ajax_save_bulk_edit_authors', [__CLASS__, 'save_bulk_edit_authors'], 10, 2);
         add_action('publishpress_authors_flush_cache', [__CLASS__, 'flush_cache'], 15);
+        add_action('publishpress_authors_flush_cache_for_post', [__CLASS__, 'flush_post_cache'], 15);
     }
 
     /**
@@ -593,7 +594,7 @@ class Post_Editor
                 Utils::set_post_authors($post_id, $authors, true, $fallbackUserId, $author_categories);
             }
 
-            do_action('publishpress_authors_flush_cache', $post_ids);
+            do_action('publishpress_authors_flush_cache_for_post', $post_ids);
         }
 
         wp_send_json_success(true, 200);
@@ -635,7 +636,7 @@ class Post_Editor
             update_post_meta($post_id, 'ppma_disable_author_box', $disableAuthorBox);
         }
 
-        do_action('publishpress_authors_flush_cache', $post_id);
+        do_action('publishpress_authors_flush_cache_for_post', $post_id);
     }
 
     /**
@@ -721,7 +722,7 @@ class Post_Editor
 
         Utils::set_post_authors($post_id, [$defaultAuthor]);
 
-        do_action('publishpress_authors_flush_cache', $post_id);
+        do_action('publishpress_authors_flush_cache_for_post', $post_id);
     }
 
     public static function remove_core_author_field()
@@ -758,24 +759,45 @@ class Post_Editor
         return $response;
     }
 
-    public static function flush_cache($post_id)
+    /**
+     * Flush cache
+     * @return void
+     */
+    public static function flush_cache()
     {
-        if (empty($post_id)) {
-            wp_cache_flush_group('get_post_authors');
-            wp_cache_flush_group('author_categories_relation_cache');
+        wp_cache_flush_group('get_post_authors');
+        wp_cache_flush_group('author_categories_relation_cache');
+    }
 
+    /**
+     * Flush post cache
+     *
+     * @param array|integer $post_ids
+     *
+     * @return array
+     */
+    public static function flush_post_cache($post_ids = [])
+    {
+        if (empty($post_ids)) {
+            self::flush_cache();
             return;
         }
 
-        // author categories relation for the post
-        $args = [
-            'post_id'  => $post_id,
-            'author_term_id' => ''
-        ];
-        $cache_key = 'author_categories_relation_' . md5(serialize($args));
-        wp_cache_delete($cache_key, 'author_categories_relation_cache');
+        if (!is_array($post_ids)) {
+            $post_ids = [$post_ids];
+        }
 
-        // post authors
-        wp_cache_delete($post_id, 'get_post_authors:authors');
+        foreach ($post_ids as $post_id) {
+            // author categories relation for the post
+            $args = [
+                'post_id'  => $post_id,
+                'author_term_id' => ''
+            ];
+            $cache_key = 'author_categories_relation_' . md5(serialize($args));
+            wp_cache_delete($cache_key, 'author_categories_relation_cache');
+
+            // post authors
+            wp_cache_delete($post_id, 'get_post_authors:authors');
+        }
     }
 }

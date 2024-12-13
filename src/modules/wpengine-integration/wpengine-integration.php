@@ -81,6 +81,11 @@ if (!class_exists('MA_Wpengine_Integration')) {
         public function init()
         {
             add_action('publishpress_authors_flush_cache', [$this, 'flushWPECache']);
+            add_action('publishpress_authors_flush_cache_for_post', [$this, 'flushWPECacheForPost']);
+        }
+
+        public function flushWPECacheForPost($post_ids) {
+            $this->flushWPECache();
         }
 
         /**

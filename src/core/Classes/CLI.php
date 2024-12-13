@@ -138,7 +138,7 @@ class CLI
             $successes++;
         } // End foreach().
 
-        do_action('publishpress_authors_flush_cache', $args);
+        do_action('publishpress_authors_flush_cache_for_post', $args);
 
         WP_CLI\Utils\report_batch_operation_results('post author', 'convert', $total, $successes, $failures);
     }
