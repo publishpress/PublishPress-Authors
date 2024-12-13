@@ -102,10 +102,11 @@ if (!class_exists('MA_Yoast_Seo_Integration')) {
             if (!is_object($post) || is_wp_error($post)) {
                 return $replacements;
             }
+            $archiveAuthor = get_archive_author();
 
             foreach ($replacements as $key => &$value) {
                 if ($key === '%%name%%') {
-                    $authors = get_post_authors($post->ID);
+                    $authors = $archiveAuthor && !empty($archiveAuthor) ? [$archiveAuthor] : get_post_authors($post->ID);
 
                     if (is_array($authors) && !empty($authors)) {
                         $author = $authors[0];
