@@ -782,7 +782,7 @@ class Author
          *
          */
         $alt = apply_filters('multiple_authors_avatar_alt_text', null, $this, $urls, $size);
-        if (!is_null($alt)) {
+        if (is_null($alt)) {
             $imageId = attachment_url_to_postid($urls['url']);
             $alt = get_post_meta( $imageId, '_wp_attachment_image_alt', true );
         }
