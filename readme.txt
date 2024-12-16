@@ -6,8 +6,8 @@ Author URI: https://publishpress.com
 Tags: multiple authors, authors, guest authors, author bio, author layouts
 Requires at least: 5.5
 Requires PHP: 7.2.5
-Tested up to: 6.6
-Stable tag: 4.7.2
+Tested up to: 6.7
+Stable tag: 4.7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -245,6 +245,29 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [4.7.3] - 16 Dec 2024 =
+
+* Fixed: Can't change the layout for new Author Lists, #1892
+* Fixed: HTML Title Issue with AIO SEO, #1899
+* Fixed: Schema Issue with RankMath, #1901
+* Fixed: Wrong Author name on Yoast Description, #1898
+* Fixed: Missing Schema on Page, #1926
+* Update: Add Author Recent featured image size settings in Authors Lists, #1891
+* Update: Add twitter icon and bluesky from, FA #1920
+* Update: Update FontAwesome to 6.7.1, #1930
+* Fixed: Prevented mid-word cuts for readability, #1922
+* Fixed: Small typo with the Display Name, #1895
+* Update: Move the Author Pages warning, #1893
+* Fixed: Deprecated: Dynamic properties MA_Author_Pages::$module_url and $module, #1946
+* Update: Add option for hyperlink in author bio box, #1938
+* Fixed: 4.7.0 introduced a slow query from avatar alt text, Add option to filter avatar alt 'multiple_authors_avatar_alt_text', #1923
+* Fixed: Refactor flush_cache Method, #1952
+* Update: Add margin to warnings on the Authors screen, #1909
+* Update: Use Alt text on Avatar Author Box, #1880
+* Fixed: Author category filter returning all Authors when none is found, #1878
+* Fixed: Moving Authors to new category is not reflecting after saving and reloading post, #1932
+* Update: Authors Translation Updates v.4.7.2, #1919
 
 = [4.7.2] - 15 Oct 2024 =
 
