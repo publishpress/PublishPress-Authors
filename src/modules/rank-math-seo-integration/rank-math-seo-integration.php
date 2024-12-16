@@ -189,12 +189,17 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
                             }
                         }
                     }
+                    
                     if (isset($data['richSnippet'])) {
                         $data['richSnippet']['author'] = $profile_page_authors;
                     }
                     $data['ProfilePage'] = $author_profile_data;
 
-                    if (isset($data['publisher'])) {
+                    /**
+                     * I still don't understand why publisher shouldn't be replaced in case of Guest author 
+                     * for NewsArticle but here's the issue that warrant the update https://github.com/publishpress/PublishPress-Authors/issues/1901
+                     */
+                    if (isset($data['publisher']) && $data['richSnippet']['@type'] !== 'NewsArticle') {
                         $data_publisher = $data['publisher'];
                         if (isset($author_profile_data['@name'])) {
                             $data_publisher['name'] = $author_profile_data['@name'];

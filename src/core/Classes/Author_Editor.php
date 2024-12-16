@@ -901,7 +901,7 @@ class Author_Editor
         if (!empty($_REQUEST['bulk_update_author'])) {
             $count = (int)$_REQUEST['bulk_update_author'];
 
-            echo '<div id="message" class="updated fade">';
+            echo '<div id="message" class="updated fade"><p>';
 
             if (empty($count)) {
                 esc_html__('No authors were updated', 'publishpress-authors');
@@ -912,7 +912,7 @@ class Author_Editor
                 );
             }
 
-            echo '</div>';
+            echo '</p></div>';
         }
     }
 

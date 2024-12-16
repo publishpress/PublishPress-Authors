@@ -21,6 +21,11 @@
                 } else {
                     $('.ppma-author-list-editor-tab-content.ppma-editor-group_by').hide();
                 }
+                if ($(this).val() == 'authors_recent') {
+                    $('.ppma-author-list-editor-tab-content.ppma-editor-featured_image_size').show();
+                } else {
+                    $('.ppma-author-list-editor-tab-content.ppma-editor-featured_image_size').hide();
+                }
             }
         });
 
@@ -66,6 +71,11 @@
             if (!isEmptyOrSpaces(layout_columns)) {
                 if (layout === 'authors_recent') {
                     shortcode += ' authors_recent_col="' + layout_columns + '"';
+                    // add featured_image_size
+                    var featured_image_size = $('.author-list-tab-content .input #featured_image_size').val();
+                    if (!isEmptyOrSpaces(featured_image_size)) {
+                        shortcode += ' featured_image_size="' + featured_image_size + '"';
+                    }
                 } else {
                     shortcode += ' layout_columns="' + layout_columns + '"';
                 }

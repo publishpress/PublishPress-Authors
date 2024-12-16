@@ -271,7 +271,7 @@ class AuthorBoxesEditorFields
             'sanitize' => 'sanitize_text_field',
             'options'  => [
                 'after_avatar'       => esc_html__('After Avatar', 'publishpress-authors'),
-                'infront_of_avatar'  => esc_html__('Infront of Avatar', 'publishpress-authors'),
+                'infront_of_avatar'  => esc_html__('In front of Avatar', 'publishpress-authors'),
             ],
             'tab'      => 'name',
         ];
@@ -1015,6 +1015,12 @@ class AuthorBoxesEditorFields
     {
         $fields['author_bio_show'] = [
             'label'       => esc_html__('Show Biographical Info', 'publishpress-authors'),
+            'type'        => 'checkbox',
+            'sanitize'    => 'absint',
+            'tab'         => 'author_bio',
+        ];
+        $fields['author_bio_link'] = [
+            'label'       => esc_html__('Enable Biographical Link', 'publishpress-authors'),
             'type'        => 'checkbox',
             'sanitize'    => 'absint',
             'tab'         => 'author_bio',

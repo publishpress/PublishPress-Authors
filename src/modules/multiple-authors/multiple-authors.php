@@ -1761,6 +1761,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'If enabled, PublishPress Authors will replace the default WordPress author pages.',
                     'publishpress-authors'
                 )
+                . ' '
+                . esc_html__('Please note this feature will not work for all themes.', 'publishpress-authors') . ' <a target="_blank" href="https://publishpress.com/knowledge-base/author-pages-troubleshooting/">'.  esc_html__('Click here for more details.', 'publishpress-authors') .'</a>'
                 . '</span>';
 
 
@@ -4480,7 +4482,7 @@ echo '<span class="ppma_settings_field_description">'
             if (!empty($validPostAuthors)) {
                 Utils::set_post_authors($postId, $validPostAuthors);
 
-                do_action('publishpress_authors_flush_cache', $postId);
+                do_action('publishpress_authors_flush_cache_for_post', $postId);
             }
 
             return $postId;
@@ -4557,7 +4559,7 @@ echo '<span class="ppma_settings_field_description">'
         {
             Utils::set_post_authors($postId, $authors);
 
-            do_action('publishpress_authors_flush_cache', $postId);
+            do_action('publishpress_authors_flush_cache_for_post', $postId);
         }
 
         public function userProfileUpdate($userId, $oldUserData)

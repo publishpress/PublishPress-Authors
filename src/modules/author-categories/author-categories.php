@@ -104,6 +104,7 @@ class MA_Author_Categories extends Module
         add_action('wp_ajax_reorder_ppma_author_category', [$this, 'handleReOrderCategory']);
         add_filter('removable_query_args', [$this, 'removableQueryArgs']);
         add_action('delete_post', [$this, 'deleteAuthorCategoryRelation']);
+        add_action('publishpress_author_categories_flush_cache', [$this, 'flush_cache'], 15);
     }
 
     /**
@@ -171,6 +172,13 @@ class MA_Author_Categories extends Module
             ]
         );
 
+    }
+
+    /**
+     * Flush author category cache
+     */
+    public function flush_cache($category_id) {
+        wp_cache_flush_group('author_categories_results_cache');
     }
 
     /**
@@ -432,6 +440,7 @@ class MA_Author_Categories extends Module
             foreach ($meta_data as $meta_data_key => $meta_data_value) {
                 self::updateAuthorCategoryMeta($category_id, $meta_data_key, $meta_data_value);
             }
+            do_action('publishpress_author_categories_flush_cache', $category_id);
             return get_ppma_author_categories(['id' => $category_id]);
         } else {
             return false;
@@ -472,6 +481,8 @@ class MA_Author_Categories extends Module
         foreach ($meta_data as $meta_data_key => $meta_data_value) {
             self::updateAuthorCategoryMeta($id, $meta_data_key, $meta_data_value);
         }
+
+        do_action('publishpress_author_categories_flush_cache', $id);
 
         return get_ppma_author_categories(['id' => $id]);
     }

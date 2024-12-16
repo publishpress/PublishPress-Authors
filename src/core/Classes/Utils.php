@@ -152,7 +152,7 @@ class Utils
 
         Utils::set_post_authors($post_id, $authors);
 
-        do_action('publishpress_authors_flush_cache', $post_id);
+        do_action('publishpress_authors_flush_cache_for_post', $post_id);
 
         return $result;
     }
@@ -229,6 +229,7 @@ class Utils
                 }
             }
         }
+        do_action('publishpress_authors_flush_cache_for_post', $post_id);
     }
 
     public static function detect_author_slug_mismatch()
@@ -761,6 +762,11 @@ class Utils
         return class_exists('UM_Functions');
     }
 
+    public static function isAllInOneSeoPackInstalled()
+    {
+        return defined('AIOSEO_DIR');
+    }
+
     public static function isCompatibleYoastSeoInstalled()
     {
         if (! defined('WPSEO_VERSION')) {
@@ -946,10 +952,8 @@ class Utils
         $excerpt = strip_shortcodes($excerpt);
         $excerpt = wp_strip_all_tags($excerpt);
 
-        if (strlen($excerpt) > $limit) {
-            // truncate excerpt
-            $excerpt = substr($excerpt, 0, $limit);
-        }
+        // If the string length exceeds $limit, we look for the nearest space
+        $excerpt = strlen($excerpt) > $limit ? substr($excerpt, 0, strpos($excerpt . ' ', ' ', $limit)) : $excerpt;
 
         if (!empty($author_post_excerpt_ellipsis) && !empty(trim($excerpt))) {
             $excerpt .= $author_post_excerpt_ellipsis;
@@ -1192,7 +1196,7 @@ class Utils
         if ($enable_font_awesome) {
             wp_enqueue_style(
                 'multiple-authors-fontawesome',
-                'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css',
+                'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css',
                 false,
                 PP_AUTHORS_VERSION,
                 'all'

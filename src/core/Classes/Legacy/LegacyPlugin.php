@@ -225,6 +225,10 @@ class LegacyPlugin
             $defaultDirs['rank-math-seo-integration'] = PP_AUTHORS_MODULES_PATH;
         }
 
+        if (Utils::isAllInOneSeoPackInstalled()) {
+            $defaultDirs['all-in-one-seo-pack-integration'] = PP_AUTHORS_MODULES_PATH;
+        }
+
         if (Utils::isUltimatePostInstalled()) {
             $defaultDirs['ultimate-post-integration'] = PP_AUTHORS_MODULES_PATH;
         }

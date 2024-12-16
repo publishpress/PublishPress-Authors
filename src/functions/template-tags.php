@@ -608,6 +608,7 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
             } elseif ($result_type === 'recent') {
                 //query recent post by authors
                 $author_recent_posts = multiple_authors_get_author_recent_posts($author);
+                $featured_image_size = isset($instance['featured_image_size']) ? $instance['featured_image_size'] : '';
 
                 //add recent posts
                 $author_recent    = '';
@@ -620,7 +621,11 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
                         if ($post_index === 1) {
                             $featured_image = PP_AUTHORS_ASSETS_URL . 'img/no-image.jpeg';
                             if (has_post_thumbnail($author_recent_post)) {
-                                $featured_image_data = wp_get_attachment_image_src(get_post_thumbnail_id($author_recent_post));
+                                if (!empty($featured_image_size)) {
+                                    $featured_image_data = wp_get_attachment_image_src(get_post_thumbnail_id($author_recent_post), $featured_image_size);
+                                } else {
+                                    $featured_image_data = wp_get_attachment_image_src(get_post_thumbnail_id($author_recent_post));
+                                }
                                 if ($featured_image_data && is_array($featured_image_data)) {
                                     $featured_image = $featured_image_data[0];
                                 }
@@ -1604,7 +1609,7 @@ if (!function_exists('ppma_get_grouped_post_authors')) {
 
         $post_id = (int)$post;
 
-        if (empty($post_id) ) {
+        if (empty($post_id) && !$authors ) {
             return [];
         }
         

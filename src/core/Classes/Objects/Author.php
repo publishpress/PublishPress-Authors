@@ -763,14 +763,29 @@ class Author
     {
         $urls = $this->get_custom_avatar_url($size);
 
-        $imageId = attachment_url_to_postid($urls['url']);
-
         $class = [
             'multiple_authors_guest_author_avatar',
             'avatar',
         ];
 
-        $alt = get_post_meta( $imageId, '_wp_attachment_image_alt', true );
+        /**
+         * Filters avatar alt.
+         *
+         * Passing a non-null value will prevent us fetching for avatar alt.
+         *
+         * @param string $avatar_alt text for the author's avatar. Default null.
+         * @param Author $author The author's instance.
+         * @param array $urls The avatar urls.
+         * @param int $size The size of the avatar.
+         *
+         * @since 4.7.3
+         *
+         */
+        $alt = apply_filters('multiple_authors_avatar_alt_text', null, $this, $urls, $size);
+        if (is_null($alt)) {
+            $imageId = attachment_url_to_postid($urls['url']);
+            $alt = get_post_meta( $imageId, '_wp_attachment_image_alt', true );
+        }
 
         // Build the HTML tag.
         $avatar = sprintf(
