@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Plugins - Co-Authors, Multiple Authors and Guest Authors "
 "in an Author Box with PublishPress Authors - Stable (latest release)\n"
-"POT-Creation-Date: 2024-10-14 09:25+0000\n"
-"PO-Revision-Date: 2024-10-16 14:21+0200\n"
+"POT-Creation-Date: 2024-12-16 08:58+0000\n"
+"PO-Revision-Date: 2024-12-17 12:54+0100\n"
 "Last-Translator: \n"
 "Language-Team: Spanish (Spain)\n"
 "Language: es_ES\n"
@@ -15,11 +15,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Poedit 3.4.4\n"
 
-#: src/functions/template-tags.php:795 src/functions/template-tags.php:1416
+#: src/functions/template-tags.php:800 src/functions/template-tags.php:1421
 msgid " and "
 msgstr " y "
 
-#: src/core/Classes/Post_Editor.php:178
+#: src/core/Classes/Post_Editor.php:179
 msgid "\"post_author\" is empty"
 msgstr "«post_author» está vacío"
 
@@ -124,7 +124,7 @@ msgstr "Valor prefijo del %1s"
 msgid "%1s Weight"
 msgstr "Peso del %1s"
 
-#: src/functions/template-tags.php:643
+#: src/functions/template-tags.php:648
 #, php-format
 msgid "%1sView all posts%2s by %3s"
 msgstr "%1sVer todas las entradas%2s de %3s"
@@ -184,7 +184,7 @@ msgstr ""
 "Gravatar si no se ha cargado el avatar por defecto en los ajustes de los "
 "autores)"
 
-#: src/functions/template-tags.php:1417
+#: src/functions/template-tags.php:1422
 msgid ", and "
 msgstr ", y "
 
@@ -193,8 +193,8 @@ msgstr ", y "
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:434
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:645
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:923
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1049
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1251
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1055
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1257
 msgid "100 - Thin"
 msgstr "100 - Fino"
 
@@ -203,8 +203,8 @@ msgstr "100 - Fino"
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:435
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:646
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:924
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1050
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1252
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1056
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1258
 msgid "200 - Extra light"
 msgstr "200 - Extra claro"
 
@@ -213,8 +213,8 @@ msgstr "200 - Extra claro"
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:436
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:647
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:925
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1051
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1253
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1057
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1259
 msgid "300 - Light"
 msgstr "300 - Claro"
 
@@ -223,8 +223,8 @@ msgstr "300 - Claro"
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:437
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:648
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:926
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1052
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1254
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1058
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1260
 msgid "400 - Normal"
 msgstr "400 - Normal"
 
@@ -233,8 +233,8 @@ msgstr "400 - Normal"
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:438
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:649
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:927
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1053
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1255
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1059
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1261
 msgid "500 - Medium"
 msgstr "500 - Medio"
 
@@ -243,8 +243,8 @@ msgstr "500 - Medio"
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:439
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:650
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:928
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1054
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1256
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1060
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1262
 msgid "600 - Semi bold"
 msgstr "600 - Semi negrita"
 
@@ -253,8 +253,8 @@ msgstr "600 - Semi negrita"
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:440
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:651
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:929
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1055
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1257
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1061
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1263
 msgid "700 - Bold"
 msgstr "700 - Negrita"
 
@@ -263,8 +263,8 @@ msgstr "700 - Negrita"
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:441
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:652
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:930
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1056
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1258
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1062
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1264
 msgid "800 - Extra bold"
 msgstr "800 - Extra negrita"
 
@@ -273,8 +273,8 @@ msgstr "800 - Extra negrita"
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:442
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:653
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:931
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1057
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1259
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1063
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1265
 msgid "900 - Black"
 msgstr "900 - Negro"
 
@@ -292,11 +292,11 @@ msgstr "[]"
 msgid "About"
 msgstr "Acerca de"
 
-#: src/modules/multiple-authors/multiple-authors.php:3497
+#: src/modules/multiple-authors/multiple-authors.php:3499
 msgid "Access denied"
 msgstr "Acceso denegado"
 
-#: src/modules/author-boxes/author-boxes.php:2046
+#: src/modules/author-boxes/author-boxes.php:2052
 msgid "Action"
 msgstr "Acción"
 
@@ -305,7 +305,7 @@ msgstr "Acción"
 msgid "Active"
 msgstr "Activo"
 
-#: src/modules/author-boxes/author-boxes.php:2074
+#: src/modules/author-boxes/author-boxes.php:2080
 msgid "Add"
 msgstr "Añadir"
 
@@ -326,13 +326,17 @@ msgstr ""
 msgid "Add Author"
 msgstr "Añade autor"
 
-#: src/modules/author-categories/author-categories.php:560
+#: src/modules/author-categories/author-categories.php:571
 msgid "Add Author Category"
 msgstr "Add Author Category"
 
-#: src/modules/author-list/author-list.php:689
+#: src/modules/author-list/author-list.php:730
 msgid "Add Author List"
 msgstr "Añade lista de autor"
+
+#: src/modules/all-in-one-seo-pack-integration/all-in-one-seo-pack-integration.php:53
+msgid "Add compatibility with the All In One Seo Pack plugin"
+msgstr "Añade compatibilidad con el plugin All In One Seo Pack"
 
 #: src/modules/divi-integration/divi-integration.php:54
 msgid "Add compatibility with the Divi Theme Builder"
@@ -379,7 +383,7 @@ msgstr "Añade compatibilidad con la caché de objetos de WPEngine."
 msgid "Add compatibility with the Yoast SEO plugin"
 msgstr "Añade compatibilidad con el plugin Yoast SEO"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1537
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1543
 msgid "Add Custom CSS styles here..."
 msgstr "Añade estilos CSS personalizados aquí..."
 
@@ -387,7 +391,7 @@ msgstr "Añade estilos CSS personalizados aquí..."
 msgid "Add debug information for the plugin"
 msgstr "Añadir información de depuración para el plugin"
 
-#: src/core/Classes/Utils.php:1125
+#: src/core/Classes/Utils.php:1129
 msgid "Add fields for social networks"
 msgstr "Añade campos para redes sociales"
 
@@ -411,11 +415,11 @@ msgstr "Añadir nuevo"
 msgid "Add New %1$s"
 msgstr "Añadir nuevo %1$s"
 
-#: src/modules/author-categories/author-categories.php:591
+#: src/modules/author-categories/author-categories.php:602
 msgid "Add New Author Category"
 msgstr "Añadir nueva categoría de autor"
 
-#: src/core/Classes/Utils.php:1124
+#: src/core/Classes/Utils.php:1128
 msgid "Add new Author Fields"
 msgstr "Añade nuevos campos de autor"
 
@@ -423,7 +427,7 @@ msgstr "Añade nuevos campos de autor"
 msgid "Add or remove authors"
 msgstr "Añadir o eliminar autores"
 
-#: src/modules/author-list/author-list.php:422
+#: src/modules/author-list/author-list.php:463
 msgid "Add Search Box to Author Lists"
 msgstr "Añadir caja de búsqueda a las listas de autores"
 
@@ -442,8 +446,8 @@ msgstr "Añadir compatibilidad con las categorías de autores."
 msgid "Add support for author list."
 msgstr "Añadir compatibilidad con la lista de autores."
 
-#: src/modules/author-pages/author-pages.php:57
 #: src/modules/author-pages/author-pages.php:61
+#: src/modules/author-pages/author-pages.php:65
 msgid "Add support for author pages."
 msgstr "Añadir compatibilidad con las páginas de autores."
 
@@ -457,11 +461,11 @@ msgstr ""
 msgid "Adding the author term %d to the post %d"
 msgstr "Añadiendo el término de autor %d a la entrada %d"
 
-#: src/modules/multiple-authors/multiple-authors.php:2908
+#: src/modules/multiple-authors/multiple-authors.php:2910
 msgid "Advanced"
 msgstr "Avanzado"
 
-#: src/modules/author-boxes/author-boxes.php:2036
+#: src/modules/author-boxes/author-boxes.php:2042
 msgid "After All Authors"
 msgstr "Después todos los autores"
 
@@ -469,15 +473,15 @@ msgstr "Después todos los autores"
 msgid "After Avatar"
 msgstr "Después del avatar"
 
-#: src/modules/author-boxes/author-boxes.php:2035
+#: src/modules/author-boxes/author-boxes.php:2041
 msgid "After Biographical Info Row"
 msgstr "Después de la fila de información biográfica"
 
-#: src/modules/author-boxes/author-boxes.php:2034
+#: src/modules/author-boxes/author-boxes.php:2040
 msgid "After Name Row"
 msgstr "Después de la fila del nombre"
 
-#: src/modules/author-boxes/author-boxes.php:2033
+#: src/modules/author-boxes/author-boxes.php:2039
 msgid "After View all posts Row"
 msgstr "Después de la fila de «Ver todas las entradas»"
 
@@ -489,13 +493,17 @@ msgstr[0] "Todos %s"
 msgstr[1] "Todos %s"
 
 #: src/core/Authors_Widget.php:181 src/core/Authors_Widget.php:412
-#: src/core/Plugin.php:562 src/core/Classes/Post_Editor.php:509
+#: src/core/Plugin.php:562 src/core/Classes/Post_Editor.php:510
 msgid "All Authors"
 msgstr "Todos los autores"
 
-#: src/modules/author-categories/author-categories.php:330
+#: src/modules/author-categories/author-categories.php:338
 msgid "All fields are required."
 msgstr "Todos los campos son obligatorios."
+
+#: src/modules/all-in-one-seo-pack-integration/all-in-one-seo-pack-integration.php:52
+msgid "All In One Seo Pack Integration"
+msgstr "Integración de All In One Seo Pack"
 
 #: src/core/Classes/Installer.php:233
 msgid "All is set. No author need to be updated"
@@ -513,7 +521,7 @@ msgstr "Permite crear autores sin un usuario asignado."
 msgid "Allow authors to be created without a real user account."
 msgstr "Permitir crear autores sin una cuenta de usuario real."
 
-#: src/modules/multiple-authors/multiple-authors.php:1970
+#: src/modules/multiple-authors/multiple-authors.php:1972
 msgid "Allow User to Choose"
 msgstr "Permite al usuario elegir"
 
@@ -528,11 +536,11 @@ msgstr ""
 msgid "An author with the name provided already exists."
 msgstr "Un autor con el nombre proporcionado ya existe."
 
-#: src/modules/author-categories/author-categories.php:223
-#: src/modules/author-categories/author-categories.php:366
+#: src/modules/author-categories/author-categories.php:231
 #: src/modules/author-categories/author-categories.php:374
+#: src/modules/author-categories/author-categories.php:382
 #: src/modules/author-custom-fields/author-custom-fields.php:998
-#: src/modules/author-list/author-list.php:1101
+#: src/modules/author-list/author-list.php:1145
 #: src/modules/author-boxes/classes/AuthorBoxesAjax.php:34
 #: src/modules/author-boxes/classes/AuthorBoxesAjax.php:82
 #: src/modules/author-boxes/classes/AuthorBoxesAjax.php:124
@@ -586,17 +594,17 @@ msgstr ""
 "¿Seguro que quieres actualizar el slug de autor para todos los usuarios?"
 
 #: src/core/Authors_Widget.php:186
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1226
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1232
 msgid "Ascending"
 msgstr "Ascendente"
 
-#: src/core/Plugin.php:580
-#: src/modules/author-categories/author-categories.php:623
-#: src/modules/author-categories/author-categories.php:625
+#: src/core/Plugin.php:580 src/modules/author-boxes/author-boxes.php:1805
+#: src/modules/author-categories/author-categories.php:634
+#: src/modules/author-categories/author-categories.php:636
 msgid "Author"
 msgstr "Autor"
 
-#: src/modules/author-pages/author-pages.php:115
+#: src/modules/author-pages/author-pages.php:119
 msgid "Author Bio"
 msgstr "Biografía del autor"
 
@@ -606,7 +614,7 @@ msgstr "Diseño de biografía del autor:"
 
 #: src/modules/author-boxes/author-boxes.php:397
 #: src/modules/author-boxes/author-boxes.php:499
-#: src/modules/author-boxes/author-boxes.php:2561
+#: src/modules/author-boxes/author-boxes.php:2567
 msgid "Author Box"
 msgstr "Caja de autor"
 
@@ -614,27 +622,27 @@ msgstr "Caja de autor"
 msgid "Author Box added."
 msgstr "Caja de autor añadida."
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1482
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1488
 msgid "Author Box Background Color"
 msgstr "Color de fondo de la caja de autor"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1461
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1467
 msgid "Author Box Border Color"
 msgstr "Color del borde de la caja de autor"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1476
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1482
 msgid "Author Box Border Radius (px)"
 msgstr "Radio del borde de la caja de autor (px)"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1443
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1449
 msgid "Author Box Border Style"
 msgstr "Estilo del borde de la caja de autor"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1437
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1443
 msgid "Author Box Border Width (px)"
 msgstr "Ancho del borde de la caja de autor (px)"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1488
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1494
 msgid "Author Box Color"
 msgstr "Color de la caja de autor"
 
@@ -642,35 +650,35 @@ msgstr "Color de la caja de autor"
 msgid "Author Box Editor"
 msgstr "Editor de la caja de autor"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1395
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1401
 msgid "Author Box Margin Bottom"
 msgstr "Margen inferior de la caja de autor"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1401
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1407
 msgid "Author Box Margin Left"
 msgstr "Margen izquierdo de la caja de autor"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1407
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1413
 msgid "Author Box Margin Right"
 msgstr "Margen derecho de la caja de autor"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1389
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1395
 msgid "Author Box Margin Top"
 msgstr "Margen superior de la caja de autor"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1419
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1425
 msgid "Author Box Padding Bottom"
 msgstr "Relleno inferior de la caja de autor"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1425
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1431
 msgid "Author Box Padding Left"
 msgstr "Relleno izquierdo de la caja de autor"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1431
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1437
 msgid "Author Box Padding Right"
 msgstr "Relleno derecho de la caja de autor"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1413
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1419
 msgid "Author Box Padding Top"
 msgstr "Relleno superior de la caja de autor"
 
@@ -688,23 +696,23 @@ msgstr "Previa de la caja de autor"
 msgid "Author Box saved."
 msgstr "Caja de autor guardada."
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1512
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1518
 msgid "Author Box Shadow Blur"
 msgstr "Desenfoque de la sombra de la caja de autor"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1494
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1500
 msgid "Author Box Shadow Color"
 msgstr "Color de la sombra de la caja de autor"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1500
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1506
 msgid "Author Box Shadow Horizontal Offset"
 msgstr "Desfase horizontal de la sombra de la caja de autor"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1518
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1524
 msgid "Author Box Shadow Spread"
 msgstr "Difusión de la sombra de la caja de autor"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1506
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1512
 msgid "Author Box Shadow Vertical Offset"
 msgstr "Desfase vertical de la sombra de la caja de autor"
 
@@ -717,7 +725,7 @@ msgstr "Caja de autor enviada."
 msgid "Author Box updated."
 msgstr "Caja de autor actualizada."
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1467
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1473
 msgid "Author Box Width (%)"
 msgstr "Ancho de la caja de autor (%)"
 
@@ -726,15 +734,15 @@ msgstr "Ancho de la caja de autor (%)"
 #: src/modules/author-boxes/author-boxes.php:456
 #: src/modules/author-boxes/author-boxes.php:457
 #: src/modules/author-boxes/author-boxes.php:500
-#: src/modules/multiple-authors/multiple-authors.php:2903
+#: src/modules/multiple-authors/multiple-authors.php:2905
 msgid "Author Boxes"
 msgstr "Cajas de autor"
 
 #: src/modules/author-boxes/author-boxes.php:1030
 #: src/modules/author-categories/author-categories.php:64
-#: src/modules/author-categories/author-categories.php:185
-#: src/modules/author-categories/author-categories.php:186
-#: src/modules/author-categories/author-categories.php:536
+#: src/modules/author-categories/author-categories.php:193
+#: src/modules/author-categories/author-categories.php:194
+#: src/modules/author-categories/author-categories.php:547
 #: src/modules/author-categories/classes/AuthorCategoriesTable.php:29
 msgid "Author Categories"
 msgstr "Categorías de autores"
@@ -821,8 +829,8 @@ msgstr "Etiqueta HTML del título de la categoría de autor"
 msgid "Author Category Weight"
 msgstr "Peso de la categoría de autor"
 
-#: src/modules/author-categories/author-categories.php:256
-#: src/modules/author-categories/author-categories.php:335
+#: src/modules/author-categories/author-categories.php:264
+#: src/modules/author-categories/author-categories.php:343
 msgid "Author category with this name already exist."
 msgstr "Una categoría de autor con este nombre ya existe."
 
@@ -846,16 +854,16 @@ msgstr "Campos de autor"
 msgid "Author Grouping Title Option"
 msgstr "Opción del título de la agrupación de autores"
 
-#: src/modules/author-list/author-list.php:513
+#: src/modules/author-list/author-list.php:554
 msgid "Author Index List"
 msgstr "Lista de índice de autores"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1357
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1363
 msgid "Author inline display"
 msgstr "Visualización integrada del autor"
 
 #: src/modules/author-list/author-list.php:64
-#: src/modules/author-list/author-list.php:659
+#: src/modules/author-list/author-list.php:700
 msgid "Author List"
 msgstr "Lista de autores"
 
@@ -874,7 +882,7 @@ msgstr "Lista de autores restaurada de la papelera"
 #: src/modules/author-list/author-list.php:196
 #: src/modules/author-list/author-list.php:197
 #: src/modules/author-list/author-list.php:273
-#: src/modules/author-list/author-list.php:704
+#: src/modules/author-list/author-list.php:745
 msgid "Author Lists"
 msgstr "Listas de autores"
 
@@ -882,14 +890,14 @@ msgstr "Listas de autores"
 msgid "Author name is required"
 msgstr "El nombre del autor es obligatorio"
 
-#: src/modules/author-pages/author-pages.php:116
+#: src/modules/author-pages/author-pages.php:120
 msgid "Author Page Title"
 msgstr "Título de la página de autor"
 
-#: src/modules/author-pages/author-pages.php:56
-#: src/modules/author-pages/author-pages.php:102
-#: src/modules/author-pages/author-pages.php:103
-#: src/modules/multiple-authors/multiple-authors.php:2905
+#: src/modules/author-pages/author-pages.php:60
+#: src/modules/author-pages/author-pages.php:106
+#: src/modules/author-pages/author-pages.php:107
+#: src/modules/multiple-authors/multiple-authors.php:2907
 msgid "Author Pages"
 msgstr "Páginas de autor"
 
@@ -913,7 +921,7 @@ msgstr "Cabecera de las páginas del autor:"
 msgid "Author post title header:"
 msgstr "Cabecera del título de la entrada del autor:"
 
-#: src/modules/author-list/author-list.php:423
+#: src/modules/author-list/author-list.php:464
 msgid ""
 "Author Pro allows you to add a search box to the Authors List. You can also "
 "show a dropdown menu that allows users to search on specific author fields."
@@ -935,7 +943,7 @@ msgstr "Perfil del autor borrado."
 msgid "Author profile updated."
 msgstr "Perfil del autor actualizado."
 
-#: src/modules/multiple-authors/multiple-authors.php:2904
+#: src/modules/multiple-authors/multiple-authors.php:2906
 msgid "Author Profiles"
 msgstr "Perfiles de autor"
 
@@ -952,7 +960,7 @@ msgstr ""
 "los usuarios existentes haciendo clic en el botón «Crear autores que faltan "
 "desde el perfil» en la pestaña de mantenimiento."
 
-#: src/modules/author-list/author-list.php:469
+#: src/modules/author-list/author-list.php:510
 msgid "Author Recent List"
 msgstr "Lista de autores recientes"
 
@@ -960,26 +968,26 @@ msgstr "Lista de autores recientes"
 msgid "Author Recent Posts"
 msgstr "Entradas recientes del autor"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1365
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1371
 msgid "Author Row Prefix"
 msgstr "Prefijo fila del autor"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1373
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1379
 msgid "Author Row Suffix"
 msgstr "Sufijo fila del autor"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1381
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1387
 msgid "Author Separator"
 msgstr "Separador de autores"
 
 #: src/core/Classes/Author_Editor.php:49
-#: src/modules/author-list/author-list.php:396
-#: src/modules/author-list/author-list.php:401
+#: src/modules/author-list/author-list.php:437
+#: src/modules/author-list/author-list.php:442
 msgid "Author Type"
 msgstr "Tipo de autor"
 
 #: src/core/Classes/Term_Editor.php:79
-#: src/modules/multiple-authors/multiple-authors.php:2996
+#: src/modules/multiple-authors/multiple-authors.php:2998
 msgid "Author URL"
 msgstr "URL del autor"
 
@@ -999,10 +1007,10 @@ msgid "AuthorList"
 msgstr "AuthorList"
 
 #: src/core/Authors_Widget.php:138 src/core/Plugin.php:856
-#: src/core/Classes/Post_Editor.php:94 src/core/Classes/Post_Editor.php:206
+#: src/core/Classes/Post_Editor.php:95 src/core/Classes/Post_Editor.php:207
 #: src/core/Traits/Author_box.php:193
-#: src/modules/author-categories/author-categories.php:624
-#: src/modules/author-list/author-list.php:402
+#: src/modules/author-categories/author-categories.php:635
+#: src/modules/author-list/author-list.php:443
 #: src/modules/editflow-integration/editflow-integration.php:114
 #: src/modules/multiple-authors/multiple-authors.php:322
 #: src/modules/multiple-authors/multiple-authors.php:323
@@ -1011,11 +1019,11 @@ msgstr "AuthorList"
 #: src/modules/multiple-authors/multiple-authors.php:391
 #: src/modules/multiple-authors/multiple-authors.php:1231
 #: src/modules/author-boxes/classes/AuthorBoxesDefault.php:82
-#: src/modules/author-boxes/classes/AuthorBoxesDefault.php:161
-#: src/modules/author-boxes/classes/AuthorBoxesDefault.php:342
-#: src/modules/author-boxes/classes/AuthorBoxesDefault.php:421
-#: src/modules/author-boxes/classes/AuthorBoxesDefault.php:503
-#: src/modules/author-boxes/classes/AuthorBoxesDefault.php:590
+#: src/modules/author-boxes/classes/AuthorBoxesDefault.php:162
+#: src/modules/author-boxes/classes/AuthorBoxesDefault.php:344
+#: src/modules/author-boxes/classes/AuthorBoxesDefault.php:424
+#: src/modules/author-boxes/classes/AuthorBoxesDefault.php:506
+#: src/modules/author-boxes/classes/AuthorBoxesDefault.php:593
 msgid "Authors"
 msgstr "Autores"
 
@@ -1044,7 +1052,7 @@ msgstr "Índice de autores"
 msgid "Authors List"
 msgstr "Lista de autores"
 
-#: src/modules/author-list/author-list.php:413
+#: src/modules/author-list/author-list.php:454
 msgid ""
 "Authors Pro allows you to add extra features to the Authors List. These "
 "features include pagination, choose the order of authors, and much more."
@@ -1108,27 +1116,27 @@ msgstr "Banner"
 msgid "Biographical Info"
 msgstr "Información biográfica"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1100
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1106
 msgid "Biographical Info Alignment"
 msgstr "Alineación de la información biográfica"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1023
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1029
 msgid "Biographical Info Character Limit"
 msgstr "Límite de caracteres para la información biográfica"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1113
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1119
 msgid "Biographical Info Color"
 msgstr "Color de la información biográfica"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1087
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1093
 msgid "Biographical Info Decoration"
 msgstr "Decoración de la información biográfica"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1120
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1126
 msgid "Biographical Info HTML Tag"
 msgstr "Etiqueta HTML de la información biográfica"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1036
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1042
 msgid "Biographical Info Line Height (px)"
 msgstr "Interlineado de la información biográfica (px)"
 
@@ -1136,19 +1144,19 @@ msgstr "Interlineado de la información biográfica (px)"
 msgid "Biographical Info Row"
 msgstr "Fila de información biográfica"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1030
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1036
 msgid "Biographical Info Size"
 msgstr "Tamaño de la información biográfica"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1075
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1081
 msgid "Biographical Info Style"
 msgstr "Estilo de la información biográfica"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1062
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1068
 msgid "Biographical Info Transform"
 msgstr "Transformación de la información biográfica"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1042
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1048
 msgid "Biographical Info Weight"
 msgstr "Peso de la información biográfica"
 
@@ -1166,8 +1174,8 @@ msgstr "Agrupación en bloque"
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:433
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:644
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:922
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1048
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1250
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1054
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1256
 msgid "Bold"
 msgstr "Negrita"
 
@@ -1259,16 +1267,16 @@ msgstr "Cancelar"
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:330
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:454
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:945
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1069
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1271
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1075
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1277
 msgid "Capitalize"
 msgstr "Iniciales en mayúscula"
 
-#: src/modules/author-categories/author-categories.php:272
+#: src/modules/author-categories/author-categories.php:280
 msgid "Category added."
 msgstr "Categoría añadida."
 
-#: src/modules/author-categories/author-categories.php:395
+#: src/modules/author-categories/author-categories.php:403
 msgid "Category order updated."
 msgstr "Orden de la categoría actualizado."
 
@@ -1276,8 +1284,8 @@ msgstr "Orden de la categoría actualizado."
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:367
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:491
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:988
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1106
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1308
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1112
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1314
 msgid "Center"
 msgstr "Centro"
 
@@ -1289,12 +1297,12 @@ msgstr "Centrado"
 msgid "Centered legacy layout Author Box:"
 msgstr "Diseño centrado heredado de la caja de autor:"
 
-#: src/modules/author-boxes/author-boxes.php:2298
+#: src/modules/author-boxes/author-boxes.php:2304
 #, php-format
 msgid "Change %1s"
 msgstr "Cambiar %1s"
 
-#: src/core/Classes/Legacy/LegacyPlugin.php:284
+#: src/core/Classes/Legacy/LegacyPlugin.php:288
 msgid "Cheatin&#8217; uh?"
 msgstr "Haciendo trampas, ¿eh?"
 
@@ -1302,7 +1310,7 @@ msgstr "Haciendo trampas, ¿eh?"
 msgid "Choose from the most used Authors"
 msgstr "Elige entre los autores más utilizados"
 
-#: src/modules/author-pages/author-pages.php:165
+#: src/modules/multiple-authors/multiple-authors.php:1765
 msgid "Click here for more details."
 msgstr "Haz clic aquí para más detalles."
 
@@ -1322,7 +1330,7 @@ msgstr ""
 "Haz clic en un autor para cambiarlo. Arrastra para cambiar su orden. Haz "
 "clic en <strong>Eliminar</strong> para eliminarlos."
 
-#: src/modules/author-boxes/author-boxes.php:2159
+#: src/modules/author-boxes/author-boxes.php:2165
 msgid ""
 "Click the \"Generate Template\" button under the text area. Wait for the "
 "code to be generated."
@@ -1339,7 +1347,7 @@ msgstr "Haz clic para cambiar este autor o arrastra para cambiar su posición"
 msgid "Click To Copy!"
 msgstr "¡Haz clic para copiar!"
 
-#: src/modules/multiple-authors/multiple-authors.php:4393
+#: src/modules/multiple-authors/multiple-authors.php:4395
 msgid "Click to run the update now"
 msgstr "Haz clic para ejecutar la actualización ahora"
 
@@ -1347,23 +1355,23 @@ msgstr "Haz clic para ejecutar la actualización ahora"
 msgid "Co-Authors Plus must be installed and active."
 msgstr "Co-Authors Plus debe estar instalado y activo."
 
-#: src/modules/author-categories/author-categories.php:632
-#: src/modules/author-categories/author-categories.php:634
+#: src/modules/author-categories/author-categories.php:643
+#: src/modules/author-categories/author-categories.php:645
 msgid "Coauthor"
 msgstr "Coautor"
 
-#: src/modules/author-categories/author-categories.php:633
+#: src/modules/author-categories/author-categories.php:644
 msgid "Coauthors"
 msgstr "Coautores"
 
 #: src/modules/byline-migration/byline-migration.php:145
 #: src/modules/bylines-migration/bylines-migration.php:147
-#: src/modules/multiple-authors/multiple-authors.php:3859
+#: src/modules/multiple-authors/multiple-authors.php:3861
 msgid "Collecting data for the migration..."
 msgstr "Recogiendo datos para la migración…"
 
-#: src/modules/multiple-authors/multiple-authors.php:3791
-#: src/modules/multiple-authors/multiple-authors.php:3822
+#: src/modules/multiple-authors/multiple-authors.php:3793
+#: src/modules/multiple-authors/multiple-authors.php:3824
 msgid "Collecting data..."
 msgstr "Recogiendo los datos…"
 
@@ -1376,15 +1384,15 @@ msgstr "Esquema de color:"
 msgid "Comment counts"
 msgstr "Recuento de comentarios"
 
-#: src/core/Classes/Legacy/LegacyPlugin.php:277
+#: src/core/Classes/Legacy/LegacyPlugin.php:281
 msgid "Configure"
 msgstr "Configurar"
 
-#: src/modules/author-list/author-list.php:412
+#: src/modules/author-list/author-list.php:453
 msgid "Configure Author List Options"
 msgstr "Configurar las opciones de la lista de autores"
 
-#: src/modules/author-boxes/author-boxes.php:2162
+#: src/modules/author-boxes/author-boxes.php:2168
 msgid ""
 "Congratulations. Your can now choose your template inside the PublishPress "
 "Authors Settings."
@@ -1400,8 +1408,8 @@ msgstr "Contacto"
 msgid "Convert to Registered Author With User Account"
 msgstr "Convertir en autor registrado con cuenta de usuario"
 
-#: src/modules/author-boxes/author-boxes.php:2131
-#: src/modules/author-boxes/author-boxes.php:2203
+#: src/modules/author-boxes/author-boxes.php:2137
+#: src/modules/author-boxes/author-boxes.php:2209
 msgid "Copied to Clipboard!"
 msgstr "Copiado en el portapapeles."
 
@@ -1419,26 +1427,26 @@ msgstr "Copiar los datos de Byline"
 msgid "Copy Bylines Data"
 msgstr "Copiar los datos de Bylines"
 
-#: src/modules/multiple-authors/multiple-authors.php:2697
+#: src/modules/multiple-authors/multiple-authors.php:2699
 msgid "Copy Co-Authors Plus Data"
 msgstr "Copiar los datos de Co-Authors Plus"
 
-#: src/modules/multiple-authors/multiple-authors.php:3864
+#: src/modules/multiple-authors/multiple-authors.php:3866
 msgid "Copy Co-Authors Plus data"
 msgstr "Copiar los datos de Co-Authors Plus"
 
-#: src/modules/author-boxes/author-boxes.php:2161
+#: src/modules/author-boxes/author-boxes.php:2167
 msgid "Copy the generated code and paste it inside the newly created file."
 msgstr "Copia el código generado y pégalo dentro del archivo recién creado."
 
-#: src/modules/author-boxes/author-boxes.php:2127
-#: src/modules/author-boxes/author-boxes.php:2198
+#: src/modules/author-boxes/author-boxes.php:2133
+#: src/modules/author-boxes/author-boxes.php:2204
 msgid "Copy to Clipboard"
 msgstr "Copia en el portapapeles"
 
 #: src/modules/byline-migration/byline-migration.php:149
 #: src/modules/bylines-migration/bylines-migration.php:151
-#: src/modules/multiple-authors/multiple-authors.php:3863
+#: src/modules/multiple-authors/multiple-authors.php:3865
 msgid "Copying authors' data..."
 msgstr "Copiando los datos del autor…"
 
@@ -1471,7 +1479,7 @@ msgstr ""
 "ligera pero puede tener problemas de compatibilidad con otros temas y "
 "plugins."
 
-#: src/modules/author-boxes/author-boxes.php:2160
+#: src/modules/author-boxes/author-boxes.php:2166
 #, php-format
 msgid ""
 "Create an empty php template file with your desired file slug in the %1s /"
@@ -1486,7 +1494,7 @@ msgstr ""
 "nombre-del-tema%6s/publishpress-authors/author-boxes/mi-primera-plantilla-"
 "autor-personalizada.php %7s ."
 
-#: src/core/Classes/Utils.php:1127
+#: src/core/Classes/Utils.php:1131
 msgid "Create Author Boxes with authors organized in categories"
 msgstr "Crea cajas de autores con los autores organizados en categorías"
 
@@ -1494,20 +1502,20 @@ msgstr "Crea cajas de autores con los autores organizados en categorías"
 msgid "Create Author Profile"
 msgstr "Crear un perfil de autor"
 
-#: src/modules/multiple-authors/multiple-authors.php:2666
+#: src/modules/multiple-authors/multiple-authors.php:2668
 msgid "Create missing PublishPress Authors profiles"
 msgstr "Crea los perfiles de PublishPress Authors que faltan"
 
-#: src/modules/multiple-authors/multiple-authors.php:2672
+#: src/modules/multiple-authors/multiple-authors.php:2674
 msgid "Create PublishPress Authors profiles"
 msgstr "Crea los perfiles de PublishPress Authors"
 
-#: src/modules/multiple-authors/multiple-authors.php:2664
+#: src/modules/multiple-authors/multiple-authors.php:2666
 msgid "Create PublishPress Authors Profiles for all post authors"
 msgstr ""
 "Crea los perfiles de PublishPress Authors para todos los autores de entradas"
 
-#: src/modules/multiple-authors/multiple-authors.php:2670
+#: src/modules/multiple-authors/multiple-authors.php:2672
 msgid "Create PublishPress Authors Profiles for all users in a role"
 msgstr ""
 "Crea los perfiles de PublishPress Authors para todos los usuarios en un "
@@ -1517,12 +1525,12 @@ msgstr ""
 msgid "Creating author term for the user %d"
 msgstr "Creando el término de autor para el usuario %d"
 
-#: src/modules/multiple-authors/multiple-authors.php:3861
+#: src/modules/multiple-authors/multiple-authors.php:3863
 msgid "Creating missed post authors...."
 msgstr "Creación de autores de entradas faltantes…"
 
 #: src/modules/author-boxes/author-boxes.php:1050
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1536
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1542
 msgid "Custom CSS"
 msgstr "CSS personalizado"
 
@@ -1574,12 +1582,12 @@ msgid "%2$s"
 msgstr "%2$s"
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:202
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1179
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1449
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1185
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1455
 msgid "Dashed"
 msgstr "Discontinuo"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1212
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1218
 msgid "Date"
 msgstr "Fecha"
 
@@ -1591,7 +1599,7 @@ msgstr "Desactivar Byline"
 msgid "Deactivate Bylines"
 msgstr "Desactivar Bylines"
 
-#: src/modules/multiple-authors/multiple-authors.php:3867
+#: src/modules/multiple-authors/multiple-authors.php:3869
 msgid "Deactivate Co-Authors Plus"
 msgstr "Desactivar Co-Authors Plus"
 
@@ -1603,7 +1611,7 @@ msgstr "Desactivando Byline…"
 msgid "Deactivating Bylines..."
 msgstr "Desactivando Bylines…"
 
-#: src/modules/multiple-authors/multiple-authors.php:3865
+#: src/modules/multiple-authors/multiple-authors.php:3867
 msgid "Deactivating Co-uthors Plus..."
 msgstr "Desactivando Co-Authors Plus…"
 
@@ -1634,16 +1642,16 @@ msgstr "Depuración"
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:957
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:971
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:986
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1046
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1066
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1079
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1091
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1104
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1248
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1268
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1281
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1293
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1306
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1052
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1072
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1085
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1097
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1110
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1254
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1274
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1287
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1299
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1312
 msgid "Default"
 msgstr "Por defecto"
 
@@ -1668,26 +1676,26 @@ msgstr "Diseños por defecto"
 msgid "Default Search"
 msgstr "Buscador por defecto"
 
-#: src/modules/author-boxes/author-boxes.php:2073
-#: src/modules/author-boxes/author-boxes.php:2102
+#: src/modules/author-boxes/author-boxes.php:2079
+#: src/modules/author-boxes/author-boxes.php:2108
 #: src/modules/author-categories/classes/AuthorCategoriesTable.php:125
 #: src/modules/author-categories/classes/AuthorCategoriesTable.php:373
 msgid "Delete"
 msgstr "Borrar"
 
-#: src/modules/multiple-authors/multiple-authors.php:2707
+#: src/modules/multiple-authors/multiple-authors.php:2709
 msgid "Delete all authors mapped to users"
 msgstr "Borrar todos los autores asignados a los usuarios"
 
-#: src/modules/multiple-authors/multiple-authors.php:2714
+#: src/modules/multiple-authors/multiple-authors.php:2716
 msgid "Delete all guest authors"
 msgstr "Borrar todos los autores invitados"
 
-#: src/modules/multiple-authors/multiple-authors.php:2712
+#: src/modules/multiple-authors/multiple-authors.php:2714
 msgid "Delete Guest Authors"
 msgstr "Borrar los autores invitados"
 
-#: src/modules/multiple-authors/multiple-authors.php:2705
+#: src/modules/multiple-authors/multiple-authors.php:2707
 msgid "Delete Mapped Authors"
 msgstr "Borrar los autores asignados"
 
@@ -1696,7 +1704,7 @@ msgid "Delete Permanently"
 msgstr "Borrar permanentemente"
 
 #: src/core/Authors_Widget.php:187
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1227
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1233
 msgid "Descending"
 msgstr "Descendente"
 
@@ -1704,7 +1712,7 @@ msgstr "Descendente"
 msgid "Description"
 msgstr "Descripción"
 
-#: src/core/Classes/Utils.php:1156
+#: src/core/Classes/Utils.php:1160
 msgid "Detailed documentation is also available on the plugin website."
 msgstr ""
 "Una documentación detallada está también disponible en la web del plugin."
@@ -1721,7 +1729,7 @@ msgstr "Desactiva las categorías"
 msgid "Disable the \"Authors\" box when using \"Quick Edit\":"
 msgstr "Desactiva la caja «Autores» cuando utilizas la «Edición rápida»:"
 
-#: src/core/Classes/Post_Editor.php:451
+#: src/core/Classes/Post_Editor.php:452
 msgid "Disable the default author display under this post"
 msgstr "Desactivar la visualización del autor por defecto bajo esta entrada"
 
@@ -1741,8 +1749,8 @@ msgstr ""
 "Desactivado porque add_post_type_support('%1$s', '%2$s') está incluido en un "
 "archivo cargado."
 
-#: src/modules/multiple-authors/multiple-authors.php:4325
-#: src/modules/multiple-authors/multiple-authors.php:4399
+#: src/modules/multiple-authors/multiple-authors.php:4327
+#: src/modules/multiple-authors/multiple-authors.php:4401
 msgid "Dismiss"
 msgstr "Descartar"
 
@@ -1817,8 +1825,8 @@ msgstr "Peso del nombre visible"
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:526
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:662
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:789
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1130
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1337
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1136
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1343
 msgid "div"
 msgstr "div"
 
@@ -1830,7 +1838,7 @@ msgstr "Integración de Divi"
 msgid "Documentation"
 msgstr "Documentación"
 
-#: src/modules/author-boxes/author-boxes.php:2167
+#: src/modules/author-boxes/author-boxes.php:2173
 msgid "documentation page"
 msgstr "páginas de documentación"
 
@@ -1838,11 +1846,11 @@ msgstr "páginas de documentación"
 msgid "dofollow"
 msgstr "dofollow"
 
-#: src/modules/multiple-authors/multiple-authors.php:3824
+#: src/modules/multiple-authors/multiple-authors.php:3826
 msgid "Done! %d authors were updated."
 msgstr "¡Hecho! Se han actualizado %d autores."
 
-#: src/modules/multiple-authors/multiple-authors.php:3793
+#: src/modules/multiple-authors/multiple-authors.php:3795
 msgid "Done! %d posts were updated."
 msgstr "¡Hecho! Se han actualizado %d entradas."
 
@@ -1864,27 +1872,27 @@ msgstr ""
 msgid "Done! Bylines is deactivated."
 msgstr "¡Hecho! Bylines está desactivado."
 
-#: src/modules/multiple-authors/multiple-authors.php:3868
+#: src/modules/multiple-authors/multiple-authors.php:3870
 msgid "Done! Co-Authors Plus data was copied."
 msgstr "¡Hecho! Los datos de Co-Authors Plus han sido copiados."
 
-#: src/modules/multiple-authors/multiple-authors.php:3866
+#: src/modules/multiple-authors/multiple-authors.php:3868
 msgid "Done! Co-Authors Plus is deactivated."
 msgstr "¡Hecho! Co-Authors Plus está desactivado."
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:201
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1178
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1448
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1184
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1454
 msgid "Dotted"
 msgstr "Punteado"
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:204
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1181
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1452
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1187
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1458
 msgid "Double"
 msgstr "Doble"
 
-#: src/modules/author-list/author-list.php:783
+#: src/modules/author-list/author-list.php:824
 msgid "Dynamic Shortcode"
 msgstr "Shortcode dinámico"
 
@@ -1903,7 +1911,7 @@ msgstr "Editar %1$s"
 msgid "Edit Author"
 msgstr "Editar el autor"
 
-#: src/modules/author-list/author-list.php:689
+#: src/modules/author-list/author-list.php:730
 msgid "Edit Author List"
 msgstr "Editar lista de autores"
 
@@ -1925,12 +1933,12 @@ msgstr "Editar mi perfil de autor"
 msgid "Edit User"
 msgstr "Editar el usuario"
 
-#: src/modules/author-categories/author-categories.php:650
-#: src/modules/author-categories/author-categories.php:652
+#: src/modules/author-categories/author-categories.php:661
+#: src/modules/author-categories/author-categories.php:663
 msgid "Editor"
 msgstr "Editor"
 
-#: src/modules/author-categories/author-categories.php:651
+#: src/modules/author-categories/author-categories.php:662
 msgid "Editors"
 msgstr "Editores"
 
@@ -1959,11 +1967,15 @@ msgstr "Activar las páginas de autor:"
 msgid "Enable author's search box"
 msgstr "Activar la caja de búsqueda del autor"
 
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1023
+msgid "Enable Biographical Link"
+msgstr "Activar el enlace biográfico"
+
 #: src/modules/author-categories/classes/AuthorCategoriesTable.php:123
 msgid "Enable Categories"
 msgstr "Activar las categorías"
 
-#: src/modules/author-categories/author-categories.php:587
+#: src/modules/author-categories/author-categories.php:598
 #: src/modules/author-categories/classes/AuthorCategoriesTable.php:80
 #: src/modules/author-categories/classes/AuthorCategoriesTable.php:450
 msgid "Enable Category"
@@ -1989,24 +2001,24 @@ msgstr "Activado"
 msgid "Enabled features"
 msgstr "Características activas"
 
-#: src/core/Classes/Utils.php:1121
+#: src/core/Classes/Utils.php:1125
 msgid "Enhance the power of PublishPress Authors with the Pro version:"
 msgstr "Mejora la potencia de PublishPress Authors con la versión Pro:"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1547
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1553
 msgid "Enter class name without dot(.)"
 msgstr "Introduce el nombre de la clase sin punto(.)"
 
-#: src/modules/author-categories/author-categories.php:565
+#: src/modules/author-categories/author-categories.php:576
 msgid "Enter the Author Category name when it's a single author"
 msgstr "Introduce el nombre de la categoría de autor cuando es un único autor"
 
-#: src/modules/author-categories/author-categories.php:570
+#: src/modules/author-categories/author-categories.php:581
 msgid "Enter the Author Category name when there are more than 1 author"
 msgstr ""
 "Introduce el nombre de la categoría de autor cuando haya más de 1 autor"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1374
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1380
 msgid ""
 "Enter the text that should be added after authors. This field accepts basic "
 "HTML."
@@ -2022,7 +2034,7 @@ msgstr ""
 "Introduce el texto que debe añadirse después del título del grupo. Este "
 "campo acepta HTML básico."
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1366
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1372
 msgid ""
 "Enter the text that should be added before authors. This field accepts basic "
 "HTML."
@@ -2042,7 +2054,7 @@ msgstr ""
 msgid "Error adding author account."
 msgstr "Error al añadir la cuenta de autor."
 
-#: src/modules/author-categories/author-categories.php:285
+#: src/modules/author-categories/author-categories.php:293
 msgid "Error inserting new author category."
 msgstr "Error al añadir la nueva categoría de autor."
 
@@ -2050,17 +2062,17 @@ msgstr "Error al añadir la nueva categoría de autor."
 msgid "Error updating author profile."
 msgstr "Error al actualizar el perfil de autor."
 
-#: src/modules/author-categories/author-categories.php:358
+#: src/modules/author-categories/author-categories.php:366
 msgid "Error updating category data."
 msgstr "Error al actualizar los datos de la categoría."
 
-#: src/modules/multiple-authors/multiple-authors.php:3662
+#: src/modules/multiple-authors/multiple-authors.php:3664
 msgid "Error. Author terms could not be reseted."
 msgstr "Error. No se han podido restablecer los términos del autor."
 
 #: src/modules/byline-migration/byline-migration.php:146
 #: src/modules/bylines-migration/bylines-migration.php:148
-#: src/modules/multiple-authors/multiple-authors.php:3860
+#: src/modules/multiple-authors/multiple-authors.php:3862
 msgid "Error: "
 msgstr "Error: "
 
@@ -2069,15 +2081,15 @@ msgid "Existing Author Boxes"
 msgstr "Cajas de autor existentes"
 
 #: src/modules/author-boxes/author-boxes.php:1054
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1583
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1589
 msgid "Export"
 msgstr "Exportar"
 
-#: src/modules/author-boxes/author-boxes.php:2116
+#: src/modules/author-boxes/author-boxes.php:2122
 msgid "Export Editor Settings"
 msgstr "Exportar los ajustes del editor"
 
-#: src/core/Classes/Utils.php:1126
+#: src/core/Classes/Utils.php:1130
 msgid "Extra features for Author Lists"
 msgstr "Características adicionales para listas de autores"
 
@@ -2085,7 +2097,7 @@ msgstr "Características adicionales para listas de autores"
 msgid "Fallback user for Guest Authors:"
 msgstr "Usuario de respaldo para los autores invitados:"
 
-#: src/core/Classes/Utils.php:1130
+#: src/core/Classes/Utils.php:1134
 msgid "Fast, professional support"
 msgstr "Soporte rápido y profesional"
 
@@ -2096,6 +2108,10 @@ msgstr "Altura personalizada de la imagen destacada:"
 #: src/modules/multiple-authors/multiple-authors.php:857
 msgid "Featured image custom width:"
 msgstr "Ancho personalizado de la imagen destacada:"
+
+#: src/modules/author-list/author-list.php:424
+msgid "Featured Image Size"
+msgstr "Tamaño de la imagen destacada"
 
 #: src/modules/modules-settings/modules-settings.php:251
 msgid "Features"
@@ -2164,18 +2180,18 @@ msgstr "Campo valor"
 msgid "Filter %2$s list"
 msgstr "Filtrar la lista %2$s"
 
-#: src/modules/multiple-authors/multiple-authors.php:3792
-#: src/modules/multiple-authors/multiple-authors.php:3823
+#: src/modules/multiple-authors/multiple-authors.php:3794
+#: src/modules/multiple-authors/multiple-authors.php:3825
 msgid "Finishing the process..."
 msgstr "Finalizando el proceso…"
 
 #: src/core/Authors_Widget.php:192 src/core/Classes/Author_Editor.php:358
 #: src/modules/author-custom-fields/author-custom-fields.php:890
-#: src/modules/multiple-authors/multiple-authors.php:1973
+#: src/modules/multiple-authors/multiple-authors.php:1975
 msgid "First Name"
 msgstr "Nombre"
 
-#: src/modules/multiple-authors/multiple-authors.php:1971
+#: src/modules/multiple-authors/multiple-authors.php:1973
 msgid "First Name Last Name"
 msgstr "Nombre y apellidos"
 
@@ -2196,13 +2212,19 @@ msgstr ""
 "Para authors_index layout, puedes agrupar usuarios por campo de perfil "
 "usando %1$s ."
 
-#: src/modules/author-list/author-list.php:384
+#: src/modules/author-list/author-list.php:414
 msgid "For authors_index layout, you can group user by profile fields."
 msgstr ""
 "Para authors_index layout, puedes agrupar a los usuarios por campos de "
 "perfil."
 
-#: src/modules/author-categories/author-categories.php:576
+#: src/modules/author-list/author-list.php:425
+msgid "For authors_recent layout, you can select the featured image size.."
+msgstr ""
+"Para authors_recent layout, puedes seleccionar el tamaño de la imagen "
+"destacada."
+
+#: src/modules/author-categories/author-categories.php:587
 #, php-format
 msgid ""
 "For example, when this value is set to reviewedBy, all users under this "
@@ -2215,17 +2237,17 @@ msgstr ""
 
 #: src/core/Classes/Author_Editor.php:313
 #: src/modules/author-list/author-list.php:316
-#: src/modules/author-pages/author-pages.php:113
-#: src/modules/multiple-authors/multiple-authors.php:2902
+#: src/modules/author-pages/author-pages.php:117
+#: src/modules/multiple-authors/multiple-authors.php:2904
 msgid "General"
 msgstr "General"
 
-#: src/modules/author-boxes/author-boxes.php:2192
+#: src/modules/author-boxes/author-boxes.php:2198
 msgid "Generate Template"
 msgstr "Genera la plantilla"
 
 #: src/modules/author-boxes/author-boxes.php:1062
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1620
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1626
 msgid "Generate Theme Template"
 msgstr "Generar plantilla de tema"
 
@@ -2237,7 +2259,7 @@ msgstr "Integración de Generatepress"
 msgid "Genesis Integration"
 msgstr "Integración de Genesis"
 
-#: src/modules/multiple-authors/multiple-authors.php:1798
+#: src/modules/multiple-authors/multiple-authors.php:1800
 msgid "Grid"
 msgstr "Cuadrícula"
 
@@ -2246,28 +2268,28 @@ msgid "Grid layout column:"
 msgstr "Columna de diseño de la cuadrícula:"
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:205
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1182
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1453
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1188
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1459
 msgid "Groove"
 msgstr "Acanalado"
 
-#: src/modules/author-list/author-list.php:383
+#: src/modules/author-list/author-list.php:413
 msgid "Group By"
 msgstr "Agrupar por"
 
-#: src/modules/multiple-authors/multiple-authors.php:4784
+#: src/modules/multiple-authors/multiple-authors.php:4786
 msgid "Guest Author cannot login on the site."
 msgstr "El autor invitado no puede acceder al sitio."
 
 #: src/core/Classes/Author_Editor.php:121
 #: src/core/Classes/Author_Editor.php:739
-#: src/modules/author-list/author-list.php:979
+#: src/modules/author-list/author-list.php:1023
 msgid "Guest Author With No User Account"
 msgstr "Autor invitado sin cuenta de usuario"
 
 #: src/core/Classes/Author_Editor.php:117
 #: src/core/Classes/Author_Editor.php:732
-#: src/modules/author-list/author-list.php:978
+#: src/modules/author-list/author-list.php:1022
 msgid "Guest Author With User Account"
 msgstr "Autor invitado con cuenta de usuario"
 
@@ -2275,75 +2297,75 @@ msgstr "Autor invitado con cuenta de usuario"
 msgid "Guest Authors"
 msgstr "Autores invitados"
 
-#: src/modules/multiple-authors/multiple-authors.php:1826
-#: src/modules/multiple-authors/multiple-authors.php:1858
+#: src/modules/multiple-authors/multiple-authors.php:1828
+#: src/modules/multiple-authors/multiple-authors.php:1860
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:152
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:384
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:520
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:665
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:791
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1124
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1331
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1130
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1337
 msgid "H1"
 msgstr "H1"
 
-#: src/modules/multiple-authors/multiple-authors.php:1827
-#: src/modules/multiple-authors/multiple-authors.php:1859
+#: src/modules/multiple-authors/multiple-authors.php:1829
+#: src/modules/multiple-authors/multiple-authors.php:1861
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:153
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:385
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:521
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:666
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:792
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1125
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1332
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1131
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1338
 msgid "H2"
 msgstr "H2"
 
-#: src/modules/multiple-authors/multiple-authors.php:1828
-#: src/modules/multiple-authors/multiple-authors.php:1860
+#: src/modules/multiple-authors/multiple-authors.php:1830
+#: src/modules/multiple-authors/multiple-authors.php:1862
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:154
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:386
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:522
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:667
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:793
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1126
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1333
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1132
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1339
 msgid "H3"
 msgstr "H3"
 
-#: src/modules/multiple-authors/multiple-authors.php:1829
-#: src/modules/multiple-authors/multiple-authors.php:1861
+#: src/modules/multiple-authors/multiple-authors.php:1831
+#: src/modules/multiple-authors/multiple-authors.php:1863
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:155
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:387
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:523
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:668
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:794
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1127
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1334
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1133
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1340
 msgid "H4"
 msgstr "H4"
 
-#: src/modules/multiple-authors/multiple-authors.php:1830
-#: src/modules/multiple-authors/multiple-authors.php:1862
+#: src/modules/multiple-authors/multiple-authors.php:1832
+#: src/modules/multiple-authors/multiple-authors.php:1864
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:156
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:388
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:524
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:669
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:795
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1128
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1335
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1134
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1341
 msgid "H5"
 msgstr "H5"
 
-#: src/modules/multiple-authors/multiple-authors.php:1831
-#: src/modules/multiple-authors/multiple-authors.php:1863
+#: src/modules/multiple-authors/multiple-authors.php:1833
+#: src/modules/multiple-authors/multiple-authors.php:1865
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:157
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:389
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:525
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:670
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:796
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1129
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1336
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1135
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1342
 msgid "H6"
 msgstr "H6"
 
@@ -2356,7 +2378,7 @@ msgstr "Oculta %1s"
 msgid "Hide Title"
 msgstr "Ocultar el título"
 
-#: src/modules/author-boxes/author-boxes.php:2156
+#: src/modules/author-boxes/author-boxes.php:2162
 msgid "How to generate and use a theme template file"
 msgstr "Cómo generar y utilizar un archivo de plantilla de tema"
 
@@ -2368,7 +2390,7 @@ msgstr "https://publishpress.com"
 msgid "https://wordpress.org/plugins/publishpress-authors/"
 msgstr "https://es.wordpress.org/plugins/publishpress-authors/"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1215
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1221
 msgid "ID"
 msgstr "ID"
 
@@ -2424,13 +2446,13 @@ msgstr "Si %1$s te gusta, por favor, déjanos una valoración de %2$s. ¡Gracias
 msgid "If you like %s please leave us a %s rating. Thank you!"
 msgstr "Si %s te gusta, por favor, déjanos una valoración de %s. ¡Gracias!"
 
-#: src/core/Classes/Utils.php:1145
+#: src/core/Classes/Utils.php:1149
 msgid "If you need help or have a new feature request, let us know."
 msgstr ""
 "Si necesitas ayuda o tienes una petición de nueva característica, háznoslo "
 "saber."
 
-#: src/modules/multiple-authors/multiple-authors.php:2569
+#: src/modules/multiple-authors/multiple-authors.php:2571
 msgid ""
 "If you only have Guest Authors selected for a post, this user may be used as "
 "a fallback. WordPress sometimes requires a WordPress user to be assigned to "
@@ -2442,20 +2464,20 @@ msgstr ""
 "portada de tu sitio."
 
 #: src/modules/author-boxes/author-boxes.php:1058
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1602
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1608
 msgid "Import"
 msgstr "Importar"
 
-#: src/modules/author-boxes/author-boxes.php:2147
+#: src/modules/author-boxes/author-boxes.php:2153
 msgid "Import Data"
 msgstr "Importar datos"
 
-#: src/modules/author-boxes/author-boxes.php:2136
+#: src/modules/author-boxes/author-boxes.php:2142
 msgid "Import Editor Settings"
 msgstr "Importar los ajustes del editor"
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:274
-msgid "Infront of Avatar"
+msgid "In front of Avatar"
 msgstr "Delante de avatar"
 
 #: src/modules/author-boxes/classes/AuthorBoxesDefault.php:31
@@ -2481,8 +2503,8 @@ msgid "Inline with Avatars"
 msgstr "Integrado con avatares"
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:207
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1184
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1455
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1190
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1461
 msgid "Inset"
 msgstr "Hundido"
 
@@ -2490,19 +2512,19 @@ msgstr "Hundido"
 msgid "Install this plugin to showcase content by your Authors."
 msgstr "Instala este plugin para mostrar el contenido de tus autores."
 
-#: src/modules/author-boxes/author-boxes.php:2146
+#: src/modules/author-boxes/author-boxes.php:2152
 msgid "Invalid data"
 msgstr "Datos no validos"
 
-#: src/modules/author-list/author-list.php:1114
+#: src/modules/author-list/author-list.php:1158
 msgid "Invalid form"
 msgstr "Formulario no valido"
 
-#: src/modules/author-categories/author-categories.php:384
+#: src/modules/author-categories/author-categories.php:392
 msgid "Invalid form data."
 msgstr "Datos del formulario no validos."
 
-#: src/modules/multiple-authors/multiple-authors.php:3493
+#: src/modules/multiple-authors/multiple-authors.php:3495
 msgid "Invalid nonce"
 msgstr "Nonce no válido"
 
@@ -2510,7 +2532,7 @@ msgstr "Nonce no válido"
 msgid "is required"
 msgstr "Es obligatorio"
 
-#: src/modules/multiple-authors/multiple-authors.php:4319
+#: src/modules/multiple-authors/multiple-authors.php:4321
 msgid "It looks like you have Co-Authors Plus installed."
 msgstr "Parece que tienes instalado Co-Authors Plus."
 
@@ -2518,8 +2540,8 @@ msgstr "Parece que tienes instalado Co-Authors Plus."
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:342
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:466
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:959
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1081
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1283
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1087
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1289
 msgid "Italic"
 msgstr "Cursivo"
 
@@ -2531,29 +2553,33 @@ msgstr "Título del puesto"
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:369
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:493
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:990
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1108
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1310
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1114
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1316
 msgid "Justify"
 msgstr "Justificado"
 
+#: src/modules/author-list/author-list.php:362
+msgid "Large-sized image (1024px by 1024px)"
+msgstr "Imagen de tamaño grande (1024px por 1024px)"
+
 #: src/core/Authors_Widget.php:193 src/core/Classes/Author_Editor.php:363
 #: src/modules/author-custom-fields/author-custom-fields.php:898
-#: src/modules/multiple-authors/multiple-authors.php:1974
+#: src/modules/multiple-authors/multiple-authors.php:1976
 msgid "Last Name"
 msgstr "Apellidos"
 
-#: src/modules/multiple-authors/multiple-authors.php:1972
+#: src/modules/multiple-authors/multiple-authors.php:1974
 msgid "Last Name First Name"
 msgstr "Apellidos y nombre"
 
 #: src/core/Authors_Widget.php:131 src/core/Widget.php:123
-#: src/modules/author-list/author-list.php:363
-#: src/modules/author-pages/author-pages.php:114
+#: src/modules/author-list/author-list.php:393
+#: src/modules/author-pages/author-pages.php:118
 #: src/modules/author-list/classes/AuthorListTable.php:151
 msgid "Layout"
 msgstr "Diseño"
 
-#: src/modules/author-list/author-list.php:373
+#: src/modules/author-list/author-list.php:403
 msgid "Layout Columns"
 msgstr "Columnas del diseño"
 
@@ -2561,7 +2587,7 @@ msgstr "Columnas del diseño"
 msgid "Layout Slug"
 msgstr "Slug del diseño"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1545
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1551
 msgid "Layout Wrapper Class Name"
 msgstr "Nombre de la clase de envoltura de diseño"
 
@@ -2573,8 +2599,8 @@ msgstr "Diseño:"
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:366
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:490
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:987
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1105
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1307
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1111
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1313
 msgid "Left"
 msgstr "Izquierda"
 
@@ -2586,8 +2612,8 @@ msgstr "Límites por página"
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:355
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:479
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:974
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1094
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1296
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1100
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1302
 msgid "Line Through"
 msgstr "Tachado"
 
@@ -2607,7 +2633,7 @@ msgstr "Enlace de avatar"
 msgid "Link Rel"
 msgstr "Relación del enlace"
 
-#: src/modules/multiple-authors/multiple-authors.php:1797
+#: src/modules/multiple-authors/multiple-authors.php:1799
 msgid "List"
 msgstr "Listado"
 
@@ -2623,16 +2649,16 @@ msgstr "Listado de autores integrado (categorías)"
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:329
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:453
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:944
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1068
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1270
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1074
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1276
 msgid "Lowercase"
 msgstr "Minúsculo"
 
-#: src/modules/multiple-authors/multiple-authors.php:2907
+#: src/modules/multiple-authors/multiple-authors.php:2909
 msgid "Maintenance"
 msgstr "Mantenimiento"
 
-#: src/modules/multiple-authors/multiple-authors.php:3673
+#: src/modules/multiple-authors/multiple-authors.php:3675
 msgid "Maintenance completed successfully."
 msgstr "El mantenimiento se ha completado correctamente."
 
@@ -2643,6 +2669,14 @@ msgstr "Usuario asignado"
 #: src/core/Classes/Admin_Ajax.php:346 src/core/Classes/Author_Editor.php:1043
 msgid "Mapped user is required."
 msgstr "El usuario asignado es obligatorio."
+
+#: src/modules/author-list/author-list.php:363
+msgid "Medium-large image (768px)"
+msgstr "Imagen medio-grande (768px)"
+
+#: src/modules/author-list/author-list.php:364
+msgid "Medium-sized image (300px by 300px)"
+msgstr "Imagen de tamaño medio (300px por 300px)"
 
 #: src/modules/byline-migration/byline-migration.php:73
 msgid "Migrate Byline Data"
@@ -2656,7 +2690,7 @@ msgstr "Migrar los datos Bylines"
 msgid "Mine"
 msgstr "Mío"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1213
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1219
 msgid "Modified date"
 msgstr "Fecha de modificación"
 
@@ -2677,7 +2711,7 @@ msgstr "Nombre"
 msgid "Name Row"
 msgstr "Fila del nombre"
 
-#: src/core/Classes/Utils.php:1140
+#: src/core/Classes/Utils.php:1144
 msgid "Need PublishPress Authors Support?"
 msgstr "¿Necesitas soporte para PublishPress Authors?"
 
@@ -2701,7 +2735,7 @@ msgstr "Nuevo autor"
 msgid "New author added."
 msgstr "Nuevo autor añadido."
 
-#: src/modules/author-boxes/author-boxes.php:2498
+#: src/modules/author-boxes/author-boxes.php:2504
 msgid "New Author Categories Box"
 msgstr "Nueva caja de categorías de autores"
 
@@ -2738,7 +2772,7 @@ msgstr "No hay categorías."
 msgid "No author list avaliable in the selected view."
 msgstr "No hay lista de autores disponible en la vista seleccionada."
 
-#: src/core/Classes/Post_Editor.php:170
+#: src/core/Classes/Post_Editor.php:171
 msgid "No author term"
 msgstr "No hay término de autor"
 
@@ -2766,7 +2800,7 @@ msgstr ""
 msgid "No posts without author terms were found"
 msgstr "No se han encontrado entradas sin términos de autor"
 
-#: src/modules/author-boxes/author-boxes.php:1838
+#: src/modules/author-boxes/author-boxes.php:1844
 msgid "No Recent Posts by this Author"
 msgstr "No hay entradas recientes de este autor"
 
@@ -2781,8 +2815,8 @@ msgstr "nofollow"
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:200
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:264
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:760
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1177
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1447
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1183
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1453
 msgid "None"
 msgstr "Ninguno"
 
@@ -2803,14 +2837,14 @@ msgstr "Ninguno"
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:946
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:958
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:975
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1047
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1070
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1080
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1095
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1249
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1272
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1282
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1297
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1053
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1076
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1086
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1101
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1255
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1278
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1288
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1303
 msgid "Normal"
 msgstr "Normal"
 
@@ -2822,11 +2856,11 @@ msgstr "Ahora inspeccionando o actualizando %d autores en total"
 msgid "Now inspecting or updating %d total posts"
 msgstr "Ahora inspeccionando o actualizando %d entradas en total"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1216
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1222
 msgid "Number of comments"
 msgstr "Número de comentarios"
 
-#: src/modules/author-categories/author-categories.php:204
+#: src/modules/author-categories/author-categories.php:212
 #: src/modules/author-list/author-list.php:217
 msgid "Number of items per page"
 msgstr "Número de elementos por página"
@@ -2835,8 +2869,8 @@ msgstr "Número de elementos por página"
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:343
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:467
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:960
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1082
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1284
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1088
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1290
 msgid "Oblique"
 msgstr "Oblicuo"
 
@@ -2861,13 +2895,13 @@ msgstr "Ordenar"
 msgid "Order by"
 msgstr "Ordenar por"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1208
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1214
 msgid "Order Recent Posts By"
 msgstr "Ordenar entradas recientes por"
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:208
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1185
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1456
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1191
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1462
 msgid "Outset"
 msgstr "Elevado"
 
@@ -2875,8 +2909,8 @@ msgstr "Elevado"
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:354
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:478
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:973
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1093
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1295
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1099
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1301
 msgid "Overline"
 msgstr "Raya superior"
 
@@ -2885,8 +2919,8 @@ msgstr "Raya superior"
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:528
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:664
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:790
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1132
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1339
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1138
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1345
 msgid "p"
 msgstr "p"
 
@@ -2902,11 +2936,11 @@ msgstr "Autor principal"
 msgid "Parent Author:"
 msgstr "Autor principal:"
 
-#: src/modules/author-boxes/author-boxes.php:2137
+#: src/modules/author-boxes/author-boxes.php:2143
 msgid "Paste the editor data from the \"Export\" tab on another site."
 msgstr "Pega los datos del editor desde la pestaña «Exportar» en otro sitio."
 
-#: src/modules/multiple-authors/multiple-authors.php:2720
+#: src/modules/multiple-authors/multiple-authors.php:2722
 msgid ""
 "Please be careful clicking these buttons. Before clicking, we recommend "
 "taking a site backup in case anything goes wrong."
@@ -2915,7 +2949,7 @@ msgstr ""
 "recomendamos hacer una copia de seguridad del sitio para el caso de que algo "
 "vaya mal."
 
-#: src/modules/multiple-authors/multiple-authors.php:4320
+#: src/modules/multiple-authors/multiple-authors.php:4322
 msgid "Please click here and read this guide!"
 msgstr "¡Por favor, haz clic aquí y lee esta guía!"
 
@@ -2925,13 +2959,13 @@ msgstr ""
 "Por favor, completa los siguientes campos obligatorios para guardar tus "
 "cambios:"
 
-#: src/core/Classes/Legacy/LegacyPlugin.php:280
+#: src/core/Classes/Legacy/LegacyPlugin.php:284
 msgid "Please correct your form errors below and try again."
 msgstr ""
 "Por favor, corrige los errores de tu formulario a continuación e inténtalo "
 "de nuevo."
 
-#: src/modules/author-pages/author-pages.php:165
+#: src/modules/multiple-authors/multiple-authors.php:1765
 msgid "Please note this feature will not work for all themes."
 msgstr ""
 "Por favor, ten en cuenta que esta característica non funciona con todos los "
@@ -2940,9 +2974,9 @@ msgstr ""
 #: src/core/Plugin.php:1534
 #: src/modules/byline-migration/byline-migration.php:148
 #: src/modules/bylines-migration/bylines-migration.php:150
-#: src/modules/multiple-authors/multiple-authors.php:3794
-#: src/modules/multiple-authors/multiple-authors.php:3825
-#: src/modules/multiple-authors/multiple-authors.php:3862
+#: src/modules/multiple-authors/multiple-authors.php:3796
+#: src/modules/multiple-authors/multiple-authors.php:3827
+#: src/modules/multiple-authors/multiple-authors.php:3864
 msgid "Please, wait..."
 msgstr "Por favor, espera…"
 
@@ -2950,13 +2984,13 @@ msgstr "Por favor, espera…"
 msgid "Plural"
 msgstr "Plural"
 
-#: src/modules/author-categories/author-categories.php:568
+#: src/modules/author-categories/author-categories.php:579
 #: src/modules/author-categories/classes/AuthorCategoriesTable.php:78
 #: src/modules/author-categories/classes/AuthorCategoriesTable.php:439
 msgid "Plural Name"
 msgstr "Nombre plural"
 
-#: src/modules/author-categories/author-categories.php:251
+#: src/modules/author-categories/author-categories.php:259
 msgid "Plural name is required."
 msgstr "El nombre plural es obligatorio."
 
@@ -2974,7 +3008,7 @@ msgstr "Integración de Polylang"
 msgid "Popular Authors"
 msgstr "Autores populares"
 
-#: src/modules/author-boxes/author-boxes.php:2045
+#: src/modules/author-boxes/author-boxes.php:2051
 msgid "Position"
 msgstr "Posición"
 
@@ -2986,7 +3020,7 @@ msgstr "Autor de la entrada"
 msgid "Post Counts"
 msgstr "Recuento de entradas"
 
-#: src/core/Classes/Legacy/LegacyPlugin.php:289
+#: src/core/Classes/Legacy/LegacyPlugin.php:293
 msgid "Post does not exist"
 msgstr "La entrada no existe"
 
@@ -3003,18 +3037,18 @@ msgstr "Vista previa de la entrada"
 msgid "Post types to display on the author's profile page:"
 msgstr "Tipos de contenido a mostrar en la página de perfil del autor:"
 
-#: src/core/Plugin.php:776 src/modules/author-pages/author-pages.php:117
+#: src/core/Plugin.php:776 src/modules/author-pages/author-pages.php:121
 #: src/modules/multiple-authors/multiple-authors.php:155
 msgid "Posts"
 msgstr "Entradas"
 
 #. Posts by a given author.
-#: src/functions/template-tags.php:1331
+#: src/functions/template-tags.php:1336
 #, php-format
 msgid "Posts by %1$s"
 msgstr "Entradas de %1$s"
 
-#: src/functions/template-tags.php:946
+#: src/functions/template-tags.php:951
 #, php-format
 msgid "Posts by %s"
 msgstr "Entradas de %s"
@@ -3025,7 +3059,7 @@ msgid "Prev"
 msgstr "Anterior"
 
 #: src/modules/author-list/author-list.php:312
-#: src/modules/author-list/author-list.php:431
+#: src/modules/author-list/author-list.php:472
 msgid "Preview"
 msgstr "Vista previa"
 
@@ -3057,14 +3091,14 @@ msgstr ""
 "PublishPress Authors te permite añadir múltiples autores y autores invitados "
 "a las entradas de WordPress"
 
-#: src/modules/multiple-authors/multiple-authors.php:4392
+#: src/modules/multiple-authors/multiple-authors.php:4394
 msgid ""
 "PublishPress Authors needs a database update for Permissions integration."
 msgstr ""
 "PublishPress Authors necesita una actualización de la base de datos para la "
 "integración de Permissions."
 
-#: src/modules/author-boxes/author-boxes.php:2506
+#: src/modules/author-boxes/author-boxes.php:2512
 msgid ""
 "PublishPress Authors Pro allows you to unlock the full potential of Author "
 "Categories."
@@ -3112,8 +3146,8 @@ msgstr "Edición rápida &#8220;%s&#8221; integrada"
 msgid "Quick&nbsp;Edit"
 msgstr "Edición&nbsp;rápida"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1217
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1451
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1223
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1457
 msgid "Random"
 msgstr "Aleatorio"
 
@@ -3121,71 +3155,71 @@ msgstr "Aleatorio"
 msgid "Rank Math Seo Integration"
 msgstr "Integración de Rank Math Seo"
 
-#: src/core/Classes/Utils.php:959
+#: src/core/Classes/Utils.php:963
 msgid "Read more."
 msgstr "Leer más."
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1173
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1179
 msgid "Recent Post Title Border Bottom Style"
 msgstr "Estilo del borde inferior del título de la entrada reciente"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1196
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1202
 msgid "Recent Post Title Border Color"
 msgstr "Color del borde del título de la entrada reciente"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1190
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1196
 msgid "Recent Post Title Border Width"
 msgstr "Anchura del borde del título de la entrada reciente"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1167
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1173
 msgid "Recent Post Title Color"
 msgstr "Color del título de la entrada reciente"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1302
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1308
 msgid "Recent Posts Alignment"
 msgstr "Alineación de las entradas recientes"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1315
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1321
 msgid "Recent Posts Color"
 msgstr "Color de las entradas recientes"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1289
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1295
 msgid "Recent Posts Decoration"
 msgstr "Decoración de las entradas recientes"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1327
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1333
 msgid "Recent Posts HTML Tag"
 msgstr "Etiqueta HTML de las entradas recientes"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1321
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1327
 msgid "Recent Posts Icon Color"
 msgstr "Color del icono de las entradas recientes"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1202
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1208
 msgid "Recent Posts Limit"
 msgstr "Límite de las entradas recientes"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1238
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1244
 msgid "Recent Posts Line Height (px)"
 msgstr "Interlineado de las entradas recientes (px)"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1222
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1228
 msgid "Recent Posts Order"
 msgstr "Orden de las entradas recientes"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1232
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1238
 msgid "Recent Posts Size"
 msgstr "Tamaño de las entradas recientes"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1277
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1283
 msgid "Recent Posts Style"
 msgstr "Estilo de las entradas recientes"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1264
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1270
 msgid "Recent Posts Transform"
 msgstr "Transformación de las entradas recientes"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1244
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1250
 msgid "Recent Posts Weight"
 msgstr "Peso de las entradas recientes"
 
@@ -3195,7 +3229,7 @@ msgstr "Recomendaciones para ti"
 
 #: src/core/Classes/Author_Editor.php:119
 #: src/core/Classes/Author_Editor.php:726
-#: src/modules/author-list/author-list.php:977
+#: src/modules/author-list/author-list.php:1021
 msgid "Registered Author With User Account"
 msgstr "Autor registrado con cuenta de usuario"
 
@@ -3205,12 +3239,12 @@ msgstr "Autor registrado con cuenta de usuario"
 msgid "Remove %1$s Image"
 msgstr "Elimina imagen %1$s"
 
-#: src/modules/author-boxes/author-boxes.php:2299
+#: src/modules/author-boxes/author-boxes.php:2305
 #, php-format
 msgid "Remove %1s"
 msgstr "Eliminar %1s"
 
-#: src/core/Classes/Utils.php:1129
+#: src/core/Classes/Utils.php:1133
 msgid "Remove PublishPress ads and branding"
 msgstr "Eliminar los anuncios y la marca de PublishPress"
 
@@ -3220,15 +3254,15 @@ msgstr "Eliminar la restricción de asignación única de autor: "
 
 #: src/core/Classes/Author_Editor.php:470
 #: src/core/Classes/Author_Editor.php:519
-#: src/modules/multiple-authors/multiple-authors.php:2011
+#: src/modules/multiple-authors/multiple-authors.php:2013
 msgid "Remove this image"
 msgstr "Eliminar esta imagen"
 
-#: src/modules/author-boxes/author-boxes.php:2248
+#: src/modules/author-boxes/author-boxes.php:2254
 msgid "Reorder Fields"
 msgstr "Reordenar los campos"
 
-#: src/modules/author-boxes/author-boxes.php:2256
+#: src/modules/author-boxes/author-boxes.php:2262
 msgid ""
 "Reorder the fields by dragging them to the correct position and saving your "
 "changes."
@@ -3240,7 +3274,7 @@ msgstr ""
 msgid "Request status."
 msgstr "Estado de la solicitud."
 
-#: src/core/Classes/Utils.php:1147
+#: src/core/Classes/Utils.php:1151
 msgid "Request Support"
 msgstr "Solicitar soporte"
 
@@ -3266,12 +3300,12 @@ msgstr "Compatibilidad con la API REST"
 msgid "Restore"
 msgstr "Restablecer"
 
-#: src/modules/author-categories/author-categories.php:641
-#: src/modules/author-categories/author-categories.php:643
+#: src/modules/author-categories/author-categories.php:652
+#: src/modules/author-categories/author-categories.php:654
 msgid "Reviewer"
 msgstr "Evaluador"
 
-#: src/modules/author-categories/author-categories.php:642
+#: src/modules/author-categories/author-categories.php:653
 msgid "Reviewers"
 msgstr "Evaluadores"
 
@@ -3280,8 +3314,8 @@ msgid "Reviews"
 msgstr "Reseñas"
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:206
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1183
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1454
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1189
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1460
 msgid "Ridge"
 msgstr "Crestas"
 
@@ -3289,29 +3323,29 @@ msgstr "Crestas"
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:368
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:492
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:989
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1107
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1309
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1113
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1315
 msgid "Right"
 msgstr "Derecha"
 
-#: src/modules/author-list/author-list.php:400
+#: src/modules/author-list/author-list.php:441
 msgid "Roles"
 msgstr "Perfiles"
 
-#: src/modules/author-list/author-list.php:760
-#: src/modules/author-list/author-list.php:767
+#: src/modules/author-list/author-list.php:801
+#: src/modules/author-list/author-list.php:808
 msgid "Save Changes"
 msgstr "Guardar cambios"
 
-#: src/modules/author-boxes/author-boxes.php:2274
+#: src/modules/author-boxes/author-boxes.php:2280
 msgid "Save for All Author Boxes"
 msgstr "Guardar para «Todas las cajas de autor»"
 
-#: src/modules/author-boxes/author-boxes.php:2270
+#: src/modules/author-boxes/author-boxes.php:2276
 msgid "Save for Current Author Box"
 msgstr "Guardar para «Caja de autor actual»"
 
-#: src/modules/author-categories/author-categories.php:573
+#: src/modules/author-categories/author-categories.php:584
 #: src/modules/author-custom-fields/author-custom-fields.php:416
 #: src/modules/author-categories/classes/AuthorCategoriesTable.php:444
 msgid "Schema Property"
@@ -3321,7 +3355,7 @@ msgstr "Propiedad de schema"
 msgid "Search"
 msgstr "Buscar"
 
-#: src/modules/author-boxes/author-boxes.php:2326
+#: src/modules/author-boxes/author-boxes.php:2332
 #, php-format
 msgid "Search %1s Icon"
 msgstr "Icono de búsqueda de %1s"
@@ -3332,7 +3366,7 @@ msgstr "Icono de búsqueda de %1s"
 msgid "Search %2$s"
 msgstr "Busca %2$s"
 
-#: src/modules/author-categories/author-categories.php:553
+#: src/modules/author-categories/author-categories.php:564
 msgid "Search Author Categories"
 msgstr "Buscar categorías de autores"
 
@@ -3348,11 +3382,11 @@ msgstr "Buscar autores"
 msgid "Search Box"
 msgstr "Caja de búsqueda"
 
-#: src/core/Plugin.php:1503 src/core/Classes/Post_Editor.php:357
+#: src/core/Plugin.php:1503 src/core/Classes/Post_Editor.php:358
 msgid "Search for an author"
 msgstr "Buscar un autor"
 
-#: src/core/Classes/Post_Editor.php:467
+#: src/core/Classes/Post_Editor.php:468
 msgid "Search for an user"
 msgstr "Buscar un usuario"
 
@@ -3363,10 +3397,10 @@ msgid "Search results for &#8220;%s&#8221;"
 msgstr "Resultados de la búsqueda de &#8220;%s&#8221;"
 
 #: src/core/Classes/Admin_Ajax.php:317 src/core/Classes/Admin_Ajax.php:398
-#: src/modules/author-categories/author-categories.php:228
-#: src/modules/author-categories/author-categories.php:311
+#: src/modules/author-categories/author-categories.php:236
+#: src/modules/author-categories/author-categories.php:319
 #: src/modules/author-custom-fields/author-custom-fields.php:1005
-#: src/modules/author-list/author-list.php:1108
+#: src/modules/author-list/author-list.php:1152
 #: src/modules/author-boxes/classes/AuthorBoxesAjax.php:41
 #: src/modules/author-boxes/classes/AuthorBoxesAjax.php:89
 #: src/modules/author-boxes/classes/AuthorBoxesAjax.php:131
@@ -3375,12 +3409,12 @@ msgid "Security error. Kindly reload this page and try again"
 msgstr ""
 "Error de seguridad. Por favor, recarga esta página e inténtalo de nuevo"
 
-#: src/modules/author-categories/author-categories.php:379
+#: src/modules/author-categories/author-categories.php:387
 msgid "Security error. Kindly reload this page and try again."
 msgstr ""
 "Error de seguridad. Por favor, recarga esta página e inténtalo de nuevo"
 
-#: src/modules/author-boxes/author-boxes.php:2297
+#: src/modules/author-boxes/author-boxes.php:2303
 #, php-format
 msgid "Select %1s"
 msgstr "Seleccionar %1s"
@@ -3389,16 +3423,16 @@ msgstr "Seleccionar %1s"
 msgid "Select a user"
 msgstr "Selecciona un usuario"
 
-#: src/modules/author-boxes/author-boxes.php:2562
+#: src/modules/author-boxes/author-boxes.php:2568
 msgid "Select an author box"
 msgstr "Selecciona una caja de autor"
 
 #: src/core/CustomFieldsModel.php:115
-#: src/modules/author-list/author-list.php:346
+#: src/modules/author-list/author-list.php:348
 msgid "Select an option"
 msgstr "Selecciona una opción"
 
-#: src/modules/author-list/author-list.php:397
+#: src/modules/author-list/author-list.php:438
 msgid ""
 "Select an option to limit the results to selected user roles, author types "
 "or specific authors."
@@ -3412,15 +3446,15 @@ msgstr "Selecciona una cuenta de autor"
 
 #: src/core/Classes/Author_Editor.php:466
 #: src/core/Classes/Author_Editor.php:515
-#: src/modules/multiple-authors/multiple-authors.php:2007
+#: src/modules/multiple-authors/multiple-authors.php:2009
 msgid "Select image"
 msgstr "Selecciona una imagen"
 
-#: src/modules/multiple-authors/multiple-authors.php:2099
-#: src/modules/multiple-authors/multiple-authors.php:2136
-#: src/modules/multiple-authors/multiple-authors.php:2173
-#: src/modules/multiple-authors/multiple-authors.php:2210
-#: src/modules/multiple-authors/multiple-authors.php:2247
+#: src/modules/multiple-authors/multiple-authors.php:2101
+#: src/modules/multiple-authors/multiple-authors.php:2138
+#: src/modules/multiple-authors/multiple-authors.php:2175
+#: src/modules/multiple-authors/multiple-authors.php:2212
+#: src/modules/multiple-authors/multiple-authors.php:2249
 msgid "Select option"
 msgstr "Seleccionar una opción"
 
@@ -3428,7 +3462,7 @@ msgstr "Seleccionar una opción"
 msgid "Select Preview Post"
 msgstr "Selecciona la vista previa de la entrada"
 
-#: src/modules/author-list/author-list.php:1001
+#: src/modules/author-list/author-list.php:1045
 msgid "Select Users"
 msgstr "Selecciona usuarios"
 
@@ -3455,8 +3489,8 @@ msgstr "Establece la imagen %1$s"
 msgid "Settings"
 msgstr "Ajustes"
 
-#: src/modules/author-boxes/author-boxes.php:2146
-#: src/modules/author-boxes/author-boxes.php:2151
+#: src/modules/author-boxes/author-boxes.php:2152
+#: src/modules/author-boxes/author-boxes.php:2157
 msgid "Settings Imported Successfully!"
 msgstr "¡Ajustes importados correctamente!"
 
@@ -3466,9 +3500,9 @@ msgstr "¡Ajustes actualizados correctamente!"
 
 #: src/modules/author-boxes/author-boxes.php:199
 #: src/modules/author-boxes/author-boxes.php:973
-#: src/modules/author-boxes/author-boxes.php:2044
-#: src/modules/author-boxes/author-boxes.php:2055
-#: src/modules/author-list/author-list.php:777
+#: src/modules/author-boxes/author-boxes.php:2050
+#: src/modules/author-boxes/author-boxes.php:2061
+#: src/modules/author-list/author-list.php:818
 #: src/modules/author-list/classes/AuthorListTable.php:152
 msgid "Shortcode"
 msgstr "Shortcode"
@@ -3478,8 +3512,8 @@ msgid "Shortcode documentation."
 msgstr "Documentación del shortcode."
 
 #: src/modules/author-boxes/author-boxes.php:1038
-#: src/modules/multiple-authors/multiple-authors.php:2906
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1565
+#: src/modules/multiple-authors/multiple-authors.php:2908
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1571
 msgid "Shortcodes"
 msgstr "Shortcodes"
 
@@ -3552,7 +3586,7 @@ msgstr "Mostrar el nombre a mostrar"
 msgid "Show email link:"
 msgstr "Mostrar el enlace del correo electrónico:"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1161
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1167
 msgid "Show Even if No Recent Post"
 msgstr "Muestra incluso si no hay entradas recientes"
 
@@ -3572,11 +3606,11 @@ msgstr "Mostrar la fecha de publicación:"
 msgid "Show read more link:"
 msgstr "Mostrar el enlace para leer más:"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1149
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1155
 msgid "Show Recent Posts"
 msgstr "Muestra las entradas recientes"
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1155
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1161
 msgid "Show Recent Posts Title"
 msgstr "Mostrar título de las entradas recientes"
 
@@ -3632,12 +3666,12 @@ msgctxt "singular custom field post type name"
 msgid "%1$s"
 msgstr "%1$s"
 
-#: src/modules/author-categories/author-categories.php:563
+#: src/modules/author-categories/author-categories.php:574
 #: src/modules/author-categories/classes/AuthorCategoriesTable.php:434
 msgid "Singular Name"
 msgstr "Nombre singular"
 
-#: src/modules/author-categories/author-categories.php:246
+#: src/modules/author-categories/author-categories.php:254
 msgid "Singular name is required."
 msgstr "El nombre singular es obligatorio."
 
@@ -3650,13 +3684,17 @@ msgstr "Tamaño"
 msgid "Slug"
 msgstr "Slug"
 
+#: src/modules/author-list/author-list.php:365
+msgid "Small-sized image (150px by 150px)"
+msgstr "Imagen de tamaño pequeño (150px por 150px)"
+
 #: src/modules/author-custom-fields/author-custom-fields.php:403
 msgid "Social Profile?"
 msgstr "¿Perfil social?"
 
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:203
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1180
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1450
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1186
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1456
 msgid "Solid"
 msgstr "Continuo"
 
@@ -3677,12 +3715,12 @@ msgstr ""
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:527
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:663
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:787
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1131
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1338
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1137
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1344
 msgid "span"
 msgstr "span"
 
-#: src/modules/author-list/author-list.php:785
+#: src/modules/author-list/author-list.php:826
 msgid "Static Shortcode"
 msgstr "Shortcode estático"
 
@@ -3690,24 +3728,24 @@ msgstr "Shortcode estático"
 msgid "Status"
 msgstr "Estado"
 
-#: src/core/Classes/Utils.php:1128
+#: src/core/Classes/Utils.php:1132
 msgid "Support for Polylang"
 msgstr "Compatibile con Polylang"
 
 #: src/core/Classes/Author_Editor.php:834
-#: src/modules/multiple-authors/multiple-authors.php:3790
+#: src/modules/multiple-authors/multiple-authors.php:3792
 msgid "Sync author and user fields"
 msgstr "Sincroniza los campos de autor y usuario"
 
-#: src/modules/multiple-authors/multiple-authors.php:3821
+#: src/modules/multiple-authors/multiple-authors.php:3823
 msgid "Sync author and user URLs"
 msgstr "Sincroniza las URL de autor y de usuario"
 
-#: src/modules/multiple-authors/multiple-authors.php:2676
+#: src/modules/multiple-authors/multiple-authors.php:2678
 msgid "Synchronize PublishPress Authors Fields and user profile fields"
 msgstr "Sincronizar los campos de PublishPress Authors y el perfil del usuario"
 
-#: src/modules/multiple-authors/multiple-authors.php:2683
+#: src/modules/multiple-authors/multiple-authors.php:2685
 msgid "Synchronize the author and user URLs"
 msgstr "Sincroniza las URL de autor y de usuario"
 
@@ -3721,7 +3759,7 @@ msgctxt "taxonomy singular name"
 msgid "Author"
 msgstr "Autor"
 
-#: src/modules/author-boxes/author-boxes.php:2206
+#: src/modules/author-boxes/author-boxes.php:2212
 msgid "Template generated successfuly!"
 msgstr "¡La plantilla ha sido generada correctamente!"
 
@@ -3739,6 +3777,10 @@ msgstr ""
 "El shortcode de datos de los autores acepta parámetros de campo como: %1$s "
 "%2$s %3$s %4$s %5$s %6$s %7$s. Puedes ver todos los detalles y parámetros "
 "%8$s en esta guía %9$s."
+
+#: src/modules/author-list/author-list.php:361
+msgid "The original size of the uploaded image"
+msgstr "El tamaño original de la imagen subida"
 
 #: src/modules/seoframework-integration/seoframework-integration.php:59
 msgid "The SEO Framework Integration"
@@ -3775,7 +3817,7 @@ msgstr ""
 "siguiente shortcode en la página de autores para mostrar el perfil del autor "
 "actual. Solo tienes que añadir el parámetro %s."
 
-#: src/modules/multiple-authors/multiple-authors.php:2020
+#: src/modules/multiple-authors/multiple-authors.php:2022
 msgid ""
 "This avatar will be used as default avatar instead of gravatar where no "
 "custom avatar is added to profile."
@@ -3814,7 +3856,7 @@ msgstr ""
 "usuario asignado, esta URL se obtiene de la cuenta del usuario y no se puede "
 "modificar."
 
-#: src/modules/author-list/author-list.php:1042
+#: src/modules/author-list/author-list.php:1086
 msgid ""
 "This is a quick preview of this Author List. Test on frontend pages to see "
 "exactly how it looks with your theme."
@@ -3822,11 +3864,11 @@ msgstr ""
 "Esta es una vista previa rápida de esta «Lista de autores». Pruébalo en las "
 "páginas de la vista pública para ver exactamente cómo se ve con tu tema."
 
-#: src/modules/multiple-authors/multiple-authors.php:2111
-#: src/modules/multiple-authors/multiple-authors.php:2148
-#: src/modules/multiple-authors/multiple-authors.php:2185
-#: src/modules/multiple-authors/multiple-authors.php:2222
-#: src/modules/multiple-authors/multiple-authors.php:2259
+#: src/modules/multiple-authors/multiple-authors.php:2113
+#: src/modules/multiple-authors/multiple-authors.php:2150
+#: src/modules/multiple-authors/multiple-authors.php:2187
+#: src/modules/multiple-authors/multiple-authors.php:2224
+#: src/modules/multiple-authors/multiple-authors.php:2261
 #, php-format
 msgid "This is useful if you use legacy shortcode %s"
 msgstr "Esto es útil si utilizas el shortcode heredado %s"
@@ -3848,7 +3890,7 @@ msgstr ""
 "Este nombre se usa en varias visualizaciones por defecto y algunas "
 "integraciones con motores de búsqueda."
 
-#: src/core/Classes/Post_Editor.php:459
+#: src/core/Classes/Post_Editor.php:460
 msgid ""
 "This option is showing because you do not have a WordPress user selected as "
 "an author. For some tasks, it can be helpful to have a user selected here. "
@@ -3862,13 +3904,13 @@ msgstr ""
 msgid "This plugin can be deleted."
 msgstr "Este plugin puede ser borrado."
 
-#: src/modules/multiple-authors/multiple-authors.php:2533
+#: src/modules/multiple-authors/multiple-authors.php:2535
 msgid "This setting may be disabled for users who can not edit others posts."
 msgstr ""
 "Este ajuste puede estar desactivado para los usuarios que no pueden editar "
 "las entradas de otros."
 
-#: src/modules/multiple-authors/multiple-authors.php:2351
+#: src/modules/multiple-authors/multiple-authors.php:2353
 msgid ""
 "This will allows you map a WordPress user to more than one author. Don't use "
 "this feature unless requested to do so by the PublishPress team. This plugin "
@@ -3878,7 +3920,7 @@ msgstr ""
 "esta función a menos que te lo pida el equipo de PublishPress. Este plugin "
 "funciona mejor cuando los autores y los usuarios están emparejados uno a uno."
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1358
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1364
 msgid ""
 "This will display author in an inline format side by side instead of block "
 "format."
@@ -3886,11 +3928,11 @@ msgstr ""
 "Esto mostrará al autor en un formato integrado, uno al lado del otro, en "
 "lugar del formato de bloque."
 
-#: src/modules/multiple-authors/multiple-authors.php:2303
+#: src/modules/multiple-authors/multiple-authors.php:2305
 msgid "This will display author page title."
 msgstr "Esto mostrará el título de la página del autor."
 
-#: src/modules/multiple-authors/multiple-authors.php:2042
+#: src/modules/multiple-authors/multiple-authors.php:2044
 msgid "This will display the author bio."
 msgstr "Esto mostrará la biografía del autor."
 
@@ -3898,57 +3940,57 @@ msgstr "Esto mostrará la biografía del autor."
 msgid "This will display the authors box at the end of the content."
 msgstr "Esto mostrará la caja de autores al final del contenido."
 
-#: src/modules/multiple-authors/multiple-authors.php:2587
+#: src/modules/multiple-authors/multiple-authors.php:2589
 msgid "This will display the authors email in the author box."
 msgstr "Esto mostrará el correo electrónico del autor en la caja de autor."
 
-#: src/modules/multiple-authors/multiple-authors.php:2607
+#: src/modules/multiple-authors/multiple-authors.php:2609
 msgid "This will display the authors site in the author box."
 msgstr "Esto mostrará el sitio del autor en la caja de autor."
 
-#: src/modules/multiple-authors/multiple-authors.php:2375
+#: src/modules/multiple-authors/multiple-authors.php:2377
 msgid "This will display the authors."
 msgstr "Esto mostrará los autores."
 
-#: src/modules/multiple-authors/multiple-authors.php:2447
+#: src/modules/multiple-authors/multiple-authors.php:2449
 msgid "This will display the categories."
 msgstr "Esto mostrará las categorías."
 
-#: src/modules/multiple-authors/multiple-authors.php:2423
+#: src/modules/multiple-authors/multiple-authors.php:2425
 msgid "This will display the comment count."
 msgstr "Esto mostrará el recuento de comentarios."
 
-#: src/modules/multiple-authors/multiple-authors.php:2327
+#: src/modules/multiple-authors/multiple-authors.php:2329
 msgid "This will display the excerpt."
 msgstr "Esto mostrará el extracto."
 
-#: src/modules/multiple-authors/multiple-authors.php:2279
+#: src/modules/multiple-authors/multiple-authors.php:2281
 msgid "This will display the featured image."
 msgstr "Esto mostrará la imagen destacada."
 
-#: src/modules/multiple-authors/multiple-authors.php:2399
+#: src/modules/multiple-authors/multiple-authors.php:2401
 msgid "This will display the published date."
 msgstr "Esto mostrará la fecha de publicación."
 
-#: src/modules/multiple-authors/multiple-authors.php:2495
+#: src/modules/multiple-authors/multiple-authors.php:2497
 msgid "This will display the read more link."
 msgstr "Esto mostrará el enlace para leer más."
 
-#: src/modules/multiple-authors/multiple-authors.php:2471
+#: src/modules/multiple-authors/multiple-authors.php:2473
 msgid "This will display the tags."
 msgstr "Esto mostrará las etiquetas."
 
-#: src/modules/multiple-authors/multiple-authors.php:2627
+#: src/modules/multiple-authors/multiple-authors.php:2629
 msgid "This will load Font Awesome icons for use in Author Boxes."
 msgstr ""
 "Esto cargará los iconos de Font Awesome para usarlos en las cajas de autor."
 
-#: src/modules/multiple-authors/multiple-authors.php:2645
+#: src/modules/multiple-authors/multiple-authors.php:2647
 msgid "This will remove the Authors Box in \"Quick Edit\"."
 msgstr "Esto eliminará la caja de autores en «Edición rápida»."
 
-#: src/core/Authors_Widget.php:130 src/modules/author-list/author-list.php:354
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1214
+#: src/core/Authors_Widget.php:130 src/modules/author-list/author-list.php:384
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1220
 #: src/modules/author-list/classes/AuthorListTable.php:150
 msgid "Title"
 msgstr "Título"
@@ -4010,8 +4052,8 @@ msgstr "Integración de Ultimate_Post"
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:353
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:477
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:972
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1092
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1294
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1098
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1300
 msgid "Underline"
 msgstr "Subrayado"
 
@@ -4031,30 +4073,30 @@ msgstr "Actualizar el recuento de entradas"
 msgid "Updated %d authors"
 msgstr "Actualizado(s) %d autor(es)"
 
-#: src/modules/multiple-authors/multiple-authors.php:3827
+#: src/modules/multiple-authors/multiple-authors.php:3829
 msgid "Updated %d of %d authors..."
 msgstr "Actualizado %d de %d autores..."
 
-#: src/modules/multiple-authors/multiple-authors.php:3796
+#: src/modules/multiple-authors/multiple-authors.php:3798
 msgid "Updated %d of %d posts..."
 msgstr "Actualizado %d de %d entradas…"
 
-#: src/modules/multiple-authors/multiple-authors.php:3795
+#: src/modules/multiple-authors/multiple-authors.php:3797
 msgid "Updating author field on posts..."
 msgstr "Actualizando el campo de autor en las entradas…"
 
-#: src/modules/multiple-authors/multiple-authors.php:3826
+#: src/modules/multiple-authors/multiple-authors.php:3828
 msgid "Updating authors slug..."
 msgstr "Actualizando el slug de los autores…"
 
-#: includes.php:63 src/core/Classes/Utils.php:1133
-#: src/modules/author-boxes/author-boxes.php:2511
+#: includes.php:63 src/core/Classes/Utils.php:1137
+#: src/modules/author-boxes/author-boxes.php:2517
 #: src/modules/author-custom-fields/author-custom-fields.php:951
-#: src/modules/author-list/author-list.php:1065
+#: src/modules/author-list/author-list.php:1109
 msgid "Upgrade to Pro"
 msgstr "Actualizar a Pro"
 
-#: src/core/Classes/Utils.php:1116
+#: src/core/Classes/Utils.php:1120
 msgid "Upgrade to PublishPress Authors Pro"
 msgstr "Actualizar a PublishPress Authors Pro"
 
@@ -4062,8 +4104,8 @@ msgstr "Actualizar a PublishPress Authors Pro"
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:328
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:452
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:943
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1067
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1269
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1073
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1275
 msgid "Uppercase"
 msgstr "Mayúsculo"
 
@@ -4102,8 +4144,8 @@ msgstr "Muestra %1$s"
 msgid "View All Posts"
 msgstr "Ver todas las entradas"
 
-#: src/modules/author-boxes/author-boxes.php:1811
-#: src/modules/author-boxes/author-boxes.php:1812
+#: src/modules/author-boxes/author-boxes.php:1817
+#: src/modules/author-boxes/author-boxes.php:1818
 #: src/modules/default-layouts/default-layouts.php:105
 msgid "View all posts"
 msgstr "Ver todas las entradas"
@@ -4160,11 +4202,11 @@ msgstr "Fila de «Ver todas las entradas»"
 msgid "View Author"
 msgstr "Ver el autor"
 
-#: src/core/Classes/Utils.php:1158
+#: src/core/Classes/Utils.php:1162
 msgid "View Knowledge Base"
 msgstr "Ver la base de conocimientos"
 
-#: src/modules/multiple-authors/multiple-authors.php:1776
+#: src/modules/multiple-authors/multiple-authors.php:1778
 msgid "View sample Author Page"
 msgstr "Ver página de autor de muestra"
 
@@ -4261,7 +4303,7 @@ msgstr ""
 "Puedes elegir el número de autores por página usando %1$s . %2$s La "
 "paginación se añadirá automáticamente si es necesario."
 
-#: src/modules/author-boxes/author-boxes.php:2508
+#: src/modules/author-boxes/author-boxes.php:2514
 msgid ""
 "You can create Author Boxes where Authors are grouped into their categories."
 msgstr ""
@@ -4364,7 +4406,7 @@ msgstr ""
 "proporcionando el slug o slugs de la categoría. Separa los slugs múltiples "
 "con una coma."
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1382
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1388
 msgid ""
 "You can specify a separator such as ',' to separate authors. This field "
 "accepts basic HTML."
@@ -4394,7 +4436,7 @@ msgstr ""
 "guía %2$s. %3$s %4$s Este shortcode también proporciona dos diseños "
 "personalizados: %5$s %6$s."
 
-#: src/modules/author-boxes/author-boxes.php:2112
+#: src/modules/author-boxes/author-boxes.php:2118
 #, php-format
 msgid "You can use basic HTML in this field. For example: Read Time %1s."
 msgstr ""
@@ -4410,12 +4452,12 @@ msgstr ""
 "Puedes usar iconos de Dashicons y Font Awesome. %1s %2sHaz clic aquí para "
 "ver la documentación%3s."
 
-#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1546
+#: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:1552
 msgid "You can use multiple class names. Leave a space between each class."
 msgstr ""
 "Puedes utilizar varios nombres de clase. Deja un espacio entre cada clase."
 
-#: src/modules/author-boxes/author-boxes.php:2117
+#: src/modules/author-boxes/author-boxes.php:2123
 msgid ""
 "You can use this data to export your author box design and import it to a "
 "new site."
@@ -4423,12 +4465,12 @@ msgstr ""
 "Puedes utilizar estos datos para exportar el diseño de tu caja de autor e "
 "importarlo a un nuevo sitio."
 
-#: src/core/Classes/Legacy/LegacyPlugin.php:285
+#: src/core/Classes/Legacy/LegacyPlugin.php:289
 msgid "You do not have necessary permissions to complete this action."
 msgstr "No tienes los permisos necesarios para completar esta acción."
 
-#: src/modules/author-categories/author-categories.php:233
-#: src/modules/author-categories/author-categories.php:316
+#: src/modules/author-categories/author-categories.php:241
+#: src/modules/author-categories/author-categories.php:324
 #: src/modules/author-custom-fields/author-custom-fields.php:1011
 #: src/modules/author-boxes/classes/AuthorBoxesAjax.php:47
 msgid "You do not have permission to perform this action"
