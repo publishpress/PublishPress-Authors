@@ -1165,7 +1165,7 @@ class MA_Author_Boxes extends Module
         $editor_data['post_id'] = $post_id;
 
         //set social profile defaults
-        $social_fields = ['facebook', 'twitter', 'instagram', 'linkedin', 'youtube', 'tiktok'];
+        $social_fields = ['facebook', 'twitter', 'x', 'instagram', 'linkedin', 'youtube', 'tiktok'];
         foreach ($social_fields as $social_field) {
             //set default display to icon
             if (!isset($editor_data['profile_fields_'.$social_field.'_display'])
