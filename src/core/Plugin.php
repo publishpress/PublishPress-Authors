@@ -18,6 +18,7 @@ use MultipleAuthors\Classes\Query;
 use MultipleAuthors\Classes\Utils;
 use MultipleAuthors\Traits\Author_box;
 use WP_Query;
+use WP_Error;
 
 defined('ABSPATH') or die('No direct script access allowed.');
 
