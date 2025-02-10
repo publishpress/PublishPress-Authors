@@ -1147,7 +1147,14 @@ class Plugin
             return 0;
         }
 
-        return $author->getTerm()->count;
+        $term = $author->getTerm();
+    
+        // Ensure $term is a valid object before accessing properties incase of legacy data
+        if (!is_object($term) || is_wp_error($term)) {
+            return 0;
+        }
+    
+        return $term->count ?? 0;
     }
 
     /**
