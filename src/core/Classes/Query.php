@@ -211,7 +211,7 @@ class Query
         }
         $where = preg_replace(
             '/\(?\b(?:' . $wpdb->posts . '\.)?post_author\s*(?:=|IN)\s*\(?(\d+)\)? AND (?:' . $wpdb->posts . '\.)?post_status = \'(\w+)\'/',
-            '(' . $maybe_both_query . ' ' . $wpdb->term_taxonomy . '.term_id = \'' . (int)$current_user_term_id . '\' AND ' . $wpdb->posts . '.post_status = \'$2\'',
+            '(' . $maybe_both_query . ' ' . 'ppmaq1.term_taxonomy_id IN (' . (int)$current_user_term_id . ') AND ' . $wpdb->posts . '.post_status = \'$2\'',
             $where,
             -1
         );
@@ -221,7 +221,7 @@ class Query
          */
         $where = preg_replace(
             '/\(?\b(?:' . $wpdb->posts . '\.)?post_author\s*(?:=|IN)\s*\(?(\d+)\)?/',
-            '(' . $maybe_both_query . ' ' . '(' . $wpdb->term_taxonomy . '.term_id = \'' . (int)$term->term_id . '\') ' . ')',
+            '(' . $maybe_both_query . ' ' . '(ppmaq1.term_taxonomy_id IN (' . (int)$term->term_id . ')) ' . ')',
             $where,
             -1
         );
@@ -249,8 +249,8 @@ class Query
 
         // Check to see that JOIN hasn't already been added. Props michaelingp and nbaxley.
         $term_relationship_inner_join = " INNER JOIN {$wpdb->term_relationships} ON ({$wpdb->posts}.ID = {$wpdb->term_relationships}.object_id)";
-        $term_relationship_left_join  = " LEFT JOIN {$wpdb->term_relationships} ON ({$wpdb->posts}.ID = {$wpdb->term_relationships}.object_id)";
-        $term_taxonomy_join           = " INNER JOIN {$wpdb->term_taxonomy} ON ( {$wpdb->term_relationships}.term_taxonomy_id = {$wpdb->term_taxonomy}.term_taxonomy_id )";
+        $term_relationship_left_join  = " LEFT JOIN {$wpdb->term_relationships} AS ppmaq1 ON ({$wpdb->posts}.ID = ppmaq1.object_id)";
+        $term_taxonomy_join           = " INNER JOIN {$wpdb->term_taxonomy} ON ( ppmaq1.term_taxonomy_id = {$wpdb->term_taxonomy}.term_taxonomy_id )";
 
         // 4.6+ uses a LEFT JOIN for tax queries so we need to check for both.
         if (false === strpos($join, trim($term_relationship_inner_join))
@@ -259,7 +259,7 @@ class Query
         }
 
         if (false === strpos($join, trim($term_taxonomy_join))) {
-            $join .= str_replace('INNER JOIN', 'LEFT JOIN', $term_taxonomy_join);
+           $join .= str_replace('INNER JOIN', 'LEFT JOIN', $term_taxonomy_join);
         }
 
         return $join;
@@ -330,7 +330,7 @@ class Query
             return $where;
         }
 
-        $terms_implode = '(' . $wpdb->term_taxonomy . '.term_id = \'' . (int)$author->getTerm()->term_id . '\') ';
+        $terms_implode = '(' . 'ppmaq1.term_taxonomy_id IN (' . (int)$author->getTerm()->term_id . ')) ';
 
         /**
          * Regex for Post Author + Post Status solution for private and custom post status
@@ -348,9 +348,10 @@ class Query
         } else {
             $current_user_term_id = 0;
         }
+
         $where = preg_replace(
             '/\(?\b(?:' . $wpdb->posts . '\.)?post_author\s*(?:=|IN)\s*\(?(\d+)\)? AND (?:' . $wpdb->posts . '\.)?post_status = \'(\w+)\'/',
-            '(' . $wpdb->term_taxonomy . '.term_id = \'' . (int)$current_user_term_id . '\' AND ' . $wpdb->posts . '.post_status = \'$2\'',
+            '(' . 'ppmaq1.term_taxonomy_id IN (' . (int)$current_user_term_id . ') AND ' . $wpdb->posts . '.post_status = \'$2\'',
             $where,
             -1
         );
@@ -451,8 +452,8 @@ class Query
 
         // Check to see that JOIN hasn't already been added. Props michaelingp and nbaxley.
         $term_relationship_inner_join = " INNER JOIN {$wpdb->term_relationships} ON ({$wpdb->posts}.ID = {$wpdb->term_relationships}.object_id)";
-        $term_relationship_left_join  = " LEFT JOIN {$wpdb->term_relationships} ON ({$wpdb->posts}.ID = {$wpdb->term_relationships}.object_id)";
-        $term_taxonomy_join           = " INNER JOIN {$wpdb->term_taxonomy} ON ( {$wpdb->term_relationships}.term_taxonomy_id = {$wpdb->term_taxonomy}.term_taxonomy_id )";
+        $term_relationship_left_join  = " LEFT JOIN {$wpdb->term_relationships} AS ppmaq1 ON ({$wpdb->posts}.ID = ppmaq1.object_id)";
+        $term_taxonomy_join           = " INNER JOIN {$wpdb->term_taxonomy} ON ( ppmaq1.term_taxonomy_id = {$wpdb->term_taxonomy}.term_taxonomy_id )";
 
         // 4.6+ uses a LEFT JOIN for tax queries so we need to check for both.
         if (false === strpos($join, trim($term_relationship_inner_join))
