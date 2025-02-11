@@ -225,8 +225,11 @@ class Query
             $where,
             -1
         );
-
-        $where = static::add_custom_post_types_to_query($where);
+        
+        // Add post type only if it's not an admin main query
+        if ( ! ( is_admin() && $query->is_main_query() ) ) {
+            $where = static::add_custom_post_types_to_query($where);
+        }
 
         return apply_filters('publishpress_authors_filter_posts_list_where', $where, $query, $term);
     }
