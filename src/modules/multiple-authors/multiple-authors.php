@@ -30,7 +30,6 @@ use MultipleAuthors\Classes\Legacy\Util;
 use MultipleAuthors\Classes\Objects\Author;
 use MultipleAuthors\Classes\Utils;
 use MultipleAuthors\Factory;
-use WP_Error;
 
 
 if (!class_exists('MA_Multiple_Authors')) {

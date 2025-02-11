@@ -1620,7 +1620,7 @@ class Plugin
         }
 
         $author     = Author::get_by_user_id(get_current_user_id());
-        if (!$author || !is_object(!$author)) {
+        if (!$author || !is_object($author)) {
             return $default_views;
         }
 
