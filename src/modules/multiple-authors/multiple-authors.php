@@ -1684,7 +1684,7 @@ if (!class_exists('MA_Multiple_Authors')) {
 
             echo '<label for="' . esc_attr($id) . '">';
 
-            echo '<select id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_for_new_users][]" multiple="multiple" class="chosen-select">';
+            echo '<select id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_for_new_users][]" multiple="multiple" class="chosen-select" data-placeholder="'.  esc_attr__('Select some options', 'publishpress-authors') .'">';
 
             $roles = get_editable_roles();
 
@@ -2693,26 +2693,26 @@ echo '<span class="ppma_settings_field_description">'
             $actions = [
                 'create_post_authors' => [
                     'title'        => esc_html__('Create PublishPress Authors Profiles for all post authors', 'publishpress-authors'),
-                    'description'  => 'If a WordPress user is the author of a post, but does not have a PublishPress Authors profile, this will automatically create a profile for them. <a href="https://publishpress.com/knowledge-base/authors-maintenance" target="_blank">Click here for documentation</a>.',
+                    'description'  => esc_html__('If a WordPress user is the author of a post, but does not have a PublishPress Authors profile, this will automatically create a profile for them.', 'publishpress-authors') . ' <a href="https://publishpress.com/knowledge-base/authors-maintenance" target="_blank">' . esc_html__('Click here for documentation', 'publishpress-authors') . '</a>.',
                     'button_label' => esc_html__('Create missing PublishPress Authors profiles', 'publishpress-authors'),
                 ],
 
                 'create_role_authors' => [
                     'title'        => esc_html__('Create PublishPress Authors Profiles for all users in a role', 'publishpress-authors'),
-                    'description'  => 'This will find all the users in a role and creates author profiles for them. You can choose the roles using the "Automatically create author profiles" setting. <a href="https://publishpress.com/knowledge-base/authors-maintenance" target="_blank">Click here for documentation</a>.',
+                    'description'  => esc_html__('This will find all the users in a role and create author profiles for them. You can choose the roles using the "Automatically create author profiles" setting.', 'publishpress-authors') . ' <a href="https://publishpress.com/knowledge-base/authors-maintenance" target="_blank">' . esc_html__('Click here for documentation', 'publishpress-authors') . '</a>.',
                     'button_label' => esc_html__('Create PublishPress Authors profiles', 'publishpress-authors'),
                 ],
 
                 'sync_post_author' => [
                     'title'       => esc_html__('Synchronize PublishPress Authors Fields and user profile fields', 'publishpress-authors'),
-                    'description' => 'Description: This will update all the author profile in PublishPress Authors to match the default WordPress fields for each user. <a href="https://publishpress.com/knowledge-base/authors-maintenance" target="_blank">Click here for documentation</a>.',
+                    'description' => esc_html__('This will update all the author profiles in PublishPress Authors to match the default WordPress fields for each user.', 'publishpress-authors') . ' <a href="https://publishpress.com/knowledge-base/authors-maintenance" target="_blank">' . esc_html__('Click here for documentation', 'publishpress-authors') . '</a>.',
                     'button_link' => '',
                     'after'       => '<div id="publishpress-authors-sync-post-authors"></div>',
                 ],
 
                 'sync_author_slug' => [
                     'title'       => esc_html__('Synchronize the author and user URLs', 'publishpress-authors'),
-                    'description' => 'This will update all the Author URLs in PublishPress Authors to match the default WordPress URLs for each user. <br /> <a href="https://publishpress.com/knowledge-base/authors-maintenance" target="_blank">Click here for documentation</a>.',
+                    'description' => esc_html__('This will update all the Author URLs in PublishPress Authors to match the default WordPress URLs for each user.', 'publishpress-authors') . ' <br /> <a href="https://publishpress.com/knowledge-base/authors-maintenance" target="_blank">' . esc_html__('Click here for documentation', 'publishpress-authors') . '</a>.',
                     'button_link' => '',
                     'after'       => '<div id="publishpress-authors-sync-author-slug"></div>',
                 ],
@@ -2726,7 +2726,7 @@ echo '<span class="ppma_settings_field_description">'
             if (isset($GLOBALS['coauthors_plus']) && !empty($GLOBALS['coauthors_plus'])) {
                 $actions['copy_coauthor_plus_data'] = [
                     'title'       => esc_html__('Copy Co-Authors Plus Data', 'publishpress-authors'),
-                    'description' => 'This action will copy the authors from the plugin Co-Authors Plus allowing you to migrate to PublishPress Authors without losing any data. This action can be run multiple times.',
+                    'description' => esc_html__('This action will copy the authors from the plugin Co-Authors Plus allowing you to migrate to PublishPress Authors without losing any data. This action can be run multiple times.', 'publishpress-authors'),
                     'button_link' => '',
                     'after'       => '<div id="publishpress-authors-coauthors-migration"></div>',
                 ];
@@ -2734,14 +2734,14 @@ echo '<span class="ppma_settings_field_description">'
 
             $actions['delete_mapped_authors'] = [
                 'title'        => esc_html__('Delete Mapped Authors', 'publishpress-authors'),
-                'description'  => 'This action can reset the PublishPress Authors data before using other maintenance options. It will delete all author profiles that are mapped to a WordPress user account. This will not delete the WordPress user accounts, but any links between the posts and multiple authors will be lost.',
+                'description'  => esc_html__('This action can reset the PublishPress Authors data before using other maintenance options. It will delete all author profiles that are mapped to a WordPress user account. This will not delete the WordPress user accounts, but any links between the posts and multiple authors will be lost.', 'publishpress-authors'),
                 'button_label' => esc_html__('Delete all authors mapped to users', 'publishpress-authors'),
                 'button_icon'  => 'dashicons-warning',
             ];
 
             $actions['delete_guest_authors'] = [
                 'title'        => esc_html__('Delete Guest Authors', 'publishpress-authors'),
-                'description'  => 'This action can reset the PublishPress Authors data before using other maintenance options. Guest authors are author profiles that are not mapped to a WordPress user account. This action will delete all guest authors.',
+                'description'  => esc_html__('This action can reset the PublishPress Authors data before using other maintenance options. Guest authors are author profiles that are not mapped to a WordPress user account. This action will delete all guest authors.', 'publishpress-authors'),
                 'button_label' => esc_html__('Delete all guest authors', 'publishpress-authors'),
                 'button_icon'  => 'dashicons-warning',
             ];
@@ -2762,8 +2762,7 @@ echo '<span class="ppma_settings_field_description">'
 
                 echo '<div class="ppma_maintenance_action_wrapper">';
                 echo '<h4>' . esc_html($actionInfo['title']) . '</h4>';
-                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-                echo '<p class="ppma_settings_field_description">' . $actionInfo['description'] . ' </p>';
+                echo '<p class="ppma_settings_field_description">' . wp_kses_post($actionInfo['description']) . ' </p>';
 
                 if (!empty($link)) {
                     echo '<a href="' . esc_url($link) . '" class="button - secondary button - danger ppma_maintenance_button" id="' . esc_attr($actionName) . '">';
