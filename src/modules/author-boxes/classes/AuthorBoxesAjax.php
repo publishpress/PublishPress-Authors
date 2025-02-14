@@ -471,7 +471,8 @@ $display_name_suffix    = !empty($args['display_name_suffix']['value']) ? $args[
 
 $display_name_markup = '';
                if ($args['name_show']['value']) :
-    $name_author_category_content = '';
+    $after_name_author_category_content = '';
+    $before_name_author_category_content = '';
     if (!empty($args['name_author_categories']['value'])) :
         $name_author_categories_divider = !empty($args['name_author_categories_divider']['value']) ? $args['name_author_categories_divider']['value'] : '';
 
@@ -486,16 +487,31 @@ $display_name_markup = '';
             } elseif ($name_author_categories_divider == 'square_bracket') {
                 $name_author_category_prefix = ' [';
                 $name_author_category_suffix = '] ';
+            } elseif ($name_author_categories_divider == 'space') {
+                $name_author_category_prefix = ' ';
             }
                 
-            $name_author_category_content = '</?php if (!empty($current_author_category)) : ?><span class="name-author-category ' . $key . '">' . $name_author_category_prefix . '</?php echo $current_author_category["singular_title"]; ?>' . $name_author_category_suffix . '</span></?php endif; ?>';
+            $name_author_categories_position = !empty($args['name_author_categories_position']['value']) ? $args['name_author_categories_position']['value'] : 'after';
+            if ($name_author_categories_position == 'after') {
+                $after_name_author_category_content = '</?php if (!empty($current_author_category)) : ?><span class="name-author-category ' . $key . '">' . $name_author_category_prefix . '</?php echo $current_author_category["singular_title"]; ?>' . $name_author_category_suffix . '</span></?php endif; ?>';;
+            } else {
+                if ($name_author_categories_divider == 'colon') {
+                    $name_author_category_prefix = '';
+                    $name_author_category_suffix = ': ';
+                } elseif ($name_author_categories_divider == 'space') {
+                    $name_author_category_prefix = '';
+                    $name_author_category_suffix = ' ';
+                }
+                $before_name_author_category_content = '</?php if (!empty($current_author_category)) : ?><span class="name-author-category ' . $key . '">' . $name_author_category_prefix . '</?php echo $current_author_category["singular_title"]; ?>' . $name_author_category_suffix . '</span></?php endif; ?>';;
+            }
+            
     endif;
 
     $display_name_markup .= '<'.esc_html($args['name_html_tag']['value']) .' class="pp-author-boxes-name multiple-authors-name">' . "\n"; ?>
     <?php if ($author_categories_title_option == 'before_individual') :
         $display_name_markup .= str_repeat(" ", 32) . '</?php if (!empty($author_category_data["title"])) : ?>' . "\n" . str_repeat(" ", 36) . '<' . $author_categories_title_html_tag . ' class="ppma-category-group-title">' . "\n" . str_repeat(" ", 40) . $author_categories_title_prefix . '</?php echo $author_category_data["singular_title"]; ?>' . '' . $author_categories_title_suffix . "\n"  . str_repeat(" ", 36) . '</' . $author_categories_title_html_tag . '>' . "\n" . str_repeat(" ", 32) . '</?php endif; ?>' . "\n";
     endif;
-    $display_name_markup .= str_repeat(" ", 32) . '<a href="</?php echo esc_url($author->link); ?>" rel="author" title="</?php echo esc_attr($author->display_name); ?>" class="author url fn">' . "\n" . str_repeat(" ", 36) . $display_name_prefix . '</?php echo esc_html($author->display_name); ?>' . $display_name_suffix . "\n" . str_repeat(" ", 32) . '</a>' . "\n" . str_repeat(" ", 32) . $name_author_category_content;
+    $display_name_markup .= str_repeat(" ", 32) . $before_name_author_category_content . str_repeat(" ", 32) . '<a href="</?php echo esc_url($author->link); ?>" rel="author" title="</?php echo esc_attr($author->display_name); ?>" class="author url fn">' . "\n" . str_repeat(" ", 36) . $display_name_prefix . '</?php echo esc_html($author->display_name); ?>' . $display_name_suffix . "\n" . str_repeat(" ", 32) . '</a>' . "\n" . str_repeat(" ", 32) . $after_name_author_category_content;
     if ($author_categories_title_option == 'after_individual') :
         $display_name_markup .= str_repeat(" ", 32) . '</?php if (!empty($author_category_data["title"])) : ?>' . str_repeat(" ", 36) . '<' . $author_categories_title_html_tag . ' class="ppma-category-group-title">' . "\n" . str_repeat(" ", 40) . $author_categories_title_prefix . '</?php echo $author_category_data["singular_title"]; ?>' . $author_categories_title_suffix . "\n" . str_repeat(" ", 36) . '</' . $author_categories_title_html_tag . '>' . "\n" . str_repeat(" ", 32) . '</?php endif; ?>' . "\n";
     endif;

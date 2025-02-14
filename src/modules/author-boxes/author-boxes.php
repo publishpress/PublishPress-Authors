@@ -1738,7 +1738,8 @@ class MA_Author_Boxes extends Module
 
                                                         $display_name_markup = '';
                                                        if ($args['name_show']['value']) :
-                                                            $name_author_category_content = '';
+                                                            $after_name_author_category_content = '';
+                                                            $before_name_author_category_content = '';
                                                             if (!empty($args['name_author_categories']['value'])) :
                                                                 $name_author_categories_divider = !empty($args['name_author_categories_divider']['value']) ? $args['name_author_categories_divider']['value'] : '';
 
@@ -1754,8 +1755,23 @@ class MA_Author_Boxes extends Module
                                                                     } elseif ($name_author_categories_divider == 'square_bracket') {
                                                                         $name_author_category_prefix = ' [';
                                                                         $name_author_category_suffix = '] ';
+                                                                    } elseif ($name_author_categories_divider == 'space') {
+                                                                        $name_author_category_prefix = ' ';
                                                                     }
-                                                                    $name_author_category_content = '<span class="name-author-category">' . $name_author_category_prefix . $current_author_category['singular_title'] . $name_author_category_suffix . '</span>';
+                                                                    $name_author_categories_position = !empty($args['name_author_categories_position']['value']) ? $args['name_author_categories_position']['value'] : 'after';
+                                                                    if ($name_author_categories_position == 'after') {
+                                                                        $after_name_author_category_content = '<span class="name-author-category">' . $name_author_category_prefix . $current_author_category['singular_title'] . $name_author_category_suffix . '</span>';
+                                                                    } else {
+                                                                        if ($name_author_categories_divider == 'colon') {
+                                                                            $name_author_category_prefix = '';
+                                                                            $name_author_category_suffix = ': ';
+                                                                        } elseif ($name_author_categories_divider == 'space') {
+                                                                            $name_author_category_prefix = '';
+                                                                            $name_author_category_suffix = ' ';
+                                                                        }
+                                                                        $before_name_author_category_content = '<span class="name-author-category">' . $name_author_category_prefix . $current_author_category['singular_title'] . $name_author_category_suffix . '</span>';
+                                                                    }
+
                                                                 endif;
                                                             endif;
 
@@ -1763,7 +1779,7 @@ class MA_Author_Boxes extends Module
                                                             <?php if ($author_categories_title_option == 'before_individual' && !empty($author_category_data['title'])) :
                                                                 $display_name_markup .= '<' . $author_categories_title_html_tag . ' class="ppma-category-group-title">' . $author_categories_title_prefix . '' . $author_category_data['singular_title'] . '' . $author_categories_title_suffix . '</' . $author_categories_title_html_tag . '>';
                                                             endif;
-                                                            $display_name_markup .= '<a href="'. esc_url($author->link) .'" rel="author" title="'. esc_attr($author->display_name) .'" class="author url fn">'. esc_html($display_name_prefix . $author->display_name . $display_name_suffix) .'</a>'. $name_author_category_content;
+                                                            $display_name_markup .= $before_name_author_category_content . '<a href="'. esc_url($author->link) .'" rel="author" title="'. esc_attr($author->display_name) .'" class="author url fn">'. esc_html($display_name_prefix . $author->display_name . $display_name_suffix) .'</a>'. $after_name_author_category_content;
                                                             if ($author_categories_title_option == 'after_individual' && !empty($author_category_data['title'])) :
                                                                 $display_name_markup .= '<' . $author_categories_title_html_tag . ' class="ppma-category-group-title">' . $author_categories_title_prefix . '' . $author_category_data['singular_title'] . '' . $author_categories_title_suffix . '</' . $author_categories_title_html_tag . '>';
                                                             endif;

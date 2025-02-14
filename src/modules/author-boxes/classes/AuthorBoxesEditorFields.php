@@ -253,6 +253,16 @@ class AuthorBoxesEditorFields
             'sanitize'    => 'absint',
             'tab'         => 'name',
         ];
+        $fields['name_author_categories_position'] = [
+            'label'    => esc_html__('Author Categories Position', 'publishpress-authors'),
+            'type'     => 'select',
+            'sanitize' => 'sanitize_text_field',
+            'options'  => [
+                'after'        => esc_html__('After Name', 'publishpress-authors'),
+                'before'          => esc_html__('Before Name', 'publishpress-authors'),
+            ],
+            'tab'      => 'name',
+        ];
         $fields['name_author_categories_divider'] = [
             'label'    => esc_html__('Author Categories Divider', 'publishpress-authors'),
             'type'     => 'select',
@@ -261,6 +271,7 @@ class AuthorBoxesEditorFields
                 'colon'          => esc_html__(':', 'publishpress-authors'),
                 'bracket'        => esc_html__('()', 'publishpress-authors'),
                 'square_bracket' => esc_html__('[]', 'publishpress-authors'),
+                'space'          => esc_html__('Empty Space', 'publishpress-authors'),
                 'none'           => esc_html__('None', 'publishpress-authors'),
             ],
             'tab'      => 'name',

@@ -70,7 +70,9 @@
 }
 
 .pp-multiple-authors-layout-boxed .multiple-authors-name a,
-.pp-multiple-authors-layout-centered .multiple-authors-name a {
+.pp-multiple-authors-layout-centered .multiple-authors-name a,
+.pp-multiple-authors-layout-boxed .name-author-category,
+.pp-multiple-authors-layout-centered .name-author-category {
     margin-bottom: 10px;
     font-size: 1.2em;
 }

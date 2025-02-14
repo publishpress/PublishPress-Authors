@@ -609,6 +609,7 @@
                 'name_show',
                 'name_author_categories',
                 'name_author_categories_divider',
+                'name_author_categories_position',
                 'display_name_position',
                 'display_name_prefix',
                 'display_name_suffix'
