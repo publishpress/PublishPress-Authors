@@ -89,6 +89,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                         'post' => 'on'
                     ],
                     'append_to_content'            => 'yes',
+                    'preppend_to_content'          => 'no',
                     'author_for_new_users'         => [],
                     'layout'                       => Utils::getDefaultLayout(),
                     'force_empty_author'           => 'no',
@@ -665,6 +666,14 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
 
             add_settings_field(
+                'preppend_to_content',
+                __('Show above the content:', 'publishpress-authors'),
+                [$this, 'settings_preppend_to_content_option'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_display'
+            );
+
+            add_settings_field(
                 'append_to_content',
                 __('Show below the content:', 'publishpress-authors'),
                 [$this, 'settings_append_to_content_option'],
@@ -1193,6 +1202,26 @@ if (!class_exists('MA_Multiple_Authors')) {
                 }
                 echo '<br />';
             }
+        }
+
+        /**
+         * Displays the field to choose display or not the author box above the content
+         *
+         * @param array
+         */
+        public function settings_preppend_to_content_option($args = [])
+        {
+            $id    = $this->module->options_group_name . '_preppend_to_content';
+            $value = isset($this->module->options->preppend_to_content) ? $this->module->options->preppend_to_content : 'yes';
+
+            echo '<label for="' . esc_attr($id) . '">';
+            echo '<input type="checkbox" value="yes" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[preppend_to_content]" '
+                . checked($value, 'yes', false) . ' />';
+            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">' . esc_html__(
+                    'This will display the authors box at the top of the content.',
+                    'publishpress-authors'
+                ) . '</span>';
+            echo '</label>';
         }
 
         /**
@@ -2778,6 +2807,10 @@ echo '<span class="ppma_settings_field_description">'
                 $new_options['post_types'],
                 $this->module->post_type_support
             );
+
+            if (!isset($new_options['preppend_to_content'])) {
+                $new_options['preppend_to_content'] = 'no';
+            }
 
             if (!isset($new_options['append_to_content'])) {
                 $new_options['append_to_content'] = 'no';
