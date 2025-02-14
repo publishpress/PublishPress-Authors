@@ -1812,11 +1812,19 @@ class Plugin
     {
         $legacyPlugin = Factory::getLegacyPlugin();
 
-        // Check if it is configured to append to the content
-        $append_to_content = 'yes' === $legacyPlugin->modules->multiple_authors->options->append_to_content;
+        if ($this->should_display_author_box()) {
 
-        if ($this->should_display_author_box() && $append_to_content) {
-            $content .= $this->get_author_box_markup('the_content');
+            // Check if it is configured to prepend and/or append to the content
+            $preppend_to_content = 'yes' === $legacyPlugin->modules->multiple_authors->options->preppend_to_content;
+            $append_to_content = 'yes' === $legacyPlugin->modules->multiple_authors->options->append_to_content;
+            
+            if ($preppend_to_content) {
+                $content = $this->get_author_box_markup('the_content') . $content;
+            }
+            
+            if ($append_to_content) {
+                $content .= $this->get_author_box_markup('the_content');
+            }
         }
 
         return $content;
