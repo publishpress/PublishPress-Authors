@@ -1499,7 +1499,7 @@ class Plugin
         $js_strings = [
             'edit_label'                    => esc_html__('Edit', 'publishpress-authors'),
             'new_button'                    => esc_html__('Add Author', 'publishpress-authors'),
-            'new_name_label'                => esc_html__('Author Name'),
+            'new_name_label'                => esc_html__('Author Name', 'publishpress-authors'),
             'confirm_delete'                => __(
                 'Are you sure you want to remove this author?',
                 'publishpress-authors'

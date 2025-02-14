@@ -940,7 +940,7 @@ class MA_Author_List extends Module
                     <select name="author_list[<?php echo esc_attr($key); ?>]<?php echo ($args['multiple'] === true) ? '[]' : ''; ?>"
                         class="chosen-select"
                         id="<?php echo esc_attr($key); ?>"
-                        placeholder="<?php echo esc_attr($args['placeholder']); ?>"
+                        data-placeholder="<?php echo esc_attr($args['placeholder']); ?>"
                         <?php echo (isset($args['readonly']) && $args['readonly'] === true) ? 'readonly' : ''; ?>
                         <?php echo ($args['multiple'] === true) ? 'multiple' : ''; ?>
                         />
@@ -1004,6 +1004,7 @@ class MA_Author_List extends Module
                                             <select name="author_list[<?php echo esc_attr($option_key); ?>][]"
                                                 class="chosen-select"
                                                 id="<?php echo esc_attr($key); ?>-<?php echo esc_attr($option_key); ?>"
+                                                data-placeholder="<?php echo esc_attr__('Select some options', 'publishpress-authors'); ?>"
                                                 multiple
                                                 />
                                                 <?php foreach (get_ppma_get_all_user_roles() as $role => $data) :
@@ -1026,6 +1027,7 @@ class MA_Author_List extends Module
                                             <select name="author_list[<?php echo esc_attr($option_key); ?>][]"
                                                 class="chosen-select"
                                                 id="<?php echo esc_attr($key); ?>-<?php echo esc_attr($option_key); ?>"
+                                                data-placeholder="<?php echo esc_attr__('Select some options', 'publishpress-authors'); ?>"
                                                 multiple
                                                 />
                                                 <?php foreach ($authors_options as $sub_key => $sub_label) :
