@@ -140,6 +140,7 @@ class MA_Author_Boxes extends Module
         add_action('pre_get_posts', [$this, 'author_author_boxes_default_sort']);
         add_filter('parent_file', [$this, 'setParentFile']);
         add_action('admin_head', [$this, 'addInlineScripts']);
+        add_action('wp_footer', [$this, 'addAuthorBoxStyles']);
         add_action('enqueue_block_editor_assets', [$this, 'author_boxes_block_enqueue_assets']);
         add_action('wp_ajax_ppma_block_fetch_author_boxes', [$this, 'ppma_block_fetch_author_boxes']);
         add_action('wp_ajax_nopriv_ppma_block_fetch_author_boxes', [$this, 'ppma_block_fetch_author_boxes']);
@@ -1387,8 +1388,17 @@ class MA_Author_Boxes extends Module
      * @param array $args Arguments to render the preview.
      */
     public static function get_rendered_author_boxes_editor_preview($args) {
-        global $ppma_instance_id, $auto_list_prefix;
+        global $ppma_instance_id, $auto_list_prefix, $ppma_rendered_box_ids, $ppma_custom_styles;
+        
         ob_start();
+
+        if (empty($ppma_rendered_box_ids)) {
+            $ppma_rendered_box_ids = [];
+        }
+
+        if (empty($ppma_custom_styles)) {
+            $ppma_custom_styles = [];
+        }
 
         if (!$ppma_instance_id) {
             $ppma_instance_id = 1;
@@ -1892,14 +1902,25 @@ class MA_Author_Boxes extends Module
                 </style>
             </div>
         <?php else : ?>
-            <?php /*wp_add_inline_style(
-                'multiple-authors-widget-css',
-                $custom_styles
-            );*/
+            <?php 
+            /**
+             * Allow dev to filter style locaction between footer and inline
+             */
+            $style_location = apply_filters('multiple_authors_author_boxes_style_location', 'footer');
+            // Ensure the same box style is only stored once
+            if (!in_array($box_post_id, $ppma_rendered_box_ids)) {
+                // Track rendered boxes
+                $ppma_rendered_box_ids[] = $box_post_id;
+                
+                if ($style_location === 'inline') {
+                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                    echo '<style>' . html_entity_decode($custom_styles) . '</style>';
+                } else {
+                    // Store for footer output
+                    $ppma_custom_styles[$box_post_id] = html_entity_decode($custom_styles);
+                }
+            }
             ?>
-            <style>
-                <?php echo html_entity_decode($custom_styles); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-            </style>
         <?php endif; ?>
 
         <?php
@@ -2476,6 +2497,20 @@ class MA_Author_Boxes extends Module
         }
 
         return $profile_fields;
+    }
+
+    /**
+     * Add Author box styles
+     *
+     * @return void
+     */
+    public function addAuthorBoxStyles() {
+        global $ppma_custom_styles;
+    
+        if (!empty($ppma_custom_styles) && is_array($ppma_custom_styles)) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+            echo '<style id="mutliple-author-box-inline-style">' . implode('', array_values($ppma_custom_styles)) . '</style>';
+        }
     }
 
     /**
