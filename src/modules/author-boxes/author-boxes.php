@@ -1958,6 +1958,7 @@ class MA_Author_Boxes extends Module
             'options'     => [],
             'value'       => '',
             'label'       => '',
+            'group_title' => '',
             'description' => '',
             'min'         => '',
             'max'         => '',
@@ -1968,11 +1969,14 @@ class MA_Author_Boxes extends Module
             'tab_name'    => '',
             'show_input'  => false,
             'post_id'     => false,
+            'group_start' => false,
+            'group_end'   => false,
         ];
 
         $args      = array_merge($defaults, $args);
         $key       = $args['key'];
         $tab_class = 'ppma-boxes-editor-tab-content ppma-' . $args['tab'] . '-tab ' . $args['type'] . ' ppma-editor-'.$key;
+ 
         if ('range' === $args['type'] && $args['show_input']) {
             $tab_class .= ' double-input';
         }
@@ -1992,6 +1996,18 @@ class MA_Author_Boxes extends Module
             $colspan  = '';
         }
         ?>
+        <?php if ($args['group_start'] === true) : 
+           ?>
+            <tr
+                class="group-title-row <?php echo esc_attr($tab_class); ?>"
+                data-tab="<?php echo esc_attr($args['tab']); ?>"
+                style="<?php echo esc_attr($tab_style); ?>"
+            >
+                <td colspan="2" style="padding-left: 0; padding-right: 0;">
+                <div class="author-boxes-group-table-wrap">
+                    <div class="table-title"><?php echo esc_html($args['group_title']); ?></div>
+                        <table>
+        <?php endif; ?>
         <tr
             class="<?php echo esc_attr($tab_class); ?>"
             data-tab="<?php echo esc_attr($args['tab']); ?>"
@@ -2393,6 +2409,12 @@ class MA_Author_Boxes extends Module
                 <?php endif; ?>
             </td>
         </tr>
+        <?php if ($args['group_end'] === true) : ?>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        <?php endif; ?>
         <?php
         return ob_get_clean();
     }
