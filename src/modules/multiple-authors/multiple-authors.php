@@ -4479,9 +4479,13 @@ echo '<span class="ppma_settings_field_description">'
                 } else {
                     $author = Author::get_by_term_id($authorId * -1);
 
-                    if ($author->is_guest()) {
+                    if (is_object($author) && $author->is_guest()) {
                         return true;
                     }
+                }
+
+                if (!is_object($author)) {
+                    return $canEdit;
                 }
 
                 $user = $author->get_user_object();
