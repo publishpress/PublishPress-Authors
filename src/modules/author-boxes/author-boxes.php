@@ -140,6 +140,7 @@ class MA_Author_Boxes extends Module
         add_action('pre_get_posts', [$this, 'author_author_boxes_default_sort']);
         add_filter('parent_file', [$this, 'setParentFile']);
         add_action('admin_head', [$this, 'addInlineScripts']);
+        add_action('wp_footer', [$this, 'addAuthorBoxStyles']);
         add_action('enqueue_block_editor_assets', [$this, 'author_boxes_block_enqueue_assets']);
         add_action('wp_ajax_ppma_block_fetch_author_boxes', [$this, 'ppma_block_fetch_author_boxes']);
         add_action('wp_ajax_nopriv_ppma_block_fetch_author_boxes', [$this, 'ppma_block_fetch_author_boxes']);
@@ -1165,7 +1166,7 @@ class MA_Author_Boxes extends Module
         $editor_data['post_id'] = $post_id;
 
         //set social profile defaults
-        $social_fields = ['facebook', 'twitter', 'instagram', 'linkedin', 'youtube', 'tiktok'];
+        $social_fields = ['facebook', 'twitter', 'x', 'instagram', 'linkedin', 'youtube', 'tiktok'];
         foreach ($social_fields as $social_field) {
             //set default display to icon
             if (!isset($editor_data['profile_fields_'.$social_field.'_display'])
@@ -1387,8 +1388,17 @@ class MA_Author_Boxes extends Module
      * @param array $args Arguments to render the preview.
      */
     public static function get_rendered_author_boxes_editor_preview($args) {
-        global $ppma_instance_id, $auto_list_prefix;
+        global $ppma_instance_id, $auto_list_prefix, $ppma_rendered_box_ids, $ppma_custom_styles;
+        
         ob_start();
+
+        if (empty($ppma_rendered_box_ids)) {
+            $ppma_rendered_box_ids = [];
+        }
+
+        if (empty($ppma_custom_styles)) {
+            $ppma_custom_styles = [];
+        }
 
         if (!$ppma_instance_id) {
             $ppma_instance_id = 1;
@@ -1728,7 +1738,8 @@ class MA_Author_Boxes extends Module
 
                                                         $display_name_markup = '';
                                                        if ($args['name_show']['value']) :
-                                                            $name_author_category_content = '';
+                                                            $after_name_author_category_content = '';
+                                                            $before_name_author_category_content = '';
                                                             if (!empty($args['name_author_categories']['value'])) :
                                                                 $name_author_categories_divider = !empty($args['name_author_categories_divider']['value']) ? $args['name_author_categories_divider']['value'] : '';
 
@@ -1744,8 +1755,23 @@ class MA_Author_Boxes extends Module
                                                                     } elseif ($name_author_categories_divider == 'square_bracket') {
                                                                         $name_author_category_prefix = ' [';
                                                                         $name_author_category_suffix = '] ';
+                                                                    } elseif ($name_author_categories_divider == 'space') {
+                                                                        $name_author_category_prefix = ' ';
                                                                     }
-                                                                    $name_author_category_content = '<span class="name-author-category">' . $name_author_category_prefix . $current_author_category['singular_title'] . $name_author_category_suffix . '</span>';
+                                                                    $name_author_categories_position = !empty($args['name_author_categories_position']['value']) ? $args['name_author_categories_position']['value'] : 'after';
+                                                                    if ($name_author_categories_position == 'after') {
+                                                                        $after_name_author_category_content = '<span class="name-author-category">' . $name_author_category_prefix . $current_author_category['singular_title'] . $name_author_category_suffix . '</span>';
+                                                                    } else {
+                                                                        if ($name_author_categories_divider == 'colon') {
+                                                                            $name_author_category_prefix = '';
+                                                                            $name_author_category_suffix = ': ';
+                                                                        } elseif ($name_author_categories_divider == 'space') {
+                                                                            $name_author_category_prefix = '';
+                                                                            $name_author_category_suffix = ' ';
+                                                                        }
+                                                                        $before_name_author_category_content = '<span class="name-author-category">' . $name_author_category_prefix . $current_author_category['singular_title'] . $name_author_category_suffix . '</span>';
+                                                                    }
+
                                                                 endif;
                                                             endif;
 
@@ -1753,7 +1779,7 @@ class MA_Author_Boxes extends Module
                                                             <?php if ($author_categories_title_option == 'before_individual' && !empty($author_category_data['title'])) :
                                                                 $display_name_markup .= '<' . $author_categories_title_html_tag . ' class="ppma-category-group-title">' . $author_categories_title_prefix . '' . $author_category_data['singular_title'] . '' . $author_categories_title_suffix . '</' . $author_categories_title_html_tag . '>';
                                                             endif;
-                                                            $display_name_markup .= '<a href="'. esc_url($author->link) .'" rel="author" title="'. esc_attr($author->display_name) .'" class="author url fn">'. esc_html($display_name_prefix . $author->display_name . $display_name_suffix) .'</a>'. $name_author_category_content;
+                                                            $display_name_markup .= $before_name_author_category_content . '<a href="'. esc_url($author->link) .'" rel="author" title="'. esc_attr($author->display_name) .'" class="author url fn">'. esc_html($display_name_prefix . $author->display_name . $display_name_suffix) .'</a>'. $after_name_author_category_content;
                                                             if ($author_categories_title_option == 'after_individual' && !empty($author_category_data['title'])) :
                                                                 $display_name_markup .= '<' . $author_categories_title_html_tag . ' class="ppma-category-group-title">' . $author_categories_title_prefix . '' . $author_category_data['singular_title'] . '' . $author_categories_title_suffix . '</' . $author_categories_title_html_tag . '>';
                                                             endif;
@@ -1892,14 +1918,25 @@ class MA_Author_Boxes extends Module
                 </style>
             </div>
         <?php else : ?>
-            <?php /*wp_add_inline_style(
-                'multiple-authors-widget-css',
-                $custom_styles
-            );*/
+            <?php 
+            /**
+             * Allow dev to filter style locaction between footer and inline
+             */
+            $style_location = apply_filters('multiple_authors_author_boxes_style_location', 'footer');
+            // Ensure the same box style is only stored once
+            if (!in_array($box_post_id, $ppma_rendered_box_ids)) {
+                // Track rendered boxes
+                $ppma_rendered_box_ids[] = $box_post_id;
+                
+                if ($style_location === 'inline') {
+                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                    echo '<style>' . html_entity_decode($custom_styles) . '</style>';
+                } else {
+                    // Store for footer output
+                    $ppma_custom_styles[$box_post_id] = html_entity_decode($custom_styles);
+                }
+            }
             ?>
-            <style>
-                <?php echo html_entity_decode($custom_styles); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-            </style>
         <?php endif; ?>
 
         <?php
@@ -1921,6 +1958,7 @@ class MA_Author_Boxes extends Module
             'options'     => [],
             'value'       => '',
             'label'       => '',
+            'group_title' => '',
             'description' => '',
             'min'         => '',
             'max'         => '',
@@ -1931,11 +1969,14 @@ class MA_Author_Boxes extends Module
             'tab_name'    => '',
             'show_input'  => false,
             'post_id'     => false,
+            'group_start' => false,
+            'group_end'   => false,
         ];
 
         $args      = array_merge($defaults, $args);
         $key       = $args['key'];
         $tab_class = 'ppma-boxes-editor-tab-content ppma-' . $args['tab'] . '-tab ' . $args['type'] . ' ppma-editor-'.$key;
+ 
         if ('range' === $args['type'] && $args['show_input']) {
             $tab_class .= ' double-input';
         }
@@ -1955,6 +1996,18 @@ class MA_Author_Boxes extends Module
             $colspan  = '';
         }
         ?>
+        <?php if ($args['group_start'] === true) : 
+           ?>
+            <tr
+                class="group-title-row <?php echo esc_attr($tab_class); ?>"
+                data-tab="<?php echo esc_attr($args['tab']); ?>"
+                style="<?php echo esc_attr($tab_style); ?>"
+            >
+                <td colspan="2" style="padding-left: 0; padding-right: 0;">
+                <div class="author-boxes-group-table-wrap">
+                    <div class="table-title"><?php echo esc_html($args['group_title']); ?></div>
+                        <table>
+        <?php endif; ?>
         <tr
             class="<?php echo esc_attr($tab_class); ?>"
             data-tab="<?php echo esc_attr($args['tab']); ?>"
@@ -2356,6 +2409,12 @@ class MA_Author_Boxes extends Module
                 <?php endif; ?>
             </td>
         </tr>
+        <?php if ($args['group_end'] === true) : ?>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        <?php endif; ?>
         <?php
         return ob_get_clean();
     }
@@ -2476,6 +2535,20 @@ class MA_Author_Boxes extends Module
         }
 
         return $profile_fields;
+    }
+
+    /**
+     * Add Author box styles
+     *
+     * @return void
+     */
+    public function addAuthorBoxStyles() {
+        global $ppma_custom_styles;
+    
+        if (!empty($ppma_custom_styles) && is_array($ppma_custom_styles)) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+            echo '<style id="mutliple-author-box-inline-style">' . implode('', array_values($ppma_custom_styles)) . '</style>';
+        }
     }
 
     /**

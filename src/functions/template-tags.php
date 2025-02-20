@@ -428,6 +428,13 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
          */
         $args = apply_filters('pp_multiple_authors_get_all_authors_args', $args, $instance);
 
+        $args['orderby'] = sanitize_sql_orderby($args['orderby'] ?? 'name');
+        if (empty($args['orderby'])) {
+            $args['orderby'] = 'name';
+        }
+
+        $args['order'] = strtoupper($args['order'] ?? 'ASC') === 'DESC' ? 'DESC' : 'ASC';
+
         if (!empty($args['orderby']) && !in_array($args['orderby'], ['name', 'count'])) {
             $meta_order = true;
         } else {
@@ -566,7 +573,9 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
             } else {
                 $sql_order_by = "tm.meta_value";
             }
-            $term_query .= "ORDER BY {$sql_order_by} {$args['order']}";
+            $sql_order_by = $sql_order_by . ' ' . $args['order'];
+
+            $term_query .= "ORDER BY {$sql_order_by}";
             //add limit if it's a paginated request
             if ($paged) {
                 $term_query .= " LIMIT {$offset}, {$per_page}";
@@ -1484,11 +1493,14 @@ if (!function_exists('get_ppma_author_categories')) {
         $slug            = sanitize_text_field($args['slug']);
         $category_name   = sanitize_text_field($args['category_name']);
         $plural_name     = sanitize_text_field($args['plural_name']);
-        $orderby         = sanitize_text_field($args['orderby']);
         $search          = sanitize_text_field($args['search']);
-        $order           = strtoupper(sanitize_text_field($args['order']));
+        $orderby         = sanitize_sql_orderby($args['orderby'] . ' ' . strtoupper($args['order']));
         $category_status = sanitize_text_field($args['category_status']);
         $count_only      = boolval($args['count_only']);
+
+        if (empty($orderby)) {
+            $orderby = 'category_order ASC';
+        }
 
         $field_search = $field_value = false;
         if (!empty($id)) {
@@ -1517,7 +1529,7 @@ if (!function_exists('get_ppma_author_categories')) {
                     FROM {$table_name}
                     LEFT JOIN {$meta_table_name} ON {$table_name}.id = {$meta_table_name}.category_id
                     WHERE {$table_name}.{$field_search} = %s
-                    ORDER BY {$orderby} {$order}
+                    ORDER BY {$orderby}
                     LIMIT 1",
                     $field_value
                 );
@@ -1558,7 +1570,7 @@ if (!function_exists('get_ppma_author_categories')) {
                 }
         
                 $query .= $wpdb->prepare(
-                    " ORDER BY {$orderby} {$order} LIMIT %d OFFSET %d",
+                    " ORDER BY {$orderby} LIMIT %d OFFSET %d",
                     $limit,
                     $offset
                 );

@@ -89,10 +89,12 @@ if (!class_exists('MA_Default_Layouts')) {
         public function renderBoxHTML($html, $args)
         {
             // Color scheme. This is here, before the Pro loaded check because the Pro uses this style too.
-            wp_add_inline_style(
-                'multiple-authors-widget-css',
-                ':root { --ppa-color-scheme: ' . $args['color_scheme'] . '; --ppa-color-scheme-active: ' . $this->luminanceColor($args['color_scheme'])  . '; }'
-            );
+            if (empty(wp_styles()->print_inline_style('multiple-authors-widget-css', false))) {
+                wp_add_inline_style(
+                    'multiple-authors-widget-css',
+                    ':root { --ppa-color-scheme: ' . $args['color_scheme'] . '; --ppa-color-scheme-active: ' . $this->luminanceColor($args['color_scheme'])  . '; }'
+                );
+            }
 
             if ($html && !empty(trim($html))) {
                 return $html;

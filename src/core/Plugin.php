@@ -18,6 +18,7 @@ use MultipleAuthors\Classes\Query;
 use MultipleAuthors\Classes\Utils;
 use MultipleAuthors\Traits\Author_box;
 use WP_Query;
+use WP_Error;
 
 defined('ABSPATH') or die('No direct script access allowed.');
 
@@ -1146,7 +1147,14 @@ class Plugin
             return 0;
         }
 
-        return $author->getTerm()->count;
+        $term = $author->getTerm();
+    
+        // Ensure $term is a valid object before accessing properties incase of legacy data
+        if (!is_object($term) || is_wp_error($term)) {
+            return 0;
+        }
+    
+        return $term->count ?? 0;
     }
 
     /**
@@ -1491,7 +1499,7 @@ class Plugin
         $js_strings = [
             'edit_label'                    => esc_html__('Edit', 'publishpress-authors'),
             'new_button'                    => esc_html__('Add Author', 'publishpress-authors'),
-            'new_name_label'                => esc_html__('Author Name'),
+            'new_name_label'                => esc_html__('Author Name', 'publishpress-authors'),
             'confirm_delete'                => __(
                 'Are you sure you want to remove this author?',
                 'publishpress-authors'
@@ -1612,7 +1620,7 @@ class Plugin
         }
 
         $author     = Author::get_by_user_id(get_current_user_id());
-        if (!$author || !is_object(!$author)) {
+        if (!$author || !is_object($author)) {
             return $default_views;
         }
 
@@ -1804,11 +1812,19 @@ class Plugin
     {
         $legacyPlugin = Factory::getLegacyPlugin();
 
-        // Check if it is configured to append to the content
-        $append_to_content = 'yes' === $legacyPlugin->modules->multiple_authors->options->append_to_content;
+        if ($this->should_display_author_box()) {
 
-        if ($this->should_display_author_box() && $append_to_content) {
-            $content .= $this->get_author_box_markup('the_content');
+            // Check if it is configured to prepend and/or append to the content
+            $preppend_to_content = 'yes' === $legacyPlugin->modules->multiple_authors->options->preppend_to_content;
+            $append_to_content = 'yes' === $legacyPlugin->modules->multiple_authors->options->append_to_content;
+            
+            if ($preppend_to_content) {
+                $content = $this->get_author_box_markup('the_content') . $content;
+            }
+            
+            if ($append_to_content) {
+                $content .= $this->get_author_box_markup('the_content');
+            }
         }
 
         return $content;
