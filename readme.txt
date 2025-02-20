@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author bio, author layouts
 Requires at least: 5.5
 Requires PHP: 7.2.5
 Tested up to: 6.7
-Stable tag: 4.7.3
+Stable tag: 4.7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,7 +105,7 @@ PublishPress Authors Pro enables you to create author fields and enhance your au
 
 The Pro versions of the PublishPress plugins are well worth your investment. The Pro versions have extra features and faster support. [Click here to join PublishPress](https://publishpress.com/pricing/).
 
-Join PublishPress and you'll get access to these Pro plugins:
+Join PublishPress and you'll get access to these ten Pro plugins:
 
 * [PublishPress Authors Pro](https://publishpress.com/authors) allows you to add multiple authors and guest authors to WordPress posts.
 * [PublishPress Blocks Pro](https://publishpress.com/blocks) has everything you need to build professional websites with the WordPress block editor.
@@ -115,7 +115,8 @@ Join PublishPress and you'll get access to these Pro plugins:
 * [PublishPress Permissions Pro](https://publishpress.com/permissions)  is the plugin for advanced WordPress permissions.
 * [PublishPress Planner Pro](https://publishpress.com/publishpress) is the plugin for managing and scheduling WordPress content.
 * [PublishPress Revisions Pro](https://publishpress.com/revisions) allows you to update your published pages with teamwork and precision.
-* [PublishPress Series Pro](https://publishpress.com/series) enables you to group content together into a series
+* [PublishPress Series Pro](https://publishpress.com/series) enables you to group content together into a series.
+* [PublishPress Statuses Pro](https://publishpress.com/series) enables you to create additional publishing steps for your posts.
 
 Together, these plugins are a suite of powerful publishing tools for WordPress. If you need to create a professional workflow in WordPress, with moderation, revisions, permissions and more... then you should try PublishPress.
 
@@ -245,6 +246,26 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [4.7.4] - 20 Feb 2025 =
+
+* Fixed: Fix data sanitization on author categories
+* Fixed: PHP Warning with Rank Math, #1970
+* Fixed: Conflict between Polylang and Authors, #1931
+* Update: Add sub headings to Author Boxes > Author Fields, #1889
+* Update: Allow Display Name Author Categories to be in front, #1894
+* Fixed: PHP Fatal error: Uncaught Error: Call to a member function get_user_object() on bool, #1997
+* Update: Add settings to show Author profile above the content, #1929
+* Fixed: Post Filter Not Working when filtering on Author and Category together, #1933
+* Fixed: Admin "Mine" tab count is incorrect, and also including post from all post types instead of current post type, #1989
+* Fixed: "Mine" not showing when author is a secondary author on posts, #1939
+* Fixed: Undefined property: WP_Error::$count, #1974
+* Fixed: Author Categories Errors on installs, #1972
+* Fixed: Redundant repeated CSS and move Author box styling from content to footer(filtereable), #1976
+* Fixed: Fatal error: "Class "MultipleAuthors\WP_Error" not found", #1971
+* Update: Update "Twitter" for "X" on new installation, #1955
+* Update: Update text for bulk edit, #1978
+* Update: Authors Translation Updates v.4.7.3, #1966
 
 = [4.7.3] - 16 Dec 2024 =
 
