@@ -44,7 +44,7 @@ class Author_Editor
         $new_columns = [];
         foreach ($columns as $key => $title) {
             if ('name' === $key) {
-                $new_columns['author_name']       = __('Name', 'publishpress-authors');
+                $new_columns['author_name']       = __('Display name publicly as', 'publishpress-authors');
                 $new_columns['author_user_email'] = __('Email', 'publishpress-authors');
                 $new_columns['author_type'] = __('Author Type', 'publishpress-authors');
             } else {
