@@ -70,10 +70,15 @@ if ($author_post_custom_height > 0) {
         <?php if (have_posts()) : ?>
             <?php while ( have_posts() ) : the_post(); ?>
                     <?php
-                    $featured_image_id = get_post_thumbnail_id();
-                    $featured_image = PP_AUTHORS_ASSETS_URL . 'img/no-image-450.jpeg';
-                    $featured_image = has_post_thumbnail() ? wp_get_attachment_image_src(get_post_thumbnail_id(), 'single-post-thumbnail')[0] : $featured_image;
-                    $featured_image_alt = get_post_meta($featured_image_id, '_wp_attachment_image_alt', TRUE);
+                    $featured_image_alt = '';
+                    if (has_post_thumbnail()) {
+                        $image_data = wp_get_attachment_image_src(get_post_thumbnail_id(), 'single-post-thumbnail');
+                        if (!empty($image_data) && is_array($image_data)) {
+                            $featured_image = $image_data[0];
+                            $featured_image_id = get_post_thumbnail_id();
+                            $featured_image_alt = get_post_meta($featured_image_id, '_wp_attachment_image_alt', true);
+                        }
+                    }
                     $post_categories  = ($show_post_category) ? get_the_category_list(', ') : false;
                     $post_tags        = ($show_post_tags) ? get_the_tags() : [];
                     $post_authors     = ($show_post_authors) ? get_post_authors() : [];
