@@ -94,7 +94,7 @@ class AuthorBoxesDefault
         $editor_data['author_bio_link'] = 0;
         $editor_data['author_bio_html_tag'] = 'p';
         //meta default
-        $editor_data['meta_view_all_show'] = 1;
+        $editor_data['meta_view_all_show'] = 0;
         $editor_data['meta_html_tag'] = 'span';
         $editor_data['meta_background_color'] = '#655997';
         $editor_data['meta_color'] = '#ffffff';
@@ -363,7 +363,7 @@ class AuthorBoxesDefault
         $editor_data['author_bio_show'] = 1;
         $editor_data['author_bio_html_tag'] = 'p';
         //meta default
-        $editor_data['meta_view_all_show'] = 1;
+        $editor_data['meta_view_all_show'] = 0;
         $editor_data['meta_html_tag'] = 'span';
         $editor_data['meta_background_color'] = '#655997';
         $editor_data['meta_color'] = '#ffffff';
