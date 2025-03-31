@@ -598,7 +598,7 @@ jQuery(document).ready(function ($) {
 
                     var $field = $('textarea[name="authors-description"]');
                     if ($field.val() === "") {
-                        $field.val(data.description);
+                        setEditorContentIfEmpty('authors-description', data.description);
                     }
 
                     // Slug always change to be in sync
@@ -606,6 +606,22 @@ jQuery(document).ready(function ($) {
                 }
             );
         });
+    }
+
+    function setEditorContentIfEmpty(editorId, content) {
+        var editor = tinymce.get(editorId);
+        
+        if (editor) {
+            var currentContent = editor.getContent().trim();
+            if (!currentContent) {
+                editor.setContent(content);
+            }
+        } else {
+            var textarea = $('#' + editorId);
+            if (!textarea.val().trim()) {
+                textarea.val(content);
+            }
+        }
     }
 
     // Add action to the Mapped User Field in the New Author form.
