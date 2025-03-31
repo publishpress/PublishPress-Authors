@@ -564,9 +564,9 @@ endif ?>
 
 <?php if ($args['meta_view_all_show']['value']) : ?>
                             <<?php echo esc_html($args['meta_html_tag']['value']); ?> class="pp-author-boxes-meta multiple-authors-links">
-                                <a href="</?php echo esc_url($author->link); ?>" title="</?php echo esc_attr__('View all posts', 'publishpress-authors'); ?>">
+                                <a href="</?php echo esc_url($author->link); ?>" title="<?php echo esc_attr($args['meta_label']['value']); ?>">
                                     <span>
-                                        </?php echo esc_html__('View all posts', 'publishpress-authors'); ?>
+                                        <?php echo esc_html($args['meta_label']['value']); ?>
                                     </span>
                                 </a>
                             </<?php echo esc_html($args['meta_html_tag']['value']); ?>>
