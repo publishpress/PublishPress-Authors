@@ -115,6 +115,9 @@ class Installer
         if (version_compare($currentVersions, '4.7.0', '<')) {
             MA_Author_List::createDefaultList();
         }
+        if (version_compare($currentVersions, '4.7.5', '<')) {
+            MA_Author_Boxes::authorBoxesMetaDefaultLabelUpdate();
+        }
 
         /**
          * @param string $previousVersion

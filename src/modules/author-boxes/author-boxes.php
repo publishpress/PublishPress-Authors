@@ -586,6 +586,7 @@ class MA_Author_Boxes extends Module
                 $editor_data = (array) get_post_meta($post->ID, self::META_PREFIX . 'layout_meta_value', true);
                 //meta default
                 $editor_data['meta_html_tag'] = 'span';
+                $editor_data['meta_label'] = __('View all posts', 'publishpress-authors');
                 // hide all default fields
                 $editor_data['profile_fields_hide_first_name'] = 1;
                 $editor_data['profile_fields_hide_last_name'] = 1;
@@ -604,6 +605,26 @@ class MA_Author_Boxes extends Module
                 $editor_data['profile_fields_user_url_display_icon_background_color'] = '#655997';
                 $editor_data['profile_fields_user_url_color'] = '#ffffff';
                 $editor_data['profile_fields_user_url_display_icon_border_radius'] = '100';
+                update_post_meta($post->ID, self::META_PREFIX . 'layout_meta_value', $editor_data);
+            }
+        }
+
+    }
+
+    public static function authorBoxesMetaDefaultLabelUpdate() {
+        $post_args = [
+            'post_type' => self::POST_TYPE_BOXES,
+            'posts_per_page' => -1,
+            'post_status' => 'publish',
+        ];
+
+        $posts = get_posts($post_args);
+
+        if (! empty($posts)) {
+            foreach ($posts as $post) {
+                $editor_data = (array) get_post_meta($post->ID, self::META_PREFIX . 'layout_meta_value', true);
+                //meta default
+                $editor_data['meta_label'] = __('View all posts', 'publishpress-authors');
                 update_post_meta($post->ID, self::META_PREFIX . 'layout_meta_value', $editor_data);
             }
         }
@@ -1840,8 +1861,8 @@ class MA_Author_Boxes extends Module
 
                                                                 <?php if ($args['meta_view_all_show']['value']) : ?>
                                                                     <<?php echo esc_html($args['meta_html_tag']['value']); ?> class="pp-author-boxes-meta multiple-authors-links">
-                                                                        <a href="<?php echo esc_url($author->link); ?>" title="<?php echo esc_attr__('View all posts', 'publishpress-authors'); ?>">
-                                                                            <span><?php echo esc_html__('View all posts', 'publishpress-authors'); ?></span>
+                                                                        <a href="<?php echo esc_url($author->link); ?>" title="<?php echo esc_attr($args['meta_label']['value']); ?>">
+                                                                            <span><?php echo esc_html($args['meta_label']['value']); ?></span>
                                                                         </a>
                                                                     </<?php echo esc_html($args['meta_html_tag']['value']); ?>>
                                                                 <?php endif; ?>
