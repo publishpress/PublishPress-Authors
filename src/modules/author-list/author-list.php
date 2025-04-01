@@ -446,6 +446,15 @@ class MA_Author_List extends Module
             'field_visibility'  => [],
             'tab'               => 'users',
         ];
+        $fields['exclude_term_id'] = [
+            'label'             => esc_html__('Exclude Authors', 'publishpress-authors'),
+            'description'       => esc_html__('Select Authors to be excluded from this list.', 'publishpress-authors'),
+            'type'              => 'multiple_authors',
+            'options'           => [],
+            'sanitize'          => 'sanitize_text_field',
+            'field_visibility'  => [],
+            'tab'               => 'users',
+        ];
 
         // add options fields
         if (!$pro_active) {
@@ -516,6 +525,7 @@ class MA_Author_List extends Module
             'authors'               => '',
             'roles'                 => '',
             'term_id'               => '',
+            'exclude_term_id'       => [],
 
             'limit_per_page'        => $pro_active ? 20 : '',
             'show_empty'            => $pro_active ? 1 : '',
@@ -560,6 +570,7 @@ class MA_Author_List extends Module
             'authors'               => '',
             'roles'                 => '',
             'term_id'               => '',
+            'exclude_term_id'       => [],
 
             'limit_per_page'        => $pro_active ? 20 : '',
             'show_empty'            => $pro_active ? 1 : '',
@@ -706,6 +717,7 @@ class MA_Author_List extends Module
                 'authors'               => '',
                 'roles'                 => '',
                 'term_id'               => '',
+                'exclude_term_id'       => [],
 
                 'limit_per_page'        => $pro_active ? 20 : '',
                 'show_empty'            => $pro_active ? 1 : '',
@@ -881,7 +893,7 @@ class MA_Author_List extends Module
 
         ob_start();
         $generate_tab_title = false;
-        if (in_array($args['type'], ['textarea', 'preview', 'tab', 'promo'])) {
+        if (in_array($args['type'], ['textarea', 'preview', 'tab', 'promo', 'multiple_authors'])) {
             $th_style = 'display: none;';
             $colspan  = 2;
         } else {
@@ -1113,6 +1125,38 @@ class MA_Author_List extends Module
                             </div>
                         </div>
                     </div>
+                <?php
+                elseif ('multiple_authors' === $args['type']) :
+                    ?>
+                    <label for="<?php echo esc_attr($key); ?>">
+                        <strong>
+                            <?php echo esc_html($args['label']); ?>
+                            <?php if (isset($args['required']) && $args['required'] === true) : ?>
+                                <span class="required">*</span>
+                            <?php endif; ?>
+                        </strong>
+                    </label>
+                    <select name="author_list[<?php echo esc_attr($key); ?>][]"
+                        data-nonce="<?php echo esc_attr(wp_create_nonce('authors-user-search')); ?>"
+                        data-placeholder="<?php esc_html_e('Select Users', 'publishpress-authors'); ?>"
+                        class="authors-user-term-id-search"
+                        id="<?php echo esc_attr($key); ?>-<?php echo esc_attr($key); ?>"
+                        multiple
+                        style="width: 99%;"
+                        />
+                        <?php 
+                        if (!empty($args['value']) && is_array($args['value'])) {
+                            foreach ($args['value'] as $term_id) :
+                                $author = Author::get_by_term_id((int)$term_id);
+                                if (is_object($author) && isset($author->display_name)) {
+                            ?>
+                                <option value="<?php echo esc_attr($term_id); ?>" selected>
+                                    <?php echo esc_html($author->display_name); ?>
+                                </option>
+                        <?php }
+                            endforeach;
+                        } ?>
+                    </select>
                 <?php else : ?>
                     <input name="author_list[<?php echo esc_attr($key); ?>]"
                         id="<?php echo esc_attr($key); ?>" 

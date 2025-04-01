@@ -321,12 +321,21 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
         $exclude_real_user = false;
         $per_page    = 0;
         $term_counts = 0;
+        $can_exclude = true;
 
         // limit to term ids
         if (isset($instance['term_id']) && !empty($instance['term_id'])) {
+            $can_exclude = false;
             $term_ids  = explode(',', $instance['term_id']);
         } else {
             $term_ids = [];
+        }
+
+        // exclude ids
+        if ($can_exclude && isset($instance['exclude_term_id']) && !empty($instance['exclude_term_id'])) {
+            $exclude_term_ids  = explode(',', $instance['exclude_term_id']);
+        } else {
+            $exclude_term_ids = [];
         }
 
         // limit to roles
@@ -418,6 +427,8 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
 
         if (!empty($term_ids)) {
             $args['include'] = array_values($term_ids);
+        } elseif (!empty($exclude_term_ids)) {
+            $args['exclude'] = array_values($exclude_term_ids);
         }
 
         /**
@@ -472,6 +483,9 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
             if (!empty($term_ids)) {
                 $term_ids_string = implode(',', array_map('intval', $term_ids));
                 $term_query .= "AND t.term_id IN ({$term_ids_string}) ";
+            } elseif (!empty($exclude_term_ids)) {
+                $exclude_term_ids_string = implode(',', array_map('intval', $exclude_term_ids));
+                $term_query .= "AND t.term_id NOT IN ({$exclude_term_ids_string}) ";
             }
 
             if ($guests_only) {
