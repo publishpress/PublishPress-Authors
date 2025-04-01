@@ -144,7 +144,16 @@ if (!class_exists('MA_Rank_Math_Seo_Integration')) {
 
                     $data['WebPage']['@type']  = 'ProfilePage';
                     $data['ProfilePage']        = $author_profile_data;
+
+                    $mainEntityOfPage = $page_author->link;
+                    if (isset($data['WebPage']['@id'])) {
+                        $mainEntityOfPage = $data['WebPage']['@id'];
+                    }
+                    $data['ProfilePage']['mainEntityOfPage'] = [
+                        '@id' => $mainEntityOfPage
+                    ];
                 }
+
             }
 
             return $data;
