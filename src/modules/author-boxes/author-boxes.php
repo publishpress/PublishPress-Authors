@@ -823,6 +823,26 @@ class MA_Author_Boxes extends Module
     }
 
     /**
+     * Summary of removeExcludedAuthors
+     * @param mixed $authorsList
+     * @return array
+     */
+    public static function removeExcludedAuthors($authorsList) {
+        if (empty($authorsList)) {
+            return [];
+        }
+        foreach ($authorsList as $index => $author) {
+            if ((int)$author->exclude_author === 1) {
+                unset($authorsList[$index]);
+                unset($index);
+            }
+        }
+        $authorsList = array_filter(array_values($authorsList));
+
+        return $authorsList;
+    }
+
+    /**
      * @param $html
      * @param $args
      *
@@ -1459,6 +1479,8 @@ class MA_Author_Boxes extends Module
         }
 
         $authors = (isset($args['authors']) && is_array($args['authors']) && !empty($args['authors'])) ? $args['authors'] : [];
+
+        $authors = self::removeExcludedAuthors($authors);
 
         $box_post         = get_post($args['post_id']);
         $box_post_id      = (is_object($box_post) && isset($box_post->ID)) ? $box_post->ID : '1';
