@@ -97,6 +97,12 @@
             } else if (author_type == 'term_id' && term_id.length > 0) {
                 shortcode += ' term_id="' + term_id.join(',') + '"';
             }
+            // add exclude_term_id
+            var exclude_term_id = $('.author-list-tab-content .input #exclude_term_id-exclude_term_id').val();
+            if (exclude_term_id.length > 0) {
+                shortcode += ' exclude_term_id="' + exclude_term_id.join(',') + '"';
+            }
+
             // add limit_per_page
             var limit_per_page = $('.author-list-tab-content .input #limit_per_page').val();
             if (pro_active && !isEmptyOrSpaces(limit_per_page)) {
