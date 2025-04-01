@@ -309,10 +309,22 @@ class Post_Editor
             ];
         }
 
-        // Add remaining author to first category
+        // Add remaining author to default or first category
         if (!empty($remaining_authors)) {
-            $authors_data[0]['authors'] = array_values(array_merge($authors_data[0]['authors'], $remaining_authors));
-        }
+            foreach ($remaining_authors as $remaining_author) {
+                $author_default_category = (int) $remaining_author->author_category;
+        
+                $category_index = ($author_default_category > 0) 
+                    ? array_search($author_default_category, array_column($authors_data, 'id')) 
+                    : false;
+        
+                if ($category_index !== false) {
+                    $authors_data[$category_index]['authors'][] = $remaining_author;
+                } else {
+                    $authors_data[0]['authors'][] = $remaining_author;
+                }
+            }
+        }               
 
 
         return $authors_data;
@@ -365,7 +377,7 @@ class Post_Editor
                         'display_name' => '{{ data.display_name }}',
                         'term'         => '{{ data.id }}',
                         'is_guest'     => '{{ data.is_guest }}',
-                        'category_id'  => 0,
+                        'category_id'  => '{{ data.author_category }}',
                     ]
                 );
                 ?>

@@ -42,7 +42,7 @@ class MA_Author_Boxes extends Module
     /**
      * Excluded profile fields
      */
-    const AUTHOR_BOXES_EXCLUDED_FIELDS = ['user_id', 'avatar', 'description'];
+    const AUTHOR_BOXES_EXCLUDED_FIELDS = ['user_id', 'avatar', 'description', 'author_category', 'exclude_author'];
 
     /**
      * Meta data prefix.

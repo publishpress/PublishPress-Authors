@@ -339,7 +339,15 @@ class Author_Editor
     {
         $legacyPlugin = Factory::getLegacyPlugin();
         $enable_guest_author_user = $legacyPlugin->modules->multiple_authors->options->enable_guest_author_user === 'yes';
-
+        $author_categories = get_ppma_author_categories(['category_status' => 1]);
+        $author_category_options = [];
+        if (empty($author_categories)) {
+            $author_category_options['author'] = esc_html__('Author', 'publishpress-authors');
+        } else {
+            foreach ($author_categories as $author_category) {
+                $author_category_options[$author_category['id']] = $author_category['category_name'];
+            }
+        }
         $fields = [
             'user_id'     => [
                 'label'    => esc_html__('Mapped User', 'publishpress-authors'),
@@ -396,6 +404,14 @@ class Author_Editor
                 'sanitize' => 'esc_url_raw',
                 'tab'      => 'general',
             ],
+            'author_category'    => [
+                'label'    => esc_html__('Author Category', 'publishpress-authors'),
+                'description' => esc_html__('Select the Category this Author should be assigned to be default on new posts and Author Lists', 'publishpress-authors'),
+                'type'     => 'select',
+                'options'  => $author_category_options,
+                'sanitize' => 'intval',
+                'tab'      => 'general',
+            ],
             'exclude_author'    => [
                 'label'    => esc_html__('Exclude from Author Boxes', 'publishpress-authors'),
                 'type'     => 'checkbox',
@@ -412,7 +428,14 @@ class Author_Editor
          */
         $fields = apply_filters('authors_editor_fields', $fields, $author);
 
-        //Move exclude_author to the bottom if not filtered out
+        //Move author_category to the bottom if not filtered out
+        if (isset($fields['author_category'])) {
+            $author_category_field = [
+                'author_category' => $fields['author_category']
+            ];
+            unset($fields['author_category']);
+            $fields = array_merge($fields, $author_category_field);
+        }
         if (isset($fields['exclude_author'])) {
             $exclude_author_field = [
                 'exclude_author' => $fields['exclude_author']
@@ -580,6 +603,15 @@ class Author_Editor
                     ?>
                     <input name="<?php echo esc_attr($key); ?>" type="<?php echo esc_attr($args['type']); ?>"
                            id="<?php echo esc_attr($key); ?>" value="1" <?php checked($checked, true); ?>/>
+                
+                <?php elseif ('select' === $args['type']) : 
+                    ?>
+                    <select name="<?php echo esc_attr($key); ?>" id="<?php echo esc_attr($key); ?>"/>
+                    <?php foreach ($args['options'] as $option_value => $option_text) :
+                     ?>
+                        <option value="<?php echo esc_attr($option_value); ?>" <?php selected($option_value, $args['value']); ?>><?php echo esc_html($option_text); ?></option>
+                    <?php endforeach; ?>
+                    </select>
                 <?php else : ?>
                     <input name="<?php echo esc_attr($key); ?>" type="<?php echo esc_attr($args['type']); ?>"
                            id="<?php echo esc_attr($key); ?>" value="<?php echo esc_attr($args['value']); ?>"/>
