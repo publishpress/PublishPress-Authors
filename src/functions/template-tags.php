@@ -1629,6 +1629,11 @@ if (!function_exists('ppma_get_grouped_post_authors')) {
             $authors = get_post_authors($post_id);
         }
 
+        $authors = \MA_Author_Boxes::removeExcludedAuthors($authors);
+
+        if (empty($authors)) {
+            return [];
+        }
         // make sure there's a default grouping
         $author_categories_data = [];
         $author_categories_data[] = [

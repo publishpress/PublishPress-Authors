@@ -396,6 +396,12 @@ class Author_Editor
                 'sanitize' => 'esc_url_raw',
                 'tab'      => 'general',
             ],
+            'exclude_author'    => [
+                'label'    => esc_html__('Exclude from Author Boxes', 'publishpress-authors'),
+                'type'     => 'checkbox',
+                'sanitize' => 'sanitize_text_field',
+                'tab'      => 'general',
+            ],
         ];
 
         /**
@@ -405,6 +411,15 @@ class Author_Editor
          * @param Author $author Author to be rendered.
          */
         $fields = apply_filters('authors_editor_fields', $fields, $author);
+
+        //Move exclude_author to the bottom if not filtered out
+        if (isset($fields['exclude_author'])) {
+            $exclude_author_field = [
+                'exclude_author' => $fields['exclude_author']
+            ];
+            unset($fields['exclude_author']);
+            $fields = array_merge($fields, $exclude_author_field);
+        }
 
         return $fields;
     }
@@ -560,6 +575,11 @@ class Author_Editor
                     </div>
                 <?php elseif ('wysiwyg' === $args['type']) : ?>
                     <?php wp_editor($args['value'], $key, []); ?>
+                <?php elseif ('checkbox' === $args['type']) : 
+                    $checked = !empty($args['value']);
+                    ?>
+                    <input name="<?php echo esc_attr($key); ?>" type="<?php echo esc_attr($args['type']); ?>"
+                           id="<?php echo esc_attr($key); ?>" value="1" <?php checked($checked, true); ?>/>
                 <?php else : ?>
                     <input name="<?php echo esc_attr($key); ?>" type="<?php echo esc_attr($args['type']); ?>"
                            id="<?php echo esc_attr($key); ?>" value="<?php echo esc_attr($args['value']); ?>"/>
@@ -627,14 +647,14 @@ class Author_Editor
         }
 
         foreach (self::get_fields($author) as $key => $args) {
-            if (!isset($_POST['authors-' . $key])) {
+            if (!isset($_POST['authors-' . $key]) && $args['type'] !== 'checkbox') {
                 continue;
             }
             $sanitize = isset($args['sanitize']) ? $args['sanitize'] : 'sanitize_text_field';
             if ($key == 'user_id') {
                 $field_value = $user_id;
             } else {
-                $field_value = $sanitize($_POST['authors-' . $key]); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+                $field_value = isset($_POST['authors-' . $key]) ? $sanitize($_POST['authors-' . $key]) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
             }
             update_term_meta($term_id, $key, $field_value);
             if ($user_id) {

@@ -177,6 +177,8 @@ trait Author_box
             }
         }
 
+        $authorsList = \MA_Author_Boxes::removeExcludedAuthors($authorsList);
+
         if (empty($authorsList)) {
             return '';
         }
