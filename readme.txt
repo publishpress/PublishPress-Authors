@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author bio, author layouts
 Requires at least: 5.5
 Requires PHP: 7.2.5
 Tested up to: 6.7
-Stable tag: 4.7.4
+Stable tag: 4.7.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -246,6 +246,26 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [4.7.5] - 02 April 2025 =
+
+* Update: Add field to assign Authors to default Author Category from Author Edit screen, #1808
+* Update: Add Authors to their assigned defauly category on new post, #1808
+* Update: Add option to show Authors belonging to same category in Author List User tab, #1809
+* Update: Add Exclude Users options on Author List, #1882
+* Update: Add a checkbox field to disabled authors from Author Boxes, #1973
+* Fixed: Post not showing on Authors page for some sites, #2011
+* Fixed: Conflict with Jetpack Social, #2010
+* Update: Allow to modify Author Boxes "View All Post" label, #2009
+* Fixed: Trying to access array offset on value of type bool, #2008
+* Fixed: Missing field "mainEntity" in rankmath integration, #2007
+* Update: Allow biographic information and other details in Categories boxes, #1897
+* Update: Change Authors "Name" column to "Display name publicly as", #1887
+* Fixed: Deprecated: Creation of dynamic property MA_Author_Pages, #1883
+* Update: Change author biographical information to rich editor, #1877
+* Update: Disable "View all posts" by default, #1807
+* Update: Authors Translation Updates v.4.7.4, #2004
+* Update: Translation pt_BR, #2005
 
 = [4.7.4] - 20 Feb 2025 =
 
