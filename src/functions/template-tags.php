@@ -331,6 +331,13 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
             $term_ids = [];
         }
 
+        // author category ids
+        if (isset($instance['category_id']) && !empty($instance['category_id'])) {
+            $category_ids = array_map('intval', explode(',', $instance['category_id']));
+        } else {
+            $category_ids = [];
+        }
+
         // exclude ids
         if ($can_exclude && isset($instance['exclude_term_id']) && !empty($instance['exclude_term_id'])) {
             $exclude_term_ids  = explode(',', $instance['exclude_term_id']);
@@ -431,6 +438,17 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
             $args['exclude'] = array_values($exclude_term_ids);
         }
 
+        // Add author_category meta query to args
+        if (!empty($category_ids)) {
+            $args['meta_query'] = [
+                [
+                    'key' => 'author_category',
+                    'value' => $category_ids,
+                    'compare' => 'IN',
+                ]
+            ];
+        }
+
         /**
          * Filter author query args
          *
@@ -477,8 +495,17 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
                 $term_query .= "LEFT JOIN {$wpdb->users} u ON u.ID = tm.meta_value ";
                 $term_query .= "LEFT JOIN {$wpdb->usermeta} um ON u.ID = um.user_id ";
             }
+
+            // Add author_category filtering to custom query
+            if (!empty($category_ids)) {
+                $term_query .= "LEFT JOIN {$wpdb->termmeta} AS tm_cat ON (t.term_id = tm_cat.term_id AND tm_cat.meta_key = 'author_category') ";
+            }
             
             $term_query .= "WHERE tt.taxonomy = 'author' ";
+
+            if (!empty($category_ids)) {
+                $term_query .= "AND tm_cat.meta_value IN (" . implode(',', $category_ids) . ") ";
+            }
 
             if (!empty($term_ids)) {
                 $term_ids_string = implode(',', array_map('intval', $term_ids));
