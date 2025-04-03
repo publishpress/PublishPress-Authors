@@ -406,7 +406,7 @@ class Author_Editor
             ],
             'author_category'    => [
                 'label'    => esc_html__('Author Category', 'publishpress-authors'),
-                'description' => esc_html__('Select the Category this Author should be assigned to be default on new posts and Author Lists', 'publishpress-authors'),
+                'description' => esc_html__('Select the default Category for this Author. This will be used when the Author is added to new posts.', 'publishpress-authors'),
                 'type'     => 'select',
                 'options'  => $author_category_options,
                 'sanitize' => 'intval',
