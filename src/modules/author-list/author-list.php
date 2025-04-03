@@ -993,7 +993,7 @@ class MA_Author_List extends Module
                 <?php
                 elseif ('tab' === $args['type']) :
                     ?>
-                    <h3>
+                    <h3 style="margin-top: 0;">
                         <label for="<?php echo esc_attr($key); ?>">
                             <strong>
                                 <?php echo esc_html($args['label']); ?>
@@ -1165,7 +1165,7 @@ class MA_Author_List extends Module
                 <?php
                 elseif ('multiple_authors' === $args['type']) :
                     ?>
-                    <h3>
+                    <h3 style="margin-top: 0;">
                         <label for="<?php echo esc_attr($key); ?>">
                             <strong>
                                 <?php echo esc_html($args['label']); ?>
