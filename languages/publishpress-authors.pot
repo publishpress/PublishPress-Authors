@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PublishPress Authors\n"
-"POT-Creation-Date: 2025-04-02 13:33+0000\n"
+"POT-Creation-Date: 2025-04-03 06:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Anderson Grudtner Martins <anderson@publishpress.com>\n"
 "Language-Team: Anderson Grudtner Martins <anderson@publishpress.com>\n"
@@ -545,7 +545,7 @@ msgstr ""
 #: src/modules/author-categories/author-categories.php:374
 #: src/modules/author-categories/author-categories.php:382
 #: src/modules/author-custom-fields/author-custom-fields.php:999
-#: src/modules/author-list/author-list.php:1218
+#: src/modules/author-list/author-list.php:1230
 #: src/modules/author-boxes/classes/AuthorBoxesAjax.php:34
 #: src/modules/author-boxes/classes/AuthorBoxesAjax.php:82
 #: src/modules/author-boxes/classes/AuthorBoxesAjax.php:124
@@ -977,7 +977,6 @@ msgid "Author Separator"
 msgstr ""
 
 #: src/core/Classes/Author_Editor.php:49
-#: src/modules/author-list/author-list.php:437
 #: src/modules/author-list/author-list.php:442
 msgid "Author Type"
 msgstr ""
@@ -2271,13 +2270,13 @@ msgstr ""
 
 #: src/core/Classes/Author_Editor.php:121
 #: src/core/Classes/Author_Editor.php:791
-#: src/modules/author-list/author-list.php:1040
+#: src/modules/author-list/author-list.php:1050
 msgid "Guest Author With No User Account"
 msgstr ""
 
 #: src/core/Classes/Author_Editor.php:117
 #: src/core/Classes/Author_Editor.php:784
-#: src/modules/author-list/author-list.php:1039
+#: src/modules/author-list/author-list.php:1049
 msgid "Guest Author With User Account"
 msgstr ""
 
@@ -2493,7 +2492,7 @@ msgstr ""
 msgid "Invalid data"
 msgstr ""
 
-#: src/modules/author-list/author-list.php:1231
+#: src/modules/author-list/author-list.php:1243
 msgid "Invalid form"
 msgstr ""
 
@@ -3183,7 +3182,7 @@ msgstr ""
 
 #: src/core/Classes/Author_Editor.php:119
 #: src/core/Classes/Author_Editor.php:778
-#: src/modules/author-list/author-list.php:1038
+#: src/modules/author-list/author-list.php:1048
 msgid "Registered Author With User Account"
 msgstr ""
 
@@ -3352,7 +3351,7 @@ msgstr ""
 #: src/modules/author-categories/author-categories.php:236
 #: src/modules/author-categories/author-categories.php:319
 #: src/modules/author-custom-fields/author-custom-fields.php:1006
-#: src/modules/author-list/author-list.php:1225
+#: src/modules/author-list/author-list.php:1237
 #: src/modules/author-boxes/classes/AuthorBoxesAjax.php:41
 #: src/modules/author-boxes/classes/AuthorBoxesAjax.php:89
 #: src/modules/author-boxes/classes/AuthorBoxesAjax.php:131
@@ -3392,7 +3391,7 @@ msgstr ""
 msgid "Select Author Account"
 msgstr ""
 
-#: src/modules/author-list/author-list.php:1089
+#: src/modules/author-list/author-list.php:1099
 msgid "Select Author Category"
 msgstr ""
 
@@ -3418,20 +3417,20 @@ msgstr ""
 msgid "Select Preview Post"
 msgstr ""
 
-#: src/modules/author-list/author-list.php:1023
-#: src/modules/author-list/author-list.php:1046
+#: src/modules/author-list/author-list.php:1033
+#: src/modules/author-list/author-list.php:1056
 #: src/modules/multiple-authors/multiple-authors.php:1687
 msgid "Select some options"
 msgstr ""
 
 #: src/core/Classes/Author_Editor.php:409
 msgid ""
-"Select the Category this Author should be assigned to be default on new "
-"posts and Author Lists"
+"Select the default Category for this Author. This will be used when the "
+"Author is added to new posts."
 msgstr ""
 
-#: src/modules/author-list/author-list.php:1063
-#: src/modules/author-list/author-list.php:1168
+#: src/modules/author-list/author-list.php:1073
+#: src/modules/author-list/author-list.php:1180
 msgid "Select Users"
 msgstr ""
 
@@ -3511,6 +3510,10 @@ msgstr ""
 
 #: src/modules/multiple-authors/multiple-authors.php:817
 msgid "Show author page title:"
+msgstr ""
+
+#: src/modules/author-list/author-list.php:437
+msgid "Show Authors"
 msgstr ""
 
 #: src/modules/multiple-authors/multiple-authors.php:899
@@ -3827,7 +3830,7 @@ msgid ""
 "changed."
 msgstr ""
 
-#: src/modules/author-list/author-list.php:1127
+#: src/modules/author-list/author-list.php:1137
 msgid ""
 "This is a quick preview of this Author List. Test on frontend pages to see "
 "exactly how it looks with your theme."
@@ -4064,7 +4067,7 @@ msgstr ""
 #: includes.php:63 src/core/Classes/Utils.php:1137
 #: src/modules/author-boxes/author-boxes.php:2633
 #: src/modules/author-custom-fields/author-custom-fields.php:952
-#: src/modules/author-list/author-list.php:1150
+#: src/modules/author-list/author-list.php:1160
 msgid "Upgrade to Pro"
 msgstr ""
 
