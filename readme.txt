@@ -247,7 +247,7 @@ There are two ways to install the PublishPress Authors plugin:
 
 == Changelog ==
 
-= [4.7.5] - 02 April 2025 =
+= [4.7.5] - 03 April 2025 =
 
 * Update: Add field to assign Authors to default Author Category from Author Edit screen, #1808
 * Update: Add Authors to their assigned defauly category on new post, #1808
