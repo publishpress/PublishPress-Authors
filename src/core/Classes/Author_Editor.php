@@ -44,7 +44,7 @@ class Author_Editor
         $new_columns = [];
         foreach ($columns as $key => $title) {
             if ('name' === $key) {
-                $new_columns['author_name']       = __('Name', 'publishpress-authors');
+                $new_columns['author_name']       = __('Display name publicly as', 'publishpress-authors');
                 $new_columns['author_user_email'] = __('Email', 'publishpress-authors');
                 $new_columns['author_type'] = __('Author Type', 'publishpress-authors');
             } else {
@@ -339,7 +339,17 @@ class Author_Editor
     {
         $legacyPlugin = Factory::getLegacyPlugin();
         $enable_guest_author_user = $legacyPlugin->modules->multiple_authors->options->enable_guest_author_user === 'yes';
+        $author_categories = get_ppma_author_categories(['category_status' => 1]);
+        $author_category_options = [];
+        if (empty($author_categories)) {
+            $author_category_options['author'] = esc_html__('Author', 'publishpress-authors');
+        } else {
+            foreach ($author_categories as $author_category) {
+                $author_category_options[$author_category['id']] = $author_category['category_name'];
+            }
+        }
 
+        $author_boxes_opt_out = $legacyPlugin->modules->multiple_authors->options->author_boxes_opt_out === 'yes';
         $fields = [
             'user_id'     => [
                 'label'    => esc_html__('Mapped User', 'publishpress-authors'),
@@ -396,7 +406,25 @@ class Author_Editor
                 'sanitize' => 'esc_url_raw',
                 'tab'      => 'general',
             ],
+            'author_category'    => [
+                'label'    => esc_html__('Author Category', 'publishpress-authors'),
+                'description' => esc_html__('Select the default Category for this Author. This will be used when the Author is added to new posts.', 'publishpress-authors'),
+                'type'     => 'select',
+                'options'  => $author_category_options,
+                'sanitize' => 'intval',
+                'tab'      => 'general',
+            ],
+            'exclude_author'    => [
+                'label'    => esc_html__('Do not show this profile publicly', 'publishpress-authors'),
+                'type'     => 'checkbox',
+                'sanitize' => 'sanitize_text_field',
+                'tab'      => 'general',
+            ],
         ];
+
+        if (!$author_boxes_opt_out) {
+            unset($fields['exclude_author']);
+        }
 
         /**
          * Customize fields presented in the author editor.
@@ -405,6 +433,22 @@ class Author_Editor
          * @param Author $author Author to be rendered.
          */
         $fields = apply_filters('authors_editor_fields', $fields, $author);
+
+        //Move author_category to the bottom if not filtered out
+        if (isset($fields['author_category'])) {
+            $author_category_field = [
+                'author_category' => $fields['author_category']
+            ];
+            unset($fields['author_category']);
+            $fields = array_merge($fields, $author_category_field);
+        }
+        if (isset($fields['exclude_author'])) {
+            $exclude_author_field = [
+                'exclude_author' => $fields['exclude_author']
+            ];
+            unset($fields['exclude_author']);
+            $fields = array_merge($fields, $exclude_author_field);
+        }
 
         return $fields;
     }
@@ -560,6 +604,20 @@ class Author_Editor
                     </div>
                 <?php elseif ('wysiwyg' === $args['type']) : ?>
                     <?php wp_editor($args['value'], $key, []); ?>
+                <?php elseif ('checkbox' === $args['type']) : 
+                    $checked = !empty($args['value']);
+                    ?>
+                    <input name="<?php echo esc_attr($key); ?>" type="<?php echo esc_attr($args['type']); ?>"
+                           id="<?php echo esc_attr($key); ?>" value="1" <?php checked($checked, true); ?>/>
+                
+                <?php elseif ('select' === $args['type']) : 
+                    ?>
+                    <select name="<?php echo esc_attr($key); ?>" id="<?php echo esc_attr($key); ?>"/>
+                    <?php foreach ($args['options'] as $option_value => $option_text) :
+                     ?>
+                        <option value="<?php echo esc_attr($option_value); ?>" <?php selected($option_value, $args['value']); ?>><?php echo esc_html($option_text); ?></option>
+                    <?php endforeach; ?>
+                    </select>
                 <?php else : ?>
                     <input name="<?php echo esc_attr($key); ?>" type="<?php echo esc_attr($args['type']); ?>"
                            id="<?php echo esc_attr($key); ?>" value="<?php echo esc_attr($args['value']); ?>"/>
@@ -627,14 +685,14 @@ class Author_Editor
         }
 
         foreach (self::get_fields($author) as $key => $args) {
-            if (!isset($_POST['authors-' . $key])) {
+            if (!isset($_POST['authors-' . $key]) && $args['type'] !== 'checkbox') {
                 continue;
             }
             $sanitize = isset($args['sanitize']) ? $args['sanitize'] : 'sanitize_text_field';
             if ($key == 'user_id') {
                 $field_value = $user_id;
             } else {
-                $field_value = $sanitize($_POST['authors-' . $key]); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+                $field_value = isset($_POST['authors-' . $key]) ? $sanitize($_POST['authors-' . $key]) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
             }
             update_term_meta($term_id, $key, $field_value);
             if ($user_id) {

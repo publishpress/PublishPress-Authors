@@ -624,7 +624,8 @@
                 'avatar_link'
             ];
             var meta_refresh_trigger = [
-                'meta_view_all_show'
+                'meta_view_all_show',
+                'meta_label'
             ];
             var layout_refresh_trigger = [
                 'box_tab_layout_author_separator',

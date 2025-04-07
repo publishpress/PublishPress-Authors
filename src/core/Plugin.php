@@ -86,7 +86,7 @@ class Plugin
         add_filter('wp_get_object_terms', [$this, 'filter_wp_get_object_terms'], 10, 4);
 
         // Support Jetpack Open Graph Tags
-        add_filter('jetpack_open_graph_tags', [$this, 'filter_jetpack_open_graph_tags'], 10, 2);
+        add_filter('jetpack_open_graph_tags', [$this, 'filter_jetpack_open_graph_tags']);
 
         // Filter to send comment moderation notification e-mail to multiple authors
         add_filter('comment_moderation_recipients', 'cap_filter_comment_moderation_email_recipients', 10, 2);
@@ -1499,7 +1499,7 @@ class Plugin
         $js_strings = [
             'edit_label'                    => esc_html__('Edit', 'publishpress-authors'),
             'new_button'                    => esc_html__('Add Author', 'publishpress-authors'),
-            'new_name_label'                => esc_html__('Author Name', 'publishpress-authors'),
+            'new_name_label'                => esc_html__('Display name publicly as', 'publishpress-authors'),
             'confirm_delete'                => __(
                 'Are you sure you want to remove this author?',
                 'publishpress-authors'
@@ -1701,13 +1701,12 @@ class Plugin
      * Filter non-native users added by Co-Author-Plus in Jetpack
      *
      * @param array $og_tags Required. Array of Open Graph Tags.
-     * @param array $image_dimensions Required. Dimensions for images used.
      *
      * @return array Open Graph Tags either as they were passed or updated.
      * @since 3.1
      *
      */
-    public function filter_jetpack_open_graph_tags($og_tags, $image_dimensions)
+    public function filter_jetpack_open_graph_tags($og_tags)
     {
         if (Util::isAuthor()) {
             $author                        = get_queried_object();

@@ -428,6 +428,12 @@ class AuthorBoxesEditorFields
             'sanitize'    => 'absint',
             'tab'         => 'meta',
         ];
+        $fields['meta_label'] = [
+            'label'    => esc_html__('View All Posts Label', 'publishpress-authors'),
+            'type'     => 'text',
+            'sanitize' => 'sanitize_text_field',
+            'tab'      => 'meta',
+        ];
         $fields['meta_size'] = [
             'label'    => esc_html__('View All Posts Link Size', 'publishpress-authors'),
             'type'     => 'number',

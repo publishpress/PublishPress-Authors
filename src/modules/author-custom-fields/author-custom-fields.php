@@ -490,6 +490,7 @@ class MA_Author_Custom_Fields extends Module
 
         //Move Biographical Info to the bottom
         if (isset($author_fields['description'])) {
+            $author_fields['description']['type'] = 'wysiwyg';
             $description_field = [
                 'description' => $author_fields['description']
             ];

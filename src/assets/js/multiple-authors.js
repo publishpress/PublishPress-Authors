@@ -91,7 +91,7 @@ jQuery(document).ready(function ($) {
                         var ignored = [];
                         selector
                             .closest("div")
-                            .find(".authors-list input")
+                            .find(".authors-list input.author_term")
                             .each(function () {
                                 ignored.push($(this).val());
                             });
@@ -104,9 +104,15 @@ jQuery(document).ready(function ($) {
             });
             authorsSearch.on("ppma_select2:select", function (e) {
                 var template = wp.template("authors-author-partial");
-                $(".authors-list:first").append(
-                    window.htmlEnDeCode.htmlDecode(template(e.params.data))
-                );
+                if ($('.authors-list.authors-category-' + e.params.data.category_id).length) {
+                    $('.authors-list.authors-category-' + e.params.data.category_id).append(
+                        window.htmlEnDeCode.htmlDecode(template(e.params.data))
+                    );
+                } else {
+                    $(".authors-list:first").append(
+                        window.htmlEnDeCode.htmlDecode(template(e.params.data))
+                    );
+                }
                 authorsSearch.val(null).trigger("change");
                 handleUsersAuthorField();
                 handleAuthorCategory();
@@ -598,7 +604,7 @@ jQuery(document).ready(function ($) {
 
                     var $field = $('textarea[name="authors-description"]');
                     if ($field.val() === "") {
-                        $field.val(data.description);
+                        setEditorContentIfEmpty('authors-description', data.description);
                     }
 
                     // Slug always change to be in sync
@@ -606,6 +612,22 @@ jQuery(document).ready(function ($) {
                 }
             );
         });
+    }
+
+    function setEditorContentIfEmpty(editorId, content) {
+        var editor = tinymce.get(editorId);
+        
+        if (editor) {
+            var currentContent = editor.getContent().trim();
+            if (!currentContent) {
+                editor.setContent(content);
+            }
+        } else {
+            var textarea = $('#' + editorId);
+            if (!textarea.val().trim()) {
+                textarea.val(content);
+            }
+        }
     }
 
     // Add action to the Mapped User Field in the New Author form.

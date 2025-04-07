@@ -196,6 +196,7 @@ class Admin_Ajax
                     'display_name' => $text,
                     'slug'         => $term->slug,
                     'user_id'      => $author->user_id,
+                    'category_id'  => $author->author_category,
                     'is_guest'     => $author->is_guest() ? 1 : 0,
                 ];
             }
