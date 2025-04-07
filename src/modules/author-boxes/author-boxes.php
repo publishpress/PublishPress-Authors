@@ -828,9 +828,18 @@ class MA_Author_Boxes extends Module
      * @return array
      */
     public static function removeExcludedAuthors($authorsList) {
+        $legacyPlugin = Factory::getLegacyPlugin();
+        
+        $author_boxes_opt_out = $legacyPlugin->modules->multiple_authors->options->author_boxes_opt_out === 'yes';
+
         if (empty($authorsList)) {
             return [];
         }
+
+        if (!$author_boxes_opt_out) {
+            return $authorsList;
+        }
+
         foreach ($authorsList as $index => $author) {
             if ((int)$author->exclude_author === 1) {
                 unset($authorsList[$index]);

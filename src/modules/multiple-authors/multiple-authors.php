@@ -126,6 +126,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     'disable_quick_edit_author_box' => 'no',
                     'enable_font_awesome'            => 'yes',
                     'enable_guest_author_user'     => 'no',
+                    'author_boxes_opt_out'         => 'no',
                     'enable_guest_author_acount'   => 'yes',
                     'default_avatar'               => '',
                     'display_name_format'          => 'custom',
@@ -1048,6 +1049,17 @@ if (!class_exists('MA_Multiple_Authors')) {
             );
 
             add_settings_field(
+                'author_boxes_opt_out',
+                __(
+                    'Allow users to opt out of Author Boxes',
+                    'publishpress-authors'
+                ),
+                [$this, 'settings_author_boxes_opt_out'],
+                $this->module->options_group_name,
+                $this->module->options_group_name . '_guest_authors'
+            );
+
+            add_settings_field(
                 'display_name_format',
                 __(
                     'Display Name',
@@ -1741,6 +1753,29 @@ if (!class_exists('MA_Multiple_Authors')) {
             echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
                 . esc_html__(
                     'Allow authors to be created without a real user account.',
+                    'publishpress-authors'
+                )
+                . '</span>';
+
+
+            echo '</label>';
+        }
+
+        /**
+         * @param array $args
+         */
+        public function settings_author_boxes_opt_out($args = [])
+        {
+            $id    = $this->module->options_group_name . '_author_boxes_opt_out';
+            $value = isset($this->module->options->author_boxes_opt_out) ? $this->module->options->author_boxes_opt_out : '';
+
+            echo '<label for="' . esc_attr($id) . '">';
+
+            echo '<input type="checkbox" id="' . esc_attr($id) . '" name="' . esc_attr($this->module->options_group_name) . '[author_boxes_opt_out]" value="yes" ' . ($value === 'yes' ? 'checked="checked"' : '') . '/>';
+
+            echo '&nbsp;&nbsp;&nbsp;<span class="ppma_settings_field_description">'
+                . esc_html__(
+                    'Show a profile checkbox allowing Authors to be excluded from Author Boxes.',
                     'publishpress-authors'
                 )
                 . '</span>';
@@ -2861,6 +2896,10 @@ echo '<span class="ppma_settings_field_description">'
 
             if (!isset($new_options['enable_guest_author_user'])) {
                 $new_options['enable_guest_author_user'] = 'no';
+            }
+
+            if (!isset($new_options['author_boxes_opt_out'])) {
+                $new_options['author_boxes_opt_out'] = 'no';
             }
 
             if (!isset($new_options['enable_guest_author_acount'])) {

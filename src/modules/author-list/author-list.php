@@ -434,7 +434,7 @@ class MA_Author_List extends Module
 
         // add users fields
         $fields['author_type'] = [
-            'label'             => esc_html__('Author Type', 'publishpress-authors'),
+            'label'             => esc_html__('Show Authors', 'publishpress-authors'),
             'description'       => esc_html__('Select an option to limit the results to selected user roles, author types, specific authors or author Categories.', 'publishpress-authors'),
             'type'              => 'tab',
             'options'           => [
@@ -993,6 +993,16 @@ class MA_Author_List extends Module
                 <?php
                 elseif ('tab' === $args['type']) :
                     ?>
+                    <h3 style="margin-top: 0;">
+                        <label for="<?php echo esc_attr($key); ?>">
+                            <strong>
+                                <?php echo esc_html($args['label']); ?>
+                                <?php if (isset($args['required']) && $args['required'] === true) : ?>
+                                    <span class="required">*</span>
+                                <?php endif; ?>
+                            </strong>
+                        </label>
+                    </h3>
                     <div class="ppma-group-wrap">
                         <div class="ppma-button-group">
                             <?php foreach ($args['options'] as $option_key => $options_label) : 
@@ -1155,14 +1165,16 @@ class MA_Author_List extends Module
                 <?php
                 elseif ('multiple_authors' === $args['type']) :
                     ?>
-                    <label for="<?php echo esc_attr($key); ?>">
-                        <strong>
-                            <?php echo esc_html($args['label']); ?>
-                            <?php if (isset($args['required']) && $args['required'] === true) : ?>
-                                <span class="required">*</span>
-                            <?php endif; ?>
-                        </strong>
-                    </label>
+                    <h3 style="margin-top: 0;">
+                        <label for="<?php echo esc_attr($key); ?>">
+                            <strong>
+                                <?php echo esc_html($args['label']); ?>
+                                <?php if (isset($args['required']) && $args['required'] === true) : ?>
+                                    <span class="required">*</span>
+                                <?php endif; ?>
+                            </strong>
+                        </label>
+                    </h3>
                     <select name="author_list[<?php echo esc_attr($key); ?>][]"
                         data-nonce="<?php echo esc_attr(wp_create_nonce('authors-user-search')); ?>"
                         data-placeholder="<?php esc_html_e('Select Users', 'publishpress-authors'); ?>"

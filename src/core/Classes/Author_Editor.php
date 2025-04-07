@@ -348,6 +348,8 @@ class Author_Editor
                 $author_category_options[$author_category['id']] = $author_category['category_name'];
             }
         }
+
+        $author_boxes_opt_out = $legacyPlugin->modules->multiple_authors->options->author_boxes_opt_out === 'yes';
         $fields = [
             'user_id'     => [
                 'label'    => esc_html__('Mapped User', 'publishpress-authors'),
@@ -406,19 +408,23 @@ class Author_Editor
             ],
             'author_category'    => [
                 'label'    => esc_html__('Author Category', 'publishpress-authors'),
-                'description' => esc_html__('Select the Category this Author should be assigned to be default on new posts and Author Lists', 'publishpress-authors'),
+                'description' => esc_html__('Select the default Category for this Author. This will be used when the Author is added to new posts.', 'publishpress-authors'),
                 'type'     => 'select',
                 'options'  => $author_category_options,
                 'sanitize' => 'intval',
                 'tab'      => 'general',
             ],
             'exclude_author'    => [
-                'label'    => esc_html__('Exclude from Author Boxes', 'publishpress-authors'),
+                'label'    => esc_html__('Do not show this profile publicly', 'publishpress-authors'),
                 'type'     => 'checkbox',
                 'sanitize' => 'sanitize_text_field',
                 'tab'      => 'general',
             ],
         ];
+
+        if (!$author_boxes_opt_out) {
+            unset($fields['exclude_author']);
+        }
 
         /**
          * Customize fields presented in the author editor.
