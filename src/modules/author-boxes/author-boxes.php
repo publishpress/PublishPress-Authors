@@ -829,7 +829,7 @@ class MA_Author_Boxes extends Module
      */
     public static function removeExcludedAuthors($authorsList) {
         $legacyPlugin = Factory::getLegacyPlugin();
-        
+
         $author_boxes_opt_out = $legacyPlugin->modules->multiple_authors->options->author_boxes_opt_out === 'yes';
 
         if (empty($authorsList)) {
@@ -883,18 +883,43 @@ class MA_Author_Boxes extends Module
                 return $html;
             }
         } else {
-            //check in theme boxes template
-            $box_template = locate_template(['publishpress-authors/author-boxes/'.$layoutName.'.php']);
-            if ($box_template && is_file($box_template) && is_readable($box_template)) {
-                global $ppma_template_authors, $ppma_template_authors_post;
-                $ppma_template_authors      = $args['authors'];
-                $ppma_template_authors_post = isset($args['post']) ? $args['post'] : false;
-                ob_start();
-                include $box_template;
-                $html = ob_get_clean();
+             // Validate the layout name
+            if (!preg_match('/^[a-zA-Z0-9_-]+$/', $layoutName)) {
                 return $html;
             }
 
+            //check in theme boxes template
+            $relative_path = 'publishpress-authors/author-boxes/' . $layoutName . '.php';
+            $box_template = locate_template([$relative_path]);
+
+            if ($box_template && is_file($box_template) && is_readable($box_template)) {
+                 // Get full expected directory path
+                 $expected_dirs = [
+                    realpath(get_stylesheet_directory() . '/publishpress-authors/author-boxes'),
+                    realpath(get_template_directory() . '/publishpress-authors/author-boxes')
+                ];
+                // Get resolved path of the template
+                $real_box_template = realpath($box_template);
+
+                $valid_path = false;
+                foreach ($expected_dirs as $dir) {
+                    if (strpos($real_box_template, $dir) === 0) {
+                        $valid_path = true;
+                        break;
+                    }
+                }
+
+                // Ensure the template is inside the expected directory
+                if ($valid_path) {
+                    global $ppma_template_authors, $ppma_template_authors_post;
+                    $ppma_template_authors      = $args['authors'];
+                    $ppma_template_authors_post = isset($args['post']) ? $args['post'] : false;
+                    ob_start();
+                    include $box_template;
+                    $html = ob_get_clean();
+                    return $html;
+                }
+            }
             return $html;
         }
 
@@ -1439,7 +1464,7 @@ class MA_Author_Boxes extends Module
      */
     public static function get_rendered_author_boxes_editor_preview($args) {
         global $ppma_instance_id, $auto_list_prefix, $ppma_rendered_box_ids, $ppma_custom_styles;
-        
+
         ob_start();
 
         if (empty($ppma_rendered_box_ids)) {
@@ -1970,7 +1995,7 @@ class MA_Author_Boxes extends Module
                 </style>
             </div>
         <?php else : ?>
-            <?php 
+            <?php
             /**
              * Allow dev to filter style locaction between footer and inline
              */
@@ -1979,7 +2004,7 @@ class MA_Author_Boxes extends Module
             if (!in_array($box_post_id, $ppma_rendered_box_ids)) {
                 // Track rendered boxes
                 $ppma_rendered_box_ids[] = $box_post_id;
-                
+
                 if ($style_location === 'inline') {
                     // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     echo '<style>' . html_entity_decode($custom_styles) . '</style>';
@@ -2028,7 +2053,7 @@ class MA_Author_Boxes extends Module
         $args      = array_merge($defaults, $args);
         $key       = $args['key'];
         $tab_class = 'ppma-boxes-editor-tab-content ppma-' . $args['tab'] . '-tab ' . $args['type'] . ' ppma-editor-'.$key;
- 
+
         if ('range' === $args['type'] && $args['show_input']) {
             $tab_class .= ' double-input';
         }
@@ -2048,7 +2073,7 @@ class MA_Author_Boxes extends Module
             $colspan  = '';
         }
         ?>
-        <?php if ($args['group_start'] === true) : 
+        <?php if ($args['group_start'] === true) :
            ?>
             <tr
                 class="group-title-row <?php echo esc_attr($tab_class); ?>"
@@ -2596,7 +2621,7 @@ class MA_Author_Boxes extends Module
      */
     public function addAuthorBoxStyles() {
         global $ppma_custom_styles;
-    
+
         if (!empty($ppma_custom_styles) && is_array($ppma_custom_styles)) {
             // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             echo '<style id="mutliple-author-box-inline-style">' . implode('', array_values($ppma_custom_styles)) . '</style>';
