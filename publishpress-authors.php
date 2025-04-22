@@ -5,7 +5,7 @@
  * Description: PublishPress Authors allows you to add multiple authors and guest authors to WordPress posts
  * Author:      PublishPress
  * Author URI:  https://publishpress.com
- * Version: 4.7.5
+ * Version: 4.7.6
  * Text Domain: publishpress-authors
  * Domain Path: /languages
  * Requires at least: 5.5
@@ -115,7 +115,7 @@ if (! defined('PP_AUTHORS_LOADED')) {
         $multiple_authors_addon = new Plugin();
 
         /**
-         * This installer is currently not running due to it been 
+         * This installer is currently not running due to it been
          * inside plugins_loaded and we need to find a way around it
          */
         /*
