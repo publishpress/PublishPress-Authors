@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author bio, author layouts
 Requires at least: 5.5
 Requires PHP: 7.2.5
 Tested up to: 6.7
-Stable tag: 4.7.5
+Stable tag: 4.7.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,7 +25,7 @@ Here are the some most important features of PublishPress Authors:
 * **Author Categories**. Categorize your authors as Coauthors, Reviews, Editors, Photographers, and more.
 * **Author Fields**. Customize the user details for each author with fields for social media, job details, and more.
 * **Author Lists**. Create a custom display of all your authors. You can sort, order, and filter to show only the authors you want.
-* **Author Pages**. Showcase the work of each individual author with customizable author pages where you decide which post information is displayed. 
+* **Author Pages**. Showcase the work of each individual author with customizable author pages where you decide which post information is displayed.
 
 
 ## PublishPress Authors Pro ##
@@ -222,7 +222,7 @@ Author bios can be a tricky area in WordPress because many themes try to add the
 
 = How does PublishPress Authors Compare With Other Author Plugins? =
 
-There are other plugins available such as Co-Authors Plus, Simple Author Box, Molongui, Starbox and more. These are all really good plugins. PublishPress Authors stands out because of the advanced features and flexibility. 
+There are other plugins available such as Co-Authors Plus, Simple Author Box, Molongui, Starbox and more. These are all really good plugins. PublishPress Authors stands out because of the advanced features and flexibility.
 
 == Installation ==
 
@@ -246,6 +246,11 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [4.7.6] - 22 April 2025 =
+
+* Fixes: Limit Author boxes custom template to theme directory, #2034
+* Update: Authors FREE Translation Updates_v.4.7.5, #2033
 
 = [4.7.5] - 07 April 2025 =
 
