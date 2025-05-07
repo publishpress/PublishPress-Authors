@@ -203,6 +203,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_action('multiple_authors_create_post_authors', [$this, 'action_create_post_authors']);
             add_action('multiple_authors_create_role_authors', [$this, 'action_create_role_authors']);
             add_action('multiple_authors_copy_coauthor_plus_data', [$this, 'action_copy_coauthor_plus_data']);
+            add_action('multiple_authors_create_author_categories', [$this, 'action_create_author_categories']);
 
             add_action('deleted_user', [$this, 'handle_deleted_user']);
 
@@ -2751,6 +2752,12 @@ echo '<span class="ppma_settings_field_description">'
                     'button_link' => '',
                     'after'       => '<div id="publishpress-authors-sync-author-slug"></div>',
                 ],
+
+                'create_author_categories' => [
+                    'title'       => esc_html__('Create Author Categories', 'publishpress-authors'),
+                    'description' => esc_html__('This will create author categories table if missing and add default categories.', 'publishpress-authors'),
+                    'button_label' => esc_html__('Create Author Categories', 'publishpress-authors'),
+                ],
             ];
 
             /**
@@ -3552,7 +3559,8 @@ echo '<span class="ppma_settings_field_description">'
                 'create_role_authors',
                 'copy_coauthor_plus_data',
                 'sync_post_author',
-                'sync_author_slug'
+                'sync_author_slug',
+                'create_author_categories'
             ];
 
             if (! isset($_GET['ppma_action']) || isset($_GET['author_term_reset_notice'])
@@ -3637,6 +3645,14 @@ echo '<span class="ppma_settings_field_description">'
                 foreach ($terms as $term) {
                     wp_delete_term($term->term_id, 'author');
                 }
+            }
+        }
+
+        public function action_create_author_categories()
+        {
+            if (class_exists('MA_Author_Categories')) {
+                $author_category_class = new MA_Author_Categories();
+                $author_category_class->runInstallTasks('4.4.1');
             }
         }
 
