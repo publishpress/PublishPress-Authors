@@ -2995,8 +2995,13 @@ echo '<span class="ppma_settings_field_description">'
         public function theAuthorPostsLink($link)
         {
             $newLink   = '';
-            $postID    = get_the_id();
+            $post      = get_post();
+            $postID    = $post ? $post->ID : '';
             $authors   = get_post_authors($postID);
+
+            if ($post && ! Utils::is_post_type_enabled($post->post_type)) {
+                return $link;
+            }
 
             foreach ($authors as $author) {
                 if (!empty($newLink)) {
