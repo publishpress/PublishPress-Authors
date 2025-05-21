@@ -55,8 +55,8 @@ class Post_Editor
     public static function add_author_bulk_quick_edit_custom_box($column_name, $post_type)
     {
         if (Utils::is_post_type_enabled($post_type) && $column_name === 'authors') {
-            $legacyPlugin      = Factory::getLegacyPlugin(); 
-            $quick_edit_styles = isset($legacyPlugin->modules->multiple_authors->options->disable_quick_edit_author_box) 
+            $legacyPlugin      = Factory::getLegacyPlugin();
+            $quick_edit_styles = isset($legacyPlugin->modules->multiple_authors->options->disable_quick_edit_author_box)
                 && 'yes' === $legacyPlugin->modules->multiple_authors->options->disable_quick_edit_author_box
                 ? 'display:none;' : '';
             ?>
@@ -143,7 +143,7 @@ class Post_Editor
                         $showedPostAuthorUser = true;
                     }
 
-                    
+
                     $author_category  = get_ppma_author_relations(['post_id' => $post_id, 'author_term_id' => $author->term_id]);
                     if (!empty($author_category) && isset($author_category[0]['category_id'])) {
                         $category_id = $author_category[0]['category_id'];
@@ -219,7 +219,7 @@ class Post_Editor
      * @param object $response
      * @param object $taxonomy
      * @param array $request
-     * 
+     *
      * @return object $response
      */
     public static function action_remove_gutenberg_author_metabox($response, $taxonomy, $request) {
@@ -257,7 +257,7 @@ class Post_Editor
      * @param array $author_relations
      * @param array $authors
      * @param bool $admin_preview
-     * 
+     *
      * @return array
      */
     public static function group_category_authors($author_categories, $author_relations, $authors, $admin_preview = false) {
@@ -313,18 +313,18 @@ class Post_Editor
         if (!empty($remaining_authors)) {
             foreach ($remaining_authors as $remaining_author) {
                 $author_default_category = (int) $remaining_author->author_category;
-        
-                $category_index = ($author_default_category > 0) 
-                    ? array_search($author_default_category, array_column($authors_data, 'id')) 
+
+                $category_index = ($author_default_category > 0)
+                    ? array_search($author_default_category, array_column($authors_data, 'id'))
                     : false;
-        
+
                 if ($category_index !== false) {
                     $authors_data[$category_index]['authors'][] = $remaining_author;
                 } else {
                     $authors_data[0]['authors'][] = $remaining_author;
                 }
             }
-        }               
+        }
 
 
         return $authors_data;
@@ -439,7 +439,7 @@ class Post_Editor
             $legacyPlugin           = Factory::getLegacyPlugin();
             $fallbackAuthor         = isset($legacyPlugin->modules->multiple_authors->options->fallback_user_for_guest_post) ?
                 (int)$legacyPlugin->modules->multiple_authors->options->fallback_user_for_guest_post : 0;
-    
+
             if ($fallbackAuthor > 0) {
                 $postAuthorId = $fallbackAuthor;
                 $userAuthor   = Author::get_by_user_id($postAuthorId);
@@ -454,9 +454,9 @@ class Post_Editor
             <?php if (!$bulkEdit) : ?>
                 <div class="ppma-authors-display-option-wrapper">
                     <input name="ppma_save_disable_author_box" type="hidden" value="1" />
-                    <input name="ppma_disable_author_box" 
-                            id="ppma_disable_author_box" 
-                            value="1" 
+                    <input name="ppma_disable_author_box"
+                            id="ppma_disable_author_box"
+                            value="1"
                             type="checkbox"
                             <?php checked((int)get_post_meta($post->ID, 'ppma_disable_author_box', true), 1); ?>
                         />
@@ -497,7 +497,7 @@ class Post_Editor
     public static function post_author_filter_field()
     {
         $post_type = isset($_GET['post_type']) ? sanitize_key($_GET['post_type']) : 'post';
-        
+
         if (Utils::is_post_type_enabled($post_type)) {
 
             $userAuthor = false;
@@ -706,7 +706,7 @@ class Post_Editor
         $defaultAuthorSetting = isset($legacyPlugin->modules->multiple_authors->options->default_author_for_new_posts) ?
             $legacyPlugin->modules->multiple_authors->options->default_author_for_new_posts : '';
 
-        if (!empty($defaultAuthorSetting)) {
+        if (Utils::is_post_type_enabled($post->post_type) && !empty($defaultAuthorSetting)) {
             $defaultAuthor = Author::get_by_term_id($defaultAuthorSetting);
         } elseif ($post->post_author) {
             $defaultAuthor = Author::get_by_user_id($post->post_author);

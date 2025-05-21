@@ -79,6 +79,38 @@ if (!function_exists('get_post_authors')) {
             return [];
         }
 
+        $post = get_post($postId);
+
+        if (
+            $post &&
+            ! is_wp_error($post) &&
+            is_object($post) &&
+            ! empty($post->post_author) &&
+            ! Utils::is_post_type_enabled($post->post_type)
+        ) {
+            // this post type is not enabled for Authors
+
+            $author = Author::get_by_user_id($post->post_author);
+
+            if (empty($author) || is_wp_error($author)) {
+                $postTypes = Util::get_selected_post_types();
+
+                if (in_array($post->post_type, $postTypes)) {
+                    $author = Author::create_from_user($post->post_author);
+                    $authorsInstances = [$author];
+                } else {
+                    return [get_userdata($post->post_author)];
+                }
+            } else {
+                $authorsInstances = [$author];
+            }
+
+            if (!empty($authorsInstances) && $updateAuthors) {
+                Utils::set_post_authors($postId, $authorsInstances);
+            }
+            return $authorsInstances;
+        }
+
         $authorsInstances = false;
         if (!$ignoreCache) {
             $authorsInstances = wp_cache_get($postId, 'get_post_authors:authors');
@@ -124,8 +156,6 @@ if (!function_exists('get_post_authors')) {
             }
         } else {
             // Fallback to the post author, fixing the post and author relationship
-            $post = get_post($postId);
-
             // TODO: Should we really just fail silently? Check WP_DEBUG and add a log error message.
             if (empty($post) || is_wp_error($post) || !is_object($post) || empty($post->post_author)) {
                 return [];
@@ -206,7 +236,7 @@ if (!function_exists('ppma_post_authors_categorized')) {
             $category_slugs = array_values($category_slugs);
             $filtered_authors     = array_intersect_key($categorized_authors, array_flip($category_slugs));
             $categorized_authors = array_intersect_key($categorized_authors, $filtered_authors);
-    
+
         }
 
         return $categorized_authors;
@@ -500,7 +530,7 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
             if (!empty($category_ids)) {
                 $term_query .= "LEFT JOIN {$wpdb->termmeta} AS tm_cat ON (t.term_id = tm_cat.term_id AND tm_cat.meta_key = 'author_category') ";
             }
-            
+
             $term_query .= "WHERE tt.taxonomy = 'author' ";
 
             if (!empty($category_ids)) {
@@ -1501,7 +1531,7 @@ if (!function_exists('get_ppma_author_categories')) {
      * Get author categories
      *
      * @param array $args
-     * 
+     *
      * @return array|integer
      */
     function get_ppma_author_categories($args = []) {
@@ -1559,7 +1589,7 @@ if (!function_exists('get_ppma_author_categories')) {
         }
 
         $cache_key = 'author_categories_results_' . md5(serialize($args));
-    
+
         $category_results = wp_cache_get($cache_key, 'author_categories_results_cache');
         $single_result = false;
         if ($category_results === false) {
@@ -1604,19 +1634,19 @@ if (!function_exists('get_ppma_author_categories')) {
                         $category_status
                     );
                 }
-        
+
                 if ($count_only) {
                     $query = str_replace("SELECT *", "SELECT COUNT(*)", $query);
                     return $wpdb->get_var($query);
                 }
-        
+
                 $query .= $wpdb->prepare(
                     " ORDER BY {$orderby} LIMIT %d OFFSET %d",
                     $limit,
                     $offset
                 );
 
-                
+
                 $category_results = $wpdb->get_results($query, \ARRAY_A);
                 wp_cache_set($cache_key, $category_results, 'author_categories_results_cache', 3600);
             }
@@ -1626,17 +1656,17 @@ if (!function_exists('get_ppma_author_categories')) {
             $merged_results = $single_result ? [$category_results] : $category_results;
             $category_results = array_reduce($merged_results, function ($accumulator, $item) {
                 $id = $item['id'];
-            
+
                 if (!isset($accumulator[$id])) {
                     $accumulator[$id] = $item;
                 }
-            
+
                 if (isset($item['meta_key']) && isset($item['meta_value'])) {
                     $accumulator[$id][$item['meta_key']] = $item['meta_value'];
                 }
-            
+
                 unset($accumulator[$id]['meta_key'], $accumulator[$id]['meta_value']);
-            
+
                 return $accumulator;
             }, []);
             $category_results = $single_result ? array_values($category_results)[0] : array_values($category_results);
@@ -1665,7 +1695,7 @@ if (!function_exists('ppma_get_grouped_post_authors')) {
         if (empty($post_id) && !$authors ) {
             return [];
         }
-        
+
         if (!$authors) {
             $authors = get_post_authors($post_id);
         }
@@ -1694,7 +1724,7 @@ if (!function_exists('ppma_get_grouped_post_authors')) {
             $author_relations       = get_ppma_author_relations(['post_id' => $post_id]);
             $author_categories_data = Post_Editor::group_category_authors($author_categories, $author_relations, $authors);
         }
-        
+
         // TODO: Cache this data
         return $author_categories_data;
     }
@@ -1750,11 +1780,11 @@ if (!function_exists('get_ppma_author_category')) {
      *
      * @param object $author
      * @param array $author_categories_data
-     * 
+     *
      * @return array
      */
     function get_ppma_author_category($author, $author_categories_data) {
-        
+
         $author_category = [];
 
         foreach ($author_categories_data as $author_category_data) {
@@ -1777,12 +1807,12 @@ if (!function_exists('get_ppma_section_content')) {
      * Return section content
      *
      * @param string $page
-     * 
+     *
      * @return string
      */
     function get_ppma_section_content($page) {
         ob_start();
-        
+
         do_settings_sections($page);
 
         return ob_get_clean();
