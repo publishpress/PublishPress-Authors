@@ -684,7 +684,12 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
                 //group authors by first letter of their name
                 $group_by     = isset($instance['group_by']) ? $instance['group_by'] : 'display_name';
                 $grouped_name = (!empty($author->$group_by)) ? $author->$group_by : $author->display_name;
-                $authors[strtolower($grouped_name[0])][]  = $author;
+
+                $first_char = mb_substr($grouped_name, 0, 1, 'UTF-8');
+                $normalized_char = publishpress_authors_normalize_character($first_char);
+
+                $authors[strtolower($normalized_char)][] = $author;
+
             } elseif ($result_type === 'recent') {
                 //query recent post by authors
                 $author_recent_posts = multiple_authors_get_author_recent_posts($author);
@@ -765,6 +770,103 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
         }
 
         return $authors;
+    }
+}
+
+
+if (!function_exists('publishpress_authors_get_character_mapping')) {
+    /**
+     * Get comprehensive character mapping for alphabetical indexing
+     * Handles Icelandic, European, and other extended characters
+     */
+    function publishpress_authors_get_character_mapping() {
+        $character_map = [
+            // Icelandic characters
+            'Á' => 'A', 'á' => 'A',
+            'Í' => 'I', 'í' => 'I',
+            'Ó' => 'O', 'ó' => 'O',
+            'Ú' => 'U', 'ú' => 'U',
+            'Ý' => 'Y', 'ý' => 'Y',
+            'Æ' => 'A', 'æ' => 'A',
+            'Þ' => 'T', 'þ' => 'T',
+            'Ð' => 'D', 'ð' => 'D',
+
+            // French characters
+            'À' => 'A', 'à' => 'A', 'Â' => 'A', 'â' => 'A', 'Ä' => 'A', 'ä' => 'A',
+            'È' => 'E', 'è' => 'E', 'É' => 'E', 'é' => 'E', 'Ê' => 'E', 'ê' => 'E', 'Ë' => 'E', 'ë' => 'E',
+            'Ì' => 'I', 'ì' => 'I', 'Î' => 'I', 'î' => 'I', 'Ï' => 'I', 'ï' => 'I',
+            'Ò' => 'O', 'ò' => 'O', 'Ô' => 'O', 'ô' => 'O', 'Ö' => 'O', 'ö' => 'O',
+            'Ù' => 'U', 'ù' => 'U', 'Û' => 'U', 'û' => 'U', 'Ü' => 'U', 'ü' => 'U',
+            'Ç' => 'C', 'ç' => 'C',
+
+            // German characters
+            'ß' => 'S',
+
+            // Spanish characters
+            'Ñ' => 'N', 'ñ' => 'N',
+
+            // Other European characters
+            'Å' => 'A', 'å' => 'A',
+            'Ø' => 'O', 'ø' => 'O',
+            'Œ' => 'O', 'œ' => 'O',
+        ];
+
+        return apply_filters('publishpress_authors_index_character_mapping', $character_map);
+    }
+}
+
+if (!function_exists('publishpress_authors_normalize_character')) {
+    /**
+     * Normalize character for alphabetical indexing
+     */
+    function publishpress_authors_normalize_character($char) {
+        $character_map = publishpress_authors_get_character_mapping();
+        return isset($character_map[$char]) ? $character_map[$char] : strtoupper($char);
+    }
+}
+
+if (!function_exists('publishpress_authors_get_index_titles')) {
+    /**
+     * Get index title mapping for different languages
+     */
+    function publishpress_authors_get_index_titles() {
+        $index_titles = [
+            'A' => 'A', 'B' => 'B', 'C' => 'C', 'D' => 'D', 'E' => 'E',
+            'F' => 'F', 'G' => 'G', 'H' => 'H', 'I' => 'I', 'J' => 'J',
+            'K' => 'K', 'L' => 'L', 'M' => 'M', 'N' => 'N', 'O' => 'O',
+            'P' => 'P', 'Q' => 'Q', 'R' => 'R', 'S' => 'S', 'T' => 'T',
+            'U' => 'U', 'V' => 'V', 'W' => 'W', 'X' => 'X', 'Y' => 'Y',
+            'Z' => 'Z'
+        ];
+
+        /**
+         * Filter the index title mapping for different languages
+         *
+         * Example for Icelandic:
+         * $icelandic_titles = [
+         *     'A' => 'A/Á', 'B' => 'B', 'C' => 'C', 'D' => 'D/Ð',
+         *     'E' => 'E/É', 'F' => 'F', 'G' => 'G', 'H' => 'H',
+         *     'I' => 'I/Í', 'J' => 'J', 'K' => 'K', 'L' => 'L',
+         *     'M' => 'M', 'N' => 'N', 'O' => 'O/Ó', 'P' => 'P',
+         *     'Q' => 'Q', 'R' => 'R', 'S' => 'S', 'T' => 'T/Þ',
+         *     'U' => 'U/Ú', 'V' => 'V', 'W' => 'W', 'X' => 'X',
+         *     'Y' => 'Y/Ý', 'Z' => 'Z', 'AE' => 'Æ'
+         * ];
+         *
+         * @param array $index_titles The default index title mapping
+         */
+        return apply_filters('publishpress_authors_index_titles', $index_titles);
+    }
+}
+
+if (!function_exists('publishpress_authors_get_index_display_title')) {
+    /**
+     * Get display title for index character
+     */
+    function publishpress_authors_get_index_display_title($normalized_char) {
+        $index_titles = publishpress_authors_get_index_titles();
+
+        return isset($index_titles[strtoupper($normalized_char)]) ? $index_titles[strtoupper($normalized_char)] : $normalized_char;
     }
 }
 
