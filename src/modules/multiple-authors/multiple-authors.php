@@ -226,8 +226,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                 add_filter('admin_body_class', [$this, 'filter_admin_body_class']);
             }
 
-            // Fix upload permissions for multiple authors.
-            add_filter('map_meta_cap', [$this, 'filter_map_meta_cap'], 10, 4);
+            // Fix ACF Caps and upload permissions for multiple authors.
+            add_filter('map_meta_cap', [$this, 'filter_map_meta_cap'], 11, 4);
 
             add_filter('publishpress_is_author_of_post', [$this, 'filter_is_author_of_post'], 10, 3);
             add_filter('publishpress_post_authors_names', [$this, 'filter_post_authors_names'], 10, 2);
@@ -3772,7 +3772,8 @@ echo '<span class="ppma_settings_field_description">'
         }
 
         /**
-         * Fix the upload of media for posts when the user is a secondary author and can't edit others' posts.
+         * Fix ACF caps(#2024) and the upload of media for posts when
+         * the user is a secondary author and can't edit others' posts.
          *
          * @param $caps
          * @param $cap
@@ -3799,7 +3800,6 @@ echo '<span class="ppma_settings_field_description">'
                             }
                         }
                     }
-
                     $caps = apply_filters('pp_authors_filter_map_meta_cap', $caps, $cap, $user_id, $post_id);
                 }
             }
