@@ -18,7 +18,7 @@
         $display_title = publishpress_authors_get_index_display_title($alphabet); ?>
         <div class="author-index-group author-index-group-<?php esc_attr_e($alphabet); ?>">
             <div class="author-index-header">
-                <h4 class="author-list-head author-list-head-<?php esc_attr_e($alphabet); ?>"><?php esc_html_e(strtoupper($alphabet)); ?></h4>
+                <h4 class="author-list-head author-list-head-<?php esc_attr_e($alphabet); ?>"><?php esc_html_e(strtoupper($display_title)); ?></h4>
             </div>
             <div class="author-index-authors author-index-<?php esc_attr_e($alphabet); ?>">
                 <ul>
