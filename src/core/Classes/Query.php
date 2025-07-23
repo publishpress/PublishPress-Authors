@@ -157,7 +157,7 @@ class Query
             return $where;
         }
 
-        $author_name = !empty($query->query_vars['ppma_author']) 
+        $author_name = !empty($query->query_vars['ppma_author'])
             ? sanitize_title($query->get('ppma_author')) : sanitize_title($query->get('author_name'));
 
         if (empty($author_name)) {
@@ -225,7 +225,7 @@ class Query
             $where,
             -1
         );
-        
+
         // Add post type only if it's not an admin main query
         if ( ! ( is_admin() && $query->is_main_query() ) ) {
             $where = static::add_custom_post_types_to_query($where);
@@ -285,7 +285,7 @@ class Query
             return $groupby;
         }
 
-        $having  = 'MAX( IF ( ppmaq2.taxonomy = "author", IF ( ' . $query->authors_having_terms . ',2,1 ),0 ) ) <> 1 ';
+        $having  = 'MAX( IF ( ppmaq2.taxonomy = \'author\', IF ( ' . $query->authors_having_terms . ',2,1 ),0 ) ) <> 1 ';
         $groupby = $wpdb->posts . '.ID HAVING ' . $having;
 
         return $groupby;

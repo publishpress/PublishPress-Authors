@@ -427,6 +427,9 @@ class Plugin
             ]
         );
 
+        // Prevent ACF Extended from modifying authors list and edit page
+        add_filter('acf/settings/acfe/modules/ui', [$this, 'disable_acfe_ui_for_authors']);
+
         add_filter('cme_multiple_authors_capabilities', [$this, 'filterCMECapabilities'], 20);
 
         $this->addTestShortcode();
@@ -793,7 +796,7 @@ class Plugin
         $author = Author::get_by_user_id($user_id);
 
         if (!is_object($author) || is_wp_error($author)) {
-            return 0;
+            return (int) $this->get_user_id_post_counts($user_id);;
         }
 
         $numPosts = $author->getTerm()->count;
@@ -1129,6 +1132,27 @@ class Plugin
         return $terms;
     }
 
+
+    public function get_user_id_post_counts($user_id)
+    {
+        global $wpdb;
+
+        $post_types = array_values(Utils::getAuthorTaxonomyPostTypes());
+
+        $post_types = array_map('esc_sql', $post_types);
+        $post_types_in = "'" . implode("','", $post_types) . "'";
+
+        $count = (int) $wpdb->get_var($wpdb->prepare(
+            "SELECT COUNT(*) FROM {$wpdb->posts}
+            WHERE post_author = %d
+            AND post_type IN ({$post_types_in})
+            AND post_status = 'publish'",
+            $user_id
+        ));
+
+        return $count;
+    }
+
     /**
      * Filter the number of author posts. The author can be mapped to a user or not.
      *
@@ -1144,16 +1168,16 @@ class Plugin
         }
 
         if (!is_object($author) || empty($author) || is_wp_error($author)) {
-            return 0;
+            return $count;
         }
 
         $term = $author->getTerm();
-    
+
         // Ensure $term is a valid object before accessing properties incase of legacy data
         if (!is_object($term) || is_wp_error($term)) {
-            return 0;
+            return $count;
         }
-    
+
         return $term->count ?? 0;
     }
 
@@ -1171,7 +1195,8 @@ class Plugin
         $author = Author::get_by_user_id($user_id);
 
         if (!is_object($author)) {
-            return 0;
+            $count = (int) $this->get_user_id_post_counts($user_id);
+            return $count;
         }
 
         return apply_filters('get_authornumposts', $count, $author);
@@ -1463,7 +1488,7 @@ class Plugin
         $author_details   = [];
         $author_display_name_html   = '';
         $enqueue_media_script = false;
-        
+
         if (
             is_admin()
             && $pagenow === 'term.php'
@@ -1490,7 +1515,7 @@ class Plugin
             }
         } elseif (
             is_admin()
-            && isset($_GET['page']) 
+            && isset($_GET['page'])
             && $_GET['page'] === 'ppma-modules-settings'
         ) {
             $enqueue_media_script = true;
@@ -1816,11 +1841,11 @@ class Plugin
             // Check if it is configured to prepend and/or append to the content
             $preppend_to_content = 'yes' === $legacyPlugin->modules->multiple_authors->options->preppend_to_content;
             $append_to_content = 'yes' === $legacyPlugin->modules->multiple_authors->options->append_to_content;
-            
+
             if ($preppend_to_content) {
                 $content = $this->get_author_box_markup('the_content') . $content;
             }
-            
+
             if ($append_to_content) {
                 $content .= $this->get_author_box_markup('the_content');
             }
@@ -2003,4 +2028,33 @@ class Plugin
 
         return $capabilities;
     }
+
+        /**
+         * Prevent ACF Extended from modifying authors list and edit page
+         *
+         * @param mixed $value
+         * @return mixed
+         */
+        public function disable_acfe_ui_for_authors($value)
+        {
+            global $current_screen, $pagenow;
+
+            if (!is_admin()) {
+                return $value;
+            }
+
+            if (!in_array($pagenow, ['edit-tags.php', 'term.php'])) {
+                return $value;
+            }
+
+            $screen_taxonomy = $current_screen ? $current_screen->taxonomy : '';
+
+            $taxonomy = isset($_GET['taxonomy']) ? sanitize_key($_GET['taxonomy']) : $screen_taxonomy;
+
+            if ($taxonomy === 'author') {
+                return false;
+            }
+
+            return $value;
+        }
 }

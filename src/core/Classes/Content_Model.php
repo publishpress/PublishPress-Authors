@@ -68,10 +68,10 @@ class Content_Model
             $author_slug = is_object($author) ? $author->slug : '';
             $permastruct = $wp_rewrite->get_author_permastruct();
 
-            if ($permastruct) {
+            if ($permastruct && !empty($author_slug)) {
                 $link = str_replace('%author%', $author_slug, $permastruct);
                 $link = home_url(user_trailingslashit($link));
-            } else {
+            } elseif (!empty($author_slug)) {
                 $link = add_query_arg('author_name', rawurlencode($author_slug), home_url() . '/');
             }
         }

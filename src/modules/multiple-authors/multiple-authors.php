@@ -203,6 +203,7 @@ if (!class_exists('MA_Multiple_Authors')) {
             add_action('multiple_authors_create_post_authors', [$this, 'action_create_post_authors']);
             add_action('multiple_authors_create_role_authors', [$this, 'action_create_role_authors']);
             add_action('multiple_authors_copy_coauthor_plus_data', [$this, 'action_copy_coauthor_plus_data']);
+            add_action('multiple_authors_create_author_categories', [$this, 'action_create_author_categories']);
 
             add_action('deleted_user', [$this, 'handle_deleted_user']);
 
@@ -225,8 +226,8 @@ if (!class_exists('MA_Multiple_Authors')) {
                 add_filter('admin_body_class', [$this, 'filter_admin_body_class']);
             }
 
-            // Fix upload permissions for multiple authors.
-            add_filter('map_meta_cap', [$this, 'filter_map_meta_cap'], 10, 4);
+            // Fix ACF Caps and upload permissions for multiple authors.
+            add_filter('map_meta_cap', [$this, 'filter_map_meta_cap'], 11, 4);
 
             add_filter('publishpress_is_author_of_post', [$this, 'filter_is_author_of_post'], 10, 3);
             add_filter('publishpress_post_authors_names', [$this, 'filter_post_authors_names'], 10, 2);
@@ -2751,6 +2752,12 @@ echo '<span class="ppma_settings_field_description">'
                     'button_link' => '',
                     'after'       => '<div id="publishpress-authors-sync-author-slug"></div>',
                 ],
+
+                'create_author_categories' => [
+                    'title'       => esc_html__('Create Author Categories', 'publishpress-authors'),
+                    'description' => esc_html__('This will create author categories table if missing and add default categories.', 'publishpress-authors'),
+                    'button_label' => esc_html__('Create Author Categories', 'publishpress-authors'),
+                ],
             ];
 
             /**
@@ -2988,8 +2995,13 @@ echo '<span class="ppma_settings_field_description">'
         public function theAuthorPostsLink($link)
         {
             $newLink   = '';
-            $postID    = get_the_id();
+            $post      = get_post();
+            $postID    = $post ? $post->ID : '';
             $authors   = get_post_authors($postID);
+
+            if ($post && ! Utils::is_post_type_enabled($post->post_type)) {
+                return $link;
+            }
 
             foreach ($authors as $author) {
                 if (!empty($newLink)) {
@@ -3552,7 +3564,8 @@ echo '<span class="ppma_settings_field_description">'
                 'create_role_authors',
                 'copy_coauthor_plus_data',
                 'sync_post_author',
-                'sync_author_slug'
+                'sync_author_slug',
+                'create_author_categories'
             ];
 
             if (! isset($_GET['ppma_action']) || isset($_GET['author_term_reset_notice'])
@@ -3637,6 +3650,14 @@ echo '<span class="ppma_settings_field_description">'
                 foreach ($terms as $term) {
                     wp_delete_term($term->term_id, 'author');
                 }
+            }
+        }
+
+        public function action_create_author_categories()
+        {
+            if (class_exists('MA_Author_Categories')) {
+                $author_category_class = new MA_Author_Categories();
+                $author_category_class->runInstallTasks('4.4.1');
             }
         }
 
@@ -3751,7 +3772,8 @@ echo '<span class="ppma_settings_field_description">'
         }
 
         /**
-         * Fix the upload of media for posts when the user is a secondary author and can't edit others' posts.
+         * Fix ACF caps(#2024) and the upload of media for posts when
+         * the user is a secondary author and can't edit others' posts.
          *
          * @param $caps
          * @param $cap
@@ -3778,7 +3800,6 @@ echo '<span class="ppma_settings_field_description">'
                             }
                         }
                     }
-
                     $caps = apply_filters('pp_authors_filter_map_meta_cap', $caps, $cap, $user_id, $post_id);
                 }
             }

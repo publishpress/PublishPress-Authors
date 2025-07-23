@@ -23,6 +23,7 @@
 
 use MultipleAuthors\Classes\Legacy\Module;
 use MultipleAuthors\Classes\Objects\Author;
+use MultipleAuthors\Classes\Utils;
 use MultipleAuthors\Factory;
 
 if (!class_exists('MA_Divi_Integration')) {
@@ -94,16 +95,20 @@ if (!class_exists('MA_Divi_Integration')) {
 
         /**
          * Filter author post link to support multiple and guest author
-         * 
+         *
          * @param string $link
-         * 
+         *
          * @return string
          */
         public function filter_author_posts_link($link) {
             global $authordata, $post;
 
             $authors = get_post_authors($post->ID);
-            
+
+            if ($post && ! Utils::is_post_type_enabled($post->post_type)) {
+                return $link;
+            }
+
             $author_links = [];
             foreach ($authors as $index => $author) {
                 $author_links[] = sprintf(
@@ -127,7 +132,7 @@ if (!class_exists('MA_Divi_Integration')) {
                 $legacyPlugin           = Factory::getLegacyPlugin();
                 $fallbackAuthor         = isset($legacyPlugin->modules->multiple_authors->options->fallback_user_for_guest_post) ?
                     (int)$legacyPlugin->modules->multiple_authors->options->fallback_user_for_guest_post : 0;
-                
+
                 $authordata = get_userdata($fallbackAuthor);
             }
 

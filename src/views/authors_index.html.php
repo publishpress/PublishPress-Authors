@@ -4,18 +4,21 @@
     <?php endif; ?>
     <ul class="author-index-navigation">
         <li class="page-item active" data-item="all"><a class="page-link " href="#"><?php esc_html_e($context['all_text']); ?></a></li>
-        <?php foreach ($context['results'] as $key => $value) : ?>
+        <?php foreach ($context['results'] as $key => $value) :
+            $display_title = publishpress_authors_get_index_display_title($key);
+        ?>
             <li class="page-item" data-item="<?php esc_attr_e($key); ?>">
-                <a class="page-link" href="#"><?php esc_html_e(strtoupper($key)); ?></a>
+                <a class="page-link" href="#"><?php esc_html_e(strtoupper($display_title)); ?></a>
             </li>
         <?php endforeach; ?>
     </ul>
     <?php
     $currentUserIndex = 0;
-    foreach ($context['results'] as $alphabet => $users) : ?>
+    foreach ($context['results'] as $alphabet => $users) :
+        $display_title = publishpress_authors_get_index_display_title($alphabet); ?>
         <div class="author-index-group author-index-group-<?php esc_attr_e($alphabet); ?>">
             <div class="author-index-header">
-                <h4 class="author-list-head author-list-head-<?php esc_attr_e($alphabet); ?>"><?php esc_html_e(strtoupper($alphabet)); ?></h4>
+                <h4 class="author-list-head author-list-head-<?php esc_attr_e($alphabet); ?>"><?php esc_html_e(strtoupper($display_title)); ?></h4>
             </div>
             <div class="author-index-authors author-index-<?php esc_attr_e($alphabet); ?>">
                 <ul>
