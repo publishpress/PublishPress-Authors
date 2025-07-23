@@ -125,24 +125,26 @@ class MA_Author_Custom_Fields extends Module
         add_action('admin_head', [$this, 'addInlineScripts']);
         add_action('admin_enqueue_scripts', [$this, 'enqueueAdminScripts']);
         add_action('wp_ajax_author_custom_fields_save_order', [$this, 'handle_ajax_update_field_order']);
-        add_action('pre_get_posts', [$this, 'author_custom_fields_default_sort']);
+        add_action('pre_get_posts', [$this, 'filter_custom_fields_query']);
         add_filter('parent_file', [$this, 'setParentFile']);
+        // Add promo virtual fields
+        add_filter('the_posts', [$this, 'add_virtual_social_fields'], 10, 2);
 
         $this->registerPostType();
     }
 
     /**
-     * Set authors menu as parent for post type so menu is shown 
+     * Set authors menu as parent for post type so menu is shown
      * as active when on post type edit screen.
      *
      * @param string $parent_file
-     * 
+     *
      * @return string
      */
     public function setParentFile($parent_file)
     {
         global $submenu_file, $current_screen;
-        
+
         // Check if the current screen is the User Code page
        if (!empty($current_screen->post_type) && $current_screen->post_type == self::POST_TYPE_CUSTOM_FIELDS) {
             $parent_file = \MA_Multiple_Authors::MENU_SLUG;
@@ -240,7 +242,7 @@ class MA_Author_Custom_Fields extends Module
 
         $moduleAssetsUrl = PP_AUTHORS_URL . 'src/modules/author-custom-fields/assets';
 
-        wp_enqueue_script('jquery-ui-sortable');  
+        wp_enqueue_script('jquery-ui-sortable');
 
         wp_enqueue_script(
             'author-custom-fields-js',
@@ -350,8 +352,8 @@ class MA_Author_Custom_Fields extends Module
      */
     public function renderMetaboxes()
     {
-        if (!Utils::isAuthorsProActive() 
-            && isset($_GET['post_type']) 
+        if (!Utils::isAuthorsProActive()
+            && isset($_GET['post_type'])
             && $_GET['post_type'] === self::POST_TYPE_CUSTOM_FIELDS
         ) {
             return;
@@ -546,6 +548,28 @@ class MA_Author_Custom_Fields extends Module
      */
     public static function getFieldMeta($postId, $field)
     {
+        global $post;
+
+        // Handle virtual posts
+        if (is_numeric($postId) && $postId < 0) {
+            $field_data = $post->virtual_field_data ?? [];
+            switch ($field) {
+                case 'field_status':
+                    return $field_data['field_status'] ?? '';
+                    break;
+                case 'type':
+                    return $field_data['type'] ?? '';
+                    break;
+                case 'slug':
+                    return $field_data['post_name'] ?? '';
+                    break;
+                case 'requirement':
+                    return $field_data['requirement'] ?? '';
+                    break;
+            }
+            return;
+        }
+
         return get_post_meta($postId, self::META_PREFIX . $field, true);
     }
 
@@ -742,7 +766,7 @@ class MA_Author_Custom_Fields extends Module
      * @return void
      */
     public function renderBannerMetabox(\WP_Post $post)
-    { 
+    {
         Utils::ppma_pro_sidebar();
     }
 
@@ -936,7 +960,7 @@ class MA_Author_Custom_Fields extends Module
      *
      * @return void
      */
-    public function addInlineScripts() 
+    public function addInlineScripts()
     {
         global $pagenow, $current_screen;
 
@@ -952,24 +976,61 @@ class MA_Author_Custom_Fields extends Module
                 $modal_content .= '<a class="upgrade-link" href="https://publishpress.com/links/authors-banner" target="_blank">'. __('Upgrade to Pro', 'publishpress-authors') .'</a>';
                 $modal_content .= '</p>';
                 $modal_content .= '</div>';
-                Utils::loadThickBoxModal('ppma-new-cf-thickbox-botton', 500, 150, $modal_content);
+                Utils::loadThickBoxModal('ppma-new-cf-thickbox-botton', 'initial', 'initial', $modal_content);
                 ?>
                 <style>
                     .post-new-php.post-type-ppmacf_field,
                     body.edit-php.post-type-ppmacf_field .tablenav .alignleft.actions,
-                    body.edit-php.post-type-ppmacf_field table.wp-list-table .check-column { 
-                        display: none !important; 
+                    body.edit-php.post-type-ppmacf_field table.wp-list-table .check-column {
+                        display: none !important;
                     }
                 </style>
                 <script>
                 jQuery(document).ready(function ($) {
+                    // Remove new post link value
                     $(".page-title-action")
                         .attr('href', '#');
+                    // Remove post editor area incase of direct access
                     $(".post-new-php.post-type-ppmacf_field #poststuff").remove();
+
+                    // wrap the add new inside a new div with promo inside
+                    var $action = $('.page-title-action');
+                    if ($action.length) {
+                        var $extra = $('<span class="dashicons dashicons-lock" style="vertical-align: sub;margin-right: 5px;"></span>');
+                        $action.prepend($extra);
+                    }
+
                     $(document).on('click', '.page-title-action', function (e) {
                         e.preventDefault();
                         $('.ppma-new-cf-thickbox-botton').trigger('click');
                         return;
+                    });
+                    // promo field handler
+                    var virtualRowCounter = 0;
+                    $('table.wp-list-table tbody tr[id^="post--"]').each(function() {
+                        virtualRowCounter++;
+                        var $row = $(this);
+                        // add blur class
+                        $row.addClass('ppma-blur');
+                        // Replace the span content with a proper row-title link
+                        var $titleCell = $(this).find('td.column-title strong span');
+                        if ($titleCell.length > 0) {
+                            var titleText = $titleCell.text();
+                            $titleCell.html('<a class="row-title" href="#" onclick="return false;">' + titleText + '</a>');
+                        }
+                         // Add promo notice to the third virtual post
+                        if (virtualRowCounter === 3) {
+                            $row.addClass('ppma-promo-overlay-row');
+                            $row.removeClass('ppma-blur');
+                            $row.find('td').addClass('ppma-blur');
+                            var promoHtml = '<div class="ppma-promo-upgrade-notice">' +
+                                '<p><?php echo esc_html__('In addition to letting you add new Author Fields, PublishPress Authors also includes fields for social networks. This feature is available in PublishPress Authors Pro.', 'publishpress-authors'); ?></p>' +
+                                '<p><a href="https://publishpress.com/links/authors-banner" target="_blank"><?php echo esc_html__('Upgrade to Pro', 'publishpress-authors'); ?></a></p>' +
+                                '</div>';
+                            $row.find('td.column-requirement')
+                                .removeClass('ppma-blur')
+                                .append(promoHtml);
+                        }
                     });
                 });
                 </script>
@@ -977,8 +1038,8 @@ class MA_Author_Custom_Fields extends Module
             }
         }
 
-        if (in_array($pagenow, ['post.php']) 
-            && $current_screen 
+        if (in_array($pagenow, ['post.php'])
+            && $current_screen
             && !empty($current_screen->post_type)
             && $current_screen->post_type === self::POST_TYPE_CUSTOM_FIELDS
         ) {
@@ -999,18 +1060,18 @@ class MA_Author_Custom_Fields extends Module
         $response['content'] = esc_html__('An error occured.', 'publishpress-authors');
 
         //do not process request if nonce validation failed
-        if (empty($_POST['nonce']) 
+        if (empty($_POST['nonce'])
             || !wp_verify_nonce(sanitize_key($_POST['nonce']), 'author-custom-fields-request-nonce')
         ) {
             $response['status']  = 'error';
             $response['content'] = esc_html__(
-                'Security error. Kindly reload this page and try again', 
+                'Security error. Kindly reload this page and try again',
                 'publishpress-authors'
             );
         } elseif (!current_user_can(apply_filters('pp_multiple_authors_manage_custom_fields_cap', 'ppma_manage_custom_fields'))) {
             $response['status']  = 'error';
             $response['content'] = esc_html__(
-                'You do not have permission to perform this action', 
+                'You do not have permission to perform this action',
                 'publishpress-authors'
             );
         } else {
@@ -1041,13 +1102,150 @@ class MA_Author_Custom_Fields extends Module
      * @param object $query
      * @return void
      */
-    public function author_custom_fields_default_sort($query) {
+    public function filter_custom_fields_query($query)
+    {
 
-        if (is_admin() && $query->is_main_query() && $query->get('post_type') === self::POST_TYPE_CUSTOM_FIELDS) {
+        if (is_admin() && $query->is_main_query() && $query->get('post_type') == self::POST_TYPE_CUSTOM_FIELDS) {
+            // Sort custom fields by order
             if (!$query->get('orderby')) {
                 $query->set('orderby', 'menu_order');
                 $query->set('order', 'ASC');
             }
+            // filter out social fields if pro is not active
+            if (!Utils::isAuthorsProActive() && isset($_GET['post_type']) && $_GET['post_type'] == self::POST_TYPE_CUSTOM_FIELDS) {
+                $social_field_names = ['facebook', 'x', 'instagram', 'linkedIn', 'youtube', 'tiktok'];
+
+                $meta_query = $query->get('meta_query') ?: [];
+                $meta_query[] = [
+                    'key' => 'ppmacf_slug',
+                    'value' => $social_field_names,
+                    'compare' => 'NOT IN'
+                ];
+                $query->set('meta_query', $meta_query);
+            }
         }
+    }
+
+    /**
+     * Add promo virtual fields
+     *
+     * @param mixed $posts
+     * @param mixed $query
+     *
+     * @return mixed
+     */
+    public function add_virtual_social_fields($posts, $query) {
+        if (!is_admin()
+            || !$query->is_main_query()
+            || $query->get('post_type') !== self::POST_TYPE_CUSTOM_FIELDS
+            || Utils::isAuthorsProActive()
+            || ! isset($_GET['post_type'])
+            || $_GET['post_type'] !== self::POST_TYPE_CUSTOM_FIELDS
+        ) {
+            return $posts;
+        }
+
+        $social_custom_fields = $this->get_social_custom_fields();
+
+        // Create virtual post objects for display
+         $virtual_id_counter = -999999999;
+        foreach ($social_custom_fields as $field_key => $field_data) {
+            $post_data = array(
+                'ID' => $virtual_id_counter,
+                'post_author' => get_current_user_id(),
+                'post_date' => current_time('mysql'),
+                'post_date_gmt' => current_time('mysql', 1),
+                'post_content' => '',
+                'post_title' => $field_data['post_title'],
+                'post_excerpt' => '',
+                'post_status' => 'publish',
+                'comment_status' => 'closed',
+                'ping_status' => 'closed',
+                'post_password' => '',
+                'post_name' => $field_data['post_name'],
+                'to_ping' => '',
+                'pinged' => '',
+                'post_modified' => current_time('mysql'),
+                'post_modified_gmt' => current_time('mysql', 1),
+                'post_content_filtered' => '',
+                'post_parent' => 0,
+                'guid' => '',
+                'menu_order' => 0,
+                'post_type' => 'ppmacf_field',
+                'post_mime_type' => '',
+                'comment_count' => 0,
+                'filter' => 'raw'
+            );
+
+            $virtual_post = new WP_Post((object) $post_data);
+            $virtual_post->virtual_field_data = $field_data;
+            $virtual_post->virtual_field_key = $field_key;
+
+            $posts[] = $virtual_post;
+            $virtual_id_counter--;
+        }
+
+        return $posts;
+    }
+
+    private function get_social_custom_fields() {
+        $social_custom_fields = [];
+
+        //add Facebook
+        $social_custom_fields['facebook'] = [
+            'post_title'   => __('Facebook', 'publishpress-authors'),
+            'post_name'    => 'facebook',
+            'type'         => 'url',
+            'social_profile'  => 1,
+            'field_status'  => 'off',
+            'description'  => __('Please enter the full URL to your Facebook profile.', 'publishpress-authors'),
+        ];
+        //add X
+        $social_custom_fields['x'] = [
+            'post_title'   => __('X', 'publishpress-authors'),
+            'post_name'    => 'x',
+            'type'         => 'url',
+            'social_profile'  => 1,
+            'field_status'  => 'off',
+            'description'  => __('Please enter the full URL to your X profile.', 'publishpress-authors'),
+        ];
+        //add Instagram
+        $social_custom_fields['instagram'] = [
+            'post_title'   => __('Instagram', 'publishpress-authors'),
+            'post_name'    => 'instagram',
+            'type'         => 'url',
+            'social_profile'  => 1,
+            'field_status'  => 'off',
+            'description'  => __('Please enter the full URL to your Instagram page.', 'publishpress-authors'),
+        ];
+        //add LinkedIn
+        $social_custom_fields['linkedIn'] = [
+            'post_title'   => __('LinkedIn', 'publishpress-authors'),
+            'post_name'    => 'linkedIn',
+            'type'         => 'url',
+            'social_profile'  => 1,
+            'field_status'  => 'off',
+            'description'  => __('Please enter the full URL to your LinkedIn profile.', 'publishpress-authors'),
+        ];
+        //add YouTube
+        $social_custom_fields['youtube'] = [
+            'post_title'   => __('YouTube', 'publishpress-authors'),
+            'post_name'    => 'youtube',
+            'type'         => 'url',
+            'social_profile'  => 1,
+            'field_status'  => 'off',
+            'description'  => __('Please enter the full URL to your YouTube channel.', 'publishpress-authors'),
+        ];
+        //add TikTok
+        $social_custom_fields['tiktok'] = [
+            'post_title'   => __('TikTok', 'publishpress-authors'),
+            'post_name'    => 'tiktok',
+            'type'         => 'url',
+            'social_profile'  => 1,
+            'field_status'  => 'off',
+            'description'  => __('Please enter the full URL to your TikTok profile.', 'publishpress-authors'),
+        ];
+
+        return $social_custom_fields;
     }
 }
