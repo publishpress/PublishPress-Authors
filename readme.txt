@@ -7,7 +7,7 @@ Tags: multiple authors, authors, guest authors, author bio, author layouts
 Requires at least: 5.5
 Requires PHP: 7.2.5
 Tested up to: 6.8
-Stable tag: 4.7.6
+Stable tag: 4.8.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -246,6 +246,17 @@ There are two ways to install the PublishPress Authors plugin:
 5. Activate the PublishPress Authors plugin.
 
 == Changelog ==
+
+= [4.8.0] - 23 July 2025 =
+
+* Feature: Add new Rest API endpoint to create and update Authors and their fields, #2065
+* Fixed: Issue with get_the_author_posts_link(), #2054
+* Fixed: Incorrect post counts for non mapped users, #2064
+* Fixed: Deprecated: str_replace(): Passing null to parameter #2 ($replace), #2050
+* Fixed: Error 404 on Author Archive Page (Next Page), #2062
+* Fixed: Author names in Icelandic or no UTF-8 character not included in Author Index, #2056
+* Compat: ACF Compatibility when secondary author is editing post ACF Block, #2024
+* Update: Pro upgrade nudges, #2058
 
 = [4.7.6] - 22 April 2025 =
 
