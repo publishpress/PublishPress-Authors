@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PublishPress Authors\n"
-"POT-Creation-Date: 2025-07-23 08:28+0000\n"
+"POT-Creation-Date: 2025-07-23 09:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Anderson Grudtner Martins <anderson@publishpress.com>\n"
 "Language-Team: Anderson Grudtner Martins <anderson@publishpress.com>\n"
@@ -552,7 +552,7 @@ msgstr ""
 #: src/modules/author-categories/author-categories.php:231
 #: src/modules/author-categories/author-categories.php:374
 #: src/modules/author-categories/author-categories.php:382
-#: src/modules/author-custom-fields/author-custom-fields.php:1060
+#: src/modules/author-custom-fields/author-custom-fields.php:1061
 #: src/modules/author-list/author-list.php:1230
 #: src/modules/author-boxes/classes/AuthorBoxesAjax.php:34
 #: src/modules/author-boxes/classes/AuthorBoxesAjax.php:82
@@ -2100,7 +2100,7 @@ msgstr ""
 msgid "Extra features for Author Lists"
 msgstr ""
 
-#: src/modules/author-custom-fields/author-custom-fields.php:1196
+#: src/modules/author-custom-fields/author-custom-fields.php:1197
 msgid "Facebook"
 msgstr ""
 
@@ -2145,7 +2145,7 @@ msgstr ""
 msgid "Field Icon + Prefix + Value + Suffix"
 msgstr ""
 
-#: src/modules/author-custom-fields/author-custom-fields.php:1091
+#: src/modules/author-custom-fields/author-custom-fields.php:1092
 msgid "Field Order updated."
 msgstr ""
 
@@ -2486,13 +2486,6 @@ msgstr ""
 msgid "Import Editor Settings"
 msgstr ""
 
-#: src/modules/author-custom-fields/author-custom-fields.php:1027
-msgid ""
-"In addition to letting you add new Author Fields, PublishPress Authors also "
-"includes fields for social networks. This feature is available in "
-"PublishPress Authors Pro."
-msgstr ""
-
 #: src/modules/author-boxes/classes/AuthorBoxesEditorFields.php:290
 msgid "In front of Avatar"
 msgstr ""
@@ -2525,7 +2518,7 @@ msgstr ""
 msgid "Inset"
 msgstr ""
 
-#: src/modules/author-custom-fields/author-custom-fields.php:1214
+#: src/modules/author-custom-fields/author-custom-fields.php:1215
 msgid "Instagram"
 msgstr ""
 
@@ -2654,7 +2647,7 @@ msgstr ""
 msgid "Link Rel"
 msgstr ""
 
-#: src/modules/author-custom-fields/author-custom-fields.php:1223
+#: src/modules/author-custom-fields/author-custom-fields.php:1224
 msgid "LinkedIn"
 msgstr ""
 
@@ -2981,27 +2974,27 @@ msgstr ""
 msgid "Please correct your form errors below and try again."
 msgstr ""
 
-#: src/modules/author-custom-fields/author-custom-fields.php:1201
+#: src/modules/author-custom-fields/author-custom-fields.php:1202
 msgid "Please enter the full URL to your Facebook profile."
 msgstr ""
 
-#: src/modules/author-custom-fields/author-custom-fields.php:1219
+#: src/modules/author-custom-fields/author-custom-fields.php:1220
 msgid "Please enter the full URL to your Instagram page."
 msgstr ""
 
-#: src/modules/author-custom-fields/author-custom-fields.php:1228
+#: src/modules/author-custom-fields/author-custom-fields.php:1229
 msgid "Please enter the full URL to your LinkedIn profile."
 msgstr ""
 
-#: src/modules/author-custom-fields/author-custom-fields.php:1246
+#: src/modules/author-custom-fields/author-custom-fields.php:1247
 msgid "Please enter the full URL to your TikTok profile."
 msgstr ""
 
-#: src/modules/author-custom-fields/author-custom-fields.php:1210
+#: src/modules/author-custom-fields/author-custom-fields.php:1211
 msgid "Please enter the full URL to your X profile."
 msgstr ""
 
-#: src/modules/author-custom-fields/author-custom-fields.php:1237
+#: src/modules/author-custom-fields/author-custom-fields.php:1238
 msgid "Please enter the full URL to your YouTube channel."
 msgstr ""
 
@@ -3136,10 +3129,6 @@ msgstr ""
 msgid ""
 "PublishPress Authors Pro allows you to unlock the full potential of Author "
 "Categories."
-msgstr ""
-
-#: src/modules/author-custom-fields/author-custom-fields.php:973
-msgid "PublishPress Authors Pro is required to add a new Custom Field."
 msgstr ""
 
 #: src/modules/settings/settings.php:104
@@ -3423,7 +3412,7 @@ msgstr ""
 #: src/core/Classes/Admin_Ajax.php:318 src/core/Classes/Admin_Ajax.php:399
 #: src/modules/author-categories/author-categories.php:236
 #: src/modules/author-categories/author-categories.php:319
-#: src/modules/author-custom-fields/author-custom-fields.php:1067
+#: src/modules/author-custom-fields/author-custom-fields.php:1068
 #: src/modules/author-list/author-list.php:1237
 #: src/modules/author-boxes/classes/AuthorBoxesAjax.php:41
 #: src/modules/author-boxes/classes/AuthorBoxesAjax.php:89
@@ -4056,7 +4045,7 @@ msgstr ""
 msgid "This WordPress user is already mapped to another author."
 msgstr ""
 
-#: src/modules/author-custom-fields/author-custom-fields.php:1241
+#: src/modules/author-custom-fields/author-custom-fields.php:1242
 msgid "TikTok"
 msgstr ""
 
@@ -4159,7 +4148,7 @@ msgstr ""
 #: includes.php:63 src/core/Classes/Utils.php:1137
 #: src/modules/author-boxes/author-boxes.php:2667
 #: src/modules/author-custom-fields/author-custom-fields.php:976
-#: src/modules/author-custom-fields/author-custom-fields.php:1028
+#: src/modules/author-custom-fields/author-custom-fields.php:1029
 #: src/modules/author-list/author-list.php:1160
 msgid "Upgrade to Pro"
 msgstr ""
@@ -4291,6 +4280,13 @@ msgstr ""
 msgid "Website"
 msgstr ""
 
+#: src/modules/author-custom-fields/author-custom-fields.php:973
+#: src/modules/author-custom-fields/author-custom-fields.php:1028
+msgid ""
+"With PublishPress Authors Pro, you can add new fields for social networks "
+"and more."
+msgstr ""
+
 #: src/modules/multiple-authors/multiple-authors.php:1307
 msgid ""
 "With this shortcode you can display the author box in any part of the "
@@ -4317,7 +4313,7 @@ msgstr ""
 msgid "WYSIWYG Editor"
 msgstr ""
 
-#: src/modules/author-custom-fields/author-custom-fields.php:1205
+#: src/modules/author-custom-fields/author-custom-fields.php:1206
 msgid "X"
 msgstr ""
 
@@ -4496,7 +4492,7 @@ msgstr ""
 
 #: src/modules/author-categories/author-categories.php:241
 #: src/modules/author-categories/author-categories.php:324
-#: src/modules/author-custom-fields/author-custom-fields.php:1073
+#: src/modules/author-custom-fields/author-custom-fields.php:1074
 #: src/modules/author-boxes/classes/AuthorBoxesAjax.php:47
 msgid "You do not have permission to perform this action"
 msgstr ""
@@ -4512,6 +4508,6 @@ msgid ""
 "and support. %sUpgrade to Pro%s"
 msgstr ""
 
-#: src/modules/author-custom-fields/author-custom-fields.php:1232
+#: src/modules/author-custom-fields/author-custom-fields.php:1233
 msgid "YouTube"
 msgstr ""
