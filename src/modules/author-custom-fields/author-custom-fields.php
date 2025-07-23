@@ -970,7 +970,7 @@ class MA_Author_Custom_Fields extends Module
                 $modal_content = '';
                 $modal_content .= '<div class="new-cf-upgrade-notice">';
                 $modal_content .= '<p>';
-                $modal_content .= __('PublishPress Authors Pro is required to add a new Custom Field.', 'publishpress-authors');
+                $modal_content .= __('With PublishPress Authors Pro, you can add new fields for social networks and more.', 'publishpress-authors');
                 $modal_content .= '</p>';
                 $modal_content .= '<p>';
                 $modal_content .= '<a class="upgrade-link" href="https://publishpress.com/links/authors-banner" target="_blank">'. __('Upgrade to Pro', 'publishpress-authors') .'</a>';
@@ -1019,12 +1019,13 @@ class MA_Author_Custom_Fields extends Module
                             $titleCell.html('<a class="row-title" href="#" onclick="return false;">' + titleText + '</a>');
                         }
                          // Add promo notice to the third virtual post
-                        if (virtualRowCounter === 3) {
+                        if (virtualRowCounter === 4) {
                             $row.addClass('ppma-promo-overlay-row');
+                            $row.css('cursor', 'default');
                             $row.removeClass('ppma-blur');
                             $row.find('td').addClass('ppma-blur');
                             var promoHtml = '<div class="ppma-promo-upgrade-notice">' +
-                                '<p><?php echo esc_html__('In addition to letting you add new Author Fields, PublishPress Authors also includes fields for social networks. This feature is available in PublishPress Authors Pro.', 'publishpress-authors'); ?></p>' +
+                                '<p><?php echo esc_html__('With PublishPress Authors Pro, you can add new fields for social networks and more.', 'publishpress-authors'); ?></p>' +
                                 '<p><a href="https://publishpress.com/links/authors-banner" target="_blank"><?php echo esc_html__('Upgrade to Pro', 'publishpress-authors'); ?></a></p>' +
                                 '</div>';
                             $row.find('td.column-requirement')
