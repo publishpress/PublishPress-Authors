@@ -427,6 +427,9 @@ class Plugin
             ]
         );
 
+        // Prevent ACF Extended from modifying authors list and edit page
+        add_filter('acf/settings/acfe/modules/ui', [$this, 'disable_acfe_ui_for_authors']);
+
         add_filter('cme_multiple_authors_capabilities', [$this, 'filterCMECapabilities'], 20);
 
         $this->addTestShortcode();
@@ -2025,4 +2028,33 @@ class Plugin
 
         return $capabilities;
     }
+
+        /**
+         * Prevent ACF Extended from modifying authors list and edit page
+         *
+         * @param mixed $value
+         * @return mixed
+         */
+        public function disable_acfe_ui_for_authors($value)
+        {
+            global $current_screen, $pagenow;
+
+            if (!is_admin()) {
+                return $value;
+            }
+
+            if (!in_array($pagenow, ['edit-tags.php', 'term.php'])) {
+                return $value;
+            }
+
+            $screen_taxonomy = $current_screen ? $current_screen->taxonomy : '';
+
+            $taxonomy = isset($_GET['taxonomy']) ? sanitize_key($_GET['taxonomy']) : $screen_taxonomy;
+
+            if ($taxonomy === 'author') {
+                return false;
+            }
+
+            return $value;
+        }
 }
