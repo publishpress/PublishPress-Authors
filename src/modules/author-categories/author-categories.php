@@ -514,10 +514,8 @@ class MA_Author_Categories extends Module
         // Check if the slug already exists
         if (isset($insert_args['slug'])) {
             $slug = $insert_args['slug'];
-            $existing_id = $wpdb->get_var($wpdb->prepare(
-                "SELECT id FROM $table_name WHERE slug = %s",
-                $slug
-            ));
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name is generated internally by AuthorCategoriesSchema.
+            $existing_id = $wpdb->get_var($wpdb->prepare("SELECT id FROM {$table_name} WHERE slug = %s", $slug));
 
             if ($existing_id) {
                 return get_ppma_author_categories(['id' => $existing_id]);
@@ -590,13 +588,19 @@ class MA_Author_Categories extends Module
         $table_name     = AuthorCategoriesSchema::metaTableName();
 
         if (empty($meta_value)) {
-            $result = $wpdb->query(
-                $wpdb->prepare(
-                    "DELETE FROM {$table_name} WHERE meta_key = %s AND category_id = %d",
-                    $meta_key, $category_id
-                )
+            $result = $wpdb->delete(
+                $table_name,
+                [
+                    'meta_key'    => $meta_key,
+                    'category_id' => (int) $category_id,
+                ],
+                [
+                    '%s',
+                    '%d',
+                ]
             );
         } else {
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name is generated internally by AuthorCategoriesSchema.
             $meta_ids = $wpdb->get_col($wpdb->prepare("SELECT meta_id FROM $table_name WHERE meta_key = %s AND category_id = %d", $meta_key, $category_id));
 
             if (empty($meta_ids)) {

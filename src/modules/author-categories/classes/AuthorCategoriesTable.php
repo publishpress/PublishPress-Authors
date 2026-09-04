@@ -225,18 +225,16 @@ class AuthorCategoriesTable extends \WP_List_Table
         $table_name = AuthorCategoriesSchema::tableName();
         $meta_table_name = AuthorCategoriesSchema::metaTableName();
 
-        $delete = $wpdb->query(
-            $wpdb->prepare(
-                "DELETE FROM {$table_name} WHERE id = %d",
-                $category_id
-            )
+        $delete = $wpdb->delete(
+            $table_name,
+            ['id' => (int) $category_id],
+            ['%d']
         );
 
-        $wpdb->query(
-            $wpdb->prepare(
-                "DELETE FROM {$meta_table_name} WHERE category_id = %d",
-                $category_id
-            )
+        $wpdb->delete(
+            $meta_table_name,
+            ['category_id' => (int) $category_id],
+            ['%d']
         );
 
         return $delete;
