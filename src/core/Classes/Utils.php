@@ -257,10 +257,13 @@ class Utils
 
         if (!$allow_multiple_categories) {
             $existing_relations = $wpdb->get_results(
+                // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name is generated internally.
                 $wpdb->prepare(
                     "SELECT category_id, author_term_id FROM {$table_name} WHERE post_id = %d ORDER BY id ASC",
                     $post_id
-                ),
+                )
+                // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                ,
                 ARRAY_A
             );
 
@@ -359,10 +362,12 @@ class Utils
         $query_args   = array_merge([$post_id], $authors);
 
         $wpdb->query(
+            // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name and placeholders are generated internally from integer IDs.
             $wpdb->prepare(
                 "DELETE FROM {$table_name} WHERE post_id = %d AND author_term_id NOT IN ({$placeholders})",
                 $query_args
             )
+            // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         );
 
         do_action('publishpress_authors_flush_cache_for_post', $post_id);
@@ -1417,17 +1422,26 @@ class Utils
         global $wpdb;
 
         if ( is_array( $post_type ) ) {
-            $post_type           = esc_sql( $post_type );
-            $post_type_in_string = "'" . implode( "','", $post_type ) . "'";
-            $sql                 = $wpdb->prepare(
+            $post_type = array_values(array_filter(array_map('sanitize_key', $post_type)));
+
+            if (empty($post_type)) {
+                return null;
+            }
+
+            $post_type_placeholders = implode(', ', array_fill(0, count($post_type), '%s'));
+            $query_args             = array_merge([$page_title], $post_type);
+
+            // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Post type placeholders are generated from a sanitized array.
+            $sql                    = $wpdb->prepare(
                 "
                 SELECT ID
                 FROM $wpdb->posts
                 WHERE post_title = %s
-                AND post_type IN ($post_type_in_string)
+                AND post_type IN ($post_type_placeholders)
             ",
-                $page_title
+                $query_args
             );
+            // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         } else {
             $sql = $wpdb->prepare(
                 "
@@ -1441,6 +1455,7 @@ class Utils
             );
         }
 
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Query is prepared above.
         $page = $wpdb->get_var( $sql );
 
         if ( $page ) {

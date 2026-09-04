@@ -161,19 +161,33 @@ class Installer
 
 
         if (!is_array($parsedArgs['post_type'])) {
-            $parsedArgs['post_type'] = [esc_sql($parsedArgs['post_type'])];
+            $parsedArgs['post_type'] = [$parsedArgs['post_type']];
         }
 
-        $parsedArgs['post_type'] = array_map('esc_sql', $parsedArgs['post_type']);
+        $parsedArgs['post_type'] = array_values(array_filter(array_map('sanitize_key', $parsedArgs['post_type'])));
 
-        $parsedArgs['posts_per_page'] = (int)$parsedArgs['posts_per_page'];
+        if (empty($parsedArgs['post_type'])) {
+            return [];
+        }
 
-        $parsedArgs['paged'] = (int)$parsedArgs['paged'];
+        $parsedArgs['posts_per_page'] = max(1, (int)$parsedArgs['posts_per_page']);
+
+        $parsedArgs['paged'] = max(1, (int)$parsedArgs['paged']);
         $parsedArgs['paged'] = $parsedArgs['paged'] * $parsedArgs['posts_per_page'] - $parsedArgs['posts_per_page'];
+        $post_type_placeholders = implode(', ', array_fill(0, count($parsedArgs['post_type']), '%s'));
+        $query_args = array_merge(
+            $parsedArgs['post_type'],
+            [
+                $parsedArgs['paged'],
+                $parsedArgs['posts_per_page'],
+            ]
+        );
 
         return wp_list_pluck(
-            $wpdb->get_results( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-                "
+            $wpdb->get_results(
+                // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Post type placeholders are generated from a sanitized array.
+                $wpdb->prepare(
+                    "
                 SELECT DISTINCT
                     p.post_author AS ID
                 FROM
@@ -188,10 +202,13 @@ class Installer
                             AND tt.taxonomy = 'author'
                     )
                     AND p.post_author <> 0
-                    AND p.post_type IN ('" . implode('\',\'', $parsedArgs['post_type']) . "')
+                    AND p.post_type IN ($post_type_placeholders)
                     AND p.post_status NOT IN ('trash')
-                LIMIT {$parsedArgs['paged']}, {$parsedArgs['posts_per_page']}
-                "
+                LIMIT %d, %d
+                ",
+                    $query_args
+                )
+                // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             ),
             'ID'
         );
@@ -265,22 +282,45 @@ class Installer
 
 
         if (!is_array($parsedArgs['post_type'])) {
-            $parsedArgs['post_type'] = [esc_sql($parsedArgs['post_type'])];
+            $parsedArgs['post_type'] = [$parsedArgs['post_type']];
         }
 
-        $parsedArgs['post_type'] = array_map('esc_sql', $parsedArgs['post_type']);
+        $parsedArgs['post_type'] = array_values(array_filter(array_map('sanitize_key', $parsedArgs['post_type'])));
+
+        if (empty($parsedArgs['post_type'])) {
+            return [];
+        }
 
         $parsedArgs['order'] = strtoupper($parsedArgs['order']) === 'DESC' ? 'DESC' : 'ASC';
 
-        $parsedArgs['orderby'] = esc_sql($parsedArgs['orderby']);
+        $allowed_orderby = [
+            'ID',
+            'post_author',
+            'post_date',
+            'post_name',
+            'post_status',
+            'post_title',
+            'post_type',
+        ];
+        $parsedArgs['orderby'] = in_array($parsedArgs['orderby'], $allowed_orderby, true) ? $parsedArgs['orderby'] : 'ID';
 
-        $parsedArgs['posts_per_page'] = (int)$parsedArgs['posts_per_page'];
+        $parsedArgs['posts_per_page'] = max(1, (int)$parsedArgs['posts_per_page']);
 
-        $parsedArgs['paged'] = (int)$parsedArgs['paged'];
+        $parsedArgs['paged'] = max(1, (int)$parsedArgs['paged']);
         $parsedArgs['paged'] = $parsedArgs['paged'] * $parsedArgs['posts_per_page'] - $parsedArgs['posts_per_page'];
+        $post_type_placeholders = implode(', ', array_fill(0, count($parsedArgs['post_type']), '%s'));
+        $query_args = array_merge(
+            $parsedArgs['post_type'],
+            [
+                $parsedArgs['paged'],
+                $parsedArgs['posts_per_page'],
+            ]
+        );
 
-        return $wpdb->get_results( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-            "
+        return $wpdb->get_results(
+            // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Post type placeholders and order fragments are sanitized or whitelisted above.
+            $wpdb->prepare(
+                "
             SELECT
                 p.*
             FROM
@@ -295,12 +335,15 @@ class Installer
                         tt.taxonomy = 'author') AS str ON (str.object_id = p.ID
                 )
             WHERE
-                p.post_type IN ('" . implode('\',\'', $parsedArgs['post_type']) . "')
+                p.post_type IN ($post_type_placeholders)
                 AND p.post_status NOT IN('trash')
                 AND str.term_taxonomy_id IS NULL
             ORDER BY {$parsedArgs['orderby']} {$parsedArgs['order']}
-            LIMIT {$parsedArgs['paged']}, {$parsedArgs['posts_per_page']}
-            "
+            LIMIT %d, %d
+            ",
+                $query_args
+            )
+            // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         );
     }
 
