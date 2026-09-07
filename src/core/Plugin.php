@@ -1171,16 +1171,21 @@ class Plugin
             $post_types = ['post'];
         }
 
-        $post_types = array_map('esc_sql', $post_types);
-        $post_types_in = "'" . implode("','", $post_types) . "'";
+        $post_types = array_values(array_filter(array_map('sanitize_key', $post_types)));
+        $post_types_placeholders = implode(', ', array_fill(0, count($post_types), '%s'));
+        $query_args = array_merge([$user_id], $post_types);
 
-        $count = (int) $wpdb->get_var($wpdb->prepare(
+        $count = (int) $wpdb->get_var(
+            // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Post type placeholders are generated from a sanitized array.
+            $wpdb->prepare(
             "SELECT COUNT(*) FROM {$wpdb->posts}
             WHERE post_author = %d
-            AND post_type IN ({$post_types_in})
+            AND post_type IN ({$post_types_placeholders})
             AND post_status = 'publish'",
-            $user_id
-        ));
+                $query_args
+            )
+            // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        );
 
         return $count;
     }
