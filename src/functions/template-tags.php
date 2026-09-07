@@ -2012,6 +2012,8 @@ if (!function_exists('get_ppma_author_categories')) {
             'slug',
             'category_order',
             'category_status',
+            'created_at',
+            'meta_data',
         ];
         $orderby_column  = in_array($args['orderby'], $allowed_orderby, true) ? $args['orderby'] : 'category_order';
         $order           = strtoupper($args['order']) === 'DESC' ? 'DESC' : 'ASC';
