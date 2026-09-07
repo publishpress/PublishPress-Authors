@@ -4362,6 +4362,7 @@ echo '<span class="ppma_settings_field_description">'
             )));
 
             if (empty($postTypes)) {
+                delete_transient('publishpress_authors_sync_post_author_ids');
                 wp_send_json(['total' => 0]);
             }
 
