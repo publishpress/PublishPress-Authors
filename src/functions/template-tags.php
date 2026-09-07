@@ -701,11 +701,10 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
 
         if (true === $args['hide_empty'] || $search_text || $meta_order || $last_article_date || !empty($user_roles) || $guests_only || $exclude_real_user || $exclude_guest_user || !empty($exclude_user_roles) || $exclude_guests_only || $exclude_exclude_real_user || $exclude_exclude_guest_user || !empty($exclude_category_ids) || $alphabet_filter) {
 
-            $postTypes = Utils::get_enabled_post_types();
-            $postTypes = array_map(function($item) {
-                return '"' . $item . '"';
-            }, $postTypes);
-            $postTypes = implode(', ', $postTypes);
+            $postTypes = array_values(array_filter(array_map('sanitize_key', Utils::get_enabled_post_types())));
+            if (empty($postTypes)) {
+                $postTypes = ['post'];
+            }
 
             $term_query = "SELECT t.term_id as `term_id` ";
             $term_query .= "FROM {$wpdb->terms} AS t ";
@@ -800,7 +799,6 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
             }
 
             if ($exclude_real_user) {
-                $role_condition = '%"ppma_guest_author"%';
                 $term_query .= "AND (
                     tm2.meta_key IS NULL
                     OR tm2.meta_value IS NULL
@@ -808,7 +806,7 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
                     OR tm2.meta_value = '0'
                     OR (
                         tm.meta_key = 'user_id'
-                        AND um.meta_value LIKE '{$role_condition}'
+                        AND " . $wpdb->prepare('um.meta_value LIKE %s', '%"ppma_guest_author"%') . "
                     )
                 ) ";
             }
@@ -905,7 +903,9 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
 
             if (true === $args['hide_empty'] || $last_article_date) {
                 $term_query .= "AND p.post_status IN ('publish') ";
-                $term_query .= "AND p.post_type IN ({$postTypes}) ";
+                $post_type_placeholders = implode(', ', array_fill(0, count($postTypes), '%s'));
+                // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Post type placeholders are generated from a sanitized array.
+                $term_query .= $wpdb->prepare("AND p.post_type IN ({$post_type_placeholders}) ", $postTypes);
 
                 if ($last_article_date) {
                     $last_article_date = str_replace(' ago', '', $last_article_date);
@@ -913,21 +913,23 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
                 }
             }
             if ($search_text && !$search_field) {
+                $search_like = '%' . $wpdb->esc_like($search_text) . '%';
                 $term_query .= $wpdb->prepare(
-                    "AND (t.name LIKE '%%%s%%' OR t.slug LIKE '%%%s%%')",
-                    $search_text,
-                    $search_text
+                    'AND (t.name LIKE %s OR t.slug LIKE %s)',
+                    $search_like,
+                    $search_like
                 );
             } elseif ($search_text && $search_field) {
+                $search_like = '%' . $wpdb->esc_like($search_text) . '%';
                 $term_query .= $wpdb->prepare(
-                    "AND (tm.meta_key = '%s' AND tm.meta_value LIKE '%%%s%%') ",
+                    'AND (tm.meta_key = %s AND tm.meta_value LIKE %s) ',
                     $search_field,
-                    $search_text
+                    $search_like
                 );
             }
 
             if ($meta_order) {
-                $term_query .= "AND (tm.meta_key = '{$args['orderby']}') ";
+                $term_query .= $wpdb->prepare('AND (tm.meta_key = %s) ', $args['orderby']);
             }
 
             //get term count before before limit and group by in case it's paginated query
@@ -943,6 +945,7 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
                  */
                 $term_count_query = apply_filters('pp_multiple_authors_get_all_authors_term_count_query', $term_count_query, $args, $instance);
 
+                // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Query is built from prepared fragments, then passed through a legacy SQL filter.
                 $term_counts = $wpdb->get_var($term_count_query);
             }
 
@@ -972,7 +975,8 @@ if (!function_exists('publishpress_authors_get_all_authors')) {
              */
             $term_query = apply_filters('pp_multiple_authors_get_all_authors_term_query', $term_query, $args, $instance);
 
-            $terms = $wpdb->get_results($term_query);// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Query is built from prepared fragments, then passed through a legacy SQL filter.
+            $terms = $wpdb->get_results($term_query);
         } else {
             $terms   = get_terms('author', $args);
             if ($paged) {
