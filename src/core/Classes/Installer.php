@@ -170,9 +170,13 @@ class Installer
             return [];
         }
 
-        $parsedArgs['posts_per_page'] = max(1, (int)$parsedArgs['posts_per_page']);
+        $parsedArgs['posts_per_page'] = (int)$parsedArgs['posts_per_page'];
+        $parsedArgs['paged']          = (int)$parsedArgs['paged'];
 
-        $parsedArgs['paged'] = max(1, (int)$parsedArgs['paged']);
+        if ($parsedArgs['posts_per_page'] < 1 || $parsedArgs['paged'] < 1) {
+            return [];
+        }
+
         $parsedArgs['paged'] = $parsedArgs['paged'] * $parsedArgs['posts_per_page'] - $parsedArgs['posts_per_page'];
         $post_type_placeholders = implode(', ', array_fill(0, count($parsedArgs['post_type']), '%s'));
         $query_args = array_merge(
@@ -291,22 +295,43 @@ class Installer
             return [];
         }
 
-        $parsedArgs['order'] = strtoupper($parsedArgs['order']) === 'DESC' ? 'DESC' : 'ASC';
+        $parsedArgs['order'] = strtoupper(trim($parsedArgs['order'])) === 'DESC' ? 'DESC' : 'ASC';
 
         $allowed_orderby = [
-            'ID',
-            'post_author',
-            'post_date',
-            'post_name',
-            'post_status',
-            'post_title',
-            'post_type',
+            'id'                    => 'ID',
+            'post_author'           => 'post_author',
+            'post_date'             => 'post_date',
+            'post_date_gmt'         => 'post_date_gmt',
+            'post_content'          => 'post_content',
+            'post_title'            => 'post_title',
+            'post_excerpt'          => 'post_excerpt',
+            'post_status'           => 'post_status',
+            'comment_status'        => 'comment_status',
+            'ping_status'           => 'ping_status',
+            'post_password'         => 'post_password',
+            'post_name'             => 'post_name',
+            'to_ping'               => 'to_ping',
+            'pinged'                => 'pinged',
+            'post_modified'         => 'post_modified',
+            'post_modified_gmt'     => 'post_modified_gmt',
+            'post_content_filtered' => 'post_content_filtered',
+            'post_parent'           => 'post_parent',
+            'guid'                  => 'guid',
+            'menu_order'            => 'menu_order',
+            'post_type'             => 'post_type',
+            'post_mime_type'        => 'post_mime_type',
+            'comment_count'         => 'comment_count',
         ];
-        $parsedArgs['orderby'] = in_array($parsedArgs['orderby'], $allowed_orderby, true) ? $parsedArgs['orderby'] : 'ID';
+        $orderby_key = strtolower(trim($parsedArgs['orderby']));
+        $parsedArgs['orderby'] = $allowed_orderby[$orderby_key] ?? 'ID';
 
-        $parsedArgs['posts_per_page'] = max(1, (int)$parsedArgs['posts_per_page']);
+        $parsedArgs['posts_per_page'] = (int)$parsedArgs['posts_per_page'];
+        $parsedArgs['paged']          = (int)$parsedArgs['paged'];
 
-        $parsedArgs['paged'] = max(1, (int)$parsedArgs['paged']);
+        if ($parsedArgs['posts_per_page'] < 1 || $parsedArgs['paged'] < 1) {
+            return [];
+        }
+
         $parsedArgs['paged'] = $parsedArgs['paged'] * $parsedArgs['posts_per_page'] - $parsedArgs['posts_per_page'];
         $post_type_placeholders = implode(', ', array_fill(0, count($parsedArgs['post_type']), '%s'));
         $query_args = array_merge(
