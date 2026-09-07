@@ -146,4 +146,43 @@ class MultipleAuthorsCest
             $receivers
         );
     }
+
+    public function testGetSyncPostAuthorDataWithNoPostTypesClearsStalePostIds(WpunitTester $I)
+    {
+        $module = $this->getMultipleAuthorsModule();
+        $originalPostTypes = $module->module->options->post_types;
+        $originalUserId = get_current_user_id();
+        $dieHandler = static function () {
+            return static function () {
+                throw new \RuntimeException('wp_send_json completed');
+            };
+        };
+
+        $adminUserId = $I->factory('an admin user')->user->create(['role' => 'administrator']);
+        wp_set_current_user($adminUserId);
+        $module->module->options->post_types = [];
+        set_transient('publishpress_authors_sync_post_author_ids', [123, 456], HOUR_IN_SECONDS);
+        $_GET['nonce'] = wp_create_nonce('sync_post_author');
+
+        add_filter('wp_die_handler', $dieHandler, PHP_INT_MAX);
+        add_filter('wp_die_ajax_handler', $dieHandler, PHP_INT_MAX);
+        ob_start();
+
+        try {
+            $module->getSyncPostAuthorData();
+            $I->fail('Expected wp_send_json() to terminate the request.');
+        } catch (\RuntimeException $exception) {
+            $I->assertSame('wp_send_json completed', $exception->getMessage());
+        } finally {
+            $response = ob_get_clean();
+            remove_filter('wp_die_handler', $dieHandler, PHP_INT_MAX);
+            remove_filter('wp_die_ajax_handler', $dieHandler, PHP_INT_MAX);
+            unset($_GET['nonce']);
+            $module->module->options->post_types = $originalPostTypes;
+            wp_set_current_user($originalUserId);
+        }
+
+        $I->assertSame(['total' => 0], json_decode($response, true));
+        $I->assertFalse(get_transient('publishpress_authors_sync_post_author_ids'));
+    }
 }
