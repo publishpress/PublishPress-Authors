@@ -260,9 +260,13 @@ class MA_Author_Boxes extends Module
             return;
         }
 
+        $postTypeObject = get_post_type_object(self::POST_TYPE_BOXES);
+        $editCapability = !empty($postTypeObject->cap->edit_post)
+            ? $postTypeObject->cap->edit_post
+            : 'edit_post';
+
         if (!current_user_can(apply_filters('pp_multiple_authors_manage_layouts_cap', 'ppma_manage_layouts'))
-            || !current_user_can('edit_post', $post_id)
-        ) {
+            || !current_user_can($editCapability, $post_id)) {
             return;
         }
 
@@ -601,9 +605,10 @@ class MA_Author_Boxes extends Module
             'show_in_menu' => false,
             'map_meta_cap' => true,
             'capabilities' => [
-                'edit_post'              => $manageLayoutsCapability,
-                'read_post'              => $manageLayoutsCapability,
-                'delete_post'            => $manageLayoutsCapability,
+                'edit_post'              => 'edit_ppma_box',
+                'read_post'              => 'read_ppma_box',
+                'delete_post'            => 'delete_ppma_box',
+                'read'                   => $manageLayoutsCapability,
                 'edit_posts'             => $manageLayoutsCapability,
                 'edit_others_posts'      => $manageLayoutsCapability,
                 'delete_posts'           => $manageLayoutsCapability,
@@ -772,14 +777,15 @@ class MA_Author_Boxes extends Module
             return $actions;
         }
 
-        if (!current_user_can('edit_post', $post->ID)) {
-            return $actions;
-        }
-
         $postTypeObject = get_post_type_object(self::POST_TYPE_BOXES);
-        $createCapability = !empty($postTypeObject->cap->create_posts) ? $postTypeObject->cap->create_posts : 'edit_posts';
+        $editCapability = !empty($postTypeObject->cap->edit_post)
+            ? $postTypeObject->cap->edit_post
+            : 'edit_post';
+        $createCapability = !empty($postTypeObject->cap->create_posts)
+            ? $postTypeObject->cap->create_posts
+            : 'edit_posts';
 
-        if (!current_user_can($createCapability)) {
+        if (!current_user_can($editCapability, $post->ID) || !current_user_can($createCapability)) {
             return $actions;
         }
 
@@ -833,12 +839,18 @@ class MA_Author_Boxes extends Module
             wp_die(esc_html__('Invalid Author Box.', 'publishpress-authors'));
         }
 
-        if (!current_user_can('edit_post', $postId)) {
+        $postTypeObject = get_post_type_object(self::POST_TYPE_BOXES);
+        $editCapability = !empty($postTypeObject->cap->edit_post)
+            ? $postTypeObject->cap->edit_post
+            : 'edit_post';
+        $createCapability = !empty($postTypeObject->cap->create_posts)
+            ? $postTypeObject->cap->create_posts
+            : 'edit_posts';
+
+        if (!current_user_can($editCapability, $postId)) {
             wp_die(esc_html__('You are not allowed to duplicate this Author Box.', 'publishpress-authors'));
         }
 
-        $postTypeObject = get_post_type_object(self::POST_TYPE_BOXES);
-        $createCapability = !empty($postTypeObject->cap->create_posts) ? $postTypeObject->cap->create_posts : 'edit_posts';
         if (!current_user_can($createCapability)) {
             wp_die(esc_html__('You are not allowed to create Author Boxes.', 'publishpress-authors'));
         }

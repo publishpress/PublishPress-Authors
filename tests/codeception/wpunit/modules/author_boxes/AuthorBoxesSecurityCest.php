@@ -27,14 +27,51 @@ class AuthorBoxesSecurityCest
         $postType = get_post_type_object(\MA_Author_Boxes::POST_TYPE_BOXES);
         $authorId = $I->factory('an author')->user->create(['role' => 'author']);
         $adminId = $I->factory('an administrator')->user->create(['role' => 'administrator']);
+        $postId = wp_insert_post(
+            [
+                'post_type'   => \MA_Author_Boxes::POST_TYPE_BOXES,
+                'post_title'  => 'Capability test box',
+                'post_status' => 'publish',
+            ]
+        );
+
+        $I->assertSame('edit_ppma_box', $postType->cap->edit_post);
+        $I->assertSame('read_ppma_box', $postType->cap->read_post);
+        $I->assertSame('delete_ppma_box', $postType->cap->delete_post);
+        $I->assertSame('ppma_manage_layouts', $postType->cap->read);
 
         wp_set_current_user($authorId);
         $I->assertFalse(current_user_can($postType->cap->create_posts));
         $I->assertFalse(current_user_can($postType->cap->publish_posts));
+        $I->assertFalse(current_user_can($postType->cap->edit_post, $postId));
+        $I->assertFalse(current_user_can($postType->cap->read_post, $postId));
+        $I->assertFalse(current_user_can($postType->cap->delete_post, $postId));
 
         wp_set_current_user($adminId);
         $I->assertTrue(current_user_can($postType->cap->create_posts));
         $I->assertTrue(current_user_can($postType->cap->publish_posts));
+        $I->assertTrue(current_user_can($postType->cap->edit_post, $postId));
+        $I->assertTrue(current_user_can($postType->cap->read_post, $postId));
+        $I->assertTrue(current_user_can($postType->cap->delete_post, $postId));
+    }
+
+    public function manageLayoutsCapability_isNotRegisteredAsAPostMetaCapability(WpunitTester $I)
+    {
+        $adminId = $I->factory('an administrator')->user->create(['role' => 'administrator']);
+        $incorrectUsageMessages = [];
+        $captureIncorrectUsage = static function ($function, $message) use (&$incorrectUsageMessages) {
+            if ($function === 'map_meta_cap') {
+                $incorrectUsageMessages[] = $message;
+            }
+        };
+
+        add_action('doing_it_wrong_run', $captureIncorrectUsage, 10, 2);
+        wp_set_current_user($adminId);
+
+        $I->assertTrue(current_user_can('ppma_manage_layouts'));
+
+        remove_action('doing_it_wrong_run', $captureIncorrectUsage, 10);
+        $I->assertSame([], $incorrectUsageMessages);
     }
 
     public function profileValuePrefixes_areSanitizedAsUrlsOnSave(WpunitTester $I)
