@@ -163,7 +163,7 @@ class AuthorCategoriesTable extends \WP_List_Table
         }
 
         if ($this->current_action() === 'ppma-delete-author-categories' && !empty($_REQUEST['author_categories'])) {
-            $author_categories = array_map('sanitize_text_field', (array) $_REQUEST['author_categories']);
+            $author_categories = array_map('sanitize_text_field', wp_unslash((array) $_REQUEST['author_categories']));
             if (!empty($author_categories)) {
                 foreach ($author_categories as $author_category) {
                     $this->deleteAuthorCategory($author_category);
@@ -177,7 +177,7 @@ class AuthorCategoriesTable extends \WP_List_Table
                 }
             }
         } elseif ($this->current_action() === 'ppma-enable-author-categories' && !empty($_REQUEST['author_categories'])) {
-            $author_categories = array_map('sanitize_text_field', (array) $_REQUEST['author_categories']);
+            $author_categories = array_map('sanitize_text_field', wp_unslash((array) $_REQUEST['author_categories']));
             if (!empty($author_categories)) {
                 foreach ($author_categories as $author_category) {
                     $this->editAuthorCategory(['category_status' => 1], $author_category);

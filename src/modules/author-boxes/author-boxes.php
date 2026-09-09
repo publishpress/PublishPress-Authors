@@ -262,7 +262,7 @@ class MA_Author_Boxes extends Module
 
         $post = get_post($post_id);
 
-        $submitted_data = $_POST; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+        $submitted_data = wp_unslash($_POST); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
         $baseline_data = null;
         $uses_consolidated_payload = !empty($_POST['author_boxes_editor_data']);
 
@@ -294,8 +294,8 @@ class MA_Author_Boxes extends Module
         $meta_data = [];
         $latest_data = (array) get_post_meta($post_id, self::META_PREFIX . 'layout_meta_value', true);
         $conflicts = [];
-        $preview_author_post = isset($_POST['preview_author_post']) ? sanitize_text_field($_POST['preview_author_post']) : '';
-        $parent_author_box = isset($_POST['parent_author_box']) ? sanitize_text_field($_POST['parent_author_box']) : '';
+        $preview_author_post = isset($_POST['preview_author_post']) ? sanitize_text_field(wp_unslash($_POST['preview_author_post'])) : '';
+        $parent_author_box = isset($_POST['parent_author_box']) ? sanitize_text_field(wp_unslash($_POST['parent_author_box'])) : '';
 
         foreach ($fields as $key => $args) {
             if (in_array($key, $excluded_input)) {
@@ -3029,7 +3029,7 @@ class MA_Author_Boxes extends Module
                             data-button_change="<?php echo esc_attr($button_change); ?>"
                             data-field_name="<?php echo esc_attr($field_name); ?>"
                             data-input_id="<?php echo esc_attr($key); ?>"
-                            data-search_placeholder="<?php echo sprintf(esc_attr__('Search %1s Icon', 'publishpress-authors'), $field_name); ?>"
+                            data-search_placeholder="<?php echo esc_attr(sprintf(__('Search %1s Icon', 'publishpress-authors'), $field_name)); ?>"
                         >
                             <div class="button-secondary"><?php echo esc_html($default_text); ?></div>
                         </div>

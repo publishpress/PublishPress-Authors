@@ -190,7 +190,7 @@ if (!class_exists('MA_Molongui_Authorship_Migration')) {
                            'publishpress-authors'
                        ); ?></a>
                     |
-                    <a href="<?php echo esc_url(add_query_arg(['action' => 'dismiss_molongui_authorship_migration_notice'])); ?>"><?php esc_html_e(
+                    <a href="<?php echo esc_url(wp_nonce_url(add_query_arg(['action' => 'dismiss_molongui_authorship_migration_notice']), 'dismiss_molongui_authorship_migration_notice')); ?>"><?php esc_html_e(
                              'Dismiss',
                              'publishpress-authors'
                          ); ?></a>
@@ -204,6 +204,8 @@ if (!class_exists('MA_Molongui_Authorship_Migration')) {
             if (!isset($_GET['action']) || $_GET['action'] !== 'dismiss_molongui_authorship_migration_notice') {
                 return;
             }
+
+            check_admin_referer('dismiss_molongui_authorship_migration_notice');
 
             update_option('publishpress_authors_dismiss_molongui_authorship_migration_notice', 1);
         }

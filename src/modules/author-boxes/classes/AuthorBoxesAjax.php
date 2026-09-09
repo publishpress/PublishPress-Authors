@@ -50,9 +50,9 @@ class AuthorBoxesAjax
             );
         } else {
 
-            $field_orders = (!empty($_POST['field_orders']) && is_array($_POST['field_orders'])) ? array_map('sanitize_text_field', $_POST['field_orders']) : false;
-            $post_id = isset($_POST['post_id']) ? sanitize_text_field($_POST['post_id']) : false;
-            $save_for = isset($_POST['save_for']) ? sanitize_text_field($_POST['save_for']) : 'current';
+            $field_orders = (!empty($_POST['field_orders']) && is_array($_POST['field_orders'])) ? array_map('sanitize_text_field', wp_unslash($_POST['field_orders'])) : false;
+            $post_id = isset($_POST['post_id']) ? sanitize_text_field(wp_unslash($_POST['post_id'])) : false;
+            $save_for = isset($_POST['save_for']) ? sanitize_text_field(wp_unslash($_POST['save_for'])) : 'current';
 
             if ($field_orders && $post_id) {
                 if ($save_for === 'current') {

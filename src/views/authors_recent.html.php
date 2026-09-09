@@ -65,7 +65,7 @@
                                 <div class="ppma-row-article-block secondary">
                                     <div class="ppma-col-12">
                                         <div class="text">
-                                            <p class="no-post"><?php echo $context['no_post_text']; ?></p>
+                                            <p class="no-post"><?php echo esc_html($context['no_post_text']); ?></p>
                                         </div>
                                     </div>
                                 </div>

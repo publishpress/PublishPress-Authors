@@ -2028,7 +2028,7 @@ if (!class_exists('MA_Multiple_Authors')) {
                     isset($current_author->link)
                 ) {
                     $author_url = $current_author->link;
-                    echo '<div style="margin-top: 15px;"><a class="button" target="_blank" href="'. $author_url .'">'. esc_html__('View sample Author Page', 'publishpress-authors') .'</a></div>';
+                    echo '<div style="margin-top: 15px;"><a class="button" target="_blank" href="'. esc_url($author_url) .'">'. esc_html__('View sample Author Page', 'publishpress-authors') .'</a></div>';
                 }
             }
         }
@@ -4357,10 +4357,17 @@ echo '<span class="ppma_settings_field_description">'
             }
 
             $postTypes = array_values(Util::get_post_types_for_module($this->module));
-            $postTypes = '"' . implode('","', $postTypes) . '"';
+            // Preserve the empty-string lookup when no post types are selected.
+            if (empty($postTypes)) {
+                $postTypes = [''];
+            }
+            $placeholders = implode(', ', array_fill(0, count($postTypes), '%s'));
 
             $result = $wpdb->get_results(
-                "SELECT ID FROM {$wpdb->posts} WHERE post_type IN ({$postTypes}) AND post_status NOT IN ('trash')",
+                $wpdb->prepare(
+                    "SELECT ID FROM {$wpdb->posts} WHERE post_type IN ({$placeholders}) AND post_status NOT IN ('trash')",
+                    $postTypes
+                ),
                 ARRAY_N
             );
 

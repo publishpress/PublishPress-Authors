@@ -11,7 +11,7 @@ $rating_star .= '<span class="dashicons dashicons-star-filled"></span>';
             href="//wordpress.org/support/plugin/<?php echo esc_attr($context['plugin_slug']); ?>/reviews/#new-post"
             target="_blank"
             rel="noopener noreferrer">
-            <?php printf(esc_html__('If you like %1$s please leave us a %2$s rating. Thank you!', 'publishpress-authors'), '<strong>'. $context['plugin_name'] .'</strong>', $rating_star); ?>
+            <?php printf(esc_html__('If you like %1$s please leave us a %2$s rating. Thank you!', 'publishpress-authors'), '<strong>'. esc_html($context['plugin_name']) .'</strong>', $rating_star); ?>
         </a>
     </div>
     <hr>

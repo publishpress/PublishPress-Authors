@@ -578,7 +578,7 @@ class Post_Editor
         }
         ?>
         <div class="ppma-author-box-selection" style="margin-bottom: 15px;">
-            <label for="ppma_author_box_select"><?php _e('Author Box', 'publishpress-authors'); ?></label>
+                <label for="ppma_author_box_select"><?php esc_html_e('Author Box', 'publishpress-authors'); ?></label>
             <?php
             $layouts = apply_filters('pp_multiple_authors_author_layouts', []);
             if (isset($layouts['authors_index'])) {
@@ -602,8 +602,8 @@ class Post_Editor
             }
             ?>
             <select name="ppma_author_box_select" class="authors-select2-default-select" id="ppma_author_box_select" style="width: 100%;">
-                <option value=""><?php _e('Default Author Box', 'publishpress-authors'); ?></option>
-                <option value="none"<?php selected($selected_box, 'none'); ?>><?php _e('Hide Author Box', 'publishpress-authors'); ?></option>
+                <option value=""><?php esc_html_e('Default Author Box', 'publishpress-authors'); ?></option>
+                <option value="none"<?php selected($selected_box, 'none'); ?>><?php esc_html_e('Hide Author Box', 'publishpress-authors'); ?></option>
                 <?php foreach ($layouts as $layout => $text):
                     $selected = $selected_box == $layout;
                     ?>
@@ -716,7 +716,7 @@ class Post_Editor
             return;
         }
 
-        $post_ids = array_map('sanitize_key', $_POST['post_ids']);
+        $post_ids = array_map('sanitize_key', wp_unslash((array) $_POST['post_ids']));
         if (!isset($_POST['bulkEditNonce'])
             || !wp_verify_nonce(sanitize_key($_POST['bulkEditNonce']), 'bulk-edit-nonce')
             || !current_user_can(get_taxonomy('author')->cap->assign_terms)
@@ -729,8 +729,8 @@ class Post_Editor
             return;
         }
 
-        $authors = isset($_POST['authors_ids']) ? array_map('sanitize_text_field', $_POST['authors_ids']) : [];
-        $author_categories = isset($_POST['author_categories']) ? Utils::sanitizeArray($_POST['author_categories']) : []; // phpcs:ignore WordPress.Security.
+        $authors = isset($_POST['authors_ids']) ? array_map('sanitize_text_field', wp_unslash((array) $_POST['authors_ids'])) : [];
+        $author_categories = isset($_POST['author_categories']) ? Utils::sanitizeArray(wp_unslash($_POST['author_categories'])) : []; // phpcs:ignore WordPress.Security.
         $authors = self::remove_dirty_authors_from_authors_arr($authors);
 
         $fallbackUserId = isset($_POST['fallback_author_user']) ? (int)$_POST['fallback_author_user'] : null;
@@ -794,7 +794,7 @@ class Post_Editor
         Utils::set_post_authors($post_id, $authors, true, $fallbackUserId, $author_categories);
 
         if ($show_editor_author_box && isset($_POST['ppma_author_box_select'])) {
-            $selected_box = sanitize_text_field($_POST['ppma_author_box_select']);
+            $selected_box = sanitize_text_field(wp_unslash($_POST['ppma_author_box_select']));
 
             if (empty($selected_box)) {
                 delete_post_meta($post_id, 'ppma_selected_author_box');

@@ -557,11 +557,11 @@ class Author_Editor
                         </div>
                         <p class="hide-if-no-js">
                             <a class="select-author-image-field <?php echo $author_image ? 'hidden' : ''; ?>" href="#">
-                                <?php _e('Select image', 'publishpress-authors'); ?>
+                                <?php esc_html_e('Select image', 'publishpress-authors'); ?>
                             </a>
                             <a class="delete-author-image-field <?php echo !$author_image ? 'hidden' : ''; ?>"
                                href="#">
-                                <?php _e('Remove this image', 'publishpress-authors'); ?>
+                                <?php esc_html_e('Remove this image', 'publishpress-authors'); ?>
                             </a>
                         </p>
                         <input name="<?php echo esc_attr($key); ?>" class="author-image-field-id" type="hidden"
@@ -788,7 +788,7 @@ class Author_Editor
 
             if (count($updated_args) > 1) {
                 if (isset($_POST['name'])) {
-                    $updated_args['display_name'] = sanitize_text_field($_POST['name']);
+            $updated_args['display_name'] = sanitize_text_field(wp_unslash($_POST['name']));
                 }
                 wp_update_user($updated_args);
             }
@@ -1099,7 +1099,7 @@ class Author_Editor
             $legacyPlugin = Factory::getLegacyPlugin();
             $author_id = (int)$_POST['authors-new'];
             $enable_guest_author_user = $legacyPlugin->modules->multiple_authors->options->enable_guest_author_user === 'yes';
-            $author_type = !empty($_POST['authors-author_type']) ? sanitize_text_field($_POST['authors-author_type']) : '';
+        $author_type = !empty($_POST['authors-author_type']) ? sanitize_text_field(wp_unslash($_POST['authors-author_type'])) : '';
             /**
              * Check if term with this user exist
              */
@@ -1126,9 +1126,9 @@ class Author_Editor
             }
 
             if (empty($_POST['slug'])) {
-                $slug = sanitize_title($_POST['tag-name']);
+        $slug = sanitize_title(wp_unslash($_POST['tag-name']));
             } else {
-                $slug = sanitize_title($_POST['slug']);
+        $slug = sanitize_title(wp_unslash($_POST['slug']));
             }
             /**
              * Check if user with term slug already exists

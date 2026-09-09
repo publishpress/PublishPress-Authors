@@ -312,10 +312,10 @@ class MA_Author_Categories extends Module
             );
         } else {
 
-            $category_name = isset($_POST['category_name']) ? sanitize_text_field($_POST['category_name']) : '';
-            $plural_name = isset($_POST['plural_name']) ? sanitize_text_field($_POST['plural_name']) : '';
-            $schema_property = isset($_POST['schema_property']) ? sanitize_text_field($_POST['schema_property']) : '';
-            $post_types = isset($_POST['post_types']) && is_array($_POST['post_types']) ? array_map('sanitize_text_field', $_POST['post_types']) : [];
+        $category_name = isset($_POST['category_name']) ? sanitize_text_field(wp_unslash($_POST['category_name'])) : '';
+        $plural_name = isset($_POST['plural_name']) ? sanitize_text_field(wp_unslash($_POST['plural_name'])) : '';
+            $schema_property = isset($_POST['schema_property']) ? sanitize_text_field(wp_unslash($_POST['schema_property'])) : '';
+            $post_types = isset($_POST['post_types']) && is_array($_POST['post_types']) ? array_map('sanitize_text_field', wp_unslash($_POST['post_types'])) : [];
             $enabled_category = isset($_POST['enabled_category']) ? intval($_POST['enabled_category']) : 0;
             $slug = ppma_generate_slug($category_name);
 
@@ -400,10 +400,10 @@ class MA_Author_Categories extends Module
             ));
         } else {
 
-            $category_name = isset($_POST['singular_name']) ? sanitize_text_field($_POST['singular_name']) : '';
-            $plural_name = isset($_POST['plural_name']) ? sanitize_text_field($_POST['plural_name']) : '';
-            $schema_property = isset($_POST['schema_property']) ? sanitize_text_field($_POST['schema_property']) : '';
-            $post_types = isset($_POST['post_types']) && is_array($_POST['post_types']) ? array_map('sanitize_text_field', $_POST['post_types']) : [];
+            $category_name = isset($_POST['singular_name']) ? sanitize_text_field(wp_unslash($_POST['singular_name'])) : '';
+            $plural_name = isset($_POST['plural_name']) ? sanitize_text_field(wp_unslash($_POST['plural_name'])) : '';
+            $schema_property = isset($_POST['schema_property']) ? sanitize_text_field(wp_unslash($_POST['schema_property'])) : '';
+            $post_types = isset($_POST['post_types']) && is_array($_POST['post_types']) ? array_map('sanitize_text_field', wp_unslash($_POST['post_types'])) : [];
             $category_status = isset($_POST['enabled_category']) ? intval($_POST['enabled_category']) : 0;
             $category_id = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
             $slug = ppma_generate_slug($category_name);

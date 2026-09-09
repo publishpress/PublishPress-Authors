@@ -40,6 +40,7 @@ $hide_empty_posts_message  = isset($legacyPlugin->modules->multiple_authors->opt
 $show_author_page_title    = $legacyPlugin->modules->multiple_authors->options->show_author_page_title === 'yes';
 $author_pages_title_header = $legacyPlugin->modules->multiple_authors->options->author_pages_title_header;
 $author_post_title_header  = $legacyPlugin->modules->multiple_authors->options->author_post_title_header;
+$author_post_title_header = in_array($author_post_title_header, ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'], true) ? $author_post_title_header : 'h2';
 $author_post_custom_width  = (int) $legacyPlugin->modules->multiple_authors->options->author_post_custom_width;
 $author_post_custom_height = (int) $legacyPlugin->modules->multiple_authors->options->author_post_custom_height;
 

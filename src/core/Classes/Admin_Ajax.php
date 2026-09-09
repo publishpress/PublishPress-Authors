@@ -39,8 +39,8 @@ class Admin_Ajax
             wp_send_json_error(null, 403);
         }
 
-        $search   = !empty($_GET['q']) ? sanitize_text_field($_GET['q']) : '';
-        $ignored  = !empty($_GET['ignored']) ? array_map('sanitize_text_field', $_GET['ignored']) : [];
+        $search   = !empty($_GET['q']) ? sanitize_text_field(wp_unslash($_GET['q'])) : '';
+        $ignored  = !empty($_GET['ignored']) ? array_map('sanitize_text_field', wp_unslash((array) $_GET['ignored'])) : [];
         $authors  = self::get_possible_authors_for_search($search, $ignored);
         $response = [
             'results' => $authors,
@@ -66,8 +66,8 @@ class Admin_Ajax
             wp_send_json_error(null, 403);
         }
 
-        $search   = !empty($_GET['q']) ? sanitize_text_field($_GET['q']) : '';
-        $ignored  = !empty($_GET['ignored']) ? array_map('sanitize_text_field', $_GET['ignored']) : [];
+        $search   = !empty($_GET['q']) ? sanitize_text_field(wp_unslash($_GET['q'])) : '';
+        $ignored  = !empty($_GET['ignored']) ? array_map('sanitize_text_field', wp_unslash((array) $_GET['ignored'])) : [];
         $authors  = self::get_possible_authors_for_search($search, $ignored);
 
         $results = [];
@@ -102,8 +102,8 @@ class Admin_Ajax
             wp_send_json_error(null, 403);
         }
 
-        $search     = !empty($_GET['q']) ? sanitize_text_field($_GET['q']) : '';
-        $post_type  = !empty($_GET['post_type']) ? sanitize_text_field($_GET['post_type']) : 'post';
+        $search     = !empty($_GET['q']) ? sanitize_text_field(wp_unslash($_GET['q'])) : '';
+        $post_type  = !empty($_GET['post_type']) ? sanitize_text_field(wp_unslash($_GET['post_type'])) : 'post';
 
         $post_args = [
             'post_type'         => $post_type,
@@ -236,7 +236,7 @@ class Admin_Ajax
         }
 
         if (!empty($_GET['q'])) {
-            $user_args['search'] = sanitize_text_field('*' . $_GET['q'] . '*');
+            $user_args['search'] = sanitize_text_field('*' . wp_unslash($_GET['q']) . '*');
         }
 
         $users   = get_users($user_args);
@@ -330,7 +330,7 @@ class Admin_Ajax
                 'publishpress-authors'
             );
         } else {
-            $author_slug = !empty($_POST['author_slug']) ? sanitize_title($_POST['author_slug']) : '';
+            $author_slug = !empty($_POST['author_slug']) ? sanitize_title(wp_unslash($_POST['author_slug'])) : '';
             $author_id   = !empty($_POST['author_id']) ? (int) $_POST['author_id'] : 0;
             $term_id     = !empty($_POST['term_id']) ? (int) $_POST['term_id'] : 0;
             $legacyPlugin = Factory::getLegacyPlugin();

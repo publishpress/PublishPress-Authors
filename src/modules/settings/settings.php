@@ -145,7 +145,7 @@ if (!class_exists('MA_Settings')) {
             $message = false;
 
             if (isset($_REQUEST['message'])) {
-                $message = sanitize_text_field($_REQUEST['message']);
+            $message = sanitize_text_field(wp_unslash($_REQUEST['message']));
             }
 
             if ($message && isset($current_module->messages[$message])) {
@@ -156,7 +156,7 @@ if (!class_exists('MA_Settings')) {
             $error = false;
 
             if (isset($_REQUEST['error'])) {
-                $error = sanitize_text_field($_REQUEST['error']);
+            $error = sanitize_text_field(wp_unslash($_REQUEST['error']));
             }
 
             if ($error && isset($current_module->messages[$error])) {
