@@ -908,6 +908,14 @@ class Author
         return self::get_by_term_id($id);
     }
 
+    public static function clear_cache()
+    {
+        self::$authorsByIdCache     = [];
+        self::$authorsBySlugCache   = [];
+        self::$authorsByTermIdCache = [];
+        self::$authorsByEmailCache  = [];
+    }
+
     /**
      * Get author posts count with support for post_type.
      *
@@ -987,6 +995,7 @@ class Author
              */
             $query    = apply_filters('ppma_author_posts_count_query', $query, $term_id, $post_type);
 
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Query is built from prepared fragments, then passed through the existing filter for backward compatibility.
             $counts = (int)$wpdb->get_var($query);
 
             /**

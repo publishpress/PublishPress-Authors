@@ -222,6 +222,7 @@ class Utils
         }
 
         if (empty(array_filter(array_values($post_author_categories)))) {
+            self::deletePostAuthorCategoryRelationshipsForRemovedAuthors($post_id, $authors);
             return;
         }
 
@@ -256,10 +257,13 @@ class Utils
 
         if (!$allow_multiple_categories) {
             $existing_relations = $wpdb->get_results(
+                // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name is generated internally.
                 $wpdb->prepare(
                     "SELECT category_id, author_term_id FROM {$table_name} WHERE post_id = %d ORDER BY id ASC",
                     $post_id
-                ),
+                )
+                // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                ,
                 ARRAY_A
             );
 
@@ -327,6 +331,45 @@ class Utils
                 }
             }
         }
+        do_action('publishpress_authors_flush_cache_for_post', $post_id);
+    }
+
+    /**
+     * Delete author category relationships for authors no longer assigned to a post.
+     *
+     * @param int $post_id Post ID.
+     * @param array $authors Author term IDs still assigned to the post.
+     *
+     * @return void
+     */
+    private static function deletePostAuthorCategoryRelationshipsForRemovedAuthors($post_id, $authors)
+    {
+        global $wpdb;
+
+        $table_name = $wpdb->prefix . 'ppma_author_relationships';
+        $post_id    = (int) $post_id;
+        $authors    = array_values(array_unique(array_map('intval', (array) $authors)));
+
+        if (empty($post_id) || empty($authors)) {
+            return;
+        }
+
+        if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $table_name)) !== $table_name) {
+            return;
+        }
+
+        $placeholders = implode(', ', array_fill(0, count($authors), '%d'));
+        $query_args   = array_merge([$post_id], $authors);
+
+        $wpdb->query(
+            // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name and placeholders are generated internally from integer IDs.
+            $wpdb->prepare(
+                "DELETE FROM {$table_name} WHERE post_id = %d AND author_term_id NOT IN ({$placeholders})",
+                $query_args
+            )
+            // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        );
+
         do_action('publishpress_authors_flush_cache_for_post', $post_id);
     }
 
@@ -1303,7 +1346,7 @@ class Utils
 
                 <div class="inside ppma-advert">
                     <p><?php echo esc_html__('If you need help or have a new feature request, let us know.', 'publishpress-authors'); ?>
-                        <a class="advert-link" href="https://wordpress.org/plugins/publishpress-authors/" target="_blank">
+                        <a class="advert-link" href="https://wordpress.org/support/plugin/publishpress-authors/" target="_blank">
                         <?php echo esc_html__('Request Support', 'publishpress-authors'); ?>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="linkIcon">
                                 <path
@@ -1314,7 +1357,7 @@ class Utils
                     </p>
                     <p>
                     <?php echo esc_html__('Detailed documentation is also available on the plugin website.', 'publishpress-authors'); ?>
-                        <a class="advert-link" href="https://publishpress.com/knowledge-base/getting-started-ma/" target="_blank">
+                        <a class="advert-link" href="https://publishpress.com/knowledge-base/authors-getting-started/" target="_blank">
                         <?php echo esc_html__('View Knowledge Base', 'publishpress-authors'); ?>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="linkIcon">
                                 <path
@@ -1379,17 +1422,26 @@ class Utils
         global $wpdb;
 
         if ( is_array( $post_type ) ) {
-            $post_type           = esc_sql( $post_type );
-            $post_type_in_string = "'" . implode( "','", $post_type ) . "'";
-            $sql                 = $wpdb->prepare(
+            $post_type = array_values(array_filter(array_map('sanitize_key', $post_type)));
+
+            if (empty($post_type)) {
+                return null;
+            }
+
+            $post_type_placeholders = implode(', ', array_fill(0, count($post_type), '%s'));
+            $query_args             = array_merge([$page_title], $post_type);
+
+            // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Post type placeholders are generated from a sanitized array.
+            $sql                    = $wpdb->prepare(
                 "
                 SELECT ID
                 FROM $wpdb->posts
                 WHERE post_title = %s
-                AND post_type IN ($post_type_in_string)
+                AND post_type IN ($post_type_placeholders)
             ",
-                $page_title
+                $query_args
             );
+            // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         } else {
             $sql = $wpdb->prepare(
                 "
@@ -1403,6 +1455,7 @@ class Utils
             );
         }
 
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Query is prepared above.
         $page = $wpdb->get_var( $sql );
 
         if ( $page ) {
