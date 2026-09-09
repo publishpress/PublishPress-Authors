@@ -4356,11 +4356,26 @@ echo '<span class="ppma_settings_field_description">'
                 wp_send_json_error(null, 403);
             }
 
-            $postTypes = array_values(Util::get_post_types_for_module($this->module));
-            $postTypes = '"' . implode('","', $postTypes) . '"';
+            $postTypes = array_values(array_filter(array_map(
+                'sanitize_key',
+                Util::get_post_types_for_module($this->module)
+            )));
+
+            if (empty($postTypes)) {
+                delete_transient('publishpress_authors_sync_post_author_ids');
+                wp_send_json(['total' => 0]);
+            }
+
+            $postTypePlaceholders = implode(', ', array_fill(0, count($postTypes), '%s'));
 
             $result = $wpdb->get_results(
-                "SELECT ID FROM {$wpdb->posts} WHERE post_type IN ({$postTypes}) AND post_status NOT IN ('trash')",
+                // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Post type placeholders are generated from a sanitized array.
+                $wpdb->prepare(
+                    "SELECT ID FROM {$wpdb->posts} WHERE post_type IN ({$postTypePlaceholders}) AND post_status NOT IN ('trash')",
+                    $postTypes
+                )
+                // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                ,
                 ARRAY_N
             );
 

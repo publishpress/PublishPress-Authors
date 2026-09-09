@@ -604,7 +604,7 @@ class Author_Editor
                         <?php echo $group_description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                     </div>
                 <?php elseif ('wysiwyg' === $args['type']) : ?>
-                    <?php wp_editor($args['value'], $key, []); ?>
+                    <?php wp_editor($args['value'], $key, self::get_wysiwyg_editor_settings($key)); ?>
                 <?php elseif ('checkbox' === $args['type']) :
                     $checked = !empty($args['value']);
                     ?>
@@ -669,6 +669,27 @@ class Author_Editor
     }
 
     /**
+     * Get settings for WYSIWYG author fields.
+     *
+     * @param string $field_key Rendered field key.
+     *
+     * @return array
+     */
+    private static function get_wysiwyg_editor_settings($field_key)
+    {
+        if ($field_key !== 'authors-description') {
+            return [];
+        }
+
+        return [
+            'wpautop' => false,
+            'tinymce' => [
+                'wpautop' => false,
+            ],
+        ];
+    }
+
+    /**
      * Handle saving of term meta
      *
      * @param int $term_id ID for the term being edited.
@@ -682,6 +703,7 @@ class Author_Editor
         }
         $author = Author::get_by_term_id($term_id);
         $updated_args = [];
+        $saved_description = null;
 
         $user_id = false;
         $user    = false;
@@ -770,7 +792,9 @@ class Author_Editor
                 // pre_user_description filter (wp_filter_kses) strips block-level
                 // HTML (<p>, headings, lists) that wp_kses_post above allows. The
                 // update_user_meta() call just above already stored the correct value.
-                if ($key !== 'description') {
+                if ($key === 'description') {
+                    $saved_description = $field_value;
+                } else {
                     $updated_args[$key] = $field_value;
                 }
             }
@@ -791,6 +815,11 @@ class Author_Editor
                     $updated_args['display_name'] = sanitize_text_field($_POST['name']);
                 }
                 wp_update_user($updated_args);
+
+                if (!is_null($saved_description)) {
+                    update_user_meta($user_id, 'description', $saved_description);
+                    update_term_meta($term_id, 'description', $saved_description);
+                }
             }
 
             // Do they have the same slug and nicename?

@@ -995,6 +995,7 @@ class Author
              */
             $query    = apply_filters('ppma_author_posts_count_query', $query, $term_id, $post_type);
 
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Query is built from prepared fragments, then passed through the existing filter for backward compatibility.
             $counts = (int)$wpdb->get_var($query);
 
             /**

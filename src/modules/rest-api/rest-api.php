@@ -630,7 +630,9 @@ if (!class_exists('MA_REST_API')) {
                     // Also update user meta if there's a mapped user, except the core account email.
                     if ($user_id && $field_name !== 'user_email') {
                         update_user_meta($user_id, $field_name, $sanitized_value);
-                        $updated_args[$field_name] = $sanitized_value;
+                        if ($field_name !== 'description') {
+                            $updated_args[$field_name] = $sanitized_value;
+                        }
                     }
                 }
             }
